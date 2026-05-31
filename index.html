@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="color-scheme" content="light only">
 <meta name="supported-color-schemes" content="light">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v71 (版本號僅留註解，不顯示於畫面)
+<!-- ATELIER 影片診斷工作台 · 內部版本 v72 (版本號僅留註解，不顯示於畫面)
+     v72 更新：影片輸入頁的「⑥ 連結到帳號」區，直接加了「職稱／職位類別」「產業」兩格——所以在歸類卡/影片輸入這一頁就看得到也能填，不用再跳帳號管理。它仍綁定所選帳號（在這裡填＝改那個帳號，單一來源、不會兩份打架）；貼歸類卡有職稱/產業會自動帶入這兩格；切換帳號會即時帶出該帳號的職稱/產業。
      v71 更新：①貼歸類卡建立新帳號時，回報會明確顯示「已存到帳號→身份/職稱/產業」，讓你當下看到它已歸到帳號（不必再去翻）。②同一個帳號再次丟卡時，會自動比對粉絲數變化、記一筆快照並顯示「上次→這次（增減/%）」，變化≥20% 會標「⚠️變化偏大」提醒去看歷史/更新版面五件套——帳號↔影片雙向累積的第一步。
      v70 更新：「帳號分析提示詞」強化——置頂貼文／置頂 Reels 各分析前三，並寫進規則：沒置頂就略過、有置頂才深入（分析各支類型、鉤子、在漏斗負責什麼）。讓 Claude 從主頁截圖就能做帳號版面（五件套）分析。
      v69 更新：影片庫每張卡片現在會從該帳號帶出「身份／職稱／產業」一起顯示（資料仍只存在帳號一處，不重複輸入也不會兩邊不一致）；影片庫搜尋也可用帳號名、職稱、產業、身份本質找影片。從影片角度即可看到創作者職業，不必跳到帳號管理。
@@ -556,7 +557,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <!-- 版本號 v71（內部）：原 <span class="v"> 已移除 -->
+    <!-- 版本號 v72（內部）：原 <span class="v"> 已移除 -->
   </div>
   <div class="stat" id="topstat">已存 <b id="vcount">0</b> 支影片</div>
 </div>
@@ -859,6 +860,11 @@ if('serviceWorker' in navigator){
         <input id="f-account-quick" placeholder="或直接打 @ 快速建檔（會自動建立帳號）" style="flex:1;padding:9px 12px;border:1px solid var(--border);border-radius:8px;font-size:13px;background:#fff" autocomplete="off">
         <button type="button" class="btn btn-ghost" id="f-account-create" style="white-space:nowrap;font-size:13px">＋ 建檔</button>
       </div>
+      <div class="row2" style="margin-top:8px">
+        <div class="fld" style="margin:0"><label style="font-size:12.5px">職稱 / 職位類別 <span class="opt">這個帳號的</span></label><input id="f-jobTitle" placeholder="例：整形外科醫師、健身教練" style="width:100%;padding:9px 12px;border:1px solid var(--border);border-radius:8px;font-size:13px;background:#fff" autocomplete="off"></div>
+        <div class="fld" style="margin:0"><label style="font-size:12.5px">產業</label><input id="f-industry" placeholder="例：醫美、健身、餐飲" style="width:100%;padding:9px 12px;border:1px solid var(--border);border-radius:8px;font-size:13px;background:#fff" autocomplete="off"></div>
+      </div>
+      <div class="tip">職稱／產業是「創作者本人」的屬性，會存到上面選的那個帳號（你在這裡填＝改那個帳號，不會變兩份）。貼歸類卡若有「職稱／產業」會自動帶入這裡。還沒選帳號的話，先按「＋建檔」或貼歸類卡建立帳號，填的職稱／產業就會一起存進去。</div>
       <div class="tip">把這支影片連結到一個「創作者帳號」。日後可以看到「這個帳號我拆過幾支、平均成效、粉絲成長」。可在「帳號管理」分頁再補身份分類與粉絲快照。</div>
     </div>
 
@@ -1702,6 +1708,7 @@ $('parseBtn').onclick=function(){
       setTimeout(()=>{ toast('🔁 「'+h+'」之前處理過：已拆 '+vidCount+' 支'+fanMsg); }, 800);
     }
     if($('f-account')) $('f-account').value=acc.id;
+    if(typeof syncAccountJobFields==='function') syncAccountJobFields();
   }
   // ───── v43 新增：記錄日期 / 客戶來源標籤 ─────
   if((F['記錄日期']||'').match(/\d{4}-\d{2}-\d{2}/)){ $('f-logdate').value=F['記錄日期'].match(/\d{4}-\d{2}-\d{2}/)[0]; got.push('記錄日期'); }
@@ -1891,7 +1898,7 @@ $('saveBtn').onclick=async function(){
   // 只清標題/連結/備註/缺口/Hook，保留分類設定與載體/狀態以利連續輸入
   $('f-title').value=''; $('f-url').value=''; $('f-note').value=''; $('f-gap').checked=false;
   $('contentHook').value=''; $('contentCover').value=''; $('f-headline').value='';
-  $('contentCaption').value=''; $('contentHashtag').value=''; $('contentWhy').value=''; $('contentApply').value=''; $('contentTranscript').value=''; if($('contentLang'))$('contentLang').value=''; updateHashtagCount(); if($('f-cta-type'))$('f-cta-type').selectedIndex=0; if($('f-cta-auto'))$('f-cta-auto').checked=false; if($('f-cta-text'))$('f-cta-text').value='';
+  $('contentCaption').value=''; $('contentHashtag').value=''; $('contentWhy').value=''; $('contentApply').value=''; $('contentTranscript').value=''; if($('contentLang'))$('contentLang').value=''; updateHashtagCount(); if($('f-cta-type'))$('f-cta-type').selectedIndex=0; if($('f-cta-auto'))$('f-cta-auto').checked=false; if($('f-cta-text'))$('f-cta-text').value=''; if($('f-jobTitle'))$('f-jobTitle').value=''; if($('f-industry'))$('f-industry').value='';
   ['specDur','specHookType','specPace','specSub','specEmotion','specHookSec'].forEach(i=>$(i).value='');
   ['f-views','f-likes','f-comments','f-reposts','f-shares','f-saves','f-reach','f-engrate','f-complete'].forEach(i=>$(i).value='');
   renderInsight(); renderGoalKit();
@@ -1902,7 +1909,7 @@ $('saveBtn').onclick=async function(){
 $('clearBtn').onclick=()=>{
   ['f-title','f-url','f-date','f-client','f-note'].forEach(i=>$(i).value='');
   $('contentHook').value=''; $('contentCover').value=''; $('f-headline').value='';
-  $('contentCaption').value=''; $('contentHashtag').value=''; $('contentWhy').value=''; $('contentApply').value=''; $('contentTranscript').value=''; if($('contentLang'))$('contentLang').value=''; updateHashtagCount(); if($('f-cta-type'))$('f-cta-type').selectedIndex=0; if($('f-cta-auto'))$('f-cta-auto').checked=false; if($('f-cta-text'))$('f-cta-text').value='';
+  $('contentCaption').value=''; $('contentHashtag').value=''; $('contentWhy').value=''; $('contentApply').value=''; $('contentTranscript').value=''; if($('contentLang'))$('contentLang').value=''; updateHashtagCount(); if($('f-cta-type'))$('f-cta-type').selectedIndex=0; if($('f-cta-auto'))$('f-cta-auto').checked=false; if($('f-cta-text'))$('f-cta-text').value=''; if($('f-jobTitle'))$('f-jobTitle').value=''; if($('f-industry'))$('f-industry').value='';
   ['specDur','specHookType','specPace','specSub','specEmotion','specHookSec'].forEach(i=>$(i).value='');
   $('contentPlatform').selectedIndex=0; $('productionStatus').selectedIndex=0;
   ['f-stage','f-theme','f-mat','f-sub','f-trig','f-form','f-goal'].forEach(i=>$(i).selectedIndex=0);
@@ -2813,6 +2820,20 @@ function populateAccountSelect(){
     accounts.map(a=>`<option value="${a.id}">${esc(a.handle||'?')} ${esc(a.displayName||'')} ${a.types&&a.types.length?'·['+esc(a.types.join('/'))+']':''}</option>`).join('');
   if(cur) sel.value=cur;
 }
+// v72：影片頁「職稱/產業」與所選帳號同步（顯示）
+function syncAccountJobFields(){
+  const a=accounts.find(x=>x.id===($('f-account')?$('f-account').value:''));
+  if($('f-jobTitle')) $('f-jobTitle').value=a?(a.jobTitle||''):'';
+  if($('f-industry')) $('f-industry').value=a?(a.industry||''):'';
+}
+// v72：在影片頁改職稱/產業 → 寫回所選帳號（單一來源）
+function writeAccountJobFields(){
+  const id=$('f-account')?$('f-account').value:''; if(!id) return;
+  const a=accounts.find(x=>x.id===id); if(!a) return;
+  const jt=$('f-jobTitle')?$('f-jobTitle').value.trim():'';
+  const ind=$('f-industry')?$('f-industry').value.trim():'';
+  if((a.jobTitle||'')!==jt||(a.industry||'')!==ind){ a.jobTitle=jt; a.industry=ind; a.updatedAt=Date.now(); saveAccounts(); if(typeof renderAccounts==='function') renderAccounts(); if(typeof renderLibrary==='function') renderLibrary(); }
+}
 // 綁定帳號管理 UI 事件
 function bindAccountUI(){
   if($('acc-add-btn')) $('acc-add-btn').onclick=()=>openAccountModal(null);
@@ -2827,7 +2848,7 @@ function bindAccountUI(){
     const handle=h.startsWith('@')||h.startsWith('http')?h:'@'+h;
     let existing=accounts.find(a=>a.handle===handle);
     if(!existing){
-      existing={id:'acc_'+Date.now()+'_'+Math.random().toString(36).slice(2,7), platform:'IG', handle:handle, displayName:'', types:[], domain:'', relatedAccounts:[], note:'(快速建檔，請到帳號管理補完整資訊)', fanSnapshots:[], profileSnapshots:[], createdAt:Date.now(), updatedAt:Date.now()};
+      existing={id:'acc_'+Date.now()+'_'+Math.random().toString(36).slice(2,7), platform:'IG', handle:handle, displayName:'', types:[], domain:'', jobTitle:($('f-jobTitle')?$('f-jobTitle').value.trim():''), industry:($('f-industry')?$('f-industry').value.trim():''), relatedAccounts:[], note:'(快速建檔，請到帳號管理補完整資訊)', fanSnapshots:[], profileSnapshots:[], createdAt:Date.now(), updatedAt:Date.now()};
       accounts.unshift(existing);
       await saveAccounts();
       toast('✓ 已建帳號 '+handle+'（請到帳號管理補身份/粉絲快照）');
@@ -2837,7 +2858,11 @@ function bindAccountUI(){
     populateAccountSelect();
     $('f-account').value=existing.id;
     $('f-account-quick').value='';
+    syncAccountJobFields();
   };
+  // v72：影片頁「職稱/產業」↔ 所選帳號 雙向綁定
+  if($('f-account')) $('f-account').addEventListener('change',syncAccountJobFields);
+  ['f-jobTitle','f-industry'].forEach(id=>{ const el=$(id); if(el) el.addEventListener('change',writeAccountJobFields); });
   ['accSearch','accFilterType','accFilterTier','accSort'].forEach(id=>{ const el=$(id); if(el) el.addEventListener(el.tagName==='INPUT'?'input':'change', renderAccounts); });
   if($('accClr')) $('accClr').onclick=()=>{ $('accSearch').value=''; renderAccounts(); };
   if($('cmpRun')) $('cmpRun').onclick=runCompare;
