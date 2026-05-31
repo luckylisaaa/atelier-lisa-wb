@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="color-scheme" content="light only">
 <meta name="supported-color-schemes" content="light">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v70 (版本號僅留註解，不顯示於畫面)
+<!-- ATELIER 影片診斷工作台 · 內部版本 v71 (版本號僅留註解，不顯示於畫面)
+     v71 更新：①貼歸類卡建立新帳號時，回報會明確顯示「已存到帳號→身份/職稱/產業」，讓你當下看到它已歸到帳號（不必再去翻）。②同一個帳號再次丟卡時，會自動比對粉絲數變化、記一筆快照並顯示「上次→這次（增減/%）」，變化≥20% 會標「⚠️變化偏大」提醒去看歷史/更新版面五件套——帳號↔影片雙向累積的第一步。
      v70 更新：「帳號分析提示詞」強化——置頂貼文／置頂 Reels 各分析前三，並寫進規則：沒置頂就略過、有置頂才深入（分析各支類型、鉤子、在漏斗負責什麼）。讓 Claude 從主頁截圖就能做帳號版面（五件套）分析。
      v69 更新：影片庫每張卡片現在會從該帳號帶出「身份／職稱／產業」一起顯示（資料仍只存在帳號一處，不重複輸入也不會兩邊不一致）；影片庫搜尋也可用帳號名、職稱、產業、身份本質找影片。從影片角度即可看到創作者職業，不必跳到帳號管理。
      v68 更新：①帳號層新增「職稱／職位類別」＋「產業」兩欄（比 KOL/KOC 身份本質更具體的真實職業）——帳號管理可編輯、貼卡自動填入、寫進 CSV、PROMPT_A/PROMPT_C 會輸出 ②影片新增「CTA（行動呼籲）」區：CTA 類型＋「含自動回覆/領取機制(CPI)」勾選＋CTA 原句，貼卡自動填入、寫進 CSV、歸類卡輸出，診斷面板會顯示 CTA 紀錄；留言領取型會另算「互動率不含留言」對照真實熱度 ③Gemini/Claude 提示詞同步要求輸出 影片CTA／職稱／產業。
@@ -555,7 +556,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <!-- 版本號 v70（內部）：原 <span class="v"> 已移除 -->
+    <!-- 版本號 v71（內部）：原 <span class="v"> 已移除 -->
   </div>
   <div class="stat" id="topstat">已存 <b id="vcount">0</b> 支影片</div>
 </div>
@@ -1671,17 +1672,34 @@ $('parseBtn').onclick=function(){
       accounts.unshift(acc);
       saveAccounts();
       populateAccountSelect();
-      got.push('+ 新帳號 '+h);
+      got.push('+ 新帳號 '+h+(()=>{const seg=[];if((acc.types||[]).length)seg.push('身份:'+acc.types.join('、'));if(acc.jobTitle)seg.push('職稱:'+acc.jobTitle);if(acc.industry)seg.push('產業:'+acc.industry);return seg.length?'（已存到帳號→'+seg.join('・')+'）':'';})());
     } else {
-      // ─── 帳號重複偵測：提示已處理過 ───
-      // 若卡片這次有給職稱/產業、而帳號原本空白，順手補上
-      const njt=(F['職稱']||F['職位']||F['職稱類別']||F['職業']||'').trim(); if(njt && !acc.jobTitle){ acc.jobTitle=njt; acc.updatedAt=Date.now(); saveAccounts(); }
-      const nind=(F['產業']||F['行業']||'').trim(); if(nind && !acc.industry){ acc.industry=nind; acc.updatedAt=Date.now(); saveAccounts(); }
+      // ─── 帳號重複偵測 + 變化比對（雙向第一步：粉絲數）───
+      let dirty=false;
+      // 卡片這次有給職稱/產業、而帳號原本空白，順手補上並回報
+      const njt=(F['職稱']||F['職位']||F['職稱類別']||F['職業']||'').trim(); if(njt && !acc.jobTitle){ acc.jobTitle=njt; dirty=true; got.push('帳號補上職稱:'+njt); }
+      const nind=(F['產業']||F['行業']||'').trim(); if(nind && !acc.industry){ acc.industry=nind; dirty=true; got.push('帳號補上產業:'+nind); }
       const vidCount=videos.filter(x=>x.accountId===acc.id).length;
-      const lastFan=(acc.fanSnapshots&&acc.fanSnapshots.length)?acc.fanSnapshots[acc.fanSnapshots.length-1]:null;
-      const daysSince=acc.updatedAt?Math.round((Date.now()-acc.updatedAt)/86400000):'?';
-      got.push('🔁 帳號已建檔 '+h+'（已拆 '+vidCount+' 支，'+daysSince+' 天前更新）');
-      setTimeout(()=>{ toast('🔁 「'+h+'」處理過了：已拆 '+vidCount+' 支影片'+(lastFan?'，上次 '+(parseInt(lastFan.count)||0).toLocaleString()+' 粉':'')+'。建議到帳號管理記新粉絲快照看成長'); }, 800);
+      if(!acc.fanSnapshots) acc.fanSnapshots=[];
+      const lastFan=acc.fanSnapshots.length?acc.fanSnapshots[acc.fanSnapshots.length-1]:null;
+      const today=new Date().toISOString().slice(0,10);
+      const newFc=parseInt(numUnit(F['粉絲數']||''))||0;
+      let fanMsg='';
+      if(newFc){
+        const lastCount=lastFan?(parseInt(lastFan.count)||0):0;
+        if(!lastFan){ acc.fanSnapshots.push({date:today,count:newFc,note:'歸類卡自動更新'}); dirty=true; fanMsg='，已記第一筆粉絲 '+newFc.toLocaleString(); }
+        else if(newFc!==lastCount){
+          if(lastFan.date===today){ lastFan.count=newFc; } else { acc.fanSnapshots.push({date:today,count:newFc,note:'歸類卡自動更新'}); }
+          dirty=true;
+          const delta=newFc-lastCount;
+          const pctChg=lastCount?Math.round(delta/lastCount*100):0;
+          const big=Math.abs(pctChg)>=20;
+          fanMsg='，粉絲 '+lastCount.toLocaleString()+' → '+newFc.toLocaleString()+'（'+(delta>=0?'+':'')+delta.toLocaleString()+(lastCount?'，'+(pctChg>=0?'+':'')+pctChg+'%':'')+'）'+(big?' ⚠️ 變化偏大，建議到帳號管理看歷史、並更新版面五件套':'');
+        } else { fanMsg='，粉絲數與上次相同'; }
+      }
+      if(dirty){ acc.updatedAt=Date.now(); saveAccounts(); }
+      got.push('🔁 帳號已建檔 '+h+'（已拆 '+vidCount+' 支）'+fanMsg);
+      setTimeout(()=>{ toast('🔁 「'+h+'」之前處理過：已拆 '+vidCount+' 支'+fanMsg); }, 800);
     }
     if($('f-account')) $('f-account').value=acc.id;
   }
