@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="color-scheme" content="light only">
 <meta name="supported-color-schemes" content="light">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v88 (版本號僅留註解，不顯示於畫面)
+<!-- ATELIER 影片診斷工作台 · 內部版本 v89 (版本號僅留註解，不顯示於畫面)
+     v89 更新（把「翻譯」變成一鍵產生提示詞，不用自己在腦袋裡轉）：做了兩顆「產生提示詞」按鈕，跟影片庫「產生腳本範本」同一套機制——點一下→工作台自動把帳號資料填好成一段乾淨提示詞→複製→貼到 ChatGPT/Claude/Gemini 任一個翻譯，完全不用在工作台接 AI、不用 API。①「特點→賣點翻譯」：放在「帳號管理」每張帳號卡上，點下去自動帶入該帳號的職稱/產業/人群/產品/人設，產生「先看懂這個人＋把專業特點用特點→優勢→利益翻成賣點」的提示詞（沒填三要素時提示 AI 依職稱產業推斷）。②「客戶對標優化」：放在「版面對照」頁下方新卡，選 1 個你的客戶＋勾最多 10 個對標帳號→產生提示詞，內含客戶現況＋對標們的人群/產品/人設/版面，要 AI 做：對標共同點→客戶落差診斷→特點→賣點翻譯→可直接照做的優化建議（定位/Bio/置頂/視覺）→3 個選題方向。完全不動原本的「並排比較」表格。
      v88 更新（把「轉譯方法論」寫進核心的腳本範本）：「產生腳本範本」的提示詞新增一步「特點→賣點轉譯」——①客戶欄位多收一格「你的專業特點／資源」當翻譯原料（例：刑法第213條、十年資歷）。②新增 STEP 3 特點→賣點轉譯：把每個專業特點用特點→優勢→利益三層翻成觀眾有感的賣點，句型「不是只告訴你我有＿，而是讓你＿」，並標出打中的人群痛點/誤區，術語一定翻白話不留在文案。③客戶腳本改 STEP 4，要求把翻好的賣點放進 Hook 與 CTA。④重點規則加「全程用特點→賣點思維」＋「一支腳本要顧到三大要素：人群(痛點/誤區)/產品(賣點/案例)/人設(身分/理念)→曝光×需求×信任」（用 Lisa 的自有框架名，不再叫 ICP）。
      v87 更新（修一個真的 bug，不是藏起來）：輸入頁「帳號版面解析」那塊，你點下去其實有開、但裡面是空的——因為畫欄位的函式 renderProfFields 只在「你動帳號選單」時才被呼叫，一進頁面從來沒跑過，所以一開就是一片空白，看起來像「打不開、看不到」。這版改兩點：①一進頁面就先把欄位畫出來（renderProfFields 進初始化），不用先選帳號也不用先動任何東西。②那個框預設「直接攤開、一直顯示」（open），可自行收合。配合 v86 的「沒選帳號時欄位灰色唯讀先給你看格式」，現在一進輸入頁就直接看得到全部欄位長怎樣。
      v86 更新（全部都是「別再把東西藏起來」）：①帳號版面解析的空格——以前展開時若還沒選帳號只會看到一行字、看不到空格；現在不管有沒有選帳號，一展開就把全部欄位「空格」畫出來給你看（沒選帳號時灰色唯讀先看格式，選或建或貼卡後才可填可存）。②影片庫頂部那排操作鈕——以前 .btn 預設整條寬100%，5顆鈕疊成5條吃掉大半畫面；改成小顆並排，匯出全部CSV也收進同一排靠右，影片卡片大幅提前出現（手機/電腦都是）。③每張影片卡「腳本靈感＋備註」標題改清楚為「腳本靈感＋逐字稿＋備註（點開·每項可複製/複製全部）」，逐字稿複製鍵一直都在裡面、現在好找了。④卡片左上勾選框放大更好按。
@@ -577,7 +578,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v88</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v89</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -1358,6 +1359,21 @@ if('serviceWorker' in navigator){
     </div>
   </div>
   <div id="cmpResult"></div>
+
+  <!-- v89 客戶對標優化（產生提示詞，不連 AI） -->
+  <div class="card" style="margin-top:22px;border:1.5px solid var(--gold-soft)">
+    <div class="ph-en" style="margin-bottom:4px">CLIENT TUNING · 對標優化</div>
+    <div style="font-size:15px;font-weight:800;color:var(--rouge);margin-bottom:4px">客戶對標優化（一鍵產生提示詞）</div>
+    <div class="ph-sub" style="margin:0 0 12px">選 1 個「你的客戶」＋勾幾個「對標帳號」（最多 10 個）→ 產生一段提示詞 → 貼到 ChatGPT／Claude／Gemini，AI 會拿對標的人群／產品／人設／版面，幫你客戶診斷落差、把專業特點翻成賣點、給可直接照做的優化。不會自動連 AI，只幫你把資料整理好。</div>
+    <div style="font-size:13px;color:var(--ink);margin-bottom:6px;font-weight:600">① 你的客戶（要被優化的那一個）：</div>
+    <select id="optClient" style="width:100%;max-width:420px;padding:8px 10px;border:1px solid var(--border);border-radius:8px;background:#fff;color:var(--ink);font-family:inherit;font-size:13px;margin-bottom:14px"></select>
+    <div style="font-size:13px;color:var(--ink);margin-bottom:6px;font-weight:600">② 對標帳號（勾 1–10 個，當參考標竿）：</div>
+    <div id="optPicker" style="display:flex;flex-wrap:wrap;gap:8px"></div>
+    <div style="margin-top:14px;display:flex;gap:8px">
+      <button class="btn btn-go" id="optRun" style="flex:1">產生對標優化提示詞</button>
+      <button class="btn btn-ghost" id="optClear">清除勾選</button>
+    </div>
+  </div>
 </div>
 
 <!-- 說明書 -->
@@ -2513,7 +2529,8 @@ function renderManual(){
   <div class="form-card" style="border-left:3px solid var(--gold)">
     <div class="stitle" style="font-size:15px;color:var(--rouge)">更新紀錄 · 還沒做的</div>
     <p style="font-size:13px;color:var(--text);line-height:1.85;margin-top:8px">
-    <b>v88（這版）：</b>把「轉譯方法論」寫進「產生腳本範本」——選爆款影片＋填客戶職業後，多收一格「你的專業特點／資源」，AI 會多做一步「特點→賣點轉譯」：把專業（例：刑法第213條）用特點→優勢→利益翻成觀眾有感的好處，句型「不是只告訴你我有＿，而是讓你＿」，再寫成腳本。一支腳本同時顧到你的三大要素：人群（痛點/誤區）、產品（賣點/案例）、人設（身分/理念）→曝光×需求×信任。<br>
+    <b>v89（這版）：</b>把「特點→賣點翻譯」做成「一鍵產生提示詞」，不用你自己在腦袋裡轉、也不用在工作台裡接 AI。兩顆按鈕：①「帳號管理」每張帳號卡多一顆<b>「特點→賣點翻譯」</b>——點一下，工作台自動把這個帳號的職稱/產業/人群/產品/人設帶好，產生一段提示詞，你複製去貼 ChatGPT／Claude／Gemini，它就幫你「先看懂這個人，再把專業特點用『特點→優勢→利益』翻成觀眾有感的賣點」。一個帳號跑一次，4 個今天就翻得完。②「版面對照」頁最下面新增<b>「客戶對標優化」</b>——選 1 個你的客戶＋勾最多 10 個對標帳號，產生提示詞貼出去，AI 會拿這些對標的人群/產品/人設/版面，幫你客戶做：對標共同點→落差診斷→特點轉賣點→可直接照做的優化（定位/Bio/置頂/視覺）→3 個選題方向。累積越多帳號越準。原本的「並排比較」表格完全沒動。<br>
+    <b>v88：</b>把「轉譯方法論」寫進「產生腳本範本」——選爆款影片＋填客戶職業後，多收一格「你的專業特點／資源」，AI 會多做一步「特點→賣點轉譯」：把專業（例：刑法第213條）用特點→優勢→利益翻成觀眾有感的好處，句型「不是只告訴你我有＿，而是讓你＿」，再寫成腳本。一支腳本同時顧到你的三大要素：人群（痛點/誤區）、產品（賣點/案例）、人設（身分/理念）→曝光×需求×信任。<br>
     <b>v87：</b>修好「帳號版面解析」那塊點了卻空白的 bug——以前畫欄位的程式只在你動帳號選單時才跑，一進頁面從沒跑過，所以一打開就是空的。現在一進輸入頁就直接把全部欄位攤開給你看（不用點、不用先選帳號；沒選帳號時是灰色先看格式，選/建/貼卡後可填可存）。<br>
     <b>v86：</b>把幾個被藏起來的東西放出來：①「帳號版面解析」一展開就看得到全部空格（沒選帳號時先給你看格式、灰色的），不用先輸入才看得到。②影片庫頂部那排鈕改成小顆並排、不再每顆佔一整條，影片卡片提前出現（手機/電腦都是）。③每張卡的「腳本靈感＋逐字稿＋備註」標題改清楚，逐字稿的複製鍵就在裡面（每項可複製、也能複製全部）。④卡片左上勾選框放大更好按。<br>
     <b>v85：</b>修掉一個藏很久的痛點——在「輸入影片」頁貼「帳號分析卡」後，現在會自動選好下面⑥的那個帳號、把版面解析＋ICP＋報價直接填進去並展開給你看，還會自動捲到那一區，全程不用跳去帳號管理（以前是有存進帳號、但畫面上看不到，像沒反應）。<br>
@@ -2713,6 +2730,7 @@ function renderAccounts(){
   if(!list.length){ box.innerHTML='<div class="empty-res">尚無帳號。點上方「新增帳號」開始建立你的創作者資料庫。</div>'; return; }
   box.innerHTML=list.map(a=>accCard(a)).join('');
   box.querySelectorAll('[data-acc-edit]').forEach(b=>b.onclick=()=>editAccount(b.dataset.accEdit));
+  box.querySelectorAll('[data-acc-fab]').forEach(b=>b.onclick=()=>buildFabPrompt(b.dataset.accFab));
   box.querySelectorAll('[data-acc-snap]').forEach(b=>b.onclick=()=>addFanSnapshot(b.dataset.accSnap));
   box.querySelectorAll('[data-acc-prof]').forEach(b=>b.onclick=()=>addProfileSnapshot(b.dataset.accProf));
   box.querySelectorAll('[data-acc-del]').forEach(b=>b.onclick=()=>delAccount(b.dataset.accDel));
@@ -2749,6 +2767,7 @@ function accCard(a){
     <div class="vmeta" style="margin-top:8px;display:flex;gap:14px;flex-wrap:wrap">
       ${(()=>{const _h=(a.handle||'').replace(/^@/,'').trim();if(!_h)return '';const _u=(a.handle||'').startsWith('http')?a.handle:(a.platform==='TikTok'?'https://www.tiktok.com/@'+_h:a.platform==='YouTube'?'https://www.youtube.com/@'+_h:a.platform==='Threads'?'https://www.threads.net/@'+_h:a.platform==='X'?'https://x.com/'+_h:a.platform==='FB'?'https://www.facebook.com/'+_h:'https://www.instagram.com/'+_h+'/');return `<a class="vlink" href="${esc(_u)}" target="_blank" style="color:var(--rouge);font-weight:800">看主頁</a>`;})()}
       <span class="vlink" style="cursor:pointer" data-acc-edit="${a.id}">編輯</span>
+      <span class="vlink" style="cursor:pointer;color:var(--gold-dark);font-weight:800" data-acc-fab="${a.id}">特點→賣點翻譯</span>
       <span class="vlink" style="cursor:pointer" data-acc-snap="${a.id}">+ 粉絲快照</span>
       <span class="vlink" style="cursor:pointer" data-acc-prof="${a.id}">+ 版面快照</span>
       <span class="vdel" data-acc-del="${a.id}">刪除</span>
@@ -3052,6 +3071,7 @@ function closeModal(){ $('modal').classList.remove('show'); $('sheet').innerHTML
 let cmpSelected=new Set();
 function renderComparePicker(){
   const box=$('cmpPicker'); if(!box) return;
+  if(typeof populateOptClient==='function'){ populateOptClient(); renderOptPicker(); }
   if(!accounts.length){ box.innerHTML='<div class="empty-res" style="margin:0">尚無帳號可比較。先到「帳號管理」新增帳號並記錄版面快照。</div>'; return; }
   box.innerHTML=accounts.map(a=>{
     const sel=cmpSelected.has(a.id);
@@ -3125,6 +3145,121 @@ function runCompare(){
   html+='</tbody></table></div>';
   html+='<div class="tip" style="margin-top:10px">綠底＝所有帳號這欄完全相同（共同點）。空格＝該帳號此欄無資料。建議至少各記 1 筆版面快照才能完整比較。</div>';
   $('cmpResult').innerHTML=html;
+}
+
+
+/* ===== v89 一鍵產生提示詞：特點→賣點翻譯 ＋ 客戶對標優化 ===== */
+// 取一個帳號的 人群/產品/人設/版面 摘要（用最新版面快照補 Bio/置頂/視覺），回傳字串陣列
+function accProfileBlock(a){
+  var pf=a.profile||{}; var L=[];
+  if(a.jobTitle)L.push('職稱：'+a.jobTitle);
+  if(a.industry)L.push('產業：'+a.industry);
+  if(pf.positioning)L.push('帳號定位：'+pf.positioning);
+  if(pf.persona)L.push('人設關鍵字：'+pf.persona);
+  if(pf.icpAudience)L.push('人群（痛點/誤區）：'+pf.icpAudience);
+  if(pf.icpProduct)L.push('產品（賣點/案例）：'+pf.icpProduct);
+  if(pf.icpPersona)L.push('人設（身分/理念）：'+pf.icpPersona);
+  if(pf.icpAxis)L.push('曝光×需求×信任：'+pf.icpAxis);
+  var ps=(a.profileSnapshots||[]).slice().sort(function(x,y){return (y.date||'').localeCompare(x.date||'');})[0];
+  var src=ps||pf;
+  var bio=[src.bio1||src.bioL1||'',src.bio2||src.bioL2||'',src.bio3||src.bioL3||''].filter(Boolean).join(' / ');
+  if(bio)L.push('Bio：'+bio);
+  if(src.pinnedPosts)L.push('置頂貼文：'+src.pinnedPosts);
+  if(src.pinnedReels)L.push('置頂Reels：'+src.pinnedReels);
+  if(src.visualStyle)L.push('視覺風格：'+src.visualStyle);
+  if(src.contentMix)L.push('內容混合比例：'+src.contentMix);
+  return L;
+}
+
+// 帳號卡上「特點→賣點翻譯」：產生提示詞讓你貼到任一 AI 翻譯
+function buildFabPrompt(id){
+  var a=accounts.find(function(x){return x.id===id;});
+  if(!a){ toast('找不到這個帳號'); return; }
+  var blk=accProfileBlock(a);
+  var head='@'+(a.handle||'?').replace(/^@/,'')+(a.displayName?'（'+a.displayName+'）':'');
+  var pf=a.profile||{};
+  var has3=pf.icpAudience||pf.icpProduct||pf.icpPersona;
+  var p='【任務】我是短影音代理營運。下面是一個創作者帳號的分析資料。'
+    +'請幫我兩件事：先讓我看懂這個人，再把他的「專業特點」翻成「觀眾聽得懂的賣點」。\n\n'
+    +'【帳號資料】'+head+'\n'+(blk.length?blk.join('\n'):'（資料較少）')+'\n\n'
+    +(has3?'':'（提醒：這個帳號還沒填人群/產品/人設，請你先依職稱與產業合理推斷，並在開頭標明哪幾項是你推斷的。）\n\n')
+    +'【請輸出】\n\n'
+    +'一、先看懂這個人（大白話，各 2-3 句）\n'
+    +'1. 人群：他在打哪一群人？這群人最痛的問題、最常見的誤區是什麼？\n'
+    +'2. 產品：他在賣什麼？核心賣點、有沒有成功案例？\n'
+    +'3. 人設：他是什麼身分？相信什麼、主張什麼？\n\n'
+    +'二、特點→賣點翻譯（這是重點）\n'
+    +'先列出他現在有的「專業特點／資源」（例：某條法律、某張證照、幾年資歷、某台設備、某套流程、某個方法論）。\n'
+    +'然後每一個特點，照這個順序翻一次：\n'
+    +'　特點（他有什麼）→ 優勢（所以比別人強在哪）→ 利益（那群人因此能得到什麼、少掉什麼麻煩、產生什麼感受）\n'
+    +'　每條用這個句型收尾：「不是只告訴你我有＿＿，而是讓你＿＿。」\n'
+    +'　並標明：這條打中的是上面人群的哪一個痛點或誤區。\n'
+    +'　特點裡若有專業術語，一定翻成一般人聽得懂的好處，不要把術語留在文案裡。\n\n'
+    +'【規則】講人話、不要學術腔。一個特點一段、清楚分開。用專家口吻直接給，不要反問。';
+  copyVal(p,'特點→賣點翻譯提示詞（'+(a.handle||'帳號')+'）');
+}
+
+/* ===== v89 客戶對標優化 ===== */
+var optSelected=new Set();
+function populateOptClient(){
+  var sel=document.getElementById('optClient'); if(!sel) return;
+  var cur=sel.value;
+  if(!accounts.length){ sel.innerHTML='<option value="">（尚無帳號）</option>'; return; }
+  sel.innerHTML='<option value="">— 請選擇你的客戶帳號 —</option>'+accounts.map(function(a){
+    return '<option value="'+a.id+'">'+esc(a.handle||'?')+(a.jobTitle?'（'+esc(a.jobTitle)+'）':'')+'</option>';
+  }).join('');
+  if(cur)sel.value=cur;
+}
+function renderOptPicker(){
+  var box=document.getElementById('optPicker'); if(!box) return;
+  var clientId=(document.getElementById('optClient')||{value:''}).value;
+  var list=accounts.filter(function(a){return a.id!==clientId;});
+  if(!list.length){ box.innerHTML='<div class="empty-res" style="margin:0">尚無其他帳號可當對標。先到「帳號管理」多累積幾個帳號。</div>'; return; }
+  box.innerHTML=list.map(function(a){
+    var sel=optSelected.has(a.id);
+    return '<label data-opt-id="'+a.id+'" style="padding:8px 12px;border:1.5px solid '+(sel?'var(--rouge)':'var(--border)')+';border-radius:18px;cursor:pointer;font-size:13px;background:'+(sel?'var(--rouge)':'#fff')+';color:'+(sel?'#fff':'var(--ink)')+'"><input type="checkbox" '+(sel?'checked':'')+' style="display:none">'+esc(a.handle||'?')+'</label>';
+  }).join('');
+  box.querySelectorAll('label[data-opt-id]').forEach(function(lab){
+    lab.onclick=function(e){
+      e.preventDefault();
+      var id=lab.dataset.optId;
+      if(optSelected.has(id)){ optSelected.delete(id); }
+      else { if(optSelected.size>=10){ toast('最多選 10 個對標帳號'); return; } optSelected.add(id); }
+      renderOptPicker();
+    };
+  });
+}
+function buildOptimizePrompt(){
+  var clientId=(document.getElementById('optClient')||{value:''}).value;
+  if(!clientId){ toast('先選一個「你的客戶」帳號'); return; }
+  if(!optSelected.size){ toast('再勾選至少 1 個對標帳號'); return; }
+  var client=accounts.find(function(a){return a.id===clientId;});
+  if(!client){ toast('找不到客戶帳號'); return; }
+  var bms=[...optSelected].map(function(id){return accounts.find(function(a){return a.id===id;});}).filter(Boolean);
+  var clientBlock=accProfileBlock(client);
+  var cHead='@'+(client.handle||'?').replace(/^@/,'')+(client.displayName?'（'+client.displayName+'）':'');
+  var bmText=bms.map(function(a,i){
+    var who='@'+(a.handle||'?').replace(/^@/,'')+(a.jobTitle?'／'+a.jobTitle:'')+(a.industry?'／'+a.industry:'');
+    var vc=(typeof videosOfAccount==='function'?videosOfAccount(a.id).length:0);
+    return '('+(i+1)+') '+who+(vc?'（已拆解 '+vc+' 支影片）':'')+'\n    '+accProfileBlock(a).join('\n    ');
+  }).join('\n\n');
+  var p='【任務】我是短影音代理營運。我要優化「我的客戶」這個帳號的內容定位與賣點表達。'
+    +'下面給你：我的客戶現況，以及我精選的 '+bms.length+' 個對標帳號（已驗證的標竿／競品／同師承）。'
+    +'請拿這些對標當參考，幫我客戶找出可以調整、補強、學起來的地方——不是要客戶變成別人，是把對標有效的邏輯，翻成適合我客戶職業的版本。\n\n'
+    +'【我的客戶】'+cHead+'\n'+(clientBlock.length?clientBlock.join('\n'):'（資料較少，請先依職稱產業合理推斷並標明）')+'\n\n'
+    +'【對標帳號（參考標竿）】\n'+bmText+'\n\n'
+    +'【請你依序產出五段】\n'
+    +'STEP 1 對標共同點：這些對標帳號在「人群／產品／人設／版面（Bio・置頂・視覺・內容比例）」上，有哪些反覆出現的共同打法？哪些是「換職業也通用」、哪些是「該職業專屬」不能照搬？\n'
+    +'STEP 2 客戶落差診斷：拿我客戶的現況逐項對照對標，指出我客戶在 人群（痛點/誤區）、產品（賣點/案例）、人設（身分/理念）、版面 這四塊各缺了什麼、哪裡可以更強。\n'
+    +'STEP 3 特點→賣點翻譯：把我客戶現有的專業特點／資源，逐條用「特點→優勢→利益」翻成觀眾有感的賣點，每條收尾用句型「不是只告訴你我有＿＿，而是讓你＿＿。」並標出打中的人群痛點或誤區；專業術語一律翻成白話好處，不要留在文案裡。\n'
+    +'STEP 4 優化建議（可直接照做）：給我客戶 ① 新的帳號定位一句話 ② Bio 三行改寫 ③ 置頂貼文／Reels 該放哪三種題材 ④ 視覺風格與內容比例建議。每一條都說明「是參考哪個對標、為什麼換到我客戶身上一樣成立」。\n'
+    +'STEP 5 三個內容方向：依優化後的定位，給 3 個能馬上拍的選題方向（各標：打中的人群痛點、屬於哪個漏斗階段 G1–G5、Hook 怎麼開）。\n\n'
+    +'【重點規則】\n'
+    +'- 全程用「特點→賣點」思維：先講觀眾能得到什麼，再帶到專業，不要只報功能。\n'
+    +'- 一定要同時顧到三大要素：人群（痛點/誤區）、產品（賣點/案例）、人設（身分/理念），最後落在「曝光 × 需求 × 信任」。\n'
+    +'- 換成我客戶真實職業的語境、案例、合規用語，不要殘留對標的原職業。\n'
+    +'- 用專家口吻直接給，不要反問。';
+  copyVal(p,'客戶對標優化提示詞（'+bms.length+' 個對標）');
 }
 
 // v45 口說字數 + 語速計算（節拍器）
@@ -3263,6 +3398,9 @@ function bindAccountUI(){
   if($('accClr')) $('accClr').onclick=()=>{ $('accSearch').value=''; renderAccounts(); };
   if($('cmpRun')) $('cmpRun').onclick=runCompare;
   if($('cmpClear')) $('cmpClear').onclick=()=>{ cmpSelected.clear(); renderComparePicker(); $('cmpResult').innerHTML=''; };
+  if($('optRun')) $('optRun').onclick=buildOptimizePrompt;
+  if($('optClear')) $('optClear').onclick=()=>{ optSelected.clear(); renderOptPicker(); };
+  if($('optClient')) $('optClient').addEventListener('change',()=>{ optSelected.clear(); renderOptPicker(); });
 }
 
 
