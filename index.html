@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="color-scheme" content="light only">
 <meta name="supported-color-schemes" content="light">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v77 (版本號僅留註解，不顯示於畫面)
+<!-- ATELIER 影片診斷工作台 · 內部版本 v78 (版本號僅留註解，不顯示於畫面)
+     v78 更新：①修好「編輯／+粉絲快照／+版面快照」點不動的 bug（模態框 class 用錯：開窗加 on、但 CSS 只認 show，視窗永遠不顯示；已統一為 show）。②影片庫新增「並排對比」——勾 2–4 支影片→像帳號版面對照那樣，把漏斗層/主題/素材/子題/形式/命根/Hook/爆紅歸因/客戶落地/CTA/觀看/讚/分享率/收藏率/互動率 並排比較，綠底標出共同點。
      v77 更新：①修「版面對照」亂碼——欄位改用 v76 新鍵、修掉把「—」當文字再跳脫的 bug，現在能正確並排比較。②挑選器的 ⚠ 改成「·無版面」文字。③拿掉卡片/區塊上別人的裝飾 emoji（腳本靈感、貼卡框、五件套、爆紅/客戶/CTA 標題）。④影片庫每張卡的標籤改依自媒體商業閉環層級排序：目標→主題→素材→子題→形式→命根→製作資訊。⑤強化「產生腳本範本」：帶入原帳號職業/完整文案/逐字稿，並要 AI 先做「流量密碼拆解＋對標帳號邏輯」再寫客戶腳本。⑥解析帳號卡時過濾提示/範例文字，避免把「（例：…）」這種說明存成假資料。
      v76 更新：帳號五件套＋報價正式進工具——①帳號編輯視窗新增可點開的「版面五件套＋報價」區（bio三行、置頂貼文/Reels前三、精選動態、視覺風格、發文頻率、內容混合、人設、定位、量級、報價四項＋備註、分析日期），可逐格手填。②兩個入口都能「貼帳號分析卡→自動填」：帳號管理頂部、影片輸入頁各一個（認@去重、寫進帳號、存版面歷史快照）。③帳號卡片顯示五件套/報價摘要。
      v75 更新：標題列（ATELIER 旁）加上可見版本號徽章，打開頁面就能用肉眼確認自己看到的是不是最新版（解決「不知道更新了沒」的困擾）。
@@ -562,7 +563,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v77</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v78</span>
   </div>
   <div class="stat" id="topstat">已存 <b id="vcount">0</b> 支影片</div>
 </div>
@@ -1142,9 +1143,11 @@ if('serviceWorker' in navigator){
     <span id="libSelCount" style="font-size:12px;color:var(--gold-dark)"></span>
     <span style="flex:1"></span>
     <button class="btn btn-ghost" id="bulkTemplate" style="font-size:12px;padding:5px 12px;border-color:var(--gold-dark);color:var(--gold-dark)">⧉ 產生腳本範本</button>
+    <button class="btn btn-ghost" id="bulkCompare" style="font-size:12px;padding:5px 12px;border-color:var(--rouge);color:var(--rouge)">並排對比</button>
     <button class="btn btn-ghost" id="bulkExport" style="font-size:12px;padding:5px 12px">匯出選取</button>
   </div>
   <div class="tip" style="margin:-4px 0 10px">逐支勾選＝單一選擇；勾「選擇全部」＝整批。選好後可「產生腳本範本」（複製一段提示詞，丟給 AI 幫客戶套寫腳本）或「匯出選取」。</div>
+  <div id="libCompareResult" style="margin-top:14px"></div>
   <div id="libList"></div>
   <div id="libBulkBottom" style="display:flex;justify-content:flex-end;margin-top:16px">
     <button class="btn btn-ghost" id="bulkDel" style="font-size:12px;padding:6px 14px;border-color:var(--rouge);color:var(--rouge)">刪除選取</button>
@@ -2112,6 +2115,51 @@ function buildTemplatePrompt(){
   copyVal(p,'腳本範本提示詞（'+picked.length+' 支）');
 }
 if($('bulkTemplate')) $('bulkTemplate').onclick=buildTemplatePrompt;
+// v78：影片並排對比（像帳號版面對照）
+function compareSelectedVideos(){
+  var ids=libSelIds();
+  if(ids.length<2){ toast('請至少勾選 2 支影片來對比'); return; }
+  if(ids.length>4){ toast('一次最多對比 4 支'); return; }
+  var vs=videos.filter(v=>ids.includes(String(v.id)));
+  var rtp=function(a,b){ a=parseFloat(a)||0; b=parseFloat(b)||0; return b?((a/b*100).toFixed(1)+'%'):'—'; };
+  var rows=[
+    ['漏斗層', v=>v.stage||''],
+    ['主題', v=>((v.themeId||'')+' '+(v.themeName||'')).trim()],
+    ['素材', v=>v.matName||''],
+    ['子題', v=>v.sub||''],
+    ['形式', v=>v.form||''],
+    ['命根(流量觸發)', v=>v.trig||''],
+    ['Hook', v=>v.hook||''],
+    ['爆紅歸因', v=>v.why||''],
+    ['客戶落地', v=>v.apply||''],
+    ['CTA', v=>((v.ctaType&&v.ctaType!=='無')?v.ctaType:'')+(v.ctaText?'｜'+v.ctaText:'')],
+    ['觀看', v=>v.views?(+v.views).toLocaleString():''],
+    ['讚', v=>v.likes?(+v.likes).toLocaleString():''],
+    ['分享率', v=>{var vw=parseFloat(v.views)||0;return vw?rtp((parseFloat(v.reposts)||0)+(parseFloat(v.shares)||0),vw):'';}],
+    ['收藏率', v=>{var vw=parseFloat(v.views)||0;return vw?rtp(v.saves,vw):'';}],
+    ['互動率%', v=>v.engrate||'']
+  ];
+  var html='<div style="font-family:\'Noto Serif TC\',serif;font-size:17px;font-weight:900;color:var(--rouge);margin-bottom:8px">影片並排對比（'+vs.length+' 支）</div>';
+  html+='<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:13px;background:#fff"><thead><tr><th style="text-align:left;padding:9px 11px;border-bottom:2px solid var(--rouge);color:var(--rouge);font-size:11px;letter-spacing:1px">項目</th>';
+  vs.forEach(function(v){ html+='<th style="text-align:left;padding:9px 11px;border-bottom:2px solid var(--rouge);min-width:170px;font-weight:900;color:var(--rouge)">'+esc(v.title||'(未命名)')+'</th>'; });
+  html+='</tr></thead><tbody>';
+  rows.forEach(function(r,ri){
+    html+='<tr style="background:'+(ri%2?'var(--warm)':'#fff')+'"><td style="padding:8px 11px;font-weight:700;color:var(--gold-dark);font-size:12px;border-right:1px solid var(--border);vertical-align:top">'+r[0]+'</td>';
+    var vals=vs.map(function(v){return (r[1](v)||'').toString();});
+    var allSame=vals.length>1&&vals.every(function(x){return x===vals[0]&&x;});
+    vs.forEach(function(v,ci){
+      var raw=vals[ci];
+      var cell=raw?esc(raw):'<span style="color:#bbb">—</span>';
+      html+='<td style="padding:8px 11px;vertical-align:top;border-right:1px solid var(--border);white-space:pre-wrap;'+(allSame?'background:#F0F5EC;':'')+'">'+cell+'</td>';
+    });
+    html+='</tr>';
+  });
+  html+='</tbody></table></div><div class="tip" style="margin-top:8px">綠底＝這幾支這列完全相同（常是它們一起爆的共同關鍵）。　<span class="vlink" id="libCmpClose" style="cursor:pointer;text-decoration:underline">收起對比</span></div>';
+  $('libCompareResult').innerHTML=html;
+  if($('libCmpClose')) $('libCmpClose').onclick=function(){ $('libCompareResult').innerHTML=''; };
+  $('libCompareResult').scrollIntoView({behavior:'smooth',block:'start'});
+}
+if($('bulkCompare')) $('bulkCompare').onclick=compareSelectedVideos;
 
 /* ============ 全域搜尋（架構＋影片）============ */
 let archIndex=null;
@@ -2376,7 +2424,8 @@ function renderManual(){
   <div class="form-card" style="border-left:3px solid var(--gold)">
     <div class="stitle" style="font-size:15px;color:var(--rouge)">更新紀錄 · 還沒做的</div>
     <p style="font-size:13px;color:var(--text);line-height:1.85;margin-top:8px">
-    <b>v77（這版）：</b>修好「版面對照」亂碼（欄位對齊＋跳脫修正）；影片庫卡片標籤改依商業閉環層級排序（目標→主題→素材→子題→形式→命根→製作）；拿掉多處別人的裝飾 emoji；強化「產生腳本範本」（帶入原職業/文案/逐字稿，先拆流量密碼再寫客戶腳本）；過濾提示文字避免假資料。<br>
+    <b>v78（這版）：</b>修好「編輯／+粉絲快照／+版面快照」點不動（模態框 class 用錯，已修）；影片庫新增「並排對比」（勾 2–4 支影片像帳號那樣並排比較，綠底＝共同點）。<br>
+    <b>v77：</b>修好「版面對照」亂碼（欄位對齊＋跳脫修正）；影片庫卡片標籤改依商業閉環層級排序（目標→主題→素材→子題→形式→命根→製作）；拿掉多處別人的裝飾 emoji；強化「產生腳本範本」（帶入原職業/文案/逐字稿，先拆流量密碼再寫客戶腳本）；過濾提示文字避免假資料。<br>
     <b>v76：</b>帳號五件套＋報價正式做進工具：帳號編輯視窗多了「版面五件套＋報價」區（可逐格手填），而且帳號管理頂部＋影片輸入頁各有一個「貼帳號分析卡→自動填入」入口（認 @ 自動建檔/更新、存版面歷史）。帳號卡片也會顯示報價/置頂/Bio 摘要。<br>
     <b>v75：</b>標題列右側加上版本號徽章（例如「v75」），方便你一眼確認自己打開的是不是最新版——以後更新後只要看那個號碼有沒有跟著變，就知道有沒有成功換版。<br>
     <b>v74：</b>① 影片表單的「完整文案」「逐字稿」各加了「⧉ 複製」鈕（完整文案的複製會連同你填的 Hashtag 一起複製，跟對方原貼文一致）。② 影片庫工具列：「全選」改成「選擇全部」、可逐支勾選＝單選；「刪除選取」移到清單最下面避免誤按；新增「⧉ 產生腳本範本」——勾幾支影片→複製一段提示詞，丟給 AI 就能照這些成功影片的邏輯幫你的客戶套寫新腳本（自動帶入它們的 Hook／流量觸發／爆紅歸因／成效，並讓你填客戶職業）。③ 影片庫卡片帳號列加「顯示名稱」。④ 雲端連不到時不再跳紅色錯誤，安靜切「本機模式」（資料一樣存得住；上 GitHub 用真網址才會連雲端）。<br>
@@ -2739,7 +2788,7 @@ function openAccountModal(a){
         <button class="btn btn-go" id="ma-save" style="flex:2">儲存帳號</button>
       </div>
     </div>`;
-  $('sheet').innerHTML=html; $('modal').classList.add('on');
+  $('sheet').innerHTML=html; $('modal').classList.add('show');
   $('ma-cancel').onclick=closeModal;
   // v76：modal 內貼帳號分析卡 → 自動填欄位
   if($('ma-cardParse')) $('ma-cardParse').onclick=function(){
@@ -2823,7 +2872,7 @@ function addFanSnapshot(accId){
         <button class="btn btn-go" id="fs-save" style="flex:2">儲存快照</button>
       </div>
     </div>`;
-  $('sheet').innerHTML=html; $('modal').classList.add('on');
+  $('sheet').innerHTML=html; $('modal').classList.add('show');
   $('fs-cancel').onclick=closeModal;
   $('fs-save').onclick=async function(){
     const c=parseInt($('fs-count').value); if(!c){ toast('⚠️ 粉絲數必填'); return; }
@@ -2875,7 +2924,7 @@ function addProfileSnapshot(accId){
         <button class="btn btn-go" id="ps-save" style="flex:2">儲存版面快照</button>
       </div>
     </div>`;
-  $('sheet').innerHTML=html; $('modal').classList.add('on');
+  $('sheet').innerHTML=html; $('modal').classList.add('show');
   $('ps-cancel').onclick=closeModal;
   $('ps-save').onclick=async function(){
     a.profileSnapshots=a.profileSnapshots||[];
@@ -2896,7 +2945,7 @@ function addProfileSnapshot(accId){
   };
 }
 
-function closeModal(){ $('modal').classList.remove('on'); $('sheet').innerHTML=''; }
+function closeModal(){ $('modal').classList.remove('show'); $('sheet').innerHTML=''; }
 
 /* ─── 版面對照（Apple 比較模式）─── */
 let cmpSelected=new Set();
