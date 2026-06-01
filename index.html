@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="color-scheme" content="light only">
 <meta name="supported-color-schemes" content="light">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v75 (版本號僅留註解，不顯示於畫面)
+<!-- ATELIER 影片診斷工作台 · 內部版本 v76 (版本號僅留註解，不顯示於畫面)
+     v76 更新：帳號五件套＋報價正式進工具——①帳號編輯視窗新增可點開的「版面五件套＋報價」區（bio三行、置頂貼文/Reels前三、精選動態、視覺風格、發文頻率、內容混合、人設、定位、量級、報價四項＋備註、分析日期），可逐格手填。②兩個入口都能「貼帳號分析卡→自動填」：帳號管理頂部、影片輸入頁各一個（認@去重、寫進帳號、存版面歷史快照）。③帳號卡片顯示五件套/報價摘要。
      v75 更新：標題列（ATELIER 旁）加上可見版本號徽章，打開頁面就能用肉眼確認自己看到的是不是最新版（解決「不知道更新了沒」的困擾）。
      v74 更新：①完整文案／逐字稿各加「複製」鈕（文案複製含 Hashtag）。②影片庫：「全選」改「選擇全部」、刪除選取移到清單最下、新增「產生腳本範本」（選影片→複製提示詞讓 AI 幫客戶套寫腳本）。③影片庫卡片加顯示名稱。④雲端連不到不再噴紅字、安靜切本機模式。
      v73 更新：①「帳號分析」提示詞升級——結尾會附一張結構化「ATELIER帳號分析卡」（@帳號・平台・身份・職稱・產業・粉絲量級・Bio三行・置頂貼文前三・置頂Reels前三・精選動態・視覺風格・發文頻率・內容混合・人設關鍵字・帳號定位・報價細項[短影音/貼文限動/包月業配/互惠]・報價備註・分析日期），讓 Claude 從主頁截圖一次產出最完整的帳號分析。②影片庫卡片的簡單顯示加上該帳號最新粉絲數（帳號/職稱/產業/粉絲）。（下一版做：貼這張帳號分析卡→自動讀進系統、存歷史快照、認@去重、可比較媒合。）
@@ -560,7 +561,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v75</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v76</span>
   </div>
   <div class="stat" id="topstat">已存 <b id="vcount">0</b> 支影片</div>
 </div>
@@ -794,6 +795,12 @@ if('serviceWorker' in navigator){
     <button class="btn btn-ghost" id="bulkBtn" style="margin-top:8px"><svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.8;vertical-align:-2px;margin-right:5px"><path d="M4 7h16M4 12h16M4 17h10" stroke-linecap="round"/></svg>批次匯入（一次貼多張歸類卡，全部建檔）</button>
     <div id="parseMsg" class="parse-msg"></div>
   </div>
+  <details class="paste-card" style="margin-top:0;border:1px dashed var(--gold-soft)" id="accCardBoxInput">
+    <summary style="cursor:pointer;font-weight:700;color:var(--gold-dark);list-style:none;font-size:13px">📋 貼「帳號分析卡」→ 只更新帳號（不建影片）點開</summary>
+    <div class="paste-note" style="margin:8px 0">這裡是給「帳號五件套／報價」用的（跟上面影片歸類卡分開）。貼 <b>===ATELIER帳號分析卡===</b>，按一下依 @ 自動建檔／更新，存進帳號＋留版面歷史。要看或逐格改，到「帳號管理」點該帳號。</div>
+    <textarea id="acc-card-paste-in" placeholder="貼整張帳號分析卡…" style="width:100%;min-height:90px;padding:9px 10px;border:1px solid var(--gold-soft);border-radius:8px;font-size:12px"></textarea>
+    <button class="btn btn-go" id="acc-card-ingest-in" style="width:100%;margin-top:8px">⧉ 自動建檔／更新帳號</button>
+  </details>
   <div class="hint">
     <b>或手動填：</b>只有影片名稱必填，其他能填多少算多少，之後隨時可補。下面選單會跟著你選的主題連動。
   </div>
@@ -1243,6 +1250,13 @@ if('serviceWorker' in navigator){
   <div class="card" style="margin-bottom:14px">
     <button class="btn btn-go" id="acc-add-btn" style="width:100%"><svg viewBox="0 0 24 24" style="width:16px;height:16px;vertical-align:-3px;margin-right:6px"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg>新增帳號</button>
   </div>
+
+  <details class="paste-card" style="margin-bottom:14px" id="accCardBox">
+    <summary style="cursor:pointer;font-weight:700;color:var(--rouge);list-style:none">📋 貼帳號分析卡 → 自動建檔／更新（點開）</summary>
+    <div class="paste-note" style="margin:8px 0">把 Claude 用「帳號分析提示詞」吐出的 <b>===ATELIER帳號分析卡===</b> 整段貼進來，按一下，會依 @ 自動建檔或更新，五件套＋報價都存進去，並留一筆版面歷史。</div>
+    <textarea id="acc-card-paste" placeholder="貼整張帳號分析卡…" style="width:100%;min-height:100px;padding:9px 10px;border:1px solid var(--gold-soft);border-radius:8px;font-size:12px"></textarea>
+    <button class="btn btn-go" id="acc-card-ingest" style="width:100%;margin-top:8px">⧉ 自動建檔／更新帳號</button>
+  </details>
 
   <div class="searchbar">
     <input id="accSearch" placeholder="搜尋帳號（@帳號名 / 顯示名 / 領域 / 身份）" autocomplete="off">
@@ -2356,7 +2370,8 @@ function renderManual(){
   <div class="form-card" style="border-left:3px solid var(--gold)">
     <div class="stitle" style="font-size:15px;color:var(--rouge)">更新紀錄 · 還沒做的</div>
     <p style="font-size:13px;color:var(--text);line-height:1.85;margin-top:8px">
-    <b>v75（這版）：</b>標題列右側加上版本號徽章（例如「v75」），方便你一眼確認自己打開的是不是最新版——以後更新後只要看那個號碼有沒有跟著變，就知道有沒有成功換版。<br>
+    <b>v76（這版）：</b>帳號五件套＋報價正式做進工具：帳號編輯視窗多了「版面五件套＋報價」區（可逐格手填），而且帳號管理頂部＋影片輸入頁各有一個「貼帳號分析卡→自動填入」入口（認 @ 自動建檔/更新、存版面歷史）。帳號卡片也會顯示報價/置頂/Bio 摘要。<br>
+    <b>v75：</b>標題列右側加上版本號徽章（例如「v75」），方便你一眼確認自己打開的是不是最新版——以後更新後只要看那個號碼有沒有跟著變，就知道有沒有成功換版。<br>
     <b>v74：</b>① 影片表單的「完整文案」「逐字稿」各加了「⧉ 複製」鈕（完整文案的複製會連同你填的 Hashtag 一起複製，跟對方原貼文一致）。② 影片庫工具列：「全選」改成「選擇全部」、可逐支勾選＝單選；「刪除選取」移到清單最下面避免誤按；新增「⧉ 產生腳本範本」——勾幾支影片→複製一段提示詞，丟給 AI 就能照這些成功影片的邏輯幫你的客戶套寫新腳本（自動帶入它們的 Hook／流量觸發／爆紅歸因／成效，並讓你填客戶職業）。③ 影片庫卡片帳號列加「顯示名稱」。④ 雲端連不到時不再跳紅色錯誤，安靜切「本機模式」（資料一樣存得住；上 GitHub 用真網址才會連雲端）。<br>
     <b>怎麼把存的影片變成客戶腳本（重點）：</b>影片庫→勾同一個目標層（例如都是 G3）的 5–10 支→按「產生腳本範本」→貼給 AI→在提示詞頂端填客戶的職業／產業。AI 會沿用這些影片有效的 Hook 與流量邏輯、換成客戶職業情境寫新腳本。職業會影響舉例、可信度來源與比例，所以一定要填。<br>
     <b>v69–v73：</b>影片庫卡片帶出帳號身份／職稱／產業／粉絲；「帳號分析提示詞」升級成完整「ATELIER帳號分析卡」（bio 三行、置頂貼文／Reels 前三、五件套、人設、粉絲量級、報價細項）；同一帳號再次貼卡自動比對粉絲變化；影片輸入頁「連結到帳號」可直接填職稱／產業（綁定該帳號）。<br>
@@ -2574,7 +2589,8 @@ function accCard(a){
     <div class="vmeta" style="margin-top:5px"><span class="lab">30天成長</span> ${gText}</div>
     ${relList?`<div class="vmeta" style="margin-top:5px"><span class="lab">關聯</span> ${relList}</div>`:''}
     ${a.note?`<div class="vmeta" style="margin-top:5px;color:var(--text)">${esc(a.note)}</div>`:''}
-    ${(a.fanSnapshots&&a.fanSnapshots.length)||(a.profileSnapshots&&a.profileSnapshots.length)?`<details class="vstrat" style="margin-top:7px"><summary>📊 歷史快照（${(a.fanSnapshots||[]).length} 筆粉絲、${(a.profileSnapshots||[]).length} 筆版面）</summary>${(a.fanSnapshots||[]).slice().sort((x,y)=>(y.date||'').localeCompare(x.date||'')).map(s=>`<div class="vstrat-row"><span class="vs-tag vs-why">${esc(s.date)}</span><span>${(parseInt(s.count)||0).toLocaleString()} 粉 ${s.note?'· '+esc(s.note):''}</span></div>`).join('')}${(a.profileSnapshots||[]).slice().sort((x,y)=>(y.date||'').localeCompare(x.date||'')).map(p=>`<div class="vstrat-row"><span class="vs-tag vs-apply">${esc(p.date)} 版面</span><span style="white-space:pre-wrap">${esc((p.bioL1||'')+(p.bioL2?'\\n'+p.bioL2:'')+(p.bioL3?'\\n'+p.bioL3:''))}${p.visualStyle?' · 風格:'+esc(p.visualStyle):''}</span></div>`).join('')}</details>`:''}
+    ${a.profile&&Object.values(a.profile).some(v=>v)?`<div class="vmeta" style="margin-top:5px;color:var(--gold-dark)">${a.profile.bio1?`<span class="lab">Bio</span> ${esc(a.profile.bio1)}　·　`:''}${a.profile.pinnedPosts?`<span class="lab">置頂</span> ${esc(a.profile.pinnedPosts.slice(0,36))}　·　`:''}${a.profile.priceShort?`<span class="lab">短影音報價</span> ${esc(a.profile.priceShort)}　·　`:''}${a.profile.priceNote?`<span class="lab">報價備註</span> ${esc(a.profile.priceNote.slice(0,28))}`:''}</div>`:''}
+    ${(a.fanSnapshots&&a.fanSnapshots.length)||(a.profileSnapshots&&a.profileSnapshots.length)?`<details class="vstrat" style="margin-top:7px"><summary>📊 歷史快照（${(a.fanSnapshots||[]).length} 筆粉絲、${(a.profileSnapshots||[]).length} 筆版面）</summary>${(a.fanSnapshots||[]).slice().sort((x,y)=>(y.date||'').localeCompare(x.date||'')).map(s=>`<div class="vstrat-row"><span class="vs-tag vs-why">${esc(s.date)}</span><span>${(parseInt(s.count)||0).toLocaleString()} 粉 ${s.note?'· '+esc(s.note):''}</span></div>`).join('')}${(a.profileSnapshots||[]).slice().sort((x,y)=>(y.date||'').localeCompare(x.date||'')).map(p=>`<div class="vstrat-row"><span class="vs-tag vs-apply">${esc(p.date)} 版面</span><span style="white-space:pre-wrap">${esc([p.bio1||p.bioL1||'',p.bio2||p.bioL2||'',p.bio3||p.bioL3||''].filter(Boolean).join(' / '))}${(p.visualStyle)?' · 風格:'+esc(p.visualStyle):''}${p.priceShort?' · 短影音:'+esc(p.priceShort):''}</span></div>`).join('')}</details>`:''}
     <div class="vmeta" style="margin-top:8px;display:flex;gap:14px;flex-wrap:wrap">
       <span class="vlink" style="cursor:pointer" data-acc-edit="${a.id}">編輯</span>
       <span class="vlink" style="cursor:pointer" data-acc-snap="${a.id}">+ 粉絲快照</span>
@@ -2585,9 +2601,78 @@ function accCard(a){
 }
 
 /* ─── 新增 / 編輯帳號（彈窗）─── */
+/* ===== v76：帳號版面五件套 ＋ 報價 ===== */
+const ACC_PROFILE_FIELDS=[
+  ['fanTier','粉絲量級'],['relatedBrands','關聯品牌'],
+  ['bio1','Bio第1行'],['bio2','Bio第2行'],['bio3','Bio第3行'],['bioCTA','Bio連結CTA'],
+  ['pinnedPosts','置頂貼文前三',1],['pinnedReels','置頂Reels前三',1],['highlights','精選動態分類',1],
+  ['visualStyle','視覺風格'],['postFreq','發文頻率'],['contentMix','內容混合比例'],
+  ['persona','人設關鍵字'],['positioning','帳號定位',1],
+  ['priceShort','報價-短影音單支'],['pricePost','報價-貼文或限動'],['priceMonthly','報價-包月或業配合作'],
+  ['priceBarter','是否接互惠'],['priceNote','報價備註',1],['profileDate','分析日期']
+];
+// 把「欄位：值」逐行拆成物件（給帳號分析卡用）
+function parseCardFields(raw){
+  const F={};
+  (raw||'').split(/\r?\n/).forEach(line=>{
+    const m=line.match(/^\s*[*\-•]?\s*\d{0,2}[a-z]?[.、]?\s*([^：:]{1,16})\s*[：:]\s*(.+?)\s*$/);
+    if(m){ let k=m[1].trim().replace(/^@/,''); let val=m[2].trim(); if(val && !/^[（(]?(待補|待詢|無|—|-)[）)]?$/.test(val)) F[k]=val; }
+  });
+  return F;
+}
+// 從一張帳號分析卡，取出 handle ＋ 各欄位值（含五件套/報價）
+function readAccountCard(raw){
+  const F=parseCardFields(raw);
+  const handleRaw=(F['帳號']||F['IG帳號']||'').trim();
+  const out={ handle:'', displayName:F['顯示名稱']||'', platform:F['平台']||'', domain:F['領域']||F['主打主題']||'',
+    jobTitle:F['職稱']||F['職位']||F['職稱類別']||'', industry:F['產業']||F['行業']||'',
+    types:(F['身份本質']||F['身份分類']||'').split(/[、,，\/]/).map(s=>s.trim()).filter(Boolean),
+    fanCount:(F['粉絲數']?(parseInt(numUnit(F['粉絲數']))||0):0), profile:{} };
+  if(handleRaw){ const h=handleRaw.split(/\s/)[0]; out.handle = h.startsWith('@')||h.startsWith('http')?h:'@'+h; }
+  ACC_PROFILE_FIELDS.forEach(([k,label])=>{ if(F[label]) out.profile[k]=F[label]; });
+  return out;
+}
+// 入庫：認 @ 去重，寫入帳號＋存一筆版面歷史快照
+async function ingestAccountCard(raw, opt){
+  opt=opt||{};
+  const c=readAccountCard(raw);
+  if(!c.handle){ toast('⚠️ 卡片裡找不到「@帳號：」這行，請確認貼的是帳號分析卡'); return null; }
+  const norm=s=>(s||'').toLowerCase().replace(/^@/,'').replace(/\/+$/,'');
+  let acc=accounts.find(x=>norm(x.handle)===norm(c.handle));
+  const isNew=!acc;
+  if(isNew){ acc={id:'acc_'+Date.now()+'_'+Math.random().toString(36).slice(2,7), platform:c.platform||'IG', handle:c.handle, displayName:'', types:[], domain:'', jobTitle:'', industry:'', relatedAccounts:[], note:'(由帳號分析卡建檔)', fanSnapshots:[], profileSnapshots:[], profile:{}, createdAt:Date.now(), updatedAt:Date.now()}; accounts.unshift(acc); }
+  if(c.platform) acc.platform=c.platform;
+  if(c.displayName) acc.displayName=c.displayName;
+  if(c.domain) acc.domain=c.domain;
+  if(c.jobTitle) acc.jobTitle=c.jobTitle;
+  if(c.industry) acc.industry=c.industry;
+  if(c.types.length) acc.types=c.types;
+  acc.profile=Object.assign({}, acc.profile||{}, c.profile);
+  // 粉絲數：用既有快照機制比對
+  let fanMsg='';
+  if(c.fanCount){
+    if(!acc.fanSnapshots) acc.fanSnapshots=[];
+    const today=new Date().toISOString().slice(0,10);
+    const last=acc.fanSnapshots.length?acc.fanSnapshots[acc.fanSnapshots.length-1]:null;
+    const lastN=last?(parseInt(last.count)||0):0;
+    if(!last){ acc.fanSnapshots.push({date:today,count:c.fanCount,note:'帳號分析卡'}); fanMsg='，粉絲 '+c.fanCount.toLocaleString(); }
+    else if(c.fanCount!==lastN){ if(last.date===today) last.count=c.fanCount; else acc.fanSnapshots.push({date:today,count:c.fanCount,note:'帳號分析卡'}); const d=c.fanCount-lastN; const pc=lastN?Math.round(d/lastN*100):0; fanMsg='，粉絲 '+lastN.toLocaleString()+'→'+c.fanCount.toLocaleString()+'（'+(d>=0?'+':'')+d.toLocaleString()+(lastN?'，'+(pc>=0?'+':'')+pc+'%':'')+'）'+(Math.abs(pc)>=20?' ⚠️變化偏大':''); }
+  }
+  // 版面歷史快照：每次入庫存一份（同一天覆蓋）
+  if(!acc.profileSnapshots) acc.profileSnapshots=[];
+  const today2=new Date().toISOString().slice(0,10);
+  const snap=Object.assign({date:today2}, acc.profile);
+  const lastSnap=acc.profileSnapshots[acc.profileSnapshots.length-1];
+  if(lastSnap && lastSnap.date===today2) acc.profileSnapshots[acc.profileSnapshots.length-1]=snap; else acc.profileSnapshots.push(snap);
+  acc.updatedAt=Date.now();
+  await saveAccounts(); renderAccounts(); if(typeof renderComparePicker==='function') renderComparePicker(); if(typeof renderAll==='function') renderAll();
+  toast((isNew?'✓ 已建帳號 ':'🔁 已更新帳號 ')+acc.handle+'（版面五件套已存）'+fanMsg);
+  return acc;
+}
+
 function openAccountModal(a){
   const isNew=!a;
-  if(isNew) a={id:'acc_'+Date.now()+'_'+Math.random().toString(36).slice(2,7), platform:'IG', handle:'', displayName:'', types:[], domain:'', jobTitle:'', industry:'', relatedAccounts:[], note:'', fanSnapshots:[], profileSnapshots:[], createdAt:Date.now(), updatedAt:Date.now()};
+  if(isNew) a={id:'acc_'+Date.now()+'_'+Math.random().toString(36).slice(2,7), platform:'IG', handle:'', displayName:'', types:[], domain:'', jobTitle:'', industry:'', relatedAccounts:[], note:'', fanSnapshots:[], profileSnapshots:[], profile:{}, createdAt:Date.now(), updatedAt:Date.now()};
   const TYPES_A=['演員','歌手','主持人','通告藝人','模特兒','運動員','企業家','名人'];
   const TYPES_B=['KOL','KOC','個人IP','Youtuber','實況主','內容創作者','素人'];
   const TYPES_C=['品牌號','媒體節目號','機構號'];
@@ -2619,6 +2704,18 @@ function openAccountModal(a){
         <div id="ma-rels" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px">${(a.relatedAccounts||[]).map(rid=>{const r=accounts.find(x=>x.id===rid);return r?`<span data-rid="${rid}" style="padding:4px 10px;background:var(--rouge);color:#fff;border-radius:12px;font-size:12px;cursor:pointer">${esc(r.handle||r.displayName||'?')} ×</span>`:''}).join('')}</div>
         <div class="tip">處理「律師個人 IP + 事務所品牌號」這種一人多帳號矩陣</div>
       </div>
+      <details class="spec-box" style="margin-bottom:14px">
+        <summary style="cursor:pointer;font-weight:700;color:var(--rouge);padding:11px 13px;list-style:none;font-size:14px">📋 帳號版面五件套 ＋ 報價（點開）</summary>
+        <div style="padding:0 13px 13px">
+          <div class="paste-note" style="margin-bottom:6px">把 Claude 用「帳號分析提示詞」吐出的 <b>===ATELIER帳號分析卡===</b> 整段貼進來，按「自動填入」會把下面欄位一次填好；也可以逐格自己改。</div>
+          <textarea id="ma-cardPaste" placeholder="貼整張帳號分析卡…" style="width:100%;min-height:90px;padding:9px 10px;border:1px solid var(--gold-soft);border-radius:8px;font-size:12px"></textarea>
+          <button class="btn btn-go" id="ma-cardParse" style="width:100%;margin:8px 0 4px">⧉ 自動填入下面欄位</button>
+          ${ACC_PROFILE_FIELDS.map(([k,label,big])=>big
+            ?`<div class="fld"><label style="font-size:12px">${label}</label><textarea id="ma-${k}" style="width:100%;min-height:48px;padding:8px 10px;border:1px solid var(--border);border-radius:8px;font-size:13px">${esc((a.profile||{})[k]||'')}</textarea></div>`
+            :`<div class="fld"><label style="font-size:12px">${label}</label><input id="ma-${k}" value="${esc((a.profile||{})[k]||'')}" style="width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:8px;font-size:13px"></div>`
+          ).join('')}
+        </div>
+      </details>
       <div class="fld"><label>備註</label><textarea id="ma-note" style="width:100%;padding:9px 10px;border:1px solid var(--border);border-radius:8px;min-height:60px">${esc(a.note||'')}</textarea></div>
       <div style="display:flex;gap:8px;margin-top:14px">
         <button class="btn btn-ghost" id="ma-cancel" style="flex:1">取消</button>
@@ -2627,6 +2724,20 @@ function openAccountModal(a){
     </div>`;
   $('sheet').innerHTML=html; $('modal').classList.add('on');
   $('ma-cancel').onclick=closeModal;
+  // v76：modal 內貼帳號分析卡 → 自動填欄位
+  if($('ma-cardParse')) $('ma-cardParse').onclick=function(){
+    const raw=$('ma-cardPaste').value; if(!raw.trim()){ toast('請先貼上帳號分析卡'); return; }
+    const c=readAccountCard(raw);
+    if(c.handle && !$('ma-handle').value.trim()) $('ma-handle').value=c.handle;
+    if(c.displayName) $('ma-displayName').value=c.displayName;
+    if(c.domain) $('ma-domain').value=c.domain;
+    if(c.jobTitle) $('ma-jobTitle').value=c.jobTitle;
+    if(c.industry) $('ma-industry').value=c.industry;
+    if(c.platform && $('ma-platform')) { [...$('ma-platform').options].forEach(o=>{ if(o.value===c.platform) $('ma-platform').value=c.platform; }); }
+    if(c.types.length){ document.querySelectorAll('#ma-typesA label, #ma-typesB label, #ma-typesC label').forEach(lab=>{ const cb=lab.querySelector('input'); const on=c.types.includes(cb.value); cb.checked=on; lab.style.background=on?'var(--rouge)':'#fff'; lab.style.color=on?'#fff':'var(--ink)'; }); }
+    ACC_PROFILE_FIELDS.forEach(([k])=>{ if(c.profile[k]!=null && $('ma-'+k)) $('ma-'+k).value=c.profile[k]; });
+    toast('✓ 已填入，檢查後按「儲存帳號」');
+  };
   // 身份 chip 點選切換
   document.querySelectorAll('#ma-typesA label, #ma-typesB label, #ma-typesC label').forEach(lab=>{
     lab.onclick=(e)=>{ e.preventDefault(); const cb=lab.querySelector('input'); cb.checked=!cb.checked; lab.style.background=cb.checked?'var(--rouge)':'#fff'; lab.style.color=cb.checked?'#fff':'var(--ink)'; };
@@ -2659,6 +2770,10 @@ function openAccountModal(a){
     a.industry=$('ma-industry').value.trim();
     a.types=[]; document.querySelectorAll('#ma-typesA input, #ma-typesB input, #ma-typesC input').forEach(cb=>{ if(cb.checked) a.types.push(cb.value); });
     a.note=$('ma-note').value.trim();
+    // v76：寫入版面五件套＋報價，並存一筆歷史快照（同日覆蓋）
+    a.profile=a.profile||{};
+    ACC_PROFILE_FIELDS.forEach(([k])=>{ if($('ma-'+k)) a.profile[k]=$('ma-'+k).value.trim(); });
+    if(Object.values(a.profile).some(v=>v)){ a.profileSnapshots=a.profileSnapshots||[]; const td=new Date().toISOString().slice(0,10); const snp=Object.assign({date:td},a.profile); const ls=a.profileSnapshots[a.profileSnapshots.length-1]; if(ls&&ls.date===td) a.profileSnapshots[a.profileSnapshots.length-1]=snp; else a.profileSnapshots.push(snp); }
     a.updatedAt=Date.now();
     if(isNew) accounts.unshift(a);
     // 雙向關聯：把自己加進對方的 relatedAccounts
@@ -2896,6 +3011,9 @@ function writeAccountJobFields(){
 // 綁定帳號管理 UI 事件
 function bindAccountUI(){
   if($('acc-add-btn')) $('acc-add-btn').onclick=()=>openAccountModal(null);
+  // v76：兩個入口都綁「貼帳號分析卡 → 入庫」
+  if($('acc-card-ingest')) $('acc-card-ingest').onclick=async function(){ const r=$('acc-card-paste').value; if(!r.trim()){ toast('請先貼上帳號分析卡'); return; } const a=await ingestAccountCard(r); if(a){ $('acc-card-paste').value=''; var b=$('accCardBox'); if(b) b.open=false; } };
+  if($('acc-card-ingest-in')) $('acc-card-ingest-in').onclick=async function(){ const r=$('acc-card-paste-in').value; if(!r.trim()){ toast('請先貼上帳號分析卡'); return; } const a=await ingestAccountCard(r); if(a){ $('acc-card-paste-in').value=''; var b=$('accCardBoxInput'); if(b) b.open=false; } };
   // 填充影片表單的「連結帳號」下拉
   populateAccountSelect();
   // 口說字數/語速即時計算
