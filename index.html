@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="color-scheme" content="light only">
 <meta name="supported-color-schemes" content="light">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v84 (版本號僅留註解，不顯示於畫面)
+<!-- ATELIER 影片診斷工作台 · 內部版本 v85 (版本號僅留註解，不顯示於畫面)
+     v85 更新（修最久沒解決的痛點）：問題根因找到了——輸入頁最上面那個「貼帳號分析卡」的框，按下去其實「有」把版面解析／ICP／報價存進帳號，但存完什麼都沒往下接：沒幫你選好帳號、沒把資料填到下面⑥的欄位、還把框收起來，看起來像沒反應（資料其實默默存進去了），而且舊文字還叫你「去帳號管理才看得到」。這版改成：在輸入頁貼帳號分析卡 → 自動依@建檔／更新 → 自動選好⑥的那個帳號 → 把版面解析＋ICP＋報價直接填進去並「自動展開」給你看 → 自動捲到該區，全程不用離開歸類卡頁。框的標題與說明也改成正確描述。
      v84 更新：加入「ICP 理想客戶三區塊」——①人群(痛點/誤區)×產品(賣點/案例)×人設(身分/理念)＋一句話「曝光×需求×信任」。②帳號分析提示詞會輸出這四欄，工具的帳號版面解析也多了這四個可填欄位（自動流到輸入頁/編輯視窗/版面對照）。③每支影片新增「目標人群＋切點(ICP)」欄位：表單可填、貼卡自動帶、卡片展開看得到、可複製、並排對比與腳本範本都帶入；Claude 合併提示詞也會輸出「目標人群」。
      v83 更新：①修掉 console.info 在某些手機/預覽環境報錯（程式最前面把 console 補全），這會打斷後面程式、可能是手機體感怪的原因之一。②「帳號版面解析」取代原本借來的「五件套」說法（自有命名、客戶也好懂）。③手機把影片庫那排操作鈕壓緊一點，不再每顆佔一整列。
      v82 更新：①修正——影片庫的「全選／產生腳本範本／並排對比／匯出選取／刪除選取」和每支的勾選框改成「一直顯示」，不再藏在「選取」模式後面（之前藏起來害你跟手機都找不到，這是我的設計失誤）。②「輸入影片→⑥連結到帳號」直接做出帳號版面解析＋報價的填空欄位：選了帳號就出現，填好點到別處自動存回那個帳號並留版面快照——所以版面對照也會有資料、不再全是空格。
@@ -573,7 +574,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v84</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v85</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -811,10 +812,10 @@ if('serviceWorker' in navigator){
     <div id="parseMsg" class="parse-msg"></div>
   </div>
   <details class="paste-card" style="margin-top:0;border:1px dashed var(--gold-soft)" id="accCardBoxInput">
-    <summary style="cursor:pointer;font-weight:700;color:var(--gold-dark);list-style:none;font-size:13px">貼「帳號分析卡」→ 只更新帳號（不建影片）點開</summary>
-    <div class="paste-note" style="margin:8px 0">這裡是給「帳號版面解析／報價」用的（跟上面影片歸類卡分開）。貼 <b>===ATELIER帳號分析卡===</b>，按一下依 @ 自動建檔／更新，存進帳號＋留版面歷史。要看或逐格改，到「帳號管理」點該帳號。</div>
+    <summary style="cursor:pointer;font-weight:700;color:var(--gold-dark);list-style:none;font-size:13px">貼「帳號分析卡」→ 帶入這個帳號的版面解析＋ICP＋報價（點開）</summary>
+    <div class="paste-note" style="margin:8px 0">這裡是給「帳號版面解析／ICP／報價」用的（跟上面影片歸類卡分開）。貼 <b>===ATELIER帳號分析卡===</b> 按一下：會依 @ 自動建檔／更新，然後自動選好下面⑥的帳號、把版面解析＋ICP＋報價直接填進去並展開給你看，不用再跑到帳號管理。</div>
     <textarea id="acc-card-paste-in" placeholder="貼整張帳號分析卡…" style="width:100%;min-height:90px;padding:9px 10px;border:1px solid var(--gold-soft);border-radius:8px;font-size:12px"></textarea>
-    <button class="btn btn-go" id="acc-card-ingest-in" style="width:100%;margin-top:8px">⧉ 自動建檔／更新帳號</button>
+    <button class="btn btn-go" id="acc-card-ingest-in" style="width:100%;margin-top:8px">⧉ 帶入帳號分析（版面解析＋ICP＋報價）</button>
   </details>
   <div class="hint">
     <b>或手動填：</b>只有影片名稱必填，其他能填多少算多少，之後隨時可補。下面選單會跟著你選的主題連動。
@@ -2508,7 +2509,8 @@ function renderManual(){
   <div class="form-card" style="border-left:3px solid var(--gold)">
     <div class="stitle" style="font-size:15px;color:var(--rouge)">更新紀錄 · 還沒做的</div>
     <p style="font-size:13px;color:var(--text);line-height:1.85;margin-top:8px">
-    <b>v84（這版）：</b>加入「ICP 理想客戶三區塊」（人群痛點誤區×產品賣點案例×人設身分理念＋曝光×需求×信任）：帳號分析提示詞會輸出、帳號版面解析多了這四欄可填、版面對照可比；每支影片也新增「目標人群＋切點」欄位（可填/貼卡自動帶/可複製/進對比與腳本範本）。<br>
+    <b>v85（這版）：</b>修掉一個藏很久的痛點——在「輸入影片」頁貼「帳號分析卡」後，現在會自動選好下面⑥的那個帳號、把版面解析＋ICP＋報價直接填進去並展開給你看，還會自動捲到那一區，全程不用跳去帳號管理（以前是有存進帳號、但畫面上看不到，像沒反應）。<br>
+    <b>v84：</b>加入「ICP 理想客戶三區塊」（人群痛點誤區×產品賣點案例×人設身分理念＋曝光×需求×信任）：帳號分析提示詞會輸出、帳號版面解析多了這四欄可填、版面對照可比；每支影片也新增「目標人群＋切點」欄位（可填/貼卡自動帶/可複製/進對比與腳本範本）。<br>
     <b>v83：</b>修掉 console.info 在部分環境報錯（程式最前補全 console）；把「五件套」改名為「帳號版面解析」（自有命名）；手機影片庫操作鈕壓緊。<br>
     <b>v82：</b>影片庫的全選／產生範本／對比／匯出／刪除＋勾選框改成「一直顯示」（不再藏在選取模式後面）；「輸入影片→連結到帳號」直接有帳號版面解析＋報價填空欄位，填了自動存回帳號＋留快照，版面對照就有資料了。<br>
     <b>v81：</b>影片庫加「分頁」：一次顯示前 20 支，下面「顯示更多」逐次多載，可「收合回前 20 支」，換篩選會回到頂端。存再多也不會無限長拉。<br>
@@ -3204,7 +3206,19 @@ function bindAccountUI(){
   if($('acc-add-btn')) $('acc-add-btn').onclick=()=>openAccountModal(null);
   // v76：兩個入口都綁「貼帳號分析卡 → 入庫」
   if($('acc-card-ingest')) $('acc-card-ingest').onclick=async function(){ const r=$('acc-card-paste').value; if(!r.trim()){ toast('請先貼上帳號分析卡'); return; } const a=await ingestAccountCard(r); if(a){ $('acc-card-paste').value=''; var b=$('accCardBox'); if(b) b.open=false; } };
-  if($('acc-card-ingest-in')) $('acc-card-ingest-in').onclick=async function(){ const r=$('acc-card-paste-in').value; if(!r.trim()){ toast('請先貼上帳號分析卡'); return; } const a=await ingestAccountCard(r); if(a){ $('acc-card-paste-in').value=''; var b=$('accCardBoxInput'); if(b) b.open=false; } };
+  if($('acc-card-ingest-in')) $('acc-card-ingest-in').onclick=async function(){
+    const r=$('acc-card-paste-in').value; if(!r.trim()){ toast('請先貼上帳號分析卡'); return; }
+    const a=await ingestAccountCard(r); if(!a) return;
+    $('acc-card-paste-in').value='';
+    // v85：入庫後接回輸入頁⑥——選好帳號、填好版面解析/ICP/報價、自動展開、捲過去給她看到
+    populateAccountSelect();
+    if($('f-account')) $('f-account').value=a.id;
+    if(typeof syncAccountJobFields==='function') syncAccountJobFields();
+    if($('f-profBox')) $('f-profBox').open=true;
+    var b=$('accCardBoxInput'); if(b) b.open=false;
+    if($('f-account')){ try{ $('f-account').scrollIntoView({behavior:'smooth',block:'center'}); }catch(e){} }
+    toast('✓ 已帶入「'+(a.handle||'')+'」：下方⑥已選好帳號，版面解析＋ICP＋報價已填好並展開');
+  };
   // 填充影片表單的「連結帳號」下拉
   populateAccountSelect();
   // 口說字數/語速即時計算
