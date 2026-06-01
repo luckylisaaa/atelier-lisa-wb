@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="color-scheme" content="light only">
 <meta name="supported-color-schemes" content="light">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v86 (版本號僅留註解，不顯示於畫面)
+<!-- ATELIER 影片診斷工作台 · 內部版本 v87 (版本號僅留註解，不顯示於畫面)
+     v87 更新（修一個真的 bug，不是藏起來）：輸入頁「帳號版面解析」那塊，你點下去其實有開、但裡面是空的——因為畫欄位的函式 renderProfFields 只在「你動帳號選單」時才被呼叫，一進頁面從來沒跑過，所以一開就是一片空白，看起來像「打不開、看不到」。這版改兩點：①一進頁面就先把欄位畫出來（renderProfFields 進初始化），不用先選帳號也不用先動任何東西。②那個框預設「直接攤開、一直顯示」（open），可自行收合。配合 v86 的「沒選帳號時欄位灰色唯讀先給你看格式」，現在一進輸入頁就直接看得到全部欄位長怎樣。
      v86 更新（全部都是「別再把東西藏起來」）：①帳號版面解析的空格——以前展開時若還沒選帳號只會看到一行字、看不到空格；現在不管有沒有選帳號，一展開就把全部欄位「空格」畫出來給你看（沒選帳號時灰色唯讀先看格式，選或建或貼卡後才可填可存）。②影片庫頂部那排操作鈕——以前 .btn 預設整條寬100%，5顆鈕疊成5條吃掉大半畫面；改成小顆並排，匯出全部CSV也收進同一排靠右，影片卡片大幅提前出現（手機/電腦都是）。③每張影片卡「腳本靈感＋備註」標題改清楚為「腳本靈感＋逐字稿＋備註（點開·每項可複製/複製全部）」，逐字稿複製鍵一直都在裡面、現在好找了。④卡片左上勾選框放大更好按。
      v85 更新（修最久沒解決的痛點）：問題根因找到了——輸入頁最上面那個「貼帳號分析卡」的框，按下去其實「有」把版面解析／ICP／報價存進帳號，但存完什麼都沒往下接：沒幫你選好帳號、沒把資料填到下面⑥的欄位、還把框收起來，看起來像沒反應（資料其實默默存進去了），而且舊文字還叫你「去帳號管理才看得到」。這版改成：在輸入頁貼帳號分析卡 → 自動依@建檔／更新 → 自動選好⑥的那個帳號 → 把版面解析＋ICP＋報價直接填進去並「自動展開」給你看 → 自動捲到該區，全程不用離開歸類卡頁。框的標題與說明也改成正確描述。
      v84 更新：加入「ICP 理想客戶三區塊」——①人群(痛點/誤區)×產品(賣點/案例)×人設(身分/理念)＋一句話「曝光×需求×信任」。②帳號分析提示詞會輸出這四欄，工具的帳號版面解析也多了這四個可填欄位（自動流到輸入頁/編輯視窗/版面對照）。③每支影片新增「目標人群＋切點(ICP)」欄位：表單可填、貼卡自動帶、卡片展開看得到、可複製、並排對比與腳本範本都帶入；Claude 合併提示詞也會輸出「目標人群」。
@@ -575,7 +576,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v86</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v87</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -893,8 +894,8 @@ if('serviceWorker' in navigator){
       </div>
       <div class="tip">職稱／產業是「創作者本人」的屬性，會存到上面選的那個帳號（你在這裡填＝改那個帳號，不會變兩份）。貼歸類卡若有「職稱／產業」會自動帶入這裡。還沒選帳號的話，先按「＋建檔」或貼歸類卡建立帳號，填的職稱／產業就會一起存進去。</div>
       <div class="tip">把這支影片連結到一個「創作者帳號」。日後可以看到「這個帳號我拆過幾支、平均成效、粉絲成長」。可在「帳號管理」分頁再補身份分類與粉絲快照。</div>
-      <details class="spec-box" style="margin-top:8px" id="f-profBox">
-        <summary style="cursor:pointer;font-weight:700;color:var(--rouge);padding:10px 12px;list-style:none;font-size:13px">帳號版面解析 ＋ 報價（這個帳號的 · 填了會存進帳號 · 點開）</summary>
+      <details class="spec-box" style="margin-top:8px" id="f-profBox" open>
+        <summary style="cursor:pointer;font-weight:700;color:var(--rouge);padding:10px 12px;list-style:none;font-size:13px">帳號版面解析 ＋ 報價（這個帳號的 · 一直顯示 · 可收合）</summary>
         <div style="padding:2px 12px 12px"><div id="f-profFields"></div></div>
       </details>
     </div>
@@ -2510,7 +2511,8 @@ function renderManual(){
   <div class="form-card" style="border-left:3px solid var(--gold)">
     <div class="stitle" style="font-size:15px;color:var(--rouge)">更新紀錄 · 還沒做的</div>
     <p style="font-size:13px;color:var(--text);line-height:1.85;margin-top:8px">
-    <b>v86（這版）：</b>把幾個被藏起來的東西放出來：①「帳號版面解析」一展開就看得到全部空格（沒選帳號時先給你看格式、灰色的），不用先輸入才看得到。②影片庫頂部那排鈕改成小顆並排、不再每顆佔一整條，影片卡片提前出現（手機/電腦都是）。③每張卡的「腳本靈感＋逐字稿＋備註」標題改清楚，逐字稿的複製鍵就在裡面（每項可複製、也能複製全部）。④卡片左上勾選框放大更好按。<br>
+    <b>v87（這版）：</b>修好「帳號版面解析」那塊點了卻空白的 bug——以前畫欄位的程式只在你動帳號選單時才跑，一進頁面從沒跑過，所以一打開就是空的。現在一進輸入頁就直接把全部欄位攤開給你看（不用點、不用先選帳號；沒選帳號時是灰色先看格式，選/建/貼卡後可填可存）。<br>
+    <b>v86：</b>把幾個被藏起來的東西放出來：①「帳號版面解析」一展開就看得到全部空格（沒選帳號時先給你看格式、灰色的），不用先輸入才看得到。②影片庫頂部那排鈕改成小顆並排、不再每顆佔一整條，影片卡片提前出現（手機/電腦都是）。③每張卡的「腳本靈感＋逐字稿＋備註」標題改清楚，逐字稿的複製鍵就在裡面（每項可複製、也能複製全部）。④卡片左上勾選框放大更好按。<br>
     <b>v85：</b>修掉一個藏很久的痛點——在「輸入影片」頁貼「帳號分析卡」後，現在會自動選好下面⑥的那個帳號、把版面解析＋ICP＋報價直接填進去並展開給你看，還會自動捲到那一區，全程不用跳去帳號管理（以前是有存進帳號、但畫面上看不到，像沒反應）。<br>
     <b>v84：</b>加入「ICP 理想客戶三區塊」（人群痛點誤區×產品賣點案例×人設身分理念＋曝光×需求×信任）：帳號分析提示詞會輸出、帳號版面解析多了這四欄可填、版面對照可比；每支影片也新增「目標人群＋切點」欄位（可填/貼卡自動帶/可複製/進對比與腳本範本）。<br>
     <b>v83：</b>修掉 console.info 在部分環境報錯（程式最前補全 console）；把「五件套」改名為「帳號版面解析」（自有命名）；手機影片庫操作鈕壓緊。<br>
@@ -3228,6 +3230,8 @@ function bindAccountUI(){
   };
   // 填充影片表單的「連結帳號」下拉
   populateAccountSelect();
+  // v87：一進頁面就把「帳號版面解析」欄位畫出來（之前只在動帳號選單時才畫，所以一開是空的）
+  if(typeof renderProfFields==='function') renderProfFields();
   // 口說字數/語速即時計算
   ['contentTranscript','specDur'].forEach(id=>{ const el=$(id); if(el) el.addEventListener('input', calcSpeechRate); });
   // 快速建檔 @
