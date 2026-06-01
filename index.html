@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="color-scheme" content="light only">
 <meta name="supported-color-schemes" content="light">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v74 (版本號僅留註解，不顯示於畫面)
+<!-- ATELIER 影片診斷工作台 · 內部版本 v75 (版本號僅留註解，不顯示於畫面)
+     v75 更新：標題列（ATELIER 旁）加上可見版本號徽章，打開頁面就能用肉眼確認自己看到的是不是最新版（解決「不知道更新了沒」的困擾）。
      v74 更新：①完整文案／逐字稿各加「複製」鈕（文案複製含 Hashtag）。②影片庫：「全選」改「選擇全部」、刪除選取移到清單最下、新增「產生腳本範本」（選影片→複製提示詞讓 AI 幫客戶套寫腳本）。③影片庫卡片加顯示名稱。④雲端連不到不再噴紅字、安靜切本機模式。
      v73 更新：①「帳號分析」提示詞升級——結尾會附一張結構化「ATELIER帳號分析卡」（@帳號・平台・身份・職稱・產業・粉絲量級・Bio三行・置頂貼文前三・置頂Reels前三・精選動態・視覺風格・發文頻率・內容混合・人設關鍵字・帳號定位・報價細項[短影音/貼文限動/包月業配/互惠]・報價備註・分析日期），讓 Claude 從主頁截圖一次產出最完整的帳號分析。②影片庫卡片的簡單顯示加上該帳號最新粉絲數（帳號/職稱/產業/粉絲）。（下一版做：貼這張帳號分析卡→自動讀進系統、存歷史快照、認@去重、可比較媒合。）
      v72 更新：影片輸入頁的「⑥ 連結到帳號」區，直接加了「職稱／職位類別」「產業」兩格——所以在歸類卡/影片輸入這一頁就看得到也能填，不用再跳帳號管理。它仍綁定所選帳號（在這裡填＝改那個帳號，單一來源、不會兩份打架）；貼歸類卡有職稱/產業會自動帶入這兩格；切換帳號會即時帶出該帳號的職稱/產業。
@@ -559,7 +560,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <!-- 版本號 v74（內部）：原 <span class="v"> 已移除 -->
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v75</span>
   </div>
   <div class="stat" id="topstat">已存 <b id="vcount">0</b> 支影片</div>
 </div>
@@ -2355,7 +2356,8 @@ function renderManual(){
   <div class="form-card" style="border-left:3px solid var(--gold)">
     <div class="stitle" style="font-size:15px;color:var(--rouge)">更新紀錄 · 還沒做的</div>
     <p style="font-size:13px;color:var(--text);line-height:1.85;margin-top:8px">
-    <b>v74（這版）：</b>① 影片表單的「完整文案」「逐字稿」各加了「⧉ 複製」鈕（完整文案的複製會連同你填的 Hashtag 一起複製，跟對方原貼文一致）。② 影片庫工具列：「全選」改成「選擇全部」、可逐支勾選＝單選；「刪除選取」移到清單最下面避免誤按；新增「⧉ 產生腳本範本」——勾幾支影片→複製一段提示詞，丟給 AI 就能照這些成功影片的邏輯幫你的客戶套寫新腳本（自動帶入它們的 Hook／流量觸發／爆紅歸因／成效，並讓你填客戶職業）。③ 影片庫卡片帳號列加「顯示名稱」。④ 雲端連不到時不再跳紅色錯誤，安靜切「本機模式」（資料一樣存得住；上 GitHub 用真網址才會連雲端）。<br>
+    <b>v75（這版）：</b>標題列右側加上版本號徽章（例如「v75」），方便你一眼確認自己打開的是不是最新版——以後更新後只要看那個號碼有沒有跟著變，就知道有沒有成功換版。<br>
+    <b>v74：</b>① 影片表單的「完整文案」「逐字稿」各加了「⧉ 複製」鈕（完整文案的複製會連同你填的 Hashtag 一起複製，跟對方原貼文一致）。② 影片庫工具列：「全選」改成「選擇全部」、可逐支勾選＝單選；「刪除選取」移到清單最下面避免誤按；新增「⧉ 產生腳本範本」——勾幾支影片→複製一段提示詞，丟給 AI 就能照這些成功影片的邏輯幫你的客戶套寫新腳本（自動帶入它們的 Hook／流量觸發／爆紅歸因／成效，並讓你填客戶職業）。③ 影片庫卡片帳號列加「顯示名稱」。④ 雲端連不到時不再跳紅色錯誤，安靜切「本機模式」（資料一樣存得住；上 GitHub 用真網址才會連雲端）。<br>
     <b>怎麼把存的影片變成客戶腳本（重點）：</b>影片庫→勾同一個目標層（例如都是 G3）的 5–10 支→按「產生腳本範本」→貼給 AI→在提示詞頂端填客戶的職業／產業。AI 會沿用這些影片有效的 Hook 與流量邏輯、換成客戶職業情境寫新腳本。職業會影響舉例、可信度來源與比例，所以一定要填。<br>
     <b>v69–v73：</b>影片庫卡片帶出帳號身份／職稱／產業／粉絲；「帳號分析提示詞」升級成完整「ATELIER帳號分析卡」（bio 三行、置頂貼文／Reels 前三、五件套、人設、粉絲量級、報價細項）；同一帳號再次貼卡自動比對粉絲變化；影片輸入頁「連結到帳號」可直接填職稱／產業（綁定該帳號）。<br>
     <b>v68：</b>帳號職稱／產業欄＋影片 CTA 擷取（含自動回覆、互動率不含留言對照）。<br>
