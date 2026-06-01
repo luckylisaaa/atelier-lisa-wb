@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="color-scheme" content="light only">
 <meta name="supported-color-schemes" content="light">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v85 (版本號僅留註解，不顯示於畫面)
+<!-- ATELIER 影片診斷工作台 · 內部版本 v86 (版本號僅留註解，不顯示於畫面)
+     v86 更新（全部都是「別再把東西藏起來」）：①帳號版面解析的空格——以前展開時若還沒選帳號只會看到一行字、看不到空格；現在不管有沒有選帳號，一展開就把全部欄位「空格」畫出來給你看（沒選帳號時灰色唯讀先看格式，選或建或貼卡後才可填可存）。②影片庫頂部那排操作鈕——以前 .btn 預設整條寬100%，5顆鈕疊成5條吃掉大半畫面；改成小顆並排，匯出全部CSV也收進同一排靠右，影片卡片大幅提前出現（手機/電腦都是）。③每張影片卡「腳本靈感＋備註」標題改清楚為「腳本靈感＋逐字稿＋備註（點開·每項可複製/複製全部）」，逐字稿複製鍵一直都在裡面、現在好找了。④卡片左上勾選框放大更好按。
      v85 更新（修最久沒解決的痛點）：問題根因找到了——輸入頁最上面那個「貼帳號分析卡」的框，按下去其實「有」把版面解析／ICP／報價存進帳號，但存完什麼都沒往下接：沒幫你選好帳號、沒把資料填到下面⑥的欄位、還把框收起來，看起來像沒反應（資料其實默默存進去了），而且舊文字還叫你「去帳號管理才看得到」。這版改成：在輸入頁貼帳號分析卡 → 自動依@建檔／更新 → 自動選好⑥的那個帳號 → 把版面解析＋ICP＋報價直接填進去並「自動展開」給你看 → 自動捲到該區，全程不用離開歸類卡頁。框的標題與說明也改成正確描述。
      v84 更新：加入「ICP 理想客戶三區塊」——①人群(痛點/誤區)×產品(賣點/案例)×人設(身分/理念)＋一句話「曝光×需求×信任」。②帳號分析提示詞會輸出這四欄，工具的帳號版面解析也多了這四個可填欄位（自動流到輸入頁/編輯視窗/版面對照）。③每支影片新增「目標人群＋切點(ICP)」欄位：表單可填、貼卡自動帶、卡片展開看得到、可複製、並排對比與腳本範本都帶入；Claude 合併提示詞也會輸出「目標人群」。
      v83 更新：①修掉 console.info 在某些手機/預覽環境報錯（程式最前面把 console 補全），這會打斷後面程式、可能是手機體感怪的原因之一。②「帳號版面解析」取代原本借來的「五件套」說法（自有命名、客戶也好懂）。③手機把影片庫那排操作鈕壓緊一點，不再每顆佔一整列。
@@ -574,7 +575,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v85</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v86</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -1165,16 +1166,16 @@ if('serviceWorker' in navigator){
     <select id="libTypeF" style="padding:8px 10px;border:1px solid var(--border);border-radius:8px;background:#fff;color:var(--ink);font-family:inherit;font-size:13px"><option value="">全部身份</option><option>KOL</option><option>KOC</option><option>個人IP</option><option>Youtuber</option><option>內容創作者</option><option>素人</option><option>品牌號</option><option>企業家</option><option>名人</option><option>演員</option><option>歌手</option></select>
   </div>
   <div class="filterrow" id="libClientRow"></div>
-  <button class="btn btn-ghost" id="exportBtn" style="margin-bottom:12px"><svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.8;vertical-align:-2px;margin-right:5px"><path d="M12 4v11m0 0l-4-4m4 4l4-4M5 20h14" stroke-linecap="round" stroke-linejoin="round"/></svg>匯出全部成 CSV</button>
-  <div id="libBulk" style="display:flex;gap:8px;align-items:center;margin-bottom:10px;flex-wrap:wrap">
-    <button class="btn btn-ghost" id="libSelAllBtn" style="font-size:12px;padding:5px 12px">全選</button>
-    <label style="font-size:11px;display:none"><input type="checkbox" id="libSelAll"></label>
-    <span id="libSelCount" style="font-size:12px;color:var(--gold-dark);margin-right:auto"></span>
-    <button class="btn btn-ghost" id="bulkTemplate" style="font-size:12px;padding:5px 12px;border-color:var(--gold-dark);color:var(--gold-dark)">⧉ 產生腳本範本</button>
-    <button class="btn btn-ghost" id="bulkCompare" style="font-size:12px;padding:5px 12px;border-color:var(--rouge);color:var(--rouge)">並排對比</button>
-    <button class="btn btn-ghost" id="bulkExport" style="font-size:12px;padding:5px 12px">匯出選取</button>
+  <div id="libBulk" style="display:flex;gap:6px;align-items:center;margin-bottom:8px;flex-wrap:wrap">
+    <button class="btn btn-ghost" id="libSelAllBtn" style="width:auto;font-size:12px;padding:6px 12px">全選</button>
+    <span id="libSelCount" style="font-size:12px;color:var(--gold-dark)"></span>
+    <button class="btn btn-ghost" id="bulkTemplate" style="width:auto;font-size:12px;padding:6px 12px;border-color:var(--gold-dark);color:var(--gold-dark)">⧉ 產生腳本範本</button>
+    <button class="btn btn-ghost" id="bulkCompare" style="width:auto;font-size:12px;padding:6px 12px;border-color:var(--rouge);color:var(--rouge)">並排對比</button>
+    <button class="btn btn-ghost" id="bulkExport" style="width:auto;font-size:12px;padding:6px 12px">匯出選取</button>
+    <button class="btn btn-ghost" id="exportBtn" style="width:auto;font-size:12px;padding:6px 12px;margin-left:auto">↓ 匯出全部CSV</button>
+    <label style="display:none"><input type="checkbox" id="libSelAll"></label>
   </div>
-  <div class="tip" style="margin:-4px 0 10px">每支影片左上有勾選框：逐支勾＝單選、按「全選」＝整批（全選的是目前顯示出來的）。選好可「產生腳本範本／並排對比／匯出選取」，要刪到最下面按「刪除選取」。</div>
+  <div class="tip" style="margin:-2px 0 10px;font-size:11px">每支影片左上有勾選框＝點一下就選取；「全選」選的是目前顯示出來的。選好可「產生腳本範本／並排對比／匯出選取」；刪除在清單最下面的「刪除選取」。</div>
   <div id="libCompareResult" style="margin-top:14px"></div>
   <div id="libList"></div>
   <div id="libBulkBottom" style="display:flex;justify-content:flex-end;margin-top:16px">
@@ -2051,7 +2052,7 @@ function vcard(v){
   if(v.client) parts.push('<span class="lab">來源</span> '+esc(v.client));
   return `<div class="vcard t-${tc.k}">
     <div class="vtop">
-      <input type="checkbox" class="vsel" data-id="${v.id}" onclick="event.stopPropagation()" style="margin-right:8px;transform:scale(1.25);accent-color:var(--rouge);cursor:pointer">
+      <input type="checkbox" class="vsel" data-id="${v.id}" onclick="event.stopPropagation()" style="margin-right:8px;transform:scale(1.5);accent-color:var(--rouge);cursor:pointer">
       <div class="vtitle">${path}${esc(v.title)}</div>
       <div class="vtime ${tc.k}">${tc.label}</div>
     </div>
@@ -2062,7 +2063,7 @@ function vcard(v){
     ${(()=>{const n=x=>parseFloat(x)||0;const vw=n(v.views);const sr=vw?(((n(v.reposts)+n(v.shares))/vw)*100):null;const m=[];if(v.views)m.push('觀看 '+(+v.views).toLocaleString());if(v.likes)m.push('讚 '+(+v.likes).toLocaleString());if(v.saves)m.push('收藏 '+(+v.saves).toLocaleString());if(sr!=null)m.push('分享率 '+sr.toFixed(2)+'%');return m.length?`<div class="vmeta" style="margin-top:6px;font-weight:700;color:var(--rouge)">${m.join('　')}</div>`:'';})()}
     ${v.gap?`<div class="vgap">待優化缺口</div>`:''}
     ${v.hook?`<div class="vmeta" style="margin-top:5px;color:var(--gold-dark)"><span class="lab">Hook</span> ${esc(v.hook)}</div>`:''}
-    ${(v.why||v.apply||v.icp||v.caption||v.transcript||v.note)?`<details class="vstrat"><summary>腳本靈感＋備註（爆紅拆解 · 客戶轉化 · 文案 · 逐字稿 · 備註）</summary><div style="text-align:right;padding:6px 10px 0"><button onclick="copyVideoAll('${v.id}')" class="btn btn-ghost" style="font-size:11px;padding:3px 10px">⧉ 複製全部</button></div>${v.why?`<div class="vstrat-row"><span class="vs-tag vs-why">爆紅歸因</span><span>${esc(v.why)}</span><button class="vstrat-cp" onclick="copyVideoField('${v.id}','why')">⧉</button></div>`:''}${v.apply?`<div class="vstrat-row"><span class="vs-tag vs-apply">客戶落地</span><span>${esc(v.apply)}</span><button class="vstrat-cp" onclick="copyVideoField('${v.id}','apply')">⧉</button></div>`:''}${v.icp?`<div class="vstrat-row"><span class="vs-tag vs-why">目標人群</span><span>${esc(v.icp)}</span><button class="vstrat-cp" onclick="copyVideoField('${v.id}','icp')">⧉</button></div>`:''}${v.caption?`<div class="vstrat-row"><span class="vs-tag vs-apply">完整文案</span><span>${esc(v.caption)}</span><button class="vstrat-cp" onclick="copyVideoField('${v.id}','caption')">⧉</button></div>`:''}${v.transcript?`<div class="vstrat-row"><span class="vs-tag vs-why">逐字稿</span><span style="white-space:pre-wrap">${esc(v.transcript)}</span><button class="vstrat-cp" onclick="copyVideoField('${v.id}','transcript')">⧉</button></div>`:''}${v.note?`<div class="vstrat-row"><span class="vs-tag vs-apply">備註</span><span style="white-space:pre-wrap">${esc(v.note)}</span><button class="vstrat-cp" onclick="copyVideoField('${v.id}','note')">⧉</button></div>`:''}</details>`:''}
+    ${(v.why||v.apply||v.icp||v.caption||v.transcript||v.note)?`<details class="vstrat"><summary>腳本靈感＋逐字稿＋備註（點開 · 每項都可複製／也能一鍵複製全部）</summary><div style="text-align:right;padding:6px 10px 0"><button onclick="copyVideoAll('${v.id}')" class="btn btn-ghost" style="font-size:11px;padding:3px 10px">⧉ 複製全部</button></div>${v.why?`<div class="vstrat-row"><span class="vs-tag vs-why">爆紅歸因</span><span>${esc(v.why)}</span><button class="vstrat-cp" onclick="copyVideoField('${v.id}','why')">⧉</button></div>`:''}${v.apply?`<div class="vstrat-row"><span class="vs-tag vs-apply">客戶落地</span><span>${esc(v.apply)}</span><button class="vstrat-cp" onclick="copyVideoField('${v.id}','apply')">⧉</button></div>`:''}${v.icp?`<div class="vstrat-row"><span class="vs-tag vs-why">目標人群</span><span>${esc(v.icp)}</span><button class="vstrat-cp" onclick="copyVideoField('${v.id}','icp')">⧉</button></div>`:''}${v.caption?`<div class="vstrat-row"><span class="vs-tag vs-apply">完整文案</span><span>${esc(v.caption)}</span><button class="vstrat-cp" onclick="copyVideoField('${v.id}','caption')">⧉</button></div>`:''}${v.transcript?`<div class="vstrat-row"><span class="vs-tag vs-why">逐字稿</span><span style="white-space:pre-wrap">${esc(v.transcript)}</span><button class="vstrat-cp" onclick="copyVideoField('${v.id}','transcript')">⧉</button></div>`:''}${v.note?`<div class="vstrat-row"><span class="vs-tag vs-apply">備註</span><span style="white-space:pre-wrap">${esc(v.note)}</span><button class="vstrat-cp" onclick="copyVideoField('${v.id}','note')">⧉</button></div>`:''}</details>`:''}
     <div class="vmeta" style="margin-top:8px;display:flex;gap:14px;align-items:center;flex-wrap:wrap">
       ${v.logdate?`<span style="font-size:11px;color:var(--gold-dark)">建檔 ${esc(v.logdate)}</span>`:''}
       ${v.url?`<a class="vlink" href="${esc(v.url)}" target="_blank">開啟影片</a>`:''}
@@ -2509,7 +2510,8 @@ function renderManual(){
   <div class="form-card" style="border-left:3px solid var(--gold)">
     <div class="stitle" style="font-size:15px;color:var(--rouge)">更新紀錄 · 還沒做的</div>
     <p style="font-size:13px;color:var(--text);line-height:1.85;margin-top:8px">
-    <b>v85（這版）：</b>修掉一個藏很久的痛點——在「輸入影片」頁貼「帳號分析卡」後，現在會自動選好下面⑥的那個帳號、把版面解析＋ICP＋報價直接填進去並展開給你看，還會自動捲到那一區，全程不用跳去帳號管理（以前是有存進帳號、但畫面上看不到，像沒反應）。<br>
+    <b>v86（這版）：</b>把幾個被藏起來的東西放出來：①「帳號版面解析」一展開就看得到全部空格（沒選帳號時先給你看格式、灰色的），不用先輸入才看得到。②影片庫頂部那排鈕改成小顆並排、不再每顆佔一整條，影片卡片提前出現（手機/電腦都是）。③每張卡的「腳本靈感＋逐字稿＋備註」標題改清楚，逐字稿的複製鍵就在裡面（每項可複製、也能複製全部）。④卡片左上勾選框放大更好按。<br>
+    <b>v85：</b>修掉一個藏很久的痛點——在「輸入影片」頁貼「帳號分析卡」後，現在會自動選好下面⑥的那個帳號、把版面解析＋ICP＋報價直接填進去並展開給你看，還會自動捲到那一區，全程不用跳去帳號管理（以前是有存進帳號、但畫面上看不到，像沒反應）。<br>
     <b>v84：</b>加入「ICP 理想客戶三區塊」（人群痛點誤區×產品賣點案例×人設身分理念＋曝光×需求×信任）：帳號分析提示詞會輸出、帳號版面解析多了這四欄可填、版面對照可比；每支影片也新增「目標人群＋切點」欄位（可填/貼卡自動帶/可複製/進對比與腳本範本）。<br>
     <b>v83：</b>修掉 console.info 在部分環境報錯（程式最前補全 console）；把「五件套」改名為「帳號版面解析」（自有命名）；手機影片庫操作鈕壓緊。<br>
     <b>v82：</b>影片庫的全選／產生範本／對比／匯出／刪除＋勾選框改成「一直顯示」（不再藏在選取模式後面）；「輸入影片→連結到帳號」直接有帳號版面解析＋報價填空欄位，填了自動存回帳號＋留快照，版面對照就有資料了。<br>
@@ -3175,15 +3177,20 @@ function syncAccountJobFields(){
 function renderProfFields(){
   const wrap=$('f-profFields'); if(!wrap) return;
   const a=accounts.find(x=>x.id===($('f-account')?$('f-account').value:''));
-  if(!a){ wrap.innerHTML='<div class="tip" style="margin:0">先在上面選一個帳號（或按「＋建檔」／貼帳號分析卡），才能填這個帳號的版面解析。</div>'; return; }
-  const p=a.profile||{};
-  wrap.innerHTML='<div class="tip" style="margin:0 0 8px">填好任一格、點到別處就會自動存進帳號「'+esc(a.handle||'')+'」，並留一筆版面歷史快照。</div>'+ACC_PROFILE_FIELDS.map(function(f){
+  // v86：不管有沒有選帳號，都先把「空格」畫出來給你看（沒選帳號時是灰色、唯讀，先看格式）
+  const p=a?(a.profile||{}):{};
+  const bg=a?'#fff':'#faf7f3';
+  const dis=a?'':' disabled';
+  const note=a
+    ? '填好任一格、點到別處就會自動存進帳號「'+esc(a.handle||'')+'」，並留一筆版面歷史快照。'
+    : '↓ 這就是「帳號版面解析」的全部欄位（先給你看格式）。在上面選一個帳號、或按「＋建檔」、或直接貼一張「帳號分析卡」，這些格子就會變成可填、填的內容會存進那個帳號。';
+  wrap.innerHTML='<div class="tip" style="margin:0 0 8px">'+note+'</div>'+ACC_PROFILE_FIELDS.map(function(f){
     const k=f[0],label=f[1],big=f[2];
     return big
-      ?'<div class="fld" style="margin:0 0 8px"><label style="font-size:12px">'+label+'</label><textarea data-pf="'+k+'" style="width:100%;min-height:44px;padding:8px 10px;border:1px solid var(--border);border-radius:8px;font-size:13px">'+esc(p[k]||'')+'</textarea></div>'
-      :'<div class="fld" style="margin:0 0 8px"><label style="font-size:12px">'+label+'</label><input data-pf="'+k+'" value="'+esc(p[k]||'')+'" style="width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:8px;font-size:13px"></div>';
+      ?'<div class="fld" style="margin:0 0 8px"><label style="font-size:12px">'+label+'</label><textarea data-pf="'+k+'"'+dis+' style="width:100%;min-height:44px;padding:8px 10px;border:1px solid var(--border);border-radius:8px;font-size:13px;background:'+bg+'">'+esc(p[k]||'')+'</textarea></div>'
+      :'<div class="fld" style="margin:0 0 8px"><label style="font-size:12px">'+label+'</label><input data-pf="'+k+'"'+dis+' value="'+esc(p[k]||'')+'" style="width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:8px;font-size:13px;background:'+bg+'"></div>';
   }).join('');
-  wrap.querySelectorAll('[data-pf]').forEach(function(el){ el.addEventListener('change',writeProfFields); });
+  if(a) wrap.querySelectorAll('[data-pf]').forEach(function(el){ el.addEventListener('change',writeProfFields); });
 }
 function writeProfFields(){
   const a=accounts.find(x=>x.id===($('f-account')?$('f-account').value:'')); if(!a) return;
