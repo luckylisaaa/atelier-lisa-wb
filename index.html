@@ -5,7 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="color-scheme" content="light only">
 <meta name="supported-color-schemes" content="light">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v80 (版本號僅留註解，不顯示於畫面)
+<!-- ATELIER 影片診斷工作台 · 內部版本 v82 (版本號僅留註解，不顯示於畫面)
+     v82 更新：①修正——影片庫的「全選／產生腳本範本／並排對比／匯出選取／刪除選取」和每支的勾選框改成「一直顯示」，不再藏在「選取」模式後面（之前藏起來害你跟手機都找不到，這是我的設計失誤）。②「輸入影片→⑥連結到帳號」直接做出帳號五件套＋報價的填空欄位：選了帳號就出現，填好點到別處自動存回那個帳號並留版面快照——所以版面對照也會有資料、不再全是空格。
+     v81 更新：影片庫加分頁——一次只顯示前 20 支，下面有「顯示更多（還有 X 支）」可逐次多載 20 支，超過 20 支時也可「收合回前 20 支」；換搜尋／篩選／排序會自動回到前 20 支。存再多影片也不會無限長拉。（提醒：選取模式的「全選」是選目前顯示出來的那些；要選更多先按顯示更多。）
      v80 更新：①導覽列重排——「帳號管理／版面對照」移到「影片庫」後面，順著診斷流程。②快速篩選下拉加中文說明（G1 打破認知型…G5 信任轉化型；A 認知…E 組織）。③影片庫卡片展開「腳本靈感」後，爆紅歸因/客戶落地/完整文案/逐字稿/備註 每項都有單獨複製鍵，還有「複製全部」。④帳號卡新增「看主頁」連結，直接開對方版面。⑤輸入影片「連結到帳號」選好帳號後，顯示該帳號的定位/人設/Bio/報價摘要供當下核對。⑥再清掉殘留符號（歷史快照 📊、開啟影片 ↗ 等）。
      v79 更新：①標題列右上加「↻ 重新整理」鍵（按一下自動帶新網址抓最新版，不必再 Cmd+Shift+R）。②雲端狀態列拿掉外來 emoji，改純文字（顏色仍標示狀態）。③影片庫新增下拉「快速篩選」：階段(G1–G5)／目標層(A–E)／身份(KOL/KOC…)，搜尋框留給特殊詞。④影片庫改成 iPhone 式「選取」模式：平常不顯示勾選框，按「選取」才進入，內含「全選」鈕；「刪除選取」只在選取模式出現。
      v78 更新：①修好「編輯／+粉絲快照／+版面快照」點不動的 bug（模態框 class 用錯：開窗加 on、但 CSS 只認 show，視窗永遠不顯示；已統一為 show）。②影片庫新增「並排對比」——勾 2–4 支影片→像帳號版面對照那樣，把漏斗層/主題/素材/子題/形式/命根/Hook/爆紅歸因/客戶落地/CTA/觀看/讚/分享率/收藏率/互動率 並排比較，綠底標出共同點。
@@ -204,8 +206,7 @@ input,select,textarea{color-scheme:light}
 .vcard .vact{position:absolute;right:10px;bottom:10px;display:flex;gap:8px}
 .vcard .vlink{font-size:11px;color:var(--gold-dark);text-decoration:none;font-weight:700}
 .vcard .vdel{font-size:11px;color:var(--sub);cursor:pointer}
-.vsel{display:none}
-body.selmode .vsel{display:inline-block}
+.vsel{display:inline-block;vertical-align:middle}
 
 .sumrow{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px}
 .sumcard{background:var(--card);border:1px solid #F0E9E4;border-radius:10px;box-shadow:0 1px 3px rgba(90,40,45,.04);
@@ -568,7 +569,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v80</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v82</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -886,7 +887,10 @@ if('serviceWorker' in navigator){
       </div>
       <div class="tip">職稱／產業是「創作者本人」的屬性，會存到上面選的那個帳號（你在這裡填＝改那個帳號，不會變兩份）。貼歸類卡若有「職稱／產業」會自動帶入這裡。還沒選帳號的話，先按「＋建檔」或貼歸類卡建立帳號，填的職稱／產業就會一起存進去。</div>
       <div class="tip">把這支影片連結到一個「創作者帳號」。日後可以看到「這個帳號我拆過幾支、平均成效、粉絲成長」。可在「帳號管理」分頁再補身份分類與粉絲快照。</div>
-      <div id="f-accSummary" style="display:none;margin-top:8px;padding:10px 12px;background:var(--warm);border:1px solid var(--gold-soft);border-radius:9px;font-size:12.5px;color:var(--ink)"></div>
+      <details class="spec-box" style="margin-top:8px" id="f-profBox">
+        <summary style="cursor:pointer;font-weight:700;color:var(--rouge);padding:10px 12px;list-style:none;font-size:13px">帳號版面五件套 ＋ 報價（這個帳號的 · 填了會存進帳號 · 點開）</summary>
+        <div style="padding:2px 12px 12px"><div id="f-profFields"></div></div>
+      </details>
     </div>
 
     <div class="metrics-box">
@@ -1152,11 +1156,8 @@ if('serviceWorker' in navigator){
     <select id="libTypeF" style="padding:8px 10px;border:1px solid var(--border);border-radius:8px;background:#fff;color:var(--ink);font-family:inherit;font-size:13px"><option value="">全部身份</option><option>KOL</option><option>KOC</option><option>個人IP</option><option>Youtuber</option><option>內容創作者</option><option>素人</option><option>品牌號</option><option>企業家</option><option>名人</option><option>演員</option><option>歌手</option></select>
   </div>
   <div class="filterrow" id="libClientRow"></div>
-  <div style="display:flex;gap:8px;margin-bottom:14px">
-    <button class="btn btn-ghost" id="exportBtn" style="flex:1;margin:0"><svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.8;vertical-align:-2px;margin-right:5px"><path d="M12 4v11m0 0l-4-4m4 4l4-4M5 20h14" stroke-linecap="round" stroke-linejoin="round"/></svg>匯出全部成 CSV</button>
-    <button class="btn btn-ghost" id="selModeBtn" style="white-space:nowrap;margin:0;border-color:var(--rouge);color:var(--rouge)">選取</button>
-  </div>
-  <div id="libBulk" style="display:none;gap:8px;align-items:center;margin-bottom:10px;flex-wrap:wrap">
+  <button class="btn btn-ghost" id="exportBtn" style="margin-bottom:12px"><svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.8;vertical-align:-2px;margin-right:5px"><path d="M12 4v11m0 0l-4-4m4 4l4-4M5 20h14" stroke-linecap="round" stroke-linejoin="round"/></svg>匯出全部成 CSV</button>
+  <div id="libBulk" style="display:flex;gap:8px;align-items:center;margin-bottom:10px;flex-wrap:wrap">
     <button class="btn btn-ghost" id="libSelAllBtn" style="font-size:12px;padding:5px 12px">全選</button>
     <label style="font-size:11px;display:none"><input type="checkbox" id="libSelAll"></label>
     <span id="libSelCount" style="font-size:12px;color:var(--gold-dark)"></span>
@@ -1165,10 +1166,10 @@ if('serviceWorker' in navigator){
     <button class="btn btn-ghost" id="bulkCompare" style="font-size:12px;padding:5px 12px;border-color:var(--rouge);color:var(--rouge)">並排對比</button>
     <button class="btn btn-ghost" id="bulkExport" style="font-size:12px;padding:5px 12px">匯出選取</button>
   </div>
-  <div class="tip" style="margin:-4px 0 10px">按「選取」進入選取模式 → 影片左上出現勾選框，逐支勾＝單選、按「全選」＝整批。選好可「產生腳本範本／並排對比／匯出選取」。</div>
+  <div class="tip" style="margin:-4px 0 10px">每支影片左上有勾選框：逐支勾＝單選、按「全選」＝整批（全選的是目前顯示出來的）。選好可「產生腳本範本／並排對比／匯出選取」，要刪到最下面按「刪除選取」。</div>
   <div id="libCompareResult" style="margin-top:14px"></div>
   <div id="libList"></div>
-  <div id="libBulkBottom" style="display:none;justify-content:flex-end;margin-top:16px">
+  <div id="libBulkBottom" style="display:flex;justify-content:flex-end;margin-top:16px">
     <button class="btn btn-ghost" id="bulkDel" style="font-size:12px;padding:6px 14px;border-color:var(--rouge);color:var(--rouge)">刪除選取</button>
   </div>
 </div>
@@ -1467,7 +1468,7 @@ const numUnit=raw=>{
 };
 
 let videos=[]; // 影片資料
-let libFilter='all', libClient='', searchScope='all', libStageF='', libGoalF='', libTypeF='';
+let libFilter='all', libClient='', searchScope='all', libStageF='', libGoalF='', libTypeF='', libShowN=20, _libSig='';
 
 /* ---- 持久儲存 ---- */
 async function loadVideos(){
@@ -2007,9 +2008,18 @@ function renderLibrary(){
   else if(sortBy==='engage') list.sort((a,b)=>engRateOf(b)-engRateOf(a));
   const box=$('libList');
   if(!list.length){ box.innerHTML='<div class="empty-res">沒有符合的影片。</div>'; return; }
-  box.innerHTML=list.map(v=>vcard(v)).join('');
+  // v81：分頁，避免無限長拉。換搜尋/篩選/排序就回到前 20 支
+  const sig=[$('libSearch')?$('libSearch').value.trim():'',libFilter,libClient,libStageF,libGoalF,libTypeF,sortBy].join('|');
+  if(sig!==_libSig){ libShowN=20; _libSig=sig; }
+  const total=list.length;
+  const shown=list.slice(0,libShowN);
+  box.innerHTML=shown.map(v=>vcard(v)).join('')
+    +(total>libShowN?`<div style="text-align:center;margin:16px 0 4px"><button id="libMore" class="btn btn-ghost" style="padding:9px 22px">顯示更多（還有 ${total-libShowN} 支）</button><div class="tip" style="margin-top:6px">目前顯示 ${shown.length} / ${total} 支</div></div>`
+    :(total>20?`<div class="tip" style="text-align:center;margin-top:12px">已顯示全部 ${total} 支　<span class="vlink" id="libCollapse" style="cursor:pointer;text-decoration:underline">收合回前 20 支</span></div>`:''));
   box.querySelectorAll('.vdel').forEach(b=>b.onclick=()=>delVideo(b.dataset.id));
   box.querySelectorAll('.vsel').forEach(c=>c.onchange=updateLibSel);
+  if($('libMore'))$('libMore').onclick=function(){ libShowN+=20; renderLibrary(); };
+  if($('libCollapse'))$('libCollapse').onclick=function(){ libShowN=20; renderLibrary(); window.scrollTo({top:0,behavior:'smooth'}); };
   if($('libSelAll'))$('libSelAll').checked=false;
   updateLibSel();
 }
@@ -2485,7 +2495,9 @@ function renderManual(){
   <div class="form-card" style="border-left:3px solid var(--gold)">
     <div class="stitle" style="font-size:15px;color:var(--rouge)">更新紀錄 · 還沒做的</div>
     <p style="font-size:13px;color:var(--text);line-height:1.85;margin-top:8px">
-    <b>v80（這版）：</b>導覽列把「帳號管理／版面對照」移到「影片庫」後；快速篩選下拉加中文說明；影片庫展開後每項（爆紅歸因/客戶落地/文案/逐字稿/備註）都有單獨複製鍵＋複製全部；帳號卡加「看主頁」連結；輸入影片選帳號後顯示其策略摘要核對；再清掉殘留符號。<br>
+    <b>v82（這版）：</b>影片庫的全選／產生範本／對比／匯出／刪除＋勾選框改成「一直顯示」（不再藏在選取模式後面）；「輸入影片→連結到帳號」直接有帳號五件套＋報價填空欄位，填了自動存回帳號＋留快照，版面對照就有資料了。<br>
+    <b>v81：</b>影片庫加「分頁」：一次顯示前 20 支，下面「顯示更多」逐次多載，可「收合回前 20 支」，換篩選會回到頂端。存再多也不會無限長拉。<br>
+    <b>v80：</b>導覽列把「帳號管理／版面對照」移到「影片庫」後；快速篩選下拉加中文說明；影片庫展開後每項（爆紅歸因/客戶落地/文案/逐字稿/備註）都有單獨複製鍵＋複製全部；帳號卡加「看主頁」連結；輸入影片選帳號後顯示其策略摘要核對；再清掉殘留符號。<br>
     <b>v79：</b>標題列加「↻ 重新整理」鍵；雲端狀態改純文字（去外來符號）；影片庫加下拉快速篩選（階段/目標層/身份）＋搜尋框留給特殊詞；影片庫改 iPhone 式「選取」模式（按選取才出現勾選框，內含全選）。<br>
     <b>v78：</b>修好「編輯／+粉絲快照／+版面快照」點不動（模態框 class 用錯，已修）；影片庫新增「並排對比」（勾 2–4 支影片像帳號那樣並排比較，綠底＝共同點）。<br>
     <b>v77：</b>修好「版面對照」亂碼（欄位對齊＋跳脫修正）；影片庫卡片標籤改依商業閉環層級排序（目標→主題→素材→子題→形式→命根→製作）；拿掉多處別人的裝飾 emoji；強化「產生腳本範本」（帶入原職業/文案/逐字稿，先拆流量密碼再寫客戶腳本）；過濾提示文字避免假資料。<br>
@@ -3135,20 +3147,29 @@ function syncAccountJobFields(){
   const a=accounts.find(x=>x.id===($('f-account')?$('f-account').value:''));
   if($('f-jobTitle')) $('f-jobTitle').value=a?(a.jobTitle||''):'';
   if($('f-industry')) $('f-industry').value=a?(a.industry||''):'';
-  // v80：顯示此帳號的定位／人設／Bio／報價摘要，方便當下核對
-  const box=$('f-accSummary'); if(!box) return;
-  const p=a&&a.profile?a.profile:null;
-  if(!a || !p || !Object.values(p).some(v=>v)){ box.style.display='none'; box.innerHTML=''; return; }
-  const rows=[];
-  if(p.positioning) rows.push('<b>帳號定位</b>：'+esc(p.positioning));
-  if(p.persona) rows.push('<b>人設關鍵字</b>：'+esc(p.persona));
-  if(p.bio1||p.bio2||p.bio3) rows.push('<b>Bio</b>：'+esc([p.bio1,p.bio2,p.bio3].filter(Boolean).join(' / ')));
-  if(p.pinnedPosts) rows.push('<b>置頂貼文</b>：'+esc(p.pinnedPosts));
-  if(p.visualStyle) rows.push('<b>視覺風格</b>：'+esc(p.visualStyle));
-  if(p.priceShort||p.priceNote) rows.push('<b>報價</b>：'+esc([p.priceShort,p.priceNote].filter(Boolean).join('／')));
-  if(!rows.length){ box.style.display='none'; box.innerHTML=''; return; }
-  box.style.display='block';
-  box.innerHTML='<div style="font-weight:700;color:var(--rouge);margin-bottom:5px">此帳號策略摘要（核對用，完整內容在「帳號管理」改）</div>'+rows.map(r=>'<div style="margin:2px 0;line-height:1.6">'+r+'</div>').join('');
+  renderProfFields();
+}
+// v82：在輸入頁直接填「這個帳號」的五件套＋報價，存回帳號（單一來源）
+function renderProfFields(){
+  const wrap=$('f-profFields'); if(!wrap) return;
+  const a=accounts.find(x=>x.id===($('f-account')?$('f-account').value:''));
+  if(!a){ wrap.innerHTML='<div class="tip" style="margin:0">先在上面選一個帳號（或按「＋建檔」／貼帳號分析卡），才能填這個帳號的五件套。</div>'; return; }
+  const p=a.profile||{};
+  wrap.innerHTML='<div class="tip" style="margin:0 0 8px">填好任一格、點到別處就會自動存進帳號「'+esc(a.handle||'')+'」，並留一筆版面歷史快照。</div>'+ACC_PROFILE_FIELDS.map(function(f){
+    const k=f[0],label=f[1],big=f[2];
+    return big
+      ?'<div class="fld" style="margin:0 0 8px"><label style="font-size:12px">'+label+'</label><textarea data-pf="'+k+'" style="width:100%;min-height:44px;padding:8px 10px;border:1px solid var(--border);border-radius:8px;font-size:13px">'+esc(p[k]||'')+'</textarea></div>'
+      :'<div class="fld" style="margin:0 0 8px"><label style="font-size:12px">'+label+'</label><input data-pf="'+k+'" value="'+esc(p[k]||'')+'" style="width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:8px;font-size:13px"></div>';
+  }).join('');
+  wrap.querySelectorAll('[data-pf]').forEach(function(el){ el.addEventListener('change',writeProfFields); });
+}
+function writeProfFields(){
+  const a=accounts.find(x=>x.id===($('f-account')?$('f-account').value:'')); if(!a) return;
+  a.profile=a.profile||{};
+  $('f-profFields').querySelectorAll('[data-pf]').forEach(function(el){ a.profile[el.dataset.pf]=el.value.trim(); });
+  if(Object.values(a.profile).some(function(v){return v;})){ a.profileSnapshots=a.profileSnapshots||[]; const td=new Date().toISOString().slice(0,10); const snp=Object.assign({date:td},a.profile); const ls=a.profileSnapshots[a.profileSnapshots.length-1]; if(ls&&ls.date===td) a.profileSnapshots[a.profileSnapshots.length-1]=snp; else a.profileSnapshots.push(snp); }
+  a.updatedAt=Date.now(); saveAccounts(); if(typeof renderAccounts==='function') renderAccounts(); if(typeof renderComparePicker==='function') renderComparePicker();
+  toast('✓ 已存到帳號 '+(a.handle||''));
 }
 // v72：在影片頁改職稱/產業 → 寫回所選帳號（單一來源）
 function writeAccountJobFields(){
