@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="color-scheme" content="light only">
 <meta name="supported-color-schemes" content="light">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v76 (版本號僅留註解，不顯示於畫面)
+<!-- ATELIER 影片診斷工作台 · 內部版本 v77 (版本號僅留註解，不顯示於畫面)
+     v77 更新：①修「版面對照」亂碼——欄位改用 v76 新鍵、修掉把「—」當文字再跳脫的 bug，現在能正確並排比較。②挑選器的 ⚠ 改成「·無版面」文字。③拿掉卡片/區塊上別人的裝飾 emoji（腳本靈感、貼卡框、五件套、爆紅/客戶/CTA 標題）。④影片庫每張卡的標籤改依自媒體商業閉環層級排序：目標→主題→素材→子題→形式→命根→製作資訊。⑤強化「產生腳本範本」：帶入原帳號職業/完整文案/逐字稿，並要 AI 先做「流量密碼拆解＋對標帳號邏輯」再寫客戶腳本。⑥解析帳號卡時過濾提示/範例文字，避免把「（例：…）」這種說明存成假資料。
      v76 更新：帳號五件套＋報價正式進工具——①帳號編輯視窗新增可點開的「版面五件套＋報價」區（bio三行、置頂貼文/Reels前三、精選動態、視覺風格、發文頻率、內容混合、人設、定位、量級、報價四項＋備註、分析日期），可逐格手填。②兩個入口都能「貼帳號分析卡→自動填」：帳號管理頂部、影片輸入頁各一個（認@去重、寫進帳號、存版面歷史快照）。③帳號卡片顯示五件套/報價摘要。
      v75 更新：標題列（ATELIER 旁）加上可見版本號徽章，打開頁面就能用肉眼確認自己看到的是不是最新版（解決「不知道更新了沒」的困擾）。
      v74 更新：①完整文案／逐字稿各加「複製」鈕（文案複製含 Hashtag）。②影片庫：「全選」改「選擇全部」、刪除選取移到清單最下、新增「產生腳本範本」（選影片→複製提示詞讓 AI 幫客戶套寫腳本）。③影片庫卡片加顯示名稱。④雲端連不到不再噴紅字、安靜切本機模式。
@@ -561,7 +562,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v76</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v77</span>
   </div>
   <div class="stat" id="topstat">已存 <b id="vcount">0</b> 支影片</div>
 </div>
@@ -796,7 +797,7 @@ if('serviceWorker' in navigator){
     <div id="parseMsg" class="parse-msg"></div>
   </div>
   <details class="paste-card" style="margin-top:0;border:1px dashed var(--gold-soft)" id="accCardBoxInput">
-    <summary style="cursor:pointer;font-weight:700;color:var(--gold-dark);list-style:none;font-size:13px">📋 貼「帳號分析卡」→ 只更新帳號（不建影片）點開</summary>
+    <summary style="cursor:pointer;font-weight:700;color:var(--gold-dark);list-style:none;font-size:13px">貼「帳號分析卡」→ 只更新帳號（不建影片）點開</summary>
     <div class="paste-note" style="margin:8px 0">這裡是給「帳號五件套／報價」用的（跟上面影片歸類卡分開）。貼 <b>===ATELIER帳號分析卡===</b>，按一下依 @ 自動建檔／更新，存進帳號＋留版面歷史。要看或逐格改，到「帳號管理」點該帳號。</div>
     <textarea id="acc-card-paste-in" placeholder="貼整張帳號分析卡…" style="width:100%;min-height:90px;padding:9px 10px;border:1px solid var(--gold-soft);border-radius:8px;font-size:12px"></textarea>
     <button class="btn btn-go" id="acc-card-ingest-in" style="width:100%;margin-top:8px">⧉ 自動建檔／更新帳號</button>
@@ -1061,15 +1062,15 @@ if('serviceWorker' in navigator){
     <div class="analysis-block">
       <div class="ab-head"><span class="ab-en">SCRIPT STRATEGY</span>爆紅拆解 ＆ 客戶轉化（質化分析）</div>
       <div class="fld">
-        <label>🔥 爆紅歸因拆解 <span class="opt">選填</span></label>
+        <label>爆紅歸因拆解 <span class="opt">選填</span></label>
         <textarea id="contentWhy" class="v27hook" placeholder="這支為什麼會中？Hook 結構、視覺亮點、情緒節奏、文案手法…（Gemini 歸因分析會自動填這裡）"></textarea>
       </div>
       <div class="fld">
-        <label>🎯 客戶落地策略 <span class="opt">選填</span></label>
+        <label>客戶落地策略 <span class="opt">選填</span></label>
         <textarea id="contentApply" class="v27hook" placeholder="這個架構怎麼換成客戶的產業/產品/痛點來翻拍？（例：把『租屋陷阱』換成客戶的『醫美術後保養迷思』，沿用同一個 Hook 結構）"></textarea>
       </div>
       <div class="fld">
-        <label>📣 影片 CTA（行動呼籲） <span class="opt">選填</span></label>
+        <label>影片 CTA（行動呼籲） <span class="opt">選填</span></label>
         <select id="f-cta-type" class="v27sel">
           <option value="無">無 / 沒有明顯 CTA</option>
           <option value="留言領取型">留言領取型（留言關鍵字→自動私訊）</option>
@@ -1252,7 +1253,7 @@ if('serviceWorker' in navigator){
   </div>
 
   <details class="paste-card" style="margin-bottom:14px" id="accCardBox">
-    <summary style="cursor:pointer;font-weight:700;color:var(--rouge);list-style:none">📋 貼帳號分析卡 → 自動建檔／更新（點開）</summary>
+    <summary style="cursor:pointer;font-weight:700;color:var(--rouge);list-style:none">貼帳號分析卡 → 自動建檔／更新（點開）</summary>
     <div class="paste-note" style="margin:8px 0">把 Claude 用「帳號分析提示詞」吐出的 <b>===ATELIER帳號分析卡===</b> 整段貼進來，按一下，會依 @ 自動建檔或更新，五件套＋報價都存進去，並留一筆版面歷史。</div>
     <textarea id="acc-card-paste" placeholder="貼整張帳號分析卡…" style="width:100%;min-height:100px;padding:9px 10px;border:1px solid var(--gold-soft);border-radius:8px;font-size:12px"></textarea>
     <button class="btn btn-go" id="acc-card-ingest" style="width:100%;margin-top:8px">⧉ 自動建檔／更新帳號</button>
@@ -1701,7 +1702,7 @@ $('parseBtn').onclick=function(){
     else if(!h.startsWith('@')&&!h.startsWith('http')) h='@'+h.replace(/^@*/,'');
     let acc=accounts.find(a=>a.handle===h || (a.handle||'').toLowerCase()===h.toLowerCase());
     if(!acc){
-      acc={id:'acc_'+Date.now()+'_'+Math.random().toString(36).slice(2,7), platform:'IG', handle:h, displayName:F['顯示名稱']||'', types:[], domain:F['領域']||F['主打主題']||'', jobTitle:(F['職稱']||F['職位']||F['職稱類別']||F['職業']||'').trim(), industry:(F['產業']||F['行業']||'').trim(), relatedAccounts:[], note:'(由歸類卡自動建檔)', fanSnapshots:[], profileSnapshots:[], createdAt:Date.now(), updatedAt:Date.now()};
+      acc={id:'acc_'+Date.now()+'_'+Math.random().toString(36).slice(2,7), platform:'IG', handle:h, displayName:F['顯示名稱']||'', types:[], domain:F['領域']||F['主打主題']||'', jobTitle:(()=>{const x=(F['職稱']||F['職位']||F['職稱類別']||F['職業']||'').trim();return isHintText(x)?'':x;})(), industry:(()=>{const x=(F['產業']||F['行業']||'').trim();return isHintText(x)?'':x;})(), relatedAccounts:[], note:'(由歸類卡自動建檔)', fanSnapshots:[], profileSnapshots:[], createdAt:Date.now(), updatedAt:Date.now()};
       // 若 Gemini 有給身份分類，採用（但只限我們架構內的）
       const VALID_TYPES=['演員','歌手','主持人','通告藝人','模特兒','運動員','企業家','名人','KOL','KOC','個人IP','Youtuber','實況主','內容創作者','素人','品牌號','媒體節目號','機構號'];
       const cTyp=F['身份本質']||F['身份分類']||F['類別']||'';
@@ -1720,8 +1721,8 @@ $('parseBtn').onclick=function(){
       // ─── 帳號重複偵測 + 變化比對（雙向第一步：粉絲數）───
       let dirty=false;
       // 卡片這次有給職稱/產業、而帳號原本空白，順手補上並回報
-      const njt=(F['職稱']||F['職位']||F['職稱類別']||F['職業']||'').trim(); if(njt && !acc.jobTitle){ acc.jobTitle=njt; dirty=true; got.push('帳號補上職稱:'+njt); }
-      const nind=(F['產業']||F['行業']||'').trim(); if(nind && !acc.industry){ acc.industry=nind; dirty=true; got.push('帳號補上產業:'+nind); }
+      const njt=(F['職稱']||F['職位']||F['職稱類別']||F['職業']||'').trim(); if(njt && !isHintText(njt) && !acc.jobTitle){ acc.jobTitle=njt; dirty=true; got.push('帳號補上職稱:'+njt); }
+      const nind=(F['產業']||F['行業']||'').trim(); if(nind && !isHintText(nind) && !acc.industry){ acc.industry=nind; dirty=true; got.push('帳號補上產業:'+nind); }
       const vidCount=videos.filter(x=>x.accountId===acc.id).length;
       if(!acc.fanSnapshots) acc.fanSnapshots=[];
       const lastFan=acc.fanSnapshots.length?acc.fanSnapshots[acc.fanSnapshots.length-1]:null;
@@ -1992,14 +1993,15 @@ function vcard(v){
   let path='';
   if(v.themeId) path+=`<span class="gtag gt-${v.stage}">${v.stage}</span>`;
   const parts=[];
+  // 依自媒體商業閉環層級排序：合作目標(層0) → 主題(L2) → 素材(L4) → 子題(L5) → 形式(L6) → 流量觸發/命根(L7) → 製作資訊
+  if(v.goal) parts.push('<span class="lab">目標</span> '+esc(v.goal));
   if(v.themeName) parts.push('<span class="lab">主題</span> '+esc(v.themeId+' '+v.themeName));
   if(v.matName) parts.push('<span class="lab">素材</span> '+esc(v.matName));
   if(v.sub) parts.push('<span class="lab">子題</span> '+esc(v.sub));
-  if(v.trig) parts.push('<span class="lab">命根</span> '+esc(v.trig));
   if(v.form) parts.push('<span class="lab">形式</span> '+esc(v.form));
+  if(v.trig) parts.push('<span class="lab">命根</span> '+esc(v.trig));
   if(v.platform) parts.push('<span class="lab">載體</span> '+esc(v.platform));
   if(v.prodStatus) parts.push('<span class="lab">狀態</span> '+esc(v.prodStatus));
-  if(v.goal) parts.push('<span class="lab">目標</span> '+esc(v.goal));
   if(v.client) parts.push('<span class="lab">來源</span> '+esc(v.client));
   return `<div class="vcard t-${tc.k}">
     <div class="vtop">
@@ -2014,7 +2016,7 @@ function vcard(v){
     ${(()=>{const n=x=>parseFloat(x)||0;const vw=n(v.views);const sr=vw?(((n(v.reposts)+n(v.shares))/vw)*100):null;const m=[];if(v.views)m.push('觀看 '+(+v.views).toLocaleString());if(v.likes)m.push('讚 '+(+v.likes).toLocaleString());if(v.saves)m.push('收藏 '+(+v.saves).toLocaleString());if(sr!=null)m.push('分享率 '+sr.toFixed(2)+'%');return m.length?`<div class="vmeta" style="margin-top:6px;font-weight:700;color:var(--rouge)">${m.join('　')}</div>`:'';})()}
     ${v.gap?`<div class="vgap">待優化缺口</div>`:''}
     ${v.hook?`<div class="vmeta" style="margin-top:5px;color:var(--gold-dark)"><span class="lab">Hook</span> ${esc(v.hook)}</div>`:''}
-    ${(v.why||v.apply||v.caption||v.transcript||v.note)?`<details class="vstrat"><summary>📋 腳本靈感＋備註（爆紅拆解 · 客戶轉化 · 文案 · 逐字稿 · 備註）</summary>${v.why?`<div class="vstrat-row"><span class="vs-tag vs-why">爆紅歸因</span><span>${esc(v.why)}</span></div>`:''}${v.apply?`<div class="vstrat-row"><span class="vs-tag vs-apply">客戶落地</span><span>${esc(v.apply)}</span></div>`:''}${v.caption?`<div class="vstrat-row"><span class="vs-tag vs-apply">完整文案</span><span>${esc(v.caption)}</span></div>`:''}${v.transcript?`<div class="vstrat-row"><span class="vs-tag vs-why">逐字稿</span><span style="white-space:pre-wrap">${esc(v.transcript)}</span></div>`:''}${v.note?`<div class="vstrat-row"><span class="vs-tag vs-apply">備註</span><span style="white-space:pre-wrap">${esc(v.note)}</span></div>`:''}</details>`:''}
+    ${(v.why||v.apply||v.caption||v.transcript||v.note)?`<details class="vstrat"><summary>腳本靈感＋備註（爆紅拆解 · 客戶轉化 · 文案 · 逐字稿 · 備註）</summary>${v.why?`<div class="vstrat-row"><span class="vs-tag vs-why">爆紅歸因</span><span>${esc(v.why)}</span></div>`:''}${v.apply?`<div class="vstrat-row"><span class="vs-tag vs-apply">客戶落地</span><span>${esc(v.apply)}</span></div>`:''}${v.caption?`<div class="vstrat-row"><span class="vs-tag vs-apply">完整文案</span><span>${esc(v.caption)}</span></div>`:''}${v.transcript?`<div class="vstrat-row"><span class="vs-tag vs-why">逐字稿</span><span style="white-space:pre-wrap">${esc(v.transcript)}</span></div>`:''}${v.note?`<div class="vstrat-row"><span class="vs-tag vs-apply">備註</span><span style="white-space:pre-wrap">${esc(v.note)}</span></div>`:''}</details>`:''}
     <div class="vmeta" style="margin-top:8px;display:flex;gap:14px;align-items:center;flex-wrap:wrap">
       ${v.logdate?`<span style="font-size:11px;color:var(--gold-dark)">建檔 ${esc(v.logdate)}</span>`:''}
       ${v.url?`<a class="vlink" href="${esc(v.url)}" target="_blank">↗ 開啟影片</a>`:''}
@@ -2084,25 +2086,29 @@ function buildTemplatePrompt(){
     if(v.engrate)perf.push('互動率'+v.engrate+'%');
     if(v.shares&&vw)perf.push('分享率'+rtp(v.shares,vw));
     if(v.saves&&vw)perf.push('收藏率'+rtp(v.saves,vw));
+    var _a=accounts.find(x=>x.id===v.accountId)||{};
+    var who=[(v.accountHandle||_a.handle||''),(_a.jobTitle||''),(_a.industry||'')].filter(Boolean).join('／');
+    var cut=function(s,n){ s=(s||'').trim(); return s.length>n?s.slice(0,n)+'…(截斷)':s; };
     return '('+(i+1)+') 標題：'+(v.title||'(未命名)')+'\n'
-      +'    漏斗層：'+(v.stage||'—')+'｜主題：'+((v.themeId||'')+' '+(v.themeName||'')).trim()+'\n'
+      +(who?'    原帳號／職業：'+who+'\n':'')
+      +'    漏斗層：'+(v.stage||'—')+'｜主題：'+((v.themeId||'')+' '+(v.themeName||'')).trim()+'｜形式：'+(v.form||'—')+'\n'
       +'    Hook：'+(v.hook||'（未填）')+'\n'
       +'    流量觸發命根：'+(v.trig||'（未填）')+'\n'
       +'    爆紅歸因：'+(v.why||'（未填）')+'\n'
       +'    客戶落地：'+(v.apply||'（未填）')+'\n'
+      +(v.caption?'    完整文案：'+cut(v.caption,400)+'\n':'')
+      +(v.transcript?'    逐字稿：'+cut(v.transcript,700)+'\n':'')
       +'    成效：'+(perf.length?perf.join('／'):'（未填數據）');
   }).join('\n\n');
   var goal=layers.length?layers.join('、'):'（請依下方影片的漏斗層）';
-  var p='【任務】我手上有 '+picked.length+' 支已驗證成效的短影音拆解（如下）。請依這套成功邏輯，幫我的「客戶」寫出全新的腳本——不是抄，是沿用有效的 Hook 結構與流量觸發邏輯，換成客戶的職業情境。\n\n'
+  var p='【任務】我是短影音代理營運。下面是我精選的 '+picked.length+' 支「同一個目標層、已驗證高成效」的對標影片拆解。請先讀懂它們為什麼會紅，再依同一套邏輯幫我的客戶寫全新腳本——不是抄，是把有效的結構換成客戶的職業情境。\n\n'
     +'【我的客戶】（請填）\n- 職業／職位：____（例：臨床心理師、牙醫、健身教練）\n- 產業：____\n- 想推的服務／主打：____\n- 目標漏斗層：'+goal+'\n\n'
-    +'【成功案例拆解】\n'+lines+'\n\n'
-    +'【請你產出】\n'
-    +'1. 針對「我的客戶」的職業，寫 3 支全新腳本，每支給：① Hook 口播（前 3 秒）② 腳本大綱（分鏡／重點）③ 結尾 CTA。\n'
-    +'2. 每支標明沿用了上面哪一支的什麼爆紅邏輯（Hook 型／流量觸發命根），並說明這個邏輯換到客戶職業為什麼一樣成立。\n'
-    +'3. 內容換成客戶真實職業的語境、案例、痛點與用語，不要殘留原案例的職業。\n'
-    +'4. 注意目標漏斗層的任務比例（G1–G2 偏拉新破題、G3 偏社交擴散／思想共鳴、G4 偏實用儲存、G5 偏轉化），讓腳本符合該層目的。\n'
-    +'5. 職業權重很重要：不同職業的可信度來源、舉例方式、合規禁忌都不同，請依客戶職業調整講法與比例。\n\n'
-    +'【規則】用專家口吻直接給腳本，不要反問。';
+    +'【對標影片拆解】\n'+lines+'\n\n'
+    +'【請你依序產出三段】\n'
+    +'STEP 1 流量密碼拆解表：橫向比較上面這幾支的共同點——它們的 Hook 型態、流量觸發命根、開頭 3 秒手法、敘事結構、節奏、CTA 收法，找出「為什麼會紅」的可複製公式（用表格或條列）。\n'
+    +'STEP 2 對標帳號邏輯：這些帳號／職業是靠什麼建立信任與吸粉？哪些是「換職業也通用」的邏輯、哪些是「該職業專屬」不能照搬的？\n'
+    +'STEP 3 客戶腳本：用上面的公式，為「我的客戶」職業寫 3 支全新腳本，每支給 ① Hook 口播（前 3 秒）② 腳本大綱（分鏡／重點／秒數）③ 完整文案＋Hashtag ④ 結尾 CTA。每支要標明：沿用了第幾支的什麼爆紅邏輯、為什麼換到客戶職業一樣成立。\n\n'
+    +'【重點規則】\n- 內容換成客戶真實職業的語境、案例、痛點、合規用語，不要殘留原職業。\n- 依目標層調比例（G1–G2 拉新破題、G3 社交擴散／思想共鳴、G4 實用儲存、G5 轉化）。\n- 職業權重：不同職業的可信度來源、舉例、禁忌都不同，請據此調整講法。\n- 用專家口吻直接給，不要反問。';
   copyVal(p,'腳本範本提示詞（'+picked.length+' 支）');
 }
 if($('bulkTemplate')) $('bulkTemplate').onclick=buildTemplatePrompt;
@@ -2370,7 +2376,8 @@ function renderManual(){
   <div class="form-card" style="border-left:3px solid var(--gold)">
     <div class="stitle" style="font-size:15px;color:var(--rouge)">更新紀錄 · 還沒做的</div>
     <p style="font-size:13px;color:var(--text);line-height:1.85;margin-top:8px">
-    <b>v76（這版）：</b>帳號五件套＋報價正式做進工具：帳號編輯視窗多了「版面五件套＋報價」區（可逐格手填），而且帳號管理頂部＋影片輸入頁各有一個「貼帳號分析卡→自動填入」入口（認 @ 自動建檔/更新、存版面歷史）。帳號卡片也會顯示報價/置頂/Bio 摘要。<br>
+    <b>v77（這版）：</b>修好「版面對照」亂碼（欄位對齊＋跳脫修正）；影片庫卡片標籤改依商業閉環層級排序（目標→主題→素材→子題→形式→命根→製作）；拿掉多處別人的裝飾 emoji；強化「產生腳本範本」（帶入原職業/文案/逐字稿，先拆流量密碼再寫客戶腳本）；過濾提示文字避免假資料。<br>
+    <b>v76：</b>帳號五件套＋報價正式做進工具：帳號編輯視窗多了「版面五件套＋報價」區（可逐格手填），而且帳號管理頂部＋影片輸入頁各有一個「貼帳號分析卡→自動填入」入口（認 @ 自動建檔/更新、存版面歷史）。帳號卡片也會顯示報價/置頂/Bio 摘要。<br>
     <b>v75：</b>標題列右側加上版本號徽章（例如「v75」），方便你一眼確認自己打開的是不是最新版——以後更新後只要看那個號碼有沒有跟著變，就知道有沒有成功換版。<br>
     <b>v74：</b>① 影片表單的「完整文案」「逐字稿」各加了「⧉ 複製」鈕（完整文案的複製會連同你填的 Hashtag 一起複製，跟對方原貼文一致）。② 影片庫工具列：「全選」改成「選擇全部」、可逐支勾選＝單選；「刪除選取」移到清單最下面避免誤按；新增「⧉ 產生腳本範本」——勾幾支影片→複製一段提示詞，丟給 AI 就能照這些成功影片的邏輯幫你的客戶套寫新腳本（自動帶入它們的 Hook／流量觸發／爆紅歸因／成效，並讓你填客戶職業）。③ 影片庫卡片帳號列加「顯示名稱」。④ 雲端連不到時不再跳紅色錯誤，安靜切「本機模式」（資料一樣存得住；上 GitHub 用真網址才會連雲端）。<br>
     <b>怎麼把存的影片變成客戶腳本（重點）：</b>影片庫→勾同一個目標層（例如都是 G3）的 5–10 支→按「產生腳本範本」→貼給 AI→在提示詞頂端填客戶的職業／產業。AI 會沿用這些影片有效的 Hook 與流量邏輯、換成客戶職業情境寫新腳本。職業會影響舉例、可信度來源與比例，所以一定要填。<br>
@@ -2611,12 +2618,22 @@ const ACC_PROFILE_FIELDS=[
   ['priceShort','報價-短影音單支'],['pricePost','報價-貼文或限動'],['priceMonthly','報價-包月或業配合作'],
   ['priceBarter','是否接互惠'],['priceNote','報價備註',1],['profileDate','分析日期']
 ];
+// 判斷一個值是不是「提示/範例文字」而非真資料
+function isHintText(v){
+  if(!v) return true;
+  v=v.trim();
+  if(/^[（(].*[）)]$/.test(v)) return true;            // 整段被括號包住＝提示
+  if(/例[：:]/.test(v)) return true;                    // 含「例：」
+  if(/判不出|從\s*18\s*種|純數字|挑\s*1|這欄要|大類/.test(v)) return true;
+  if(/^[（(]?(待補|待詢|無|—|-|未填|N\/A|n\/a)[）)]?$/i.test(v)) return true;
+  return false;
+}
 // 把「欄位：值」逐行拆成物件（給帳號分析卡用）
 function parseCardFields(raw){
   const F={};
   (raw||'').split(/\r?\n/).forEach(line=>{
     const m=line.match(/^\s*[*\-•]?\s*\d{0,2}[a-z]?[.、]?\s*([^：:]{1,16})\s*[：:]\s*(.+?)\s*$/);
-    if(m){ let k=m[1].trim().replace(/^@/,''); let val=m[2].trim(); if(val && !/^[（(]?(待補|待詢|無|—|-)[）)]?$/.test(val)) F[k]=val; }
+    if(m){ let k=m[1].trim().replace(/^@/,''); let val=m[2].trim(); if(!isHintText(val)) F[k]=val; }
   });
   return F;
 }
@@ -2705,7 +2722,7 @@ function openAccountModal(a){
         <div class="tip">處理「律師個人 IP + 事務所品牌號」這種一人多帳號矩陣</div>
       </div>
       <details class="spec-box" style="margin-bottom:14px">
-        <summary style="cursor:pointer;font-weight:700;color:var(--rouge);padding:11px 13px;list-style:none;font-size:14px">📋 帳號版面五件套 ＋ 報價（點開）</summary>
+        <summary style="cursor:pointer;font-weight:700;color:var(--rouge);padding:11px 13px;list-style:none;font-size:14px">帳號版面五件套 ＋ 報價（點開）</summary>
         <div style="padding:0 13px 13px">
           <div class="paste-note" style="margin-bottom:6px">把 Claude 用「帳號分析提示詞」吐出的 <b>===ATELIER帳號分析卡===</b> 整段貼進來，按「自動填入」會把下面欄位一次填好；也可以逐格自己改。</div>
           <textarea id="ma-cardPaste" placeholder="貼整張帳號分析卡…" style="width:100%;min-height:90px;padding:9px 10px;border:1px solid var(--gold-soft);border-radius:8px;font-size:12px"></textarea>
@@ -2889,7 +2906,7 @@ function renderComparePicker(){
   box.innerHTML=accounts.map(a=>{
     const sel=cmpSelected.has(a.id);
     const hasProf=(a.profileSnapshots||[]).length>0;
-    return `<label data-acc-id="${a.id}" style="padding:8px 12px;border:1.5px solid ${sel?'var(--rouge)':'var(--border)'};border-radius:18px;cursor:pointer;font-size:13px;background:${sel?'var(--rouge)':'#fff'};color:${sel?'#fff':hasProf?'var(--ink)':'#aaa'};opacity:${hasProf?1:0.55}" title="${hasProf?'有版面快照':'沒有版面快照'}"><input type="checkbox" ${sel?'checked':''} style="display:none">${esc(a.handle||'?')}${hasProf?'':' ⚠'}</label>`;
+    return `<label data-acc-id="${a.id}" style="padding:8px 12px;border:1.5px solid ${sel?'var(--rouge)':'var(--border)'};border-radius:18px;cursor:pointer;font-size:13px;background:${sel?'var(--rouge)':'#fff'};color:${sel?'#fff':hasProf?'var(--ink)':'#aaa'};opacity:${hasProf?1:0.55}" title="${hasProf?'有版面快照':'沒有版面快照'}"><input type="checkbox" ${sel?'checked':''} style="display:none">${esc(a.handle||'?')}${hasProf?'':' ·無版面'}</label>`;
   }).join('');
   box.querySelectorAll('label[data-acc-id]').forEach(lab=>{
     lab.onclick=(e)=>{
@@ -2913,19 +2930,24 @@ function runCompare(){
     return {acc:a, prof:list[0]||null};
   });
   const fields=[
-    {key:'bioL1', label:'Bio 第 1 行'},
-    {key:'bioL2', label:'Bio 第 2 行'},
-    {key:'bioL3', label:'Bio 第 3 行'},
-    {key:'bioCTA', label:'Bio CTA'},
-    {key:'pin1', label:'置頂 1'},
-    {key:'pin2', label:'置頂 2'},
-    {key:'pin3', label:'置頂 3'},
-    {key:'highlights', label:'Highlight 分類'},
+    {key:'fanTier', label:'粉絲量級'},
+    {key:'bio1', old:'bioL1', label:'Bio 第 1 行'},
+    {key:'bio2', old:'bioL2', label:'Bio 第 2 行'},
+    {key:'bio3', old:'bioL3', label:'Bio 第 3 行'},
+    {key:'bioCTA', label:'Bio 連結 / CTA'},
+    {key:'pinnedPosts', old:'pin1', label:'置頂貼文前三'},
+    {key:'pinnedReels', label:'置頂 Reels 前三'},
+    {key:'highlights', label:'精選動態分類'},
     {key:'visualStyle', label:'視覺風格'},
-    {key:'postFreq', label:'發文頻率/週'},
-    {key:'mixShort', label:'短影音占比%'},
-    {key:'mixCarousel', label:'輪播占比%'},
-    {key:'mixSingle', label:'單圖占比%'}
+    {key:'postFreq', label:'發文頻率'},
+    {key:'contentMix', label:'內容混合比例'},
+    {key:'persona', label:'人設關鍵字'},
+    {key:'positioning', label:'帳號定位'},
+    {key:'priceShort', label:'報價-短影音'},
+    {key:'pricePost', label:'報價-貼文/限動'},
+    {key:'priceMonthly', label:'報價-包月/業配'},
+    {key:'priceBarter', label:'接互惠?'},
+    {key:'priceNote', label:'報價備註'}
   ];
   let html='<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:13px;background:#fff"><thead><tr><th style="text-align:left;padding:10px 12px;border-bottom:2px solid var(--rouge);font-family:\'Cormorant Garamond\',serif;color:var(--rouge);letter-spacing:1px;font-size:11px">FIELD</th>';
   profs.forEach(p=>{
@@ -2935,13 +2957,14 @@ function runCompare(){
   html+='</tr></thead><tbody>';
   fields.forEach((field,fi)=>{
     html+=`<tr style="background:${fi%2?'var(--warm)':'#fff'}"><td style="padding:9px 12px;font-weight:700;color:var(--gold-dark);font-size:12px;letter-spacing:.5px;border-right:1px solid var(--border);vertical-align:top">${field.label}</td>`;
-    const values=profs.map(p=>(p.prof&&p.prof[field.key])||'');
+    const values=profs.map(p=>{ const pr=p.prof||{}; return (pr[field.key]||(field.old?pr[field.old]:'')||''); });
     const allEmpty=values.every(v=>!v);
     const allSame=values.length>1 && values.every(v=>v===values[0]) && values[0];
     profs.forEach((p,pi)=>{
-      const v=values[pi]||'<span style="color:#bbb">—</span>';
+      const raw=values[pi];
+      const cell = raw ? esc(raw) : '<span style="color:#bbb">—</span>';
       const bg=allSame&&!allEmpty?'background:#F0F5EC;':'';
-      html+=`<td style="padding:9px 12px;vertical-align:top;border-right:1px solid var(--border);white-space:pre-wrap;${bg}">${typeof v==='string'?esc(v):v}</td>`;
+      html+=`<td style="padding:9px 12px;vertical-align:top;border-right:1px solid var(--border);white-space:pre-wrap;${bg}">${cell}</td>`;
     });
     html+='</tr>';
   });
