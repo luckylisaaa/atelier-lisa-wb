@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="color-scheme" content="light only">
 <meta name="supported-color-schemes" content="light">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v123 (版本號僅留註解，不顯示於畫面)
+<!-- ATELIER 影片診斷工作台 · 內部版本 v124 (版本號僅留註解，不顯示於畫面)
+     v124 更新（智慧貼上帳號：覆蓋/保留歷史可選＋貼後接回輸入頁）：①主框 parseBtn／bulkBtn 偵測到帳號段時，先問「要不要同步」再問「保留歷史(新增一筆版面快照可前後對比)／覆蓋(同日取代)」，傳 opt.mode 給 ingestAccountCard。②貼後自動 populateAccountSelect＋選好⑥連結到帳號＋syncAccountJobFields＋展開帳號版面解析(f-profBox)，欄位立刻填出來(解決卡A貼完面板空白、感覺沒進去)；收集盤點燈沿用 lightFilingBoard。③ingestAccountCard 快照：history 一律新增一筆(date 帶時:分、可同日多版對比)，overwrite/預設同日取代。
      v123 更新（整合提示詞輸出三檔規格）：PROMPT_C 最後段改寫成「三份卡各自做成獨立可下載 .txt＋固定檔名」：卡B_單一影片歸類卡_創作者_主題.txt(只影片區塊)、卡C_帳號分析卡_創作者.txt(只帳號區塊、不接主題、已做過可省檔)、卡A_影片x帳號合一卡_創作者_主題.txt(影片區塊+帳號區塊完整原樣+3-5句小結，餵智慧貼上一次填兩邊)；明訂兩個卡頭標記須完整獨立成行不黏字、卡A 兩區塊不可只放摘要；舊「歸類卡_創作者_主題.txt 單檔備份」指示改為指向此三檔規格。
      v122 更新（智慧貼上分流＋影片庫複製鍵＋帳號刪除防呆）：①主框 parseBtn／bulkBtn 升級成智慧分流：同段文字含 歸類卡段(影片) 與/或 帳號分析卡段，各自路由——影片進影片庫、帳號段先 confirm 再 ingestAccountCard 同步進帳號管理(認@去重、只加版面快照不覆蓋)；只有影片段照舊向下相容；卡頭等號放寬 ={2,}；PROMPT_C 卡A 定義改成『雙區塊合一』(影片段+帳號段+小結)。②影片庫每張卡外層加『複製這支』、工具列加『複製選取』(不必點開腳本)。③帳號刪除改成需輸入『刪除』二字(對齊影片庫)。
      v121 更新（流程修正＋分批協議＋收集盤修）：①建檔提示詞(PROMPT_0)輸入改成 2連結+6截圖(帳號頁/貼文九宮格/影片九宮格/主-封面含觀看/主-數據讚留言轉發分享/主-文案)，並把「主角」正名為「主要」。②PROMPT_0 與 PROMPT_A 開頭都加『素材清單＋分批協議』：先報清單→分批傳→AI 每批只回報收到/缺漏並停下→等說「開始/完成」或收齊才一次輸出(解決帳號分析提早跑、漏片1-9)。③PROMPT_A 數據規則：片N只給數據+文案不另給封面、觀看一律從九宮格抓、數據排只有讚/留言/轉發/分享無瀏覽、同一貼N連續多張=同篇文案接續、貼N與片N數字略差屬擷取時間差兩筆都留。④修帳號建檔收集盤：未指定/通用盤不再載入也不寫入殘留狀態，避免空白頁顯示 13/13 假通關。
@@ -680,7 +681,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v123</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v124</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -2064,7 +2065,7 @@ function extractTag(raw,tag){
   if(!m) return '';
   return m[1].replace(/^[：:\s]+/,'').trim();
 }
-$('parseBtn').onclick=function(){
+$('parseBtn').onclick=async function(){
   const rawAll=$('pasteBox').value;
   if(!rawAll.trim()){ toast('請先貼上歸類卡'); return; }
   // 智慧分流：同一段文字裡若含「帳號分析卡」段，先同步更新帳號（卡A＝影片＋帳號合一）
@@ -2072,8 +2073,10 @@ $('parseBtn').onclick=function(){
   var vidM=rawAll.match(/={2,}\s*ATELIER\s*歸類卡\s*={2,}([\s\S]*?)={2,}\s*結束\s*={2,}/);
   if(accM){
     var hM=accM[1].match(/@?帳號\s*[：:]\s*(\S+)/); var hn=hM?(hM[1].startsWith('@')?hM[1]:'@'+hM[1]):'這個帳號';
-    if(confirm('偵測到「帳號分析段」，要一起更新帳號「'+hn+'」嗎？\n（影片照常建檔；帳號只會新增一筆版面快照、不會覆蓋舊資料）')){
-      try{ ingestAccountCard('===ATELIER帳號分析卡==='+accM[1]+'===卡片結束==='); }catch(e){}
+    if(confirm('偵測到「帳號分析段」，要一起同步帳號「'+hn+'」嗎？\n按「確定」＝同步到帳號管理；按「取消」＝只建影片、不動帳號')){
+      var _keep=confirm('要怎麼存「'+hn+'」？\n\n按「確定」＝保留歷史：新增一筆版面快照，留著舊版做前後對比（不刪舊的）\n按「取消」＝覆蓋：用這張取代今天的版本、不另外多留一筆');
+      var _acc=null; try{ _acc=await ingestAccountCard('===ATELIER帳號分析卡==='+accM[1]+'===卡片結束===',{mode:_keep?'history':'overwrite'}); }catch(e){}
+      if(_acc){ try{ populateAccountSelect(); if($('f-account')) $('f-account').value=_acc.id; if(typeof syncAccountJobFields==='function') syncAccountJobFields(); if($('f-profBox')) $('f-profBox').open=true; }catch(e){} }
     }
     if(!vidM){ return; } // 只有帳號段（卡C）→ 帳號已處理、沒有影片可填
   }
@@ -2370,8 +2373,10 @@ $('bulkBtn').onclick=async function(){
   var _accM=raw.match(/={2,}\s*ATELIER\s*帳號分析卡\s*={2,}([\s\S]*?)={2,}\s*卡片結束\s*={2,}/);
   if(_accM){
     var _hM=_accM[1].match(/@?帳號\s*[：:]\s*(\S+)/); var _hn=_hM?(_hM[1].startsWith('@')?_hM[1]:'@'+_hM[1]):'這個帳號';
-    if(confirm('偵測到「帳號分析段」，要一起更新帳號「'+_hn+'」嗎？\n（影片照常批次建檔；帳號只會新增一筆版面快照、不會覆蓋舊資料）')){
-      try{ await ingestAccountCard('===ATELIER帳號分析卡==='+_accM[1]+'===卡片結束==='); }catch(e){}
+    if(confirm('偵測到「帳號分析段」，要一起同步帳號「'+_hn+'」嗎？\n按「確定」＝同步到帳號管理；按「取消」＝只建影片、不動帳號')){
+      var _keep=confirm('要怎麼存「'+_hn+'」？\n\n按「確定」＝保留歷史：新增一筆版面快照，留著舊版做前後對比（不刪舊的）\n按「取消」＝覆蓋：用這張取代今天的版本、不另外多留一筆');
+      var _acc=null; try{ _acc=await ingestAccountCard('===ATELIER帳號分析卡==='+_accM[1]+'===卡片結束===',{mode:_keep?'history':'overwrite'}); }catch(e){}
+      if(_acc){ try{ populateAccountSelect(); if($('f-account')) $('f-account').value=_acc.id; if(typeof syncAccountJobFields==='function') syncAccountJobFields(); if($('f-profBox')) $('f-profBox').open=true; }catch(e){} }
     }
   }
   // 以「結束」切成一塊塊，每塊含 [標記]...歸類卡
@@ -2976,7 +2981,8 @@ function renderManual(){
   <div class="form-card" style="border-left:3px solid var(--gold)">
     <div class="stitle" style="font-size:15px;color:var(--rouge)">更新紀錄 · 還沒做的</div>
     <p style="font-size:13px;color:var(--text);line-height:1.85;margin-top:8px">
-    <b>v123（這版）：</b>把<b>整合那步的提示詞</b>輸出規格寫死：AI 會給你<b>三個各自獨立、可下載的 .txt</b>，檔名一眼分得出——<b>卡B_單一影片歸類卡_創作者_主題.txt</b>（只放影片、貼影片庫）、<b>卡C_帳號分析卡_創作者.txt</b>（只放帳號、貼帳號管理，帳號層級不接主題）、<b>卡A_影片x帳號合一卡_創作者_主題.txt</b>（影片段＋帳號段＋小結合一，餵主框「智慧貼上」一次填滿影片庫＋帳號管理）。並要求兩個卡頭標記完整、各自獨立成行、前面不黏字，卡A 兩段都要完整原樣不只放摘要。<br>
+    <b>v124（這版）：</b>修你回報的卡A 帳號卡點。①貼卡A 偵測到帳號段時，現在會<b>連問兩句</b>：先問「要不要同步帳號」，再讓你選「<b>保留歷史</b>（多留一筆版面快照、可跟舊版前後對比）」還是「<b>覆蓋</b>（取代今天的版本、不多留）」——想對比或想覆蓋都行。②貼完會<b>自動幫你選好下方⑥的帳號、把帳號版面解析填好並展開</b>，不會再像之前面板空白、以為沒進去；收集盤也會跟著點亮。③同一個帳號同一天想留兩個版本對比也行了（保留歷史每次都新增一筆、帶到分鐘）。<br>
+    <b>v123：</b>把<b>整合那步的提示詞</b>輸出規格寫死：AI 會給你<b>三個各自獨立、可下載的 .txt</b>，檔名一眼分得出——<b>卡B_單一影片歸類卡_創作者_主題.txt</b>（只放影片、貼影片庫）、<b>卡C_帳號分析卡_創作者.txt</b>（只放帳號、貼帳號管理，帳號層級不接主題）、<b>卡A_影片x帳號合一卡_創作者_主題.txt</b>（影片段＋帳號段＋小結合一，餵主框「智慧貼上」一次填滿影片庫＋帳號管理）。並要求兩個卡頭標記完整、各自獨立成行、前面不黏字，卡A 兩段都要完整原樣不只放摘要。<br>
     <b>v122：</b>①<b>智慧貼上</b>：主框貼一次就自動分流——你貼的卡裡若同時有「影片歸類卡」段和「帳號分析卡」段（卡A），影片會進影片庫、帳號那段會<b>先問你一句、再同步更新帳號管理</b>（只加一筆版面快照、不覆蓋舊資料）；只貼影片或只貼帳號照舊。提示詞也改好了，卡A 會吐成「影片段＋帳號段」合一，解決你之前「貼了帳號欄位填不滿」。②<b>影片庫複製鍵搬到外面</b>：每張卡上直接有「⧉ 複製這支」，上排也有「⧉ 複製選取」，不用再點開腳本。③<b>帳號刪除加防呆</b>：跟影片庫一樣要<b>打「刪除」二字</b>才會刪，不會手滑誤刪。<br>
     <b>v121：</b>修了你回報的兩件事＋對齊新流程。①<b>建檔</b>現在要的是 <b>2 個連結＋6 張截圖</b>（帳號頁、貼文九宮格、影片九宮格，加主要影片的封面／數據／文案），「主角」改叫「<b>主要</b>」。②<b>建檔與帳號分析</b>提示詞開頭都加了<b>分批協議</b>：你先貼一行素材清單→分批丟圖→它每批只回「收到哪些、還缺哪些」並停住，等你說「<b>開始</b>」或「完成」才一次出結果（這樣它不會在你還沒傳完就先跑）。③帳號分析<b>數據判讀</b>講清楚：片N 只給數據＋文案、<b>觀看數去九宮格看</b>、數據那排只有讚／留言／轉發／分享（<b>沒有瀏覽</b>）、同一貼N 連續多張＝同一篇文案、貼N 與片N 數字略差屬正常擷取時間差。④<b>收集盤假滿燈</b>修掉了：「未指定／通用」那盤不再記舊紀錄，空白頁就不會再顯示 13/13。<br>
     <b>v120：</b>把帳號分析的「逐格盤點」升級了。每一格不再只記代號／主題／數字／日期，現在會抓 <b>標題／封面文案＋完整貼文文案＋用了什麼戰術</b>（開頭鉤子怎麼下／骨子裡靠哪個爆點／用什麼手法：對比·清單·故事·數據·情緒·權威／結尾CTA原句），再加數字（畫面有圖示沒數字＝0）＋hashtag＋日期。重點防呆：逐格盤點是<b>看截圖</b>的盤點，凡是要看影片本體才知道的（秒數、逐字稿、節奏）一律不寫、不要自己編——那些留給「主」那支送 Gemini 時才做。最後總結也多一句「他最常用哪幾招戰術」。<br>
@@ -3331,15 +3337,20 @@ async function ingestAccountCard(raw, opt){
     if(!last){ acc.fanSnapshots.push({date:today,count:c.fanCount,note:'帳號分析卡'}); fanMsg='，粉絲 '+c.fanCount.toLocaleString(); }
     else if(c.fanCount!==lastN){ if(last.date===today) last.count=c.fanCount; else acc.fanSnapshots.push({date:today,count:c.fanCount,note:'帳號分析卡'}); const d=c.fanCount-lastN; const pc=lastN?Math.round(d/lastN*100):0; fanMsg='，粉絲 '+lastN.toLocaleString()+'→'+c.fanCount.toLocaleString()+'（'+(d>=0?'+':'')+d.toLocaleString()+(lastN?'，'+(pc>=0?'+':'')+pc+'%':'')+'）'+(Math.abs(pc)>=20?' ⚠️變化偏大':''); }
   }
-  // 版面歷史快照：每次入庫存一份（同一天覆蓋）
+  // 版面歷史快照：保留歷史(history)=一律新增一筆可前後對比；覆蓋/預設=同一天取代
   if(!acc.profileSnapshots) acc.profileSnapshots=[];
   const today2=new Date().toISOString().slice(0,10);
-  const snap=Object.assign({date:today2}, acc.profile);
-  const lastSnap=acc.profileSnapshots[acc.profileSnapshots.length-1];
-  if(lastSnap && lastSnap.date===today2) acc.profileSnapshots[acc.profileSnapshots.length-1]=snap; else acc.profileSnapshots.push(snap);
+  if(opt.mode==='history'){
+    const _n=new Date(); const _hm=('0'+_n.getHours()).slice(-2)+':'+('0'+_n.getMinutes()).slice(-2);
+    acc.profileSnapshots.push(Object.assign({date:today2+' '+_hm}, acc.profile));
+  } else {
+    const snap=Object.assign({date:today2}, acc.profile);
+    const lastSnap=acc.profileSnapshots[acc.profileSnapshots.length-1];
+    if(lastSnap && (lastSnap.date===today2 || (lastSnap.date||'').slice(0,10)===today2)) acc.profileSnapshots[acc.profileSnapshots.length-1]=snap; else acc.profileSnapshots.push(snap);
+  }
   acc.updatedAt=Date.now();
   await saveAccounts(); renderAccounts(); if(typeof renderComparePicker==='function') renderComparePicker(); if(typeof renderAll==='function') renderAll();
-  toast((isNew?'✓ 已建帳號 ':'已更新帳號 ')+acc.handle+'（版面解析已存）'+fanMsg);
+  toast((isNew?'✓ 已建帳號 ':'已更新帳號 ')+acc.handle+(opt.mode==='history'?'（已新增一筆版面快照·可前後對比）':opt.mode==='overwrite'?'（已覆蓋今天的版面快照）':'（版面解析已存）')+fanMsg);
   if(typeof lightFilingBoard==='function'){ try{ lightFilingBoard(acc); }catch(e){} }
   return acc;
 }
