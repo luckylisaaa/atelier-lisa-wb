@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="color-scheme" content="light only">
 <meta name="supported-color-schemes" content="light">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v95 (版本號僅留註解，不顯示於畫面)
+<!-- ATELIER 影片診斷工作台 · 內部版本 v96 (版本號僅留註解，不顯示於畫面)
+     v96 更新：新增「登出」按鈕（畫面右下角、同步燈上方）。登入創辦人帳號後才顯示；按下會先解除雲端訂閱再 signOut，回到登入頁，可重新登入同一帳號讓雲端資料再同步回來。原本沒有任何使用者可按的登出鍵。
      v95 更新：把收集盤概念延伸出兩個新盤。①「這支片資料收集盤」放在輸入頁「⑤ 漏斗階段」上方：標題/帳號/階段/主題/命根/呈現/目標層A–E/CTA 這 8 個關鍵欄位，填一格亮一格、即時更新進度，收滿提示可送 AI。②「商業閉環覆蓋（A→E）」放在帳號管理頁：挑一個帳號，自動掃它的影片，依每支片的目標層把 A認知/B品牌/C信任/D轉化/E組織 五格點亮（顯示各層支數、列出缺口），讓你一眼看出這個帳號內容有沒有照商業閉環鋪滿。兩盤皆為靜態格子＋JS 只改樣式（手機可顯示）。
      v94 更新：①收集盤通關煙火改成從盤面中央綻放（原本固定在上方、位置跑掉）。②把收集盤的金色從偏濁的 #D4A574 換成更乾淨的香檳金 #E3C27A，收到的格子奶油底提亮為 #FBF3E6，看起來不再髒髒的（品牌主色變數 --gold 維持不變，只動收集盤）。
      v93 更新：收集盤收齊全部 13 格（通關）的那一下，會在盤面綻放一束金／酒紅小煙火（純靜態星點＋CSS 動畫，手機也跑得動）。只有「手動點到通關」才放，貼卡自動點亮不會亂放。
@@ -589,7 +590,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v95</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v96</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -2776,7 +2777,8 @@ function renderManual(){
   <div class="form-card" style="border-left:3px solid var(--gold)">
     <div class="stitle" style="font-size:15px;color:var(--rouge)">更新紀錄 · 還沒做的</div>
     <p style="font-size:13px;color:var(--text);line-height:1.85;margin-top:8px">
-    <b>v95（這版）：</b>新增兩個收集盤：①輸入頁「這支片資料收集盤」——標題/帳號/階段/主題/命根/呈現/目標層/CTA 填一格亮一格，收滿代表這支片資料齊了。②帳號管理頁「商業閉環覆蓋（A→E）」——挑一個帳號，自動依它影片的目標層點亮 A認知→B品牌→C信任→D轉化→E組織，亮起代表這層有片、灰色代表還缺，讓你看出內容有沒有照閉環鋪滿。<br>
+    <b>v96（這版）：</b>新增「登出」按鈕（右下角、同步狀態燈上方），登入後才會出現；用來換帳號或重新登入把雲端資料同步回來。<br>
+    <b>v95：</b>新增兩個收集盤：①輸入頁「這支片資料收集盤」——標題/帳號/階段/主題/命根/呈現/目標層/CTA 填一格亮一格，收滿代表這支片資料齊了。②帳號管理頁「商業閉環覆蓋（A→E）」——挑一個帳號，自動依它影片的目標層點亮 A認知→B品牌→C信任→D轉化→E組織，亮起代表這層有片、灰色代表還缺，讓你看出內容有沒有照閉環鋪滿。<br>
     <b>v94：</b>把收集盤通關煙火改成從盤面正中央綻放；金色換成比較乾淨的香檳金、收到的格子底色提亮，不再有髒髒的感覺。<br>
     <b>v93：</b>收集盤收齊全部 13 格（通關）時，盤面會綻放一束金色與酒紅的小煙火慶祝一下（手機也看得到）。只有你親手點到通關才放，貼卡自動點亮不會亂放煙火。<br>
     <b>v92：</b>收集盤兩個升級。①「置頂」可以<b>一篇一篇打勾</b>了：貼文置頂①②③、影片置頂①②③，每給齊一篇（圖＋完整文案＋日期＋格式）就點一個小勾，給到第幾篇、還缺哪篇一眼就看到。②同一個收集盤<b>也放進「輸入影片」頁⑥</b>（你初期常一邊建新帳號一邊輸入，不用跳頁）；兩頁<b>同步同一份進度</b>，在哪一頁點亮都通（依@帳號記在本機）。<br>
@@ -4308,6 +4310,19 @@ function _fbStatus(state,text){
   el.textContent=text;
 }
 
+function _fbLogoutBtn(show){
+  var b=document.getElementById('fbLogoutBtn');
+  if(show){
+    if(!b){
+      b=document.createElement('button'); b.id='fbLogoutBtn'; b.type='button'; b.textContent='登出';
+      b.style.cssText='position:fixed;right:14px;bottom:46px;z-index:9999;font-size:12px;padding:6px 14px;border-radius:20px;font-family:"Noto Sans TC",sans-serif;background:#fff;border:1px solid #E8E3DA;color:#A51820;box-shadow:0 4px 14px rgba(42,26,28,.12);cursor:pointer';
+      b.onclick=function(){ if(confirm('要登出嗎？\n登出後用同一個帳號重新登入，雲端的影片與帳號資料會自動同步回來。')){ try{ if(_fbUnsub)_fbUnsub(); }catch(e){} try{ if(typeof _accUnsub!=="undefined"&&_accUnsub)_accUnsub(); }catch(e){} try{ firebase.auth().signOut(); }catch(e){} } };
+      document.body.appendChild(b);
+    }
+    b.style.display='block';
+  } else if(b){ b.style.display='none'; }
+}
+
 /* ---- 3) Firebase 初始化 + 登入流程 ---- */
 function _fbInit(){
   if(typeof firebase==='undefined'){
@@ -4329,6 +4344,7 @@ function _fbInit(){
         _fbStatus('syncing','連線中…');
         _fbSubscribe();              // 開始即時同步
         if(typeof _accFbSubscribe==='function') _accFbSubscribe();  // v45 同時訂閱帳號
+        _fbLogoutBtn(true);
       } else if(user){
         // 登入了但不是創辦人帳號 → 拒絕
         _fbAuth.signOut();
@@ -4338,6 +4354,7 @@ function _fbInit(){
         _fbReady=false;
         document.getElementById('auth-overlay').style.display='block';
         _fbStatus('offline','請先登入');
+        _fbLogoutBtn(false);
       }
     });
   }catch(e){
