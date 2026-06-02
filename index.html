@@ -5,7 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="color-scheme" content="light only">
 <meta name="supported-color-schemes" content="light">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v126 (版本號僅留註解，不顯示於畫面)
+<!-- ATELIER 影片診斷工作台 · 內部版本 v128 (版本號僅留註解，不顯示於畫面)
+     v128 更新（智慧貼上彈窗修：新帳號簡化選項＋彈窗置中）：①atelierChoose 改置中顯示(覆寫 modal alignItems=center、sheet 圓角/寬度、關閉還原)，不再貼底部像當機。②parseBtn／bulkBtn 依 _exists 給不同選項：新帳號只給「建立帳號／只建影片」兩顆(不再出現累積/覆蓋讓人誤以為建過)，已存在才給 累積/覆蓋/只建影片 三選項；標題與說明同步分流(第一次偵測到新帳號 vs 偵測到帳號分析段)。
+     v127 更新（子題型第二段工具改就地內嵌）：STEP⑥ 子題型校準新增「就地展開使用（免開新分頁）」鈕→ window.toggleSubtypeEmbed 點開才 lazy 載入 <iframe src=atelier-subtype> 在原地用、再點收起；保留「改開新分頁」連結當備援。iframe 內容在 atelier-subtype repo、不佔主檔（同商業閉環 iframe 概念）。
      v126 更新（客戶交付三診斷書：可點選本輪/本支設定＋寫入系統定義）：①客戶交付頁客戶下拉下方新增兩個可收合面板——本輪設定(合作支數/本輪主要目標/最終目標層分階段/產品露出原則/主推品類優先/口吻禁忌)與本支腳本設定(已確認主題/目標漏斗G/目標層A/長度/產品植入深度0-3/影片形式/可用不可用素材/CTA)。②新增 defsBlock(寫死 G1-G5 與 A-E 我方定義)、roundBlock、shotBlock，buildIP/buildOutline/buildScript 自動把系統定義＋點選設定組進提示詞。③buildOutline 每主題加受眾層/影片形式/Hook流量觸發/是否帶產品/拍攝理由，一頁式表加客戶確認欄位；buildScript 加實證邏輯具體化＋客戶確認版vs拍攝執行版＋額外交付(封面字/標題/文案/留言/限動)。對齊兩份 AI 評估缺口。
      v125 更新（智慧貼上帳號改三選項精緻彈窗＋回填＋PROMPT_C比對規則）：①新增 atelierChoose 自訂彈窗(重用#modal/.sheet、品牌酒紅金、可Enter/Esc)，parseBtn／bulkBtn 兩個原生 confirm 合併成「一框三選項」：同步·累積(建議·預設)／同步·覆蓋／只建影片，按鈕字與語意一致(解決原生confirm顯示「好」對不上「確定」)，並顯示該@帳號是否已存在。②貼後一律 populateAccountSelect＋選好⑥連結到帳號＋syncAccountJobFields(回填職稱/產業)＋展開帳號版面解析＋展開輸入頁收集盤 filingBoardBoxInput(看得到亮燈)。③PROMPT_C 共同規則加 H1-H3：@帳號為唯一比對鍵須純handle、職稱/產業必填(判不出填待補)、卡A帳號段須完整原樣不可只摘要。
      v124 更新（智慧貼上帳號：覆蓋/保留歷史可選＋貼後接回輸入頁）：①主框 parseBtn／bulkBtn 偵測到帳號段時，先問「要不要同步」再問「保留歷史(新增一筆版面快照可前後對比)／覆蓋(同日取代)」，傳 opt.mode 給 ingestAccountCard。②貼後自動 populateAccountSelect＋選好⑥連結到帳號＋syncAccountJobFields＋展開帳號版面解析(f-profBox)，欄位立刻填出來(解決卡A貼完面板空白、感覺沒進去)；收集盤點燈沿用 lightFilingBoard。③ingestAccountCard 快照：history 一律新增一筆(date 帶時:分、可同日多版對比)，overwrite/預設同日取代。
@@ -683,7 +685,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v126</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v128</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -881,8 +883,10 @@ if('serviceWorker' in navigator){
         <div style="font-size:14px;font-weight:700;color:var(--ink);margin-bottom:5px">&#9317; 子題型校準（第二段工具 → 貼回 Gemini）</div>
         <div style="font-size:12.5px;color:var(--text);margin-bottom:6px">用 Gemini 判出的主題+素材，到第二段工具產出含 5 個子題型完整定義的提示詞 → 貼回 Gemini，它從那 5 個精準選 1 個。</div>
         <div style="display:flex;gap:6px;flex-wrap:wrap">
-          <a href="https://luckylisaaa.github.io/atelier-subtype/" target="_blank" class="btn btn-ghost" style="text-decoration:none;font-size:12px;padding:6px 12px"><svg class="aico" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.07 0l3-3a5 5 0 1 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.07 0l-3 3a5 5 0 1 0 7.07 7.07l1.71-1.71"/></svg> 開子題型第二段工具</a>
+          <button type="button" class="btn btn-go" style="font-size:12px;padding:6px 12px" onclick="toggleSubtypeEmbed(this)">▾ 就地展開使用（免開新分頁）</button>
+          <a href="https://luckylisaaa.github.io/atelier-subtype/" target="_blank" class="btn btn-ghost" style="text-decoration:none;font-size:12px;padding:6px 12px"><svg class="aico" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.07 0l3-3a5 5 0 1 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.07 0l-3 3a5 5 0 1 0 7.07 7.07l1.71-1.71"/></svg> 改開新分頁</a>
         </div>
+        <div id="subtypeEmbed" style="display:none;margin-top:10px"></div>
       </div>
 
       <!-- 步驟 7：讀數字+合併最終卡（Claude）-->
@@ -2112,8 +2116,9 @@ function atelierChoose(o){
       return '<button data-ac="'+i+'" style="display:block;width:100%;text-align:left;padding:12px 14px;margin-top:8px;border-radius:12px;cursor:pointer;font-family:inherit;'+st+'"><span style="font-weight:700;font-size:14px">'+esc(b.label)+'</span>'+(b.sub?'<span style="display:block;font-size:12px;margin-top:3px;opacity:.85">'+esc(b.sub)+'</span>':'')+'</button>';
     }).join('');
     sheet.innerHTML='<div style="padding:6px 4px 4px"><div style="font-family:\'Noto Serif TC\',serif;font-size:17px;font-weight:900;color:#5C0F14;margin-bottom:4px">'+esc(o.title||'')+'</div>'+(o.desc?'<div style="font-size:12.5px;color:#7A5A5E;line-height:1.6;margin-bottom:6px">'+esc(o.desc)+'</div>':'')+btns+'</div>';
+    modal.style.alignItems='center'; sheet.style.borderRadius='16px'; sheet.style.maxWidth='440px'; sheet.style.width='calc(100% - 32px)'; sheet.style.animation='none';
     modal.classList.add('show');
-    function done(v){ modal.classList.remove('show'); sheet.innerHTML=''; document.removeEventListener('keydown',onkey); modal.onclick=_prevOv; resolve(v); }
+    function done(v){ modal.classList.remove('show'); sheet.innerHTML=''; modal.style.alignItems=''; sheet.style.borderRadius=''; sheet.style.maxWidth=''; sheet.style.width=''; sheet.style.animation=''; document.removeEventListener('keydown',onkey); modal.onclick=_prevOv; resolve(v); }
     function onkey(e){ if(e.key==='Escape') done(cancelV); else if(e.key==='Enter'){ var pi=-1; (o.buttons||[]).forEach(function(x,i){ if(x.primary) pi=i; }); if(pi>=0) done(o.buttons[pi].value); } }
     sheet.querySelectorAll('[data-ac]').forEach(function(bel){ bel.onclick=function(){ done(o.buttons[parseInt(bel.getAttribute('data-ac'),10)].value); }; });
     document.addEventListener('keydown',onkey);
@@ -2130,14 +2135,18 @@ $('parseBtn').onclick=async function(){
     var hM=accM[1].match(/@?帳號\s*[：:]\s*(\S+)/); var hn=hM?(hM[1].startsWith('@')?hM[1]:'@'+hM[1]):'這個帳號';
     var _nh=function(x){return (x||'').toLowerCase().replace(/^@/,'').replace(/\/+$/,'');};
     var _exists=(typeof accounts!=='undefined'&&accounts||[]).some(function(x){return _nh(x.handle)===_nh(hn);});
-    var _mode=await atelierChoose({
-      title:'偵測到帳號分析段：'+hn,
-      desc:(_exists?'帳號管理裡已經有這個帳號。':'帳號管理裡還沒有這個帳號。')+'影片照常建檔，帳號要怎麼處理？',
-      buttons:[
+    var _btns=_exists?[
         {label:'同步帳號 · 累積（建議）', sub:'新增一筆版面快照，留著舊版做前後對比', value:'history', primary:true},
         {label:'同步帳號 · 覆蓋', sub:'用這張取代今天的版本、不另外多留一筆', value:'overwrite'},
         {label:'只建影片', sub:'這次不動帳號管理', value:'skip'}
-      ],
+      ]:[
+        {label:'建立帳號（同步到帳號管理）', sub:'第一次建立這個帳號，影片照常建檔', value:'history', primary:true},
+        {label:'只建影片', sub:'這次先不建帳號', value:'skip'}
+      ];
+    var _mode=await atelierChoose({
+      title:(_exists?'偵測到帳號分析段：':'第一次偵測到新帳號：')+hn,
+      desc:(_exists?'帳號管理裡已經有這個帳號，要怎麼更新？':'帳號管理裡還沒有這個帳號，要幫你建立嗎？'),
+      buttons:_btns,
       cancelValue:'skip'
     });
     if(_mode!=='skip'){
@@ -2441,14 +2450,18 @@ $('bulkBtn').onclick=async function(){
     var _hM=_accM[1].match(/@?帳號\s*[：:]\s*(\S+)/); var _hn=_hM?(_hM[1].startsWith('@')?_hM[1]:'@'+_hM[1]):'這個帳號';
     var _nh2=function(x){return (x||'').toLowerCase().replace(/^@/,'').replace(/\/+$/,'');};
     var _ex2=(typeof accounts!=='undefined'&&accounts||[]).some(function(x){return _nh2(x.handle)===_nh2(_hn);});
-    var _m2=await atelierChoose({
-      title:'偵測到帳號分析段：'+_hn,
-      desc:(_ex2?'帳號管理裡已經有這個帳號。':'帳號管理裡還沒有這個帳號。')+'影片照常批次建檔，帳號要怎麼處理？',
-      buttons:[
+    var _b2=_ex2?[
         {label:'同步帳號 · 累積（建議）', sub:'新增一筆版面快照，留著舊版做前後對比', value:'history', primary:true},
         {label:'同步帳號 · 覆蓋', sub:'用這張取代今天的版本、不另外多留一筆', value:'overwrite'},
         {label:'只建影片', sub:'這次不動帳號管理', value:'skip'}
-      ],
+      ]:[
+        {label:'建立帳號（同步到帳號管理）', sub:'第一次建立這個帳號，影片照常批次建檔', value:'history', primary:true},
+        {label:'只建影片', sub:'這次先不建帳號', value:'skip'}
+      ];
+    var _m2=await atelierChoose({
+      title:(_ex2?'偵測到帳號分析段：':'第一次偵測到新帳號：')+_hn,
+      desc:(_ex2?'帳號管理裡已經有這個帳號，要怎麼更新？':'帳號管理裡還沒有這個帳號，要幫你建立嗎？'),
+      buttons:_b2,
       cancelValue:'skip'
     });
     if(_m2!=='skip'){
@@ -3058,7 +3071,9 @@ function renderManual(){
   <div class="form-card" style="border-left:3px solid var(--gold)">
     <div class="stitle" style="font-size:15px;color:var(--rouge)">更新紀錄 · 還沒做的</div>
     <p style="font-size:13px;color:var(--text);line-height:1.85;margin-top:8px">
-    <b>v126（這版）：</b>升級「客戶交付」三本診斷書。選好客戶後，下面多了兩個可點開的設定區：<b>本輪設定</b>（合作幾支、本輪主要目標、最終目標層會分階段推進不會一次衝、產品露出原則、主推品類、口吻禁忌）和<b>本支腳本設定</b>（這一支的主題、漏斗、目標層、長度、產品植入深度0–3級、影片形式、可用／不可用素材、CTA）。你<b>點選完，它會自動把這些＋我們系統的 G1–G5 與 A–E 定義一起組進提示詞</b>再給你複製，不管丟給哪個 AI 都讀得懂我們的用語、不會亂猜。大綱診斷書每個主題也會標受眾層／影片形式／Hook 觸發類型／要不要帶產品／為什麼拍，並附客戶可勾選欄位；腳本診斷書會分成『客戶確認版＋拍攝執行版』，還附封面字／標題／文案／留言引導。<br>
+    <b>v128（這版）：</b>修兩個你回報的小問題。①<b>第一次建立的帳號</b>不會再出現「累積／覆蓋」（那會讓人以為以前建過）——新帳號只問「建立帳號／只建影片」；已經建過的帳號才會出現「累積（保留歷史對比）／覆蓋／只建影片」三選項。②那個跳出來的<b>選擇視窗改成置中</b>，不會再貼在邊邊看起來像當機。<br>
+    <b>v127：</b>STEP ⑥ 的「子題型第二段工具」現在可以<b>就地展開使用、不用再開新分頁</b>：點「▾ 就地展開使用」會在原地把工具嵌出來（點了才載入、不拖慢頁面），用完點「收起」；想開新分頁的連結也還留著。工具內容放在它自己的網址、不佔工作台容量，就像商業閉環那頁一樣。<br>
+    <b>v126：</b>升級「客戶交付」三本診斷書。選好客戶後，下面多了兩個可點開的設定區：<b>本輪設定</b>（合作幾支、本輪主要目標、最終目標層會分階段推進不會一次衝、產品露出原則、主推品類、口吻禁忌）和<b>本支腳本設定</b>（這一支的主題、漏斗、目標層、長度、產品植入深度0–3級、影片形式、可用／不可用素材、CTA）。你<b>點選完，它會自動把這些＋我們系統的 G1–G5 與 A–E 定義一起組進提示詞</b>再給你複製，不管丟給哪個 AI 都讀得懂我們的用語、不會亂猜。大綱診斷書每個主題也會標受眾層／影片形式／Hook 觸發類型／要不要帶產品／為什麼拍，並附客戶可勾選欄位；腳本診斷書會分成『客戶確認版＋拍攝執行版』，還附封面字／標題／文案／留言引導。<br>
     <b>v125：</b>把貼卡A 的兩個跳框合併成<b>一個精緻的三選項視窗</b>，字也對齊了（不再「文字寫確定、按鈕卻是好」）。貼到帳號段時一次問你：<b>同步·累積（建議·預設）</b>／<b>同步·覆蓋</b>／<b>只建影片</b>，每顆下面有小字說明，還會告訴你這個帳號是不是已經建過。選完會<b>自動接上下方⑥的帳號、把職稱／產業／版面解析填好並展開，連收集盤也打開讓你看到亮燈</b>，不會再一片空白。提示詞也補強：@帳號要純 handle、職稱／產業必填、卡A 帳號段要完整原樣，工作台才配得到既有帳號、不多建一筆、欄位也灌得滿。<br>
     <b>v124：</b>修你回報的卡A 帳號卡點。①貼卡A 偵測到帳號段時，現在會<b>連問兩句</b>：先問「要不要同步帳號」，再讓你選「<b>保留歷史</b>（多留一筆版面快照、可跟舊版前後對比）」還是「<b>覆蓋</b>（取代今天的版本、不多留）」——想對比或想覆蓋都行。②貼完會<b>自動幫你選好下方⑥的帳號、把帳號版面解析填好並展開</b>，不會再像之前面板空白、以為沒進去；收集盤也會跟著點亮。③同一個帳號同一天想留兩個版本對比也行了（保留歷史每次都新增一筆、帶到分鐘）。<br>
     <b>v123：</b>把<b>整合那步的提示詞</b>輸出規格寫死：AI 會給你<b>三個各自獨立、可下載的 .txt</b>，檔名一眼分得出——<b>卡B_單一影片歸類卡_創作者_主題.txt</b>（只放影片、貼影片庫）、<b>卡C_帳號分析卡_創作者.txt</b>（只放帳號、貼帳號管理，帳號層級不接主題）、<b>卡A_影片x帳號合一卡_創作者_主題.txt</b>（影片段＋帳號段＋小結合一，餵主框「智慧貼上」一次填滿影片庫＋帳號管理）。並要求兩個卡頭標記完整、各自獨立成行、前面不黏字，卡A 兩段都要完整原樣不只放摘要。<br>
@@ -5167,6 +5182,14 @@ window.addEventListener('DOMContentLoaded', function(){
 </script>
 <script>
 (function(){
+  window.toggleSubtypeEmbed=function(btn){
+    var w=document.getElementById('subtypeEmbed'); if(!w) return;
+    var open=(w.style.display==='none'||!w.style.display);
+    if(open){
+      if(!w.getAttribute('data-loaded')){ w.innerHTML='<iframe src="https://luckylisaaa.github.io/atelier-subtype/" title="子題型第二段工具" style="width:100%;height:70vh;border:1px solid var(--gold-soft);border-radius:10px;background:#fff" loading="lazy"></iframe>'; w.setAttribute('data-loaded','1'); }
+      w.style.display='block'; if(btn) btn.textContent='▴ 收起工具';
+    } else { w.style.display='none'; if(btn) btn.textContent='▾ 就地展開使用（免開新分頁）'; }
+  }
   function opGuideHTML(){
     var R='var(--rouge)',INK='var(--ink)',T='var(--text)',SUB='var(--sub)',LINE='var(--line)',GS='var(--gold-soft)',GD='var(--gold-dark)',WARM='var(--warm)';
     function ic(pth,col,sz){return '<svg viewBox="0 0 24 24" style="width:'+(sz||18)+'px;height:'+(sz||18)+'px;flex:none;stroke:'+(col||R)+';fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round" aria-hidden="true">'+pth+'</svg>';}
