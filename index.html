@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="color-scheme" content="light only">
 <meta name="supported-color-schemes" content="light">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v102 (版本號僅留註解，不顯示於畫面)
+<!-- ATELIER 影片診斷工作台 · 內部版本 v103 (版本號僅留註解，不顯示於畫面)
+     v103 更新（版面瘦身·桌機＋手機）：新增一段瘦身樣式，統一縮小各頁留白與元件高度——頁首 .page-head padding 與標題字級縮小、.view 上下 padding 縮小、影片庫統計卡 .sumcard padding/數字縮小、.searchbar 與 .filterrow margin 縮小、帳號管理那幾張 .paste-card padding 18→13、margin 16→10。純縮留白不動結構，讓影片／帳號更快出現。
      v102 更新：澄清備份其實是「影片＋帳號」一起打包（功能本就如此）。①備份卡標題改「資料備份與還原（影片＋帳號 一起備份）」、按鈕改「下載備份檔（影片＋帳號）」。②影片庫頁也加一顆同樣的「下載備份檔（影片＋帳號）」鍵（btnBackup2），接到同一個 doBackup，讓使用者在影片庫頁也能直接備份、不再以為影片沒被備份。
      v101 更新：①「資料備份與還原」卡預設改為收合（原本設成展開，卡在帳號管理頁最上面佔掉一大塊）。②備份功能加雙保險：記憶體中的 videos/accounts 若為空，改從 localStorage（atelier_videos／atelier_accounts）讀取後備份，避免抓不到影片庫。註：備份本就含影片庫（videos），先前看起來只有帳號是因為當下影片庫為 0。
      v100 更新：把 v99 的「多支影片防呆規則」改成符合聊天介面現實的版本——介面會把圖片全排在最上面、文字在最下面，無法把文字打在每張圖正下方。改為：文字用【圖N】對應上方圖片「由左到右、由上到下」的順序；數量對不上要先停下來問；每張卡開頭先回報對應供使用者核對；數字文案以文字為準、封面只是縮圖可能與內容/服裝不符。GEM_PROMPT、PROMPT_C 兩支同步更新。
@@ -550,6 +551,22 @@ input,select,textarea{color-scheme:light}
 .filing-board .fb-fx span{position:absolute;left:0;top:0;font-size:16px;color:#E3C27A;opacity:0;transform:translate(-50%,-50%) scale(.2);will-change:transform,opacity}
 .filing-board .fb-fx.go span{animation:fbPop 1.25s ease-out var(--d,0s) both}
 @keyframes fbPop{0%{opacity:0;transform:translate(-50%,-50%) scale(.2)}22%{opacity:1}100%{opacity:0;transform:translate(calc(-50% + var(--x,0px)),calc(-50% + var(--y,0px))) scale(1.05)}}
+
+/* ===== v103 版面瘦身（桌機＋手機）：統一縮小頁首/統計卡/搜尋/篩選/卡片留白，內容更快出現 ===== */
+.page-head{padding:9px 0 12px}
+.page-head .ph-en{margin-bottom:4px}
+.page-head .ph-title{font-size:23px;letter-spacing:3px}
+.page-head .ph-sub{margin-top:4px;font-size:12px}
+.view{padding-top:12px;padding-bottom:72px}
+.sumrow{margin-bottom:11px;gap:7px}
+.sumcard{padding:8px 6px}
+.sumcard .num{font-size:19px}
+.sumcard .lbl{margin-top:3px}
+.searchbar{margin-bottom:10px}
+.searchbar input{padding:11px 44px 11px 15px}
+.filterrow{margin-bottom:9px}
+.paste-card{padding:13px 14px;margin-bottom:10px}
+.paste-card>summary{padding:1px 0}
 </style>
 <link rel="manifest" href="manifest.json">
 <meta name="application-name" content="ATELIER">
@@ -596,7 +613,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v102</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v103</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -2796,7 +2813,8 @@ function renderManual(){
   <div class="form-card" style="border-left:3px solid var(--gold)">
     <div class="stitle" style="font-size:15px;color:var(--rouge)">更新紀錄 · 還沒做的</div>
     <p style="font-size:13px;color:var(--text);line-height:1.85;margin-top:8px">
-    <b>v102（這版）：</b>講清楚＋更方便：備份本來就是「影片＋帳號一起」打包成同一個檔。把標題與按鈕都標明「影片＋帳號」，並在影片庫頁也加一顆一樣的下載備份鍵，你在哪一頁都能備份。<br>
+    <b>v103（這版）：</b>版面瘦身（桌機＋手機都有效）：縮小頁首、影片庫統計卡、搜尋列、篩選列、帳號管理卡片的留白與高度，讓影片／帳號更快出現、整體更精實。<br>
+    <b>v102：</b>講清楚＋更方便：備份本來就是「影片＋帳號一起」打包成同一個檔。把標題與按鈕都標明「影片＋帳號」，並在影片庫頁也加一顆一樣的下載備份鍵，你在哪一頁都能備份。<br>
     <b>v101：</b>「資料備份」卡改成預設收合（帳號管理頂端不再被它佔一大塊）；備份加雙保險，記憶體沒資料就改抓本機存檔，確保影片庫也會被備份。<br>
     <b>v100：</b>把多支影片防呆規則改成符合聊天介面現實：圖片只能全部排在上面、文字在下面，無法穿插。改用【圖N】對應上方圖片由左到右／由上到下的順序，數量對不上要先停下來問，每張卡開頭先回報對應讓你核對。<br>
     <b>v99：</b>①Gemini 那支歸類卡提示詞也加上「卡片另外存成可下載檔/純文字區塊」。②Gemini 與 Claude 兩支都加「多支影片防呆規則」：用【影片N】編號、圖序＝編號序、不跨片配對、數字文案以文字為準、封面只是縮圖可能跟內容不符，一支一支各出一張卡——解決一次丟多支封面被配錯的問題。<br>
