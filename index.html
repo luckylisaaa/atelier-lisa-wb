@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="color-scheme" content="light only">
 <meta name="supported-color-schemes" content="light">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v106 (版本號僅留註解，不顯示於畫面)
+<!-- ATELIER 影片診斷工作台 · 內部版本 v107 (版本號僅留註解，不顯示於畫面)
+     v107 更新（第四項·嵌入商業閉環）：新增「商業閉環」頁籤與 view-bizloop，用 iframe 連結嵌入 atelier_v13.html（自媒體商業閉環知識地圖 v9）。因 v13 為 525KB 完整獨立網頁、直接內嵌會樣式/程式衝突且檔案翻倍，故採 iframe src=https://luckylisaaa.github.io/atelier-map/（同源 github.io 可被嵌入），並附「在新分頁開啟」與空白時的上傳說明。註：兩份 PPT 僅供理解流程、不需內嵌。atelier-map 目前為空，需把 atelier_v13.html 當 index.html 上傳該 repo 才會顯示。
      v106 更新（主題導覽：完整框架總覽）：在「主題導覽」最上面新增「完整框架總覽」摺疊區，把 5 階段（G1–G5）× 20 主題一次攤平列清楚（每階段顯示名稱／何時用／主題清單與各主題素材數），點任一主題沿用既有 openTheme 展開素材與子題型。沿用 D.themes／gnames／gstrategy／gt-G* 顏色，純新增、不動原本互動樹。使用者所稱「20層」即框架的 20 個主題。
      v105 更新：①輸入影片頁「步驟8」原本的翠綠框（#0F6E56＋#E1F5EE，與品牌酒紅金不搭、很突兀）改為品牌金色香檳「完成」框（border var(--gold)、bg var(--gold-soft)、字 gold-dark/primary-deep）。②影片庫「快速篩選」三個下拉改成 3 欄 grid 併成同一排（手機桌機都一排），字級與留白縮小。③GEM_PROMPT 與 PROMPT_C 多支影片規則新增一條：若使用者在圖片上直接寫了標籤（片1封／貼2文…）就以圖片標籤為準對應，不必靠順序。
      v104 更新（客戶交付三階段＋診斷書系統）：新增「客戶交付」頁籤與 view-deliver 頁。選一個客戶帳號後，三個階段各一鍵產生診斷書提示詞——①IP定位診斷書（含判斷客戶落在商業閉環 A→E 哪一層的顧問判斷＋一頁式定位表）②腳本大綱診斷書（主題方向＋一頁式大綱表，對應 G1–G5／A–E）③腳本診斷書（可拍攝完整腳本＋設計理由）。三份都自動帶入影片庫實證背書（已拆解 N 帳號／N 影片、同產業同身份數），並要求 AI 另存成可下載 .txt。沿用 accProfileBlock／copyVal，路由用既有 switchTo。
@@ -630,7 +631,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v106</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v107</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -647,6 +648,7 @@ if('serviceWorker' in navigator){
   <div class="tab" data-view="search"><svg class="tic" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4-4" stroke-linecap="round"/></svg>搜尋</div>
   <div class="tab" data-view="gaps"><svg class="tic" viewBox="0 0 24 24"><path d="M12 4l8 14H4z" stroke-linejoin="round"/><path d="M12 10v3M12 16v.5" stroke-linecap="round"/></svg>缺口<span class="badge" id="gapBadge" style="background:var(--gold-dark)">0</span></div>
   <div class="tab" data-view="tree"><svg class="tic" viewBox="0 0 24 24"><circle cx="12" cy="6" r="2.4"/><circle cx="6" cy="18" r="2.4"/><circle cx="18" cy="18" r="2.4"/><path d="M12 8.4v3.6M12 12l-5 3.8M12 12l5 3.8" stroke-linecap="round"/></svg>主題導覽</div>
+  <div class="tab" data-view="bizloop"><svg class="tic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 4a8 8 0 016.9 4M12 20a8 8 0 01-6.9-4" stroke-linecap="round"/></svg>商業閉環</div>
   <div class="tab" data-view="algo"><svg class="tic" viewBox="0 0 24 24"><path d="M4 18V9M9 18V5M14 18v-6M19 18V8" stroke-linecap="round"/></svg>演算法情報</div>
   <div class="tab" data-view="kb"><svg class="tic" viewBox="0 0 24 24"><path d="M5 4h11a2 2 0 012 2v14H7a2 2 0 01-2-2z" stroke-linejoin="round"/><path d="M9 8h6M9 12h6" stroke-linecap="round"/></svg>知識庫</div>
   <div class="tab" data-view="manual"><svg class="tic" viewBox="0 0 24 24"><path d="M5 5h9a3 3 0 013 3v11a2.5 2.5 0 00-2.5-2.5H5z" stroke-linejoin="round"/><path d="M5 5v11.5" stroke-linecap="round"/></svg>說明書</div>
@@ -1724,6 +1726,21 @@ if('serviceWorker' in navigator){
   </div>
 
   <div class="tip" style="font-size:11.5px;margin-top:6px">產生後會自動複製，貼到 ChatGPT／Claude／Gemini 即可。提示詞已要求 AI 把診斷書另外做成可下載的 .txt 檔，方便你存檔與交付。</div>
+</div>
+
+<!-- 商業閉環知識地圖（v107·iframe 嵌入 atelier-map） -->
+<div class="view" id="view-bizloop">
+  <div class="page-head">
+    <div class="ph-en">BUSINESS LOOP · 商業閉環</div>
+    <div class="ph-title">商業閉環知識地圖</div>
+    <div class="ph-sub">嵌入你的「自媒體商業閉環知識地圖」。A 認知 → B 品牌 → C 信任 → D 轉化 → E 組織 的完整顧問診斷系統。</div>
+  </div>
+  <div style="margin-bottom:10px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+    <a href="https://luckylisaaa.github.io/atelier-map/" target="_blank" rel="noopener" class="btn btn-ghost" style="width:auto;font-size:13px;padding:8px 14px;text-decoration:none">↗ 在新分頁開啟</a>
+    <span style="font-size:11.5px;color:var(--sub)">若下方空白，代表 atelier-map 還沒上傳內容（見下方說明）。</span>
+  </div>
+  <iframe src="https://luckylisaaa.github.io/atelier-map/" title="商業閉環知識地圖" style="width:100%;height:78vh;border:1px solid var(--gold-soft);border-radius:12px;background:#fff" loading="lazy"></iframe>
+  <div class="hint" style="margin-top:10px;font-size:11.5px">這頁用「連結嵌入」接你的 atelier-map：你更新那邊、這裡就跟著更新。目前 atelier-map 還是空的——把 <b>atelier_v13.html</b> 當成 <b>index.html</b> 上傳到 atelier-map 那個 repo（跟更新工作台一樣），這頁就會顯示。若 v13 其實在別的網址，把網址給我，我換掉上面的連結。</div>
 </div>
 
 <!-- 說明書 -->
@@ -2879,7 +2896,8 @@ function renderManual(){
   <div class="form-card" style="border-left:3px solid var(--gold)">
     <div class="stitle" style="font-size:15px;color:var(--rouge)">更新紀錄 · 還沒做的</div>
     <p style="font-size:13px;color:var(--text);line-height:1.85;margin-top:8px">
-    <b>v106（這版）：</b>主題導覽最上面新增「完整框架總覽」：把 5 階段 × 20 主題一次列清楚（每組顯示名稱、何時用、主題與素材數），點主題仍可展開素材／子題型。你說的「20 層」就是這 20 個主題。<br>
+    <b>v107（這版）：</b>新增「商業閉環」頁籤，用 iframe 連結嵌入你的商業閉環知識地圖（atelier-map）。把 atelier_v13.html 當 index.html 上傳到 atelier-map 那個 repo 後就會顯示；附「在新分頁開啟」。<br>
+    <b>v106：</b>主題導覽最上面新增「完整框架總覽」：把 5 階段 × 20 主題一次列清楚（每組顯示名稱、何時用、主題與素材數），點主題仍可展開素材／子題型。你說的「20 層」就是這 20 個主題。<br>
     <b>v105：</b>①輸入影片頁那個突兀的綠色「步驟8」框改成品牌金色「完成」框。②影片庫快速篩選三個下拉併成同一排、更精實。③提示詞加規則：若你在圖片上寫了標籤（片1封／貼2文…），AI 以圖片標籤為準對應。<br>
     <b>v104：</b>新增「客戶交付」頁：選客戶後，三階段一鍵產生診斷書提示詞——①IP定位診斷書（含 A→E 落點判斷＋定位表）②腳本大綱診斷書（主題＋大綱表）③腳本診斷書（可拍攝腳本）。都自動帶入你影片庫的實證數字當背書，並要求 AI 另存成 .txt 方便交付。<br>
     <b>v103：</b>版面瘦身（桌機＋手機都有效）：縮小頁首、影片庫統計卡、搜尋列、篩選列、帳號管理卡片的留白與高度，讓影片／帳號更快出現、整體更精實。<br>
