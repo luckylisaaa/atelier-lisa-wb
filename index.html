@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="color-scheme" content="light only">
 <meta name="supported-color-schemes" content="light">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v128 (版本號僅留註解，不顯示於畫面)
+<!-- ATELIER 影片診斷工作台 · 內部版本 v129 (版本號僅留註解，不顯示於畫面)
+     v129 更新（帳號分析加零打字分批鈕）：STEP② 帳號分析按鈕區下方新增兩顆複製鍵——「還沒傳完，先別輸出」與「完畢，開始分析」，inline onclick 直接寫剪貼簿＋按鈕回饋，免手打分批協議訊號。
      v128 更新（智慧貼上彈窗修：新帳號簡化選項＋彈窗置中）：①atelierChoose 改置中顯示(覆寫 modal alignItems=center、sheet 圓角/寬度、關閉還原)，不再貼底部像當機。②parseBtn／bulkBtn 依 _exists 給不同選項：新帳號只給「建立帳號／只建影片」兩顆(不再出現累積/覆蓋讓人誤以為建過)，已存在才給 累積/覆蓋/只建影片 三選項；標題與說明同步分流(第一次偵測到新帳號 vs 偵測到帳號分析段)。
      v127 更新（子題型第二段工具改就地內嵌）：STEP⑥ 子題型校準新增「就地展開使用（免開新分頁）」鈕→ window.toggleSubtypeEmbed 點開才 lazy 載入 <iframe src=atelier-subtype> 在原地用、再點收起；保留「改開新分頁」連結當備援。iframe 內容在 atelier-subtype repo、不佔主檔（同商業閉環 iframe 概念）。
      v126 更新（客戶交付三診斷書：可點選本輪/本支設定＋寫入系統定義）：①客戶交付頁客戶下拉下方新增兩個可收合面板——本輪設定(合作支數/本輪主要目標/最終目標層分階段/產品露出原則/主推品類優先/口吻禁忌)與本支腳本設定(已確認主題/目標漏斗G/目標層A/長度/產品植入深度0-3/影片形式/可用不可用素材/CTA)。②新增 defsBlock(寫死 G1-G5 與 A-E 我方定義)、roundBlock、shotBlock，buildIP/buildOutline/buildScript 自動把系統定義＋點選設定組進提示詞。③buildOutline 每主題加受眾層/影片形式/Hook流量觸發/是否帶產品/拍攝理由，一頁式表加客戶確認欄位；buildScript 加實證邏輯具體化＋客戶確認版vs拍攝執行版＋額外交付(封面字/標題/文案/留言/限動)。對齊兩份 AI 評估缺口。
@@ -685,7 +686,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v128</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v129</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -837,6 +838,13 @@ if('serviceWorker' in navigator){
         <div style="display:flex;gap:6px;flex-wrap:wrap">
           <a href="https://claude.ai/" target="_blank" class="btn btn-ghost" style="text-decoration:none;font-size:12px;padding:6px 12px"><svg class="aico" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.07 0l3-3a5 5 0 1 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.07 0l-3 3a5 5 0 1 0 7.07 7.07l1.71-1.71"/></svg> 開 Claude</a>
           <button class="btn btn-ghost" id="copyPromptA" style="font-size:12px;padding:6px 12px">⧉ 複製提示詞 A（帳號分析）</button>
+        </div>
+        <div style="margin-top:8px;padding-top:8px;border-top:1px dashed var(--gold-soft)">
+          <div style="font-size:11px;color:var(--gold-dark);font-weight:700;margin-bottom:5px">零打字 · 分批傳圖時用（按一下複製 → 貼到對話框送出，不用自己打字）</div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap">
+            <button class="btn btn-ghost" style="font-size:12px;padding:6px 12px" onclick="(function(b,t){try{navigator.clipboard.writeText(t);}catch(e){}var o=b.textContent;b.textContent='✓ 已複製，去貼上';setTimeout(function(){b.textContent=o;},1500);})(this,'還沒傳完，先別輸出，等我說「完畢」再一次分析。')">⧉ 還沒傳完，先別輸出</button>
+            <button class="btn btn-go" style="font-size:12px;padding:6px 12px" onclick="(function(b,t){try{navigator.clipboard.writeText(t);}catch(e){}var o=b.textContent;b.textContent='✓ 已複製，去貼上';setTimeout(function(){b.textContent=o;},1500);})(this,'完畢，素材都傳完了，請開始分析並一次輸出全部結果。')">⧉ 完畢，開始分析</button>
+          </div>
         </div>
         <details class="prompt-peek" style="margin-top:8px;border:1px dashed var(--gold-soft);border-radius:8px;background:var(--warm)">
           <summary style="cursor:pointer;font-size:12px;font-weight:700;color:var(--rouge);padding:7px 10px;user-select:none"><svg class="aico" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> 看完整提示詞內容 ▾（先看內容，上面那顆才是複製）</summary>
@@ -3071,7 +3079,8 @@ function renderManual(){
   <div class="form-card" style="border-left:3px solid var(--gold)">
     <div class="stitle" style="font-size:15px;color:var(--rouge)">更新紀錄 · 還沒做的</div>
     <p style="font-size:13px;color:var(--text);line-height:1.85;margin-top:8px">
-    <b>v128（這版）：</b>修兩個你回報的小問題。①<b>第一次建立的帳號</b>不會再出現「累積／覆蓋」（那會讓人以為以前建過）——新帳號只問「建立帳號／只建影片」；已經建過的帳號才會出現「累積（保留歷史對比）／覆蓋／只建影片」三選項。②那個跳出來的<b>選擇視窗改成置中</b>，不會再貼在邊邊看起來像當機。<br>
+    <b>v129（這版）：</b>幫你把分批傳圖時要打的字做成<b>複製鍵</b>了。在「② 操作流程 → STEP ② 帳號分析」那邊，多了兩顆：<b>「還沒傳完，先別輸出」</b>和<b>「完畢，開始分析」</b>——分批傳圖時按一下複製、貼到對話框送出就好，不用再自己打那兩句。<br>
+    <b>v128：</b>修兩個你回報的小問題。①<b>第一次建立的帳號</b>不會再出現「累積／覆蓋」（那會讓人以為以前建過）——新帳號只問「建立帳號／只建影片」；已經建過的帳號才會出現「累積（保留歷史對比）／覆蓋／只建影片」三選項。②那個跳出來的<b>選擇視窗改成置中</b>，不會再貼在邊邊看起來像當機。<br>
     <b>v127：</b>STEP ⑥ 的「子題型第二段工具」現在可以<b>就地展開使用、不用再開新分頁</b>：點「▾ 就地展開使用」會在原地把工具嵌出來（點了才載入、不拖慢頁面），用完點「收起」；想開新分頁的連結也還留著。工具內容放在它自己的網址、不佔工作台容量，就像商業閉環那頁一樣。<br>
     <b>v126：</b>升級「客戶交付」三本診斷書。選好客戶後，下面多了兩個可點開的設定區：<b>本輪設定</b>（合作幾支、本輪主要目標、最終目標層會分階段推進不會一次衝、產品露出原則、主推品類、口吻禁忌）和<b>本支腳本設定</b>（這一支的主題、漏斗、目標層、長度、產品植入深度0–3級、影片形式、可用／不可用素材、CTA）。你<b>點選完，它會自動把這些＋我們系統的 G1–G5 與 A–E 定義一起組進提示詞</b>再給你複製，不管丟給哪個 AI 都讀得懂我們的用語、不會亂猜。大綱診斷書每個主題也會標受眾層／影片形式／Hook 觸發類型／要不要帶產品／為什麼拍，並附客戶可勾選欄位；腳本診斷書會分成『客戶確認版＋拍攝執行版』，還附封面字／標題／文案／留言引導。<br>
     <b>v125：</b>把貼卡A 的兩個跳框合併成<b>一個精緻的三選項視窗</b>，字也對齊了（不再「文字寫確定、按鈕卻是好」）。貼到帳號段時一次問你：<b>同步·累積（建議·預設）</b>／<b>同步·覆蓋</b>／<b>只建影片</b>，每顆下面有小字說明，還會告訴你這個帳號是不是已經建過。選完會<b>自動接上下方⑥的帳號、把職稱／產業／版面解析填好並展開，連收集盤也打開讓你看到亮燈</b>，不會再一片空白。提示詞也補強：@帳號要純 handle、職稱／產業必填、卡A 帳號段要完整原樣，工作台才配得到既有帳號、不多建一筆、欄位也灌得滿。<br>
