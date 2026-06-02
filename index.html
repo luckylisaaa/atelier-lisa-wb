@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="color-scheme" content="light only">
 <meta name="supported-color-schemes" content="light">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v94 (版本號僅留註解，不顯示於畫面)
+<!-- ATELIER 影片診斷工作台 · 內部版本 v95 (版本號僅留註解，不顯示於畫面)
+     v95 更新：把收集盤概念延伸出兩個新盤。①「這支片資料收集盤」放在輸入頁「⑤ 漏斗階段」上方：標題/帳號/階段/主題/命根/呈現/目標層A–E/CTA 這 8 個關鍵欄位，填一格亮一格、即時更新進度，收滿提示可送 AI。②「商業閉環覆蓋（A→E）」放在帳號管理頁：挑一個帳號，自動掃它的影片，依每支片的目標層把 A認知/B品牌/C信任/D轉化/E組織 五格點亮（顯示各層支數、列出缺口），讓你一眼看出這個帳號內容有沒有照商業閉環鋪滿。兩盤皆為靜態格子＋JS 只改樣式（手機可顯示）。
      v94 更新：①收集盤通關煙火改成從盤面中央綻放（原本固定在上方、位置跑掉）。②把收集盤的金色從偏濁的 #D4A574 換成更乾淨的香檳金 #E3C27A，收到的格子奶油底提亮為 #FBF3E6，看起來不再髒髒的（品牌主色變數 --gold 維持不變，只動收集盤）。
      v93 更新：收集盤收齊全部 13 格（通關）的那一下，會在盤面綻放一束金／酒紅小煙火（純靜態星點＋CSS 動畫，手機也跑得動）。只有「手動點到通關」才放，貼卡自動點亮不會亂放。
      v92 更新：①收集盤的「置頂」改成可一篇（支）一篇打勾——貼文置頂①②③、影片置頂①②③，各自獨立小勾，給齊一篇就點一個（總格數 13：5 必收＋貼文置頂3＋影片置頂3＋發文頻率＋報價）。②同一個收集盤也放進「輸入影片」頁⑥（因為初期常一邊建新帳號一邊輸入），兩頁同步同一份進度（依@帳號記在本機）。③收集盤改為可重複用版型（class 化），兩處共用一套程式。
@@ -588,7 +589,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v94</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v95</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -1061,6 +1062,16 @@ if('serviceWorker' in navigator){
       </div>
     </div>
 
+    <details class="paste-card" style="margin:10px 0;border:1px solid var(--gold-soft)" id="vidBoardBox">
+      <summary style="cursor:pointer;font-weight:600;color:#5C0F14">這支片資料收集盤　<span id="vbCount" style="color:#A51820">0/8</span></summary>
+      <div style="padding:10px 2px 4px">
+        <div style="font-size:12px;color:#7A5A5E;margin-bottom:8px">這支影片該填的關鍵欄位，填一格亮一格；收滿＝資料齊了，可以送 AI 跑腳本／歸類。</div>
+        <div style="height:7px;background:#F4F1EC;border-radius:999px;overflow:hidden;margin-bottom:10px"><div id="vbBar" style="height:100%;width:0%;background:#E3C27A;border-radius:999px;transition:width .3s"></div></div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px"><div class="vb-c" data-f="f-title" style="flex:1 1 calc(25% - 6px);min-width:70px;text-align:center;font-size:12.5px;padding:9px 4px;border-radius:8px;background:#FAF7F3;border:1px solid #E8E3DA;color:#C9B7A8;font-family:inherit">標題</div><div class="vb-c" data-f="f-account" style="flex:1 1 calc(25% - 6px);min-width:70px;text-align:center;font-size:12.5px;padding:9px 4px;border-radius:8px;background:#FAF7F3;border:1px solid #E8E3DA;color:#C9B7A8;font-family:inherit">帳號</div><div class="vb-c" data-f="f-stage" style="flex:1 1 calc(25% - 6px);min-width:70px;text-align:center;font-size:12.5px;padding:9px 4px;border-radius:8px;background:#FAF7F3;border:1px solid #E8E3DA;color:#C9B7A8;font-family:inherit">階段</div><div class="vb-c" data-f="f-theme" style="flex:1 1 calc(25% - 6px);min-width:70px;text-align:center;font-size:12.5px;padding:9px 4px;border-radius:8px;background:#FAF7F3;border:1px solid #E8E3DA;color:#C9B7A8;font-family:inherit">主題</div><div class="vb-c" data-f="f-trig" style="flex:1 1 calc(25% - 6px);min-width:70px;text-align:center;font-size:12.5px;padding:9px 4px;border-radius:8px;background:#FAF7F3;border:1px solid #E8E3DA;color:#C9B7A8;font-family:inherit">命根</div><div class="vb-c" data-f="f-form" style="flex:1 1 calc(25% - 6px);min-width:70px;text-align:center;font-size:12.5px;padding:9px 4px;border-radius:8px;background:#FAF7F3;border:1px solid #E8E3DA;color:#C9B7A8;font-family:inherit">呈現</div><div class="vb-c" data-f="f-goal" style="flex:1 1 calc(25% - 6px);min-width:70px;text-align:center;font-size:12.5px;padding:9px 4px;border-radius:8px;background:#FAF7F3;border:1px solid #E8E3DA;color:#C9B7A8;font-family:inherit">目標A–E</div><div class="vb-c" data-f="f-cta-type" style="flex:1 1 calc(25% - 6px);min-width:70px;text-align:center;font-size:12.5px;padding:9px 4px;border-radius:8px;background:#FAF7F3;border:1px solid #E8E3DA;color:#C9B7A8;font-family:inherit">CTA</div></div>
+        <div id="vbStatus" style="margin-top:10px;text-align:center;font-size:12.5px;color:#7A5A5E">先把上面欄位填一填</div>
+      </div>
+    </details>
+
     <div class="fld">
       <label>⑤ 漏斗階段 → 主題 <span class="opt">選填</span></label>
       <div class="row2">
@@ -1512,6 +1523,16 @@ if('serviceWorker' in navigator){
     </div>
   </details>
 
+
+  <details class="paste-card" style="margin-bottom:14px;border:1px solid var(--gold-soft)" id="loopBoardBox">
+    <summary style="cursor:pointer;font-weight:600;color:#5C0F14">商業閉環覆蓋（A → E）</summary>
+    <div style="padding:10px 2px 4px">
+      <div style="font-size:12px;color:#7A5A5E;margin-bottom:8px">挑一個帳號，看它發過的影片有沒有鋪滿五個目標層。亮起＝這層有片，灰＝還缺。數字＝該層幾支片。</div>
+      <select id="loopAcct" style="width:100%;margin-bottom:10px;padding:8px;border:1px solid #E8E3DA;border-radius:8px;font-family:inherit"><option value="">— 選一個帳號 —</option></select>
+      <div style="display:flex;flex-wrap:wrap;gap:6px"><div class="lb-c" data-k="A" style="flex:1 1 calc(20% - 6px);min-width:58px;text-align:center;font-size:12px;padding:9px 3px;border-radius:8px;background:#FAF7F3;border:1px solid #E8E3DA;color:#C9B7A8;font-family:inherit">A 認知<span class="lb-n" style="display:block;font-size:11px;margin-top:2px"></span></div><div class="lb-c" data-k="B" style="flex:1 1 calc(20% - 6px);min-width:58px;text-align:center;font-size:12px;padding:9px 3px;border-radius:8px;background:#FAF7F3;border:1px solid #E8E3DA;color:#C9B7A8;font-family:inherit">B 品牌<span class="lb-n" style="display:block;font-size:11px;margin-top:2px"></span></div><div class="lb-c" data-k="C" style="flex:1 1 calc(20% - 6px);min-width:58px;text-align:center;font-size:12px;padding:9px 3px;border-radius:8px;background:#FAF7F3;border:1px solid #E8E3DA;color:#C9B7A8;font-family:inherit">C 信任<span class="lb-n" style="display:block;font-size:11px;margin-top:2px"></span></div><div class="lb-c" data-k="D" style="flex:1 1 calc(20% - 6px);min-width:58px;text-align:center;font-size:12px;padding:9px 3px;border-radius:8px;background:#FAF7F3;border:1px solid #E8E3DA;color:#C9B7A8;font-family:inherit">D 轉化<span class="lb-n" style="display:block;font-size:11px;margin-top:2px"></span></div><div class="lb-c" data-k="E" style="flex:1 1 calc(20% - 6px);min-width:58px;text-align:center;font-size:12px;padding:9px 3px;border-radius:8px;background:#FAF7F3;border:1px solid #E8E3DA;color:#C9B7A8;font-family:inherit">E 組織<span class="lb-n" style="display:block;font-size:11px;margin-top:2px"></span></div></div>
+      <div id="lbStatus" style="margin-top:10px;text-align:center;font-size:12.5px;color:#7A5A5E">先選一個帳號</div>
+    </div>
+  </details>
 
   <details class="paste-card" style="margin-bottom:14px" id="accCardBox">
     <summary style="cursor:pointer;font-weight:700;color:var(--rouge);list-style:none">貼帳號分析卡 → 自動建檔／更新（點開）</summary>
@@ -2755,7 +2776,8 @@ function renderManual(){
   <div class="form-card" style="border-left:3px solid var(--gold)">
     <div class="stitle" style="font-size:15px;color:var(--rouge)">更新紀錄 · 還沒做的</div>
     <p style="font-size:13px;color:var(--text);line-height:1.85;margin-top:8px">
-    <b>v94（這版）：</b>把收集盤通關煙火改成從盤面正中央綻放；金色換成比較乾淨的香檳金、收到的格子底色提亮，不再有髒髒的感覺。<br>
+    <b>v95（這版）：</b>新增兩個收集盤：①輸入頁「這支片資料收集盤」——標題/帳號/階段/主題/命根/呈現/目標層/CTA 填一格亮一格，收滿代表這支片資料齊了。②帳號管理頁「商業閉環覆蓋（A→E）」——挑一個帳號，自動依它影片的目標層點亮 A認知→B品牌→C信任→D轉化→E組織，亮起代表這層有片、灰色代表還缺，讓你看出內容有沒有照閉環鋪滿。<br>
+    <b>v94：</b>把收集盤通關煙火改成從盤面正中央綻放；金色換成比較乾淨的香檳金、收到的格子底色提亮，不再有髒髒的感覺。<br>
     <b>v93：</b>收集盤收齊全部 13 格（通關）時，盤面會綻放一束金色與酒紅的小煙火慶祝一下（手機也看得到）。只有你親手點到通關才放，貼卡自動點亮不會亂放煙火。<br>
     <b>v92：</b>收集盤兩個升級。①「置頂」可以<b>一篇一篇打勾</b>了：貼文置頂①②③、影片置頂①②③，每給齊一篇（圖＋完整文案＋日期＋格式）就點一個小勾，給到第幾篇、還缺哪篇一眼就看到。②同一個收集盤<b>也放進「輸入影片」頁⑥</b>（你初期常一邊建新帳號一邊輸入，不用跳頁）；兩頁<b>同步同一份進度</b>，在哪一頁點亮都通（依@帳號記在本機）。<br>
     <b>v91：</b>三件全盤整理。①「帳號管理」最上面多了可收合的<b>「帳號建檔收集盤」</b>：照著一格一格收（帳號連結／主頁Bio／貼文格／影片格／精選動態／貼文置頂／影片置頂／發文頻率／報價），收到一格鑲一顆金鑽，五格必收收齊就提醒可送 AI、九格全收通關。每個帳號的進度各自記住，下次打開那個帳號還在。<b>貼帳號分析卡入庫後會自動點亮</b>對應格子。某一格 AI 做不好，可以點「單格重補」複製一段只重做那一格的提示詞。置頂也分清楚是<b>貼文置頂</b>還是<b>影片置頂</b>。②<b>防呆</b>：貼帳號分析卡的框會自己判斷你貼對沒——貼到「提示詞」本身、或貼到「影片歸類卡」，會跳出明確提示告訴你正確該貼哪一張、貼到哪裡，不再貼了沒反應。③<b>「帳號版面解析」預設收起來</b>了，不用再一直往下滑，要填這個帳號的 ICP／特點／報價時再點開。<br>
@@ -4508,5 +4530,54 @@ window.addEventListener('DOMContentLoaded', function(){
 })();
 </script>
 
+<script>
+(function(){
+  function $id(i){return document.getElementById(i);}
+  var VBfilled=function(id){ var el=$id(id); if(!el) return false; var v=(el.value||'').trim(); if(!v) return false; if(id==='f-cta-type'&&v==='無') return false; return true; };
+  function vbRefresh(){
+    var box=$id('vidBoardBox'); if(!box) return;
+    var cells=box.querySelectorAll('.vb-c'); var n=0, tot=cells.length;
+    cells.forEach(function(c){ var on=VBfilled(c.getAttribute('data-f')); if(on)n++;
+      c.style.background=on?'#FBF3E6':'#FAF7F3'; c.style.borderColor=on?'#E3C27A':'#E8E3DA'; c.style.color=on?'#A51820':'#C9B7A8'; c.style.fontWeight=on?'600':'400'; });
+    var cnt=$id('vbCount'); if(cnt)cnt.textContent=n+'/'+tot;
+    var bar=$id('vbBar'); if(bar)bar.style.width=Math.round(n/tot*100)+'%';
+    var st=$id('vbStatus'); if(st){ st.textContent=(n===0)?'先把上面欄位填一填':(n>=tot)?'✓ 資料齊了，可以送 AI 跑腳本／歸類':'還差 '+(tot-n)+' 格'; st.style.color=(n>=tot)?'#A51820':'#7A5A5E'; }
+  }
+  document.addEventListener('input',vbRefresh,true);
+  document.addEventListener('change',vbRefresh,true);
+
+  function bucket(g){ g=(g||''); if(/認知/.test(g))return'A'; if(/品牌/.test(g))return'B'; if(/信任/.test(g))return'C'; if(/轉化|轉換/.test(g))return'D'; if(/組織/.test(g))return'E'; var c=(g.charAt(0)||'').toUpperCase(); return 'ABCDE'.indexOf(c)>=0?c:''; }
+  function lbAccts(){ return (typeof accounts!=='undefined'&&accounts)?accounts:[]; }
+  function lbVideos(){ return (typeof videos!=='undefined'&&videos)?videos:[]; }
+  function lbEsc(x){ return (typeof esc==='function')?esc(x):String(x==null?'':x); }
+  function lbSync(){
+    var sel=$id('loopAcct'); if(!sel) return;
+    var cur=sel.value, ac=lbAccts();
+    var opt='<option value="">— 選一個帳號 —</option>';
+    ac.forEach(function(a){ opt+='<option value="'+lbEsc(a.id)+'">'+lbEsc(a.handle||a.name||a.id)+'</option>'; });
+    sel.innerHTML=opt; if(cur)sel.value=cur;
+    lbPaint();
+  }
+  function lbPaint(){
+    var box=$id('loopBoardBox'); if(!box) return;
+    var sel=$id('loopAcct'); var aid=sel?sel.value:'';
+    var counts={A:0,B:0,C:0,D:0,E:0};
+    if(aid){ lbVideos().forEach(function(v){ if(String(v.accountId)===String(aid)){ var b=bucket(v.goal); if(b)counts[b]++; } }); }
+    var cells=box.querySelectorAll('.lb-c'); var hit=0, miss=[];
+    cells.forEach(function(c){ var k=c.getAttribute('data-k'); var num=counts[k]||0; var on=!!aid&&num>0; if(on)hit++; else if(aid)miss.push(k);
+      c.style.background=on?'#FBF3E6':'#FAF7F3'; c.style.borderColor=on?'#E3C27A':'#E8E3DA'; c.style.color=on?'#A51820':'#C9B7A8'; c.style.fontWeight=on?'600':'400';
+      var ns=c.querySelector('.lb-n'); if(ns)ns.textContent=aid?String(num):''; });
+    var st=$id('lbStatus'); if(st){ if(!aid){st.textContent='先選一個帳號';st.style.color='#7A5A5E';}
+      else if(hit===0){st.textContent='這帳號還沒有已分目標層的影片';st.style.color='#7A5A5E';}
+      else if(hit>=5){st.textContent='✓ 五個目標層都鋪到了，閉環完整';st.style.color='#A51820';}
+      else {st.textContent='缺口：'+miss.join('、')+' 還沒有片';st.style.color='#7A5A5E';} }
+  }
+  window.lbSync=lbSync; window.lbPaint=lbPaint; window.vbRefresh=vbRefresh;
+  function wireLoop(){ var sel=$id('loopAcct'); if(sel&&!sel.__w){ sel.__w=1; sel.addEventListener('change',lbPaint); }
+    var bx=$id('loopBoardBox'); if(bx&&!bx.__w){ bx.__w=1; bx.addEventListener('toggle',function(){ if(bx.open) lbSync(); }); } }
+  document.addEventListener('DOMContentLoaded',function(){ wireLoop(); vbRefresh(); lbSync(); });
+  setTimeout(function(){ wireLoop(); vbRefresh(); lbSync(); },350);
+})();
+</script>
 </body>
 </html>
