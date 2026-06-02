@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="color-scheme" content="light only">
 <meta name="supported-color-schemes" content="light">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v101 (版本號僅留註解，不顯示於畫面)
+<!-- ATELIER 影片診斷工作台 · 內部版本 v102 (版本號僅留註解，不顯示於畫面)
+     v102 更新：澄清備份其實是「影片＋帳號」一起打包（功能本就如此）。①備份卡標題改「資料備份與還原（影片＋帳號 一起備份）」、按鈕改「下載備份檔（影片＋帳號）」。②影片庫頁也加一顆同樣的「下載備份檔（影片＋帳號）」鍵（btnBackup2），接到同一個 doBackup，讓使用者在影片庫頁也能直接備份、不再以為影片沒被備份。
      v101 更新：①「資料備份與還原」卡預設改為收合（原本設成展開，卡在帳號管理頁最上面佔掉一大塊）。②備份功能加雙保險：記憶體中的 videos/accounts 若為空，改從 localStorage（atelier_videos／atelier_accounts）讀取後備份，避免抓不到影片庫。註：備份本就含影片庫（videos），先前看起來只有帳號是因為當下影片庫為 0。
      v100 更新：把 v99 的「多支影片防呆規則」改成符合聊天介面現實的版本——介面會把圖片全排在最上面、文字在最下面，無法把文字打在每張圖正下方。改為：文字用【圖N】對應上方圖片「由左到右、由上到下」的順序；數量對不上要先停下來問；每張卡開頭先回報對應供使用者核對；數字文案以文字為準、封面只是縮圖可能與內容/服裝不符。GEM_PROMPT、PROMPT_C 兩支同步更新。
      v99 更新：①GEM_PROMPT（Gemini 歸類卡）比照 v98 加上「把整張歸類卡另外放純文字區塊/做成可下載 .txt」存檔指令。②GEM_PROMPT 與 PROMPT_C 都加上「多支影片防呆規則」：用【影片N】編號、圖片順序＝編號順序、不跨片配對、數字與文案以文字為準、封面只是縮圖可能與內容/服裝不符、一支一支各出一張卡並標明編號。解決一次丟多支封面時 AI 把封面/觀看/文案配錯的問題。
@@ -595,7 +596,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v101</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v102</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -1313,6 +1314,7 @@ if('serviceWorker' in navigator){
     <label style="display:none"><input type="checkbox" id="libSelAll"></label>
   </div>
   <div class="tip" style="margin:-2px 0 10px;font-size:11px">每支影片左上有勾選框＝點一下就選取；「全選」選的是目前顯示出來的。選好可「產生腳本範本／並排對比／匯出選取」；刪除在清單最下面的「刪除選取」。</div>
+  <div style="margin:2px 0 12px;display:flex;align-items:center;gap:8px;flex-wrap:wrap"><button type="button" id="btnBackup2" style="display:inline-block;padding:8px 14px;border-radius:8px;border:1px solid #A51820;background:#A51820;color:#fff;font-family:inherit;font-size:12.5px;cursor:pointer">⤓ 下載備份檔（影片＋帳號）</button><span style="font-size:11px;color:#7A5A5E">一份檔案同時存影片和帳號</span></div>
   <div id="libCompareResult" style="margin-top:14px"></div>
   <div id="libList"></div>
   <div id="libBulkBottom" style="display:flex;justify-content:flex-end;margin-top:16px">
@@ -1422,10 +1424,10 @@ if('serviceWorker' in navigator){
   </div>
 
   <details class="paste-card" style="margin-bottom:14px;border:1px solid var(--gold-soft)" id="backupBox">
-    <summary style="cursor:pointer;font-weight:600;color:#5C0F14">資料備份與還原（建議定期備份）</summary>
+    <summary style="cursor:pointer;font-weight:600;color:#5C0F14">資料備份與還原（影片＋帳號 一起備份）</summary>
     <div style="padding:10px 2px 4px">
       <div style="font-size:12px;color:#7A5A5E;margin-bottom:10px">把目前所有帳號與影片存成一個備份檔，下載到手機或電腦。檔案放著不會被瀏覽器或雲端清掉，萬一資料不見就用它一鍵還原。建議每隔一陣子備份一次。</div>
-      <button type="button" id="btnBackup" style="display:inline-block;padding:10px 18px;border-radius:8px;border:1px solid #A51820;background:#A51820;color:#fff;font-family:inherit;font-size:13px;cursor:pointer">⤓ 下載備份檔</button>
+      <button type="button" id="btnBackup" style="display:inline-block;padding:10px 18px;border-radius:8px;border:1px solid #A51820;background:#A51820;color:#fff;font-family:inherit;font-size:13px;cursor:pointer">⤓ 下載備份檔（影片＋帳號）</button>
       <div style="font-size:12px;color:#7A5A5E;margin:14px 0 6px">從備份檔還原（會用備份檔內容取代目前資料）：</div>
       <input type="file" id="fileRestore" accept="application/json,.json" style="font-family:inherit;font-size:12.5px;width:100%;max-width:100%">
       <button type="button" id="btnRestore" style="display:inline-block;margin-top:8px;padding:9px 16px;border-radius:8px;border:1px solid #E8E3DA;background:#fff;color:#5C0F14;font-family:inherit;font-size:13px;cursor:pointer">用選好的檔案還原</button>
@@ -2794,7 +2796,8 @@ function renderManual(){
   <div class="form-card" style="border-left:3px solid var(--gold)">
     <div class="stitle" style="font-size:15px;color:var(--rouge)">更新紀錄 · 還沒做的</div>
     <p style="font-size:13px;color:var(--text);line-height:1.85;margin-top:8px">
-    <b>v101（這版）：</b>「資料備份」卡改成預設收合（帳號管理頂端不再被它佔一大塊）；備份加雙保險，記憶體沒資料就改抓本機存檔，確保影片庫也會被備份。<br>
+    <b>v102（這版）：</b>講清楚＋更方便：備份本來就是「影片＋帳號一起」打包成同一個檔。把標題與按鈕都標明「影片＋帳號」，並在影片庫頁也加一顆一樣的下載備份鍵，你在哪一頁都能備份。<br>
+    <b>v101：</b>「資料備份」卡改成預設收合（帳號管理頂端不再被它佔一大塊）；備份加雙保險，記憶體沒資料就改抓本機存檔，確保影片庫也會被備份。<br>
     <b>v100：</b>把多支影片防呆規則改成符合聊天介面現實：圖片只能全部排在上面、文字在下面，無法穿插。改用【圖N】對應上方圖片由左到右／由上到下的順序，數量對不上要先停下來問，每張卡開頭先回報對應讓你核對。<br>
     <b>v99：</b>①Gemini 那支歸類卡提示詞也加上「卡片另外存成可下載檔/純文字區塊」。②Gemini 與 Claude 兩支都加「多支影片防呆規則」：用【影片N】編號、圖序＝編號序、不跨片配對、數字文案以文字為準、封面只是縮圖可能跟內容不符，一支一支各出一張卡——解決一次丟多支封面被配錯的問題。<br>
     <b>v98：</b>貼給 Claude 的歸類卡提示詞（PROMPT_C）結尾加一句：請 Claude 最後把整張歸類卡也另存成一份可下載的 .txt 檔給你存檔；卡片文字照樣會給你貼回工作台。<br>
@@ -4665,7 +4668,7 @@ window.addEventListener('DOMContentLoaded', function(){
     };
     fr.readAsText(f.files[0]);
   }
-  function wireBackup(){ var b=$b('btnBackup'); if(b&&!b.__w){b.__w=1;b.addEventListener('click',doBackup);} var r=$b('btnRestore'); if(r&&!r.__w){r.__w=1;r.addEventListener('click',doRestore);} }
+  function wireBackup(){ var b=$b('btnBackup'); if(b&&!b.__w){b.__w=1;b.addEventListener('click',doBackup);} var b2=$b('btnBackup2'); if(b2&&!b2.__w){b2.__w=1;b2.addEventListener('click',doBackup);} var r=$b('btnRestore'); if(r&&!r.__w){r.__w=1;r.addEventListener('click',doRestore);} }
   document.addEventListener('DOMContentLoaded',wireBackup);
   setTimeout(wireBackup,400);
 })();
