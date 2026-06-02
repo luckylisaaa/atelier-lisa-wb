@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="color-scheme" content="light only">
 <meta name="supported-color-schemes" content="light">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v103 (版本號僅留註解，不顯示於畫面)
+<!-- ATELIER 影片診斷工作台 · 內部版本 v104 (版本號僅留註解，不顯示於畫面)
+     v104 更新（客戶交付三階段＋診斷書系統）：新增「客戶交付」頁籤與 view-deliver 頁。選一個客戶帳號後，三個階段各一鍵產生診斷書提示詞——①IP定位診斷書（含判斷客戶落在商業閉環 A→E 哪一層的顧問判斷＋一頁式定位表）②腳本大綱診斷書（主題方向＋一頁式大綱表，對應 G1–G5／A–E）③腳本診斷書（可拍攝完整腳本＋設計理由）。三份都自動帶入影片庫實證背書（已拆解 N 帳號／N 影片、同產業同身份數），並要求 AI 另存成可下載 .txt。沿用 accProfileBlock／copyVal，路由用既有 switchTo。
      v103 更新（版面瘦身·桌機＋手機）：新增一段瘦身樣式，統一縮小各頁留白與元件高度——頁首 .page-head padding 與標題字級縮小、.view 上下 padding 縮小、影片庫統計卡 .sumcard padding/數字縮小、.searchbar 與 .filterrow margin 縮小、帳號管理那幾張 .paste-card padding 18→13、margin 16→10。純縮留白不動結構，讓影片／帳號更快出現。
      v102 更新：澄清備份其實是「影片＋帳號」一起打包（功能本就如此）。①備份卡標題改「資料備份與還原（影片＋帳號 一起備份）」、按鈕改「下載備份檔（影片＋帳號）」。②影片庫頁也加一顆同樣的「下載備份檔（影片＋帳號）」鍵（btnBackup2），接到同一個 doBackup，讓使用者在影片庫頁也能直接備份、不再以為影片沒被備份。
      v101 更新：①「資料備份與還原」卡預設改為收合（原本設成展開，卡在帳號管理頁最上面佔掉一大塊）。②備份功能加雙保險：記憶體中的 videos/accounts 若為空，改從 localStorage（atelier_videos／atelier_accounts）讀取後備份，避免抓不到影片庫。註：備份本就含影片庫（videos），先前看起來只有帳號是因為當下影片庫為 0。
@@ -613,7 +614,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v103</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v104</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -626,6 +627,7 @@ if('serviceWorker' in navigator){
   <div class="tab" data-view="library"><svg class="tic" viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="14" rx="2"/><path d="M4 10h16" stroke-linecap="round"/></svg>影片庫<span class="badge" id="libBadge">0</span></div>
   <div class="tab" data-view="accounts"><svg class="tic" viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-3.9 3.1-7 7-7s7 3.1 7 7" stroke-linecap="round"/></svg>帳號管理<span class="badge" id="accBadge">0</span></div>
   <div class="tab" data-view="compare"><svg class="tic" viewBox="0 0 24 24"><rect x="4" y="4" width="7" height="16" rx="1.5"/><rect x="13" y="4" width="7" height="16" rx="1.5"/><path d="M11 10h2M11 14h2" stroke-linecap="round"/></svg>版面對照</div>
+  <div class="tab" data-view="deliver"><svg class="tic" viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6z" stroke-linejoin="round"/><path d="M9 12.5l2 2 4-4" stroke-linecap="round" stroke-linejoin="round"/></svg>客戶交付</div>
   <div class="tab" data-view="search"><svg class="tic" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4-4" stroke-linecap="round"/></svg>搜尋</div>
   <div class="tab" data-view="gaps"><svg class="tic" viewBox="0 0 24 24"><path d="M12 4l8 14H4z" stroke-linejoin="round"/><path d="M12 10v3M12 16v.5" stroke-linecap="round"/></svg>缺口<span class="badge" id="gapBadge" style="background:var(--gold-dark)">0</span></div>
   <div class="tab" data-view="tree"><svg class="tic" viewBox="0 0 24 24"><circle cx="12" cy="6" r="2.4"/><circle cx="6" cy="18" r="2.4"/><circle cx="18" cy="18" r="2.4"/><path d="M12 8.4v3.6M12 12l-5 3.8M12 12l5 3.8" stroke-linecap="round"/></svg>主題導覽</div>
@@ -1658,6 +1660,44 @@ if('serviceWorker' in navigator){
       <button class="btn btn-ghost" id="optClear">清除勾選</button>
     </div>
   </div>
+</div>
+
+<!-- 客戶交付三階段（v104） -->
+<div class="view" id="view-deliver">
+  <div class="page-head">
+    <div class="ph-en">CLIENT DELIVERY · 客戶交付</div>
+    <div class="ph-title">客戶交付三階段</div>
+    <div class="ph-sub">順著你的服務流程：IP定位 → 腳本大綱 → 腳本，每階段一鍵產出可交給客戶的「診斷書」提示詞，並自動帶入影片庫的實證背書。</div>
+  </div>
+
+  <div class="card" style="margin-bottom:14px">
+    <div style="font-size:13px;font-weight:600;color:var(--ink);margin-bottom:6px">先選這次要服務的客戶帳號：</div>
+    <select id="dlClient" style="width:100%;max-width:420px;padding:9px 11px;border:1px solid var(--border);border-radius:8px;background:#fff;color:var(--ink);font-family:inherit;font-size:14px"></select>
+    <div style="font-size:11.5px;color:var(--sub);margin-top:8px">客戶資料越完整（貼過帳號分析卡、拆解過影片），診斷書越準。沒有客戶帳號就先到「帳號管理」新增。</div>
+  </div>
+
+  <div class="card" style="margin-bottom:12px;border-left:3px solid var(--rouge)">
+    <div class="ph-en" style="margin-bottom:3px">STAGE 1</div>
+    <div style="font-size:15px;font-weight:800;color:var(--rouge);margin-bottom:4px">① IP 定位診斷書</div>
+    <div class="ph-sub" style="margin:0 0 12px">釐清帳號定位、目標受眾、一句話定位、人群／產品／人設，並判斷客戶現在落在商業閉環 A→E 哪一層、下一步往哪推。這是你交給客戶的第一份。</div>
+    <button class="btn btn-go" id="dlIP" style="width:auto;padding:10px 18px">產生 IP定位診斷書 提示詞</button>
+  </div>
+
+  <div class="card" style="margin-bottom:12px;border-left:3px solid var(--gold-dark)">
+    <div class="ph-en" style="margin-bottom:3px">STAGE 2</div>
+    <div style="font-size:15px;font-weight:800;color:var(--gold-dark);margin-bottom:4px">② 腳本大綱診斷書</div>
+    <div class="ph-sub" style="margin:0 0 12px">依定位給出主題方向與一頁式大綱表（每個主題對應漏斗類型 G1–G5、目標層 A–E、人群痛點、Hook 方向），交給客戶確認方向。</div>
+    <button class="btn btn-go" id="dlOutline" style="width:auto;padding:10px 18px">產生 腳本大綱診斷書 提示詞</button>
+  </div>
+
+  <div class="card" style="margin-bottom:12px;border-left:3px solid var(--primary-deep)">
+    <div class="ph-en" style="margin-bottom:3px">STAGE 3</div>
+    <div style="font-size:15px;font-weight:800;color:var(--primary-deep);margin-bottom:4px">③ 腳本診斷書</div>
+    <div class="ph-sub" style="margin:0 0 12px">依已確認的主題，產出可直接拍攝的完整腳本（Hook／分鏡逐字／畫面／CTA），並附設計理由讓客戶安心。</div>
+    <button class="btn btn-go" id="dlScript" style="width:auto;padding:10px 18px">產生 腳本診斷書 提示詞</button>
+  </div>
+
+  <div class="tip" style="font-size:11.5px;margin-top:6px">產生後會自動複製，貼到 ChatGPT／Claude／Gemini 即可。提示詞已要求 AI 把診斷書另外做成可下載的 .txt 檔，方便你存檔與交付。</div>
 </div>
 
 <!-- 說明書 -->
@@ -2813,7 +2853,8 @@ function renderManual(){
   <div class="form-card" style="border-left:3px solid var(--gold)">
     <div class="stitle" style="font-size:15px;color:var(--rouge)">更新紀錄 · 還沒做的</div>
     <p style="font-size:13px;color:var(--text);line-height:1.85;margin-top:8px">
-    <b>v103（這版）：</b>版面瘦身（桌機＋手機都有效）：縮小頁首、影片庫統計卡、搜尋列、篩選列、帳號管理卡片的留白與高度，讓影片／帳號更快出現、整體更精實。<br>
+    <b>v104（這版）：</b>新增「客戶交付」頁：選客戶後，三階段一鍵產生診斷書提示詞——①IP定位診斷書（含 A→E 落點判斷＋定位表）②腳本大綱診斷書（主題＋大綱表）③腳本診斷書（可拍攝腳本）。都自動帶入你影片庫的實證數字當背書，並要求 AI 另存成 .txt 方便交付。<br>
+    <b>v103：</b>版面瘦身（桌機＋手機都有效）：縮小頁首、影片庫統計卡、搜尋列、篩選列、帳號管理卡片的留白與高度，讓影片／帳號更快出現、整體更精實。<br>
     <b>v102：</b>講清楚＋更方便：備份本來就是「影片＋帳號一起」打包成同一個檔。把標題與按鈕都標明「影片＋帳號」，並在影片庫頁也加一顆一樣的下載備份鍵，你在哪一頁都能備份。<br>
     <b>v101：</b>「資料備份」卡改成預設收合（帳號管理頂端不再被它佔一大塊）；備份加雙保險，記憶體沒資料就改抓本機存檔，確保影片庫也會被備份。<br>
     <b>v100：</b>把多支影片防呆規則改成符合聊天介面現實：圖片只能全部排在上面、文字在下面，無法穿插。改用【圖N】對應上方圖片由左到右／由上到下的順序，數量對不上要先停下來問，每張卡開頭先回報對應讓你核對。<br>
@@ -4689,6 +4730,97 @@ window.addEventListener('DOMContentLoaded', function(){
   function wireBackup(){ var b=$b('btnBackup'); if(b&&!b.__w){b.__w=1;b.addEventListener('click',doBackup);} var b2=$b('btnBackup2'); if(b2&&!b2.__w){b2.__w=1;b2.addEventListener('click',doBackup);} var r=$b('btnRestore'); if(r&&!r.__w){r.__w=1;r.addEventListener('click',doRestore);} }
   document.addEventListener('DOMContentLoaded',wireBackup);
   setTimeout(wireBackup,400);
+})();
+</script>
+<script>
+(function(){
+  function G(i){return document.getElementById(i);}
+  function populateDlClient(){
+    var sel=G('dlClient'); if(!sel) return; var cur=sel.value;
+    var has=(typeof accounts!=='undefined'&&accounts&&accounts.length);
+    if(!has){ sel.innerHTML='<option value="">（尚無帳號 — 先到帳號管理新增）</option>'; return; }
+    sel.innerHTML='<option value="">— 請選擇客戶帳號 —</option>'+accounts.map(function(a){
+      var label=(a.handle||'?')+(a.jobTitle?'（'+a.jobTitle+'）':'');
+      return '<option value="'+a.id+'">'+((typeof esc==='function')?esc(label):label)+'</option>';
+    }).join('');
+    if(cur) sel.value=cur;
+  }
+  window.populateDlClient=populateDlClient;
+  function getC(){
+    var id=(G('dlClient')||{value:''}).value;
+    if(!id){ if(typeof toast==='function') toast('先選一個客戶帳號'); return null; }
+    var c=(typeof accounts!=='undefined'&&accounts)?accounts.find(function(a){return a.id===id;}):null;
+    if(!c){ if(typeof toast==='function') toast('找不到該客戶帳號'); return null; }
+    return c;
+  }
+  function head(c){ return '@'+String(c.handle||'?').replace(/^@/,'')+(c.displayName?'（'+c.displayName+'）':'')+(c.jobTitle?'／'+c.jobTitle:'')+(c.industry?'／'+c.industry:''); }
+  function prof(c){ try{ var b=(typeof accProfileBlock==='function')?accProfileBlock(c):[]; return (b&&b.length)?b.join('\n'):'（這個客戶目前資料較少，請依職稱／產業合理推斷，並在診斷書中標明哪些是推斷、建議客戶補哪些資料。）'; }catch(e){ return '（客戶資料讀取略過）'; } }
+  function evi(c){
+    var aN=(typeof accounts!=='undefined'&&accounts)?accounts.length:0;
+    var vN=(typeof videos!=='undefined'&&videos)?videos.length:0;
+    var ind=c&&c.industry, job=c&&c.jobTitle;
+    var sInd=(ind&&typeof accounts!=='undefined'&&accounts)?accounts.filter(function(a){return a.industry===ind;}).length:0;
+    var sJob=(job&&typeof accounts!=='undefined'&&accounts)?accounts.filter(function(a){return a.jobTitle===job;}).length:0;
+    var s='【ATELIER 資料庫實證背書】本診斷立基於 ATELIER 已系統化拆解的 '+aN+' 個創作者帳號、'+vN+' 支短影音的實證資料';
+    if(sInd>1) s+='，其中與本客戶同產業（'+ind+'）'+sInd+' 個';
+    if(sJob>1) s+='、同身份（'+job+'）'+sJob+' 個';
+    s+='。請在診斷書中善用這個實證基礎，讓建議顯得有依據、非憑空臆測。';
+    return s;
+  }
+  function buildIP(){
+    var c=getC(); if(!c) return;
+    var p='【角色】你是 ATELIER 短影音內容營運顧問。請為我的客戶產出一份「IP 定位診斷書」，這是要正式交給客戶的第一份交付文件，語氣專業、有條理、讓客戶看了有信心。\n\n'
+     +'【我的客戶】'+head(c)+'\n'+prof(c)+'\n\n'
+     +evi(c)+'\n\n'
+     +'【商業閉環 A→E（判斷依據）】A 認知（被看見）→ B 品牌（被記得）→ C 信任（被相信）→ D 轉化（被購買）→ E 組織（被裂變）。\n\n'
+     +'【請產出 IP 定位診斷書，包含以下段落】\n'
+     +'1. 帳號現況快照：用 3–5 句說明這個客戶目前是誰、做什麼、現在的內容與帳號狀態。\n'
+     +'2. 商業閉環定位判斷：明確指出客戶「現在落在 A→E 的哪一層」、理由、以及下一步該往哪一層推進（這是顧問判斷，要果斷且有依據）。\n'
+     +'3. 目標受眾：主要受眾是誰、他們的痛點與常見誤區。\n'
+     +'4. 一句話定位：給一句清楚、好記、能對外講的帳號定位。\n'
+     +'5. 三大要素：人群（痛點/誤區）、產品（可被翻成賣點的硬資產／資歷）、人設（身分/理念）各條列。\n'
+     +'6. 內容主軸方向：建議主打哪些漏斗類型（G1 打破認知／G2 建立吸引／G3 建立思想／G4 建立實用／G5 信任轉化），並說明為什麼適合這個客戶。\n'
+     +'7. 一頁式定位表：把重點濃縮成一個乾淨表格（欄位：定位一句話／目標受眾／人群痛點／核心賣點／人設關鍵字／現在閉環層／下一步），方便直接交給客戶。\n\n'
+     +'【規則】\n- 專業術語一律翻成客戶與其受眾聽得懂的白話。\n- 判斷要有依據（善用上面的資料庫背書與客戶現況），不要空泛。\n- 用顧問口吻直接給結論，不要反問。\n- 最後請把整份 IP 定位診斷書「另外」做成一份可下載的純文字檔 .txt（檔名 IP定位診斷書_客戶_YYYY-MM-DD.txt）給我，方便存檔與交付。';
+    if(typeof copyVal==='function') copyVal(p,'IP定位診斷書提示詞'); else if(navigator.clipboard) navigator.clipboard.writeText(p);
+  }
+  function buildOutline(){
+    var c=getC(); if(!c) return;
+    var p='【角色】你是 ATELIER 短影音內容營運顧問。請為我的客戶產出一份「腳本大綱診斷書」，這是 IP 定位之後、正式寫腳本之前，要交給客戶確認方向的文件。\n\n'
+     +'【我的客戶】'+head(c)+'\n'+prof(c)+'\n\n'
+     +evi(c)+'\n\n'
+     +'【請產出腳本大綱診斷書，包含】\n'
+     +'1. 內容策略總綱：依客戶定位，這一個內容週期要達成什麼（要把帳號往商業閉環 A→E 的哪一層推進）。\n'
+     +'2. 主題方向 6–10 個：每個主題給——主題名稱／切角／打中的人群痛點或誤區／屬於哪個漏斗類型 G1–G5／這支的目的（對應 A–E 哪層）／一句 Hook 方向。\n'
+     +'3. 週期分佈建議：若做 10 支，建議各漏斗類型各幾支、順序怎麼排（先 G 幾、後 G 幾），讓帳號從認知一路鋪到信任轉化。\n'
+     +'4. 一頁式大綱表：把主題清單做成乾淨表格（欄位：編號／主題／漏斗類型 G／目標層 A–E／人群痛點／Hook 方向），方便交給客戶勾選確認。\n\n'
+     +'【規則】\n- 主題要貼客戶真實職業與受眾，不要泛泛。\n- 每個主題都要能對應到漏斗類型與閉環目標層。\n- 用顧問口吻直接給。\n- 最後把整份「另外」做成可下載的 .txt（檔名 腳本大綱診斷書_客戶_YYYY-MM-DD.txt）給我。';
+    if(typeof copyVal==='function') copyVal(p,'腳本大綱診斷書提示詞'); else if(navigator.clipboard) navigator.clipboard.writeText(p);
+  }
+  function buildScript(){
+    var c=getC(); if(!c) return;
+    var p='【角色】你是 ATELIER 短影音內容營運顧問與腳本師。請依已確認的主題，為我的客戶產出「腳本診斷書」——可直接拍攝的完整短影音腳本，並附上每個設計的理由（讓客戶理解為什麼這樣寫）。\n\n'
+     +'【我的客戶】'+head(c)+'\n'+prof(c)+'\n\n'
+     +evi(c)+'\n\n'
+     +'【開始前先確認（若我已在訊息給了就直接做，不要重複問）】要寫哪一個主題？目標漏斗類型 G1–G5 與目標層 A–E？影片長度約幾秒？\n\n'
+     +'【每支腳本請產出】\n'
+     +'1. 一句話主題與目的（對應 G 幾、A–E 哪層）。\n'
+     +'2. Hook（0–3 秒）：給 2–3 個可選開頭，標明用的是哪種鉤子（痛點／反差／疑問／數據…）。\n'
+     +'3. 完整腳本：分鏡逐段，含【口播逐字】【畫面/動作建議】【字幕重點】。\n'
+     +'4. CTA：收尾引導，對應這支要推進的閉環目標層 A–E。\n'
+     +'5. 設計理由：簡短說明這支為什麼這樣寫（可引用資料庫實證邏輯），讓客戶安心。\n\n'
+     +'【規則】\n- 口播要口語、好唸，符合客戶人設語氣。\n- 專業術語翻白話；若是醫師／律師等專業，注意合規與用語分寸。\n- 用顧問＋腳本師口吻直接給。\n- 最後把整份「另外」做成可下載的 .txt（檔名 腳本診斷書_客戶_主題_YYYY-MM-DD.txt）給我。';
+    if(typeof copyVal==='function') copyVal(p,'腳本診斷書提示詞'); else if(navigator.clipboard) navigator.clipboard.writeText(p);
+  }
+  function wireDeliver(){
+    [['dlIP',buildIP],['dlOutline',buildOutline],['dlScript',buildScript]].forEach(function(x){
+      var b=G(x[0]); if(b&&!b.__w){ b.__w=1; b.addEventListener('click',x[1]); }
+    });
+    populateDlClient();
+  }
+  document.addEventListener('DOMContentLoaded',wireDeliver);
+  setTimeout(wireDeliver,500);
+  var t=document.querySelector('.tab[data-view="deliver"]'); if(t) t.addEventListener('click',function(){ setTimeout(populateDlClient,30); });
 })();
 </script>
 </body>
