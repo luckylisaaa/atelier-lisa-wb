@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="color-scheme" content="light only">
 <meta name="supported-color-schemes" content="light">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v96 (版本號僅留註解，不顯示於畫面)
+<!-- ATELIER 影片診斷工作台 · 內部版本 v97 (版本號僅留註解，不顯示於畫面)
+     v97 更新（資料保護）：①帳號管理頁最上面新增「資料備份與還原」卡：可一鍵把所有影片＋帳號下載成 JSON 備份檔，也可從備份檔一鍵還原（還原後自動同步回雲端）。②兩道防呆：_fbPush／_accFbPush 偵測到空白（0 筆）就不上傳，避免空白蓋掉雲端；onSnapshot 收到雲端為空、但本機有資料時，不被空白覆蓋，反而把本機推回雲端修復。根因：手機瀏覽器清掉本機資料後，工具又把空白同步上雲端蓋掉正本——此版兩端都擋住空白覆蓋。
      v96 更新：新增「登出」按鈕（畫面右下角、同步燈上方）。登入創辦人帳號後才顯示；按下會先解除雲端訂閱再 signOut，回到登入頁，可重新登入同一帳號讓雲端資料再同步回來。原本沒有任何使用者可按的登出鍵。
      v95 更新：把收集盤概念延伸出兩個新盤。①「這支片資料收集盤」放在輸入頁「⑤ 漏斗階段」上方：標題/帳號/階段/主題/命根/呈現/目標層A–E/CTA 這 8 個關鍵欄位，填一格亮一格、即時更新進度，收滿提示可送 AI。②「商業閉環覆蓋（A→E）」放在帳號管理頁：挑一個帳號，自動掃它的影片，依每支片的目標層把 A認知/B品牌/C信任/D轉化/E組織 五格點亮（顯示各層支數、列出缺口），讓你一眼看出這個帳號內容有沒有照商業閉環鋪滿。兩盤皆為靜態格子＋JS 只改樣式（手機可顯示）。
      v94 更新：①收集盤通關煙火改成從盤面中央綻放（原本固定在上方、位置跑掉）。②把收集盤的金色從偏濁的 #D4A574 換成更乾淨的香檳金 #E3C27A，收到的格子奶油底提亮為 #FBF3E6，看起來不再髒髒的（品牌主色變數 --gold 維持不變，只動收集盤）。
@@ -590,7 +591,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v96</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v97</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -1415,6 +1416,18 @@ if('serviceWorker' in navigator){
   <div class="card" style="margin-bottom:14px">
     <button class="btn btn-go" id="acc-add-btn" style="width:100%"><svg viewBox="0 0 24 24" style="width:16px;height:16px;vertical-align:-3px;margin-right:6px"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg>新增帳號</button>
   </div>
+
+  <details class="paste-card" style="margin-bottom:14px;border:1px solid var(--gold-soft)" id="backupBox" open>
+    <summary style="cursor:pointer;font-weight:600;color:#5C0F14">資料備份與還原（建議定期備份）</summary>
+    <div style="padding:10px 2px 4px">
+      <div style="font-size:12px;color:#7A5A5E;margin-bottom:10px">把目前所有帳號與影片存成一個備份檔，下載到手機或電腦。檔案放著不會被瀏覽器或雲端清掉，萬一資料不見就用它一鍵還原。建議每隔一陣子備份一次。</div>
+      <button type="button" id="btnBackup" style="display:inline-block;padding:10px 18px;border-radius:8px;border:1px solid #A51820;background:#A51820;color:#fff;font-family:inherit;font-size:13px;cursor:pointer">⤓ 下載備份檔</button>
+      <div style="font-size:12px;color:#7A5A5E;margin:14px 0 6px">從備份檔還原（會用備份檔內容取代目前資料）：</div>
+      <input type="file" id="fileRestore" accept="application/json,.json" style="font-family:inherit;font-size:12.5px;width:100%;max-width:100%">
+      <button type="button" id="btnRestore" style="display:inline-block;margin-top:8px;padding:9px 16px;border-radius:8px;border:1px solid #E8E3DA;background:#fff;color:#5C0F14;font-family:inherit;font-size:13px;cursor:pointer">用選好的檔案還原</button>
+      <div id="backupMsg" style="margin-top:10px;font-size:12.5px;color:#7A5A5E"></div>
+    </div>
+  </details>
 
   <details class="paste-card" style="margin-bottom:14px;border:1px solid var(--gold-soft)" id="filingBoardBox">
     <summary style="cursor:pointer;font-weight:700;color:var(--rouge);list-style:none;font-size:14px">帳號建檔收集盤（點開 · 一格一格收 · 收齊再送 AI · 進度會記住）</summary>
@@ -2777,7 +2790,8 @@ function renderManual(){
   <div class="form-card" style="border-left:3px solid var(--gold)">
     <div class="stitle" style="font-size:15px;color:var(--rouge)">更新紀錄 · 還沒做的</div>
     <p style="font-size:13px;color:var(--text);line-height:1.85;margin-top:8px">
-    <b>v96（這版）：</b>新增「登出」按鈕（右下角、同步狀態燈上方），登入後才會出現；用來換帳號或重新登入把雲端資料同步回來。<br>
+    <b>v97（這版）：</b>資料保護。帳號管理頁新增「資料備份與還原」：一鍵下載備份檔、一鍵從備份檔還原（會同步回雲端）。並加兩道防呆：空白不會再被上傳蓋掉雲端，雲端是空的也不會蓋掉你本機既有的資料。<br>
+    <b>v96：</b>新增「登出」按鈕（右下角、同步狀態燈上方），登入後才會出現；用來換帳號或重新登入把雲端資料同步回來。<br>
     <b>v95：</b>新增兩個收集盤：①輸入頁「這支片資料收集盤」——標題/帳號/階段/主題/命根/呈現/目標層/CTA 填一格亮一格，收滿代表這支片資料齊了。②帳號管理頁「商業閉環覆蓋（A→E）」——挑一個帳號，自動依它影片的目標層點亮 A認知→B品牌→C信任→D轉化→E組織，亮起代表這層有片、灰色代表還缺，讓你看出內容有沒有照閉環鋪滿。<br>
     <b>v94：</b>把收集盤通關煙火改成從盤面正中央綻放；金色換成比較乾淨的香檳金、收到的格子底色提亮，不再有髒髒的感覺。<br>
     <b>v93：</b>收集盤收齊全部 13 格（通關）時，盤面會綻放一束金色與酒紅的小煙火慶祝一下（手機也看得到）。只有你親手點到通關才放，貼卡自動點亮不會亂放煙火。<br>
@@ -4394,10 +4408,13 @@ function _fbSubscribe(){
       if(doc.exists){
         var d=doc.data();
         if(d && Array.isArray(d.videos)){
-          videos=d.videos;
-          try{ localStorage.setItem(ATELIER_LS_KEY, JSON.stringify(videos)); }catch(e){}
-          if(typeof renderAll==='function') renderAll();
-          _fbStatus('connected','已同步 '+videos.length+' 筆');
+          if(d.videos.length===0 && videos && videos.length>0){ _fbPush(); }
+          else {
+            videos=d.videos;
+            try{ localStorage.setItem(ATELIER_LS_KEY, JSON.stringify(videos)); }catch(e){}
+            if(typeof renderAll==='function') renderAll();
+            _fbStatus('connected','已同步 '+videos.length+' 筆');
+          }
         }
       } else {
         // 雲端還沒有資料 → 把本機現有的推上去當第一筆
@@ -4417,10 +4434,13 @@ function _accFbSubscribe(){
       if(doc.exists){
         var d=doc.data();
         if(d && Array.isArray(d.accounts)){
-          accounts=d.accounts;
-          try{ localStorage.setItem(ACC_LS_KEY, JSON.stringify(accounts)); }catch(e){}
-          renderAccounts(); renderComparePicker();
-          if($('accBadge')) $('accBadge').textContent=accounts.length;
+          if(d.accounts.length===0 && accounts && accounts.length>0){ _accFbPush(); }
+          else {
+            accounts=d.accounts;
+            try{ localStorage.setItem(ACC_LS_KEY, JSON.stringify(accounts)); }catch(e){}
+            renderAccounts(); renderComparePicker();
+            if($('accBadge')) $('accBadge').textContent=accounts.length;
+          }
         }
       } else {
         _accFbPush();
@@ -4429,6 +4449,7 @@ function _accFbSubscribe(){
 }
 function _accFbPush(){
   if(!_fbReady || !_fbDB) return;
+  if(!accounts || accounts.length===0){ return; }
   _fbDB.collection(ACC_COLLECTION).doc(ATELIER_DOC_ID)
     .set({ accounts: accounts, updatedAt: Date.now(), count: accounts.length }, {merge:true})
     .catch(function(err){ console.error('[ATELIER FB acc push]', err); });
@@ -4437,6 +4458,7 @@ function _accFbPush(){
 /* ---- 5) 把目前 videos 寫上雲端 ---- */
 function _fbPush(){
   if(!_fbReady || !_fbDB) return;
+  if(!videos || videos.length===0){ _fbStatus('local','本機模式（空白不上傳，保護雲端）'); return; }
   _fbStatus('syncing','儲存中…');
   _fbDB.collection(ATELIER_COLLECTION).doc(ATELIER_DOC_ID)
     .set({ videos: videos, updatedAt: Date.now(), count: videos.length }, {merge:true})
@@ -4594,6 +4616,49 @@ window.addEventListener('DOMContentLoaded', function(){
     var bx=$id('loopBoardBox'); if(bx&&!bx.__w){ bx.__w=1; bx.addEventListener('toggle',function(){ if(bx.open) lbSync(); }); } }
   document.addEventListener('DOMContentLoaded',function(){ wireLoop(); vbRefresh(); lbSync(); });
   setTimeout(function(){ wireLoop(); vbRefresh(); lbSync(); },350);
+})();
+</script>
+<script>
+(function(){
+  function $b(i){return document.getElementById(i);}
+  function pad(n){return (n<10?'0':'')+n;}
+  function doBackup(){
+    var V=(typeof videos!=='undefined'&&videos)?videos:[];
+    var A=(typeof accounts!=='undefined'&&accounts)?accounts:[];
+    var data={atelier_backup:true,exportedAt:new Date().toISOString(),vCount:V.length,aCount:A.length,videos:V,accounts:A};
+    var blob=new Blob([JSON.stringify(data)],{type:'application/json'});
+    var url=URL.createObjectURL(blob); var d=new Date();
+    var a=document.createElement('a'); a.href=url;
+    a.download='atelier備份_'+d.getFullYear()+pad(d.getMonth()+1)+pad(d.getDate())+'_'+pad(d.getHours())+pad(d.getMinutes())+'.json';
+    document.body.appendChild(a); a.click(); setTimeout(function(){ URL.revokeObjectURL(url); a.remove(); },1500);
+    var m=$b('backupMsg'); if(m){ m.textContent='✓ 已下載備份檔（影片 '+V.length+' 支、帳號 '+A.length+' 個）。請存到雲端硬碟或記事本等安全的地方。'; m.style.color='#6E8678'; }
+  }
+  function doRestore(){
+    var f=$b('fileRestore'); var m=$b('backupMsg');
+    if(!f||!f.files||!f.files[0]){ if(m){m.textContent='請先在上面選一個備份檔（.json）。'; m.style.color='#A51820';} return; }
+    var fr=new FileReader();
+    fr.onload=function(){
+      var obj; try{ obj=JSON.parse(fr.result); }catch(e){ if(m){m.textContent='這個檔案讀不出來，可能不是備份檔。'; m.style.color='#A51820';} return; }
+      var V=Array.isArray(obj.videos)?obj.videos:null; var A=Array.isArray(obj.accounts)?obj.accounts:null;
+      if(!V&&!A){ if(m){m.textContent='這個檔案裡找不到備份資料。'; m.style.color='#A51820';} return; }
+      if(!confirm('要用這個備份檔還原嗎？\n影片 '+((V||[]).length)+' 支、帳號 '+((A||[]).length)+' 個，會取代目前的資料並同步回雲端。')) return;
+      try{
+        if(V&&typeof videos!=='undefined') videos=V;
+        if(A&&typeof accounts!=='undefined') accounts=A;
+        if(typeof saveVideos==='function') saveVideos();
+        if(typeof saveAccounts==='function') saveAccounts();
+        if(typeof renderAll==='function') renderAll();
+        if(typeof renderAccounts==='function') renderAccounts();
+        if(typeof renderComparePicker==='function') renderComparePicker();
+        if(window.lbSync) window.lbSync();
+        if(m){ m.textContent='✓ 已還原：影片 '+((V||[]).length)+' 支、帳號 '+((A||[]).length)+' 個，並同步回雲端。'; m.style.color='#6E8678'; }
+      }catch(e){ if(m){m.textContent='還原時出錯了，再試一次，或把檔案傳給我看。'; m.style.color='#A51820';} }
+    };
+    fr.readAsText(f.files[0]);
+  }
+  function wireBackup(){ var b=$b('btnBackup'); if(b&&!b.__w){b.__w=1;b.addEventListener('click',doBackup);} var r=$b('btnRestore'); if(r&&!r.__w){r.__w=1;r.addEventListener('click',doRestore);} }
+  document.addEventListener('DOMContentLoaded',wireBackup);
+  setTimeout(wireBackup,400);
 })();
 </script>
 </body>
