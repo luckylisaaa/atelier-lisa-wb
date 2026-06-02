@@ -5,7 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="color-scheme" content="light only">
 <meta name="supported-color-schemes" content="light">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v92 (版本號僅留註解，不顯示於畫面)
+<!-- ATELIER 影片診斷工作台 · 內部版本 v94 (版本號僅留註解，不顯示於畫面)
+     v94 更新：①收集盤通關煙火改成從盤面中央綻放（原本固定在上方、位置跑掉）。②把收集盤的金色從偏濁的 #D4A574 換成更乾淨的香檳金 #E3C27A，收到的格子奶油底提亮為 #FBF3E6，看起來不再髒髒的（品牌主色變數 --gold 維持不變，只動收集盤）。
+     v93 更新：收集盤收齊全部 13 格（通關）的那一下，會在盤面綻放一束金／酒紅小煙火（純靜態星點＋CSS 動畫，手機也跑得動）。只有「手動點到通關」才放，貼卡自動點亮不會亂放。
      v92 更新：①收集盤的「置頂」改成可一篇（支）一篇打勾——貼文置頂①②③、影片置頂①②③，各自獨立小勾，給齊一篇就點一個（總格數 13：5 必收＋貼文置頂3＋影片置頂3＋發文頻率＋報價）。②同一個收集盤也放進「輸入影片」頁⑥（因為初期常一邊建新帳號一邊輸入），兩頁同步同一份進度（依@帳號記在本機）。③收集盤改為可重複用版型（class 化），兩處共用一套程式。
      v91 更新（全盤整理：建檔收集盤＋防呆＋可收合）：①「帳號管理」最上面新增可收合的「帳號建檔收集盤」——9 格收集盤（帳號連結／主頁Bio／貼文格／影片格／精選動態／貼文置頂／影片置頂／發文頻率／報價），用品牌酒紅金奶油、收到一格鑲一顆金鑽、五格必收收齊變酒紅可送出；每個帳號的進度各自記住（localStorage，本機）；貼帳號分析卡入庫後自動點亮對應格子；附「單格重補」提示詞（某格 AI 做不好時複製一段只重做那格的提示詞）。置頂分清楚「貼文置頂／影片置頂」。②防呆：貼帳號分析卡的框會自己判斷——貼到「提示詞本身」或「影片歸類卡」會跳明確提示告訴你該貼哪一張、該貼去哪，不再「貼了沒反應」。③「帳號版面解析」整段預設收起來（本來就是可收合，只是以前預設攤開），不用再一直往下滑；要填再點開。
      v90 更新（走完整流程前先補齊兩個落差，讓「翻譯原料」一定收得到）：①把「開檔＋帳號分析」那顆合併提示詞補成跟單獨「帳號分析提示詞」一致——加入 ICP 三要素（人群痛點誤區／產品賣點案例／人設身分理念／曝光×需求×信任），並改成最後直接輸出一張完整「ATELIER帳號分析卡」，所以走這條快流程也能貼進工作台自動建檔、翻譯原料不再漏收。②新增帳號欄位「專業特點與資源」（可被翻成賣點的硬資產／技能／資歷／設備／流程／方法論）：兩個帳號分析提示詞都會收集並寫進分析卡、貼卡自動入庫、輸入頁版面解析與編輯視窗都能填、版面對照可比、特點→賣點翻譯與客戶對標優化兩顆按鈕直接帶入這格（不再每次叫 AI 重猜特點）。
@@ -535,6 +537,11 @@ input,select,textarea{color-scheme:light}
 .term-card .tc-d{font-size:12.5px;color:var(--text);line-height:1.7}
 .term-card .tc-src{font-size:10px;color:var(--sub);margin-top:6px;letter-spacing:.3px}
 .aico{display:inline-block;width:1.04em;height:1.04em;vertical-align:-0.16em;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+/* v93 收集盤通關煙火 */
+.filing-board .fb-fx{position:absolute;left:50%;top:46%;width:0;height:0;pointer-events:none;z-index:6}
+.filing-board .fb-fx span{position:absolute;left:0;top:0;font-size:16px;color:#E3C27A;opacity:0;transform:translate(-50%,-50%) scale(.2);will-change:transform,opacity}
+.filing-board .fb-fx.go span{animation:fbPop 1.25s ease-out var(--d,0s) both}
+@keyframes fbPop{0%{opacity:0;transform:translate(-50%,-50%) scale(.2)}22%{opacity:1}100%{opacity:0;transform:translate(calc(-50% + var(--x,0px)),calc(-50% + var(--y,0px))) scale(1.05)}}
 </style>
 <link rel="manifest" href="manifest.json">
 <meta name="application-name" content="ATELIER">
@@ -581,7 +588,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v92</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v94</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -901,7 +908,8 @@ if('serviceWorker' in navigator){
       <div class="tip">把這支影片連結到一個「創作者帳號」。日後可以看到「這個帳號我拆過幾支、平均成效、粉絲成長」。可在「帳號管理」分頁再補身份分類與粉絲快照。</div>
       <details class="paste-card" style="margin-top:8px;border:1px solid var(--gold-soft)" id="filingBoardBoxInput">
         <summary style="cursor:pointer;font-weight:700;color:var(--rouge);list-style:none;font-size:13px">帳號建檔收集盤（這個帳號 · 點開核對 · 與帳號管理同步）</summary>
-    <div class="filing-board" style="padding:12px 4px 4px;font-family:inherit">
+    <div class="filing-board" style="position:relative;padding:12px 4px 4px;font-family:inherit">
+      <div class="fb-fx" aria-hidden="true"><span style="--x:-58px;--y:-30px;--d:0s">✦</span><span style="--x:54px;--y:-40px;--d:.05s;color:#A51820">✦</span><span style="--x:0px;--y:-64px;--d:.02s">✧</span><span style="--x:-40px;--y:24px;--d:.08s;color:#A51820">✦</span><span style="--x:46px;--y:30px;--d:.04s">✧</span><span style="--x:-66px;--y:8px;--d:.10s">·</span><span style="--x:68px;--y:-6px;--d:.06s;color:#A51820">·</span><span style="--x:22px;--y:-50px;--d:.12s">✦</span><span style="--x:-24px;--y:-48px;--d:.09s">✧</span><span style="--x:34px;--y:54px;--d:.14s;color:#A51820">·</span><span style="--x:-34px;--y:52px;--d:.11s">✦</span><span style="--x:0px;--y:60px;--d:.07s">✧</span></div>
       <div style="text-align:center;margin-bottom:10px"><div style="font-family:'Cormorant Garamond',serif;font-size:12px;letter-spacing:2px;color:#C9B7A8">ATELIER &middot; Account Intake</div></div>
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap">
         <span style="font-size:12px;color:var(--gold-dark);font-weight:700">這個帳號</span>
@@ -911,7 +919,7 @@ if('serviceWorker' in navigator){
         <span style="font-size:12px;color:#7A5A5E">收集進度</span>
         <span class="fb-count" style="font-size:12px;font-weight:700;color:#A51820">0 / 13</span>
       </div>
-      <div style="height:7px;background:#F4F1EC;border-radius:999px;overflow:hidden;margin-bottom:12px"><div class="fb-bar" style="height:100%;width:0%;background:#D4A574;border-radius:999px;transition:width .3s"></div></div>
+      <div style="height:7px;background:#F4F1EC;border-radius:999px;overflow:hidden;margin-bottom:12px"><div class="fb-bar" style="height:100%;width:0%;background:#E3C27A;border-radius:999px;transition:width .3s"></div></div>
       <div class="fb-grid" style="position:relative;display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
 
         <div class="fb-c" data-k="link" data-req="1" tabindex="0" role="button" aria-pressed="false" aria-label="帳號連結" style="position:relative;height:108px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;background:#FAF7F3;border:1.5px solid #E8E3DA;border-radius:16px;cursor:pointer;color:#C9B7A8">
@@ -981,7 +989,7 @@ if('serviceWorker' in navigator){
       </div>
       <div style="display:flex;align-items:center;gap:12px;margin-top:10px;font-size:11px;color:#7A5A5E">
         <span style="display:inline-flex;align-items:center;gap:4px"><span style="width:11px;height:11px;border-radius:3px;background:#FAF7F3;border:1px solid #E8E3DA"></span>還沒收</span>
-        <span style="display:inline-flex;align-items:center;gap:4px"><span style="width:11px;height:11px;border-radius:3px;background:#D4A574"></span>收到了</span>
+        <span style="display:inline-flex;align-items:center;gap:4px"><span style="width:11px;height:11px;border-radius:3px;background:#E3C27A"></span>收到了</span>
         <span style="display:inline-flex;align-items:center;gap:4px"><span style="width:11px;height:11px;border-radius:3px;background:#A51820"></span>通關</span>
       </div>
       <div class="fb-status" style="display:flex;align-items:center;gap:8px;background:#FDF3F4;border-radius:9px;padding:10px;font-size:12.5px;color:#7A5A5E;margin-top:10px">點亮前五格（必收）即可送 AI</div>
@@ -1398,7 +1406,8 @@ if('serviceWorker' in navigator){
 
   <details class="paste-card" style="margin-bottom:14px;border:1px solid var(--gold-soft)" id="filingBoardBox">
     <summary style="cursor:pointer;font-weight:700;color:var(--rouge);list-style:none;font-size:14px">帳號建檔收集盤（點開 · 一格一格收 · 收齊再送 AI · 進度會記住）</summary>
-    <div class="filing-board" style="padding:12px 4px 4px;font-family:inherit">
+    <div class="filing-board" style="position:relative;padding:12px 4px 4px;font-family:inherit">
+      <div class="fb-fx" aria-hidden="true"><span style="--x:-58px;--y:-30px;--d:0s">✦</span><span style="--x:54px;--y:-40px;--d:.05s;color:#A51820">✦</span><span style="--x:0px;--y:-64px;--d:.02s">✧</span><span style="--x:-40px;--y:24px;--d:.08s;color:#A51820">✦</span><span style="--x:46px;--y:30px;--d:.04s">✧</span><span style="--x:-66px;--y:8px;--d:.10s">·</span><span style="--x:68px;--y:-6px;--d:.06s;color:#A51820">·</span><span style="--x:22px;--y:-50px;--d:.12s">✦</span><span style="--x:-24px;--y:-48px;--d:.09s">✧</span><span style="--x:34px;--y:54px;--d:.14s;color:#A51820">·</span><span style="--x:-34px;--y:52px;--d:.11s">✦</span><span style="--x:0px;--y:60px;--d:.07s">✧</span></div>
       <div style="text-align:center;margin-bottom:10px"><div style="font-family:'Cormorant Garamond',serif;font-size:12px;letter-spacing:2px;color:#C9B7A8">ATELIER &middot; Account Intake</div></div>
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap">
         <span style="font-size:12px;color:var(--gold-dark);font-weight:700">這個帳號</span>
@@ -1408,7 +1417,7 @@ if('serviceWorker' in navigator){
         <span style="font-size:12px;color:#7A5A5E">收集進度</span>
         <span class="fb-count" style="font-size:12px;font-weight:700;color:#A51820">0 / 13</span>
       </div>
-      <div style="height:7px;background:#F4F1EC;border-radius:999px;overflow:hidden;margin-bottom:12px"><div class="fb-bar" style="height:100%;width:0%;background:#D4A574;border-radius:999px;transition:width .3s"></div></div>
+      <div style="height:7px;background:#F4F1EC;border-radius:999px;overflow:hidden;margin-bottom:12px"><div class="fb-bar" style="height:100%;width:0%;background:#E3C27A;border-radius:999px;transition:width .3s"></div></div>
       <div class="fb-grid" style="position:relative;display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
 
         <div class="fb-c" data-k="link" data-req="1" tabindex="0" role="button" aria-pressed="false" aria-label="帳號連結" style="position:relative;height:108px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;background:#FAF7F3;border:1.5px solid #E8E3DA;border-radius:16px;cursor:pointer;color:#C9B7A8">
@@ -1478,7 +1487,7 @@ if('serviceWorker' in navigator){
       </div>
       <div style="display:flex;align-items:center;gap:12px;margin-top:10px;font-size:11px;color:#7A5A5E">
         <span style="display:inline-flex;align-items:center;gap:4px"><span style="width:11px;height:11px;border-radius:3px;background:#FAF7F3;border:1px solid #E8E3DA"></span>還沒收</span>
-        <span style="display:inline-flex;align-items:center;gap:4px"><span style="width:11px;height:11px;border-radius:3px;background:#D4A574"></span>收到了</span>
+        <span style="display:inline-flex;align-items:center;gap:4px"><span style="width:11px;height:11px;border-radius:3px;background:#E3C27A"></span>收到了</span>
         <span style="display:inline-flex;align-items:center;gap:4px"><span style="width:11px;height:11px;border-radius:3px;background:#A51820"></span>通關</span>
       </div>
       <div class="fb-status" style="display:flex;align-items:center;gap:8px;background:#FDF3F4;border-radius:9px;padding:10px;font-size:12.5px;color:#7A5A5E;margin-top:10px">點亮前五格（必收）即可送 AI</div>
@@ -2746,7 +2755,9 @@ function renderManual(){
   <div class="form-card" style="border-left:3px solid var(--gold)">
     <div class="stitle" style="font-size:15px;color:var(--rouge)">更新紀錄 · 還沒做的</div>
     <p style="font-size:13px;color:var(--text);line-height:1.85;margin-top:8px">
-    <b>v92（這版）：</b>收集盤兩個升級。①「置頂」可以<b>一篇一篇打勾</b>了：貼文置頂①②③、影片置頂①②③，每給齊一篇（圖＋完整文案＋日期＋格式）就點一個小勾，給到第幾篇、還缺哪篇一眼就看到。②同一個收集盤<b>也放進「輸入影片」頁⑥</b>（你初期常一邊建新帳號一邊輸入，不用跳頁）；兩頁<b>同步同一份進度</b>，在哪一頁點亮都通（依@帳號記在本機）。<br>
+    <b>v94（這版）：</b>把收集盤通關煙火改成從盤面正中央綻放；金色換成比較乾淨的香檳金、收到的格子底色提亮，不再有髒髒的感覺。<br>
+    <b>v93：</b>收集盤收齊全部 13 格（通關）時，盤面會綻放一束金色與酒紅的小煙火慶祝一下（手機也看得到）。只有你親手點到通關才放，貼卡自動點亮不會亂放煙火。<br>
+    <b>v92：</b>收集盤兩個升級。①「置頂」可以<b>一篇一篇打勾</b>了：貼文置頂①②③、影片置頂①②③，每給齊一篇（圖＋完整文案＋日期＋格式）就點一個小勾，給到第幾篇、還缺哪篇一眼就看到。②同一個收集盤<b>也放進「輸入影片」頁⑥</b>（你初期常一邊建新帳號一邊輸入，不用跳頁）；兩頁<b>同步同一份進度</b>，在哪一頁點亮都通（依@帳號記在本機）。<br>
     <b>v91：</b>三件全盤整理。①「帳號管理」最上面多了可收合的<b>「帳號建檔收集盤」</b>：照著一格一格收（帳號連結／主頁Bio／貼文格／影片格／精選動態／貼文置頂／影片置頂／發文頻率／報價），收到一格鑲一顆金鑽，五格必收收齊就提醒可送 AI、九格全收通關。每個帳號的進度各自記住，下次打開那個帳號還在。<b>貼帳號分析卡入庫後會自動點亮</b>對應格子。某一格 AI 做不好，可以點「單格重補」複製一段只重做那一格的提示詞。置頂也分清楚是<b>貼文置頂</b>還是<b>影片置頂</b>。②<b>防呆</b>：貼帳號分析卡的框會自己判斷你貼對沒——貼到「提示詞」本身、或貼到「影片歸類卡」，會跳出明確提示告訴你正確該貼哪一張、貼到哪裡，不再貼了沒反應。③<b>「帳號版面解析」預設收起來</b>了，不用再一直往下滑，要填這個帳號的 ICP／特點／報價時再點開。<br>
     <b>v90：</b>走完整流程前先補齊兩個「翻譯原料」落差。①「開檔＋帳號分析」那顆一次做完的提示詞，以前是舊版、沒有人群/產品/人設；現在補成跟單獨「帳號分析提示詞」完全一致（含 ICP 三要素＋曝光×需求×信任），而且最後會直接吐一張完整「帳號分析卡」，所以走這條快流程也能貼進工作台自動建檔、翻譯按鈕需要的原料不會漏收。②新增帳號欄位<b>「專業特點與資源」</b>——就是「可被翻成賣點的原料」（某條法律、某張證照、幾年資歷、某台設備、某套流程）。兩個帳號分析提示詞都會幫你收集並寫進卡裡、貼卡自動入庫、輸入頁與編輯帳號都能手動填、版面對照可比；「特點→賣點翻譯」和「客戶對標優化」兩顆按鈕會直接帶入這格，不用每次叫 AI 重猜。<br>
     <b>v89：</b>把「特點→賣點翻譯」做成「一鍵產生提示詞」，不用你自己在腦袋裡轉、也不用在工作台裡接 AI。兩顆按鈕：①「帳號管理」每張帳號卡多一顆<b>「特點→賣點翻譯」</b>——點一下，工作台自動把這個帳號的職稱/產業/人群/產品/人設帶好，產生一段提示詞，你複製去貼 ChatGPT／Claude／Gemini，它就幫你「先看懂這個人，再把專業特點用『特點→優勢→利益』翻成觀眾有感的賣點」。一個帳號跑一次，4 個今天就翻得完。②「版面對照」頁最下面新增<b>「客戶對標優化」</b>——選 1 個你的客戶＋勾最多 10 個對標帳號，產生提示詞貼出去，AI 會拿這些對標的人群/產品/人設/版面，幫你客戶做：對標共同點→落差診斷→特點轉賣點→可直接照做的優化（定位/Bio/置頂/視覺）→3 個選題方向。累積越多帳號越準。原本的「並排比較」表格完全沒動。<br>
@@ -4424,7 +4435,7 @@ window.addEventListener('DOMContentLoaded', function(){
   };
   var ALL=['link','bio','grid','reels','hl','pinpost1','pinpost2','pinpost3','pinreel1','pinreel2','pinreel3','freq','price'];
   var CORE=['link','bio','grid','reels','hl'];
-  var gemGold='<svg viewBox="0 0 24 24" width="16" height="16"><path d="M6 8 H18 L21 11 L12 20 L3 11 Z" fill="#D4A574" stroke="#FDFBF8" stroke-width="0.9" stroke-linejoin="round"/><path d="M3 11 H21 M9 8 L12 11 L15 8 M12 11 L12 20" stroke="#FDFBF8" stroke-width="0.7" fill="none" opacity="0.85"/></svg>';
+  var gemGold='<svg viewBox="0 0 24 24" width="16" height="16"><path d="M6 8 H18 L21 11 L12 20 L3 11 Z" fill="#E3C27A" stroke="#FDFBF8" stroke-width="0.9" stroke-linejoin="round"/><path d="M3 11 H21 M9 8 L12 11 L15 8 M12 11 L12 20" stroke="#FDFBF8" stroke-width="0.7" fill="none" opacity="0.85"/></svg>';
   var gemHollow='<svg viewBox="0 0 24 24" width="16" height="16"><path d="M6 8 H18 L21 11 L12 20 L3 11 Z" fill="none" stroke="#D8CDBE" stroke-width="1.2" stroke-linejoin="round"/></svg>';
   var BOARDS=[];
   function esc2(s){ return (typeof esc==='function')?esc(s):String(s==null?'':s); }
@@ -4435,12 +4446,12 @@ window.addEventListener('DOMContentLoaded', function(){
   function paintCell(c,on){
     if(on)c.classList.add('on');else c.classList.remove('on');
     c.setAttribute('aria-pressed',on?'true':'false');
-    c.style.background=on?'#F3E3C8':'#FAF7F3'; c.style.borderColor=on?'#D4A574':'#E8E3DA'; c.style.color=on?'#A51820':'#C9B7A8';
+    c.style.background=on?'#FBF3E6':'#FAF7F3'; c.style.borderColor=on?'#E3C27A':'#E8E3DA'; c.style.color=on?'#A51820':'#C9B7A8';
     var l=c.querySelector('.fb-l'); if(l) l.style.color=on?'#5C0F14':'#7A5A5E';
     var j=c.querySelector('.fb-j'); if(j) j.innerHTML=on?gemGold:gemHollow;
   }
   function paintPip(p,on){
-    p.style.background=on?'#D4A574':'transparent'; p.style.borderColor=on?'#C0883E':'#D8CDBE'; p.style.color=on?'#5C0F14':'#C9B7A8';
+    p.style.background=on?'#E3C27A':'transparent'; p.style.borderColor=on?'#CDA24A':'#D8CDBE'; p.style.color=on?'#5C0F14':'#C9B7A8';
   }
   function wire(root){
     var grid=root.querySelector('.fb-grid'); if(!grid) return;
@@ -4453,7 +4464,7 @@ window.addEventListener('DOMContentLoaded', function(){
     function apply(arr){
       cells.forEach(function(c){ paintCell(c, arr.indexOf(c.dataset.k)>=0); });
       pips.forEach(function(p){ paintPip(p, arr.indexOf(p.dataset.k)>=0); });
-      wraps.forEach(function(w){ var g=w.dataset.grp; var done=arr.indexOf(g+'1')>=0&&arr.indexOf(g+'2')>=0&&arr.indexOf(g+'3')>=0; w.style.background=done?'#F3E3C8':'#FAF7F3'; w.style.borderColor=done?'#D4A574':'#E8E3DA'; });
+      wraps.forEach(function(w){ var g=w.dataset.grp; var done=arr.indexOf(g+'1')>=0&&arr.indexOf(g+'2')>=0&&arr.indexOf(g+'3')>=0; w.style.background=done?'#FBF3E6':'#FAF7F3'; w.style.borderColor=done?'#E3C27A':'#E8E3DA'; });
       var lit=ALL.filter(function(k){return arr.indexOf(k)>=0;}).length;
       var req=CORE.filter(function(k){return arr.indexOf(k)>=0;}).length;
       var cnt=root.querySelector('.fb-count'); if(cnt) cnt.textContent=lit+' / 13';
@@ -4466,7 +4477,9 @@ window.addEventListener('DOMContentLoaded', function(){
     }
     function repaint(){ apply(read(curH())); }
     function fill(){ if(!sel) return; var cur=sel.value; var opts='<option value="">（未指定 · 通用檢查表）</option>'; ((typeof accounts!=='undefined'&&accounts)||[]).forEach(function(a){ opts+='<option value="'+esc2(a.handle)+'">'+esc2(a.handle)+(a.displayName?(' '+esc2(a.displayName)):'')+'</option>'; }); sel.innerHTML=opts; if(cur) sel.value=cur; }
-    function toggle(k){ var h=curH(); var arr=read(h); var i=arr.indexOf(k); if(i>=0)arr.splice(i,1); else arr.push(k); write(h,arr); apply(arr); }
+    var fx=root.querySelector('.fb-fx');
+    function celebrate(){ if(!fx) return; fx.classList.remove('go'); void fx.offsetWidth; fx.classList.add('go'); setTimeout(function(){ fx.classList.remove('go'); },1400); }
+    function toggle(k){ var h=curH(); var arr=read(h); var before=arr.filter(function(x){return ALL.indexOf(x)>=0;}).length; var i=arr.indexOf(k); if(i>=0)arr.splice(i,1); else arr.push(k); write(h,arr); apply(arr); var after=arr.filter(function(x){return ALL.indexOf(x)>=0;}).length; if(after>=13&&before<13) celebrate(); }
     cells.forEach(function(c){ c.addEventListener('click',function(){ toggle(c.dataset.k); }); c.addEventListener('keydown',function(e){ if(e.key===' '||e.key==='Enter'){ e.preventDefault(); toggle(c.dataset.k); } }); });
     pips.forEach(function(p){ p.addEventListener('click',function(){ toggle(p.dataset.k); }); p.addEventListener('keydown',function(e){ if(e.key===' '||e.key==='Enter'){ e.preventDefault(); toggle(p.dataset.k); } }); });
     if(sel) sel.addEventListener('change',repaint);
