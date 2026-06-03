@@ -5,7 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="color-scheme" content="light only">
 <meta name="supported-color-schemes" content="light">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v141 (版本號僅留註解，不顯示於畫面)
+<!-- ATELIER 影片診斷工作台 · 內部版本 v143 (版本號僅留註解，不顯示於畫面)
+     v143 更新（客戶診斷視圖②＋影片庫卡片補完入口）：①每張帳號卡「帳號體檢」旁新增「🩺 客戶診斷」鈕(data-acc-clientdx，酒紅)，綁 openClientDiagnosis(id)。新函式群：_accVidStats(accId 算 影片數/平均觀看/有Hook比例/平均標題字數/涵蓋的G階段)、_benchmark(excludeId 取其餘有影片的帳號做中位數=成功庫基準)、_med、_cdxRow、openClientDiagnosis(重用#modal/#sheet 顯示 客戶vs成功庫中位 的比對表＋發文節奏＋漏斗缺哪幾關，落差以酒紅標)、buildClientQuestionsPrompt(把客戶 accProfileBlock＋最多20支影片摘要＋成功庫中位 組成提示詞，要 AI 產出 落差診斷/卡在哪/下一步3件/該問客戶8-10題針對性問題；copyVal)。純讀 accounts+videos 不連 AI。②影片庫 libList 前新增第二個「卡片補完健檢」折疊框(#cardFixPaste2/#cardFixRun2/#cardFixMsg2)；buildCardCompletePrompt 改帶 (pasteId,msgId) 參數、預設 cardFixPaste/cardFixMsg，並修正原 onclick 直接綁函式會把 event 當 pasteId 的潛在 bug(改成包一層)；bindAccountUI 綁兩顆。node --check 全過(新函式先單獨檢查)、div/details 開閉平衡(影片庫折疊框 details→37)。下步：用 Ivan 卡示範整套；剩錦上添花(影片庫列內估/待定小標、內頁字卡顯示欄+CSV、提案一頁串IP定位)。
+     v142 更新（地基·客戶診斷鋪路①：帳號卡「存得下也看得到」——把存著卻沒顯示的完整 profile 全部露出來）：根因＝accCard 只顯示 Bio／置頂／短影音報價／報價備註 4 項，但 ACC_PROFILE_FIELDS 其實已完整存了 定位/人設/痛點誤區/賣點案例/身分理念/曝光需求信任/專業特點/發文節奏/連動帳號/跨平台/視覺風格/內容混合/置頂Reels/精選/Bio三行/CTA/報價… 只是沒露出，使用者誤以為「被吃掉、只有電腦檔最完整」。修法：在 accCard 歷史快照展開區前，新增一個「完整帳號檔 · 卡片帶入的全部（N 欄，點開）」展開區，用 IIFE 掃 職稱/產業/領域＋整份 ACC_PROFILE_FIELDS，凡有值就列一列（vstrat-row 標籤＋值），讓使用者一眼看到工作台到底記了什麼。純讀渲染、additive，未動存檔/解析。node --check 全過、div 開閉平衡、details→36。（影片庫「卡片補完健檢」入口併入 v143 與客戶診斷視圖一起做。）
      v141 更新（修待核對清單爆框＋新增「卡片補完健檢」＋輸入頁預設跳操作流程）：①版面：待核對清單帳號列／影片列的「編輯補上」鈕原吃 .btn 的 width:100% 撐爆整列、把文字擠成細條爆框——改 width:auto;white-space:nowrap，兩列容器加 flex-wrap:wrap，電腦與手機都不再爆框。②新功能 buildCardCompletePrompt()＋帳號管理 checkListPanel 上方新增 #cardFixPaste/#cardFixRun/#cardFixMsg 折疊框：貼整段卡(偵測 ===ATELIER帳號分析卡===／===ATELIER歸類卡=== 定卡別 A/B/C)，行解析後比對 accExp/vidExp 欄位清單，列出 空或含 待補|待詢|查不到|截圖待補|未提供|需查證|需人工核對 的 gaps，寫 #cardFixMsg＋copyVal 一段「請 AI 照最新格式補完重出整張卡(列 gaps＋新欄位要求：連動帳號/跨平台全掃/發文頻率分項/內頁字卡/絕對日期)＋原卡內容」的提示詞，給新對話框接進度用；綁定加在 bindAccountUI(recRun 旁)。③輸入影片預設子分頁：啟動序列(renderManual 後)與點「輸入影片」分頁時都呼叫 showInputSub('flow')；gotoInputField 補 showInputSub('card')(欄位在③歸類卡內，先顯示才聚焦得到，修潛在 bug)。node --check 全過、div/details 開閉平衡(新增 cardFix 折疊框 details→35)。
      v140 更新（影片可就地編輯數據／日期／連結——關上待核對清單的最後缺口）：①新增 editVideoModal(id)，重用 #modal/#sheet 彈窗：可改 影片標題／連結／發布日期(type=date)／六個數字(觀看讚留言轉發分享儲存)／備註，存檔寫回該影片並 saveVideos+renderAll；手填日期會 v.dateRaw=新值、v.dateEstimated=false，存檔一律 v.numCheck=false——補完即解除估算/需核對標記、自動退出待核對清單。②影片卡(vcard)「刪除」旁新增「✏️ 編輯數據」鈕，renderLibrary 及其他列出 vcard 之處(box×2、out×1)的 .vdel 綁定旁一併綁 .vedit→editVideoModal。③待核對清單影片列改 flex 版面、加「編輯補上」鈕(data-cl-vedit→editVideoModal)，說明文字更新為帳號與影片都能就地補。至此整條流程閉環：產線→貼卡(匯入自檢)→待核對清單(帳號＋影片都能就地補)→帳號體檢→對標/推薦→客戶交付。剩純錦上添花(影片庫列內估/待定小標、內頁字卡顯示欄+CSV、提案一頁串IP定位)。node --check 全過、div/details 開閉平衡。
      v139 更新（整庫「待核對清單」：一眼看哪幾筆要補、帳號可就地編輯，不用整支重跑）：①帳號管理 accList 上方新增 #checkListPanel，renderAccounts 開頭呼叫 renderCheckList()，隨頁面/帳號變動刷新。②renderCheckList 掃全庫 accounts＋videos：帳號標出缺(粉絲數/職稱/產業/連動帳號/跨平台連結/ICP三要素/專業特點)與待補殘留(掃 profile 值含 待補|截圖待補|未提供|需查證|查不到|待詢|需人工核對)，每筆🔴＋「編輯補上」鈕→editAccount(id) 就地修；影片標出 🔴數字待補/日期待補/連結待補、🟡日期是估算/互動數>觀看/小數沒換算/需人工核對/殘留待補字樣，附開啟連結(影片目前不能就地編輯，先列出供回頭看)。全部齊全則顯示綠字「✓ 沒有要補的」。③記號水管：批次 cardToVideo 與單張存檔都新增 dateRaw／dateEstimated(由 X天前/X週前 且非絕對日期判定)／numCheck(數字欄含『需人工核對』)；單張匯入 parse 時把原始日期與需核對暫存到 f-date.dataset、存檔讀取、存後與清空時清除。純讀渲染＋additive 欄位，影片就地補數字留 v140。node --check 全過、div 開閉平衡、details 因新增清單面板成 34/34。
@@ -698,7 +700,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v141</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v143</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -1443,6 +1445,13 @@ if('serviceWorker' in navigator){
   <div class="tip" style="margin:-2px 0 10px;font-size:11px">每支影片左上有勾選框＝點一下就選取；「全選」選的是目前顯示出來的。選好可「產生腳本範本／並排對比／匯出選取」；刪除在清單最下面的「刪除選取」。</div>
   <div style="margin:2px 0 12px;display:flex;align-items:center;gap:8px;flex-wrap:wrap"><button type="button" id="btnBackup2" style="display:inline-block;padding:8px 14px;border-radius:8px;border:1px solid #A51820;background:#A51820;color:#fff;font-family:inherit;font-size:12.5px;cursor:pointer">⤓ 下載備份檔（影片＋帳號）</button><span style="font-size:11px;color:#7A5A5E">一份檔案同時存影片和帳號</span></div>
   <div id="libCompareResult" style="margin-top:14px"></div>
+  <details class="card" style="margin-top:6px;margin-bottom:12px;border:1px solid var(--gold-soft)">
+    <summary style="cursor:pointer;font-size:14px;font-weight:800;color:var(--rouge)">🩺 卡片補完健檢（貼舊卡 → 看缺什麼 → 產生補完提示詞）</summary>
+    <div style="font-size:11.5px;color:var(--sub);margin:6px 0 8px">把以前的 卡A／卡B／卡C 整段貼進來，系統會比對最新規格、列出還缺哪些欄位，並複製一段提示詞——貼回 Claude／ChatGPT，請它照最新格式把整張卡補完重出。</div>
+    <textarea id="cardFixPaste2" placeholder="貼整段卡（含 ===ATELIER...=== 卡頭到結尾）…" style="width:100%;min-height:90px;padding:9px 10px;border:1px solid var(--gold-soft);border-radius:8px;font-size:12px"></textarea>
+    <button class="btn btn-go" id="cardFixRun2" style="width:auto;padding:9px 16px;margin-top:8px">看缺什麼＋產生補完提示詞</button>
+    <div id="cardFixMsg2" style="margin-top:8px"></div>
+  </details>
   <div id="libList"></div>
   <div id="libBulkBottom" style="display:flex;justify-content:flex-end;margin-top:16px">
     <button class="btn btn-ghost" id="bulkDel" style="font-size:12px;padding:6px 14px;border-color:var(--rouge);color:var(--rouge)">刪除選取</button>
@@ -3247,7 +3256,9 @@ function renderManual(){
   <div class="form-card" style="border-left:3px solid var(--gold)">
     <div class="stitle" style="font-size:15px;color:var(--rouge)">更新紀錄 · 還沒做的</div>
     <p style="font-size:13px;color:var(--text);line-height:1.85;margin-top:8px">
-    <b>v141（這版）：</b>修了你截圖看到的問題，再加一個你要的新功能。①<b>待核對清單版面修好了</b>：之前那排「編輯補上」按鈕會撐滿整列、把帳號文字擠成細細一條爆出框（看起來像當機），電腦和手機都修正了，現在文字看得清楚、要補什麼一目了然。②新增<b>「🩺 卡片補完健檢」</b>（帳號管理頁最上面）：你不想看待核對清單也沒關係——直接把以前的<b>卡A／卡B／卡C 整段貼進去</b>，系統會判斷這是哪種卡、列出它還缺哪些欄位，並複製一段提示詞給你；貼回 Claude／ChatGPT，它就會照<b>最新格式</b>把整張卡補完整重出（含新欄位：連動帳號、跨平台全掃、發文頻率分項、內頁字卡、絕對日期），新開的對話框也能直接接上最新進度。③<b>輸入影片頁預設改成「② 操作流程」</b>：以後重新整理、或點「輸入影片」分頁，都會直接停在操作流程，不用每次先經過準備動作。<br>
+    <b>v143（這版）：</b>客戶診斷視圖來了——這是「客戶診斷」三步計畫的第二步。每張帳號卡的「帳號體檢」旁邊多了一顆<b>「🩺 客戶診斷」</b>：點下去，工作台會把這個帳號（你的客戶）跟你累積的<b>成功庫</b>放在一起比——影片數、平均觀看、有 Hook 的比例、平均標題長度、漏斗涵蓋哪幾關（缺的用紅字標）、發文節奏——讓你一眼看到「他比成功帳號差在哪」。再按一下「複製提示詞」，貼到 Claude／ChatGPT，它就會給你完整的落差診斷、他卡在哪、下一步、還有<b>你第一次跟客戶聊時該問的 8-10 個針對性問題</b>。另外，<b>影片庫</b>也放了一份「卡片補完健檢」入口，補卡不用再跑去帳號管理。<br>
+    <b>v142：</b>這是「客戶診斷」三步計畫的第一步——地基。你之前覺得「丟卡進去很多東西被吃掉、只有我電腦檔最完整」，我查了一下：<b>其實沒被吃掉，是存了卻沒顯示出來</b>。帳號卡本來就把整張卡都記下來了（帳號定位、人設關鍵字、人群痛點、賣點案例、發文節奏、連動帳號、跨平台、報價…），但卡片上只露出 Bio／置頂／報價那幾項。這版在每張帳號卡多了一個<b>「完整帳號檔 · 卡片帶入的全部」</b>展開區，點開就看到工作台到底替這個帳號記了哪些欄位、各是什麼內容——你就能放心把帳號丟進來，不會丟資料。接下來 v143 會做「客戶診斷視圖」（拿客戶比對你的成功庫、列出落差＋該問的問題），影片庫的「卡片補完健檢」入口也會一起放進去。<br>
+    <b>v141：</b>修了你截圖看到的問題，再加一個你要的新功能。①<b>待核對清單版面修好了</b>：之前那排「編輯補上」按鈕會撐滿整列、把帳號文字擠成細細一條爆出框（看起來像當機），電腦和手機都修正了，現在文字看得清楚、要補什麼一目了然。②新增<b>「🩺 卡片補完健檢」</b>（帳號管理頁最上面）：你不想看待核對清單也沒關係——直接把以前的<b>卡A／卡B／卡C 整段貼進去</b>，系統會判斷這是哪種卡、列出它還缺哪些欄位，並複製一段提示詞給你；貼回 Claude／ChatGPT，它就會照<b>最新格式</b>把整張卡補完整重出（含新欄位：連動帳號、跨平台全掃、發文頻率分項、內頁字卡、絕對日期），新開的對話框也能直接接上最新進度。③<b>輸入影片頁預設改成「② 操作流程」</b>：以後重新整理、或點「輸入影片」分頁，都會直接停在操作流程，不用每次先經過準備動作。<br>
     <b>v140：</b>補上最後一塊——<b>影片現在可以就地編輯了</b>。每張影片卡「刪除」旁多了「✏️ 編輯數據」，點開可以改 標題／連結／發布日期／六個數字（觀看讚留言轉發分享儲存）／備註，存檔就更新，不用再重貼卡或重跑流程。而且「待核對清單」裡的影片那段也加了「編輯補上」鈕，點一下直接開編輯框，補完數字／日期就從清單消失。手動填的日期會自動解除「估算」標記、補完數字會解除「需人工核對」。到這裡你整條流程就完全閉環了：跑帳號 → 貼卡（匯入自檢擋錯）→ 待核對清單（帳號和影片都能就地補）→ 帳號體檢 → 對標／推薦 → 客戶交付。可以放心一個一個跑完 50 個。<br>
     <b>v139：</b>解決你「分析完還要一個一個重檢、好像整支要重跑」的困擾。帳號管理頁最上面多了一塊<b>「🔍 待核對清單」</b>——自動掃過你整個庫，只把<b>有缺漏的</b>列出來，告訴你每一筆缺哪幾格：帳號會標「缺 粉絲數／連動帳號／ICP…」或「待補殘留」，而且可以<b>直接點「編輯補上」就地修</b>，補完它就從清單消失，完全不用整個帳號重跑。影片會標「數字待補／日期待補／日期是估算／互動數比觀看還高（可能看錯）／數字標了需人工核對」這些，讓你一眼知道哪幾支要回頭看。全部補齊時會顯示綠字「✓ 沒有要補的」。（影片目前還不能在庫裡直接改數字，這個下一版 v140 補。）<br>
     <b>v138：</b>解決你說的「建好檔之後不知道怎麼用」。每個帳號卡上「特點→賣點翻譯」旁邊多了一顆<b>「帳號體檢」</b>——點一下，工作台把這個帳號的完整資料＋他底下你拆解過的影片表現，組成一段提示詞，貼給 AI，它會一次給你六段：①他現在的<b>優點</b>（哪些內容/打法在重複奏效、漏斗哪段站穩）②<b>缺點與風險</b>（缺哪段、Bio/置頂/發文節奏的問題）③他在<b>市場上的位置</b>（同領域大概新秀/腰部/頭部、強弱在哪）④你還<b>缺什麼資料</b>才看得更準⑤<b>下一步可直接做</b>（新定位/Bio/3個選題/發文節奏）⑥一段<b>提案用的「我懂你」</b>，可以直接放進提案開頭，讓客戶一看就覺得「原來你真的懂我」。這樣你跑完一個帳號，就能馬上看懂他、知道怎麼幫他、也知道怎麼提案。<br>
@@ -3517,8 +3528,9 @@ function editVideoModal(id){
   };
 }
 function clNum(x){ return parseFloat(x)||0; }
-function buildCardCompletePrompt(){
-  var raw=($('cardFixPaste')||{value:''}).value.trim();
+function buildCardCompletePrompt(pasteId,msgId){
+  pasteId=pasteId||'cardFixPaste'; msgId=msgId||'cardFixMsg';
+  var raw=($(pasteId)||{value:''}).value.trim();
   if(!raw){ toast('先貼上一張卡（卡A／卡B／卡C）'); return; }
   var hasAcc=/===\s*ATELIER帳號分析卡/.test(raw);
   var hasVid=/===\s*ATELIER歸類卡/.test(raw);
@@ -3531,7 +3543,7 @@ function buildCardCompletePrompt(){
   function chk(list){ list.forEach(function(k){ var v=F[k]; if(v===undefined||v===''||PH.test(v||'')) gaps.push(k); }); }
   var cardName=(hasAcc&&hasVid)?'卡A（影片×帳號合一卡）':(hasVid?'卡B（單一影片歸類卡）':'卡C（帳號分析卡）');
   if(hasVid) chk(vidExp); if(hasAcc) chk(accExp);
-  var msg=$('cardFixMsg');
+  var msg=$(msgId);
   if(msg){ msg.innerHTML='<div style="font-size:12.5px;color:var(--ink);background:var(--warm);border:1px solid var(--gold-soft);border-radius:8px;padding:9px 11px">偵測到：<b>'+cardName+'</b>'+(gaps.length?('｜還缺／待補 <b style="color:var(--rouge)">'+gaps.length+'</b> 欄：'+esc(gaps.join('、'))):'｜<span style="color:#0F6E56;font-weight:700">欄位都齊全 ✓</span>')+'<br>已把「請 AI 補完重出整張卡」的提示詞複製好，貼到 Claude／ChatGPT 即可。</div>'; }
   var p='【任務】這是我先前用 ATELIER 系統建好的「'+cardName+'」（附在最下方）。我的工作台規格後來有更新，請你依【最新 ATELIER 卡片格式】把這張卡補完整、重新輸出一張完整的卡，方便我貼回工作台、也讓這個對話框接上最新進度。\n\n'
     +'【請遵守】\n'
@@ -3545,6 +3557,76 @@ function buildCardCompletePrompt(){
     +'\n【原卡內容】\n'+raw;
   if(typeof copyVal==='function') copyVal(p,'卡片補完提示詞（'+cardName+'）');
 }
+function _clNum(x){ return parseFloat(x)||0; }
+function _accVidStats(accId){
+  var vs=videosOfAccount(accId);
+  var n=vs.length;
+  var wv=vs.filter(function(v){return _clNum(v.views)>0;});
+  var avgViews=wv.length?Math.round(wv.reduce(function(a,v){return a+_clNum(v.views);},0)/wv.length):0;
+  var hookN=vs.filter(function(v){return (v.hook||'').trim();}).length;
+  var hookPct=n?Math.round(hookN/n*100):0;
+  var tl=vs.map(function(v){return (v.title||'').length;}).filter(function(x){return x>0;});
+  var avgTitle=tl.length?Math.round(tl.reduce(function(a,b){return a+b;},0)/tl.length):0;
+  var st={}; vs.forEach(function(v){ if(v.stage) st[v.stage]=1; });
+  return { n:n, avgViews:avgViews, hookPct:hookPct, avgTitle:avgTitle, stages:Object.keys(st).sort() };
+}
+function _med(arr){ arr=arr.filter(function(x){return !isNaN(x);}).slice().sort(function(x,y){return x-y;}); if(!arr.length) return 0; var m=Math.floor(arr.length/2); return arr.length%2?arr[m]:Math.round((arr[m-1]+arr[m])/2); }
+function _benchmark(excludeId){
+  var accs=accounts.filter(function(a){return a.id!==excludeId && videosOfAccount(a.id).length>0;});
+  if(!accs.length) return null;
+  var stats=accs.map(function(a){return _accVidStats(a.id);});
+  return { accN:accs.length, vidMed:_med(stats.map(function(s){return s.n;})), viewsMed:_med(stats.map(function(s){return s.avgViews;}).filter(function(x){return x>0;})), hookMed:_med(stats.map(function(s){return s.hookPct;})), titleMed:_med(stats.map(function(s){return s.avgTitle;})) };
+}
+function _cdxRow(label,me,ref,bad){
+  return '<div style="display:flex;gap:8px;align-items:center;padding:6px 0;border-top:1px solid var(--line);font-size:13px"><div style="flex:1;color:var(--ink)">'+esc(label)+'</div><div style="width:90px;text-align:right;font-weight:700;color:'+(bad?'var(--rouge)':'var(--ink)')+'">'+esc(''+me)+'</div><div style="width:90px;text-align:right;color:var(--gold-dark)">'+esc(''+ref)+'</div></div>';
+}
+function openClientDiagnosis(id){
+  var c=accounts.find(function(x){return x.id===id;}); if(!c){ toast('找不到帳號'); return; }
+  var cs=_accVidStats(id); var bm=_benchmark(id);
+  var allStages=['G1','G2','G3','G4','G5'];
+  var missingStages=allStages.filter(function(g){return cs.stages.indexOf(g)<0;});
+  var html='<div style="padding:18px 16px;max-height:82vh;overflow-y:auto">'
+    +'<div style="font-family:\'Noto Serif TC\',serif;font-size:18px;font-weight:900;margin-bottom:2px">🩺 客戶診斷 · '+esc(c.handle||'@?')+'</div>'
+    +'<div style="font-size:12px;color:var(--gold-dark);margin-bottom:14px">跟你的成功庫比一比，落差就是你要問客戶的問題</div>';
+  if(bm){
+    html+='<div style="display:flex;gap:8px;align-items:center;padding:4px 0;font-size:11.5px;color:var(--sub);font-weight:700"><div style="flex:1">項目</div><div style="width:90px;text-align:right">你的客戶</div><div style="width:90px;text-align:right">成功庫中位</div></div>';
+    html+=_cdxRow('影片數',cs.n,bm.vidMed,cs.n<bm.vidMed);
+    html+=_cdxRow('平均觀看',cs.avgViews.toLocaleString(),bm.viewsMed.toLocaleString(),cs.avgViews>0&&cs.avgViews<bm.viewsMed);
+    html+=_cdxRow('有Hook比例',cs.hookPct+'%',bm.hookMed+'%',cs.hookPct<bm.hookMed);
+    html+=_cdxRow('平均標題字數',cs.avgTitle,bm.titleMed,false);
+  }else{
+    html+='<div style="font-size:12.5px;color:var(--ink);background:var(--warm);border-radius:8px;padding:9px 11px">庫裡還沒有其他帳號可以當「成功標準」比對——先多建幾個成功帳號，這裡就會自動算出落差。</div>';
+  }
+  html+='<div style="margin-top:12px;font-size:12.5px;color:var(--ink)"><b>發文節奏：</b>'+esc((c.profile&&c.profile.postFreq)||'（未填，建議補——這是診斷客戶最關鍵的一項）')+'</div>';
+  html+='<div style="margin-top:6px;font-size:12.5px;color:var(--ink)"><b>漏斗涵蓋：</b>'+(cs.stages.length?esc(cs.stages.join('、')):'（尚無影片分類）')+(missingStages.length?'　<span style="color:var(--rouge)">缺 '+esc(missingStages.join('、'))+'</span>':'')+'</div>';
+  html+='<div style="margin-top:14px;font-size:11.5px;color:var(--sub)">下面這顆會把客戶資料＋成功庫摘要組成提示詞，貼去 Claude／ChatGPT，它會給你完整落差診斷＋「該問客戶的 8-10 個針對性問題」。</div>';
+  html+='<button class="btn btn-go" id="cdx-prompt" style="width:100%;margin-top:10px">⧉ 複製「客戶診斷＋該問的問題」提示詞</button>';
+  html+='<button class="btn btn-ghost" id="cdx-close" style="width:100%;margin-top:8px">關閉</button>';
+  html+='</div>';
+  $('sheet').innerHTML=html; $('modal').classList.add('show');
+  $('cdx-close').onclick=closeModal;
+  $('cdx-prompt').onclick=function(){ buildClientQuestionsPrompt(id); };
+}
+function buildClientQuestionsPrompt(id){
+  var c=accounts.find(function(x){return x.id===id;}); if(!c) return;
+  var bm=_benchmark(id);
+  var prof=(typeof accProfileBlock==='function')?accProfileBlock(c).join('\n'):'';
+  var vids=videosOfAccount(id).slice(0,20).map(function(v){ return '- '+(v.title||'(未命名)')+'｜'+(v.stage||'?')+' '+(v.themeName||'')+'｜觀看'+(v.views||'?')+'｜Hook:'+(v.hook||'無'); }).join('\n');
+  var bmLine=bm?('成功庫參考（'+bm.accN+' 個帳號中位數）：影片數~'+bm.vidMed+'、平均觀看~'+bm.viewsMed.toLocaleString()+'、有Hook比例~'+bm.hookMed+'%、平均標題~'+bm.titleMed+' 字'):'（庫裡尚無其他帳號可比對）';
+  var p='【任務】我是短影音代操，這是我的一個客戶。請你扮演資深短影音顧問，拿這個客戶跟「成功帳號的標準」比對，幫我做初步診斷，並產出我第一次跟客戶聊時該問的針對性問題。\n\n'
+    +'【客戶帳號】@'+(c.handle||'?')+'（'+(c.jobTitle||'')+'／'+(c.industry||'')+'）\n'
+    +'發文節奏：'+((c.profile&&c.profile.postFreq)||'未提供')+'\n'
+    +(prof?('客戶版面／ICP／賣點：\n'+prof+'\n'):'')
+    +'客戶影片（最多 20 支）：\n'+(vids||'（目前庫裡沒有這個客戶的影片）')+'\n\n'
+    +'【成功標準參考】\n'+bmLine+'\n\n'
+    +'【請輸出】\n'
+    +'1. 落差診斷：客戶跟成功帳號比差在哪（發文頻率／節奏、貼文與影片是否交叉、標題有沒有鉤子、漏斗哪段缺、主題集中度、數字）。\n'
+    +'2. 他現在最可能卡在哪（一句話講白）。\n'
+    +'3. 下一步可直接做的 3 件事。\n'
+    +'4. 我第一次跟客戶聊時該問的 8-10 個針對性問題（依上面落差客製、非罐頭問題，目的是補齊會影響診斷、但我還不知道的資訊）。\n';
+  if(typeof copyVal==='function') copyVal(p,'客戶診斷＋問題（@'+(c.handle||'')+'）');
+}
+
 function renderCheckList(){
   var box=document.getElementById('checkListPanel'); if(!box) return;
   var PH=/待補|截圖待補|未提供|需查證|查不到|待詢|需人工核對/;
@@ -3620,6 +3702,7 @@ function renderAccounts(){
   box.querySelectorAll('[data-acc-edit]').forEach(b=>b.onclick=()=>editAccount(b.dataset.accEdit));
   box.querySelectorAll('[data-acc-fab]').forEach(b=>b.onclick=()=>buildFabPrompt(b.dataset.accFab));
   box.querySelectorAll('[data-acc-health]').forEach(b=>b.onclick=()=>buildAccountHealthPrompt(b.dataset.accHealth));
+  box.querySelectorAll('[data-acc-clientdx]').forEach(b=>b.onclick=()=>openClientDiagnosis(b.dataset.accClientdx));
   box.querySelectorAll('[data-acc-snap]').forEach(b=>b.onclick=()=>addFanSnapshot(b.dataset.accSnap));
   box.querySelectorAll('[data-acc-prof]').forEach(b=>b.onclick=()=>addProfileSnapshot(b.dataset.accProf));
   box.querySelectorAll('[data-acc-del]').forEach(b=>b.onclick=()=>delAccount(b.dataset.accDel));
@@ -3652,12 +3735,14 @@ function accCard(a){
     ${relList?`<div class="vmeta" style="margin-top:5px"><span class="lab">關聯</span> ${relList}</div>`:''}
     ${a.note?`<div class="vmeta" style="margin-top:5px;color:var(--text)">${esc(a.note)}</div>`:''}
     ${a.profile&&Object.values(a.profile).some(v=>v)?`<div class="vmeta" style="margin-top:5px;color:var(--gold-dark)">${a.profile.bio1?`<span class="lab">Bio</span> ${esc(a.profile.bio1)}　·　`:''}${a.profile.pinnedPosts?`<span class="lab">置頂</span> ${esc(a.profile.pinnedPosts.slice(0,36))}　·　`:''}${a.profile.priceShort?`<span class="lab">短影音報價</span> ${esc(a.profile.priceShort)}　·　`:''}${a.profile.priceNote?`<span class="lab">報價備註</span> ${esc(a.profile.priceNote.slice(0,28))}`:''}</div>`:''}
+    ${(()=>{var pf=a.profile||{};var rows=[];[['職稱',a.jobTitle],['產業',a.industry],['領域',a.domain]].forEach(function(e){if(e[1])rows.push('<div class="vstrat-row"><span class="vs-tag vs-why">'+e[0]+'</span><span style="white-space:pre-wrap">'+esc(e[1])+'</span></div>');});ACC_PROFILE_FIELDS.forEach(function(f){var v=pf[f[0]];if(v)rows.push('<div class="vstrat-row"><span class="vs-tag vs-apply">'+esc(f[1])+'</span><span style="white-space:pre-wrap">'+esc(v)+'</span></div>');});return rows.length?('<details class="vstrat" style="margin-top:7px"><summary>完整帳號檔 · 卡片帶入的全部（'+rows.length+' 欄，點開看工作台記了什麼）</summary>'+rows.join('')+'</details>'):'';})()}
     ${(a.fanSnapshots&&a.fanSnapshots.length)||(a.profileSnapshots&&a.profileSnapshots.length)?`<details class="vstrat" style="margin-top:7px"><summary>歷史快照（${(a.fanSnapshots||[]).length} 筆粉絲、${(a.profileSnapshots||[]).length} 筆版面）</summary>${(a.fanSnapshots||[]).slice().sort((x,y)=>(y.date||'').localeCompare(x.date||'')).map(s=>`<div class="vstrat-row"><span class="vs-tag vs-why">${esc(s.date)}</span><span>${(parseInt(s.count)||0).toLocaleString()} 粉 ${s.note?'· '+esc(s.note):''}</span></div>`).join('')}${(a.profileSnapshots||[]).slice().sort((x,y)=>(y.date||'').localeCompare(x.date||'')).map(p=>`<div class="vstrat-row"><span class="vs-tag vs-apply">${esc(p.date)} 版面</span><span style="white-space:pre-wrap">${esc([p.bio1||p.bioL1||'',p.bio2||p.bioL2||'',p.bio3||p.bioL3||''].filter(Boolean).join(' / '))}${(p.visualStyle)?' · 風格:'+esc(p.visualStyle):''}${p.priceShort?' · 短影音:'+esc(p.priceShort):''}</span></div>`).join('')}</details>`:''}
     <div class="vmeta" style="margin-top:8px;display:flex;gap:14px;flex-wrap:wrap">
       ${(()=>{const _h=(a.handle||'').replace(/^@/,'').trim();if(!_h)return '';const _u=(a.handle||'').startsWith('http')?a.handle:(a.platform==='TikTok'?'https://www.tiktok.com/@'+_h:a.platform==='YouTube'?'https://www.youtube.com/@'+_h:a.platform==='Threads'?'https://www.threads.net/@'+_h:a.platform==='X'?'https://x.com/'+_h:a.platform==='FB'?'https://www.facebook.com/'+_h:'https://www.instagram.com/'+_h+'/');return `<a class="vlink" href="${esc(_u)}" target="_blank" style="color:var(--rouge);font-weight:800">看主頁</a>`;})()}
       <span class="vlink" style="cursor:pointer" data-acc-edit="${a.id}">編輯</span>
       <span class="vlink" style="cursor:pointer;color:var(--gold-dark);font-weight:800" data-acc-fab="${a.id}">特點→賣點翻譯</span>
       <span class="vlink" style="cursor:pointer;color:var(--primary-deep);font-weight:800" data-acc-health="${a.id}">帳號體檢</span>
+      <span class="vlink" style="cursor:pointer;color:var(--rouge);font-weight:800" data-acc-clientdx="${a.id}">🩺 客戶診斷</span>
       <span class="vlink" style="cursor:pointer" data-acc-snap="${a.id}">+ 粉絲快照</span>
       <span class="vlink" style="cursor:pointer" data-acc-prof="${a.id}">+ 版面快照</span>
       <span class="vdel" data-acc-del="${a.id}">刪除</span>
@@ -4397,7 +4482,8 @@ function bindAccountUI(){
   if($('optClear')) $('optClear').onclick=()=>{ optSelected.clear(); renderOptPicker(); };
   if($('optClient')) $('optClient').addEventListener('change',()=>{ optSelected.clear(); renderOptPicker(); });
   if($('recRun')) $('recRun').onclick=buildRecommendPrompt;
-  if($('cardFixRun')) $('cardFixRun').onclick=buildCardCompletePrompt;
+  if($('cardFixRun')) $('cardFixRun').onclick=function(){ buildCardCompletePrompt('cardFixPaste','cardFixMsg'); };
+  if($('cardFixRun2')) $('cardFixRun2').onclick=function(){ buildCardCompletePrompt('cardFixPaste2','cardFixMsg2'); };
 }
 
 
