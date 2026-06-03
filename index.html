@@ -5,7 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="color-scheme" content="light only">
 <meta name="supported-color-schemes" content="light">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v130 (版本號僅留註解，不顯示於畫面)
+<!-- ATELIER 影片診斷工作台 · 內部版本 v132 (版本號僅留註解，不顯示於畫面)
+     v132 更新（客戶交付頂部加三階段視覺流程圖）：在 view-deliver 的 page-head 之後、選客戶卡之前，插入一張「HOW IT WORKS」視覺引導卡——三個步驟卡(STAGE1 IP定位／rouge、STAGE2 腳本大綱／gold-dark、STAGE3 腳本／primary-deep)以 flex 橫排＋箭頭串接，每步一個 aico svg 圖示＋一句白話，末尾一行指向「產生客戶版一頁診斷書」。純 HTML/CSS、用既有品牌色變數，div 16/16 平衡，未動任何 JS 與既有三關卡；概念比照輸入頁的區塊式視覺引導。
+     v131 更新（把「每步效益＋圖示」教學層鋪到操作流程每個 STEP 卡）：在「② 操作流程」分頁每張 sop-step 卡的說明文字下方、按鈕上方，加入一行「效益：…」＋check-circle 圖示，複用 v130 客戶交付三關的樣式(font-size:11.5px/gold-dark/flex+aico svg)；①建檔～⑧貼進工作台共 8 句白話效益。STEP②兩顆零打字鈕與 copyPromptA 不動、STEP⑥ toggleSubtypeEmbed/subtypeEmbed 內嵌工具不動。④逐字稿與⑧貼進工作台兩張無按鈕卡，效益行放在說明文字後(margin:8px 0 0)當卡片結尾。
      v130 更新（客戶交付加「客戶版一頁診斷書」漂亮模板產生器＋三關效益說明）：①客戶交付頁新增 dlOnePager → buildClientOnePager 就地嵌入高端編輯風一頁式診斷書(米色紙/襯線/細金線/序號01-)，客戶名/主打/日期自動帶入、其餘 contenteditable 可打字貼上、可＋新增一列、dlOnePagerPrint→window.print()＋@media print 只印 #clientOnePager。②三關各加一句「效益」＋圖示(教學樣板，之後可鋪到整條產線)。
      v129 更新（帳號分析加零打字分批鈕）：STEP② 帳號分析按鈕區下方新增兩顆複製鍵——「還沒傳完，先別輸出」與「完畢，開始分析」，inline onclick 直接寫剪貼簿＋按鈕回饋，免手打分批協議訊號。
      v128 更新（智慧貼上彈窗修：新帳號簡化選項＋彈窗置中）：①atelierChoose 改置中顯示(覆寫 modal alignItems=center、sheet 圓角/寬度、關閉還原)，不再貼底部像當機。②parseBtn／bulkBtn 依 _exists 給不同選項：新帳號只給「建立帳號／只建影片」兩顆(不再出現累積/覆蓋讓人誤以為建過)，已存在才給 累積/覆蓋/只建影片 三選項；標題與說明同步分流(第一次偵測到新帳號 vs 偵測到帳號分析段)。
@@ -687,7 +689,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v130</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v132</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -737,6 +739,7 @@ if('serviceWorker' in navigator){
         <div style="font-family:'Cormorant Garamond',serif;font-size:10.5px;letter-spacing:2.5px;color:var(--rouge);font-weight:700;margin-bottom:3px">STEP &#9312; · FILING · CLAUDE</div>
         <div style="font-size:14px;font-weight:700;color:var(--ink);margin-bottom:5px">&#9312; 先建檔（給 Claude：兩個連結 + 1 張截圖）</div>
         <div style="font-size:12.5px;color:var(--text);margin-bottom:8px"><svg class="aico" viewBox="0 0 24 24"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg> 看到影片立刻做：把<b>帳號連結 + 這支影片連結</b> ＋ <b>一張影片畫面截圖</b>丟給 Claude → 它回你<b>資料夾名稱</b>（YYYY-MM-DD_創作者_主題）和 <code>07_連結_創作者_主題.txt</code>（可直接下載）。照名稱建資料夾、存連結檔。這一步<b>只做建檔</b>就好（用下面「只建檔」那顆）；帳號分析留到下一步 ② 單獨做。下面「電腦建檔助手」是想手動命名/查捷徑時才點。</div>
+        <div style="font-size:11.5px;color:var(--gold-dark);margin:0 0 12px;display:flex;gap:6px;align-items:flex-start"><svg class="aico" viewBox="0 0 24 24" style="flex:none;margin-top:1px"><circle cx="12" cy="12" r="9"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg><span>效益：先把資料夾與命名建好，之後每支影片、每個帳號都歸得了位、找得回來。</span></div>
         <div style="display:flex;gap:6px;flex-wrap:wrap">
           <a href="https://claude.ai/" target="_blank" class="btn btn-ghost" style="text-decoration:none;font-size:12px;padding:6px 12px"><svg class="aico" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.07 0l3-3a5 5 0 1 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.07 0l-3 3a5 5 0 1 0 7.07 7.07l1.71-1.71"/></svg> 開 Claude</a>
           <button class="btn btn-ghost" id="copyPrompt0A" style="font-size:12px;padding:6px 12px;border-color:var(--rouge);color:var(--rouge)">⧉ 建檔＋帳號（一次跑·想省步驟才用）</button>
@@ -836,6 +839,7 @@ if('serviceWorker' in navigator){
         <div style="font-family:'Cormorant Garamond',serif;font-size:10.5px;letter-spacing:2.5px;color:var(--rouge);font-weight:700;margin-bottom:3px">STEP &#9313; · ACCOUNT · CLAUDE</div>
         <div style="font-size:14px;font-weight:700;color:var(--ink);margin-bottom:5px">&#9313; 帳號分析（給 Claude · 快速版）</div>
         <div style="font-size:12.5px;color:var(--text);margin-bottom:6px"><svg class="aico" viewBox="0 0 24 24"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg> 給 Claude：<b>帳號連結</b> + <b>帳號頁＋貼文九宮格＋影片九宮格</b>，再加 <b>貼1～貼9、片1～片9（逐格截圖）</b> → 身份、粉絲量級、版面策略、貼文vs影片比例、發文頻率、每篇文案與戰術，並出一份逐格盤點.txt。<br><span style="color:var(--gold-dark);font-size:11.5px">貼1–9／片1–9 不只看日期——每格的標題／文案、用了什麼鉤子／爆點／CTA 都會抓進逐格盤點；畫面有圖示沒數字＝0。</span><br><span style="color:var(--gold-dark);font-size:11.5px">↳ 這步可與下面 ③ 下載 / ④ 逐字稿<b>同時進行</b>，不用等。</span></div>
+        <div style="font-size:11.5px;color:var(--gold-dark);margin:0 0 12px;display:flex;gap:6px;align-items:flex-start"><svg class="aico" viewBox="0 0 24 24" style="flex:none;margin-top:1px"><circle cx="12" cy="12" r="9"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg><span>效益：先看懂這個人靠什麼經營，後面的影片診斷和給客戶的建議才有根據、不會空談。</span></div>
         <div style="display:flex;gap:6px;flex-wrap:wrap">
           <a href="https://claude.ai/" target="_blank" class="btn btn-ghost" style="text-decoration:none;font-size:12px;padding:6px 12px"><svg class="aico" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.07 0l3-3a5 5 0 1 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.07 0l-3 3a5 5 0 1 0 7.07 7.07l1.71-1.71"/></svg> 開 Claude</a>
           <button class="btn btn-ghost" id="copyPromptA" style="font-size:12px;padding:6px 12px">⧉ 複製提示詞 A（帳號分析）</button>
@@ -858,6 +862,7 @@ if('serviceWorker' in navigator){
         <div style="font-family:'Cormorant Garamond',serif;font-size:10.5px;letter-spacing:2.5px;color:var(--gold-dark);font-weight:700;margin-bottom:3px">STEP &#9314; · DOWNLOAD</div>
         <div style="font-size:14px;font-weight:700;color:var(--ink);margin-bottom:5px">&#9314; 下載素材（手機/電腦都行）</div>
         <div style="font-size:12.5px;color:var(--text);margin-bottom:8px">用 toolzin（手機可）或 Cobalt 把這輪要深挖的「主」影片＋封面＋文案抓下來（帳號分析要的截圖在 ② 已備齊）。<br><span style="color:var(--gold-dark);font-size:11.5px">↳ 可與 ② 帳號分析並行。</span></div>
+        <div style="font-size:11.5px;color:var(--gold-dark);margin:0 0 12px;display:flex;gap:6px;align-items:flex-start"><svg class="aico" viewBox="0 0 24 24" style="flex:none;margin-top:1px"><circle cx="12" cy="12" r="9"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg><span>效益：把要分析的影片和封面抓下來，AI 才看得到實體、判得準。</span></div>
         <div style="display:flex;gap:6px;flex-wrap:wrap">
           <a href="https://toolzin.com/" target="_blank" class="btn btn-ghost" style="text-decoration:none;font-size:12px;padding:6px 12px"><svg class="aico" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.07 0l3-3a5 5 0 1 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.07 0l-3 3a5 5 0 1 0 7.07 7.07l1.71-1.71"/></svg> 開 toolzin（推薦·一站抓齊）</a>
           <a href="https://cobalt.tools/" target="_blank" class="btn btn-ghost" style="text-decoration:none;font-size:12px;padding:6px 12px"><svg class="aico" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.07 0l3-3a5 5 0 1 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.07 0l-3 3a5 5 0 1 0 7.07 7.07l1.71-1.71"/></svg> 開 Cobalt</a>
@@ -869,6 +874,7 @@ if('serviceWorker' in navigator){
         <div style="font-family:'Cormorant Garamond',serif;font-size:10.5px;letter-spacing:2.5px;color:var(--gold-dark);font-weight:700;margin-bottom:3px">STEP &#9315; · TRANSCRIPT</div>
         <div style="font-size:14px;font-weight:700;color:var(--ink);margin-bottom:5px">&#9315; 影片轉逐字稿 SRT（剪映）</div>
         <div style="font-size:12.5px;color:var(--text)">開手機/電腦版<b>剪映 App</b> → 匯入影片 → 文字 → 自動字幕 → <b>匯出 SRT 字幕檔</b>（有秒數）。不要用 Gemini 自己聽打，它會聽錯。</div>
+        <div style="font-size:11.5px;color:var(--gold-dark);margin:8px 0 0;display:flex;gap:6px;align-items:flex-start"><svg class="aico" viewBox="0 0 24 24" style="flex:none;margin-top:1px"><circle cx="12" cy="12" r="9"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg><span>效益：給 AI 正確的秒數和台詞，逐字稿與節奏分析才不用用猜的。</span></div>
       </div>
 
       <!-- 步驟 5：影片分析（Gemini）-->
@@ -876,6 +882,7 @@ if('serviceWorker' in navigator){
         <div style="font-family:'Cormorant Garamond',serif;font-size:10.5px;letter-spacing:2.5px;color:var(--rouge);font-weight:700;margin-bottom:3px">STEP &#9316; · VIDEO · GEMINI</div>
         <div style="font-size:14px;font-weight:700;color:var(--ink);margin-bottom:5px">&#9316; 影片分析（給 Gemini）</div>
         <div style="font-size:12.5px;color:var(--text);margin-bottom:6px"><svg class="aico" viewBox="0 0 24 24"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg> 給 Gemini：<b>影片連結</b> + <b>影片檔（上傳）</b> + <b>剪映 SRT 逐字稿</b> → Gemini 給你主題判斷、爆紅歸因、客戶落地、腳本分析。<br><span style="color:var(--gold-dark);font-size:11.5px"><svg class="aico" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><path d="M12 9v4M12 17h.01"/></svg> 數字/身份/粉絲它一律「待補」，不要它猜</span></div>
+        <div style="font-size:11.5px;color:var(--gold-dark);margin:0 0 12px;display:flex;gap:6px;align-items:flex-start"><svg class="aico" viewBox="0 0 24 24" style="flex:none;margin-top:1px"><circle cx="12" cy="12" r="9"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg><span>效益：用最會看影片的 AI 拆主題與爆紅原因，這是整張歸類卡的骨架。</span></div>
         <div style="display:flex;gap:6px;flex-wrap:wrap">
           <a href="https://gemini.google.com/" target="_blank" class="btn btn-ghost" style="text-decoration:none;font-size:12px;padding:6px 12px"><svg class="aico" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.07 0l3-3a5 5 0 1 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.07 0l-3 3a5 5 0 1 0 7.07 7.07l1.71-1.71"/></svg> 開 Gemini</a>
           <button class="btn btn-ghost" id="gemCopy" style="font-size:12px;padding:6px 12px">⧉ 複製提示詞 B（影片分析）</button>
@@ -891,6 +898,7 @@ if('serviceWorker' in navigator){
         <div style="font-family:'Cormorant Garamond',serif;font-size:10.5px;letter-spacing:2.5px;color:var(--gold-dark);font-weight:700;margin-bottom:3px">STEP &#9317; · SUB-TYPE</div>
         <div style="font-size:14px;font-weight:700;color:var(--ink);margin-bottom:5px">&#9317; 子題型校準（第二段工具 → 貼回 Gemini）</div>
         <div style="font-size:12.5px;color:var(--text);margin-bottom:6px">用 Gemini 判出的主題+素材，到第二段工具產出含 5 個子題型完整定義的提示詞 → 貼回 Gemini，它從那 5 個精準選 1 個。</div>
+        <div style="font-size:11.5px;color:var(--gold-dark);margin:0 0 12px;display:flex;gap:6px;align-items:flex-start"><svg class="aico" viewBox="0 0 24 24" style="flex:none;margin-top:1px"><circle cx="12" cy="12" r="9"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg><span>效益：把主題收斂到最精準的那一個子題型，分類才細、之後找參照才對得上。</span></div>
         <div style="display:flex;gap:6px;flex-wrap:wrap">
           <button type="button" class="btn btn-go" style="font-size:12px;padding:6px 12px" onclick="toggleSubtypeEmbed(this)">▾ 就地展開使用（免開新分頁）</button>
           <a href="https://luckylisaaa.github.io/atelier-subtype/" target="_blank" class="btn btn-ghost" style="text-decoration:none;font-size:12px;padding:6px 12px"><svg class="aico" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.07 0l3-3a5 5 0 1 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.07 0l-3 3a5 5 0 1 0 7.07 7.07l1.71-1.71"/></svg> 改開新分頁</a>
@@ -903,6 +911,7 @@ if('serviceWorker' in navigator){
         <div style="font-family:'Cormorant Garamond',serif;font-size:10.5px;letter-spacing:2.5px;color:var(--rouge);font-weight:700;margin-bottom:3px">STEP &#9318; · MERGE · CLAUDE</div>
         <div style="font-size:14px;font-weight:700;color:var(--ink);margin-bottom:5px">&#9318; 讀數字 + 合併最終卡（給 Claude）</div>
         <div style="font-size:12.5px;color:var(--text);margin-bottom:6px"><svg class="aico" viewBox="0 0 24 24"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg> 回到 STEP ① 那個 Claude 對話框（它已經有帳號分析了），補上：<b>數據截圖</b> + <b>Gemini 影片分析結果</b> + <b>子題型</b> → Claude 讀正確數字、驗證分類，最後給你<b>三份</b>：卡A 影片×帳號合併／卡B 單一影片歸類卡／卡C 帳號整理（②已做過帳號分析的話卡C 可省）。</div>
+        <div style="font-size:11.5px;color:var(--gold-dark);margin:0 0 12px;display:flex;gap:6px;align-items:flex-start"><svg class="aico" viewBox="0 0 24 24" style="flex:none;margin-top:1px"><circle cx="12" cy="12" r="9"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg><span>效益：讓 Claude 把數字、影片分析、子題型對齊成可信的卡，避免 AI 讀錯數字。</span></div>
         <div style="display:flex;gap:6px;flex-wrap:wrap">
           <a href="https://claude.ai/" target="_blank" class="btn btn-ghost" style="text-decoration:none;font-size:12px;padding:6px 12px"><svg class="aico" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.07 0l3-3a5 5 0 1 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.07 0l-3 3a5 5 0 1 0 7.07 7.07l1.71-1.71"/></svg> 開 Claude</a>
           <button class="btn btn-ghost" id="copyPromptC" style="font-size:12px;padding:6px 12px">⧉ 複製提示詞 C（讀數字+合併）</button>
@@ -918,6 +927,7 @@ if('serviceWorker' in navigator){
         <div style="font-family:'Cormorant Garamond',serif;font-size:10.5px;letter-spacing:2.5px;color:var(--gold-dark);font-weight:700;margin-bottom:3px">STEP &#9319; · INPUT</div>
         <div style="font-size:14px;font-weight:700;color:var(--primary-deep);margin-bottom:5px">&#9319; 貼進下方「自動填入」框 → 按一次 → 完成 ✓</div>
         <div style="font-size:12.5px;color:var(--ink)">把 STEP ⑦ 的<b>卡B（單一影片歸類卡）</b>複製，貼進下面那個橘色框，按「自動填入」。所有欄位會自動填好、帳號會自動建檔、語速會自動算、雲端會自動同步。</div>
+        <div style="font-size:11.5px;color:var(--gold-dark);margin:8px 0 0;display:flex;gap:6px;align-items:flex-start"><svg class="aico" viewBox="0 0 24 24" style="flex:none;margin-top:1px"><circle cx="12" cy="12" r="9"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg><span>效益：一次把影片＋帳號建檔、語意自動算、收集盤點燈，資料庫越疊越厚、越用越準。</span></div>
       </div>
 
       <!-- Gemini 提示詞顯示區（隱藏，按 copyB 才複製）-->
@@ -1767,6 +1777,33 @@ if('serviceWorker' in navigator){
     <div class="ph-en">CLIENT DELIVERY · 客戶交付</div>
     <div class="ph-title">客戶交付三階段</div>
     <div class="ph-sub">順著你的服務流程：IP定位 → 腳本大綱 → 腳本，每階段一鍵產出可交給客戶的「診斷書」提示詞，並自動帶入影片庫的實證背書。</div>
+  </div>
+
+  <div class="card" style="margin-bottom:14px;background:var(--warm);border:1px solid var(--gold-soft)">
+    <div class="ph-en" style="margin-bottom:10px">HOW IT WORKS · 三關怎麼跑、最後交什麼</div>
+    <div style="display:flex;gap:8px;align-items:stretch;flex-wrap:wrap">
+      <div style="flex:1;min-width:150px;border:1.5px solid var(--rouge);border-radius:10px;padding:11px 12px;background:#fff;display:flex;flex-direction:column;gap:4px">
+        <svg class="aico" viewBox="0 0 24 24" style="width:22px;height:22px;color:var(--rouge)"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.5"/></svg>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:10px;letter-spacing:2px;color:var(--rouge);font-weight:700">STAGE 1</div>
+        <div style="font-size:13.5px;font-weight:800;color:var(--rouge)">① IP 定位</div>
+        <div style="font-size:11.5px;color:var(--text);line-height:1.5">先講清楚客戶是誰、現在在哪一層、要往哪走。</div>
+      </div>
+      <span style="display:flex;align-items:center;color:var(--gold-dark);font-size:20px;font-weight:700">&#8594;</span>
+      <div style="flex:1;min-width:150px;border:1.5px solid var(--gold-dark);border-radius:10px;padding:11px 12px;background:#fff;display:flex;flex-direction:column;gap:4px">
+        <svg class="aico" viewBox="0 0 24 24" style="width:22px;height:22px;color:var(--gold-dark)"><path d="M8 6h12M8 12h12M8 18h12"/><circle cx="4" cy="6" r="1"/><circle cx="4" cy="12" r="1"/><circle cx="4" cy="18" r="1"/></svg>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:10px;letter-spacing:2px;color:var(--gold-dark);font-weight:700">STAGE 2</div>
+        <div style="font-size:13.5px;font-weight:800;color:var(--gold-dark)">② 腳本大綱</div>
+        <div style="font-size:11.5px;color:var(--text);line-height:1.5">這一輪要拍哪些主題、各打哪個方向，先跟客戶對齊。</div>
+      </div>
+      <span style="display:flex;align-items:center;color:var(--gold-dark);font-size:20px;font-weight:700">&#8594;</span>
+      <div style="flex:1;min-width:150px;border:1.5px solid var(--primary-deep);border-radius:10px;padding:11px 12px;background:#fff;display:flex;flex-direction:column;gap:4px">
+        <svg class="aico" viewBox="0 0 24 24" style="width:22px;height:22px;color:var(--primary-deep)"><path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5"/><path d="M10 13h6M10 17h6"/></svg>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:10px;letter-spacing:2px;color:var(--primary-deep);font-weight:700">STAGE 3</div>
+        <div style="font-size:13.5px;font-weight:800;color:var(--primary-deep)">③ 腳本</div>
+        <div style="font-size:11.5px;color:var(--text);line-height:1.5">給可以直接拍的逐字腳本，附上為什麼這樣拍。</div>
+      </div>
+    </div>
+    <div style="margin-top:10px;display:flex;gap:6px;align-items:flex-start;font-size:11.5px;color:var(--gold-dark)"><svg class="aico" viewBox="0 0 24 24" style="flex:none;margin-top:1px"><path d="M12 3l2.4 5.4L20 9l-4 3.8 1 6.2-5-3-5 3 1-6.2L3 9l5.6-.6z"/></svg><span>三關產出後 &#8594; 按下面「<b>產生客戶版一頁診斷書</b>」，排成一張米色襯線的漂亮一頁，列印或存 PDF 直接交給客戶。</span></div>
   </div>
 
   <div class="card" style="margin-bottom:14px">
@@ -3104,7 +3141,9 @@ function renderManual(){
   <div class="form-card" style="border-left:3px solid var(--gold)">
     <div class="stitle" style="font-size:15px;color:var(--rouge)">更新紀錄 · 還沒做的</div>
     <p style="font-size:13px;color:var(--text);line-height:1.85;margin-top:8px">
-    <b>v130（這版）：</b>「客戶交付」頁多了一顆「<b>產生客戶版一頁診斷書</b>」——把 AI 產出換成一張<b>高級、不堆術語</b>的一頁式呈現（米色紙感、襯線字、細金線），客戶名／主打／日期自動帶入，其他灰色虛線處點下去就能打字或貼上 AI 內容，可「＋新增一列」，改好按「<b>列印／存成 PDF</b>」就能交給客戶。這就是你要的「方法版（內部）＋客戶交付版（漂亮模板）」兩個出口。另外三關各加了一句『效益』說明＋小圖示，讓你一眼知道每步做了有什麼用。<br>
+    <b>v132（這版）：</b>「客戶交付」頁最上面加了一張<b>三階段流程圖</b>——用三個彩色小卡＋箭頭，一眼看懂 ①IP定位 → ②腳本大綱 → ③腳本 各做什麼、為什麼要這樣走，最後接到「產生客戶版一頁診斷書」。就像「輸入影片」頁那種看圖就懂的引導，你跟客戶都更容易抓到整條服務的脈絡。<br>
+    <b>v131：</b>「② 操作流程」每個步驟卡都加了一句『效益』說明＋小圖示——從①先建檔、②帳號分析、③下載素材、④逐字稿、⑤Gemini 影片分析、⑥子題型校準、⑦合併最終卡，到⑧貼進工作台，每一步都用白話告訴你「這步做了有什麼用」，一眼就懂為什麼要做、漏了會怎樣。樣式跟 v130 客戶交付那三關一樣（金色小勾＋一行字）。<br>
+    <b>v130：</b>「客戶交付」頁多了一顆「<b>產生客戶版一頁診斷書</b>」——把 AI 產出換成一張<b>高級、不堆術語</b>的一頁式呈現（米色紙感、襯線字、細金線），客戶名／主打／日期自動帶入，其他灰色虛線處點下去就能打字或貼上 AI 內容，可「＋新增一列」，改好按「<b>列印／存成 PDF</b>」就能交給客戶。這就是你要的「方法版（內部）＋客戶交付版（漂亮模板）」兩個出口。另外三關各加了一句『效益』說明＋小圖示，讓你一眼知道每步做了有什麼用。<br>
     <b>v129：</b>幫你把分批傳圖時要打的字做成<b>複製鍵</b>了。在「② 操作流程 → STEP ② 帳號分析」那邊，多了兩顆：<b>「還沒傳完，先別輸出」</b>和<b>「完畢，開始分析」</b>——分批傳圖時按一下複製、貼到對話框送出就好，不用再自己打那兩句。<br>
     <b>v128：</b>修兩個你回報的小問題。①<b>第一次建立的帳號</b>不會再出現「累積／覆蓋」（那會讓人以為以前建過）——新帳號只問「建立帳號／只建影片」；已經建過的帳號才會出現「累積（保留歷史對比）／覆蓋／只建影片」三選項。②那個跳出來的<b>選擇視窗改成置中</b>，不會再貼在邊邊看起來像當機。<br>
     <b>v127：</b>STEP ⑥ 的「子題型第二段工具」現在可以<b>就地展開使用、不用再開新分頁</b>：點「▾ 就地展開使用」會在原地把工具嵌出來（點了才載入、不拖慢頁面），用完點「收起」；想開新分頁的連結也還留著。工具內容放在它自己的網址、不佔工作台容量，就像商業閉環那頁一樣。<br>
