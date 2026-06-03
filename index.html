@@ -5,7 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="color-scheme" content="light only">
 <meta name="supported-color-schemes" content="light">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v132 (版本號僅留註解，不顯示於畫面)
+<!-- ATELIER 影片診斷工作台 · 內部版本 v134 (版本號僅留註解，不顯示於畫面)
+     v134 更新（智能對標推薦：讓 AI 從整個帳號庫挑誰最該對標）：版面對照頁「對標優化」卡下方新增「智能對標推薦」卡——選 1 客戶＋這輪目標(重用交付頁 6 目標)＋Top N → buildRecommendPrompt 把客戶 accProfileBlock＋目標＋庫內所有其他帳號的精簡關鍵欄位(handle/職稱/產業/定位/人設/人群/產品＋已拆解影片數)組成提示詞，要 AI 排出最該對標的 Top N＋理由＋可學什麼＋通用或專屬＋優先級，並點出不建議對標的，最後導去「對標優化」。新增 populateRecClient(掛在 renderComparePicker，隨頁面/帳號變動刷新)、recRun 綁定 buildRecommendPrompt。比照既有 buildOptimizePrompt 寫法、純讀 accounts 不連 AI。卡內含 2 步視覺引導(PICK→RANK)。div 15 平衡。
+     v133 更新（三關成品預覽縮圖＋對標優化視覺引導）：①客戶交付三關卡(IP/Outline/Script)各在效益行與按鈕之間插入一張「成品預覽 · 交給客戶會長這樣」迷你縮圖——米色紙#FAF6EE＋金線#D7BE8C＋金序號#B08A3E＋深酒紅字#7A1318的襯線假版面(IP=定位三列／大綱=四列假表格／腳本=秒數chip場景列)，純HTML+span假內容、無JS。②版面對照「對標優化」卡ph-sub之後、選客戶之前插入3步迷你流程(GATHER 你的客戶+對標／COMPARE AI比對落差／TUNE 給可照做的優化)，flex+箭頭、aico svg、品牌色，比照客戶交付流程圖樣式。div 全平衡、未動任何 JS 與既有按鈕。
      v132 更新（客戶交付頂部加三階段視覺流程圖）：在 view-deliver 的 page-head 之後、選客戶卡之前，插入一張「HOW IT WORKS」視覺引導卡——三個步驟卡(STAGE1 IP定位／rouge、STAGE2 腳本大綱／gold-dark、STAGE3 腳本／primary-deep)以 flex 橫排＋箭頭串接，每步一個 aico svg 圖示＋一句白話，末尾一行指向「產生客戶版一頁診斷書」。純 HTML/CSS、用既有品牌色變數，div 16/16 平衡，未動任何 JS 與既有三關卡；概念比照輸入頁的區塊式視覺引導。
      v131 更新（把「每步效益＋圖示」教學層鋪到操作流程每個 STEP 卡）：在「② 操作流程」分頁每張 sop-step 卡的說明文字下方、按鈕上方，加入一行「效益：…」＋check-circle 圖示，複用 v130 客戶交付三關的樣式(font-size:11.5px/gold-dark/flex+aico svg)；①建檔～⑧貼進工作台共 8 句白話效益。STEP②兩顆零打字鈕與 copyPromptA 不動、STEP⑥ toggleSubtypeEmbed/subtypeEmbed 內嵌工具不動。④逐字稿與⑧貼進工作台兩張無按鈕卡，效益行放在說明文字後(margin:8px 0 0)當卡片結尾。
      v130 更新（客戶交付加「客戶版一頁診斷書」漂亮模板產生器＋三關效益說明）：①客戶交付頁新增 dlOnePager → buildClientOnePager 就地嵌入高端編輯風一頁式診斷書(米色紙/襯線/細金線/序號01-)，客戶名/主打/日期自動帶入、其餘 contenteditable 可打字貼上、可＋新增一列、dlOnePagerPrint→window.print()＋@media print 只印 #clientOnePager。②三關各加一句「效益」＋圖示(教學樣板，之後可鋪到整條產線)。
@@ -689,7 +691,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v132</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v134</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -1760,6 +1762,13 @@ if('serviceWorker' in navigator){
     <div class="ph-en" style="margin-bottom:4px">CLIENT TUNING · 對標優化</div>
     <div style="font-size:15px;font-weight:800;color:var(--rouge);margin-bottom:4px">客戶對標優化（一鍵產生提示詞）</div>
     <div class="ph-sub" style="margin:0 0 12px">選 1 個「你的客戶」＋勾幾個「對標帳號」（最多 10 個）→ 產生一段提示詞 → 貼到 ChatGPT／Claude／Gemini，AI 會拿對標的人群／產品／人設／版面，幫你客戶診斷落差、把專業特點翻成賣點、給可直接照做的優化。不會自動連 AI，只幫你把資料整理好。</div>
+    <div style="display:flex;gap:6px;align-items:stretch;flex-wrap:wrap;margin-bottom:14px">
+      <div style="flex:1;min-width:140px;border:1.5px solid var(--rouge);border-radius:10px;padding:10px 11px;background:#fff;display:flex;flex-direction:column;gap:3px"><svg class="aico" viewBox="0 0 24 24" style="width:20px;height:20px;color:var(--rouge)"><circle cx="9" cy="8" r="3"/><path d="M3 20a6 6 0 0 1 12 0"/><circle cx="17" cy="9" r="2.5"/><path d="M15 20a5 5 0 0 1 6.5-4.8"/></svg><div style="font-size:9px;letter-spacing:1.5px;color:var(--rouge);font-weight:700;font-family:'Cormorant Garamond',serif">GATHER</div><div style="font-size:12.5px;font-weight:800;color:var(--rouge)">你的客戶＋對標</div><div style="font-size:11px;color:var(--text);line-height:1.45">把你客戶和挑好的標竿帳號放在一起。</div></div>
+      <span style="display:flex;align-items:center;color:var(--gold-dark);font-size:18px;font-weight:700">&#8594;</span>
+      <div style="flex:1;min-width:140px;border:1.5px solid var(--gold-dark);border-radius:10px;padding:10px 11px;background:#fff;display:flex;flex-direction:column;gap:3px"><svg class="aico" viewBox="0 0 24 24" style="width:20px;height:20px;color:var(--gold-dark)"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5"/></svg><div style="font-size:9px;letter-spacing:1.5px;color:var(--gold-dark);font-weight:700;font-family:'Cormorant Garamond',serif">COMPARE</div><div style="font-size:12.5px;font-weight:800;color:var(--gold-dark)">AI 比對落差</div><div style="font-size:11px;color:var(--text);line-height:1.45">對標都做對了什麼、你客戶現在缺什麼。</div></div>
+      <span style="display:flex;align-items:center;color:var(--gold-dark);font-size:18px;font-weight:700">&#8594;</span>
+      <div style="flex:1;min-width:140px;border:1.5px solid var(--primary-deep);border-radius:10px;padding:10px 11px;background:#fff;display:flex;flex-direction:column;gap:3px"><svg class="aico" viewBox="0 0 24 24" style="width:20px;height:20px;color:var(--primary-deep)"><path d="M14 6a3.5 3.5 0 0 0-4.6 4.6L3 17v4h4l6.4-6.4A3.5 3.5 0 0 0 18 10"/><path d="M14.5 9.5l2-2"/></svg><div style="font-size:9px;letter-spacing:1.5px;color:var(--primary-deep);font-weight:700;font-family:'Cormorant Garamond',serif">TUNE</div><div style="font-size:12.5px;font-weight:800;color:var(--primary-deep)">給可照做的優化</div><div style="font-size:11px;color:var(--text);line-height:1.45">定位／Bio／置頂／選題，直接照著改。</div></div>
+    </div>
     <div style="font-size:13px;color:var(--ink);margin-bottom:6px;font-weight:600">① 你的客戶（要被優化的那一個）：</div>
     <select id="optClient" style="width:100%;max-width:420px;padding:8px 10px;border:1px solid var(--border);border-radius:8px;background:#fff;color:var(--ink);font-family:inherit;font-size:13px;margin-bottom:14px"></select>
     <div style="font-size:13px;color:var(--ink);margin-bottom:6px;font-weight:600">② 對標帳號（勾 1–10 個，當參考標竿）：</div>
@@ -1768,6 +1777,24 @@ if('serviceWorker' in navigator){
       <button class="btn btn-go" id="optRun" style="flex:1">產生對標優化提示詞</button>
       <button class="btn btn-ghost" id="optClear">清除勾選</button>
     </div>
+  </div>
+  <!-- v134 智能對標推薦 -->
+  <div class="card" style="margin-top:18px;border:1.5px solid var(--gold-soft)">
+    <div class="ph-en" style="margin-bottom:4px">SMART BENCHMARK &#183; 智能對標推薦</div>
+    <div style="font-size:15px;font-weight:800;color:var(--rouge);margin-bottom:4px">智能對標推薦（讓 AI 從你整個帳號庫挑誰最該對標）</div>
+    <div class="ph-sub" style="margin:0 0 12px">還不確定該拿誰當對標時用這個：選 1 個客戶＋這一輪目標＋要幾個，它會把你<b>整個帳號庫</b>的關鍵欄位一起組成提示詞，讓 AI 排出「這個客戶這一輪最該對標學習的 Top N」＋為什麼。挑好之後，再拿去上面的「對標優化」逐項深入比對。</div>
+    <div style="display:flex;gap:6px;align-items:stretch;flex-wrap:wrap;margin-bottom:14px">
+      <div style="flex:1;min-width:150px;border:1.5px solid var(--rouge);border-radius:10px;padding:10px 12px;background:#fff;display:flex;flex-direction:column;gap:3px"><svg class="aico" viewBox="0 0 24 24" style="width:20px;height:20px;color:var(--rouge)"><path d="M4 7h16M4 12h16M4 17h10"/><circle cx="19" cy="17" r="2.5"/></svg><div style="font-size:9px;letter-spacing:1.5px;color:var(--rouge);font-weight:700;font-family:'Cormorant Garamond',serif">PICK</div><div style="font-size:12.5px;font-weight:800;color:var(--rouge)">整庫＋客戶＋目標</div><div style="font-size:11px;color:var(--text);line-height:1.45">把你整個帳號庫、你客戶現況、這輪目標一起帶上。</div></div>
+      <span style="display:flex;align-items:center;color:var(--gold-dark);font-size:18px;font-weight:700">&#8594;</span>
+      <div style="flex:1;min-width:150px;border:1.5px solid var(--primary-deep);border-radius:10px;padding:10px 12px;background:#fff;display:flex;flex-direction:column;gap:3px"><svg class="aico" viewBox="0 0 24 24" style="width:20px;height:20px;color:var(--primary-deep)"><path d="M4 19V10M10 19V5M16 19v-6M21 19H3"/></svg><div style="font-size:9px;letter-spacing:1.5px;color:var(--primary-deep);font-weight:700;font-family:'Cormorant Garamond',serif">RANK</div><div style="font-size:12.5px;font-weight:800;color:var(--primary-deep)">AI 排出 Top N</div><div style="font-size:11px;color:var(--text);line-height:1.45">排出最該對標的幾個＋為什麼＋可以學什麼。</div></div>
+    </div>
+    <div style="font-size:13px;color:var(--ink);margin-bottom:6px;font-weight:600">① 你的客戶（要被服務的那一個）：</div>
+    <select id="recClient" style="width:100%;max-width:420px;padding:8px 10px;border:1px solid var(--border);border-radius:8px;background:#fff;color:var(--ink);font-family:inherit;font-size:13px"></select>
+    <div style="display:grid;grid-template-columns:1fr 120px;gap:10px;margin:12px 0 14px">
+      <label style="font-size:12px;color:var(--ink)">這一輪目標<select id="recGoal" style="width:100%;margin-top:3px;padding:8px 10px;border:1px solid var(--border);border-radius:8px;background:#fff"><option value="">（讓 AI 依資料判斷）</option><option>曝光為主</option><option>人設共鳴為主</option><option>需求教育為主</option><option>信任建立為主</option><option>導流轉化為主</option><option>人設升級為主</option></select></label>
+      <label style="font-size:12px;color:var(--ink)">要幾個<input id="recTopN" type="number" value="3" min="1" style="width:100%;margin-top:3px;padding:8px 10px;border:1px solid var(--border);border-radius:8px"></label>
+    </div>
+    <button class="btn btn-go" id="recRun" style="width:auto;padding:10px 18px">產生智能對標推薦提示詞</button>
   </div>
 </div>
 
@@ -1850,6 +1877,16 @@ if('serviceWorker' in navigator){
     <div style="font-size:15px;font-weight:800;color:var(--rouge);margin-bottom:4px">① IP 定位診斷書</div>
     <div class="ph-sub" style="margin:0 0 8px">釐清帳號定位、目標受眾、一句話定位、人群／產品／人設，並判斷客戶現在落在商業閉環 A→E 哪一層、下一步往哪推。這是你交給客戶的第一份。</div>
     <div style="font-size:11.5px;color:var(--gold-dark);margin:0 0 12px;display:flex;gap:6px;align-items:flex-start"><svg class="aico" viewBox="0 0 24 24" style="flex:none;margin-top:1px"><circle cx="12" cy="12" r="9"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg><span>效益：客戶一眼看懂「你現在在哪、要往哪走」，第一份就建立你很懂他的專業印象。</span></div>
+    <div style="margin:0 0 12px;border:1px dashed var(--gold-soft);border-radius:8px;padding:8px 10px;background:#fff">
+      <div style="font-size:10px;letter-spacing:1px;color:var(--gold-dark);font-weight:700;margin-bottom:6px">成品預覽 &#183; 交給客戶會長這樣</div>
+      <div style="background:#FAF6EE;border:1px solid #D7BE8C;border-radius:6px;padding:10px 12px;font-family:'Noto Serif TC',serif">
+        <div style="font-size:8px;letter-spacing:2px;color:#B08A3E">IP POSITIONING</div>
+        <div style="font-size:12px;font-weight:700;color:#7A1318;margin:2px 0 8px">客戶 &#183; IP 定位一頁</div>
+        <div style="display:flex;gap:8px;align-items:center;margin-bottom:5px"><span style="color:#B08A3E;font-size:9px;font-weight:700">01</span><span style="width:52px;flex:none;font-size:9px;color:#2B2521">一句定位</span><span style="flex:1;height:7px;background:#EFE7D6;border-radius:3px"></span></div>
+        <div style="display:flex;gap:8px;align-items:center;margin-bottom:5px"><span style="color:#B08A3E;font-size:9px;font-weight:700">02</span><span style="width:52px;flex:none;font-size:9px;color:#2B2521">理想受眾</span><span style="flex:1;height:7px;background:#EFE7D6;border-radius:3px"></span></div>
+        <div style="display:flex;gap:8px;align-items:center;margin-bottom:5px"><span style="color:#B08A3E;font-size:9px;font-weight:700">03</span><span style="width:52px;flex:none;font-size:9px;color:#2B2521">落點 A&#8594;E</span><span style="flex:1;height:7px;background:#EFE7D6;border-radius:3px"></span></div>
+      </div>
+    </div>
     <button class="btn btn-go" id="dlIP" style="width:auto;padding:10px 18px">產生 IP定位診斷書 提示詞</button>
   </div>
 
@@ -1858,6 +1895,17 @@ if('serviceWorker' in navigator){
     <div style="font-size:15px;font-weight:800;color:var(--gold-dark);margin-bottom:4px">② 腳本大綱診斷書</div>
     <div class="ph-sub" style="margin:0 0 8px">依定位給出主題方向與一頁式大綱表（每個主題對應漏斗類型 G1–G5、目標層 A–E、人群痛點、Hook 方向），交給客戶確認方向。</div>
     <div style="font-size:11.5px;color:var(--gold-dark);margin:0 0 12px;display:flex;gap:6px;align-items:flex-start"><svg class="aico" viewBox="0 0 24 24" style="flex:none;margin-top:1px"><circle cx="12" cy="12" r="9"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg><span>效益：把「這一輪要拍什麼」變成客戶可勾選的決策，先講好方向、大幅減少來回改稿。</span></div>
+    <div style="margin:0 0 12px;border:1px dashed var(--gold-soft);border-radius:8px;padding:8px 10px;background:#fff">
+      <div style="font-size:10px;letter-spacing:1px;color:var(--gold-dark);font-weight:700;margin-bottom:6px">成品預覽 &#183; 交給客戶會長這樣</div>
+      <div style="background:#FAF6EE;border:1px solid #D7BE8C;border-radius:6px;padding:10px 12px;font-family:'Noto Serif TC',serif">
+        <div style="font-size:8px;letter-spacing:2px;color:#B08A3E">SCRIPT OUTLINE</div>
+        <div style="font-size:12px;font-weight:700;color:#7A1318;margin:2px 0 8px">客戶 &#183; 腳本大綱表</div>
+        <div style="display:flex;gap:5px;border-bottom:1px solid #ECE0C8;padding:3px 0"><span style="flex:2;height:6px;background:#D7BE8C;border-radius:2px"></span><span style="flex:1;height:6px;background:#D7BE8C;border-radius:2px"></span><span style="flex:2;height:6px;background:#D7BE8C;border-radius:2px"></span></div>
+        <div style="display:flex;gap:5px;border-bottom:1px solid #ECE0C8;padding:3px 0"><span style="flex:2;height:6px;background:#EFE7D6;border-radius:2px"></span><span style="flex:1;height:6px;background:#EFE7D6;border-radius:2px"></span><span style="flex:2;height:6px;background:#EFE7D6;border-radius:2px"></span></div>
+        <div style="display:flex;gap:5px;border-bottom:1px solid #ECE0C8;padding:3px 0"><span style="flex:2;height:6px;background:#EFE7D6;border-radius:2px"></span><span style="flex:1;height:6px;background:#EFE7D6;border-radius:2px"></span><span style="flex:2;height:6px;background:#EFE7D6;border-radius:2px"></span></div>
+        <div style="display:flex;gap:5px;border-bottom:1px solid #ECE0C8;padding:3px 0"><span style="flex:2;height:6px;background:#EFE7D6;border-radius:2px"></span><span style="flex:1;height:6px;background:#EFE7D6;border-radius:2px"></span><span style="flex:2;height:6px;background:#EFE7D6;border-radius:2px"></span></div>
+      </div>
+    </div>
     <button class="btn btn-go" id="dlOutline" style="width:auto;padding:10px 18px">產生 腳本大綱診斷書 提示詞</button>
   </div>
 
@@ -1866,6 +1914,17 @@ if('serviceWorker' in navigator){
     <div style="font-size:15px;font-weight:800;color:var(--primary-deep);margin-bottom:4px">③ 腳本診斷書</div>
     <div class="ph-sub" style="margin:0 0 8px">依已確認的主題，產出可直接拍攝的完整腳本（Hook／分鏡逐字／畫面／CTA），並附設計理由讓客戶安心。</div>
     <div style="font-size:11.5px;color:var(--gold-dark);margin:0 0 12px;display:flex;gap:6px;align-items:flex-start"><svg class="aico" viewBox="0 0 24 24" style="flex:none;margin-top:1px"><circle cx="12" cy="12" r="9"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg><span>效益：給客戶可直接拍的腳本＋為什麼這樣拍，他安心、你的拍攝執行也不卡。</span></div>
+    <div style="margin:0 0 12px;border:1px dashed var(--gold-soft);border-radius:8px;padding:8px 10px;background:#fff">
+      <div style="font-size:10px;letter-spacing:1px;color:var(--gold-dark);font-weight:700;margin-bottom:6px">成品預覽 &#183; 交給客戶會長這樣</div>
+      <div style="background:#FAF6EE;border:1px solid #D7BE8C;border-radius:6px;padding:10px 12px;font-family:'Noto Serif TC',serif">
+        <div style="font-size:8px;letter-spacing:2px;color:#B08A3E">SHOOTING SCRIPT</div>
+        <div style="font-size:12px;font-weight:700;color:#7A1318;margin:2px 0 8px">客戶 &#183; 可拍腳本</div>
+        <div style="display:flex;gap:8px;align-items:center;margin-bottom:5px"><span style="flex:none;font-size:8px;color:#fff;background:#7A1318;border-radius:3px;padding:1px 5px">0-3s</span><span style="flex:1;height:7px;background:#EFE7D6;border-radius:3px"></span></div>
+        <div style="display:flex;gap:8px;align-items:center;margin-bottom:5px"><span style="flex:none;font-size:8px;color:#fff;background:#7A1318;border-radius:3px;padding:1px 5px">3-8s</span><span style="flex:1;height:7px;background:#EFE7D6;border-radius:3px"></span></div>
+        <div style="display:flex;gap:8px;align-items:center;margin-bottom:5px"><span style="flex:none;font-size:8px;color:#fff;background:#7A1318;border-radius:3px;padding:1px 5px">8-20s</span><span style="flex:1;height:7px;background:#EFE7D6;border-radius:3px"></span></div>
+        <div style="display:flex;gap:8px;align-items:center;margin-bottom:5px"><span style="flex:none;font-size:8px;color:#fff;background:#7A1318;border-radius:3px;padding:1px 5px">CTA</span><span style="flex:1;height:7px;background:#EFE7D6;border-radius:3px"></span></div>
+      </div>
+    </div>
     <button class="btn btn-go" id="dlScript" style="width:auto;padding:10px 18px">產生 腳本診斷書 提示詞</button>
   </div>
 
@@ -3141,7 +3200,9 @@ function renderManual(){
   <div class="form-card" style="border-left:3px solid var(--gold)">
     <div class="stitle" style="font-size:15px;color:var(--rouge)">更新紀錄 · 還沒做的</div>
     <p style="font-size:13px;color:var(--text);line-height:1.85;margin-top:8px">
-    <b>v132（這版）：</b>「客戶交付」頁最上面加了一張<b>三階段流程圖</b>——用三個彩色小卡＋箭頭，一眼看懂 ①IP定位 → ②腳本大綱 → ③腳本 各做什麼、為什麼要這樣走，最後接到「產生客戶版一頁診斷書」。就像「輸入影片」頁那種看圖就懂的引導，你跟客戶都更容易抓到整條服務的脈絡。<br>
+    <b>v134（這版）：</b>「版面對照」頁多了一塊「<b>智能對標推薦</b>」。你常常不確定該拿庫裡哪幾個帳號當對標——現在選 1 個客戶、選這一輪目標、填要幾個，按一下，它就把你<b>整個帳號庫</b>的關鍵資料整理成一段提示詞，貼給 AI，AI 會幫你排出「這個客戶這輪最該對標的 Top N」＋為什麼、可以學什麼、要先學還是之後再參考，還會點出哪些其實不適合。挑好之後，再拿去旁邊的「對標優化」逐項深入比對。完全不用自己一個個翻。<br>
+    <b>v133：</b>兩個地方更看得到「成品長怎樣」。①「客戶交付」三關各加了一張<b>成品預覽小縮圖</b>，用米色紙＋金線的樣子，讓你和客戶一眼看到 IP定位、腳本大綱、腳本最後排出來大概長什麼樣。②「版面對照」最下面的<b>對標優化</b>也加了一條流程圖：你的客戶＋對標 → AI 比對落差 → 給可照做的優化，先看懂這顆按鈕在幹嘛再用。<br>
+    <b>v132：</b>「客戶交付」頁最上面加了一張<b>三階段流程圖</b>——用三個彩色小卡＋箭頭，一眼看懂 ①IP定位 → ②腳本大綱 → ③腳本 各做什麼、為什麼要這樣走，最後接到「產生客戶版一頁診斷書」。就像「輸入影片」頁那種看圖就懂的引導，你跟客戶都更容易抓到整條服務的脈絡。<br>
     <b>v131：</b>「② 操作流程」每個步驟卡都加了一句『效益』說明＋小圖示——從①先建檔、②帳號分析、③下載素材、④逐字稿、⑤Gemini 影片分析、⑥子題型校準、⑦合併最終卡，到⑧貼進工作台，每一步都用白話告訴你「這步做了有什麼用」，一眼就懂為什麼要做、漏了會怎樣。樣式跟 v130 客戶交付那三關一樣（金色小勾＋一行字）。<br>
     <b>v130：</b>「客戶交付」頁多了一顆「<b>產生客戶版一頁診斷書</b>」——把 AI 產出換成一張<b>高級、不堆術語</b>的一頁式呈現（米色紙感、襯線字、細金線），客戶名／主打／日期自動帶入，其他灰色虛線處點下去就能打字或貼上 AI 內容，可「＋新增一列」，改好按「<b>列印／存成 PDF</b>」就能交給客戶。這就是你要的「方法版（內部）＋客戶交付版（漂亮模板）」兩個出口。另外三關各加了一句『效益』說明＋小圖示，讓你一眼知道每步做了有什麼用。<br>
     <b>v129：</b>幫你把分批傳圖時要打的字做成<b>複製鍵</b>了。在「② 操作流程 → STEP ② 帳號分析」那邊，多了兩顆：<b>「還沒傳完，先別輸出」</b>和<b>「完畢，開始分析」</b>——分批傳圖時按一下複製、貼到對話框送出就好，不用再自己打那兩句。<br>
@@ -3742,6 +3803,7 @@ let cmpSelected=new Set();
 function renderComparePicker(){
   const box=$('cmpPicker'); if(!box) return;
   if(typeof populateOptClient==='function'){ populateOptClient(); renderOptPicker(); }
+  if(typeof populateRecClient==='function') populateRecClient();
   if(!accounts.length){ box.innerHTML='<div class="empty-res" style="margin:0">尚無帳號可比較。先到「帳號管理」新增帳號並記錄版面快照。</div>'; return; }
   box.innerHTML=accounts.map(a=>{
     const sel=cmpSelected.has(a.id);
@@ -3934,6 +3996,55 @@ function buildOptimizePrompt(){
   copyVal(p,'客戶對標優化提示詞（'+bms.length+' 個對標）');
 }
 
+function populateRecClient(){
+  var sel=document.getElementById('recClient'); if(!sel) return;
+  var cur=sel.value;
+  if(!accounts.length){ sel.innerHTML='<option value="">（尚無帳號）</option>'; return; }
+  sel.innerHTML='<option value="">— 請選擇你的客戶帳號 —</option>'+accounts.map(function(a){
+    return '<option value="'+a.id+'">'+esc(a.handle||'?')+(a.jobTitle?'（'+esc(a.jobTitle)+'）':'')+'</option>';
+  }).join('');
+  if(cur)sel.value=cur;
+}
+function buildRecommendPrompt(){
+  var clientId=(document.getElementById('recClient')||{value:''}).value;
+  if(!clientId){ toast('先選一個「你的客戶」帳號'); return; }
+  var client=accounts.find(function(a){return a.id===clientId;});
+  if(!client){ toast('找不到客戶帳號'); return; }
+  var pool=accounts.filter(function(a){return a.id!==clientId;});
+  if(!pool.length){ toast('帳號庫裡還沒有其他帳號可推薦。先到「帳號管理」多累積幾個。'); return; }
+  var goal=(document.getElementById('recGoal')||{value:''}).value;
+  var topN=parseInt((document.getElementById('recTopN')||{value:'3'}).value,10)||3;
+  if(topN<1)topN=1; if(topN>pool.length)topN=pool.length;
+  var clientBlock=accProfileBlock(client);
+  var cHead='@'+(client.handle||'?').replace(/^@/,'')+(client.displayName?'（'+client.displayName+'）':'');
+  var poolText=pool.map(function(a,i){
+    var who='@'+(a.handle||'?').replace(/^@/,'')+(a.jobTitle?'／'+a.jobTitle:'')+(a.industry?'／'+a.industry:'');
+    var vc=(typeof videosOfAccount==='function'?videosOfAccount(a.id).length:0);
+    var pf=a.profile||{};
+    var key=[pf.positioning?'定位:'+pf.positioning:'',pf.persona?'人設:'+pf.persona:'',pf.icpAudience?'人群:'+pf.icpAudience:'',pf.icpProduct?'產品:'+pf.icpProduct:''].filter(Boolean).join('｜');
+    return '('+(i+1)+') '+who+(vc?'（已拆解 '+vc+' 支影片）':'（尚未拆解影片）')+(key?'\n    '+key:'');
+  }).join('\n');
+  var p='【任務】我是短影音代理營運，手上有一個帳號庫。請你當我的策略顧問，從下面整個帳號庫裡，依「我客戶的現況＋這一輪的目標」，排出我客戶這一輪最該對標學習的 Top '+topN+' 名＋理由。不是挑最相似的，是挑「學了最能幫到我客戶這一輪目標」的。\n\n'
+    +'【我的客戶】'+cHead+'\n'+(clientBlock.length?clientBlock.join('\n'):'（資料較少，請先依職稱產業合理推斷並標明）')+'\n\n'
+    +'【這一輪目標】'+(goal||'（我沒指定，請你依客戶現況判斷這輪最該打的目標，並說明判斷理由）')+'\n\n'
+    +'【我的帳號庫（共 '+pool.length+' 個，候選對標）】\n'+poolText+'\n\n'
+    +'【請你產出】\n'
+    +'一、Top '+topN+' 推薦對標（排序，最該對標排第一）。每一個寫：\n'
+    +'　1) 帳號（@與職業）\n'
+    +'　2) 為什麼選它（扣著「我客戶現況的缺口」＋「這一輪目標」講，不要只說因為相似）\n'
+    +'　3) 可以學它什麼（人群切法／產品表達／人設／版面打法，挑最值得搬的 1–2 點）\n'
+    +'　4) 這是「換職業也通用」還是「同職業專屬」\n'
+    +'　5) 對標優先級：先學 / 之後再參考\n\n'
+    +'二、不建議對標的（如果有）：點名 1–3 個雖然在庫裡、但這一輪不適合的，一句話說為什麼（例：目標不同、客群差太遠、資料太少）。\n\n'
+    +'三、一句話收尾：提醒我把選出的前幾個，拿去工作台的「對標優化」做逐項比對。\n\n'
+    +'【規則】\n'
+    +'- 只能從上面帳號庫裡挑，不要舉庫以外的帳號。\n'
+    +'- 用我客戶「真實職業」的語境判斷；對標職業不同沒關係，重點是邏輯能不能搬過來。\n'
+    +'- 資料少的帳號可以選，但要註明「資料較少、建議補完再深入」。\n'
+    +'- 用專家口吻直接給結論與排序，不要反問。';
+  copyVal(p,'智能對標推薦提示詞（從 '+pool.length+' 個帳號挑 Top '+topN+'）');
+}
+
 // v45 口說字數 + 語速計算（節拍器）
 function calcSpeechRate(){
   const box=$('speechStat'); if(!box) return;
@@ -4073,6 +4184,7 @@ function bindAccountUI(){
   if($('optRun')) $('optRun').onclick=buildOptimizePrompt;
   if($('optClear')) $('optClear').onclick=()=>{ optSelected.clear(); renderOptPicker(); };
   if($('optClient')) $('optClient').addEventListener('change',()=>{ optSelected.clear(); renderOptPicker(); });
+  if($('recRun')) $('recRun').onclick=buildRecommendPrompt;
 }
 
 
