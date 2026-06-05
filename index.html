@@ -5,7 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="color-scheme" content="light only">
 <meta name="supported-color-schemes" content="light">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v153 (版本號僅留註解，不顯示於畫面)
+<!-- ATELIER 影片診斷工作台 · 內部版本 v155 (版本號僅留註解，不顯示於畫面)
+     v155 更新（交辦單：客戶交付頁兩組優化一次到位，全 additive、不動三關產生提示詞邏輯與既有存檔結構）：A組（流程圖與成品預覽可點）：①HOW IT WORKS 三張階段小卡(IP定位／腳本大綱／腳本)加 cursor＋onclick＝dlGotoStage(n)，點了平滑捲動到對應大卡並金框高亮；三關大卡分別補上錨點 id＝dlStage1／dlStage2／dlStage3。②三關「成品預覽縮圖」(米色紙)加 cursor＋onclick＝showDeliverSample(n)，彈出該階段完整範例樣張(沿用米色紙#FAF6EE／金線#D7BE8C／金序號#B08A3E／深酒紅#7A1318，用既有 modal sheet)，縮圖標題加「點我放大」提示。B組（下拉 RWD 與搜尋）：③#dlClient 與新搜尋框都加 box-sizing＝border-box＋display block，寬度跟隨容器不溢出、縮放正常。④選客戶上方新增 #dlClientSearch 搜尋框，oninput＝filterDlClient()：依 handle／職稱／名稱即時篩選重建 option(值仍為帳號 id、保留當前選擇)，比照帳號管理搜尋邏輯。新增全域函式(置於 body 末 script，不在三關 IIFE 內)：dlGotoStage、dlCloseModal、filterDlClient、showDeliverSample；沿用 accounts／esc／既有 modal(#modal #sheet)。未動 buildIP／buildOutline／buildScript／buildClientOnePager／populateDlClient 與三關按鈕(#dlIP #dlOutline #dlScript)。node --check 全過、div 與 details 與 CSS 開閉平衡。
+     v154 更新（交辦單#1：問診存回紀錄可追溯，全 additive、不動資料結構）：①saveIntakeCard 的歸欄迴圈改為先偵測該 profile 欄原本有無非提示值(had)，saved 改存 over 旗標；②存回時除既有 intakeCard／intakeDate，另寫入 profile.intakeFields＝本次歸欄數；③確認清單：每欄若覆蓋舊值標一個金色「覆蓋」小標、標頭顯示「N 欄其中 M 欄覆蓋舊值」、底部加說明；④renderAccountCard 在看主頁那排前新增一行「📋 上次問診更新：日期 ·（本次更新 N 欄）」(僅當 profile.intakeDate 存在時顯示)。改動函式：saveIntakeCard(歸欄迴圈、intakeFields、ovc／rows／訊息 HTML)、renderAccountCard(新增一行模板字串)。沿用 accounts／profile／isHintText／esc／saveAccounts／renderAccounts，未動存檔機制與資料結構；node --check 全過、div 與 details 開閉平衡。
      v153 更新（三個小優化一次到位：收斂卡確認清單＋帳號卡按鈕收乾淨＋問診表細拆追問）：①saveIntakeCard 改寫：存回後不再自動關視窗，改在 ci-msg 顯示「已歸到帳號檔的欄位清單(欄名＋值預覽)」＋本輪建議已備查＋下一步去交付頁的提示，讓使用者親眼看到歸類結果(saved 由字串改存 物件帶 label/val)。②renderAccountCard meta 列收乾淨：主列只留 看主頁／編輯／📋客戶前置問診／刪除，其餘(特點賣點／帳號體檢／客戶診斷／借技法／粉絲快照／版面快照)收進「🔬 更多分析工具」vstrat 摺疊；data-acc-* 綁定不變(querySelectorAll 仍可取用摺疊內元素)。③INTAKE_QUESTIONS 每題下新增 2-3 個 ↳ 追問(通用版、開會客戶答得空可往下追)。純版面＋字串＋既有函式內邏輯調整，未動資料結構/存檔機制；node --check 全過、div 與 details 仍開閉平衡(meta 收乾淨新增 1 div 對與 1 details 對)。
      v152 更新（帳號管理頁瘦身：仿「輸入影片」分子頁籤，帳號清單一進來就乾淨、工具收進工具箱）：view-accounts 在 page-head 下新增兩個子頁籤（showAccSub）：📁帳號清單＝新增帳號＋搜尋排序＋accList；🧰工具箱＝資料備份／建檔收集盤／貼卡入庫(acc-tools-grid)＋卡片補完健檢＋九宮格速記庫＋待核對清單(checkListPanel)。以 Python 行級重排（原順序 新增→工具區→搜尋排序→補完→速記→待核對→清單 interleaved，把 搜尋排序＋accList 移到新增之後成 accsub-list，其餘工具移入 accsub-tools，皆為原封不動搬移既有平衡區塊）；新增 showAccSub(w) 比照 showInputSub 切換 display＋頁籤樣式；預設顯示帳號清單（inline display）。純版面重排＋一個切換函式，未動任何資料邏輯／既有元素 id（renderAccounts／renderCheckList／renderGridLib／bindAccountUI 全部照舊以 id 取用）；node --check 全過、div 974/974、details 39/39。
      v151 更新（客戶前置問診模組：把「我建好資料」變成「我能開始服務客戶」的橋樑；三方翻譯＝透過客戶搞懂客戶的客戶＝觀眾）：①新增 INTAKE_QUESTIONS（10 題三段問診表）＋ _intakeKnown(id)（讀 _accVidStats＋profile 算這客戶系統已知什麼）；②openClientIntake(id) 重用 modal/sheet，三步介面：問診表(可複製)／buildIntakePrompt(id)（把客戶現有 accProfileBlock＋影片庫統計＋_benchmark 成功庫中位 組進提示詞，要 AI 輸出 ATELIER問診整理卡，欄名沿用 ACC_PROFILE_FIELDS 以便存回，另含 A–E／G1–G5／10主題／3腳本）／saveIntakeCard(id)（parseCardFields 後逐欄寫回 c.profile，另存 profile.intakeCard 原文＋intakeDate，saveAccounts＋renderAccounts）；③帳號卡 meta 新增 data-acc-intake 按鈕，bindAccountUI 綁 openClientIntake；④說明書新增「🚀 怎麼開始服務一個客戶」卡。純讀 accounts／videos、沿用現有解析與存檔機制、未動 AI 串接；新函式先單獨 node --check，全檔 node --check 全過、div/details/CSS 開閉平衡。
@@ -710,7 +712,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v153</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v155</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -1859,21 +1861,21 @@ if('serviceWorker' in navigator){
   <div class="card" style="margin-bottom:14px;background:var(--warm);border:1px solid var(--gold-soft)">
     <div class="ph-en" style="margin-bottom:10px">HOW IT WORKS · 三關怎麼跑、最後交什麼</div>
     <div style="display:flex;gap:8px;align-items:stretch;flex-wrap:wrap">
-      <div style="flex:1;min-width:150px;border:1.5px solid var(--rouge);border-radius:10px;padding:11px 12px;background:#fff;display:flex;flex-direction:column;gap:4px">
+      <div style="flex:1;min-width:150px;border:1.5px solid var(--rouge);border-radius:10px;padding:11px 12px;background:#fff;display:flex;flex-direction:column;gap:4px;cursor:pointer" onclick="dlGotoStage(1)" title="點我跳到下面這一關">
         <svg class="aico" viewBox="0 0 24 24" style="width:22px;height:22px;color:var(--rouge)"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.5"/></svg>
         <div style="font-family:'Cormorant Garamond',serif;font-size:10px;letter-spacing:2px;color:var(--rouge);font-weight:700">STAGE 1</div>
         <div style="font-size:13.5px;font-weight:800;color:var(--rouge)">① IP 定位</div>
         <div style="font-size:11.5px;color:var(--text);line-height:1.5">先講清楚客戶是誰、現在在哪一層、要往哪走。</div>
       </div>
       <span style="display:flex;align-items:center;color:var(--gold-dark);font-size:20px;font-weight:700">&#8594;</span>
-      <div style="flex:1;min-width:150px;border:1.5px solid var(--gold-dark);border-radius:10px;padding:11px 12px;background:#fff;display:flex;flex-direction:column;gap:4px">
+      <div style="flex:1;min-width:150px;border:1.5px solid var(--gold-dark);border-radius:10px;padding:11px 12px;background:#fff;display:flex;flex-direction:column;gap:4px;cursor:pointer" onclick="dlGotoStage(2)" title="點我跳到下面這一關">
         <svg class="aico" viewBox="0 0 24 24" style="width:22px;height:22px;color:var(--gold-dark)"><path d="M8 6h12M8 12h12M8 18h12"/><circle cx="4" cy="6" r="1"/><circle cx="4" cy="12" r="1"/><circle cx="4" cy="18" r="1"/></svg>
         <div style="font-family:'Cormorant Garamond',serif;font-size:10px;letter-spacing:2px;color:var(--gold-dark);font-weight:700">STAGE 2</div>
         <div style="font-size:13.5px;font-weight:800;color:var(--gold-dark)">② 腳本大綱</div>
         <div style="font-size:11.5px;color:var(--text);line-height:1.5">這一輪要拍哪些主題、各打哪個方向，先跟客戶對齊。</div>
       </div>
       <span style="display:flex;align-items:center;color:var(--gold-dark);font-size:20px;font-weight:700">&#8594;</span>
-      <div style="flex:1;min-width:150px;border:1.5px solid var(--primary-deep);border-radius:10px;padding:11px 12px;background:#fff;display:flex;flex-direction:column;gap:4px">
+      <div style="flex:1;min-width:150px;border:1.5px solid var(--primary-deep);border-radius:10px;padding:11px 12px;background:#fff;display:flex;flex-direction:column;gap:4px;cursor:pointer" onclick="dlGotoStage(3)" title="點我跳到下面這一關">
         <svg class="aico" viewBox="0 0 24 24" style="width:22px;height:22px;color:var(--primary-deep)"><path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5"/><path d="M10 13h6M10 17h6"/></svg>
         <div style="font-family:'Cormorant Garamond',serif;font-size:10px;letter-spacing:2px;color:var(--primary-deep);font-weight:700">STAGE 3</div>
         <div style="font-size:13.5px;font-weight:800;color:var(--primary-deep)">③ 腳本</div>
@@ -1885,7 +1887,8 @@ if('serviceWorker' in navigator){
 
   <div class="card" style="margin-bottom:14px">
     <div style="font-size:13px;font-weight:600;color:var(--ink);margin-bottom:6px">先選這次要服務的客戶帳號：</div>
-    <select id="dlClient" style="width:100%;max-width:420px;padding:9px 11px;border:1px solid var(--border);border-radius:8px;background:#fff;color:var(--ink);font-family:inherit;font-size:14px"></select>
+    <input id="dlClientSearch" type="text" oninput="filterDlClient()" placeholder="🔍 打字找客戶：英文 handle（如 sunny）或中文名／職稱（如 王陽明、演員）" style="width:100%;max-width:420px;box-sizing:border-box;padding:9px 11px;margin-bottom:8px;border:1px solid var(--border);border-radius:8px;background:#fff;color:var(--ink);font-family:inherit;font-size:14px;display:block">
+    <select id="dlClient" style="width:100%;max-width:420px;box-sizing:border-box;padding:9px 11px;border:1px solid var(--border);border-radius:8px;background:#fff;color:var(--ink);font-family:inherit;font-size:14px;display:block"></select>
     <div style="font-size:11.5px;color:var(--sub);margin-top:8px">客戶資料越完整（貼過帳號分析卡、拆解過影片），診斷書越準。沒有客戶帳號就先到「帳號管理」新增。</div>
   </div>
 
@@ -1922,14 +1925,14 @@ if('serviceWorker' in navigator){
     </div>
   </details>
 
-  <div class="card" style="margin-bottom:12px;border-left:3px solid var(--rouge)">
+  <div class="card" style="margin-bottom:12px;border-left:3px solid var(--rouge)" id="dlStage1">
     <div class="ph-en" style="margin-bottom:3px">STAGE 1</div>
     <div style="font-size:15px;font-weight:800;color:var(--rouge);margin-bottom:4px">① IP 定位診斷書</div>
     <div class="ph-sub" style="margin:0 0 8px">釐清帳號定位、目標受眾、一句話定位、人群／產品／人設，並判斷客戶現在落在商業閉環 A→E 哪一層、下一步往哪推。這是你交給客戶的第一份。</div>
     <div style="font-size:11.5px;color:var(--gold-dark);margin:0 0 12px;display:flex;gap:6px;align-items:flex-start"><svg class="aico" viewBox="0 0 24 24" style="flex:none;margin-top:1px"><circle cx="12" cy="12" r="9"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg><span>效益：客戶一眼看懂「你現在在哪、要往哪走」，第一份就建立你很懂他的專業印象。</span></div>
     <div style="margin:0 0 12px;border:1px dashed var(--gold-soft);border-radius:8px;padding:8px 10px;background:#fff">
-      <div style="font-size:10px;letter-spacing:1px;color:var(--gold-dark);font-weight:700;margin-bottom:6px">成品預覽 &#183; 交給客戶會長這樣</div>
-      <div style="background:#FAF6EE;border:1px solid #D7BE8C;border-radius:6px;padding:10px 12px;font-family:'Noto Serif TC',serif">
+      <div style="font-size:10px;letter-spacing:1px;color:var(--gold-dark);font-weight:700;margin-bottom:6px">成品預覽 &#183; 交給客戶會長這樣 &#183; <span style="text-decoration:underline">點我放大</span></div>
+      <div style="background:#FAF6EE;border:1px solid #D7BE8C;border-radius:6px;padding:10px 12px;font-family:'Noto Serif TC',serif;cursor:zoom-in" onclick="showDeliverSample(1)" title="點我放大看完整範例樣張">
         <div style="font-size:8px;letter-spacing:2px;color:#B08A3E">IP POSITIONING</div>
         <div style="font-size:12px;font-weight:700;color:#7A1318;margin:2px 0 8px">客戶 &#183; IP 定位一頁</div>
         <div style="display:flex;gap:8px;align-items:center;margin-bottom:5px"><span style="color:#B08A3E;font-size:9px;font-weight:700">01</span><span style="width:52px;flex:none;font-size:9px;color:#2B2521">一句定位</span><span style="flex:1;height:7px;background:#EFE7D6;border-radius:3px"></span></div>
@@ -1940,14 +1943,14 @@ if('serviceWorker' in navigator){
     <button class="btn btn-go" id="dlIP" style="width:auto;padding:10px 18px">產生 IP定位診斷書 提示詞</button>
   </div>
 
-  <div class="card" style="margin-bottom:12px;border-left:3px solid var(--gold-dark)">
+  <div class="card" style="margin-bottom:12px;border-left:3px solid var(--gold-dark)" id="dlStage2">
     <div class="ph-en" style="margin-bottom:3px">STAGE 2</div>
     <div style="font-size:15px;font-weight:800;color:var(--gold-dark);margin-bottom:4px">② 腳本大綱診斷書</div>
     <div class="ph-sub" style="margin:0 0 8px">依定位給出主題方向與一頁式大綱表（每個主題對應漏斗類型 G1–G5、目標層 A–E、人群痛點、Hook 方向），交給客戶確認方向。</div>
     <div style="font-size:11.5px;color:var(--gold-dark);margin:0 0 12px;display:flex;gap:6px;align-items:flex-start"><svg class="aico" viewBox="0 0 24 24" style="flex:none;margin-top:1px"><circle cx="12" cy="12" r="9"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg><span>效益：把「這一輪要拍什麼」變成客戶可勾選的決策，先講好方向、大幅減少來回改稿。</span></div>
     <div style="margin:0 0 12px;border:1px dashed var(--gold-soft);border-radius:8px;padding:8px 10px;background:#fff">
-      <div style="font-size:10px;letter-spacing:1px;color:var(--gold-dark);font-weight:700;margin-bottom:6px">成品預覽 &#183; 交給客戶會長這樣</div>
-      <div style="background:#FAF6EE;border:1px solid #D7BE8C;border-radius:6px;padding:10px 12px;font-family:'Noto Serif TC',serif">
+      <div style="font-size:10px;letter-spacing:1px;color:var(--gold-dark);font-weight:700;margin-bottom:6px">成品預覽 &#183; 交給客戶會長這樣 &#183; <span style="text-decoration:underline">點我放大</span></div>
+      <div style="background:#FAF6EE;border:1px solid #D7BE8C;border-radius:6px;padding:10px 12px;font-family:'Noto Serif TC',serif;cursor:zoom-in" onclick="showDeliverSample(2)" title="點我放大看完整範例樣張">
         <div style="font-size:8px;letter-spacing:2px;color:#B08A3E">SCRIPT OUTLINE</div>
         <div style="font-size:12px;font-weight:700;color:#7A1318;margin:2px 0 8px">客戶 &#183; 腳本大綱表</div>
         <div style="display:flex;gap:5px;border-bottom:1px solid #ECE0C8;padding:3px 0"><span style="flex:2;height:6px;background:#D7BE8C;border-radius:2px"></span><span style="flex:1;height:6px;background:#D7BE8C;border-radius:2px"></span><span style="flex:2;height:6px;background:#D7BE8C;border-radius:2px"></span></div>
@@ -1959,14 +1962,14 @@ if('serviceWorker' in navigator){
     <button class="btn btn-go" id="dlOutline" style="width:auto;padding:10px 18px">產生 腳本大綱診斷書 提示詞</button>
   </div>
 
-  <div class="card" style="margin-bottom:12px;border-left:3px solid var(--primary-deep)">
+  <div class="card" style="margin-bottom:12px;border-left:3px solid var(--primary-deep)" id="dlStage3">
     <div class="ph-en" style="margin-bottom:3px">STAGE 3</div>
     <div style="font-size:15px;font-weight:800;color:var(--primary-deep);margin-bottom:4px">③ 腳本診斷書</div>
     <div class="ph-sub" style="margin:0 0 8px">依已確認的主題，產出可直接拍攝的完整腳本（Hook／分鏡逐字／畫面／CTA），並附設計理由讓客戶安心。</div>
     <div style="font-size:11.5px;color:var(--gold-dark);margin:0 0 12px;display:flex;gap:6px;align-items:flex-start"><svg class="aico" viewBox="0 0 24 24" style="flex:none;margin-top:1px"><circle cx="12" cy="12" r="9"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg><span>效益：給客戶可直接拍的腳本＋為什麼這樣拍，他安心、你的拍攝執行也不卡。</span></div>
     <div style="margin:0 0 12px;border:1px dashed var(--gold-soft);border-radius:8px;padding:8px 10px;background:#fff">
-      <div style="font-size:10px;letter-spacing:1px;color:var(--gold-dark);font-weight:700;margin-bottom:6px">成品預覽 &#183; 交給客戶會長這樣</div>
-      <div style="background:#FAF6EE;border:1px solid #D7BE8C;border-radius:6px;padding:10px 12px;font-family:'Noto Serif TC',serif">
+      <div style="font-size:10px;letter-spacing:1px;color:var(--gold-dark);font-weight:700;margin-bottom:6px">成品預覽 &#183; 交給客戶會長這樣 &#183; <span style="text-decoration:underline">點我放大</span></div>
+      <div style="background:#FAF6EE;border:1px solid #D7BE8C;border-radius:6px;padding:10px 12px;font-family:'Noto Serif TC',serif;cursor:zoom-in" onclick="showDeliverSample(3)" title="點我放大看完整範例樣張">
         <div style="font-size:8px;letter-spacing:2px;color:#B08A3E">SHOOTING SCRIPT</div>
         <div style="font-size:12px;font-weight:700;color:#7A1318;margin:2px 0 8px">客戶 &#183; 可拍腳本</div>
         <div style="display:flex;gap:8px;align-items:center;margin-bottom:5px"><span style="flex:none;font-size:8px;color:#fff;background:#7A1318;border-radius:3px;padding:1px 5px">0-3s</span><span style="flex:1;height:7px;background:#EFE7D6;border-radius:3px"></span></div>
@@ -3291,7 +3294,9 @@ function renderManual(){
   <div class="form-card" style="border-left:3px solid var(--gold)">
     <div class="stitle" style="font-size:15px;color:var(--rouge)">更新紀錄 · 還沒做的</div>
     <p style="font-size:13px;color:var(--text);line-height:1.85;margin-top:8px">
-    <b>v153（這版）：</b>一次做三個小優化，讓你不亂、好用：①<b>收斂卡確認清單</b>——問診模組按「整理並存回帳號」後，<b>不再立刻關掉</b>，會在下面列出「<b>幫你歸到哪幾欄、各填了什麼</b>」，你看完歸對了再自己關。②<b>帳號卡按鈕收乾淨</b>——每張卡那排現在只留 看主頁／編輯／<b>📋 客戶前置問診</b>／刪除，其他分析工具（特點→賣點、帳號體檢、客戶診斷、借技法、快照）收進一個「<b>🔬 更多分析工具</b>」的摺疊，要用再點開，不再一次堆在你眼前。③<b>問診表細拆追問</b>——10 題每題下面多了 2-3 句「↳ 追問」，開會客戶答得太空時，照著往下追就會有畫面。<br>
+    <b>v155（這版）：</b>「客戶交付」頁更好用：①上方<b>三階段流程圖</b>的三張小卡<b>可以點</b>了——點 IP定位／腳本大綱／腳本，畫面會自動<b>捲到下面那一關</b>並閃一下提醒你。②每一關的<b>成品預覽縮圖可以點開放大</b>，跳出一張完整的「交給客戶會長這樣」<b>範例樣張</b>，先看清楚成品長相再產生。③「選客戶」上面多了一個<b>搜尋框</b>，打英文 handle（如 sunny）或中文名／職稱（如 王陽明、演員）就能<b>即時篩出</b>客戶，未來客戶很多也找得到人；下拉也修好了<b>縮放跑版</b>的問題。<br>
+    <b>v154：</b>問診存回多了<b>可追溯</b>，怕日後不小心覆蓋到對的資料：①帳號卡上新增一行「<b>📋 上次問診更新：日期 ·（本次更新 N 欄）</b>」，事後看得到何時改過、改了幾欄；②按「整理並存回帳號」後的綠色清單，凡是<b>蓋掉舊值</b>的欄會標一個「<b>覆蓋</b>」小標、標頭也會寫「其中 M 欄覆蓋舊值」，讓你一眼看出哪些是新增、哪些是改寫。<br>
+    <b>v153：</b>一次做三個小優化，讓你不亂、好用：①<b>收斂卡確認清單</b>——問診模組按「整理並存回帳號」後，<b>不再立刻關掉</b>，會在下面列出「<b>幫你歸到哪幾欄、各填了什麼</b>」，你看完歸對了再自己關。②<b>帳號卡按鈕收乾淨</b>——每張卡那排現在只留 看主頁／編輯／<b>📋 客戶前置問診</b>／刪除，其他分析工具（特點→賣點、帳號體檢、客戶診斷、借技法、快照）收進一個「<b>🔬 更多分析工具</b>」的摺疊，要用再點開，不再一次堆在你眼前。③<b>問診表細拆追問</b>——10 題每題下面多了 2-3 句「↳ 追問」，開會客戶答得太空時，照著往下追就會有畫面。<br>
     <b>v152：</b>「帳號管理」頁<b>瘦身</b>了——你說它太亂、要穿過一堆東西才看到帳號，現在改成像「輸入影片」那樣<b>上面兩個頁籤</b>：<b>📁 帳號清單</b>（一進來就只看到新增帳號＋搜尋排序＋你的帳號卡，乾淨）、<b>🧰 工具箱</b>（資料備份、建檔收集盤、貼卡入庫、卡片補完健檢、九宮格速記庫、待核對清單，全部收進這裡，要用再點）。功能一個都沒少，只是不再全部堆在你眼前。<br>
     <b>v151：</b>你終於可以「<b>開始服務客戶</b>」了——新增「📋 客戶前置問診」。在帳號管理每張客戶卡會多一顆「客戶前置問診」，點開有三步：①一張 <b>10 題問診表</b>（帶去開會問客戶，重點是透過客戶搞懂「客戶的客戶＝觀眾」）；②一顆「問診整理提示詞」會自動把這客戶<b>現有的影片庫表現＋你的成功庫標準</b>一起組進去，你把會議筆記貼給 AI，它回一張「問診整理卡」（人群／痛點原話／誤區／服務／賣點／信任／人設／合規／一句話定位＋本輪 A–E、G1–G5、10 支主題、3 支優先腳本）；③「整理並存回帳號」把這些存回客戶的帳號檔，之後 IP定位／腳本／借技法／客戶診斷全部自動吃得到。說明書上方也新增「🚀 怎麼開始服務一個客戶」一條龍。<br>
     <b>v150：</b>把上一版「九宮格要截幾張」的規則，寫成說明書上方一張<b>常駐小卡</b>（不用翻更新紀錄也看得到）：頻道<b>有開放排序</b>就截兩張（最新看發文頻率＋置頂、最多人觀看看觀看排行）、<b>沒開放</b>就截一張照舊，能標排序就標、不用背。<br>
@@ -3810,16 +3815,17 @@ function saveIntakeCard(id){
   var F=parseCardFields(raw);
   if(!c.profile) c.profile={};
   var saved=[];
-  ACC_PROFILE_FIELDS.forEach(function(pair){ var key=pair[0],label=pair[1]; if(F[label]){ c.profile[key]=F[label]; saved.push({label:label,val:F[label]}); } });
-  c.profile.intakeCard=raw; c.profile.intakeDate=(new Date()).toISOString().slice(0,10);
+  ACC_PROFILE_FIELDS.forEach(function(pair){ var key=pair[0],label=pair[1]; if(F[label]){ var had=!!(c.profile[key]&&!isHintText(c.profile[key])&&String(c.profile[key]).trim()); c.profile[key]=F[label]; saved.push({label:label,val:F[label],over:had}); } });
+  c.profile.intakeCard=raw; c.profile.intakeDate=(new Date()).toISOString().slice(0,10); c.profile.intakeFields=saved.length;
   saveAccounts(); if(typeof renderAccounts==='function') renderAccounts();
   var m=$('ci-msg');
   if(!saved.length){
     if(m) m.innerHTML='<div style="font-size:12px;color:var(--rouge);background:var(--warm);border-radius:8px;padding:8px 10px">沒抓到可存的標準欄位——請確認你貼的是 AI 回的「===ATELIER問診整理卡===」整段（一行一欄、全形冒號）。整段內容我還是先存進帳號備查了。</div>';
     toast('整段已存進帳號備查'); return;
   }
-  var rows=saved.map(function(o){ var vv=o.val.length>40?(o.val.slice(0,40)+'…'):o.val; return '<div style="display:flex;gap:8px;padding:4px 0;border-top:1px solid var(--line);font-size:12px"><span style="color:#0F6E56;font-weight:700;white-space:nowrap">✓ '+esc(o.label)+'</span><span style="color:var(--sub);overflow:hidden">'+esc(vv)+'</span></div>'; }).join('');
-  if(m) m.innerHTML='<div style="background:var(--warm);border:1px solid var(--gold-soft);border-radius:8px;padding:10px 12px"><div style="font-size:13px;font-weight:800;color:var(--rouge)">✅ 已歸到 '+esc(c.handle||'帳號')+' 的帳號檔（'+saved.length+' 欄）</div>'+rows+'<div style="font-size:11.5px;color:var(--sub);margin-top:8px">本輪建議（A–E／G1–G5／10 主題／3 腳本）已連同整張卡存進帳號備查。接著去「客戶交付」頁選這個客戶，IP定位／腳本就會帶到這些。看完按下面關閉即可。</div></div>';
+  var ovc=saved.filter(function(o){return o.over;}).length;
+  var rows=saved.map(function(o){ var vv=o.val.length>40?(o.val.slice(0,40)+'…'):o.val; var ov=o.over?' <span style="color:var(--gold-dark);font-weight:700;font-size:10px;border:1px solid var(--gold-soft);border-radius:4px;padding:0 4px">覆蓋</span>':''; return '<div style="display:flex;gap:8px;padding:4px 0;border-top:1px solid var(--line);font-size:12px"><span style="color:#0F6E56;font-weight:700;white-space:nowrap">✓ '+esc(o.label)+ov+'</span><span style="color:var(--sub);overflow:hidden">'+esc(vv)+'</span></div>'; }).join('');
+  if(m) m.innerHTML='<div style="background:var(--warm);border:1px solid var(--gold-soft);border-radius:8px;padding:10px 12px"><div style="font-size:13px;font-weight:800;color:var(--rouge)">✅ 已歸到 '+esc(c.handle||'帳號')+' 的帳號檔（'+saved.length+' 欄'+(ovc?('，其中 '+ovc+' 欄覆蓋舊值'):'')+'）</div>'+rows+'<div style="font-size:11.5px;color:var(--sub);margin-top:8px">標「覆蓋」的欄＝蓋掉原本已有的值（不是新增）。本輪建議（A–E／G1–G5／10 主題／3 腳本）已連同整張卡存進帳號備查。接著去「客戶交付」頁選這個客戶。看完按下面關閉即可。</div></div>';
   toast('已歸 '+saved.length+' 欄到帳號檔');
 }
 
@@ -4038,6 +4044,7 @@ function accCard(a){
     ${a.profile&&Object.values(a.profile).some(v=>v)?`<div class="vmeta" style="margin-top:5px;color:var(--gold-dark)">${a.profile.bio1?`<span class="lab">Bio</span> ${esc(a.profile.bio1)}　·　`:''}${a.profile.pinnedPosts?`<span class="lab">置頂</span> ${esc(a.profile.pinnedPosts.slice(0,36))}　·　`:''}${a.profile.priceShort?`<span class="lab">短影音報價</span> ${esc(a.profile.priceShort)}　·　`:''}${a.profile.priceNote?`<span class="lab">報價備註</span> ${esc(a.profile.priceNote.slice(0,28))}`:''}</div>`:''}
     ${(()=>{var pf=a.profile||{};var rows=[];[['職稱',a.jobTitle],['產業',a.industry],['領域',a.domain]].forEach(function(e){if(e[1])rows.push('<div class="vstrat-row"><span class="vs-tag vs-why">'+e[0]+'</span><span style="white-space:pre-wrap">'+esc(e[1])+'</span></div>');});ACC_PROFILE_FIELDS.forEach(function(f){var v=pf[f[0]];if(v)rows.push('<div class="vstrat-row"><span class="vs-tag vs-apply">'+esc(f[1])+'</span><span style="white-space:pre-wrap">'+esc(v)+'</span></div>');});return rows.length?('<details class="vstrat" style="margin-top:7px"><summary>完整帳號檔 · 卡片帶入的全部（'+rows.length+' 欄，點開看工作台記了什麼）</summary>'+rows.join('')+'</details>'):'';})()}
     ${(a.fanSnapshots&&a.fanSnapshots.length)||(a.profileSnapshots&&a.profileSnapshots.length)?`<details class="vstrat" style="margin-top:7px"><summary>歷史快照（${(a.fanSnapshots||[]).length} 筆粉絲、${(a.profileSnapshots||[]).length} 筆版面）</summary>${(a.fanSnapshots||[]).slice().sort((x,y)=>(y.date||'').localeCompare(x.date||'')).map(s=>`<div class="vstrat-row"><span class="vs-tag vs-why">${esc(s.date)}</span><span>${(parseInt(s.count)||0).toLocaleString()} 粉 ${s.note?'· '+esc(s.note):''}</span></div>`).join('')}${(a.profileSnapshots||[]).slice().sort((x,y)=>(y.date||'').localeCompare(x.date||'')).map(p=>`<div class="vstrat-row"><span class="vs-tag vs-apply">${esc(p.date)} 版面</span><span style="white-space:pre-wrap">${esc([p.bio1||p.bioL1||'',p.bio2||p.bioL2||'',p.bio3||p.bioL3||''].filter(Boolean).join(' / '))}${(p.visualStyle)?' · 風格:'+esc(p.visualStyle):''}${p.priceShort?' · 短影音:'+esc(p.priceShort):''}</span></div>`).join('')}</details>`:''}
+    ${(a.profile&&a.profile.intakeDate)?('<div style="margin-top:8px;font-size:11.5px;color:var(--gold-dark)">📋 上次問診更新：'+esc(a.profile.intakeDate)+(a.profile.intakeFields?(' ·（本次更新 '+a.profile.intakeFields+' 欄）'):'')+'</div>'):''}
     <div class="vmeta" style="margin-top:8px;display:flex;gap:14px;flex-wrap:wrap">
       ${(()=>{const _h=(a.handle||'').replace(/^@/,'').trim();if(!_h)return '';const _u=(a.handle||'').startsWith('http')?a.handle:(a.platform==='TikTok'?'https://www.tiktok.com/@'+_h:a.platform==='YouTube'?'https://www.youtube.com/@'+_h:a.platform==='Threads'?'https://www.threads.net/@'+_h:a.platform==='X'?'https://x.com/'+_h:a.platform==='FB'?'https://www.facebook.com/'+_h:'https://www.instagram.com/'+_h+'/');return `<a class="vlink" href="${esc(_u)}" target="_blank" style="color:var(--rouge);font-weight:800">看主頁</a>`;})()}
       <span class="vlink" style="cursor:pointer" data-acc-edit="${a.id}">編輯</span>
@@ -6241,6 +6248,86 @@ window.addEventListener('DOMContentLoaded', function(){
   setTimeout(mountPrep,600);
   var t=document.querySelector('.tab[data-view="input"]'); if(t) t.addEventListener('click',function(){ setTimeout(mountPrep,40); if(typeof showInputSub==='function') showInputSub('flow'); });
 })();
+</script>
+<script>
+/* v155 客戶交付頁互動（全域、additive；不動三關 IP定位／腳本大綱／腳本 產生提示詞的邏輯與按鈕）*/
+function dlGotoStage(n){
+  var el=document.getElementById('dlStage'+n); if(!el) return;
+  el.scrollIntoView({behavior:'smooth',block:'center'});
+  el.style.transition='box-shadow .3s ease';
+  el.style.boxShadow='0 0 0 3px rgba(165,24,32,.45)';
+  setTimeout(function(){ el.style.boxShadow='0 0 0 0 rgba(165,24,32,0)'; },1300);
+}
+function dlCloseModal(){ var m=document.getElementById('modal'); if(m) m.classList.remove('show'); }
+function filterDlClient(){
+  var sel=document.getElementById('dlClient'); if(!sel) return;
+  if(typeof accounts==='undefined'||!accounts||!accounts.length) return;
+  var sb=document.getElementById('dlClientSearch');
+  var q=(sb&&sb.value?sb.value.trim().toLowerCase():'');
+  var cur=sel.value;
+  var escf=(typeof esc==='function')?esc:function(x){return x;};
+  var list=accounts.filter(function(a){
+    if(!q) return true;
+    var hay=((a.handle||'')+' '+(a.jobTitle||'')+' '+(a.name||'')).toLowerCase();
+    return hay.indexOf(q)>=0;
+  });
+  var head=q?('— 符合「'+escf(q)+'」 '+list.length+' 位 —'):'— 請選擇客戶帳號 —';
+  sel.innerHTML='<option value="">'+head+'</option>'+list.map(function(a){
+    var label=(a.handle||'?')+(a.jobTitle?'（'+a.jobTitle+'）':'');
+    return '<option value="'+a.id+'">'+escf(label)+'</option>';
+  }).join('');
+  if(cur && list.some(function(a){return String(a.id)===String(cur);})) sel.value=cur;
+}
+function showDeliverSample(stage){
+  var paper='background:#FAF6EE;border:1px solid #D7BE8C;border-radius:8px;padding:18px 20px;font-family:\'Noto Serif TC\',serif;color:#2B2521';
+  var en,title,body;
+  var row=function(no,label,val){ return '<div style="display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-top:1px solid #ECE0C8"><span style="color:#B08A3E;font-size:11px;font-weight:700;flex:none;width:20px">'+no+'</span><span style="flex:none;width:74px;font-size:12px;color:#7A1318;font-weight:700">'+label+'</span><span style="flex:1;font-size:12px;line-height:1.6;color:#2B2521">'+val+'</span></div>'; };
+  if(stage===2){
+    en='<div style="font-size:9px;letter-spacing:2px;color:#B08A3E">SCRIPT OUTLINE</div>';
+    title='<div style="font-size:17px;font-weight:700;color:#7A1318;margin:3px 0 14px">客戶 · 第一輪腳本大綱表</div>';
+    var r2=function(t,g,a,h){ return '<tr><td style="padding:6px 6px;border-top:1px solid #ECE0C8;font-size:11.5px;color:#2B2521">'+t+'</td><td style="padding:6px 6px;border-top:1px solid #ECE0C8;font-size:11px;color:#B08A3E;white-space:nowrap">'+g+'</td><td style="padding:6px 6px;border-top:1px solid #ECE0C8;font-size:11px;color:#7A1318;white-space:nowrap">'+a+'</td><td style="padding:6px 6px;border-top:1px solid #ECE0C8;font-size:11px;color:#2B2521">'+h+'</td></tr>'; };
+    body='<table style="width:100%;border-collapse:collapse"><thead><tr>'
+      +'<th style="text-align:left;padding:4px 6px;font-size:10px;letter-spacing:1px;color:#B08A3E">主題方向</th>'
+      +'<th style="text-align:left;padding:4px 6px;font-size:10px;letter-spacing:1px;color:#B08A3E">漏斗</th>'
+      +'<th style="text-align:left;padding:4px 6px;font-size:10px;letter-spacing:1px;color:#B08A3E">目標層</th>'
+      +'<th style="text-align:left;padding:4px 6px;font-size:10px;letter-spacing:1px;color:#B08A3E">Hook 方向</th></tr></thead><tbody>'
+      +r2('破除「__一定要__」的迷思','G1 打破認知','A 認知','你以為…其實…')
+      +r2('還原客戶最常踩的那個雷','G1 打破認知','A 認知','99% 的人都做錯')
+      +r2('一日工作幕後的專業感','G2 建立吸引','B 品牌','跟著我的一天')
+      +r2('客戶真實案例的轉變','G5 信任轉化','C 信任','他來找我的時候…')
+      +r2('這項服務在幫你解決什麼','G5 信任轉化','D 轉化','如果你也卡在…')
+      +'</tbody></table>';
+  } else if(stage===3){
+    en='<div style="font-size:9px;letter-spacing:2px;color:#B08A3E">SHOOTING SCRIPT</div>';
+    title='<div style="font-size:17px;font-weight:700;color:#7A1318;margin:3px 0 14px">客戶 · 單支可拍腳本</div>';
+    var r3=function(sec,val){ return '<div style="display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-top:1px solid #ECE0C8"><span style="flex:none;font-size:9px;color:#fff;background:#7A1318;border-radius:3px;padding:2px 6px;white-space:nowrap">'+sec+'</span><span style="flex:1;font-size:12px;line-height:1.6;color:#2B2521">'+val+'</span></div>'; };
+    body=r3('0-3s','Hook：一句話戳中觀眾此刻的處境（畫面：直視鏡頭 / 大字卡）')
+      +r3('3-8s','痛點：點出他正卡住、害怕或誤會的那件事')
+      +r3('8-20s','翻轉‧示範：用你的專業給反直覺的正解或步驟')
+      +r3('20-28s','賣點‧信任：為什麼有效、為什麼是你（案例 / 數據 / 資歷）')
+      +r3('CTA','收尾：告訴觀眾下一步做什麼（留言關鍵字 / 私訊 / 預約）');
+  } else {
+    en='<div style="font-size:9px;letter-spacing:2px;color:#B08A3E">IP POSITIONING</div>';
+    title='<div style="font-size:17px;font-weight:700;color:#7A1318;margin:3px 0 14px">客戶 · IP 定位一頁</div>';
+    body=row('01','一句定位','把專業講成觀眾聽得懂的一句話：「我幫 __ 在 __ 的時候，少走 __ 的冤枉路。」')
+      +row('02','理想受眾','最該被這個帳號吸引的人是誰、他正卡在什麼處境')
+      +row('03','人群痛點','他真正害怕、想避免、想搞懂的事')
+      +row('04','產品賣點','客戶提供的服務／產品，對觀眾的具體好處')
+      +row('05','人設語氣','客戶在鏡頭前是什麼樣的人、用什麼口吻說話')
+      +row('06','落點 A→E','現在落在商業閉環哪一層、這一輪要往哪一層推');
+  }
+  var html='<div style="padding:6px 4px 16px">'
+    +'<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">'
+    +'<div style="font-size:11px;letter-spacing:1px;color:#B08A3E;font-weight:700">範例樣張 · 交給客戶會長這樣</div>'
+    +'<span onclick="dlCloseModal()" style="cursor:pointer;font-size:13px;color:#8A7274">關閉 ✕</span>'
+    +'</div>'
+    +'<div style="'+paper+'">'+en+title+body+'</div>'
+    +'<div style="font-size:11px;color:#8A7274;margin-top:10px;line-height:1.6">這是<b>範例</b>版面，讓你和客戶先看到成品長相。實際內容會在你按下面「產生…提示詞」、貼給 AI 後，依這個客戶的真實資料生成。</div>'
+    +'</div>';
+  document.getElementById('sheet').innerHTML=html;
+  document.getElementById('modal').classList.add('show');
+}
+
 </script>
 </body>
 </html>
