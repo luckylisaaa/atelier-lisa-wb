@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="color-scheme" content="light only">
 <meta name="supported-color-schemes" content="light">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v146 (版本號僅留註解，不顯示於畫面)
+<!-- ATELIER 影片診斷工作台 · 內部版本 v147 (版本號僅留註解，不顯示於畫面)
+     v147 更新（客戶交付：客戶版一頁診斷書「自動帶入診斷數據」＋修 esc2 未定義 ReferenceError）：①buildClientOnePager 改為依選定客戶自動預填——讀 c.profile.positioning 帶入「一句話定位」(過 isHintText 濾提示文字)；_accVidStats(c.id) 算 影片數/平均觀看/開頭有鉤子比例/涵蓋的 G 階段→組「帳號現況盤點 SNAPSHOT」一條(有影片才出現)；由 covered/missing G 階段委婉組「現在的問題／看到的機會」(客戶面去掉 G 代號、只留白話 OP_GLABEL)；缺的漏斗 seed 進「這一輪建議方向」三列(opRow 改吃 seed 參數，無影片資料則退回通用三列)。全部欄位維持 contenteditable 可改、列印 CSS 不動、additive 不影響舊資料。②修潛在 bug：deliver IIFE 內 buildClientOnePager 呼叫的 esc2 原僅定義在另一個 IIFE，該按鈕點了會 ReferenceError；本版在 deliver IIFE 內自定 esc2/opReal/OP_GLABEL/OP_GTASK。新區塊先單獨 node --check 再插入、純讀 accounts/videos 不連 AI；div/details/CSS 開閉平衡。
      v146 更新（Phase2：九宮格速記庫——把逐格盤點變成全庫可搜尋的速記卡）：①帳號管理 checkListPanel 上方新增「🗂️ 九宮格速記庫」折疊面板：選帳號＋貼 PROMPT_A 產出的「帳號逐格盤點」＋存→寫進該帳號 a.gridDump／a.gridCells(隨 saveAccounts 持久化，完全不碰 videos 與影片庫統計)。②parseGridCells 依代號(貼N／片N／主)寬鬆切格、保留 raw、抽 封面文案/觀看/日期；切不出就整段存一格。③renderGridLib 跨所有帳號彙整速記、用 #gridSearch 即時關鍵字搜尋(配對 raw)、列出 代號｜帳號｜觀看｜日期｜封面，可展開看全文；fillGridDumpAcc 填帳號下拉(標已存幾格)。④renderAccounts 開頭呼叫 fill＋render；bindAccountUI 綁 gridDumpSave／gridSearch。函式先單獨 node --check、純讀寫 accounts。至此九宮格情報：上游雙軸排行(v145)＋全庫可搜尋速記(v146)兩塊到齊。
      v145 更新（客戶診斷④·上游：九宮格「觀看雙軸排行」——觀看率不是唯一，加轉化訊號軸）：①PROMPT_A item7 版面策略新增「九宮格觀看雙軸排行」判讀：從影片＋貼文九宮格把有觀看的格子排序，分 觸及軸(觀看率=觀看÷粉絲) 與 轉化軸(儲存率/留言問價/CTA/漏斗位置)，各出 Top3、每筆標 衝量型/精準型、墊底2=避雷，註明截圖日避免新舊失真，並聲明成交量看不到、轉化為代理訊號推估。②PROMPT_A＋PROMPT_0A 帳號分析卡同步新增「九宮格觀看雙軸排行」欄(2處)。③ACC_PROFILE_FIELDS 新增 gridRank(長欄)，v142「完整帳號檔」自動顯示；accProfileBlock 帶出 gridRank，流入 帳號體檢/對標優化/客戶診斷/借技法 各提示詞。提示詞以字面 \n 取代、assert count、單次寫檔；node --check 全過、div/CSS 不變。Phase2(把 PROMPT_A 已輸出的 貼1-9/片1-9 逐格盤點 解析成影片庫可搜尋輕量速記卡)留下一版。
      v144 更新（客戶診斷③：跨產業「借技法寫腳本」一鍵工具）：每張帳號卡「客戶診斷」旁新增「🧬 借技法寫腳本」鈕(data-acc-borrow，金色)，綁 openBorrowTechnique(clientId)：重用 #modal/#sheet 列出影片庫全部影片成 <select>(標題｜階段 主題｜帳號)，選一支當「範本」→ buildBorrowTechniquePrompt(clientId,videoId) 組提示詞：把客戶 profile(proFeatures/positioning/icpAudience 要求用 FAB 翻人話)＋範本影片的「招式」(標題/階段主題/子題型/Hook/加工方式/爆紅歸因/逐字稿節選≤800字) 打包，要 AI ①一句話拆範本紅的技法公式 ②用同公式幫客戶該產業寫新腳本(Hook/中段FAB翻譯/CTA) ③標哪裡沿用技法哪裡換內容 ④合規語氣提醒(律師/醫師/金融)。實作客戶跨產業套用成功庫技法的核心訴求(技法跨產業通用、搬公式不搬內容)。純讀 accounts+videos 不連 AI、函式先單獨 node --check。div/details 開閉平衡。
@@ -703,7 +704,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v146</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v147</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -3269,7 +3270,8 @@ function renderManual(){
   <div class="form-card" style="border-left:3px solid var(--gold)">
     <div class="stitle" style="font-size:15px;color:var(--rouge)">更新紀錄 · 還沒做的</div>
     <p style="font-size:13px;color:var(--text);line-height:1.85;margin-top:8px">
-    <b>v146（這版）：</b>九宮格速記庫——你花時間截的圖真的不白截了。帳號管理頁多了「<b>🗂️ 九宮格速記庫</b>」：把 PROMPT_A 產出的「帳號逐格盤點」整段貼進去、選它屬於哪個帳號存起來，系統會切成一格一格（貼1～片9）。之後你可以在<b>搜尋框跨所有帳號搜尋</b>——搜「迷思」「解剖」「對比」或任何主題，就會列出哪些帳號的哪幾格做過這種內容、封面寫什麼、觀看多少，點開看全文。看到某個帳號值得深挖，你再回去抓他更多影片來分析。速記是存在帳號上、不會影響影片庫的統計。<br>
+    <b>v147（這版）：</b>「客戶版一頁診斷書」現在會自動幫你把資料先填好了。以前你在「客戶交付」頁按「<b>產生客戶版一頁診斷書</b>」，出來是一張漂亮但<b>整張空白</b>的米色紙，每一格都要自己打字。這版改成：選好客戶之後，它會自動把你已經盤點到的東西先填進去——<b>一句話定位</b>（如果你帳號卡裡有寫）、一條<b>帳號現況盤點</b>（這客戶你拆了幾支、平均觀看、開頭有鉤子的比例、內容大概涵蓋哪幾種方向）、「<b>現在的問題</b>」和「<b>看到的機會</b>」也會用你盤點到的內容委婉先寫好，連「<b>這一輪建議方向</b>」都先把客戶比較少做的那幾種方向排成三列給你。這些全部都還是可以<b>點進去改字</b>，改完一樣按「列印／存成 PDF」就能交給客戶。客戶面的字刻意不寫 G1～G5 這種代號、只講白話，所以可以直接給客戶看。（順手修好一個小毛病：之前這顆按鈕在某些情況點了會沒反應，現在正常了。）還沒拆過影片的客戶就維持空白模板、照常自己填。<br>
+    <b>v146：</b>九宮格速記庫——你花時間截的圖真的不白截了。帳號管理頁多了「<b>🗂️ 九宮格速記庫</b>」：把 PROMPT_A 產出的「帳號逐格盤點」整段貼進去、選它屬於哪個帳號存起來，系統會切成一格一格（貼1～片9）。之後你可以在<b>搜尋框跨所有帳號搜尋</b>——搜「迷思」「解剖」「對比」或任何主題，就會列出哪些帳號的哪幾格做過這種內容、封面寫什麼、觀看多少，點開看全文。看到某個帳號值得深挖，你再回去抓他更多影片來分析。速記是存在帳號上、不會影響影片庫的統計。<br>
     <b>v145：</b>九宮格的「觀看雙軸排行」——你說得對，觀看率不是唯一。改了上游 PROMPT_A：分析帳號時會把影片＋貼文九宮格的格子排序，但分兩軸看：<b>觸及軸</b>（觀看率＝觀看÷粉絲，跨帳號才公平）和<b>轉化軸</b>（儲存、留言問價、有沒有 CTA、漏斗位置）。各列 Top3，每筆標「衝量型」或「精準型」，再標墊底兩個＝避雷，並註明截圖日避免把舊貼文當爆款。這樣那種「觀看不高但客群精準、成交強」的帳號就會被標成精準型、不會被埋掉（成交量公開頁看不到，所以轉化是用儲存/留言這些訊號推估、會標推估）。這個「雙軸排行」會存進帳號卡、自動顯示在「完整帳號檔」，也會流進帳號體檢／客戶診斷／借技法。<b>下一版（Phase 2）</b>會把九宮格每一格的封面標題／文案做成影片庫裡可搜尋的速記卡——你花時間截的圖就不會白截。<br>
     <b>v144：</b>把你說的「借技法寫新產業」做成一鍵工具了。每張帳號卡的「客戶診斷」旁邊多了「<b>🧬 借技法寫腳本</b>」：點開，選一支你庫裡的成功影片當「範本」（哪個產業都行，例如那支把心理學講得很白的），按一下就產生提示詞——它會先拆解那支「紅在哪的公式」，再用<b>同一套公式</b>幫你的客戶（例如律師）寫一支新腳本，把客戶的專業用 <b>FAB（特點→優勢→人話賣點）</b>翻成觀眾聽得懂的話，還會提醒律師／醫師／金融這類受規範產業哪裡要保守。核心觀念：技法是跨產業通用的，你搬的是「公式」不是「內容」。<br>
     <b>v143：</b>客戶診斷視圖來了——這是「客戶診斷」三步計畫的第二步。每張帳號卡的「帳號體檢」旁邊多了一顆<b>「🩺 客戶診斷」</b>：點下去，工作台會把這個帳號（你的客戶）跟你累積的<b>成功庫</b>放在一起比——影片數、平均觀看、有 Hook 的比例、平均標題長度、漏斗涵蓋哪幾關（缺的用紅字標）、發文節奏——讓你一眼看到「他比成功帳號差在哪」。再按一下「複製提示詞」，貼到 Claude／ChatGPT，它就會給你完整的落差診斷、他卡在哪、下一步、還有<b>你第一次跟客戶聊時該問的 8-10 個針對性問題</b>。另外，<b>影片庫</b>也放了一份「卡片補完健檢」入口，補卡不用再跑去帳號管理。<br>
@@ -5613,36 +5615,87 @@ window.addEventListener('DOMContentLoaded', function(){
     if(!c){ if(typeof toast==='function') toast('找不到該客戶帳號'); return null; }
     return c;
   }
-  function opRow(n){
+  function esc2(s){ return (typeof esc==='function')?esc(s):String(s==null?'':s); }
+  var OP_GLABEL={G1:'打破認知',G2:'建立吸引',G3:'建立思想',G4:'建立實用',G5:'信任轉化'};
+  var OP_GTASK={G1:'用反差或拆解誤區，讓人重新認識你',G2:'用人設與美感，讓人喜歡上你',G3:'輸出觀點，讓受眾覺得「你懂我」',G4:'給可以立刻用的方法與清單',G5:'用案例與過程建立信任、帶到行動'};
+  function opReal(v){ if(!v) return ''; v=(''+v).trim(); if(typeof isHintText==='function'&&isHintText(v)) return ''; return v; }
+  function opRow(n,seed){
+    seed=seed||{};
+    var topic=seed.topic||'主題（點這裡打字或貼上）';
+    var hook=seed.hook||'一句 Hook';
+    var who=seed.who||'打給誰';
+    var task=seed.task||'先被看見／建立信任／帶到諮詢';
     return '<div class="op-row" style="display:grid;grid-template-columns:30px 1fr;gap:0 16px;border-bottom:1px solid #EADFC6;padding:14px 0">'
       +'<div style="font-family:\'Cormorant Garamond\',serif;font-size:22px;color:#B08A3E;font-weight:500">'+n+'</div>'
       +'<div>'
-      +'<div class="op-edit" contenteditable="true" style="font-size:15px;color:#2B2521;font-weight:500;line-height:1.5">主題（點這裡打字或貼上）</div>'
-      +'<div class="op-edit" contenteditable="true" style="font-family:\'Cormorant Garamond\',serif;font-size:17px;color:#6E5E44;margin:5px 0 7px">「一句 Hook」</div>'
-      +'<div style="font-size:12px;color:#9C8A66">給 — <span class="op-edit" contenteditable="true">打給誰</span>　·　任務 — <span class="op-edit" contenteditable="true">先被看見／建立信任／帶到諮詢</span></div>'
+      +'<div class="op-edit" contenteditable="true" style="font-size:15px;color:#2B2521;font-weight:500;line-height:1.5">'+esc2(topic)+'</div>'
+      +'<div class="op-edit" contenteditable="true" style="font-family:\'Cormorant Garamond\',serif;font-size:17px;color:#6E5E44;margin:5px 0 7px">「'+esc2(hook)+'」</div>'
+      +'<div style="font-size:12px;color:#9C8A66">給 — <span class="op-edit" contenteditable="true">'+esc2(who)+'</span>　·　任務 — <span class="op-edit" contenteditable="true">'+esc2(task)+'</span></div>'
       +'</div></div>';
   }
   function buildClientOnePager(){
     var c=getC(); if(!c) return;
+    var pf=c.profile||{};
+    var st=(typeof _accVidStats==='function')?_accVidStats(c.id):{n:0,avgViews:0,hookPct:0,avgTitle:0,stages:[]};
+    var covered=[]; (st.stages||[]).forEach(function(s){ var m=(''+s).match(/G[1-5]/); if(m&&covered.indexOf(m[0])<0) covered.push(m[0]); });
+    covered.sort();
+    var missing=['G1','G2','G3','G4','G5'].filter(function(g){return covered.indexOf(g)<0;});
+    var coveredTxt=covered.map(function(g){return OP_GLABEL[g];}).join('、');
+    var missingTxt=missing.map(function(g){return OP_GLABEL[g];}).join('、');
     var nm=(c.displayName||('@'+String(c.handle||'').replace(/^@/,'')))||'客戶';
-    var topic=(dvv('dl-priority')||c.industry||c.field||c.領域||'').toString().trim();
+    var topic=(dvv('dl-priority')||opReal(pf.positioning)||c.industry||c.jobTitle||c.field||c.領域||'').toString().trim();
     var d=new Date(); var ds=d.getFullYear()+' . '+('0'+(d.getMonth()+1)).slice(-2);
     var L='\'Cormorant Garamond\',serif';
+    // 一句話定位（profile 有就帶入）
+    var posTxt=opReal(pf.positioning);
+    var posHtml=posTxt?esc2(posTxt):'在這裡寫一句話定位：這位客戶不是「○○」，而是「○○○○」。';
+    // 現在的問題（用盤點資料委婉描述，無資料就留原提示）
+    var probs=[];
+    if(missing.length&&covered.length) probs.push('內容目前集中在「'+coveredTxt+'」，較少觸及「'+missingTxt+'」。');
+    if(st.n>0&&st.hookPct<60) probs.push('約 '+st.hookPct+'% 的影片開頭有明確鉤子，前 3 秒留住人還有提升空間。');
+    var probHtml=probs.length?probs.join('<br>'):'寫客戶現在內容卡在哪。';
+    // 看到的機會
+    var oppos=[];
+    if(missing.length) oppos.push('補上「'+missing.slice(0,3).map(function(g){return OP_GLABEL[g];}).join('、')+'」這幾種內容，讓帳號的層次更完整。');
+    if(posTxt) oppos.push('把既有定位更清楚地貫穿每一支影片。');
+    var oppoHtml=oppos.length?oppos.join('<br>'):'寫這一輪的切入機會。';
+    // 現況盤點 strip（有影片資料才出現）
+    var snapBits=[];
+    if(st.n>0){
+      snapBits.push('盤點 '+st.n+' 支');
+      if(st.avgViews>0) snapBits.push('平均觀看 '+st.avgViews.toLocaleString());
+      snapBits.push('開頭有鉤子 '+st.hookPct+'%');
+      if(coveredTxt) snapBits.push('涵蓋 '+coveredTxt);
+    }
+    var snapHtml=snapBits.length?(
+      '<div style="margin:16px 0 4px;border:1px solid #E2D2A8;background:#FBF8F0;border-radius:6px;padding:11px 14px">'
+      +'<div style="letter-spacing:.26em;font-size:10px;color:#A98A4C;margin-bottom:5px">SNAPSHOT · 帳號現況盤點</div>'
+      +'<div class="op-edit" contenteditable="true" style="font-size:13px;color:#4A4038;line-height:1.7">'+esc2(snapBits.join('　·　'))+'</div></div>'
+    ):'';
+    // 建議方向 rows：用缺的漏斗 seed，沒資料就用通用三列
+    var rowsHtml;
+    if(missing.length){
+      var seedWho=opReal(pf.icpAudience)?'核心受眾':'打給誰';
+      rowsHtml=missing.slice(0,3).map(function(g,i){ return opRow(('0'+(i+1)).slice(-2),{topic:OP_GLABEL[g]+'方向',hook:'一句 Hook',who:seedWho,task:OP_GTASK[g]}); }).join('');
+    } else {
+      rowsHtml=opRow('01')+opRow('02')+opRow('03');
+    }
     var html='<div id="opPaper" style="-webkit-print-color-adjust:exact;print-color-adjust:exact;background:#FAF6EE;color:#2B2521;border:1px solid #E2D2A8;padding:38px 40px 30px;max-width:620px;margin:0 auto;font-family:\'Noto Serif TC\',serif">'
       +'<div style="text-align:center"><div style="font-family:'+L+';letter-spacing:.52em;font-size:15px;color:#7A1318;font-weight:500">ATELIER</div>'
       +'<hr style="height:1px;background:#D7BE8C;border:0;width:46px;margin:11px auto"><div style="letter-spacing:.34em;font-size:11px;color:#9C8A66">CONTENT DIRECTION · 內容方向診斷</div></div>'
       +'<div style="text-align:center;margin:22px 0 6px"><div style="font-family:'+L+';font-size:27px;color:#2B2521;font-weight:500">'+esc2(nm)+'</div>'
       +'<div style="letter-spacing:.28em;font-size:11px;color:#8C7B5C;margin-top:7px">主打 <span class="op-edit" contenteditable="true">'+(esc2(topic)||'——')+'</span>　·　'+ds+'</div></div>'
+      +snapHtml
       +'<hr style="height:1px;background:#D7BE8C;border:0;margin:20px 0">'
       +'<div style="margin:18px 0 22px"><div style="letter-spacing:.26em;font-size:11px;color:#A98A4C;margin-bottom:9px">POSITIONING · 一句話定位</div>'
-      +'<div class="op-edit" contenteditable="true" style="font-size:18px;line-height:1.75;color:#3A322C">在這裡寫一句話定位：這位客戶不是「○○」，而是「○○○○」。</div></div>'
+      +'<div class="op-edit" contenteditable="true" style="font-size:18px;line-height:1.75;color:#3A322C">'+posHtml+'</div></div>'
       +'<div style="display:grid;grid-template-columns:1fr 1px 1fr;gap:20px;margin:22px 0">'
-      +'<div><div style="letter-spacing:.26em;font-size:11px;color:#A98A4C;margin-bottom:8px">現在的問題</div><div class="op-edit" contenteditable="true" style="font-size:14px;line-height:1.8;color:#4A4038">寫客戶現在內容卡在哪。</div></div>'
+      +'<div><div style="letter-spacing:.26em;font-size:11px;color:#A98A4C;margin-bottom:8px">現在的問題</div><div class="op-edit" contenteditable="true" style="font-size:14px;line-height:1.8;color:#4A4038">'+probHtml+'</div></div>'
       +'<div style="background:#E2D2A8"></div>'
-      +'<div><div style="letter-spacing:.26em;font-size:11px;color:#A98A4C;margin-bottom:8px">看到的機會</div><div class="op-edit" contenteditable="true" style="font-size:14px;line-height:1.8;color:#4A4038">寫這一輪的切入機會。</div></div></div>'
+      +'<div><div style="letter-spacing:.26em;font-size:11px;color:#A98A4C;margin-bottom:8px">看到的機會</div><div class="op-edit" contenteditable="true" style="font-size:14px;line-height:1.8;color:#4A4038">'+oppoHtml+'</div></div></div>'
       +'<hr style="height:1px;background:#D7BE8C;border:0;margin:24px 0 16px">'
       +'<div style="letter-spacing:.26em;font-size:11px;color:#A98A4C;margin-bottom:6px">THIS ROUND · 這一輪建議方向</div>'
-      +'<div id="opRows">'+opRow('01')+opRow('02')+opRow('03')+'</div>'
+      +'<div id="opRows">'+rowsHtml+'</div>'
       +'<button class="btn btn-ghost op-noprint" id="opAddRow" style="width:auto;font-size:12px;padding:5px 12px;margin-top:10px">＋ 新增一列</button>'
       +'<hr style="height:1px;background:#D7BE8C;border:0;margin:22px 0 16px">'
       +'<div style="margin-bottom:22px"><div style="letter-spacing:.26em;font-size:11px;color:#A98A4C;margin-bottom:9px">RATIONALE · 為什麼這樣排</div>'
