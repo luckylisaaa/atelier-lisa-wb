@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="color-scheme" content="light only">
 <meta name="supported-color-schemes" content="light">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v155 (版本號僅留註解，不顯示於畫面)
+<!-- ATELIER 影片診斷工作台 · 內部版本 v156 (版本號僅留註解，不顯示於畫面)
+     v156 更新（交辦單：客戶交付腳本「餵客戶本人逐字稿」＋全庫共用「口吻鐵律 TONE_RULES」一次到位，全 additive、不動三關按鈕觸發與既有資料結構）：A組（餵真實口吻＋料量守門）：①buildOutline／buildScript 組提示詞時，依選中客戶呼叫新全域 _clientTranscriptBlock(c)，自動帶入該客戶 videosOfAccount 前 5 支的 Hook(≤200)＋完整文案節選(≤500)＋逐字稿節選(≤800)，並加指示「新腳本必須延續他本人的說話方式、不可套用通用勵志／說教／導購／網紅口吻公式」。②新增 #dlVideoWarn 提醒(置於三關大卡之前)，依 #dlClient 選擇即時切換：若 videosOfAccount<3 顯示「目前僅 N 支已拆解、AI 看不到他真實口吻」提醒；新增 updateDlVideoWarn()，並掛 #dlClient onchange、filterDlClient 改寫尾段、deliver 分頁點擊／DOM 載入觸發。B組（全庫共用 TONE_RULES）：①在主 script 共用定義區(const D 之後、layers 之前)新增常數 TONE_RULES(7 條鐵律：可教育但姿態平等／嚴禁高姿態說教／思維高度 OK 但語言姿態高禁止／Hook 結尾禁「你不是＿＿你是＿＿」等指正句式／禁直銷雞湯焦慮明牌／主詞起步以我為主／教育型先承認自己也曾經是觀眾)。②新增全域函式 _toneRulesBlock(client)，自動串成「全庫口吻鐵律」區塊。③讓 buildIP／buildOutline／buildScript／buildClientQuestionsPrompt／buildBorrowTechniquePrompt／buildFabPrompt／buildAccountHealthPrompt 共 7 個提示詞產生器，全部自動植入 TONE_RULES(置於各自「請輸出／請產出」段落之前)。④保留逐客戶覆蓋：若 client.profile.tone／口吻／toneRule 任一有設定，會在 TONE_RULES 之後加掛「本客戶口吻覆蓋(優先級高於通則)」段，達到 Sunny 等只陳述觀點完全不教育的個案需求。未動 ACC_PROFILE_FIELDS／accProfileBlock／三關按鈕觸發／既有資料結構；node --check 全過、div 與 details 與 CSS 開閉平衡。
      v155 更新（交辦單：客戶交付頁兩組優化一次到位，全 additive、不動三關產生提示詞邏輯與既有存檔結構）：A組（流程圖與成品預覽可點）：①HOW IT WORKS 三張階段小卡(IP定位／腳本大綱／腳本)加 cursor＋onclick＝dlGotoStage(n)，點了平滑捲動到對應大卡並金框高亮；三關大卡分別補上錨點 id＝dlStage1／dlStage2／dlStage3。②三關「成品預覽縮圖」(米色紙)加 cursor＋onclick＝showDeliverSample(n)，彈出該階段完整範例樣張(沿用米色紙#FAF6EE／金線#D7BE8C／金序號#B08A3E／深酒紅#7A1318，用既有 modal sheet)，縮圖標題加「點我放大」提示。B組（下拉 RWD 與搜尋）：③#dlClient 與新搜尋框都加 box-sizing＝border-box＋display block，寬度跟隨容器不溢出、縮放正常。④選客戶上方新增 #dlClientSearch 搜尋框，oninput＝filterDlClient()：依 handle／職稱／名稱即時篩選重建 option(值仍為帳號 id、保留當前選擇)，比照帳號管理搜尋邏輯。新增全域函式(置於 body 末 script，不在三關 IIFE 內)：dlGotoStage、dlCloseModal、filterDlClient、showDeliverSample；沿用 accounts／esc／既有 modal(#modal #sheet)。未動 buildIP／buildOutline／buildScript／buildClientOnePager／populateDlClient 與三關按鈕(#dlIP #dlOutline #dlScript)。node --check 全過、div 與 details 與 CSS 開閉平衡。
      v154 更新（交辦單#1：問診存回紀錄可追溯，全 additive、不動資料結構）：①saveIntakeCard 的歸欄迴圈改為先偵測該 profile 欄原本有無非提示值(had)，saved 改存 over 旗標；②存回時除既有 intakeCard／intakeDate，另寫入 profile.intakeFields＝本次歸欄數；③確認清單：每欄若覆蓋舊值標一個金色「覆蓋」小標、標頭顯示「N 欄其中 M 欄覆蓋舊值」、底部加說明；④renderAccountCard 在看主頁那排前新增一行「📋 上次問診更新：日期 ·（本次更新 N 欄）」(僅當 profile.intakeDate 存在時顯示)。改動函式：saveIntakeCard(歸欄迴圈、intakeFields、ovc／rows／訊息 HTML)、renderAccountCard(新增一行模板字串)。沿用 accounts／profile／isHintText／esc／saveAccounts／renderAccounts，未動存檔機制與資料結構；node --check 全過、div 與 details 開閉平衡。
      v153 更新（三個小優化一次到位：收斂卡確認清單＋帳號卡按鈕收乾淨＋問診表細拆追問）：①saveIntakeCard 改寫：存回後不再自動關視窗，改在 ci-msg 顯示「已歸到帳號檔的欄位清單(欄名＋值預覽)」＋本輪建議已備查＋下一步去交付頁的提示，讓使用者親眼看到歸類結果(saved 由字串改存 物件帶 label/val)。②renderAccountCard meta 列收乾淨：主列只留 看主頁／編輯／📋客戶前置問診／刪除，其餘(特點賣點／帳號體檢／客戶診斷／借技法／粉絲快照／版面快照)收進「🔬 更多分析工具」vstrat 摺疊；data-acc-* 綁定不變(querySelectorAll 仍可取用摺疊內元素)。③INTAKE_QUESTIONS 每題下新增 2-3 個 ↳ 追問(通用版、開會客戶答得空可往下追)。純版面＋字串＋既有函式內邏輯調整，未動資料結構/存檔機制；node --check 全過、div 與 details 仍開閉平衡(meta 收乾淨新增 1 div 對與 1 details 對)。
@@ -712,7 +713,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v155</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v156</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -1888,7 +1889,7 @@ if('serviceWorker' in navigator){
   <div class="card" style="margin-bottom:14px">
     <div style="font-size:13px;font-weight:600;color:var(--ink);margin-bottom:6px">先選這次要服務的客戶帳號：</div>
     <input id="dlClientSearch" type="text" oninput="filterDlClient()" placeholder="🔍 打字找客戶：英文 handle（如 sunny）或中文名／職稱（如 王陽明、演員）" style="width:100%;max-width:420px;box-sizing:border-box;padding:9px 11px;margin-bottom:8px;border:1px solid var(--border);border-radius:8px;background:#fff;color:var(--ink);font-family:inherit;font-size:14px;display:block">
-    <select id="dlClient" style="width:100%;max-width:420px;box-sizing:border-box;padding:9px 11px;border:1px solid var(--border);border-radius:8px;background:#fff;color:var(--ink);font-family:inherit;font-size:14px;display:block"></select>
+    <select id="dlClient" onchange="updateDlVideoWarn()" style="width:100%;max-width:420px;box-sizing:border-box;padding:9px 11px;border:1px solid var(--border);border-radius:8px;background:#fff;color:var(--ink);font-family:inherit;font-size:14px;display:block"></select>
     <div style="font-size:11.5px;color:var(--sub);margin-top:8px">客戶資料越完整（貼過帳號分析卡、拆解過影片），診斷書越準。沒有客戶帳號就先到「帳號管理」新增。</div>
   </div>
 
@@ -1924,6 +1925,8 @@ if('serviceWorker' in navigator){
       <label style="font-size:12px;color:var(--ink)">CTA 方向<input id="dl-cta" placeholder="例：導去今晚直播 / 留言『提臀』私訊" style="width:100%;margin-top:3px;padding:8px 10px;border:1px solid var(--border);border-radius:8px"></label>
     </div>
   </details>
+
+  <div id="dlVideoWarn" style="display:none;margin:0 0 10px;padding:9px 12px;border:1px solid #C02030;background:#FDF3F4;border-radius:6px;font-size:12px;color:#7A1018;line-height:1.55"></div>
 
   <div class="card" style="margin-bottom:12px;border-left:3px solid var(--rouge)" id="dlStage1">
     <div class="ph-en" style="margin-bottom:3px">STAGE 1</div>
@@ -2084,6 +2087,44 @@ const gstrategy={
   G4:{when:'觀眾認同你了，但還沒覺得「你對我有用、值得收藏」時',why:'要給出實在的價值，讓人覺得「學到東西、想存起來」。建立實用型用知識、清單、實測把認同變成依賴。',kpi:'收藏率、完播率、儲存率',funnel:'C 信任 → D 轉化前段'},
   G5:{when:'信任都到位了，要把流量變成詢問、預約、成交時',why:'最後一哩路是「讓人願意找你」。信任轉化型用過程見證、社會驗證、數據揭露推動實際行動。',kpi:'私訊數、預約率、成交率、ROAS',funnel:'D 轉化 · 帶來詢問與業績'}
 };
+
+/* v156 全庫共用：口吻鐵律 + 客戶本人逐字稿區塊（放在主 script 內，所有 build 函式都看得到）*/
+const TONE_RULES="1. 可以教育、可以給方法、可以講知識，但語氣一律平等、謙卑、像同行分享，不是「我教你怎麼做」。\n2. 嚴禁高姿態、說教、命令、貶低觀眾，不可用「你不懂、我才懂」的語氣。\n3. 區分兩件事：「思維高度高」(OK，也應該)vs「語言姿態高」(禁止)。同一句話可以平視說、也可以俯視說，這版鐵律只禁俯視。\n4. Hook 與結尾不可用「你不是＿＿、你是＿＿」、「別再＿＿了」、「真正的＿＿」這類居高臨下的指正／訓誡句式；改成「我發現…」、「我自己以前也…」、「分享一個我學到的角度」這種同行分享。\n5. 不要直銷感、不要喊話式雞湯、不要販賣焦慮、不要「報明牌」式炫耀資歷與成就。\n6. 主詞起步以「我／我們」為主，不要動不動把「你」當主詞訓人；要對觀眾講道理時，先用自身視角承接。\n7. 教育型內容寫作邏輯：先承認自己也曾經是觀眾的處境 → 講自己學到的角度／方法 → 邀請觀眾一起試試看，而不是「我教你怎麼做」。";
+function _toneRulesBlock(client){
+  var head='【全庫口吻鐵律 TONE_RULES（必遵守，優先級高於下面所有寫作指示）】\n';
+  var body=TONE_RULES;
+  var prof=(client&&client.profile)||{};
+  var override=prof.tone||prof['口吻']||prof.toneRule||'';
+  if(override && String(override).trim()){
+    body+='\n\n【本客戶口吻覆蓋（優先級高於上面通則）】\n'+String(override).trim();
+  }
+  return head+body;
+}
+function _clientTranscriptBlock(client){
+  if(!client) return '';
+  var vids=(typeof videosOfAccount==='function')?videosOfAccount(client.id):[];
+  if(!vids||!vids.length){
+    return '【客戶本人真實口吻參考】\n（系統內尚無此客戶已拆解影片，AI 看不到客戶真實口吻，將只能套用通用框架——請特別小心，避免機械感、避免套用網紅／勵志／導購公式。）\n';
+  }
+  var k=Math.min(vids.length,5);
+  var picks=vids.slice(0,k);
+  var head='【客戶本人真實口吻參考（共 '+vids.length+' 支已拆解，取前 '+k+' 支）】\n指示：請先讀客戶本人這幾支的真實口吻（用詞、語氣、節奏、是否教育觀眾、口頭禪、句長），下面新腳本必須延續他本人的說話方式；不可套用通用勵志／說教／導購／網紅口吻公式。\n\n';
+  var parts=picks.map(function(v,i){
+    var t=(v.title||'').toString().slice(0,40);
+    var hook=(v.hook||'').toString().slice(0,200);
+    var cap=(v.caption||'').toString().slice(0,500);
+    var ts=(v.transcript||'').toString().slice(0,800);
+    var s='【影片 '+(i+1)+(t?(' · '+t):'')+'】\n';
+    if(hook) s+='Hook：'+hook+'\n';
+    if(cap) s+='完整文案節選：'+cap+'\n';
+    if(ts) s+='逐字稿節選：'+ts+'\n';
+    if(!hook && !cap && !ts) s+='（此支尚未填 Hook／文案／逐字稿）\n';
+    return s;
+  }).join('\n');
+  return head+parts;
+}
+
+
 /* 11 層完整架構：提案階段 1-7 層（用診斷器定方向）→ 腳本階段 8-11 層（用 AI 產腳本） */
 const layers=[
   {n:'0',name:'合作目標層（A–E）',sub:'繼承自商業閉環 Step 1',phase:'前端',here:true,desc:'這支片在推進客戶哪個目標層：A認知/B品牌/C信任/D轉化/E組織。診斷前先確認，是上游 Step 1 帶下來的，不在這裡才決定。'},
@@ -3294,7 +3335,8 @@ function renderManual(){
   <div class="form-card" style="border-left:3px solid var(--gold)">
     <div class="stitle" style="font-size:15px;color:var(--rouge)">更新紀錄 · 還沒做的</div>
     <p style="font-size:13px;color:var(--text);line-height:1.85;margin-top:8px">
-    <b>v155（這版）：</b>「客戶交付」頁更好用：①上方<b>三階段流程圖</b>的三張小卡<b>可以點</b>了——點 IP定位／腳本大綱／腳本，畫面會自動<b>捲到下面那一關</b>並閃一下提醒你。②每一關的<b>成品預覽縮圖可以點開放大</b>，跳出一張完整的「交給客戶會長這樣」<b>範例樣張</b>，先看清楚成品長相再產生。③「選客戶」上面多了一個<b>搜尋框</b>，打英文 handle（如 sunny）或中文名／職稱（如 王陽明、演員）就能<b>即時篩出</b>客戶，未來客戶很多也找得到人；下拉也修好了<b>縮放跑版</b>的問題。<br>
+    <b>v156（這版）：</b>客戶交付腳本「餵真實口吻＋全庫姿態鐵律」一次到位。①產<b>腳本大綱／腳本</b>時，系統會自動把<b>客戶自己前 5 支影片</b>的 Hook、完整文案、逐字稿節選餵給 AI，要求新腳本「<b>延續他本人的說話方式</b>、不可套用通用勵志／說教／導購／網紅公式」。②選客戶後若該客戶<b>系統內已拆解影片 &lt; 3 支</b>，三關按鈕上方會出現<b>紅色提醒</b>，告訴你 AI 沒看到他真實口吻、腳本會偏通用，建議先到影片庫補拆幾支再回來產。③新增<b>全庫共用「口吻鐵律」</b>：分清楚「<b>教育與否</b>」跟「<b>姿態高低</b>」——<b>可以教育、給知識、給方法</b>，但語氣<b>一律平等、謙卑、像同行分享</b>；嚴禁高姿態說教、命令、貶低觀眾、Hook 與結尾禁「你不是＿＿你是＿＿」這種訓人句式。這條鐵律會自動植入到 IP定位／腳本大綱／腳本／問診／借技法／賣點翻譯／帳號體檢<b>所有 7 個產提示詞按鈕</b>，不必逐客戶填。④若某客戶 profile 口吻欄另有更嚴格設定(例 Sunny ＝只陳述觀點完全不教育)，<b>客戶設定優先級更高</b>，會疊加在通則之上。<br>
+    <b>v155：</b>「客戶交付」頁更好用：①上方<b>三階段流程圖</b>的三張小卡<b>可以點</b>了——點 IP定位／腳本大綱／腳本，畫面會自動<b>捲到下面那一關</b>並閃一下提醒你。②每一關的<b>成品預覽縮圖可以點開放大</b>，跳出一張完整的「交給客戶會長這樣」<b>範例樣張</b>，先看清楚成品長相再產生。③「選客戶」上面多了一個<b>搜尋框</b>，打英文 handle（如 sunny）或中文名／職稱（如 王陽明、演員）就能<b>即時篩出</b>客戶，未來客戶很多也找得到人；下拉也修好了<b>縮放跑版</b>的問題。<br>
     <b>v154：</b>問診存回多了<b>可追溯</b>，怕日後不小心覆蓋到對的資料：①帳號卡上新增一行「<b>📋 上次問診更新：日期 ·（本次更新 N 欄）</b>」，事後看得到何時改過、改了幾欄；②按「整理並存回帳號」後的綠色清單，凡是<b>蓋掉舊值</b>的欄會標一個「<b>覆蓋</b>」小標、標頭也會寫「其中 M 欄覆蓋舊值」，讓你一眼看出哪些是新增、哪些是改寫。<br>
     <b>v153：</b>一次做三個小優化，讓你不亂、好用：①<b>收斂卡確認清單</b>——問診模組按「整理並存回帳號」後，<b>不再立刻關掉</b>，會在下面列出「<b>幫你歸到哪幾欄、各填了什麼</b>」，你看完歸對了再自己關。②<b>帳號卡按鈕收乾淨</b>——每張卡那排現在只留 看主頁／編輯／<b>📋 客戶前置問診</b>／刪除，其他分析工具（特點→賣點、帳號體檢、客戶診斷、借技法、快照）收進一個「<b>🔬 更多分析工具</b>」的摺疊，要用再點開，不再一次堆在你眼前。③<b>問診表細拆追問</b>——10 題每題下面多了 2-3 句「↳ 追問」，開會客戶答得太空時，照著往下追就會有畫面。<br>
     <b>v152：</b>「帳號管理」頁<b>瘦身</b>了——你說它太亂、要穿過一堆東西才看到帳號，現在改成像「輸入影片」那樣<b>上面兩個頁籤</b>：<b>📁 帳號清單</b>（一進來就只看到新增帳號＋搜尋排序＋你的帳號卡，乾淨）、<b>🧰 工具箱</b>（資料備份、建檔收集盤、貼卡入庫、卡片補完健檢、九宮格速記庫、待核對清單，全部收進這裡，要用再點）。功能一個都沒少，只是不再全部堆在你眼前。<br>
@@ -3691,6 +3733,7 @@ function buildClientQuestionsPrompt(id){
     +(prof?('客戶版面／ICP／賣點：\n'+prof+'\n'):'')
     +'客戶影片（最多 20 支）：\n'+(vids||'（目前庫裡沒有這個客戶的影片）')+'\n\n'
     +'【成功標準參考】\n'+bmLine+'\n\n'
+    +_toneRulesBlock(c)+'\n\n'
     +'【請輸出】\n'
     +'1. 落差診斷：客戶跟成功帳號比差在哪（發文頻率／節奏、貼文與影片是否交叉、標題有沒有鉤子、漏斗哪段缺、主題集中度、數字）。\n'
     +'2. 他現在最可能卡在哪（一句話講白）。\n'
@@ -3867,7 +3910,8 @@ function buildBorrowTechniquePrompt(clientId, videoId){
     +(v.matName?('加工方式：'+v.matName+'\n'):'')
     +(v.why?('爆紅歸因（為什麼紅）：'+v.why+'\n'):'')
     +(v.transcript?('結構參考（逐字稿節選）：\n'+(''+v.transcript).slice(0,800)+'\n'):'')
-    +'\n【請輸出】\n'
+    +'\n'+_toneRulesBlock(c)+'\n\n'
+    +'【請輸出】\n'
     +'1. 一句話拆解這支範本「紅的技法公式」（例：反直覺開場→生活比喻把專業講白→徵詢互動收尾）。\n'
     +'2. 用同一套公式，幫客戶（'+(c.industry||'該產業')+'）寫一支新短影音腳本：開頭Hook、中段（把客戶專業用 FAB 翻成人話、用範本同樣手法講白）、結尾CTA。\n'
     +'3. 標出哪裡沿用範本技法、哪裡換成客戶內容。\n'
@@ -4494,6 +4538,7 @@ function buildFabPrompt(id){
     +'請幫我兩件事：先讓我看懂這個人，再把他的「專業特點」翻成「觀眾聽得懂的賣點」。\n\n'
     +'【帳號資料】'+head+'\n'+(blk.length?blk.join('\n'):'（資料較少）')+'\n\n'
     +(has3?'':'（提醒：這個帳號還沒填人群/產品/人設，請你先依職稱與產業合理推斷，並在開頭標明哪幾項是你推斷的。）\n\n')
+    +_toneRulesBlock(a)+'\n\n'
     +'【請輸出】\n\n'
     +'一、先看懂這個人（大白話，各 2-3 句）\n'
     +'1. 人群：他在打哪一群人？這群人最痛的問題、最常見的誤區是什麼？\n'
@@ -4534,6 +4579,7 @@ function buildAccountHealthPrompt(id){
   var p='【任務】我是短影音代理營運。請你當我的內容策略顧問，幫「'+head+'」這個帳號做一次「帳號體檢」——看懂他現在做得好不好、在市場上大概什麼位置、接下來該往哪走，最後給我一段能直接拿去提案、證明「我懂你」的話。\n\n'
     +'【帳號現況】'+head+'\n'+(blk.length?blk.join('\n'):'（帳號資料較少，請先依職稱產業合理推斷並標明哪些是推斷的）')+'\n\n'
     +'【他已累積的影片（我拆解過的，最多列 20 支）】\n'+vtext+'\n\n'
+    +_toneRulesBlock(a)+'\n\n'
     +'【請依序產出六段，講人話、給結論不要反問】\n'
     +'一、現在的優點：他做對了什麼？哪些主題／爆點／形式在重複奏效？漏斗（G1認知→G2吸引→G3思想→G4實用→G5轉化）哪幾段他已經站穩？\n'
     +'二、缺點與風險：漏斗缺了哪一段？版面（Bio／置頂／精選／發文節奏）有什麼問題？哪些「該做卻沒做」？有沒有過度集中某種內容的風險？\n'
@@ -5965,6 +6011,7 @@ window.addEventListener('DOMContentLoaded', function(){
      +evi(c)+'\n\n'
      +defsBlock()+'\n\n'
      +roundBlock()+'\n\n'
+     +_toneRulesBlock(c)+'\n\n'
      +'【請產出 IP 定位診斷書，包含以下段落】\n'
      +'1. 帳號現況快照：用 3–5 句說明這個客戶目前是誰、做什麼、現在的內容與帳號狀態。\n'
      +'2. 商業閉環定位判斷：明確指出客戶「現在落在 A→E 的哪一層」、理由、以及下一步該往哪一層推進（這是顧問判斷，要果斷且有依據）。\n'
@@ -5983,6 +6030,8 @@ window.addEventListener('DOMContentLoaded', function(){
      +evi(c)+'\n\n'
      +defsBlock()+'\n\n'
      +roundBlock()+'\n\n'
+     +_clientTranscriptBlock(c)+'\n\n'
+     +_toneRulesBlock(c)+'\n\n'
      +'【請產出腳本大綱診斷書，包含】\n'
      +'1. 內容策略總綱：依客戶定位與上面的本輪設定，這一輪要把帳號往商業閉環哪一層推進、整體路徑怎麼走（曝光→共鳴→需求教育→信任→導購）。\n'
      +'2. 主題清單（依合作支數給足）：每個主題請給——主題名稱／切角／主要受眾層／打中的痛點或誤區／漏斗類型 G1–G5／目標層 A–E／建議影片形式／Hook 方向／Hook 流量觸發類型（痛點共鳴／反直覺／故事懸念／結果利益／身份投射／情緒代償／專業提醒／稀缺經驗 擇一）／是否帶產品（依產品露出原則）／建議拍攝理由（這支如何承接既有數據、補帳號缺口或推進閉環）。\n'
@@ -5999,6 +6048,8 @@ window.addEventListener('DOMContentLoaded', function(){
      +defsBlock()+'\n\n'
      +roundBlock()+'\n\n'
      +shotBlock()+'\n\n'
+     +_clientTranscriptBlock(c)+'\n\n'
+     +_toneRulesBlock(c)+'\n\n'
      +'【ATELIER 實證邏輯｜請把資料庫裡已驗證的成功影片邏輯，翻成可複製到本支的具體做法】Hook 類型／流量觸發／觀眾痛點／留存結構／情緒轉折／CTA 方式／可複製到本客戶的地方／不可照搬要避開的地方。\n\n'
      +'【每支腳本請產出，並分成兩個版本】\n'
      +'A. 客戶確認版（強調策略）：一句話主題與目的（對應 G 幾、A–E 哪層）／這支在帳號裡扮演什麼角色／設計理由（可引用上面實證邏輯）。\n'
@@ -6327,6 +6378,35 @@ function showDeliverSample(stage){
   document.getElementById('sheet').innerHTML=html;
   document.getElementById('modal').classList.add('show');
 }
+
+</script>
+<script>
+/* v156 料量守門：依選中客戶的影片數，在三關上方顯示提醒 */
+function updateDlVideoWarn(){
+  var box=document.getElementById('dlVideoWarn'); if(!box) return;
+  var sel=document.getElementById('dlClient'); if(!sel){ box.style.display='none'; return; }
+  var id=sel.value;
+  if(!id){ box.style.display='none'; return; }
+  if(typeof videosOfAccount!=='function'){ box.style.display='none'; return; }
+  var n=0;
+  try{ n=(videosOfAccount(id)||[]).length; }catch(e){ n=0; }
+  if(n>=3){ box.style.display='none'; return; }
+  box.innerHTML='⚠ 此客戶目前系統內僅 <b>'+n+'</b> 支已拆解影片，AI 看不到他真實口吻，腳本可能偏通用、偏說教。建議先到「帳號管理 → 影片庫」補拆幾支真實影片再回來產腳本。';
+  box.style.display='block';
+}
+/* 監聽：搜尋框過濾後（會重寫 #dlClient 選項並可能切換選擇）也更新提醒 */
+(function(){
+  if(typeof window.filterDlClient==='function'){
+    var orig=window.filterDlClient;
+    window.filterDlClient=function(){ orig.apply(this,arguments); try{updateDlVideoWarn();}catch(e){} };
+  }
+})();
+/* 進到「客戶交付」頁時、初載時，都跑一次 */
+document.addEventListener('DOMContentLoaded',function(){
+  var t=document.querySelector('.tab[data-view="deliver"]');
+  if(t) t.addEventListener('click',function(){ setTimeout(updateDlVideoWarn,80); });
+  setTimeout(updateDlVideoWarn,600);
+});
 
 </script>
 </body>
