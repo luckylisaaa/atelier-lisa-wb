@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="color-scheme" content="light only">
 <meta name="supported-color-schemes" content="light">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v149 (版本號僅留註解，不顯示於畫面)
+<!-- ATELIER 影片診斷工作台 · 內部版本 v150 (版本號僅留註解，不顯示於畫面)
+     v150 更新（說明書：新增「📸 帳號分析的影片九宮格要截幾張」小卡，把 v149 的兩張/一張規則寫成常駐用法提醒）：renderManual 的更新紀錄卡與「兩個 AI 怎麼分工」卡之間，插入一張 form-card(border-left 金)，白話說明——頻道有開放排序就截兩張(最新→發文頻率/置頂、最多人觀看→觀看排行)、沒開放就截一張照舊、能標排序就標(向下相容)。純加 HTML 於 JS 模板字串內(backtick 模板，未用反引號/錢字括號)、新增 div 開閉平衡；node --check 全過、品牌色不變。
      v149 更新（帳號診斷：影片九宮格分「最新／最多人觀看」兩張、各司其職，發文頻率與觀看排行判得更準）：PROMPT_A 四處改——①素材清單例新增「影片九宮格(最新排序)、影片九宮格(最多人觀看排序)」兩張；②素材說明 bullet 講清楚兩張用途(最新＝按時間排→看置頂📌＋發文/更新頻率；最多人觀看＝已按觀看排→做觀看排行；只給一張就用該張並註明排序，向下相容)；③「發文頻率與經營節奏」改為優先用最新排序那張(時間排最看得出多久發一支＋頂端📌＝置頂)；④「九宮格觀看雙軸排行」改為優先用最多人觀看排序那張(已按觀看排好最準)。純改 PROMPT_A 字串(全形標點、未引入半形雙引號/反斜線)、4 段先驗證唯一再單次寫檔；node --check 全過、div/details/CSS 不變。
      v148 更新（產線：粵語/方言口播自動做「華語對照翻譯」——香港等中文方言創作者的 SRT 不再只丟一句「港」）：①GEM_PROMPT（Gemini 看影片那關）逐字稿要求新增：口說若是粵語(廣東話/港)、台語或其他非華語(國語)，逐字稿做成「原文／繁體華語對照」(原句照抄＋下一行台灣讀者順口的華語)，並於備註寫出口說語言判斷。②PROMPT_C（Claude 最後審查那關）三處放寬：對照翻譯觸發條件由「非中文」改為「非華語(國語)」含粵語/台語/方言/外語(原本粵語被當中文逐字抄、不翻)，輸出原文／華語白話對照並把粵語特有字(嘅/佢哋/咗/畀/㗎…)與黏字(如 save低)翻成華語；逐字稿審查同步納入粵語/台語；「口語語言」欄指示要求標清楚語言別(粵語港/台語/華語)＋是否英文穿插＋字幕語言。分工：Gemini 第一線判語言＋翻譯、Claude 校對通順＋定稿語言欄。純改提示詞字串(全形標點、未引入半形雙引號或反斜線)、4 段先驗證唯一再單次寫檔；node --check 全過、div/details/CSS 不變、JS 邏輯未動。
      v147 更新（客戶交付：客戶版一頁診斷書「自動帶入診斷數據」＋修 esc2 未定義 ReferenceError）：①buildClientOnePager 改為依選定客戶自動預填——讀 c.profile.positioning 帶入「一句話定位」(過 isHintText 濾提示文字)；_accVidStats(c.id) 算 影片數/平均觀看/開頭有鉤子比例/涵蓋的 G 階段→組「帳號現況盤點 SNAPSHOT」一條(有影片才出現)；由 covered/missing G 階段委婉組「現在的問題／看到的機會」(客戶面去掉 G 代號、只留白話 OP_GLABEL)；缺的漏斗 seed 進「這一輪建議方向」三列(opRow 改吃 seed 參數，無影片資料則退回通用三列)。全部欄位維持 contenteditable 可改、列印 CSS 不動、additive 不影響舊資料。②修潛在 bug：deliver IIFE 內 buildClientOnePager 呼叫的 esc2 原僅定義在另一個 IIFE，該按鈕點了會 ReferenceError；本版在 deliver IIFE 內自定 esc2/opReal/OP_GLABEL/OP_GTASK。新區塊先單獨 node --check 再插入、純讀 accounts/videos 不連 AI；div/details/CSS 開閉平衡。
@@ -706,7 +707,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v149</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v150</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -3272,7 +3273,8 @@ function renderManual(){
   <div class="form-card" style="border-left:3px solid var(--gold)">
     <div class="stitle" style="font-size:15px;color:var(--rouge)">更新紀錄 · 還沒做的</div>
     <p style="font-size:13px;color:var(--text);line-height:1.85;margin-top:8px">
-    <b>v149（這版）：</b>帳號診斷一開始貼影片九宮格，現在分「<b>最新</b>」和「<b>最多人觀看</b>」<b>兩張</b>、各有各的用途，判得更準。你截兩張：一張排序選「最新」（按時間排，頂端有📌的是置頂，看得出他多久發一支）、一張選「最多人觀看／瀏覽」（已經幫你按觀看高低排好）。產線的帳號分析提示詞現在會自動分清楚：<b>發文頻率、置頂</b>看「最新」那張；<b>觀看排行、最強內容</b>看「最多人觀看」那張。你只要在貼的時候標一下哪張是哪張就好；只給一張也沒關係，它會用那一張並註明是哪種排序。<br>
+    <b>v150（這版）：</b>把上一版「九宮格要截幾張」的規則，寫成說明書上方一張<b>常駐小卡</b>（不用翻更新紀錄也看得到）：頻道<b>有開放排序</b>就截兩張（最新看發文頻率＋置頂、最多人觀看看觀看排行）、<b>沒開放</b>就截一張照舊，能標排序就標、不用背。<br>
+    <b>v149：</b>帳號診斷一開始貼影片九宮格，現在分「<b>最新</b>」和「<b>最多人觀看</b>」<b>兩張</b>、各有各的用途，判得更準。你截兩張：一張排序選「最新」（按時間排，頂端有📌的是置頂，看得出他多久發一支）、一張選「最多人觀看／瀏覽」（已經幫你按觀看高低排好）。產線的帳號分析提示詞現在會自動分清楚：<b>發文頻率、置頂</b>看「最新」那張；<b>觀看排行、最強內容</b>看「最多人觀看」那張。你只要在貼的時候標一下哪張是哪張就好；只給一張也沒關係，它會用那一張並註明是哪種排序。<br>
     <b>v148：</b>香港（或講台語、其他方言）的創作者，產線現在會自動幫你附一份<b>看得懂的華語對照</b>了。以前你收到香港創作者的 SRT，整份都是廣東話用字（嘅、佢哋、咗、畀、㗎啦…），系統只把它當「中文」逐字抄下來、語言欄常常只丟你一個「港」，你（讀國語/華語）看得很卡。這版把產線兩關都升級：<b>Gemini 看影片那關</b>會先判斷「這是粵語」並把逐字稿做成「<b>粵語原文／華語對照</b>」（上一行原句、下一行翻成你順口的華語）；<b>最後 Claude 整理那關</b>會幫你校對翻譯通不通順、把聽錯黏在一起的字（像把「save 低＝存起來」聽成一個怪字）修掉，再把「口語語言」欄標清楚（例：口說粵語(港)＋英文穿插、字幕繁體中文）。台語、其他方言、外語也一樣會自動附華語對照。你不用每次手動翻，收到 SRT 跑一遍就有。<br>
     <b>v147：</b>「客戶版一頁診斷書」現在會自動幫你把資料先填好了。以前你在「客戶交付」頁按「<b>產生客戶版一頁診斷書</b>」，出來是一張漂亮但<b>整張空白</b>的米色紙，每一格都要自己打字。這版改成：選好客戶之後，它會自動把你已經盤點到的東西先填進去——<b>一句話定位</b>（如果你帳號卡裡有寫）、一條<b>帳號現況盤點</b>（這客戶你拆了幾支、平均觀看、開頭有鉤子的比例、內容大概涵蓋哪幾種方向）、「<b>現在的問題</b>」和「<b>看到的機會</b>」也會用你盤點到的內容委婉先寫好，連「<b>這一輪建議方向</b>」都先把客戶比較少做的那幾種方向排成三列給你。這些全部都還是可以<b>點進去改字</b>，改完一樣按「列印／存成 PDF」就能交給客戶。客戶面的字刻意不寫 G1～G5 這種代號、只講白話，所以可以直接給客戶看。（順手修好一個小毛病：之前這顆按鈕在某些情況點了會沒反應，現在正常了。）還沒拆過影片的客戶就維持空白模板、照常自己填。<br>
     <b>v146：</b>九宮格速記庫——你花時間截的圖真的不白截了。帳號管理頁多了「<b>🗂️ 九宮格速記庫</b>」：把 PROMPT_A 產出的「帳號逐格盤點」整段貼進去、選它屬於哪個帳號存起來，系統會切成一格一格（貼1～片9）。之後你可以在<b>搜尋框跨所有帳號搜尋</b>——搜「迷思」「解剖」「對比」或任何主題，就會列出哪些帳號的哪幾格做過這種內容、封面寫什麼、觀看多少，點開看全文。看到某個帳號值得深挖，你再回去抓他更多影片來分析。速記是存在帳號上、不會影響影片庫的統計。<br>
@@ -3354,6 +3356,15 @@ function renderManual(){
     <b>v67：</b>數字單位自動換算（萬／k／M／億）＋數字防呆＋修正欄位錯字。<br>
     <b>數字提醒：</b>影片庫顯示的數字＝建檔當下存進去的數字，工具不會自己放大。若看到某支觀看異常大，是那筆建檔時數字貼錯，到影片庫刪掉重建即可。<br>
     <b>還沒做（會逐版補）：</b>「貼帳號分析卡→自動入庫＋存歷史快照」管線、粉絲量級台灣＋國際寫進 CSV、子題型張力複核改由 Claude 定案、框架資料抽外部 JSON＋延遲渲染解卡頓、累積 10 支以上後的統計/洞察分頁。
+    </p>
+  </div>
+  <div class="form-card" style="border-left:3px solid var(--gold)">
+    <div class="stitle" style="font-size:16px;color:var(--rouge)">📸 帳號分析的影片九宮格要截幾張</div>
+    <p style="font-size:13px;color:var(--text);line-height:1.85;margin-top:10px">
+    做帳號分析（STEP②）貼影片九宮格時，<b>先看那個頻道有沒有開放排序功能</b>：<br>
+    <b>有開放（可選 最新／最多人觀看）＝截兩張</b>，貼的時候標一下哪張是哪張——「最新」那張按時間排、頂端📌是置頂，AI 用它判<b>發文頻率＋置頂</b>；「最多人觀看／瀏覽」那張已按觀看排好，AI 用它做<b>觀看排行＋找最強內容</b>。<br>
+    <b>沒開放（只有一張）＝照舊截一張</b>就好，完全不影響；知道的話順手標一句「這張是最新排序」或「最多人觀看」，AI 判得更準，不知道也沒關係、它會當一般九宮格看。<br>
+    一句話：<b>有幾張給幾張</b>，能標排序就標，不用背規則。
     </p>
   </div>
   <div class="form-card">
