@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="color-scheme" content="light only">
 <meta name="supported-color-schemes" content="light">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v150 (版本號僅留註解，不顯示於畫面)
+<!-- ATELIER 影片診斷工作台 · 內部版本 v151 (版本號僅留註解，不顯示於畫面)
+     v151 更新（客戶前置問診模組：把「我建好資料」變成「我能開始服務客戶」的橋樑；三方翻譯＝透過客戶搞懂客戶的客戶＝觀眾）：①新增 INTAKE_QUESTIONS（10 題三段問診表）＋ _intakeKnown(id)（讀 _accVidStats＋profile 算這客戶系統已知什麼）；②openClientIntake(id) 重用 modal/sheet，三步介面：問診表(可複製)／buildIntakePrompt(id)（把客戶現有 accProfileBlock＋影片庫統計＋_benchmark 成功庫中位 組進提示詞，要 AI 輸出 ATELIER問診整理卡，欄名沿用 ACC_PROFILE_FIELDS 以便存回，另含 A–E／G1–G5／10主題／3腳本）／saveIntakeCard(id)（parseCardFields 後逐欄寫回 c.profile，另存 profile.intakeCard 原文＋intakeDate，saveAccounts＋renderAccounts）；③帳號卡 meta 新增 data-acc-intake 按鈕，bindAccountUI 綁 openClientIntake；④說明書新增「🚀 怎麼開始服務一個客戶」卡。純讀 accounts／videos、沿用現有解析與存檔機制、未動 AI 串接；新函式先單獨 node --check，全檔 node --check 全過、div/details/CSS 開閉平衡。
      v150 更新（說明書：新增「📸 帳號分析的影片九宮格要截幾張」小卡，把 v149 的兩張/一張規則寫成常駐用法提醒）：renderManual 的更新紀錄卡與「兩個 AI 怎麼分工」卡之間，插入一張 form-card(border-left 金)，白話說明——頻道有開放排序就截兩張(最新→發文頻率/置頂、最多人觀看→觀看排行)、沒開放就截一張照舊、能標排序就標(向下相容)。純加 HTML 於 JS 模板字串內(backtick 模板，未用反引號/錢字括號)、新增 div 開閉平衡；node --check 全過、品牌色不變。
      v149 更新（帳號診斷：影片九宮格分「最新／最多人觀看」兩張、各司其職，發文頻率與觀看排行判得更準）：PROMPT_A 四處改——①素材清單例新增「影片九宮格(最新排序)、影片九宮格(最多人觀看排序)」兩張；②素材說明 bullet 講清楚兩張用途(最新＝按時間排→看置頂📌＋發文/更新頻率；最多人觀看＝已按觀看排→做觀看排行；只給一張就用該張並註明排序，向下相容)；③「發文頻率與經營節奏」改為優先用最新排序那張(時間排最看得出多久發一支＋頂端📌＝置頂)；④「九宮格觀看雙軸排行」改為優先用最多人觀看排序那張(已按觀看排好最準)。純改 PROMPT_A 字串(全形標點、未引入半形雙引號/反斜線)、4 段先驗證唯一再單次寫檔；node --check 全過、div/details/CSS 不變。
      v148 更新（產線：粵語/方言口播自動做「華語對照翻譯」——香港等中文方言創作者的 SRT 不再只丟一句「港」）：①GEM_PROMPT（Gemini 看影片那關）逐字稿要求新增：口說若是粵語(廣東話/港)、台語或其他非華語(國語)，逐字稿做成「原文／繁體華語對照」(原句照抄＋下一行台灣讀者順口的華語)，並於備註寫出口說語言判斷。②PROMPT_C（Claude 最後審查那關）三處放寬：對照翻譯觸發條件由「非中文」改為「非華語(國語)」含粵語/台語/方言/外語(原本粵語被當中文逐字抄、不翻)，輸出原文／華語白話對照並把粵語特有字(嘅/佢哋/咗/畀/㗎…)與黏字(如 save低)翻成華語；逐字稿審查同步納入粵語/台語；「口語語言」欄指示要求標清楚語言別(粵語港/台語/華語)＋是否英文穿插＋字幕語言。分工：Gemini 第一線判語言＋翻譯、Claude 校對通順＋定稿語言欄。純改提示詞字串(全形標點、未引入半形雙引號或反斜線)、4 段先驗證唯一再單次寫檔；node --check 全過、div/details/CSS 不變、JS 邏輯未動。
@@ -707,7 +708,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v150</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v151</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -3273,7 +3274,8 @@ function renderManual(){
   <div class="form-card" style="border-left:3px solid var(--gold)">
     <div class="stitle" style="font-size:15px;color:var(--rouge)">更新紀錄 · 還沒做的</div>
     <p style="font-size:13px;color:var(--text);line-height:1.85;margin-top:8px">
-    <b>v150（這版）：</b>把上一版「九宮格要截幾張」的規則，寫成說明書上方一張<b>常駐小卡</b>（不用翻更新紀錄也看得到）：頻道<b>有開放排序</b>就截兩張（最新看發文頻率＋置頂、最多人觀看看觀看排行）、<b>沒開放</b>就截一張照舊，能標排序就標、不用背。<br>
+    <b>v151（這版）：</b>你終於可以「<b>開始服務客戶</b>」了——新增「📋 客戶前置問診」。在帳號管理每張客戶卡會多一顆「客戶前置問診」，點開有三步：①一張 <b>10 題問診表</b>（帶去開會問客戶，重點是透過客戶搞懂「客戶的客戶＝觀眾」）；②一顆「問診整理提示詞」會自動把這客戶<b>現有的影片庫表現＋你的成功庫標準</b>一起組進去，你把會議筆記貼給 AI，它回一張「問診整理卡」（人群／痛點原話／誤區／服務／賣點／信任／人設／合規／一句話定位＋本輪 A–E、G1–G5、10 支主題、3 支優先腳本）；③「整理並存回帳號」把這些存回客戶的帳號檔，之後 IP定位／腳本／借技法／客戶診斷全部自動吃得到。說明書上方也新增「🚀 怎麼開始服務一個客戶」一條龍。<br>
+    <b>v150：</b>把上一版「九宮格要截幾張」的規則，寫成說明書上方一張<b>常駐小卡</b>（不用翻更新紀錄也看得到）：頻道<b>有開放排序</b>就截兩張（最新看發文頻率＋置頂、最多人觀看看觀看排行）、<b>沒開放</b>就截一張照舊，能標排序就標、不用背。<br>
     <b>v149：</b>帳號診斷一開始貼影片九宮格，現在分「<b>最新</b>」和「<b>最多人觀看</b>」<b>兩張</b>、各有各的用途，判得更準。你截兩張：一張排序選「最新」（按時間排，頂端有📌的是置頂，看得出他多久發一支）、一張選「最多人觀看／瀏覽」（已經幫你按觀看高低排好）。產線的帳號分析提示詞現在會自動分清楚：<b>發文頻率、置頂</b>看「最新」那張；<b>觀看排行、最強內容</b>看「最多人觀看」那張。你只要在貼的時候標一下哪張是哪張就好；只給一張也沒關係，它會用那一張並註明是哪種排序。<br>
     <b>v148：</b>香港（或講台語、其他方言）的創作者，產線現在會自動幫你附一份<b>看得懂的華語對照</b>了。以前你收到香港創作者的 SRT，整份都是廣東話用字（嘅、佢哋、咗、畀、㗎啦…），系統只把它當「中文」逐字抄下來、語言欄常常只丟你一個「港」，你（讀國語/華語）看得很卡。這版把產線兩關都升級：<b>Gemini 看影片那關</b>會先判斷「這是粵語」並把逐字稿做成「<b>粵語原文／華語對照</b>」（上一行原句、下一行翻成你順口的華語）；<b>最後 Claude 整理那關</b>會幫你校對翻譯通不通順、把聽錯黏在一起的字（像把「save 低＝存起來」聽成一個怪字）修掉，再把「口語語言」欄標清楚（例：口說粵語(港)＋英文穿插、字幕繁體中文）。台語、其他方言、外語也一樣會自動附華語對照。你不用每次手動翻，收到 SRT 跑一遍就有。<br>
     <b>v147：</b>「客戶版一頁診斷書」現在會自動幫你把資料先填好了。以前你在「客戶交付」頁按「<b>產生客戶版一頁診斷書</b>」，出來是一張漂亮但<b>整張空白</b>的米色紙，每一格都要自己打字。這版改成：選好客戶之後，它會自動把你已經盤點到的東西先填進去——<b>一句話定位</b>（如果你帳號卡裡有寫）、一條<b>帳號現況盤點</b>（這客戶你拆了幾支、平均觀看、開頭有鉤子的比例、內容大概涵蓋哪幾種方向）、「<b>現在的問題</b>」和「<b>看到的機會</b>」也會用你盤點到的內容委婉先寫好，連「<b>這一輪建議方向</b>」都先把客戶比較少做的那幾種方向排成三列給你。這些全部都還是可以<b>點進去改字</b>，改完一樣按「列印／存成 PDF」就能交給客戶。客戶面的字刻意不寫 G1～G5 這種代號、只講白話，所以可以直接給客戶看。（順手修好一個小毛病：之前這顆按鈕在某些情況點了會沒反應，現在正常了。）還沒拆過影片的客戶就維持空白模板、照常自己填。<br>
@@ -3356,6 +3358,19 @@ function renderManual(){
     <b>v67：</b>數字單位自動換算（萬／k／M／億）＋數字防呆＋修正欄位錯字。<br>
     <b>數字提醒：</b>影片庫顯示的數字＝建檔當下存進去的數字，工具不會自己放大。若看到某支觀看異常大，是那筆建檔時數字貼錯，到影片庫刪掉重建即可。<br>
     <b>還沒做（會逐版補）：</b>「貼帳號分析卡→自動入庫＋存歷史快照」管線、粉絲量級台灣＋國際寫進 CSV、子題型張力複核改由 Claude 定案、框架資料抽外部 JSON＋延遲渲染解卡頓、累積 10 支以上後的統計/洞察分頁。
+    </p>
+  </div>
+  <div class="form-card" style="border-left:3px solid var(--rouge)">
+    <div class="stitle" style="font-size:16px;color:var(--rouge)">🚀 怎麼開始服務一個客戶（建檔→問診→交付）</div>
+    <p style="font-size:13px;color:var(--text);line-height:1.85;margin-top:10px">
+    <b>核心心法：</b>你問客戶，其實是透過他去搞懂「<b>他的客戶（觀眾）</b>」。客戶講專業話、觀眾要生活話，你的工作是把專業翻成觀眾看得懂、會相信、知道下一步的影片（＝三方翻譯）。<br>
+    <b>完整一條龍：</b><br>
+    ① <b>收料</b>：客戶所有連結／網站／跨平台、影片九宮格（最新＋最多人觀看）、發文習慣。<br>
+    ② <b>全部輕掃</b>：他過去的影片整批跑帳號分析，標 片1～片N，產出帳號分析卡＋逐格盤點（文字檔）→ 進九宮格速記庫。<br>
+    ③ <b>深拆最強一支</b>：挑觀看最高那支標「主」，送 Gemini → 歸類卡 → 進影片庫。<br>
+    ④ <b>客戶前置問診</b>：在帳號管理每張客戶卡點「<b>📋 客戶前置問診</b>」——裡面有 10 題問診表（帶去開會問）＋「問診整理提示詞」（把會議筆記貼給 AI，它會對照這客戶現有數據＋你的成功庫，回一張問診整理卡）＋「整理並存回帳號」（把人群／痛點／賣點／人設／合規／一句話定位存回他的帳號檔）。<br>
+    ⑤ <b>服務交付</b>：客戶交付頁 → IP定位診斷書 → 腳本大綱 → 腳本／🧬借技法 → 客戶版一頁診斷書。<br>
+    <b>怎麼用你建好的庫：</b>②③建立的影片庫／速記庫＝這客戶自己的表現；其他成功帳號＝你的成功庫標準。問診模組會把兩邊一起餵給 AI，所以建議的 10 支主題、3 支腳本都是「補他缺的、抄成功庫已驗證的」，不是憑空想。
     </p>
   </div>
   <div class="form-card" style="border-left:3px solid var(--gold)">
@@ -3660,6 +3675,113 @@ function buildClientQuestionsPrompt(id){
   if(typeof copyVal==='function') copyVal(p,'客戶診斷＋問題（@'+(c.handle||'')+'）');
 }
 
+function _intakeKnown(id){
+  var c=accounts.find(function(x){return x.id===id;}); if(!c) return null;
+  var cs=_accVidStats(id);
+  var allStages=['G1','G2','G3','G4','G5'];
+  var missing=allStages.filter(function(g){return cs.stages.indexOf(g)<0;});
+  var pf=c.profile||{};
+  return { c:c, cs:cs, missing:missing,
+    positioning:(pf.positioning&&!isHintText(pf.positioning))?pf.positioning:'',
+    postFreq:(pf.postFreq&&!isHintText(pf.postFreq))?pf.postFreq:'' };
+}
+const INTAKE_QUESTIONS=`【ATELIER 三方翻譯 · 客戶前置問診表】
+你問客戶，其實是在挖「他的客戶（觀眾）」。客戶講專業話、觀眾要生活話，你要把專業翻成觀眾看得懂、會相信、知道下一步的影片。
+
+第一段　先搞懂「客戶的客戶」＝觀眾（挖影片開頭與爆點）
+1. 你的客戶，都是些什麼人？
+2. 他們通常發生什麼事，才會來找你？
+3. 他們開口問你的第一句話，通常是什麼？
+4. 他們最常誤會、想錯的是什麼？
+
+第二段　再搞懂「你能給觀眾什麼」＝專業翻成好處（挖中段說服）
+5. 你實際提供哪些服務？最想推哪一項？
+6. 你有哪些專業、年資、方法、案例、證照？
+7. 這些對客戶來說，省掉什麼麻煩、帶來什麼結果？
+8. 為什麼他們該選你，而不是別人？
+
+第三段　最後定調（挖人設與安全線）
+9. 你希望觀眾覺得你是「什麼樣的人」？
+10. 有哪些話不能講、要避開？（律師／醫師／保險特別問）`;
+function openClientIntake(id){
+  var k=_intakeKnown(id); if(!k){ toast('找不到帳號'); return; }
+  var c=k.c, cs=k.cs;
+  const html=`<div style="padding:18px 16px;max-height:82vh;overflow-y:auto">
+<div style="font-family:'Noto Serif TC',serif;font-size:18px;font-weight:900;margin-bottom:2px">📋 客戶前置問診 · ${esc(c.handle||'@?')}</div>
+<div style="font-size:12px;color:var(--gold-dark);margin-bottom:14px">透過客戶搞懂「客戶的客戶」→ 整理卡存回帳號 → 接 IP定位／腳本</div>
+<div style="background:var(--warm);border:1px solid var(--gold-soft);border-radius:8px;padding:10px 12px;font-size:12.5px;color:var(--ink);line-height:1.8"><b style="color:var(--rouge)">系統已經知道（不用再問客戶）：</b><br>· 影片庫：拆過 ${cs.n} 支${cs.avgViews>0?('、平均觀看 '+cs.avgViews.toLocaleString()):''}${cs.n?('、有Hook比例 '+cs.hookPct+'%'):''}<br>· 漏斗涵蓋：${cs.stages.length?esc(cs.stages.join('、')):'尚無分類'}${k.missing.length?('　<span style="color:var(--rouge)">缺 '+esc(k.missing.join('、'))+'（可問客戶補方向）</span>'):''}<br>· 定位：${k.positioning?esc(k.positioning):'<span style="color:var(--sub)">尚未填，問診後會補上</span>'}<br>· 發文節奏：${k.postFreq?esc(k.postFreq):'<span style="color:var(--sub)">尚未填</span>'}</div>
+<div style="margin-top:14px;font-size:13px;font-weight:800;color:var(--ink)">① 開會問這 10 題</div>
+<div style="white-space:pre-wrap;font-size:12.5px;color:var(--ink);line-height:1.85;background:#fff;border:1px solid var(--border);border-radius:8px;padding:10px 12px;margin-top:6px">${esc(INTAKE_QUESTIONS)}</div>
+<button class="btn btn-ghost" id="ci-copyq" style="width:100%;margin-top:8px">⧉ 複製問診表（帶去開會）</button>
+<div style="margin-top:16px;font-size:13px;font-weight:800;color:var(--ink)">② 問完，整理成卡</div>
+<div style="font-size:11.5px;color:var(--sub);margin-top:4px">這顆會把客戶現有數據＋你的成功庫一起組進提示詞。貼去 Claude／ChatGPT，把會議筆記貼在它最後面送出，它會回一張「問診整理卡」。</div>
+<button class="btn btn-go" id="ci-prompt" style="width:100%;margin-top:8px">⧉ 複製「問診整理提示詞」</button>
+<div style="margin-top:16px;font-size:13px;font-weight:800;color:var(--ink)">③ 把整理卡貼回來，存進帳號檔</div>
+<textarea id="ci-paste" placeholder="把 AI 回的「===ATELIER問診整理卡===」整段貼在這裡" style="width:100%;height:120px;margin-top:6px;padding:9px 10px;border:1px solid var(--border);border-radius:8px;font-family:inherit;font-size:12.5px;box-sizing:border-box"></textarea>
+<div id="ci-msg" style="margin-top:6px"></div>
+<button class="btn btn-go" id="ci-save" style="width:100%;margin-top:8px">＋ 整理並存回帳號</button>
+<button class="btn btn-ghost" id="ci-close" style="width:100%;margin-top:8px">關閉</button>
+</div>`;
+  $('sheet').innerHTML=html; $('modal').classList.add('show');
+  $('ci-close').onclick=closeModal;
+  $('ci-copyq').onclick=function(){ if(typeof copyVal==='function') copyVal(INTAKE_QUESTIONS,'客戶前置問診表'); };
+  $('ci-prompt').onclick=function(){ buildIntakePrompt(id); };
+  $('ci-save').onclick=function(){ saveIntakeCard(id); };
+}
+function buildIntakePrompt(id){
+  var c=accounts.find(function(x){return x.id===id;}); if(!c) return;
+  var k=_intakeKnown(id); var cs=k.cs; var bm=_benchmark(id);
+  const NL=`
+`;
+  var prof=(typeof accProfileBlock==='function')?accProfileBlock(c).join(NL):'';
+  var profLabel=prof?'客戶現有版面／ICP／賣點：':'';
+  var bmLine=bm?('成功庫參考（'+bm.accN+' 個帳號中位數）：影片數~'+bm.vidMed+'、平均觀看~'+bm.viewsMed.toLocaleString()+'、有Hook比例~'+bm.hookMed+'%、平均標題~'+bm.titleMed+' 字'):'（庫裡尚無其他帳號可比對）';
+  const p=`【任務】我是 ATELIER 短影音顧問。這是我的一個客戶，我剛跟他開完一小時問診會議。請你扮演資深短影音顧問，做「三方翻譯」：透過客戶，搞懂他真正要打中的「客戶的客戶（觀眾）」——客戶講專業語言、觀眾要生活語言，你的工作是把專業翻成觀眾看得懂、願意相信、知道下一步的內容。請對照這個客戶在我系統裡「已有的表現」＋我的「成功庫標準」，把我的會議內容整理成一張可貼回工作台的「問診整理卡」。
+
+【客戶帳號】@${c.handle||'?'}（${c.jobTitle||''}／${c.industry||''}）
+發文節奏：${k.postFreq||'未提供'}｜影片庫已拆 ${cs.n} 支${cs.avgViews>0?('、平均觀看~'+cs.avgViews.toLocaleString()):''}｜漏斗已涵蓋：${cs.stages.length?cs.stages.join('、'):'無'}${k.missing.length?('，尚缺 '+k.missing.join('、')):''}
+${profLabel}
+${prof}
+【成功標準參考】
+${bmLine}
+
+【請輸出一張卡，一行一欄、用全形冒號「：」、欄名一字不差，前面不要加任何字】
+===ATELIER問診整理卡===
+帳號定位：（一句話對外定位＋接下來可發展的 3-5 個內容主軸）
+人群痛點誤區：（觀眾是誰／他們發生什麼事才需要他＝痛點情境／他們最常怎麼開口問＝痛點原話／他們最常誤會什麼＝誤區）
+產品賣點案例：（客戶實際提供與最想推的服務／這些對觀眾的好處＝使用者賣點／可信案例）
+專業特點與資源：（年資、方法、流程、證照、設備、資源等可被翻成賣點的原料）
+人設關鍵字：（他是什麼型的專業者，例如 冷靜理性／白話翻譯／企業軍師／溫暖陪伴／犀利戰鬥）
+人設身分理念：（信任理由與差異化，為什麼選他不選別人）
+視覺風格：（建議口吻與鏡頭風格）
+合規限制：（哪些不能講、要避開的安全線；律師／醫師／保險／金融要保守）
+本輪商業閉環建議：（從 A認知 B品牌 C信任 D轉化 E組織成長 中，這一輪最該補哪 1-2 層，為什麼）
+本輪內容策略建議：（從 G1-G5 中，這一輪主打哪幾類，對應上面缺的漏斗）
+十支影片主題方向：（列 10 個，每個標 預計漏斗 G? 與 想打中的觀眾情境）
+三支優先腳本方向：（從上面挑 3 支最該先拍的，各寫一句為什麼先拍）
+===卡片結束===
+
+【我的客戶問診會議內容（逐字稿或筆記）】
+（請把問診筆記貼在這一行底下，再送出）
+`;
+  if(typeof copyVal==='function') copyVal(p,'問診整理提示詞（@'+(c.handle||'')+'）');
+}
+function saveIntakeCard(id){
+  var c=accounts.find(function(x){return x.id===id;}); if(!c){ toast('找不到帳號'); return; }
+  var raw=(($('ci-paste')&&$('ci-paste').value)||'').trim();
+  if(!raw){ toast('先把 AI 回的問診整理卡貼進來'); return; }
+  var F=parseCardFields(raw);
+  if(!c.profile) c.profile={};
+  var saved=[];
+  ACC_PROFILE_FIELDS.forEach(function(pair){ var key=pair[0],label=pair[1]; if(F[label]){ c.profile[key]=F[label]; saved.push(label); } });
+  c.profile.intakeCard=raw; c.profile.intakeDate=(new Date()).toISOString().slice(0,10);
+  var m=$('ci-msg');
+  if(!saved.length&&m){ m.innerHTML='<div style="font-size:12px;color:var(--rouge);background:var(--warm);border-radius:8px;padding:8px 10px">沒抓到可存的標準欄位——請確認你貼的是 AI 回的「===ATELIER問診整理卡===」整段（一行一欄、全形冒號）。整段內容我還是先存進帳號備查了。</div>'; }
+  saveAccounts(); if(typeof renderAccounts==='function') renderAccounts();
+  toast(saved.length?('問診整理卡已存回 '+(c.handle||'帳號')+'：補了 '+saved.length+' 欄，IP定位／腳本都吃得到'):'整段已存進帳號備查');
+  if(saved.length) closeModal();
+}
+
 function openBorrowTechnique(clientId){
   var c=accounts.find(function(x){return x.id===clientId;}); if(!c){ toast('找不到帳號'); return; }
   if(!videos.length){ toast('影片庫還沒有可借的範本，先建幾支成功影片'); return; }
@@ -3840,6 +3962,7 @@ function renderAccounts(){
   box.querySelectorAll('[data-acc-health]').forEach(b=>b.onclick=()=>buildAccountHealthPrompt(b.dataset.accHealth));
   box.querySelectorAll('[data-acc-clientdx]').forEach(b=>b.onclick=()=>openClientDiagnosis(b.dataset.accClientdx));
   box.querySelectorAll('[data-acc-borrow]').forEach(b=>b.onclick=()=>openBorrowTechnique(b.dataset.accBorrow));
+  box.querySelectorAll('[data-acc-intake]').forEach(b=>b.onclick=()=>openClientIntake(b.dataset.accIntake));
   box.querySelectorAll('[data-acc-snap]').forEach(b=>b.onclick=()=>addFanSnapshot(b.dataset.accSnap));
   box.querySelectorAll('[data-acc-prof]').forEach(b=>b.onclick=()=>addProfileSnapshot(b.dataset.accProf));
   box.querySelectorAll('[data-acc-del]').forEach(b=>b.onclick=()=>delAccount(b.dataset.accDel));
@@ -3881,6 +4004,7 @@ function accCard(a){
       <span class="vlink" style="cursor:pointer;color:var(--primary-deep);font-weight:800" data-acc-health="${a.id}">帳號體檢</span>
       <span class="vlink" style="cursor:pointer;color:var(--rouge);font-weight:800" data-acc-clientdx="${a.id}">🩺 客戶診斷</span>
       <span class="vlink" style="cursor:pointer;color:var(--gold-dark);font-weight:800" data-acc-borrow="${a.id}">🧬 借技法寫腳本</span>
+      <span class="vlink" style="cursor:pointer;color:var(--primary-deep);font-weight:800" data-acc-intake="${a.id}">📋 客戶前置問診</span>
       <span class="vlink" style="cursor:pointer" data-acc-snap="${a.id}">+ 粉絲快照</span>
       <span class="vlink" style="cursor:pointer" data-acc-prof="${a.id}">+ 版面快照</span>
       <span class="vdel" data-acc-del="${a.id}">刪除</span>
