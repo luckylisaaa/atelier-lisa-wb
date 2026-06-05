@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="color-scheme" content="light only">
 <meta name="supported-color-schemes" content="light">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v151 (版本號僅留註解，不顯示於畫面)
+<!-- ATELIER 影片診斷工作台 · 內部版本 v152 (版本號僅留註解，不顯示於畫面)
+     v152 更新（帳號管理頁瘦身：仿「輸入影片」分子頁籤，帳號清單一進來就乾淨、工具收進工具箱）：view-accounts 在 page-head 下新增兩個子頁籤（showAccSub）：📁帳號清單＝新增帳號＋搜尋排序＋accList；🧰工具箱＝資料備份／建檔收集盤／貼卡入庫(acc-tools-grid)＋卡片補完健檢＋九宮格速記庫＋待核對清單(checkListPanel)。以 Python 行級重排（原順序 新增→工具區→搜尋排序→補完→速記→待核對→清單 interleaved，把 搜尋排序＋accList 移到新增之後成 accsub-list，其餘工具移入 accsub-tools，皆為原封不動搬移既有平衡區塊）；新增 showAccSub(w) 比照 showInputSub 切換 display＋頁籤樣式；預設顯示帳號清單（inline display）。純版面重排＋一個切換函式，未動任何資料邏輯／既有元素 id（renderAccounts／renderCheckList／renderGridLib／bindAccountUI 全部照舊以 id 取用）；node --check 全過、div 974/974、details 39/39。
      v151 更新（客戶前置問診模組：把「我建好資料」變成「我能開始服務客戶」的橋樑；三方翻譯＝透過客戶搞懂客戶的客戶＝觀眾）：①新增 INTAKE_QUESTIONS（10 題三段問診表）＋ _intakeKnown(id)（讀 _accVidStats＋profile 算這客戶系統已知什麼）；②openClientIntake(id) 重用 modal/sheet，三步介面：問診表(可複製)／buildIntakePrompt(id)（把客戶現有 accProfileBlock＋影片庫統計＋_benchmark 成功庫中位 組進提示詞，要 AI 輸出 ATELIER問診整理卡，欄名沿用 ACC_PROFILE_FIELDS 以便存回，另含 A–E／G1–G5／10主題／3腳本）／saveIntakeCard(id)（parseCardFields 後逐欄寫回 c.profile，另存 profile.intakeCard 原文＋intakeDate，saveAccounts＋renderAccounts）；③帳號卡 meta 新增 data-acc-intake 按鈕，bindAccountUI 綁 openClientIntake；④說明書新增「🚀 怎麼開始服務一個客戶」卡。純讀 accounts／videos、沿用現有解析與存檔機制、未動 AI 串接；新函式先單獨 node --check，全檔 node --check 全過、div/details/CSS 開閉平衡。
      v150 更新（說明書：新增「📸 帳號分析的影片九宮格要截幾張」小卡，把 v149 的兩張/一張規則寫成常駐用法提醒）：renderManual 的更新紀錄卡與「兩個 AI 怎麼分工」卡之間，插入一張 form-card(border-left 金)，白話說明——頻道有開放排序就截兩張(最新→發文頻率/置頂、最多人觀看→觀看排行)、沒開放就截一張照舊、能標排序就標(向下相容)。純加 HTML 於 JS 模板字串內(backtick 模板，未用反引號/錢字括號)、新增 div 開閉平衡；node --check 全過、品牌色不變。
      v149 更新（帳號診斷：影片九宮格分「最新／最多人觀看」兩張、各司其職，發文頻率與觀看排行判得更準）：PROMPT_A 四處改——①素材清單例新增「影片九宮格(最新排序)、影片九宮格(最多人觀看排序)」兩張；②素材說明 bullet 講清楚兩張用途(最新＝按時間排→看置頂📌＋發文/更新頻率；最多人觀看＝已按觀看排→做觀看排行；只給一張就用該張並註明排序，向下相容)；③「發文頻率與經營節奏」改為優先用最新排序那張(時間排最看得出多久發一支＋頂端📌＝置頂)；④「九宮格觀看雙軸排行」改為優先用最多人觀看排序那張(已按觀看排好最準)。純改 PROMPT_A 字串(全形標點、未引入半形雙引號/反斜線)、4 段先驗證唯一再單次寫檔；node --check 全過、div/details/CSS 不變。
@@ -708,7 +709,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v151</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v152</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -1571,10 +1572,62 @@ if('serviceWorker' in navigator){
     <div class="ph-sub">所有被你拆解過的創作者帳號 · 身份分類 · 粉絲快照成長追蹤 · 關聯帳號矩陣（Founder × Brand）</div>
   </div>
 
+  <div style="display:flex;gap:4px;margin-bottom:14px;border-bottom:1px solid var(--line)">
+    <button id="accsubtab-list" onclick="showAccSub('list')" style="background:none;border:none;border-bottom:2px solid var(--rouge);color:var(--rouge);font-weight:700;font-size:14px;padding:8px 18px;cursor:pointer;font-family:inherit">📁 帳號清單</button>
+    <button id="accsubtab-tools" onclick="showAccSub('tools')" style="background:none;border:none;border-bottom:2px solid transparent;color:#9a8e8e;font-weight:500;font-size:14px;padding:8px 18px;cursor:pointer;font-family:inherit">🧰 工具箱</button>
+  </div>
+  <div id="accsub-list">
   <div class="card" style="margin-bottom:14px">
     <button class="btn btn-go" id="acc-add-btn" style="width:100%"><svg viewBox="0 0 24 24" style="width:16px;height:16px;vertical-align:-3px;margin-right:6px"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg>新增帳號</button>
   </div>
-
+  <div class="searchbar">
+    <input id="accSearch" placeholder="搜尋帳號（@帳號名 / 顯示名 / 領域 / 身份）" autocomplete="off">
+    <span class="ic" id="accIc">⌕</span><span class="clr" id="accClr">×</span>
+  </div>
+  <div class="filterrow" style="align-items:center;gap:8px;margin-top:8px">
+    <span style="font-size:12px;color:var(--gold-dark);font-weight:700;letter-spacing:1px">篩選</span>
+    <select id="accFilterType" style="flex:1;max-width:180px;padding:8px 10px;border:1px solid var(--border);border-radius:8px;background:#fff;color:var(--ink);font-family:inherit;font-size:13px">
+      <option value="">全部身份</option>
+      <option value="演員">演員</option>
+      <option value="歌手">歌手 / 音樂人</option>
+      <option value="主持人">主持人</option>
+      <option value="通告藝人">通告藝人</option>
+      <option value="模特兒">模特兒</option>
+      <option value="運動員">運動員</option>
+      <option value="企業家">企業家 / 創辦人</option>
+      <option value="名人">名人 / 二代</option>
+      <option value="KOL">KOL（關鍵意見領袖）</option>
+      <option value="KOC">KOC（關鍵意見消費者）</option>
+      <option value="個人IP">個人 IP</option>
+      <option value="Youtuber">Youtuber</option>
+      <option value="實況主">實況主 / 直播主</option>
+      <option value="內容創作者">內容創作者（其他）</option>
+      <option value="素人">素人</option>
+      <option value="品牌號">品牌號</option>
+      <option value="媒體節目號">媒體 / 節目號</option>
+      <option value="機構號">機構號</option>
+    </select>
+    <select id="accFilterTier" style="flex:1;max-width:160px;padding:8px 10px;border:1px solid var(--border);border-radius:8px;background:#fff;color:var(--ink);font-family:inherit;font-size:13px">
+      <option value="">全部量級</option>
+      <option value="素人">素人 (&lt;1K)</option>
+      <option value="奈米">奈米網紅 (1K–10K)</option>
+      <option value="微網紅">微網紅 (10K–50K)</option>
+      <option value="小網紅">小網紅 (50K–100K)</option>
+      <option value="中型網紅">中型網紅 (100K–500K)</option>
+      <option value="大型網紅">大型網紅 (500K–1M)</option>
+      <option value="超級網紅">超級網紅 (1M+)</option>
+    </select>
+    <select id="accSort" style="flex:1;max-width:160px;padding:8px 10px;border:1px solid var(--border);border-radius:8px;background:#fff;color:var(--ink);font-family:inherit;font-size:13px">
+      <option value="updated">最近更新</option>
+      <option value="followers">粉絲數 ↓</option>
+      <option value="growth30">30天成長 ↓</option>
+      <option value="videos">拆過的影片數 ↓</option>
+      <option value="name">名稱 A→Z</option>
+    </select>
+  </div>
+  <div id="accList" style="margin-top:14px"></div>
+  </div>
+  <div id="accsub-tools" style="display:none">
   <div class="acc-tools-grid">
   <details class="paste-card" style="margin-bottom:14px;border:1px solid var(--gold-soft)" id="backupBox">
     <summary style="cursor:pointer;font-weight:600;color:#5C0F14">資料備份與還原（影片＋帳號 一起備份）</summary>
@@ -1714,52 +1767,6 @@ if('serviceWorker' in navigator){
     <button class="btn btn-go" id="acc-card-ingest" style="width:100%;margin-top:8px">⧉ 自動建檔／更新帳號</button>
   </details>
   </div>
-
-  <div class="searchbar">
-    <input id="accSearch" placeholder="搜尋帳號（@帳號名 / 顯示名 / 領域 / 身份）" autocomplete="off">
-    <span class="ic" id="accIc">⌕</span><span class="clr" id="accClr">×</span>
-  </div>
-  <div class="filterrow" style="align-items:center;gap:8px;margin-top:8px">
-    <span style="font-size:12px;color:var(--gold-dark);font-weight:700;letter-spacing:1px">篩選</span>
-    <select id="accFilterType" style="flex:1;max-width:180px;padding:8px 10px;border:1px solid var(--border);border-radius:8px;background:#fff;color:var(--ink);font-family:inherit;font-size:13px">
-      <option value="">全部身份</option>
-      <option value="演員">演員</option>
-      <option value="歌手">歌手 / 音樂人</option>
-      <option value="主持人">主持人</option>
-      <option value="通告藝人">通告藝人</option>
-      <option value="模特兒">模特兒</option>
-      <option value="運動員">運動員</option>
-      <option value="企業家">企業家 / 創辦人</option>
-      <option value="名人">名人 / 二代</option>
-      <option value="KOL">KOL（關鍵意見領袖）</option>
-      <option value="KOC">KOC（關鍵意見消費者）</option>
-      <option value="個人IP">個人 IP</option>
-      <option value="Youtuber">Youtuber</option>
-      <option value="實況主">實況主 / 直播主</option>
-      <option value="內容創作者">內容創作者（其他）</option>
-      <option value="素人">素人</option>
-      <option value="品牌號">品牌號</option>
-      <option value="媒體節目號">媒體 / 節目號</option>
-      <option value="機構號">機構號</option>
-    </select>
-    <select id="accFilterTier" style="flex:1;max-width:160px;padding:8px 10px;border:1px solid var(--border);border-radius:8px;background:#fff;color:var(--ink);font-family:inherit;font-size:13px">
-      <option value="">全部量級</option>
-      <option value="素人">素人 (&lt;1K)</option>
-      <option value="奈米">奈米網紅 (1K–10K)</option>
-      <option value="微網紅">微網紅 (10K–50K)</option>
-      <option value="小網紅">小網紅 (50K–100K)</option>
-      <option value="中型網紅">中型網紅 (100K–500K)</option>
-      <option value="大型網紅">大型網紅 (500K–1M)</option>
-      <option value="超級網紅">超級網紅 (1M+)</option>
-    </select>
-    <select id="accSort" style="flex:1;max-width:160px;padding:8px 10px;border:1px solid var(--border);border-radius:8px;background:#fff;color:var(--ink);font-family:inherit;font-size:13px">
-      <option value="updated">最近更新</option>
-      <option value="followers">粉絲數 ↓</option>
-      <option value="growth30">30天成長 ↓</option>
-      <option value="videos">拆過的影片數 ↓</option>
-      <option value="name">名稱 A→Z</option>
-    </select>
-  </div>
   <details class="card" style="margin-top:14px;border:1px solid var(--gold-soft)">
     <summary style="cursor:pointer;font-size:14px;font-weight:800;color:var(--rouge)">🩺 卡片補完健檢（貼舊卡 → 看缺什麼 → 產生補完提示詞）</summary>
     <div style="font-size:11.5px;color:var(--sub);margin:6px 0 8px">把以前的 卡A／卡B／卡C 整段貼進來，系統會比對最新規格、列出還缺哪些欄位，並複製一段提示詞——貼回 Claude／ChatGPT，請它照最新格式把整張卡補完重出，新對話框也能直接接上進度。</div>
@@ -1778,7 +1785,7 @@ if('serviceWorker' in navigator){
     <div id="gridLibList" style="margin-top:8px"></div>
   </details>
   <div id="checkListPanel" style="margin-top:14px"></div>
-  <div id="accList" style="margin-top:14px"></div>
+  </div>
 </div>
 
 <!-- 版面對照 -->
@@ -3254,6 +3261,15 @@ function openTheme(id){
 $('modal').onclick=e=>{ if(e.target.id==='modal') $('modal').classList.remove('show'); };
 
 /* ============ 說明書 ============ */
+function showAccSub(w){
+  var li=document.getElementById('accsub-list'), to=document.getElementById('accsub-tools');
+  var bl=document.getElementById('accsubtab-list'), bt=document.getElementById('accsubtab-tools');
+  if(!li||!to) return;
+  var ON='background:none;border:none;border-bottom:2px solid var(--rouge);color:var(--rouge);font-weight:700;font-size:14px;padding:8px 18px;cursor:pointer;font-family:inherit';
+  var OFF='background:none;border:none;border-bottom:2px solid transparent;color:#9a8e8e;font-weight:500;font-size:14px;padding:8px 18px;cursor:pointer;font-family:inherit';
+  if(w==='tools'){ li.style.display='none'; to.style.display='block'; if(bl)bl.style.cssText=OFF; if(bt)bt.style.cssText=ON; }
+  else{ li.style.display='block'; to.style.display='none'; if(bl)bl.style.cssText=ON; if(bt)bt.style.cssText=OFF; }
+}
 function showInputSub(w){
   var p=document.getElementById('sub-prep'),f=document.getElementById('sub-flow'),c=document.getElementById('sub-card');
   var bp=document.getElementById('subtab-prep'),bf=document.getElementById('subtab-flow'),bc=document.getElementById('subtab-card');
@@ -3274,7 +3290,8 @@ function renderManual(){
   <div class="form-card" style="border-left:3px solid var(--gold)">
     <div class="stitle" style="font-size:15px;color:var(--rouge)">更新紀錄 · 還沒做的</div>
     <p style="font-size:13px;color:var(--text);line-height:1.85;margin-top:8px">
-    <b>v151（這版）：</b>你終於可以「<b>開始服務客戶</b>」了——新增「📋 客戶前置問診」。在帳號管理每張客戶卡會多一顆「客戶前置問診」，點開有三步：①一張 <b>10 題問診表</b>（帶去開會問客戶，重點是透過客戶搞懂「客戶的客戶＝觀眾」）；②一顆「問診整理提示詞」會自動把這客戶<b>現有的影片庫表現＋你的成功庫標準</b>一起組進去，你把會議筆記貼給 AI，它回一張「問診整理卡」（人群／痛點原話／誤區／服務／賣點／信任／人設／合規／一句話定位＋本輪 A–E、G1–G5、10 支主題、3 支優先腳本）；③「整理並存回帳號」把這些存回客戶的帳號檔，之後 IP定位／腳本／借技法／客戶診斷全部自動吃得到。說明書上方也新增「🚀 怎麼開始服務一個客戶」一條龍。<br>
+    <b>v152（這版）：</b>「帳號管理」頁<b>瘦身</b>了——你說它太亂、要穿過一堆東西才看到帳號，現在改成像「輸入影片」那樣<b>上面兩個頁籤</b>：<b>📁 帳號清單</b>（一進來就只看到新增帳號＋搜尋排序＋你的帳號卡，乾淨）、<b>🧰 工具箱</b>（資料備份、建檔收集盤、貼卡入庫、卡片補完健檢、九宮格速記庫、待核對清單，全部收進這裡，要用再點）。功能一個都沒少，只是不再全部堆在你眼前。<br>
+    <b>v151：</b>你終於可以「<b>開始服務客戶</b>」了——新增「📋 客戶前置問診」。在帳號管理每張客戶卡會多一顆「客戶前置問診」，點開有三步：①一張 <b>10 題問診表</b>（帶去開會問客戶，重點是透過客戶搞懂「客戶的客戶＝觀眾」）；②一顆「問診整理提示詞」會自動把這客戶<b>現有的影片庫表現＋你的成功庫標準</b>一起組進去，你把會議筆記貼給 AI，它回一張「問診整理卡」（人群／痛點原話／誤區／服務／賣點／信任／人設／合規／一句話定位＋本輪 A–E、G1–G5、10 支主題、3 支優先腳本）；③「整理並存回帳號」把這些存回客戶的帳號檔，之後 IP定位／腳本／借技法／客戶診斷全部自動吃得到。說明書上方也新增「🚀 怎麼開始服務一個客戶」一條龍。<br>
     <b>v150：</b>把上一版「九宮格要截幾張」的規則，寫成說明書上方一張<b>常駐小卡</b>（不用翻更新紀錄也看得到）：頻道<b>有開放排序</b>就截兩張（最新看發文頻率＋置頂、最多人觀看看觀看排行）、<b>沒開放</b>就截一張照舊，能標排序就標、不用背。<br>
     <b>v149：</b>帳號診斷一開始貼影片九宮格，現在分「<b>最新</b>」和「<b>最多人觀看</b>」<b>兩張</b>、各有各的用途，判得更準。你截兩張：一張排序選「最新」（按時間排，頂端有📌的是置頂，看得出他多久發一支）、一張選「最多人觀看／瀏覽」（已經幫你按觀看高低排好）。產線的帳號分析提示詞現在會自動分清楚：<b>發文頻率、置頂</b>看「最新」那張；<b>觀看排行、最強內容</b>看「最多人觀看」那張。你只要在貼的時候標一下哪張是哪張就好；只給一張也沒關係，它會用那一張並註明是哪種排序。<br>
     <b>v148：</b>香港（或講台語、其他方言）的創作者，產線現在會自動幫你附一份<b>看得懂的華語對照</b>了。以前你收到香港創作者的 SRT，整份都是廣東話用字（嘅、佢哋、咗、畀、㗎啦…），系統只把它當「中文」逐字抄下來、語言欄常常只丟你一個「港」，你（讀國語/華語）看得很卡。這版把產線兩關都升級：<b>Gemini 看影片那關</b>會先判斷「這是粵語」並把逐字稿做成「<b>粵語原文／華語對照</b>」（上一行原句、下一行翻成你順口的華語）；<b>最後 Claude 整理那關</b>會幫你校對翻譯通不通順、把聽錯黏在一起的字（像把「save 低＝存起來」聽成一個怪字）修掉，再把「口語語言」欄標清楚（例：口說粵語(港)＋英文穿插、字幕繁體中文）。台語、其他方言、外語也一樣會自動附華語對照。你不用每次手動翻，收到 SRT 跑一遍就有。<br>
