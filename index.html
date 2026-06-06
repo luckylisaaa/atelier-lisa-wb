@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="color-scheme" content="light only">
 <meta name="supported-color-schemes" content="light">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v165 (版本號僅留註解，不顯示於畫面)
+<!-- ATELIER 影片診斷工作台 · 內部版本 v166 (版本號僅留註解，不顯示於畫面)
+     v166 更新（交辦單：包A 選擇器與清單 UI 品牌化，全 additive、鐵則「只換外觀與展開行為、值/事件/下游不變」）：A-1 自製品牌下拉以「漸進增強」實作（不重寫任何 select 用法）：</body> 前新增 .csel 一組 CSS（品牌酒紅/暖白/金線、面板 position:absolute 在頁面流內、跟著捲動、不飛出、列印自動還原顯示原生）＋一段 IIFE（enhanceSelect：把原生 select 留在 DOM 設 data-cseled＋視覺隱藏為唯一真值來源，外面插入 .csel-btn 按鈕＋.csel-panel 面板；點選項→設 select.selectedIndex＋派發原生 change（inline onchange 與既有 addEventListener 全照舊觸發）；MutationObserver(childList) 監看 option 重填即時更新標籤；DOMContentLoaded 先 enhanceAll 全頁 49 個 select，再用 body MutationObserver 自動增強之後動態產生的 select（含 #sheet 彈窗、帳號卡 acc-case-sel、象限軸下拉等）；500ms 週期同步標籤覆蓋「程式直接改 value/selectedIndex 不派發 change」的情況，僅顯示用、不影響真值）。未改任何 select 的 id/onchange/options 結構，故 populateDlClient／filterDlClient／populateOptClient／populateAccountSelect／三關與所有下游讀 .value 完全照舊。A-2 版面對照 #cmpPicker「選擇要比較的帳號」改品牌 chip（.acc-chip）＋預設只顯示前 8、其餘「展開更多 ▾／收合 ▴」（新增 cmpExpanded／_cmpLastQ，換搜尋字自動收回前 8，搜尋框照常），保留最多 4 個與既有點選邏輯。A-3 CLIENT TUNING #optPicker「對標帳號」chips 改同一套 .acc-chip 品牌風格＋顯示名/身分＋同樣可展開/收合（新增 optExpanded），完整保留「複選 1–10 個」邏輯與 optSelected。不在本包：系統 emoji 換自繪品牌符號（另開包 B）。元件 JS 先單獨 node --check；全檔 node --check 全過（14 個 script 區塊）、div 1098／details 44／CSS 開閉平衡。
      v165 更新（交辦單：兩組一次到位＝市場數據面板＋失敗案例庫，全 additive、複用 v162 對標引擎、不動三關與既有功能、兩組獨立）：【A 市場數據面板（先手填）】①新增全域 _marketLatest／_marketLine（趨勢×擁擠度→白話結論）／openMarketData(accId)（比照 addProfileSnapshot 彈窗：主題搜尋熱度 高/中/低＋搜尋量數值〔預留 API〕、同類帳號數量/擁擠度＋數值〔預留 API〕、需求趨勢 上升/持平/下降、主題、備註→push 進 a.marketSnapshots＋saveAccounts，欄位註明「未來可接搜尋量 API 自動帶入、這版先手填」）／renderMarketCard（讀 #dlClient 最新 marketSnapshot 顯示熱度＋擁擠＋趨勢 chip＋一句白話結論小卡）。②帳號卡「更多分析工具」新增 data-acc-market（📈 市場熱度）入口＋bind openMarketData、卡上常駐顯示「📈 市場熱度：熱度·擁擠·趨勢」。③客戶交付頁客戶下拉後新增 #marketCard，dlClient onchange 加呼叫 renderMarketCard。【B 失敗案例庫（避坑對標）】④帳號層 a.caseType／影片層 v.caseType（成功標竿 success／失敗低效 low，手選）：accCard 標題加徽章、動作列加 acc-case-sel 下拉＋全域 setAccCase（存 saveAccounts）＋renderAccounts 綁定；editVideoModal 新增「案例類型」select＋存 v.caseType。⑤新增全域 _failReason(a)（從現有欄位推：缺轉化/見證片〔無 G5 且無 D/E〕、只教學少吸引共鳴、無聚焦主題〔types 空〕、健檢偏低維度、Hook 比例低）／_failCases(c)（撈 caseType==='low' 同產業優先、其餘用 v162 _smScore 排序，取 1–3）；openSuccessMatch 在既有 Top5 之後「附加」避坑對標區（不動既有成功撈取邏輯與排序），列出失敗案例＋卡在哪→要避開，並併入一鍵複製文字。⑥buildClientOnePager 模板 RATIONALE 後新增空插槽 #opPitfallSlot＋列印設定新增 #opPitfall 勾選；產生時若顧問版（預設帶、自動勾）或客戶版有勾，填入「PITFALLS · 避坑提醒」段（在 #clientOnePager 內、可印），未勾＝插槽空。範圍邊界：未串外部搜尋量 API、未自動判定成功/失敗（皆手填/手選）；未動對標引擎既有成功撈取邏輯、三關按鈕觸發、帳號健檢、既有版面（市場小卡與避坑皆獨立區塊/opt-in 插槽）。兩組新區塊先各自單獨 node --check；全檔 node --check 全過、div 1097／details 44／CSS 開閉平衡。
      v164 更新（交辦單：客戶交付頁加「定位象限圖」十字座標，全 additive、複用 v162 對標引擎計算、不動三關與既有功能）：①deliver IIFE 內 head() 前新增象限圖模組（純讀 accounts+videos）：PQ_AXES 五軸定義（tone 內容調性 感性↔理性／intent 商業企圖 輕導購↔強轉化／tier 粉絲量級 小眾↔大眾／funnel 漏斗偏向 吸引↔轉化／product 產品深度 輕↔重），每軸給 0–1 正規化值（tone 由 _smDist 的 G4+0.5G1 理性 vs G2+G3+G5 感性；intent 由 D+E＋0.5G5；funnel 由階段加權平均；product 由 D+E 佔比；tier 由 latestFollowers→tierTW 級距）；_pqVal／_pqIdent（顯示名·身分標註，非裸 handle）／_pqRefs（複用 v162 _smScore：同產業 indSame 優先、其餘相近度補滿，取 7 個當市場參照）／_pqBuild（畫 360×360 SVG 十字座標：暖色底＋金色虛線軸＋軸端 lo/hi 與軸名文字；對標點空心金圈編號、客戶實心酒紅★高亮；下方圖例 ★＝客戶＋編號對應顯示名；自動算客戶所在象限與同象限對標數→白話結論「落在＿區、這區已有N個/較空、建議往＿移動差異化」，零代號）／renderPosQuadrant（讀 #pqAxisX/#pqAxisY，兩軸相同自動換軸，填 #pqChart/#pqConcl，存 pqLastHtml/pqLastAxes 供嵌入）。②客戶交付頁 #clientOnePager 後新增 #posQuadrant 卡：X/Y 兩個下拉（預設 X=內容調性、Y=商業企圖，選項含粉絲量級/漏斗偏向/產品深度）＋「產生／更新象限圖」鈕＋#pqChart＋#pqConcl＋#pqEmbed 勾選「也放進一頁診斷書一起列印」。③buildClientOnePager 模板 RATIONALE 後新增空插槽 #opMarketSlot（預設空、不改客戶版版面）；產生時若 #pqEmbed 勾選且已產生象限圖，填入「MARKET POSITION · 市場定位象限」段（含座標說明＋SVG＋結論），因在 #clientOnePager 內故客戶版／顧問版列印都會帶出，未勾＝插槽清空。④wireDeliver 綁 #pqRender→renderPosQuadrant、兩個軸下拉 change 時若已產生即重繪。範圍邊界：未做市場搜尋量/涵蓋率與失敗案例庫；未動對標引擎既有計算（只呼叫 _smScore/_smDist 讀）、三關按鈕觸發、帳號健檢、客戶版既有版面（象限圖為獨立卡＋一頁診斷書插槽 opt-in）。象限模組先單獨 node --check；全檔 node --check 全過、div 1066／details 44／CSS 開閉平衡。
      v163 更新（交辦單：客戶交付加「顧問版底稿」輸出、與客戶版分流，全 additive、複用 v158 既有 _posCands／候選池／_whyLine 不重算、不動內部三關術語）：①交付頁一頁診斷書按鈕列下新增「輸出模式」切換（op-noprint）：#opModeClient 客戶版（現狀：精選＋白話＋零代號）／#opModeAdvisor 顧問版底稿（全候選＋判斷理由＋保留代號）；deliver IIFE 新增模組變數 opMode（預設 client）；wireDeliver 綁兩鈕＝_setOpMode（切色＋若已產生 #opPaper 即重繪 buildClientOnePager），按鈕文字由「產生客戶版一頁診斷書」改為「產生一頁診斷書」。②buildClientOnePager 依 opMode 分流：顧問版底稿在渲染後對 #clientOnePager 加 op-advisor＋show-codes＋print-alt（保留 G／A–E 代號、備選定位與備選主題全顯示且可印），並把列印設定兩個 checkbox 預設勾上；另新增顧問版專屬「定位候選全列」可印區塊 advPosHtml（列出全部 3–5 款＋手法標＋適合調性，首選標顧問首選），客戶版則維持原 chooser（op-noprint）＋altPos（op-alt）不變。③_posCands（單一資料來源，沿用不另算）擴充：每個候選帶 style 手法標，並重排／新增使候選涵蓋多種定位手法——沿用現有／綽號記憶點型／職稱切入型／價值主張型／詩意意象型／問診卡延伸，定位候選清單與底稿全列都顯示【手法】標。④列印檔名分流：dlOnePagerPrint 點擊時依 opMode 與所選客戶＋日期設 document.title＝「診斷書_顧問底稿_客戶_YYYY-MM-DD」或「診斷書_客戶版_客戶_YYYY-MM-DD」，列印後還原。範圍邊界：未動客戶版既有版面、三關提示詞與 #dlIP/#dlOutline/#dlScript 觸發、既有列印 CSS 行為（僅沿用既有 print-alt／show-codes 機制與既有 op-alt／op-code class）。全檔 node --check 全過、div 1051／details 44／CSS 開閉平衡。
@@ -722,7 +723,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v165</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v166</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -3446,7 +3447,8 @@ function renderManual(){
   <div class="form-card" style="border-left:3px solid var(--gold)">
     <div class="stitle" style="font-size:15px;color:var(--rouge)">更新紀錄 · 還沒做的</div>
     <p style="font-size:13px;color:var(--text);line-height:1.85;margin-top:8px">
-    <b>v165（這版）：</b>一次做了兩個新功能。<b>A·市場熱度</b>：每張帳號卡的「🔬 更多分析工具」裡多一顆「<b>📈 市場熱度</b>」，可以手填這個主題的<b>搜尋熱度（高/中/低）、同類帳號擁擠度、需求趨勢（上升/持平/下降）</b>，存起來後，<b>客戶交付頁選到這個客戶時會自動出現一張「市場熱度小卡」</b>，附一句白話結論（例：此主題需求上升、但同類帳號已多，建議用差異化切角搶位）。＊先手填，欄位已預留「未來可接搜尋量 API 自動帶入」。<b>B·失敗案例庫（避坑對標）</b>：①帳號卡和影片編輯框都可以把案例<b>手選標成「✅ 成功標竿」或「⚠️ 失敗／低效」</b>。②「🎯 成功庫對標」現在除了撈 Top5 成功帳號，<b>還會多撈 1–3 個同領域的失敗／低效案例</b>，各附一句「<b>它卡在哪→你要避開什麼</b>」（自動從現有資料推：缺轉化片、沒聚焦主題、健檢偏低、開頭留不住人…）。③一頁診斷書多了「<b>避坑提醒</b>」區塊：<b>顧問版底稿預設帶、客戶版可自己勾</b>，會印在診斷書裡。（這版只手填/手選，不串外部搜尋量 API、不自動判定成功失敗；沒動對標引擎原本的成功撈取、三關、帳號健檢、原本版面。）<br>
+    <b>v166（這版）：</b>把工具裡的<b>下拉選單全面品牌化</b>，不再是醜醜的系統灰底、也不會「飛出」版面。①以前點開下拉是作業系統的灰色浮層、在 Mac 上會跳出工作台外面；現在全部換成<b>自製的品牌下拉</b>（酒紅／暖白／金線那組色），<b>展開的選單在頁面裡、會跟著一起捲動，不會亂飄</b>。②客戶交付「請選擇客戶帳號」、版面對照「① 你的客戶」、還有影片庫／帳號管理那些篩選（全部身份／量級／階段／最近更新…）<b>全部換成同一套外觀</b>。③<b>重點：只換了外觀和展開方式，選到的值、會跑的流程完全沒變</b>——選哪個客戶、按下去會發生什麼，跟以前一模一樣。④版面對照上面「選擇要比較的帳號」那串太長，現在<b>預設只顯示前 8 個，下面有「展開更多 ▾／收合 ▴」</b>，搜尋框照常用。⑤「② 對標帳號（勾 1–10 個）」的那排標籤也換成<b>同一套品牌風格</b>、一樣<b>可以複選 1–10 個</b>、清單長也能收合。（這包不含把 emoji 換成自繪品牌圖示——那個要先把整套圖示設計出來，另外一包做。）<br>
+    <b>v165：</b>一次做了兩個新功能。<b>A·市場熱度</b>：每張帳號卡的「🔬 更多分析工具」裡多一顆「<b>📈 市場熱度</b>」，可以手填這個主題的<b>搜尋熱度（高/中/低）、同類帳號擁擠度、需求趨勢（上升/持平/下降）</b>，存起來後，<b>客戶交付頁選到這個客戶時會自動出現一張「市場熱度小卡」</b>，附一句白話結論（例：此主題需求上升、但同類帳號已多，建議用差異化切角搶位）。＊先手填，欄位已預留「未來可接搜尋量 API 自動帶入」。<b>B·失敗案例庫（避坑對標）</b>：①帳號卡和影片編輯框都可以把案例<b>手選標成「✅ 成功標竿」或「⚠️ 失敗／低效」</b>。②「🎯 成功庫對標」現在除了撈 Top5 成功帳號，<b>還會多撈 1–3 個同領域的失敗／低效案例</b>，各附一句「<b>它卡在哪→你要避開什麼</b>」（自動從現有資料推：缺轉化片、沒聚焦主題、健檢偏低、開頭留不住人…）。③一頁診斷書多了「<b>避坑提醒</b>」區塊：<b>顧問版底稿預設帶、客戶版可自己勾</b>，會印在診斷書裡。（這版只手填/手選，不串外部搜尋量 API、不自動判定成功失敗；沒動對標引擎原本的成功撈取、三關、帳號健檢、原本版面。）<br>
     <b>v164：</b>客戶交付頁多了一張「<b>定位象限圖</b>」（在一頁診斷書下面）。它把<b>客戶和對標帳號一起放進一個十字座標</b>，一眼看出客戶在市場上站在<b>空白藍海、還是擁擠紅海</b>。①<b>兩軸可換</b>：預設 X＝內容調性（感性↔理性）、Y＝商業企圖（輕導購↔強轉化），下拉還能換成<b>粉絲量級、漏斗偏向（吸引↔轉化）、產品深度</b>，任意搭。②<b>對標帳號自動挑</b>：用「成功庫對標」那套引擎挑出最相近的（同產業優先）當市場參照點，圖上用<b>顯示名／身分</b>標註（不是裸 handle），<b>客戶本人用酒紅★高亮</b>。③<b>圖下自動給一句白話結論</b>：「你目前落在＿＿區，這區已經有幾個人／還比較空，建議往＿＿移動做出差異化」，全程白話、不出現代號。④<b>可併入一頁診斷書一起列印</b>：勾選「也放進一頁診斷書」後再產生診斷書，這張圖就會印在裡面，客戶版／顧問版都適用。（這版只做圖；市場搜尋量／涵蓋率、失敗案例庫留下一版；沒動對標引擎算法、三關、帳號健檢、客戶版原本的版面。）<br>
     <b>v163：</b>「客戶版一頁診斷書」現在有<b>兩種輸出模式</b>，同一份資料、兩種出口。在「產生一頁診斷書」按鈕下面多了一排「<b>輸出模式</b>」：<b>客戶版</b>＝原本那張（精選、白話、不出現代號，給客戶看）；<b>顧問版底稿</b>＝<b>把全部候選和判斷理由攤開給你自己看</b>——一句話定位 <b>3–5 款全列＋各自手法和適合調性</b>、大綱<b>候選池整個列出</b>（先拍／備選都標）、每一欄的「<b>為什麼這樣判斷</b>」全展開、<b>保留 G／A–E 代號</b>，當你思考與提案的底稿。點哪個模式、就用哪個模式產生與列印。<b>兩版可各自存 PDF、檔名自動分流</b>：顧問版＝「診斷書_顧問底稿_客戶_日期」、客戶版＝「診斷書_客戶版_客戶_日期」。另外一句話定位的候選現在<b>刻意涵蓋多種風格</b>（詩意意象型／綽號記憶點型／職稱切入型／價值主張型…），不會 5 個都同一調，讓你看到多種可能再挑。（不動客戶版原本的版面、三關提示詞、原本的列印行為。）<br>
     <b>v162：</b>帳號管理每張客戶卡多了一顆 <b>🎯 成功庫對標</b>（在「🔬 更多分析工具」裡，客戶診斷旁邊）。<b>點下去→工具自動從你全庫撈出跟這個客戶最像的 5 個成功帳號</b>，每個都附「<b>相近度（高／中／低）</b>」和一句<b>白話原因＋可借鏡什麼</b>（例：同屬保險、都是個人IP、都偏教學實用知識內容、粉絲量級相近；可借鏡它把某主題做穩的做法）。底下有「<b>⧉ 一鍵複製成提案素材</b>」，整批 5 個＋原因一次複製，貼進提案就能用。怎麼算像：<b>產業／領域最重（同產業優先）</b>，再看身份本質、漏斗階段 G1–G5 與目標層 A–E 的分布、粉絲量級；資料不足就退而用領域關鍵字相近。<b>用途</b>：新客戶一進來馬上拿到 5 個適合示範與借鏡的對標範例＋原因，不用自己翻。（這版不動原本的「版面對照」手動比對、客戶交付三關、帳號健檢；SWOT／市場搜尋量／失敗案例庫留後續版本。）<br>
@@ -5013,21 +5015,26 @@ function openAccountHealthCheck(accId){
 
 /* ─── 版面對照（Apple 比較模式）─── */
 let cmpSelected=new Set();
+var cmpExpanded=false,_cmpLastQ=null;
 function renderComparePicker(){
   const box=$('cmpPicker'); if(!box) return;
   if(typeof populateOptClient==='function'){ populateOptClient(); renderOptPicker(); }
   if(typeof populateRecClient==='function') populateRecClient();
   if(!accounts.length){ box.innerHTML='<div class="empty-res" style="margin:0">尚無帳號可比較。先到「帳號管理」新增帳號並記錄版面快照。</div>'; return; }
   const _cq=($('cmpSearch')?$('cmpSearch').value.trim().toLowerCase():'');
+  if(_cq!==_cmpLastQ){ cmpExpanded=false; _cmpLastQ=_cq; }
   let _clist=accounts;
   if(_cq){ _clist=accounts.filter(function(a){ var hay=((a.handle||'')+' '+(a.displayName||'')+' '+(a.jobTitle||'')+' '+(a.industry||'')+' '+((a.types||[]).join(' '))).toLowerCase(); return hay.indexOf(_cq)>=0; }); }
   if(!_clist.length){ box.innerHTML='<div class="empty-res" style="margin:0">沒有符合「'+esc(_cq)+'」的帳號，換個關鍵字試試。</div>'; return; }
-  box.innerHTML=_clist.map(a=>{
+  const _CMPCAP=8; const _cmpTotal=_clist.length; const _cmpShow=(cmpExpanded||_cmpTotal<=_CMPCAP)?_clist:_clist.slice(0,_CMPCAP);
+  let _cmpHtml=_cmpShow.map(a=>{
     const sel=cmpSelected.has(a.id);
     const hasProf=(a.profileSnapshots||[]).length>0;
     const idy=[a.displayName,(a.jobTitle||((a.types||[])[0])||'')].filter(Boolean).join('·');
-    return `<label data-acc-id="${a.id}" style="padding:8px 12px;border:1.5px solid ${sel?'var(--rouge)':'var(--border)'};border-radius:18px;cursor:pointer;font-size:13px;background:${sel?'var(--rouge)':'#fff'};color:${sel?'#fff':hasProf?'var(--ink)':'#aaa'};opacity:${hasProf?1:0.55}" title="${hasProf?'有版面快照':'沒有版面快照'}"><input type="checkbox" ${sel?'checked':''} style="display:none">${esc(a.handle||'?')}${idy?` <span style="opacity:.82;font-size:12px">${esc(idy)}</span>`:''}${hasProf?'':' ·無版面'}</label>`;
+    return `<label class="acc-chip${sel?' sel':''}${hasProf?'':' dim'}" data-acc-id="${a.id}" title="${hasProf?'有版面快照':'沒有版面快照'}"><input type="checkbox" ${sel?'checked':''} style="display:none">${esc(a.handle||'?')}${idy?`<span class="acc-chip-id">${esc(idy)}</span>`:''}${hasProf?'':' ·無版面'}</label>`;
   }).join('');
+  if(_cmpTotal>_CMPCAP){ _cmpHtml+=cmpExpanded?`<button type="button" class="acc-more" data-cmp-toggle>收合 ▴</button>`:`<button type="button" class="acc-more" data-cmp-toggle>展開更多 ▾（還有 ${_cmpTotal-_CMPCAP}）</button>`; }
+  box.innerHTML=_cmpHtml;
   box.querySelectorAll('label[data-acc-id]').forEach(lab=>{
     lab.onclick=(e)=>{
       e.preventDefault();
@@ -5040,6 +5047,7 @@ function renderComparePicker(){
       renderComparePicker();
     };
   });
+  var _cmpTg=box.querySelector('[data-cmp-toggle]'); if(_cmpTg) _cmpTg.onclick=function(){ cmpExpanded=!cmpExpanded; renderComparePicker(); };
 }
 function runCompare(){
   if(cmpSelected.size<2){ toast('請至少選 2 個帳號'); return; }
@@ -5203,15 +5211,20 @@ function populateOptClient(){
   }).join('');
   if(cur)sel.value=cur;
 }
+var optExpanded=false;
 function renderOptPicker(){
   var box=document.getElementById('optPicker'); if(!box) return;
   var clientId=(document.getElementById('optClient')||{value:''}).value;
   var list=accounts.filter(function(a){return a.id!==clientId;});
   if(!list.length){ box.innerHTML='<div class="empty-res" style="margin:0">尚無其他帳號可當對標。先到「帳號管理」多累積幾個帳號。</div>'; return; }
-  box.innerHTML=list.map(function(a){
+  var _OCAP=8; var _oTotal=list.length; var _oShow=(optExpanded||_oTotal<=_OCAP)?list:list.slice(0,_OCAP);
+  var _oHtml=_oShow.map(function(a){
     var sel=optSelected.has(a.id);
-    return '<label data-opt-id="'+a.id+'" style="padding:8px 12px;border:1.5px solid '+(sel?'var(--rouge)':'var(--border)')+';border-radius:18px;cursor:pointer;font-size:13px;background:'+(sel?'var(--rouge)':'#fff')+';color:'+(sel?'#fff':'var(--ink)')+'"><input type="checkbox" '+(sel?'checked':'')+' style="display:none">'+esc(a.handle||'?')+'</label>';
+    var idy=[a.displayName,(a.jobTitle||((a.types||[])[0])||'')].filter(Boolean).join('·');
+    return '<label class="acc-chip'+(sel?' sel':'')+'" data-opt-id="'+a.id+'"><input type="checkbox" '+(sel?'checked':'')+' style="display:none">'+esc(a.handle||'?')+(idy?'<span class="acc-chip-id">'+esc(idy)+'</span>':'')+'</label>';
   }).join('');
+  if(_oTotal>_OCAP){ _oHtml+=optExpanded?'<button type="button" class="acc-more" data-opt-toggle>收合 ▴</button>':'<button type="button" class="acc-more" data-opt-toggle>展開更多 ▾（還有 '+(_oTotal-_OCAP)+'）</button>'; }
+  box.innerHTML=_oHtml;
   box.querySelectorAll('label[data-opt-id]').forEach(function(lab){
     lab.onclick=function(e){
       e.preventDefault();
@@ -5221,6 +5234,7 @@ function renderOptPicker(){
       renderOptPicker();
     };
   });
+  var _oTg=box.querySelector('[data-opt-toggle]'); if(_oTg) _oTg.onclick=function(){ optExpanded=!optExpanded; renderOptPicker(); };
 }
 function buildOptimizePrompt(){
   var clientId=(document.getElementById('optClient')||{value:''}).value;
@@ -7247,5 +7261,96 @@ document.addEventListener('DOMContentLoaded',function(){
 });
 
 </script>
+<style>
+/* v166 包A：自製品牌下拉 */
+.csel{position:relative;display:inline-block;vertical-align:middle}
+.csel.csel-block{display:block}
+.csel-native{position:absolute!important;width:1px;height:1px;opacity:0;pointer-events:none;overflow:hidden;clip:rect(0 0 0 0);margin:0!important}
+.csel-btn{display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;box-sizing:border-box;padding:9px 11px;border:1px solid var(--border);border-radius:8px;background:var(--warm-white,#FDFBF8);color:var(--ink);font-family:inherit;font-size:14px;cursor:pointer;text-align:left;line-height:1.3}
+.csel-btn:focus{outline:none;border-color:var(--gold-dark)}
+.csel-btn .csel-label{flex:1 1 auto;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.csel-btn .csel-caret{flex:none;color:var(--gold-dark);font-size:11px;transition:transform .15s}
+.csel.open>.csel-btn{border-color:var(--rouge);box-shadow:0 0 0 2px rgba(165,24,32,.12)}
+.csel.open>.csel-btn .csel-caret{transform:rotate(180deg)}
+.csel-panel{position:absolute;left:0;top:calc(100% + 4px);z-index:60;min-width:100%;max-width:min(92vw,520px);max-height:262px;overflow-y:auto;background:var(--warm-white,#FDFBF8);border:1px solid var(--gold-soft);border-radius:10px;box-shadow:0 10px 28px rgba(80,40,12,.18);padding:5px;display:none}
+.csel.open>.csel-panel{display:block}
+.csel-opt{padding:8px 10px;border-radius:7px;font-size:13.5px;color:var(--ink);cursor:pointer;line-height:1.45;white-space:normal}
+.csel-opt:hover{background:var(--gold-soft)}
+.csel-opt.sel{background:var(--rouge);color:#fff;font-weight:700}
+.csel-opt[data-disabled="1"]{color:var(--sub);cursor:default;background:transparent;font-size:12px}
+/* v166 包A：對標／比較 chips 統一品牌風格（A-3）＋長清單展開鈕（A-2） */
+.acc-chip{display:inline-flex;align-items:baseline;gap:5px;padding:7px 13px;border:1.5px solid var(--gold-soft);border-radius:18px;cursor:pointer;font-size:13px;background:var(--warm-white,#FDFBF8);color:var(--ink);line-height:1.3}
+.acc-chip:hover{border-color:var(--gold-dark)}
+.acc-chip.sel{background:var(--rouge);border-color:var(--rouge);color:#fff;font-weight:700}
+.acc-chip.dim{opacity:.5}
+.acc-chip .acc-chip-id{font-size:11.5px;opacity:.82;font-weight:400}
+.acc-more{display:inline-flex;align-items:center;gap:5px;padding:7px 13px;border:1.5px dashed var(--gold-dark);border-radius:18px;cursor:pointer;font-size:12.5px;background:transparent;color:var(--gold-dark);font-weight:700;font-family:inherit}
+.acc-more:hover{background:var(--gold-soft);color:var(--ink)}
+@media print{.csel-panel{display:none!important}.csel-native{position:static!important;width:auto;height:auto;opacity:1;clip:auto}.csel-btn,.csel-caret{display:none!important}.acc-more{display:none!important}}
+</style>
+<script>
+/* ===== v166 包A：自製品牌下拉（漸進增強原生 select；原生 select 留存為真值來源，只換外觀與展開行為） ===== */
+(function(){
+  function cselText(sel){ var o=sel.options&&sel.options[sel.selectedIndex]; return o?(o.textContent||''):''; }
+  function enhanceSelect(sel){
+    try{
+      if(!sel || sel.multiple || sel.getAttribute('data-cseled')==='1') return;
+      sel.setAttribute('data-cseled','1');
+      var wrap=document.createElement('div'); wrap.className='csel';
+      var block=(sel.style.width==='100%'||sel.style.display==='block');
+      wrap.classList.add(block?'csel-block':'csel-inline');
+      if(sel.style.width) wrap.style.width=sel.style.width;
+      if(sel.style.maxWidth) wrap.style.maxWidth=sel.style.maxWidth;
+      if(sel.style.margin) wrap.style.margin=sel.style.margin;
+      sel.parentNode.insertBefore(wrap,sel);
+      wrap.appendChild(sel);
+      sel.classList.add('csel-native');
+      var btn=document.createElement('button'); btn.type='button'; btn.className='csel-btn';
+      var labSpan=document.createElement('span'); labSpan.className='csel-label';
+      var caret=document.createElement('span'); caret.className='csel-caret'; caret.textContent='▾';
+      btn.appendChild(labSpan); btn.appendChild(caret);
+      var panel=document.createElement('div'); panel.className='csel-panel';
+      wrap.appendChild(btn); wrap.appendChild(panel);
+      function label(){ labSpan.textContent=cselText(sel); }
+      function build(){
+        var h='';
+        for(var i=0;i<sel.options.length;i++){ var o=sel.options[i];
+          var t=(typeof esc==='function')?esc(o.textContent||''):(o.textContent||'');
+          h+='<div class="csel-opt'+(i===sel.selectedIndex?' sel':'')+'"'+(o.disabled?' data-disabled="1"':'')+' data-i="'+i+'">'+t+'</div>';
+        }
+        panel.innerHTML=h;
+      }
+      function outside(e){ if(!wrap.contains(e.target)) close(); }
+      function open(){ build(); wrap.classList.add('open'); document.addEventListener('mousedown',outside,true); var s=panel.querySelector('.csel-opt.sel'); if(s&&s.scrollIntoView){ try{ s.scrollIntoView({block:'nearest'}); }catch(e){} } }
+      function close(){ wrap.classList.remove('open'); document.removeEventListener('mousedown',outside,true); }
+      btn.addEventListener('click',function(e){ e.preventDefault();
+        if(wrap.classList.contains('open')){ close(); }
+        else { var ws=document.querySelectorAll('.csel.open'); for(var k=0;k<ws.length;k++){ if(ws[k]!==wrap) ws[k].classList.remove('open'); } open(); }
+      });
+      panel.addEventListener('click',function(e){
+        var t=e.target.closest?e.target.closest('.csel-opt'):null; if(!t) return;
+        if(t.getAttribute('data-disabled')==='1') return;
+        var i=parseInt(t.getAttribute('data-i'),10); if(isNaN(i)) return;
+        if(sel.selectedIndex!==i){ sel.selectedIndex=i; sel.dispatchEvent(new Event('change',{bubbles:true})); }
+        label(); close();
+      });
+      sel.addEventListener('change',label);
+      try{ var mo=new MutationObserver(function(){ label(); }); mo.observe(sel,{childList:true}); }catch(e){}
+      label();
+    }catch(e){}
+  }
+  function enhanceAll(root){ try{ (root||document).querySelectorAll('select:not([data-cseled])').forEach(enhanceSelect); }catch(e){} }
+  window.__cselEnhanceAll=enhanceAll;
+  var pending=false;
+  function scheduleEnhance(){ if(pending) return; pending=true; (window.requestAnimationFrame||window.setTimeout)(function(){ pending=false; enhanceAll(); },0); }
+  document.addEventListener('DOMContentLoaded',function(){
+    enhanceAll();
+    try{ var bo=new MutationObserver(function(muts){ for(var i=0;i<muts.length;i++){ if(muts[i].addedNodes&&muts[i].addedNodes.length){ scheduleEnhance(); break; } } }); bo.observe(document.body,{childList:true,subtree:true}); }catch(e){}
+    /* 週期同步標籤：覆蓋程式直接改 value/selectedIndex 不派發 change 的情況（顯示用，不影響真值） */
+    setInterval(function(){ try{ var ws=document.querySelectorAll('.csel'); for(var i=0;i<ws.length;i++){ var s=ws[i].querySelector('select'); var l=ws[i].querySelector('.csel-label'); if(s&&l){ var t=cselText(s); if(l.textContent!==t) l.textContent=t; } } }catch(e){} },500);
+  });
+})();
+</script>
+
 </body>
 </html>
