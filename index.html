@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="color-scheme" content="light only">
 <meta name="supported-color-schemes" content="light">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v174 (版本號僅留註解，不顯示於畫面)
+<!-- ATELIER 影片診斷工作台 · 內部版本 v175 (版本號僅留註解，不顯示於畫面)
+     v175 更新（交辦單：收尾，接 v174、不改功能/id/onchange/下游、沿用品牌色與既有 csel/icon）：【★B 單選＝多選的精緻列（保留不打勾差異）】csel enhanceSelect 的 build() 對 data-accpick 單選改渲染豐富列：依 option value 反查 accounts，套與多選相同的 mp-h（帳號名粗體）＋mp-id（金色中文名/身分，用 _mpIdent）＋mp-case 徽章（_mpCaseLabel）＋·無版面（.csel-opt-acc，比照 mp-row 間距；.csel-opt.sel 時 mp-h/mp-id/mp-noprof 轉白字）；placeholder/disabled 維持純文字。唯一差別＝無打勾框、無完成鈕，點一列＝設 select.value＋派發 change＋收起（沿用既有 csel 點選邏輯，未改 value/onchange/下游）。搜尋因 textContent 含帳號名/中文名仍正常。【面板高度與捲動】csel open() 高度上限 262→340（一次看得到約 6–8 筆）、保留 v173 靠底部往上翻（flip）與 overflow 捲動。【依產業·領域以主角為準】多選 ordered() 的 industry 排序改為「有主角/客戶時」依相關度：同產業=3、與主角關鍵字（產業/職稱/領域斷詞）有交集=2、其餘=0，降冪後再字母序（律師主角→法律相關職業先出來）；無主角維持字母序。【版面對照版面重設計】拿掉 #cmpPicker 殘留的空白邊框（下拉自帶外觀，避免「用途不明的大空白框」）；「並排比較／清除選擇」「產生對標優化提示詞／清除勾選」按鈕列改 flex-wrap＋主鈕 flex:1 1 auto;min-width＋white-space:nowrap、次鈕 flex:0 0 auto（修「直排時字被壓縮」、依文字與重要性給合理大小）。【並排比較輸出 PPT/PDF】新增通用 printElementPortal(el,title)（複製目標進 body 直屬 #genPrintPortal＋body.op? 用 gen-printing class，@media print 只印它；opPrintPrepare 加 gen-printing guard 避免與一頁診斷書衝突）＋ window.exportCompare(kind)：runCompare 結果頂端加 op-noprint 工具列「輸出 PDF」（portal 列印比較表，列印視窗可另存 PDF）與「下載投影片」（產生 16:9 .html 投影片檔下載，可全螢幕投影或再列印存 PDF；因單檔規則不引入外部 pptx 函式庫，故以可投影 HTML＋PDF 滿足帶開會需求）。【確認 v174 已到位】A 系統建議每筆「建議」於列下顯示「為什麼：…」（_smReasonShort）；C 帳號管理篩選列 @media(max-width:560px) 一排塞下；D copyPrompt 產生後彈預覽看全文＋按鈕 title 說明；E 外連箭頭以 CSS ::after 給 a.btn[target=_blank] 與 .vlink[target=_blank]（含商業閉環，不限數量）補 external-link icon、純方向不動——皆確認在。全檔 node --check 全過（15 script）、div 1116／details 44／CSS 開閉平衡；v168/v170 icon 未動。
      v174 更新（交辦單：總整理收尾 A–E，接 v173、不改功能/id/onchange/下游、沿用品牌色與既有 csel/icon；P0 兩項 v173 已修，本版確認未回歸）：【A 系統建議顯示為什麼】新增全域 _smReasonShort(cand,sc)（依 v169 _smScore 結果輸出一句白話原因：同產業·X／同類型·Y／量級相近·Z／領域相近／內容結構相近／整體輪廓接近）；多選 renderAccountMultiPicker 的建議列（sug 且已選客戶）在「建議」徽章後換行顯示「為什麼：…」（新增 .mp-why，.mp-row-main 改 flex-wrap 讓原因獨佔一行）。【B 單選加搜尋】確認 #cmpHero／#optClient／#recClient／#dlClient 自 v171 起皆有 data-csearch（csel build 先渲染 .csel-search 再排序頁籤＋金線），打開即「搜尋＋頁籤＋金線」對齊②，單選點一下即定；本版無需改碼，僅驗證。【C 帳號管理篩選列手機一排】新增 @media(max-width:560px)：.filterrow 改 nowrap、隱藏「篩選」字、三個下拉 flex:1 1 0;min-width:0 等分、縮 padding/字級、.csel-label 溢出省略，避免擠成兩行。【D 消除盲盒感】新增全域 copyPrompt(text,label)＝沿用 copyVal 複製後，於 #modal/#sheet 彈出預覽（標題＋說明＋可捲動 <pre> 完整提示詞＋「再複製一次／關閉」）；buildOptimizePrompt／buildRecommendPrompt／buildIP／buildOutline／buildScript 五個產生器改呼叫 copyPrompt（產生後直接看得到內容）；optRun／recRun／dlIP／dlOutline／dlScript／cmpRun 加 title 小說明（桌機 hover、手機長按顯示「這顆在做什麼／怎麼用」）。【E ↗ 外連補 icon】以一條 CSS ::after 給 a.btn[target=_blank] 與 .vlink[target=_blank]（工具捷徑 claude/gemini/toolzin/cobalt/atelier-subtype、商業閉環 atelier-map、影片開啟、看主頁等開新分頁連結）補上 external-link 線條 icon（內嵌 data-URI、主紅 #A51820），列印時隱藏；純方向箭頭與已內嵌外連 icon 的連結不受影響、不重覆。未動任何 value/onchange/下游與既有 icon；全檔 node --check 全過（15 script）、div 1112／details 44／CSS 開閉平衡；v168/v170 icon 未動（emoji/符號殘留＝0）。
      v173 更新（交辦單：總整理，分段做——本版＝先做 🔴 P0 兩個會擋使用的 bug，A–E 下一版；接 v172、不改功能/id/onchange/下游、沿用品牌色與既有 csel/icon）：【P0-1 案例類型等所有 csel 下拉手機底部滑不到底】.csel-panel 原本只往下開（top:100%），手機底部打開時面板掉出視窗被切、看不到最後選項。修：新增 .csel.csel-up>.csel-panel{top:auto;bottom:calc(100%+4px)}，並在 csel open() 量測按鈕 getBoundingClientRect，下方空間不足（<210px）且上方較大時加 .csel-up 往上翻，並把 panel.maxHeight 限到可用空間（140–262px，保留既有 overflow-y:auto 可捲）；多選 openMenu 同套（<260px 翻上、maxHeight 160–360）。涵蓋帳號卡 acc-case-sel 與所有 csel/多選下拉；確認帳號卡容器無 overflow:hidden 夾住。【P0-2 客戶版一頁診斷書列印第二頁起爆框/撐多頁/很慢（v172 portal 已做、再加核心保險）】雖模板無 break-all、列為 grid，為徹底壓制：opPrintPrepare 複製出列印用紙後，直接對 clone 的 #opPaper 寫死 inline 樣式（width/max-width:100%、margin:0、padding:16/18、border:0、box-shadow:0、word-break:normal、overflow-wrap:break-word），對每個 .op-row/details/.vstrat-row/.op-why 設 page-break-inside:avoid，圖片/SVG max-width:100%；@media print 另加 #clientOnePager *{word-break:normal!important;overflow-wrap:break-word!important} 與卡片 break-inside:avoid。確保整張紙以全頁寬正常橫排、每張卡不被切到下一頁、頁數正常且只排版這一張（快）。未動一頁診斷書內容/欄位/三關/任何 id/onclick/下游；全檔 node --check 全過（15 script）、div 1108／details 44／CSS 開閉平衡；v168/v170 icon 未動。A–E（系統建議為什麼、單選加搜尋、手機篩選列、提示詞預覽＋說明、↗ 補漏）排下一版。
      v172 更新（待辦小修：修「客戶版一頁診斷書列印/存 PDF 第 2 頁起爆框、撐成 10 頁、很慢」；↗ 開新分頁補漏經整支重掃確認已於 v170 完成〔畫面外連箭頭皆為 icon、剩 3 個 ↗ 均在 changelog 說明文字屬保留〕，故不再動）：根因＝舊列印 CSS 用 body>*{visibility:hidden}＋#clientOnePager{position:absolute}，被隱藏的整個 App 仍佔版面高度，列印文件高度＝整個 App 高度→被分頁成多頁（第 2 頁起空白/爆框）且需排版整個巨大 DOM→很慢。修法：改 portal 列印——新增全域 opPrintPrepare()/opPrintCleanup()，列印前若 #clientOnePager 有內容就 cloneNode(true) 複製進 body 直屬的 #opPrintPortal 並對 body 加 .op-printing；@media print 改為 body.op-printing>*{display:none}（其餘元素不佔高度）＋ body.op-printing>#opPrintPortal{display:block} 只印複製出來的一頁診斷書；#opPaper padding 縮為 14/16、border/margin/box-shadow 歸零、img/svg max-width:100%、加 @page{margin:12mm}；保留既有 op-noprint／:not(.print-alt) .op-alt／show-codes .op-code 規則（clone 保留 class 故客戶版/顧問版列印行為不變）。以 window beforeprint/afterprint 自動掛載（按鈕與瀏覽器 Ctrl+P 都生效），dlOnePagerPrint 按鈕另顯式呼叫 prepare/cleanup（Safari 保險），列印後清空 portal、還原 document.title。未動一頁診斷書內容/欄位/三關/任何 id/onclick/下游，僅換列印機制。新增 1 個 script 區塊（共 15）；全檔 node --check 全過、div 1108／details 44／CSS 開閉平衡；v168/v170 icon 未動。
@@ -741,7 +742,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v174</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v175</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -1844,10 +1845,10 @@ if('serviceWorker' in navigator){
     <select id="cmpHero" data-csearch="1" data-accpick="1" style="width:100%;max-width:420px;padding:8px 10px;border:1px solid var(--border);border-radius:8px;background:#fff;color:var(--ink);font-family:inherit;font-size:13px;margin-bottom:12px"></select>
     <div style="font-size:13px;color:var(--ink);margin-bottom:6px;font-weight:700">② 選比較對象（連主角共 2–4 個）：<span style="font-weight:400;color:var(--sub);font-size:12px">選了主角後，系統會用相似度把「最適合對標的」排在最前（標「建議」）；也可自己直接勾。</span></div>
     <input id="cmpSearch" type="text" oninput="renderComparePicker()" placeholder="打字找帳號：英文 handle（如 sunny）或中文名／職稱（如 王陽明、律師）" style="width:100%;max-width:420px;box-sizing:border-box;padding:9px 11px;margin-bottom:10px;border:1px solid var(--border);border-radius:8px;background:var(--warm-white,#FDFBF8);color:var(--ink);font-family:inherit;font-size:14px;display:block">
-    <div id="cmpPicker" style="display:flex;flex-wrap:wrap;gap:8px;max-height:280px;overflow-y:auto;padding:6px;border:1px solid var(--border);border-radius:10px;background:var(--warm-white,#FDFBF8)"></div>
-    <div style="margin-top:12px;display:flex;gap:8px">
-      <button class="btn btn-go" id="cmpRun" style="flex:1" title="把主角＋勾選的比較對象並排比 Bio／置頂／Highlight／視覺風格，找出版面策略的差異與共同點。">並排比較</button>
-      <button class="btn btn-ghost" id="cmpClear">清除選擇</button>
+    <div id="cmpPicker"></div>
+    <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
+      <button class="btn btn-go" id="cmpRun" style="flex:1 1 auto;min-width:150px;white-space:nowrap" title="把主角＋勾選的比較對象並排比 Bio／置頂／Highlight／視覺風格，找出版面策略的差異與共同點。">並排比較</button>
+      <button class="btn btn-ghost" id="cmpClear" style="flex:0 0 auto;white-space:nowrap">清除選擇</button>
     </div>
   </div>
   <div id="cmpResult"></div>
@@ -1868,9 +1869,9 @@ if('serviceWorker' in navigator){
     <select id="optClient" data-csearch="1" data-accpick="1" style="width:100%;max-width:420px;padding:8px 10px;border:1px solid var(--border);border-radius:8px;background:#fff;color:var(--ink);font-family:inherit;font-size:13px;margin-bottom:14px"></select>
     <div style="font-size:13px;color:var(--ink);margin-bottom:6px;font-weight:600">② 對標帳號（勾 1–10 個，當參考標竿）：</div>
     <div id="optPicker" style="display:flex;flex-wrap:wrap;gap:8px"></div>
-    <div style="margin-top:14px;display:flex;gap:8px">
-      <button class="btn btn-go" id="optRun" style="flex:1" title="把「你的客戶」＋勾選的對標帳號整理成一段提示詞並自動複製，接著跳出預覽讓你看完整內容；貼到 ChatGPT／Claude／Gemini 就會幫客戶做落差診斷與優化建議。">產生對標優化提示詞</button>
-      <button class="btn btn-ghost" id="optClear">清除勾選</button>
+    <div style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap">
+      <button class="btn btn-go" id="optRun" style="flex:1 1 auto;min-width:200px;white-space:nowrap" title="把「你的客戶」＋勾選的對標帳號整理成一段提示詞並自動複製，接著跳出預覽讓你看完整內容；貼到 ChatGPT／Claude／Gemini 就會幫客戶做落差診斷與優化建議。">產生對標優化提示詞</button>
+      <button class="btn btn-ghost" id="optClear" style="flex:0 0 auto;white-space:nowrap">清除勾選</button>
     </div>
   </div>
   <!-- v134 智能對標推薦 -->
@@ -2049,10 +2050,20 @@ if('serviceWorker' in navigator){
   #clientOnePager .op-edit:hover,#clientOnePager .op-edit:focus{outline:1px dashed #D7BE8C;background:#FFFDF8}
   #clientOnePager .op-code{display:none}
   #clientOnePager.show-codes .op-code{display:inline}
+  #genPrintPortal{display:none}
+  @media print{
+    body.gen-printing > *{display:none!important}
+    body.gen-printing > #genPrintPortal{display:block!important}
+    #genPrintPortal{position:static}
+    #genPrintPortal table{width:100%!important;border-collapse:collapse;font-size:11px}
+    #genPrintPortal .op-noprint{display:none!important}
+    #genPrintPortal,#genPrintPortal *{word-break:normal!important;overflow-wrap:break-word!important}
+  }
   </style>
   <script>
   (function(){
     function opPrintPrepare(){
+      if(document.body.classList.contains('gen-printing')) return;
       var src=document.getElementById('clientOnePager');
       if(!src || !src.innerHTML.trim()) return;
       var portal=document.getElementById('opPrintPortal');
@@ -2073,6 +2084,41 @@ if('serviceWorker' in navigator){
       var portal=document.getElementById('opPrintPortal'); if(portal) portal.innerHTML='';
     }
     window.opPrintPrepare=opPrintPrepare; window.opPrintCleanup=opPrintCleanup;
+    function printElementPortal(el,title){
+      if(!el) return;
+      var portal=document.getElementById('genPrintPortal');
+      if(!portal){ portal=document.createElement('div'); portal.id='genPrintPortal'; document.body.appendChild(portal); }
+      portal.innerHTML=''; portal.appendChild(el.cloneNode(true));
+      document.body.classList.add('gen-printing');
+      var oldT=document.title; if(title){ try{ document.title=title; }catch(e){} }
+      window.print();
+      setTimeout(function(){ document.body.classList.remove('gen-printing'); portal.innerHTML=''; try{ document.title=oldT; }catch(e){} },800);
+    }
+    window.printElementPortal=printElementPortal;
+    function _cmpDateStr(){ var d=new Date(); return d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2); }
+    window.exportCompare=function(kind){
+      var res=document.getElementById('cmpResult'); if(!res || !res.innerHTML.trim()){ if(typeof toast==='function') toast('先按「並排比較」產生結果'); return; }
+      var tbl=res.querySelector('table'); var inner=tbl?tbl.outerHTML:res.innerHTML;
+      if(kind==='pdf'){
+        var wrap=document.createElement('div'); wrap.innerHTML='<div style="font-family:\'Noto Serif TC\',serif;font-size:18px;font-weight:900;color:#7A1318;margin-bottom:10px">版面對照 · '+_cmpDateStr()+'</div>'+inner;
+        printElementPortal(wrap,'版面對照_'+_cmpDateStr());
+        return;
+      }
+      // ppt：輸出可投影的 16:9 HTML 投影片檔（可全螢幕或再另存 PDF）
+      var slide='<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>版面對照 簡報 '+_cmpDateStr()+'</title>'
+        +'<style>*{box-sizing:border-box}body{margin:0;background:#2B2521;font-family:"Noto Sans TC",system-ui,sans-serif;display:flex;align-items:center;justify-content:center;min-height:100vh;padding:24px}'
+        +'.slide{width:100%;max-width:1280px;aspect-ratio:16/9;background:#FDFBF8;border-radius:14px;box-shadow:0 18px 50px rgba(0,0,0,.4);padding:40px 44px;overflow:auto}'
+        +'.slide h1{font-family:"Noto Serif TC",serif;color:#7A1318;font-size:26px;margin:0 0 6px}.slide .sub{color:#9C8A66;font-size:13px;margin-bottom:18px}'
+        +'.slide table{width:100%;border-collapse:collapse;font-size:13px}.slide th,.slide td{border-bottom:1px solid #E2D2A8;padding:8px 10px;text-align:left;vertical-align:top}'
+        +'.slide th{color:#7A1318}@media print{body{background:#fff;padding:0}.slide{box-shadow:none;border-radius:0;max-width:100%;aspect-ratio:auto}}</style></head>'
+        +'<body><div class="slide"><h1>版面對照</h1><div class="sub">ATELIER · '+_cmpDateStr()+'　（可全螢幕投影；要 PDF 可在瀏覽器按列印→存成 PDF）</div>'+inner+'</div></body></html>';
+      try{
+        var blob=new Blob([slide],{type:'text/html;charset=utf-8'}); var url=URL.createObjectURL(blob);
+        var a=document.createElement('a'); a.href=url; a.download='版面對照_簡報_'+_cmpDateStr()+'.html'; document.body.appendChild(a); a.click(); document.body.removeChild(a);
+        setTimeout(function(){ URL.revokeObjectURL(url); },2000);
+        if(typeof toast==='function') toast('✓ 已下載簡報投影片（.html，可投影或另存 PDF）');
+      }catch(e){ if(typeof toast==='function') toast('下載失敗，請改用「輸出 PDF」'); }
+    };
     window.addEventListener('beforeprint',opPrintPrepare);
     window.addEventListener('afterprint',opPrintCleanup);
   })();
@@ -3518,7 +3564,8 @@ function renderManual(){
   <div class="form-card" style="border-left:3px solid var(--gold)">
     <div class="stitle" style="font-size:15px;color:var(--rouge)">更新紀錄 · 還沒做的</div>
     <p style="font-size:13px;color:var(--text);line-height:1.85;margin-top:8px">
-    <b>v174（這版 · 把剩下的修完）：</b>①<b>系統建議會寫「為什麼推薦」</b>了：在版面對照／對標優化選對標時，每個被「建議」的帳號下面會多一句白話原因（同產業·X／同類型·Y／量級相近…），不用猜為什麼撈它。②<b>單選下拉打開就有搜尋框</b>（主角／你的客戶／客戶交付／智能對標客戶）——這在前一版起其實就有了，這次確認過：打開＝搜尋＋排序頁籤＋金線分隔，點一下就定。③<b>手機上帳號管理的篩選列（全部身份／量級／最近更新）改成一排塞得下</b>，不再擠成兩行、字被壓。④<b>消除「盲盒感」</b>：客戶交付與版面對照那些「產生提示詞」的按鈕，現在<b>按下去會跳出預覽、直接看到整段提示詞內容</b>（還能再複製一次）；重要按鈕也加了<b>小說明</b>（電腦把游標移上去、手機長按，就會顯示「這顆在做什麼／怎麼用」）。⑤<b>開新分頁的外連連結（工具捷徑、商業閉環、開啟影片、看主頁…）都補上了「開新分頁」小箭頭 icon</b>，一看就知道會跳出去；純指方向的箭頭不動。＊全部只動顯示與輔助說明，沒動任何功能、流程、資料與既有圖示。<br>
+    <b>v175（這版）：</b>①<b>單選下拉變得跟多選一樣精緻</b>：主角／你的客戶／客戶交付／智能對標客戶這些單選，現在每一列都跟「對標帳號」一樣有<b>帳號名＋金色中文名/身分＋徽章＋一樣的間距</b>，只差<b>不打勾、沒有完成鈕</b>（點一列就選定並收起）——區別保留、質感拉齊。②下拉面板<b>一次看得到約 6–8 筆、可乾淨捲動、靠螢幕底部會往上翻</b>、不會切掉半行。③<b>「依產業·領域」會以主角為準</b>：選了主角後，<b>同產業／相關職業（例如律師→法律相關）會排到最前</b>。④<b>版面對照版面重整</b>：拿掉「清除選擇」旁那個用途不明的空白框；「並排比較／產生提示詞」等按鈕不再被壓縮、依文字大小排好。⑤<b>並排比較結果可輸出帶去開會</b>：新增「輸出 PDF」（可存成 PDF 檔）與「下載投影片」（16:9 簡報檔，可全螢幕投影或再存 PDF）。＊另確認上一版做的：系統建議每筆有「為什麼」、提示詞按下去看得到內容＋按鈕說明、手機篩選列一排、外連連結都有「開新分頁」小箭頭——都在。＊全部沿用既有功能與圖示，沒動到流程與資料。<br>
+    <b>v174：</b>①<b>系統建議會寫「為什麼推薦」</b>了：在版面對照／對標優化選對標時，每個被「建議」的帳號下面會多一句白話原因（同產業·X／同類型·Y／量級相近…），不用猜為什麼撈它。②<b>單選下拉打開就有搜尋框</b>（主角／你的客戶／客戶交付／智能對標客戶）——這在前一版起其實就有了，這次確認過：打開＝搜尋＋排序頁籤＋金線分隔，點一下就定。③<b>手機上帳號管理的篩選列（全部身份／量級／最近更新）改成一排塞得下</b>，不再擠成兩行、字被壓。④<b>消除「盲盒感」</b>：客戶交付與版面對照那些「產生提示詞」的按鈕，現在<b>按下去會跳出預覽、直接看到整段提示詞內容</b>（還能再複製一次）；重要按鈕也加了<b>小說明</b>（電腦把游標移上去、手機長按，就會顯示「這顆在做什麼／怎麼用」）。⑤<b>開新分頁的外連連結（工具捷徑、商業閉環、開啟影片、看主頁…）都補上了「開新分頁」小箭頭 icon</b>，一看就知道會跳出去；純指方向的箭頭不動。＊全部只動顯示與輔助說明，沒動任何功能、流程、資料與既有圖示。<br>
     <b>v173：</b>①<b>手機上「案例類型」等下拉滑不到底修好了</b>：以前在手機螢幕底部打開下拉，面板會掉出畫面、看不到也滑不到最後一個選項；現在會<b>自動往上翻、並限制高度可以捲動</b>，所有下拉都套用。②<b>客戶版一頁診斷書列印／存 PDF 再加強</b>：在 v172 改成「只印那張診斷書」的基礎上，這版直接把列印用的那張紙<b>寫死成全頁寬、每張建議卡不被切到下一頁、文字照正常橫排換行</b>，確保不再爆框、頁數正常（約 2–3 頁）、又快。＊這版先處理這兩個最擋路的，其餘（系統建議寫「為什麼」、單選下拉加搜尋、手機篩選列、提示詞看得到內容＋按鈕說明、↗ 換 icon）我接著做下一版。<br>
     <b>v172：</b>修好「客戶版一頁診斷書」<b>列印／存 PDF 會爆框、撐成好幾頁、很慢</b>的問題。原因是舊的列印方式只是把其他內容「藏起來」、但它們還佔著版面高度，所以整份 PDF 被撐成跟整個工具一樣高（第 2 頁起一片空白）、而且要排版整個畫面所以很慢。現在改成<b>列印時只把那張診斷書複製出來單獨印</b>，其他完全不佔空間——<b>PDF 就乾乾淨淨只有診斷書那 1～2 頁、又快</b>（按「列印／存成 PDF」或用瀏覽器 Ctrl+P 都一樣）。客戶版／顧問版、要不要印備選與代號的設定都跟以前一樣。＊另外「↗ 開新分頁補漏」我整支重掃過，畫面上的外連箭頭在 v170 就都換成 icon 了（只剩 3 個在版本說明文字裡、屬於保留），所以這條已經完成、不用再做。<br>
     <b>v171：</b>選帳號和版面對照大升級。①<b>所有選帳號的地方長相統一了</b>：智能對標推薦的「你的客戶／這一輪目標」、客戶交付的「請選擇客戶帳號」，現在都跟「對標帳號」一樣有<b>搜尋框＋排序頁籤（系統建議／依成效／產業·領域／案例類型／A–Z）＋金線分隔</b>；單選和多選長得像、但多選有打勾、單選沒有，好分辨。②<b>多選下拉多了「完成」鈕</b>：勾完按一下就收起來、顯示「已選 N 個」，不用再點旁邊空白。③<b>版面對照改成更直覺的流程</b>：先選 1 個<b>主角帳號</b> → 系統用相似度<b>建議「適合跟誰比」排在最前（標建議）</b> → 勾 1–3 個比較對象（連主角共 2–4 個）→ 按「並排比較」；當然也能不靠建議、自己直接勾。④<b>並排比的每個帳號可以點一下直接開原頁（IG／原連結，新分頁）</b>。＊只動選單與版面對照流程，其他功能、資料、icon 都沒動到。<br>
@@ -5130,7 +5177,15 @@ function renderAccountMultiPicker(cfg){
     var arr=pool.slice(); var srt=st.sort;
     if(srt==='suggest' && client && typeof _smScore==='function'){ var sm={}; arr.forEach(function(a){ sm[a.id]=_smScore(client,a).score; }); arr.sort(function(x,y){ return (sm[y.id]||0)-(sm[x.id]||0); }); }
     else if(srt==='perf'){ var pm={}; arr.forEach(function(a){ pm[a.id]=_accPerf(a.id).score; }); arr.sort(function(x,y){ return (pm[y.id])-(pm[x.id]); }); }
-    else if(srt==='industry'){ arr.sort(function(x,y){ return (((x.industry||x.domain||'zzz')+'')).localeCompare(((y.industry||y.domain||'zzz')+'')); }); }
+    else if(srt==='industry'){
+      if(client && typeof _smTokens==='function'){
+        var cTok=_smTokens(client), cInd=(typeof _smNormStr==='function'?_smNormStr(client.industry):(client.industry||''));
+        function _indRel(a){ var ai=(typeof _smNormStr==='function'?_smNormStr(a.industry):(a.industry||'')); if(ai&&cInd&&ai===cInd) return 3; var at=_smTokens(a); var ov=at.filter(function(t){return cTok.indexOf(t)>=0;}).length; return ov>0?2:0; }
+        arr.sort(function(x,y){ return (_indRel(y)-_indRel(x)) || ((((x.industry||x.domain||'zzz')+'')).localeCompare(((y.industry||y.domain||'zzz')+''))); });
+      } else {
+        arr.sort(function(x,y){ return (((x.industry||x.domain||'zzz')+'')).localeCompare(((y.industry||y.domain||'zzz')+'')); });
+      }
+    }
     else if(srt==='case'){ var rk={success:0,low:1,'':2}; arr.sort(function(x,y){ return ((rk[x.caseType||'']-rk[y.caseType||''])||((x.handle||'').localeCompare(y.handle||''))); }); }
     else if(srt==='az'){ arr.sort(function(x,y){ return (x.handle||'').toLowerCase().localeCompare((y.handle||'').toLowerCase()); }); }
     else if(srt==='suggest'){ arr.sort(function(x,y){ return (x.handle||'').toLowerCase().localeCompare((y.handle||'').toLowerCase()); }); }
@@ -5278,7 +5333,8 @@ function runCompare(){
   });
   html+='</tbody></table></div>';
   html+='<div class="tip" style="margin-top:10px">綠底＝所有帳號這欄完全相同（共同點）。空格＝該帳號此欄無資料。建議至少各記 1 筆版面快照才能完整比較。</div>';
-  $('cmpResult').innerHTML=html;
+  var bar='<div class="op-noprint" style="display:flex;gap:8px;flex-wrap:wrap;margin:0 0 12px"><button class="btn btn-go" onclick="exportCompare(\'pdf\')" style="width:auto;padding:8px 16px" title="把這張並排比較表輸出成 PDF（列印視窗選「另存為 PDF」），存檔帶去跟客戶開會。">輸出 PDF</button><button class="btn btn-ghost" onclick="exportCompare(\'ppt\')" style="width:auto;padding:8px 16px" title="下載成 16:9 投影片檔（.html），可全螢幕投影，或在瀏覽器列印→存成 PDF。">下載投影片</button></div>';
+  $('cmpResult').innerHTML=bar+html;
 }
 
 
@@ -7470,6 +7526,10 @@ document.addEventListener('DOMContentLoaded',function(){
 .mp-row-main{display:flex;flex-wrap:wrap;align-items:center;gap:2px 6px}
 .mp-why{flex-basis:100%;width:100%;font-size:10.5px;color:var(--sub);font-style:italic;margin-top:1px}
 .csel-list .csel-opt{border-top:1px solid var(--gold-soft)}
+.csel-opt-acc{padding:9px 10px}
+.csel-opt-acc .mp-row-main{gap:1px 6px}
+.csel-opt.sel .mp-h,.csel-opt.sel .mp-id,.csel-opt.sel .mp-noprof{color:#fff}
+.csel-list-acc{max-height:none}
 .csel-list .csel-opt:first-child{border-top:0}
 .mp-panel{max-height:360px}
 .mp-done{display:block;width:100%;margin-top:8px;padding:9px 12px;border:0;border-radius:8px;background:var(--rouge);color:#fff;font-weight:800;font-size:13px;font-family:inherit;cursor:pointer;position:sticky;bottom:0}
@@ -7519,10 +7579,20 @@ document.addEventListener('DOMContentLoaded',function(){
         var h='';
         if(withSearch) h+='<input class="csel-search" type="text" placeholder="搜尋…" autocomplete="off">';
         if(accpick){ var sorts=[['suggest','系統建議'],['perf','依成效'],['industry','產業·領域'],['case','案例類型'],['az','A–Z']]; h+='<div class="mp-sort csel-sort">'+sorts.map(function(s){return '<button type="button" class="mp-sort-b'+(_accSort===s[0]?' on':'')+'" data-sort="'+s[0]+'">'+s[1]+'</button>';}).join('')+'</div>'; }
-        h+='<div class="csel-list">';
+        h+='<div class="csel-list'+(accpick?' csel-list-acc':'')+'">';
         for(var i=0;i<sel.options.length;i++){ var o=sel.options[i];
           var t=(typeof esc==='function')?esc(o.textContent||''):(o.textContent||'');
-          h+='<div class="csel-opt'+(i===sel.selectedIndex?' sel':'')+'"'+(o.disabled?' data-disabled="1"':'')+' data-i="'+i+'">'+t+'</div>';
+          var inner=t;
+          if(accpick && o.value && typeof accounts!=='undefined' && accounts){
+            var _a=accounts.find(function(x){return x.id===o.value;});
+            if(_a){
+              var idy=(typeof _mpIdent==='function')?_mpIdent(_a):'';
+              var clb=(typeof _mpCaseLabel==='function')?_mpCaseLabel(_a):'';
+              var hp=(_a.profileSnapshots||[]).length>0;
+              inner='<span class="mp-row-main"><span class="mp-h">'+esc(_a.handle||'?')+'</span>'+(idy?'<span class="mp-id">'+esc(idy)+'</span>':'')+(clb?'<span class="mp-case mp-case-'+_a.caseType+'">'+esc(clb)+'</span>':'')+(hp?'':'<span class="mp-noprof">·無版面</span>')+'</span>';
+            }
+          }
+          h+='<div class="csel-opt'+(i===sel.selectedIndex?' sel':'')+(accpick&&o.value?' csel-opt-acc':'')+'"'+(o.disabled?' data-disabled="1"':'')+' data-i="'+i+'">'+inner+'</div>';
         }
         h+='</div>';
         panel.innerHTML=h;
@@ -7531,7 +7601,7 @@ document.addEventListener('DOMContentLoaded',function(){
       }
       function outside(e){ if(!wrap.contains(e.target)) close(); }
       function open(){ build(); wrap.classList.add('open'); document.addEventListener('mousedown',outside,true);
-        try{ var r=btn.getBoundingClientRect(); var below=window.innerHeight-r.bottom-12; var above=r.top-12; var up=(below<210&&above>below); wrap.classList.toggle('csel-up',up); panel.style.maxHeight=Math.max(140,Math.min(262,(up?above:below)))+'px'; }catch(e){}
+        try{ var r=btn.getBoundingClientRect(); var below=window.innerHeight-r.bottom-12; var above=r.top-12; var up=(below<260&&above>below); wrap.classList.toggle('csel-up',up); panel.style.maxHeight=Math.max(150,Math.min(340,(up?above:below)))+'px'; }catch(e){}
         var s=panel.querySelector('.csel-opt.sel'); if(s&&s.scrollIntoView){ try{ s.scrollIntoView({block:'nearest'}); }catch(e){} } var si=panel.querySelector('.csel-search'); if(si) setTimeout(function(){ try{ si.focus(); }catch(e){} },0); }
       function close(){ wrap.classList.remove('open'); document.removeEventListener('mousedown',outside,true); }
       btn.addEventListener('click',function(e){ e.preventDefault();
