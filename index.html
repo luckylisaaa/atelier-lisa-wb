@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="color-scheme" content="light only">
 <meta name="supported-color-schemes" content="light">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v173 (版本號僅留註解，不顯示於畫面)
+<!-- ATELIER 影片診斷工作台 · 內部版本 v174 (版本號僅留註解，不顯示於畫面)
+     v174 更新（交辦單：總整理收尾 A–E，接 v173、不改功能/id/onchange/下游、沿用品牌色與既有 csel/icon；P0 兩項 v173 已修，本版確認未回歸）：【A 系統建議顯示為什麼】新增全域 _smReasonShort(cand,sc)（依 v169 _smScore 結果輸出一句白話原因：同產業·X／同類型·Y／量級相近·Z／領域相近／內容結構相近／整體輪廓接近）；多選 renderAccountMultiPicker 的建議列（sug 且已選客戶）在「建議」徽章後換行顯示「為什麼：…」（新增 .mp-why，.mp-row-main 改 flex-wrap 讓原因獨佔一行）。【B 單選加搜尋】確認 #cmpHero／#optClient／#recClient／#dlClient 自 v171 起皆有 data-csearch（csel build 先渲染 .csel-search 再排序頁籤＋金線），打開即「搜尋＋頁籤＋金線」對齊②，單選點一下即定；本版無需改碼，僅驗證。【C 帳號管理篩選列手機一排】新增 @media(max-width:560px)：.filterrow 改 nowrap、隱藏「篩選」字、三個下拉 flex:1 1 0;min-width:0 等分、縮 padding/字級、.csel-label 溢出省略，避免擠成兩行。【D 消除盲盒感】新增全域 copyPrompt(text,label)＝沿用 copyVal 複製後，於 #modal/#sheet 彈出預覽（標題＋說明＋可捲動 <pre> 完整提示詞＋「再複製一次／關閉」）；buildOptimizePrompt／buildRecommendPrompt／buildIP／buildOutline／buildScript 五個產生器改呼叫 copyPrompt（產生後直接看得到內容）；optRun／recRun／dlIP／dlOutline／dlScript／cmpRun 加 title 小說明（桌機 hover、手機長按顯示「這顆在做什麼／怎麼用」）。【E ↗ 外連補 icon】以一條 CSS ::after 給 a.btn[target=_blank] 與 .vlink[target=_blank]（工具捷徑 claude/gemini/toolzin/cobalt/atelier-subtype、商業閉環 atelier-map、影片開啟、看主頁等開新分頁連結）補上 external-link 線條 icon（內嵌 data-URI、主紅 #A51820），列印時隱藏；純方向箭頭與已內嵌外連 icon 的連結不受影響、不重覆。未動任何 value/onchange/下游與既有 icon；全檔 node --check 全過（15 script）、div 1112／details 44／CSS 開閉平衡；v168/v170 icon 未動（emoji/符號殘留＝0）。
      v173 更新（交辦單：總整理，分段做——本版＝先做 🔴 P0 兩個會擋使用的 bug，A–E 下一版；接 v172、不改功能/id/onchange/下游、沿用品牌色與既有 csel/icon）：【P0-1 案例類型等所有 csel 下拉手機底部滑不到底】.csel-panel 原本只往下開（top:100%），手機底部打開時面板掉出視窗被切、看不到最後選項。修：新增 .csel.csel-up>.csel-panel{top:auto;bottom:calc(100%+4px)}，並在 csel open() 量測按鈕 getBoundingClientRect，下方空間不足（<210px）且上方較大時加 .csel-up 往上翻，並把 panel.maxHeight 限到可用空間（140–262px，保留既有 overflow-y:auto 可捲）；多選 openMenu 同套（<260px 翻上、maxHeight 160–360）。涵蓋帳號卡 acc-case-sel 與所有 csel/多選下拉；確認帳號卡容器無 overflow:hidden 夾住。【P0-2 客戶版一頁診斷書列印第二頁起爆框/撐多頁/很慢（v172 portal 已做、再加核心保險）】雖模板無 break-all、列為 grid，為徹底壓制：opPrintPrepare 複製出列印用紙後，直接對 clone 的 #opPaper 寫死 inline 樣式（width/max-width:100%、margin:0、padding:16/18、border:0、box-shadow:0、word-break:normal、overflow-wrap:break-word），對每個 .op-row/details/.vstrat-row/.op-why 設 page-break-inside:avoid，圖片/SVG max-width:100%；@media print 另加 #clientOnePager *{word-break:normal!important;overflow-wrap:break-word!important} 與卡片 break-inside:avoid。確保整張紙以全頁寬正常橫排、每張卡不被切到下一頁、頁數正常且只排版這一張（快）。未動一頁診斷書內容/欄位/三關/任何 id/onclick/下游；全檔 node --check 全過（15 script）、div 1108／details 44／CSS 開閉平衡；v168/v170 icon 未動。A–E（系統建議為什麼、單選加搜尋、手機篩選列、提示詞預覽＋說明、↗ 補漏）排下一版。
      v172 更新（待辦小修：修「客戶版一頁診斷書列印/存 PDF 第 2 頁起爆框、撐成 10 頁、很慢」；↗ 開新分頁補漏經整支重掃確認已於 v170 完成〔畫面外連箭頭皆為 icon、剩 3 個 ↗ 均在 changelog 說明文字屬保留〕，故不再動）：根因＝舊列印 CSS 用 body>*{visibility:hidden}＋#clientOnePager{position:absolute}，被隱藏的整個 App 仍佔版面高度，列印文件高度＝整個 App 高度→被分頁成多頁（第 2 頁起空白/爆框）且需排版整個巨大 DOM→很慢。修法：改 portal 列印——新增全域 opPrintPrepare()/opPrintCleanup()，列印前若 #clientOnePager 有內容就 cloneNode(true) 複製進 body 直屬的 #opPrintPortal 並對 body 加 .op-printing；@media print 改為 body.op-printing>*{display:none}（其餘元素不佔高度）＋ body.op-printing>#opPrintPortal{display:block} 只印複製出來的一頁診斷書；#opPaper padding 縮為 14/16、border/margin/box-shadow 歸零、img/svg max-width:100%、加 @page{margin:12mm}；保留既有 op-noprint／:not(.print-alt) .op-alt／show-codes .op-code 規則（clone 保留 class 故客戶版/顧問版列印行為不變）。以 window beforeprint/afterprint 自動掛載（按鈕與瀏覽器 Ctrl+P 都生效），dlOnePagerPrint 按鈕另顯式呼叫 prepare/cleanup（Safari 保險），列印後清空 portal、還原 document.title。未動一頁診斷書內容/欄位/三關/任何 id/onclick/下游，僅換列印機制。新增 1 個 script 區塊（共 15）；全檔 node --check 全過、div 1108／details 44／CSS 開閉平衡；v168/v170 icon 未動。
      v171 更新（交辦單：選擇器／版面對照升級包，接 v170、不改 value/onchange/下游、沿用品牌色與 csel、不動 v168/v170 icon）：【A 帳號類單選統一】#dlClient／#optClient／#recClient 加 data-accpick="1"（另 #recGoal 加 data-csearch）；擴充 csel enhanceSelect 的 build()：對 data-accpick 的單選在面板頂端加排序頁籤（系統建議／依成效／產業·領域／案例類型／A–Z，沿用 .mp-sort/.mp-sort-b 樣式），新增閉包內 _accSort＋applyAccSort（依 option value=帳號 id 反查 accounts，移動既有 .csel-opt 節點重排：placeholder 置頂、disabled「還有 N」置尾、其餘按欄位排序；perf 用 _accVidStats 觀看＋_accPerf 分數；suggest 維持原序），不重建 select、不動點選邏輯與既有 csel 面板內搜尋與金線分隔；客戶單選（csel-opt 高亮、無打勾、無完成鈕）與對標多選（mp-row 打勾＋完成鈕）刻意留可辨差異。【B 多選加完成鈕】renderAccountMultiPicker 面板底部新增 .mp-done「完成（已選 N 個）」（sticky、酒紅），點擊 closeMenu 收起；勾選時同步更新其數字與按鈕「已選 N 個」。【C 版面對照主角→建議→比較】compare 卡片改成 ①主角單選 #cmpHero（data-accpick/data-csearch，新增 populateCmpHero）②比較對象多選；renderComparePicker 改：先 populateCmpHero，cmpPicker 的 clientGetter 改讀 #cmpHero（→系統建議用 v169 _smScore 把最該對標前 5 置頂、標「建議」），max 依有無主角＝3/4，placeholder 隨之；cmpHero change 監聽＝把主角移出已勾＋重繪（更新建議與上限）；runCompare 改成 ids=[主角,...cmpSelected]（去重、2–4 上限/下限），主角排最左；保留「不選主角自己直接勾」（無主角時 max4、行為同前）。【D 並排可點跳原頁】新增全域 _accURL(a)（依平台組 IG/TikTok/YouTube/Threads/X/FB 連結或既有網址）；runCompare 表頭帳號名改為 <a target="_blank" rel="noopener"> 連到原頁＋外連 icon（無 handle 則純文字）。鐵則：未改任何 select 的 id/onchange/value 與 cmpSelected/optSelected/runCompare 以外下游；先各段 node --check。全檔 node --check 全過（14 script）、div 1108／details 44／CSS 開閉平衡；v168/v170 icon 未動（目標 emoji/符號殘留＝0）。
@@ -296,6 +297,8 @@ input,select,textarea{color-scheme:light}
   font-weight:700;padding:2px 8px;border-radius:8px;margin-top:6px}
 .vcard .vact{position:absolute;right:10px;bottom:10px;display:flex;gap:8px}
 .vcard .vlink{font-size:11px;color:var(--gold-dark);text-decoration:none;font-weight:700}
+a.btn[target="_blank"]::after,.vlink[target="_blank"]::after{content:"";display:inline-block;width:11px;height:11px;margin-left:4px;vertical-align:-1px;background:center/contain no-repeat;background-image:url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='%23A51820'%20stroke-width='2'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Cpath%20d='M14%205h5v5'/%3E%3Cpath%20d='M19%205l-8%208'/%3E%3Cpath%20d='M19%2013v5a1%201%200%200%201-1%201H6a1%201%200%200%201-1-1V7a1%201%200%200%201%201-1h5'/%3E%3C/svg%3E")}
+@media print{a.btn[target="_blank"]::after,.vlink[target="_blank"]::after{display:none}}
 .vcard .vdel{font-size:11px;color:var(--sub);cursor:pointer}
 .vsel{display:inline-block;vertical-align:middle}
 
@@ -671,6 +674,14 @@ input,select,textarea{color-scheme:light}
 .sumcard{ padding:12px 6px; border-color:var(--line) }
 .searchbar{ margin-bottom:16px }
 .filterrow{ margin-bottom:14px }
+@media (max-width:560px){
+  .filterrow{flex-wrap:nowrap;gap:5px}
+  .filterrow>span{display:none}
+  .filterrow>select,.filterrow>.csel{flex:1 1 0;min-width:0;max-width:none!important}
+  .filterrow>select{padding:7px 6px;font-size:12px}
+  .filterrow .csel-btn{padding:7px 7px;font-size:12px;gap:3px}
+  .filterrow .csel-label{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+}
 .paste-card{ padding:17px 19px; margin-bottom:13px; border:1px solid var(--line); box-shadow:none }
 .paste-card>summary{ font-size:14px }
 .card{ padding:18px }
@@ -730,7 +741,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v173</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v174</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -1835,7 +1846,7 @@ if('serviceWorker' in navigator){
     <input id="cmpSearch" type="text" oninput="renderComparePicker()" placeholder="打字找帳號：英文 handle（如 sunny）或中文名／職稱（如 王陽明、律師）" style="width:100%;max-width:420px;box-sizing:border-box;padding:9px 11px;margin-bottom:10px;border:1px solid var(--border);border-radius:8px;background:var(--warm-white,#FDFBF8);color:var(--ink);font-family:inherit;font-size:14px;display:block">
     <div id="cmpPicker" style="display:flex;flex-wrap:wrap;gap:8px;max-height:280px;overflow-y:auto;padding:6px;border:1px solid var(--border);border-radius:10px;background:var(--warm-white,#FDFBF8)"></div>
     <div style="margin-top:12px;display:flex;gap:8px">
-      <button class="btn btn-go" id="cmpRun" style="flex:1">並排比較</button>
+      <button class="btn btn-go" id="cmpRun" style="flex:1" title="把主角＋勾選的比較對象並排比 Bio／置頂／Highlight／視覺風格，找出版面策略的差異與共同點。">並排比較</button>
       <button class="btn btn-ghost" id="cmpClear">清除選擇</button>
     </div>
   </div>
@@ -1858,7 +1869,7 @@ if('serviceWorker' in navigator){
     <div style="font-size:13px;color:var(--ink);margin-bottom:6px;font-weight:600">② 對標帳號（勾 1–10 個，當參考標竿）：</div>
     <div id="optPicker" style="display:flex;flex-wrap:wrap;gap:8px"></div>
     <div style="margin-top:14px;display:flex;gap:8px">
-      <button class="btn btn-go" id="optRun" style="flex:1">產生對標優化提示詞</button>
+      <button class="btn btn-go" id="optRun" style="flex:1" title="把「你的客戶」＋勾選的對標帳號整理成一段提示詞並自動複製，接著跳出預覽讓你看完整內容；貼到 ChatGPT／Claude／Gemini 就會幫客戶做落差診斷與優化建議。">產生對標優化提示詞</button>
       <button class="btn btn-ghost" id="optClear">清除勾選</button>
     </div>
   </div>
@@ -1878,7 +1889,7 @@ if('serviceWorker' in navigator){
       <label style="font-size:12px;color:var(--ink)">這一輪目標<select id="recGoal" data-csearch="1" style="width:100%;margin-top:3px;padding:8px 10px;border:1px solid var(--border);border-radius:8px;background:#fff"><option value="">（讓 AI 依資料判斷）</option><option>曝光為主</option><option>人設共鳴為主</option><option>需求教育為主</option><option>信任建立為主</option><option>導流轉化為主</option><option>人設升級為主</option></select></label>
       <label style="font-size:12px;color:var(--ink)">要幾個<input id="recTopN" type="number" value="3" min="1" style="width:100%;margin-top:3px;padding:8px 10px;border:1px solid var(--border);border-radius:8px"></label>
     </div>
-    <button class="btn btn-go" id="recRun" style="width:auto;padding:10px 18px">產生智能對標推薦提示詞</button>
+    <button class="btn btn-go" id="recRun" style="width:auto;padding:10px 18px" title="把整個帳號庫＋你選的客戶與目標組成提示詞並複製＋預覽；貼到 AI 會排出這個客戶最該對標學習的 Top N＋原因。">產生智能對標推薦提示詞</button>
   </div>
 </div>
 
@@ -1975,7 +1986,7 @@ if('serviceWorker' in navigator){
         <div style="display:flex;gap:8px;align-items:center;margin-bottom:5px"><span style="color:#B08A3E;font-size:9px;font-weight:700">03</span><span style="width:52px;flex:none;font-size:9px;color:#2B2521">落點 A&#8594;E</span><span style="flex:1;height:7px;background:#EFE7D6;border-radius:3px"></span></div>
       </div>
     </div>
-    <button class="btn btn-go" id="dlIP" style="width:auto;padding:10px 18px">產生 IP定位診斷書 提示詞</button>
+    <button class="btn btn-go" id="dlIP" style="width:auto;padding:10px 18px" title="產生「IP定位診斷書」提示詞並複製＋預覽；貼到 AI 會輸出客戶的一頁式定位與下一步方向。">產生 IP定位診斷書 提示詞</button>
   </div>
 
   <div class="card" style="margin-bottom:12px;border-left:3px solid var(--gold-dark)" id="dlStage2">
@@ -1994,7 +2005,7 @@ if('serviceWorker' in navigator){
         <div style="display:flex;gap:5px;border-bottom:1px solid #ECE0C8;padding:3px 0"><span style="flex:2;height:6px;background:#EFE7D6;border-radius:2px"></span><span style="flex:1;height:6px;background:#EFE7D6;border-radius:2px"></span><span style="flex:2;height:6px;background:#EFE7D6;border-radius:2px"></span></div>
       </div>
     </div>
-    <button class="btn btn-go" id="dlOutline" style="width:auto;padding:10px 18px">產生 腳本大綱診斷書 提示詞</button>
+    <button class="btn btn-go" id="dlOutline" style="width:auto;padding:10px 18px" title="產生「腳本大綱診斷書」提示詞並複製＋預覽；貼到 AI 會給主題方向與一頁式大綱表。">產生 腳本大綱診斷書 提示詞</button>
   </div>
 
   <div class="card" style="margin-bottom:12px;border-left:3px solid var(--primary-deep)" id="dlStage3">
@@ -2013,7 +2024,7 @@ if('serviceWorker' in navigator){
         <div style="display:flex;gap:8px;align-items:center;margin-bottom:5px"><span style="flex:none;font-size:8px;color:#fff;background:#7A1318;border-radius:3px;padding:1px 5px">CTA</span><span style="flex:1;height:7px;background:#EFE7D6;border-radius:3px"></span></div>
       </div>
     </div>
-    <button class="btn btn-go" id="dlScript" style="width:auto;padding:10px 18px">產生 腳本診斷書 提示詞</button>
+    <button class="btn btn-go" id="dlScript" style="width:auto;padding:10px 18px" title="產生「腳本診斷書」提示詞並複製＋預覽；貼到 AI 會給可拍攝的完整腳本＋設計理由。">產生 腳本診斷書 提示詞</button>
   </div>
 
   <div class="tip" style="font-size:11.5px;margin-top:6px">產生後會自動複製，貼到 ChatGPT／Claude／Gemini 即可。提示詞已要求 AI 把診斷書另外做成可下載的 .txt 檔，方便你存檔與交付。</div>
@@ -2239,6 +2250,24 @@ function copyVal(text,label){
     navigator.clipboard.writeText(text).then(()=>toast('✓ 已複製'+(label?'：'+label:''))).catch(()=>_copyFallback(text,label));
   } else { _copyFallback(text,label); }
 }
+function copyPrompt(text,label){
+  copyVal(text,label);
+  try{
+    var sh=document.getElementById('sheet'), md=document.getElementById('modal'); if(!sh||!md) return;
+    var safe=esc(text||'');
+    sh.innerHTML='<div style="padding:18px 16px">'
+      +'<div style="font-family:\'Noto Serif TC\',serif;font-size:17px;font-weight:900;margin-bottom:4px">'+esc(label||'提示詞')+'</div>'
+      +'<div style="font-size:12px;color:var(--sub);margin-bottom:10px">已自動複製到剪貼簿。貼到 ChatGPT／Claude／Gemini 即可。下面是完整內容，可先看過、或再按一次複製。</div>'
+      +'<pre style="white-space:pre-wrap;word-break:break-word;font-size:12px;line-height:1.6;background:var(--warm-white,#FDFBF8);border:1px solid var(--gold-soft);border-radius:8px;padding:12px;max-height:52vh;overflow:auto;color:var(--ink);font-family:inherit;margin:0">'+safe+'</pre>'
+      +'<div style="display:flex;gap:8px;margin-top:12px">'
+      +'<button class="btn btn-go" id="pp-copy" style="flex:1">再複製一次</button>'
+      +'<button class="btn btn-ghost" id="pp-close">關閉</button></div></div>';
+    md.classList.add('show');
+    var cp=document.getElementById('pp-copy'); if(cp) cp.onclick=function(){ copyVal(text,label); };
+    var cl=document.getElementById('pp-close'); if(cl) cl.onclick=function(){ if(typeof closeModal==='function') closeModal(); else md.classList.remove('show'); };
+  }catch(e){}
+}
+window.copyPrompt=copyPrompt;
 function _copyFallback(text,label){
   try{ const t=document.createElement('textarea'); t.value=text; t.style.position='fixed'; t.style.opacity='0'; document.body.appendChild(t); t.select(); document.execCommand('copy'); document.body.removeChild(t); toast('✓ 已複製'+(label?'：'+label:'')); }
   catch(e){ toast('複製失敗，請手動選取'); }
@@ -3489,7 +3518,8 @@ function renderManual(){
   <div class="form-card" style="border-left:3px solid var(--gold)">
     <div class="stitle" style="font-size:15px;color:var(--rouge)">更新紀錄 · 還沒做的</div>
     <p style="font-size:13px;color:var(--text);line-height:1.85;margin-top:8px">
-    <b>v173（這版 · 先修兩個會擋使用的問題）：</b>①<b>手機上「案例類型」等下拉滑不到底修好了</b>：以前在手機螢幕底部打開下拉，面板會掉出畫面、看不到也滑不到最後一個選項；現在會<b>自動往上翻、並限制高度可以捲動</b>，所有下拉都套用。②<b>客戶版一頁診斷書列印／存 PDF 再加強</b>：在 v172 改成「只印那張診斷書」的基礎上，這版直接把列印用的那張紙<b>寫死成全頁寬、每張建議卡不被切到下一頁、文字照正常橫排換行</b>，確保不再爆框、頁數正常（約 2–3 頁）、又快。＊這版先處理這兩個最擋路的，其餘（系統建議寫「為什麼」、單選下拉加搜尋、手機篩選列、提示詞看得到內容＋按鈕說明、↗ 換 icon）我接著做下一版。<br>
+    <b>v174（這版 · 把剩下的修完）：</b>①<b>系統建議會寫「為什麼推薦」</b>了：在版面對照／對標優化選對標時，每個被「建議」的帳號下面會多一句白話原因（同產業·X／同類型·Y／量級相近…），不用猜為什麼撈它。②<b>單選下拉打開就有搜尋框</b>（主角／你的客戶／客戶交付／智能對標客戶）——這在前一版起其實就有了，這次確認過：打開＝搜尋＋排序頁籤＋金線分隔，點一下就定。③<b>手機上帳號管理的篩選列（全部身份／量級／最近更新）改成一排塞得下</b>，不再擠成兩行、字被壓。④<b>消除「盲盒感」</b>：客戶交付與版面對照那些「產生提示詞」的按鈕，現在<b>按下去會跳出預覽、直接看到整段提示詞內容</b>（還能再複製一次）；重要按鈕也加了<b>小說明</b>（電腦把游標移上去、手機長按，就會顯示「這顆在做什麼／怎麼用」）。⑤<b>開新分頁的外連連結（工具捷徑、商業閉環、開啟影片、看主頁…）都補上了「開新分頁」小箭頭 icon</b>，一看就知道會跳出去；純指方向的箭頭不動。＊全部只動顯示與輔助說明，沒動任何功能、流程、資料與既有圖示。<br>
+    <b>v173：</b>①<b>手機上「案例類型」等下拉滑不到底修好了</b>：以前在手機螢幕底部打開下拉，面板會掉出畫面、看不到也滑不到最後一個選項；現在會<b>自動往上翻、並限制高度可以捲動</b>，所有下拉都套用。②<b>客戶版一頁診斷書列印／存 PDF 再加強</b>：在 v172 改成「只印那張診斷書」的基礎上，這版直接把列印用的那張紙<b>寫死成全頁寬、每張建議卡不被切到下一頁、文字照正常橫排換行</b>，確保不再爆框、頁數正常（約 2–3 頁）、又快。＊這版先處理這兩個最擋路的，其餘（系統建議寫「為什麼」、單選下拉加搜尋、手機篩選列、提示詞看得到內容＋按鈕說明、↗ 換 icon）我接著做下一版。<br>
     <b>v172：</b>修好「客戶版一頁診斷書」<b>列印／存 PDF 會爆框、撐成好幾頁、很慢</b>的問題。原因是舊的列印方式只是把其他內容「藏起來」、但它們還佔著版面高度，所以整份 PDF 被撐成跟整個工具一樣高（第 2 頁起一片空白）、而且要排版整個畫面所以很慢。現在改成<b>列印時只把那張診斷書複製出來單獨印</b>，其他完全不佔空間——<b>PDF 就乾乾淨淨只有診斷書那 1～2 頁、又快</b>（按「列印／存成 PDF」或用瀏覽器 Ctrl+P 都一樣）。客戶版／顧問版、要不要印備選與代號的設定都跟以前一樣。＊另外「↗ 開新分頁補漏」我整支重掃過，畫面上的外連箭頭在 v170 就都換成 icon 了（只剩 3 個在版本說明文字裡、屬於保留），所以這條已經完成、不用再做。<br>
     <b>v171：</b>選帳號和版面對照大升級。①<b>所有選帳號的地方長相統一了</b>：智能對標推薦的「你的客戶／這一輪目標」、客戶交付的「請選擇客戶帳號」，現在都跟「對標帳號」一樣有<b>搜尋框＋排序頁籤（系統建議／依成效／產業·領域／案例類型／A–Z）＋金線分隔</b>；單選和多選長得像、但多選有打勾、單選沒有，好分辨。②<b>多選下拉多了「完成」鈕</b>：勾完按一下就收起來、顯示「已選 N 個」，不用再點旁邊空白。③<b>版面對照改成更直覺的流程</b>：先選 1 個<b>主角帳號</b> → 系統用相似度<b>建議「適合跟誰比」排在最前（標建議）</b> → 勾 1–3 個比較對象（連主角共 2–4 個）→ 按「並排比較」；當然也能不靠建議、自己直接勾。④<b>並排比的每個帳號可以點一下直接開原頁（IG／原連結，新分頁）</b>。＊只動選單與版面對照流程，其他功能、資料、icon 都沒動到。<br>
     <b>v170：</b>把 v168 換 icon 時漏掉的符號補乾淨。影片庫的「編輯數據」鈕和「去填」（鉛筆）、帳號健檢的「儲存」（書籤）、客戶交付的「下載 .txt」（下載）、商業閉環等「在新分頁開啟／外連」（外連箭頭）、還有各處按鈕的「複製」字符，<b>全部換成跟 v168 同一套單色線條 icon（主紅）</b>。維持原樣不動的有：資料待補／日期估算的<b>紅黃狀態點</b>、AI 提示詞裡的禁止標記、範例文字裡的職業圖示、流程方向箭頭與勾／警告／星（注意：只有「開新分頁／外連」用的箭頭換成 icon，純指方向的箭頭不動）。＊只換顯示符號，按鈕功能、流程、v168 已換好的其他 icon 都沒動到。<br>
@@ -5068,6 +5098,15 @@ function openAccountHealthCheck(accId){
 var _mpState={};
 function _mpIdent(a){ return [a.displayName,(a.jobTitle||((a.types||[])[0])||'')].filter(Boolean).join('·'); }
 function _mpCaseLabel(a){ return a.caseType==='success'?'成功標竿':(a.caseType==='low'?'失敗／低效':''); }
+function _smReasonShort(cand, sc){
+  if(!sc) return '';
+  if(sc.indSame && cand.industry) return '同產業 · '+cand.industry;
+  if(sc.sharedTypes && sc.sharedTypes.length){ var ot=(cand.types||[]).filter(function(t){ return sc.sharedTypes.indexOf((typeof _smNormStr==='function'?_smNormStr(t):t))>=0; }); if(ot.length) return '同類型 · '+ot[0]; }
+  if(sc.tierLabel && sc.tierScore>=1) return '量級相近 · '+sc.tierLabel;
+  if(sc.sharedTokens && sc.sharedTokens.length) return '領域相近 · '+sc.sharedTokens.slice(0,2).join('、');
+  if(sc.funnelOk) return '內容結構相近';
+  return '整體輪廓接近';
+}
 function _accPerf(accId){
   var vs=(typeof videosOfAccount==='function')?videosOfAccount(accId):[];
   var wv=vs.filter(function(v){return _clNum(v.views)>0;});
@@ -5099,10 +5138,12 @@ function renderAccountMultiPicker(cfg){
   }
   function rowHtml(a,sug){
     var on=cfg.set.has(a.id); var idy=_mpIdent(a); var cl=_mpCaseLabel(a); var hasProf=(a.profileSnapshots||[]).length>0;
+    var _why=(sug&&client&&typeof _smScore==='function')?_smReasonShort(a,_smScore(client,a)):'';
     return '<div class="mp-row'+(on?' on':'')+'" data-id="'+a.id+'" data-s="'+esc(searchable(a))+'"><span class="mp-check">'+(on?'✓':'')+'</span>'
       +'<span class="mp-row-main"><span class="mp-h">'+esc(a.handle||'?')+'</span>'+(idy?'<span class="mp-id">'+esc(idy)+'</span>':'')
       +(sug?'<span class="mp-sugg">建議</span>':'')
-      +(cl?'<span class="mp-case mp-case-'+a.caseType+'">'+esc(cl)+'</span>':'')+(hasProf?'':'<span class="mp-noprof">·無版面</span>')+'</span></div>';
+      +(cl?'<span class="mp-case mp-case-'+a.caseType+'">'+esc(cl)+'</span>':'')+(hasProf?'':'<span class="mp-noprof">·無版面</span>')
+      +(_why?'<span class="mp-why">為什麼：'+esc(_why)+'</span>':'')+'</span></div>';
   }
   function listHTML(){
     var arr=ordered();
@@ -5381,7 +5422,7 @@ function buildOptimizePrompt(){
     +'- 一定要同時顧到三大要素：人群（痛點/誤區）、產品（賣點/案例）、人設（身分/理念），最後落在「曝光 × 需求 × 信任」。\n'
     +'- 換成我客戶真實職業的語境、案例、合規用語，不要殘留對標的原職業。\n'
     +'- 用專家口吻直接給，不要反問。';
-  copyVal(p,'客戶對標優化提示詞（'+bms.length+' 個對標）');
+  copyPrompt(p,'客戶對標優化提示詞（'+bms.length+' 個對標）');
 }
 
 function populateRecClient(){
@@ -5430,7 +5471,7 @@ function buildRecommendPrompt(){
     +'- 用我客戶「真實職業」的語境判斷；對標職業不同沒關係，重點是邏輯能不能搬過來。\n'
     +'- 資料少的帳號可以選，但要註明「資料較少、建議補完再深入」。\n'
     +'- 用專家口吻直接給結論與排序，不要反問。';
-  copyVal(p,'智能對標推薦提示詞（從 '+pool.length+' 個帳號挑 Top '+topN+'）');
+  copyPrompt(p,'智能對標推薦提示詞（從 '+pool.length+' 個帳號挑 Top '+topN+'）');
 }
 
 // v45 口說字數 + 語速計算（節拍器）
@@ -6968,7 +7009,7 @@ window.addEventListener('DOMContentLoaded', function(){
      +'6. 內容主軸方向：建議主打哪些漏斗類型（G1 打破認知／G2 建立吸引／G3 建立思想／G4 建立實用／G5 信任轉化），並說明為什麼適合這個客戶。\n'
      +'7. 一頁式定位表：把重點濃縮成一個乾淨表格（欄位：定位一句話／目標受眾／人群痛點／核心賣點／人設關鍵字／現在閉環層／下一步），方便直接交給客戶。\n\n'
      +'【規則】\n- 專業術語一律翻成客戶與其受眾聽得懂的白話。\n- 判斷要有依據（善用上面的資料庫背書與客戶現況），不要空泛。\n- 用顧問口吻直接給結論，不要反問。\n- 最後請把整份 IP 定位診斷書「另外」做成一份可下載的純文字檔 .txt（檔名 IP定位診斷書_客戶_YYYY-MM-DD.txt）給我，方便存檔與交付。';
-    if(typeof copyVal==='function') copyVal(p,'IP定位診斷書提示詞'); else if(navigator.clipboard) navigator.clipboard.writeText(p);
+    copyPrompt(p,'IP定位診斷書提示詞');
   }
   function buildOutline(){
     var c=getC(); if(!c) return;
@@ -6985,7 +7026,7 @@ window.addEventListener('DOMContentLoaded', function(){
      +'3. 週期分佈與排序：依本輪支數與目標，建議各漏斗類型各幾支、先後順序怎麼排（前段養什麼、後段收什麼）。\n'
      +'4. 一頁式大綱表（給客戶勾選確認用）：欄位＝編號／主題／漏斗 G／目標層 A–E／主要受眾層／Hook 方向／是否帶產品，並加上客戶確認欄位：是否保留、修改方向、產品露出程度、建議影片形式、客戶備註、優先拍攝順序。\n\n'
      +'【規則】\n- 完全依上面的「ATELIER 系統定義」與「本輪設定」校準，不要自行另立模型。\n- 主題要貼客戶真實職業與受眾，不要泛泛；每個主題都要能對應漏斗類型與目標層。\n- 這是「給客戶確認方向」的決策文件，不是靈感清單；用顧問口吻直接給。\n- 最後把整份「另外」做成可下載的 .txt（檔名 腳本大綱診斷書_客戶_YYYY-MM-DD.txt）給我。';
-    if(typeof copyVal==='function') copyVal(p,'腳本大綱診斷書提示詞'); else if(navigator.clipboard) navigator.clipboard.writeText(p);
+    copyPrompt(p,'腳本大綱診斷書提示詞');
   }
   function buildScript(){
     var c=getC(); if(!c) return;
@@ -7003,7 +7044,7 @@ window.addEventListener('DOMContentLoaded', function(){
      +'B. 拍攝執行版（可直接拍）：①Hook 0–3 秒給 2–3 個可選開頭、標明鉤子型與流量觸發；②完整分鏡逐段，含【口播逐字】【畫面/動作建議】【字幕重點】；③CTA 收尾，對應本支目標層與 CTA 方向。\n\n'
      +'【額外交付（內容包）】另外給：封面大字 3 組／Reels 標題 3 組／貼文文案 1 則／留言區引導句 3 句／限動導流句 2 句。\n\n'
      +'【規則】\n- 完全依上面的系統定義、本輪設定、本支任務校準。\n- 口播要口語、好唸，符合客戶人設語氣，並遵守風格禁忌。\n- 專業術語翻白話；醫師／律師等專業注意合規分寸。\n- 嚴格遵守「可用／不可用素材」，不要寫出現場拍不了的東西。\n- 最後把整份「另外」做成可下載的 .txt（檔名 腳本診斷書_客戶_主題_YYYY-MM-DD.txt）給我。';
-    if(typeof copyVal==='function') copyVal(p,'腳本診斷書提示詞'); else if(navigator.clipboard) navigator.clipboard.writeText(p);
+    copyPrompt(p,'腳本診斷書提示詞');
   }
   function wireDeliver(){
     [['dlIP',buildIP],['dlOutline',buildOutline],['dlScript',buildScript],['dlOnePager',buildClientOnePager]].forEach(function(x){
@@ -7426,6 +7467,8 @@ document.addEventListener('DOMContentLoaded',function(){
 .mp-noprof{font-size:11px;color:var(--sub);margin-left:6px}
 .mp-empty{font-size:12px;color:var(--sub);padding:10px 4px}
 .mp-sugg{font-size:10px;background:var(--rouge);color:#fff;border-radius:8px;padding:0 6px;margin-left:6px;font-weight:700;white-space:nowrap}
+.mp-row-main{display:flex;flex-wrap:wrap;align-items:center;gap:2px 6px}
+.mp-why{flex-basis:100%;width:100%;font-size:10.5px;color:var(--sub);font-style:italic;margin-top:1px}
 .csel-list .csel-opt{border-top:1px solid var(--gold-soft)}
 .csel-list .csel-opt:first-child{border-top:0}
 .mp-panel{max-height:360px}
