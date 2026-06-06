@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="color-scheme" content="light only">
 <meta name="supported-color-schemes" content="light">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v170 (版本號僅留註解，不顯示於畫面)
+<!-- ATELIER 影片診斷工作台 · 內部版本 v171 (版本號僅留註解，不顯示於畫面)
+     v171 更新（交辦單：選擇器／版面對照升級包，接 v170、不改 value/onchange/下游、沿用品牌色與 csel、不動 v168/v170 icon）：【A 帳號類單選統一】#dlClient／#optClient／#recClient 加 data-accpick="1"（另 #recGoal 加 data-csearch）；擴充 csel enhanceSelect 的 build()：對 data-accpick 的單選在面板頂端加排序頁籤（系統建議／依成效／產業·領域／案例類型／A–Z，沿用 .mp-sort/.mp-sort-b 樣式），新增閉包內 _accSort＋applyAccSort（依 option value=帳號 id 反查 accounts，移動既有 .csel-opt 節點重排：placeholder 置頂、disabled「還有 N」置尾、其餘按欄位排序；perf 用 _accVidStats 觀看＋_accPerf 分數；suggest 維持原序），不重建 select、不動點選邏輯與既有 csel 面板內搜尋與金線分隔；客戶單選（csel-opt 高亮、無打勾、無完成鈕）與對標多選（mp-row 打勾＋完成鈕）刻意留可辨差異。【B 多選加完成鈕】renderAccountMultiPicker 面板底部新增 .mp-done「完成（已選 N 個）」（sticky、酒紅），點擊 closeMenu 收起；勾選時同步更新其數字與按鈕「已選 N 個」。【C 版面對照主角→建議→比較】compare 卡片改成 ①主角單選 #cmpHero（data-accpick/data-csearch，新增 populateCmpHero）②比較對象多選；renderComparePicker 改：先 populateCmpHero，cmpPicker 的 clientGetter 改讀 #cmpHero（→系統建議用 v169 _smScore 把最該對標前 5 置頂、標「建議」），max 依有無主角＝3/4，placeholder 隨之；cmpHero change 監聽＝把主角移出已勾＋重繪（更新建議與上限）；runCompare 改成 ids=[主角,...cmpSelected]（去重、2–4 上限/下限），主角排最左；保留「不選主角自己直接勾」（無主角時 max4、行為同前）。【D 並排可點跳原頁】新增全域 _accURL(a)（依平台組 IG/TikTok/YouTube/Threads/X/FB 連結或既有網址）；runCompare 表頭帳號名改為 <a target="_blank" rel="noopener"> 連到原頁＋外連 icon（無 handle 則純文字）。鐵則：未改任何 select 的 id/onchange/value 與 cmpSelected/optSelected/runCompare 以外下游；先各段 node --check。全檔 node --check 全過（14 script）、div 1108／details 44／CSS 開閉平衡；v168/v170 icon 未動（目標 emoji/符號殘留＝0）。
      v170 更新（交辦單：icon 補漏，接 v169、同 v168 單色線條風格主紅 #A51820／stroke 2px 圓角、只換顯示符號不動功能/id/onclick/下游、不動 v168 既有 icon）：整支重掃後補換 4＋種殘留符號為內嵌 SVG。Pass A 先把「不能放標記語言」的位置中性化：兩處按鈕複製後重設用的 textContent（複製類字符開頭）去掉前綴字元（改純文字）；changelog 文字敘述裡的複製／鉛筆／圖表類字符等去除前綴（避免在說明文字插入 SVG）。Pass B 換 live UI 符號：影片庫「編輯數據」鈕與「去填」的 鉛筆字符→pencil 線條 icon；帳號健檢「儲存」維度的書籤字符→bookmark；客戶交付「下載 .txt」的下載字符→download；商業閉環等 <a> 內「在新分頁開啟」與連結尾端的外連箭頭（僅 <a> 內，純方向箭頭不動）→external-link；全檔按鈕「複製/動作」的複製類字符（31 處 live）→copy 線條 icon。維持不動：狀態點 紅/黃、提示詞文字裡的禁止標記、範例文字裡的公事包、流程方向箭頭與勾/警告/星（驗證後計數 紅6/黃4/禁止5/公事包1/勾51/警告35/星20 皆在；純方向/文件用的 ↗ 保留 2 處於 changelog）。先確認無 SVG 誤入 <option>/屬性。全檔 node --check 全過（14 script）、div 1106／details 44／CSS 開閉平衡；本版目標符號殘留＝0、v168 既有 icon 未動（其 19 種 emoji 仍為 0）。
      v169 更新（交辦單：v169 修正單＝P0 打字當機＋選擇器補強，接 v168、不改功能/id/onchange/下游、icon 不動）：【P0 當機根因與修復】帳號搜尋當機來自 renderAccountMultiPicker 的 mp-search 每次按鍵都 reRender 整個面板，且 sort='suggest' 的排序比較器對每個帳號重算 _smScore（O(N log N) 次、每鍵上千次相似度計算）→ 桌機/手機卡死。重寫元件：①搜尋改為「只切換 .mp-row 的 display」的輕量過濾（applyFilter，依預存 data-s 比對，O(N) 純顯示、不重建、不重算、不重跑 enhanceSelect），並隱藏空的 .mp-sec 區塊標。②加中文輸入法處理：compositionstart 設 _comp、compositionend 才過濾，input 期間若 _comp 則略過。③勾選只更新被點該列的 class／勾記號＋按鈕「已選 N 個」標籤（不重建清單）；排序頁籤切換才重建 .mp-list（只換清單、保留搜尋框焦點）；開關選單只切 open class＋管理外點關閉監聽。④排序計算把 _smScore／_accPerf 各帳號分數預存成 map 後再排序（一次性，不在比較器內重算）。確認既有 while 迴圈皆安全（SRT 正則含 /g、定位候選池 poolN≤24）。【D-1 系統建議真排序】sort='suggest' 且已選客戶時用 _smScore（既有 領域/產業/身份/量級 權重）把最相近前 5 置頂「系統建議·最該對標」並標紅色「建議」徽章（.mp-sugg），其餘依分數；未選客戶退 A–Z。【D-2 選帳號統一】三個帳號單選 #dlClient／#optClient／#recClient 加 data-csearch="1"，csel enhanceSelect 的 build() 改 withSearch=options>8 || data-csearch，使「智能對標推薦」客戶選單等一律有面板內搜尋；新增 .csel-list .csel-opt 金線分隔（border-top var(--gold-soft)、首列無線）與多選一致。【D-3 依成效排序】新增 _accPerf(accId)（用既有影片欄位：平均觀看 views ＋互動率＝(likes+comments+shares+saves+reposts)/views 平均；無數據→排後面）＋排序頁籤「依成效」（score=log10(1+views)+互動率×8）。沿用品牌色與 csel，未動 v168 icon、三關、帳號健檢、各 Set（cmpSelected/optSelected）與 runCompare／buildOptimizePrompt／optClient change 等下游。元件重寫先單獨 node --check；全檔 node --check 全過（14 script）、div 1106／details 44／CSS 開閉平衡、目標 emoji 殘留＝0。
      v168 更新（交辦單：包B emoji 換內嵌品牌 SVG icon，接在驗收過的 v167 上、只換顯示符號、不動任何按鈕功能/id/onclick/value/下游）：以 Python 兩段式全檔處理——Pass 1：把明確 UI 標籤 token（emoji＋文字、後接 < 或 ·（：（ 等 UI 邊界）換成內嵌 SVG（單色描邊 #A51820、stroke 2px、圓角端點、viewBox 0 0 24 24、約 15px、vertical-align inline）。B-1 大區塊用畫廊對應概念圖（畫廊 v17 原檔未隨單提供，改以同風格品牌線條 SVG 對應）：帳號健檢/客戶診斷/卡片補完/更多分析工具→Diagnose(脈衝線)；成功庫對標→ICP(同心圓靶)；工具箱→Kit(工具箱)；借技法寫腳本→Scripts(膠片)；成功標竿徽章→Cases(獎章)；客戶前置問診→Tasks(打勾板)；帳號清單→Matrix(田字格)；九宮格速記庫→Folio(九宮格)；怎麼開始服務客戶→Handbook(書)。B-2 小標記用線條 icon：市場熱度→trending-up；重複清理→broom；提示→bulb；待核對清單→search；置頂/截圖/互動/留言/CTA 等位於提示詞或無 UI 標籤處則於 Pass 2 移除。先把 select 的 <option>（不能放標記語言）內 emoji 改純文字（成功標竿徽章字樣去除前綴）。Pass 2：把全檔殘留的 19 個目標 emoji（健檢卡/聽診器/顯微鏡/標靶/工具箱/DNA/打勾/夾板/資料夾/檔案盒/火箭/圖釘/放大鏡(兩種)/掃把/趨勢/相機/燈泡/爆炸/對話/喇叭，含其變體選擇符）連同尾隨空白一律移除（移除字元不會破壞語法），涵蓋 placeholder／toast／confirm／changelog 文字／normalize 名稱用的 regex 字元集／提示詞內裝飾字。共插入 48 個內嵌品牌 SVG。功能符號全保留：✓✗✕⚠★✦✧🔴🟡❌與箭頭→↔↳↑↓↗↻⇄➤（驗證後計數：✓48 ✗1 ✕1 ⚠33 ★18 ✦11 ✧8 🔴4 🟡2 ❌3 →447）。未動任何 id/onclick/onchange/value 與下游邏輯（icon 為純顯示、置於原標籤前）。全檔目標 emoji 殘留＝0；node --check 全過（14 script）、div 1106／details 44／CSS 開閉平衡、品牌色在、無危險語法。
@@ -727,7 +728,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v170</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v171</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -1826,7 +1827,9 @@ if('serviceWorker' in navigator){
   </div>
 
   <div class="card" style="margin-bottom:14px">
-    <div style="font-size:13px;color:var(--ink);margin-bottom:10px;font-weight:600">選擇要比較的帳號（2–4 個）：</div>
+    <div style="font-size:13px;color:var(--ink);margin-bottom:6px;font-weight:700">① 先選 1 個主角帳號（要被分析、放在最左邊的那一個）：</div>
+    <select id="cmpHero" data-csearch="1" data-accpick="1" style="width:100%;max-width:420px;padding:8px 10px;border:1px solid var(--border);border-radius:8px;background:#fff;color:var(--ink);font-family:inherit;font-size:13px;margin-bottom:12px"></select>
+    <div style="font-size:13px;color:var(--ink);margin-bottom:6px;font-weight:700">② 選比較對象（連主角共 2–4 個）：<span style="font-weight:400;color:var(--sub);font-size:12px">選了主角後，系統會用相似度把「最適合對標的」排在最前（標「建議」）；也可自己直接勾。</span></div>
     <input id="cmpSearch" type="text" oninput="renderComparePicker()" placeholder="打字找帳號：英文 handle（如 sunny）或中文名／職稱（如 王陽明、律師）" style="width:100%;max-width:420px;box-sizing:border-box;padding:9px 11px;margin-bottom:10px;border:1px solid var(--border);border-radius:8px;background:var(--warm-white,#FDFBF8);color:var(--ink);font-family:inherit;font-size:14px;display:block">
     <div id="cmpPicker" style="display:flex;flex-wrap:wrap;gap:8px;max-height:280px;overflow-y:auto;padding:6px;border:1px solid var(--border);border-radius:10px;background:var(--warm-white,#FDFBF8)"></div>
     <div style="margin-top:12px;display:flex;gap:8px">
@@ -1849,7 +1852,7 @@ if('serviceWorker' in navigator){
       <div style="flex:1;min-width:140px;border:1.5px solid var(--primary-deep);border-radius:10px;padding:10px 11px;background:#fff;display:flex;flex-direction:column;gap:3px"><svg class="aico" viewBox="0 0 24 24" style="width:20px;height:20px;color:var(--primary-deep)"><path d="M14 6a3.5 3.5 0 0 0-4.6 4.6L3 17v4h4l6.4-6.4A3.5 3.5 0 0 0 18 10"/><path d="M14.5 9.5l2-2"/></svg><div style="font-size:9px;letter-spacing:1.5px;color:var(--primary-deep);font-weight:700;font-family:'Cormorant Garamond',serif">TUNE</div><div style="font-size:12.5px;font-weight:800;color:var(--primary-deep)">給可照做的優化</div><div style="font-size:11px;color:var(--text);line-height:1.45">定位／Bio／置頂／選題，直接照著改。</div></div>
     </div>
     <div style="font-size:13px;color:var(--ink);margin-bottom:6px;font-weight:600">① 你的客戶（要被優化的那一個）：</div>
-    <select id="optClient" data-csearch="1" style="width:100%;max-width:420px;padding:8px 10px;border:1px solid var(--border);border-radius:8px;background:#fff;color:var(--ink);font-family:inherit;font-size:13px;margin-bottom:14px"></select>
+    <select id="optClient" data-csearch="1" data-accpick="1" style="width:100%;max-width:420px;padding:8px 10px;border:1px solid var(--border);border-radius:8px;background:#fff;color:var(--ink);font-family:inherit;font-size:13px;margin-bottom:14px"></select>
     <div style="font-size:13px;color:var(--ink);margin-bottom:6px;font-weight:600">② 對標帳號（勾 1–10 個，當參考標竿）：</div>
     <div id="optPicker" style="display:flex;flex-wrap:wrap;gap:8px"></div>
     <div style="margin-top:14px;display:flex;gap:8px">
@@ -1868,9 +1871,9 @@ if('serviceWorker' in navigator){
       <div style="flex:1;min-width:150px;border:1.5px solid var(--primary-deep);border-radius:10px;padding:10px 12px;background:#fff;display:flex;flex-direction:column;gap:3px"><svg class="aico" viewBox="0 0 24 24" style="width:20px;height:20px;color:var(--primary-deep)"><path d="M4 19V10M10 19V5M16 19v-6M21 19H3"/></svg><div style="font-size:9px;letter-spacing:1.5px;color:var(--primary-deep);font-weight:700;font-family:'Cormorant Garamond',serif">RANK</div><div style="font-size:12.5px;font-weight:800;color:var(--primary-deep)">AI 排出 Top N</div><div style="font-size:11px;color:var(--text);line-height:1.45">排出最該對標的幾個＋為什麼＋可以學什麼。</div></div>
     </div>
     <div style="font-size:13px;color:var(--ink);margin-bottom:6px;font-weight:600">① 你的客戶（要被服務的那一個）：</div>
-    <select id="recClient" data-csearch="1" style="width:100%;max-width:420px;padding:8px 10px;border:1px solid var(--border);border-radius:8px;background:#fff;color:var(--ink);font-family:inherit;font-size:13px"></select>
+    <select id="recClient" data-csearch="1" data-accpick="1" style="width:100%;max-width:420px;padding:8px 10px;border:1px solid var(--border);border-radius:8px;background:#fff;color:var(--ink);font-family:inherit;font-size:13px"></select>
     <div style="display:grid;grid-template-columns:1fr 120px;gap:10px;margin:12px 0 14px">
-      <label style="font-size:12px;color:var(--ink)">這一輪目標<select id="recGoal" style="width:100%;margin-top:3px;padding:8px 10px;border:1px solid var(--border);border-radius:8px;background:#fff"><option value="">（讓 AI 依資料判斷）</option><option>曝光為主</option><option>人設共鳴為主</option><option>需求教育為主</option><option>信任建立為主</option><option>導流轉化為主</option><option>人設升級為主</option></select></label>
+      <label style="font-size:12px;color:var(--ink)">這一輪目標<select id="recGoal" data-csearch="1" style="width:100%;margin-top:3px;padding:8px 10px;border:1px solid var(--border);border-radius:8px;background:#fff"><option value="">（讓 AI 依資料判斷）</option><option>曝光為主</option><option>人設共鳴為主</option><option>需求教育為主</option><option>信任建立為主</option><option>導流轉化為主</option><option>人設升級為主</option></select></label>
       <label style="font-size:12px;color:var(--ink)">要幾個<input id="recTopN" type="number" value="3" min="1" style="width:100%;margin-top:3px;padding:8px 10px;border:1px solid var(--border);border-radius:8px"></label>
     </div>
     <button class="btn btn-go" id="recRun" style="width:auto;padding:10px 18px">產生智能對標推薦提示詞</button>
@@ -1915,7 +1918,7 @@ if('serviceWorker' in navigator){
   <div class="card" style="margin-bottom:14px">
     <div style="font-size:13px;font-weight:600;color:var(--ink);margin-bottom:6px">先選這次要服務的客戶帳號：</div>
     <input id="dlClientSearch" type="text" oninput="filterDlClient()" placeholder="打字找客戶：英文 handle（如 sunny）或中文名／職稱（如 王陽明、演員）" style="width:100%;max-width:420px;box-sizing:border-box;padding:9px 11px;margin-bottom:8px;border:1px solid var(--border);border-radius:8px;background:var(--warm-white,#FDFBF8);color:var(--ink);font-family:inherit;font-size:14px;display:block">
-    <select id="dlClient" data-csearch="1" onchange="updateDlVideoWarn();if(typeof renderMarketCard==='function')renderMarketCard()" style="width:100%;max-width:420px;box-sizing:border-box;padding:9px 11px;border:1px solid var(--border);border-radius:8px;background:var(--warm-white,#FDFBF8);color:var(--ink);font-family:inherit;font-size:14px;display:block"></select>
+    <select id="dlClient" data-csearch="1" data-accpick="1" onchange="updateDlVideoWarn();if(typeof renderMarketCard==='function')renderMarketCard()" style="width:100%;max-width:420px;box-sizing:border-box;padding:9px 11px;border:1px solid var(--border);border-radius:8px;background:var(--warm-white,#FDFBF8);color:var(--ink);font-family:inherit;font-size:14px;display:block"></select>
     <div style="font-size:11.5px;color:var(--sub);margin-top:8px">客戶資料越完整（貼過帳號分析卡、拆解過影片），診斷書越準。沒有客戶帳號就先到「帳號管理」新增。</div>
     <div id="marketCard" class="op-noprint" style="margin-top:10px"></div>
   </div>
@@ -3451,7 +3454,8 @@ function renderManual(){
   <div class="form-card" style="border-left:3px solid var(--gold)">
     <div class="stitle" style="font-size:15px;color:var(--rouge)">更新紀錄 · 還沒做的</div>
     <p style="font-size:13px;color:var(--text);line-height:1.85;margin-top:8px">
-    <b>v170（這版）：</b>把 v168 換 icon 時漏掉的符號補乾淨。影片庫的「編輯數據」鈕和「去填」（鉛筆）、帳號健檢的「儲存」（書籤）、客戶交付的「下載 .txt」（下載）、商業閉環等「在新分頁開啟／外連」（外連箭頭）、還有各處按鈕的「複製」字符，<b>全部換成跟 v168 同一套單色線條 icon（主紅）</b>。維持原樣不動的有：資料待補／日期估算的<b>紅黃狀態點</b>、AI 提示詞裡的禁止標記、範例文字裡的職業圖示、流程方向箭頭與勾／警告／星（注意：只有「開新分頁／外連」用的箭頭換成 icon，純指方向的箭頭不動）。＊只換顯示符號，按鈕功能、流程、v168 已換好的其他 icon 都沒動到。<br>
+    <b>v171（這版）：</b>選帳號和版面對照大升級。①<b>所有選帳號的地方長相統一了</b>：智能對標推薦的「你的客戶／這一輪目標」、客戶交付的「請選擇客戶帳號」，現在都跟「對標帳號」一樣有<b>搜尋框＋排序頁籤（系統建議／依成效／產業·領域／案例類型／A–Z）＋金線分隔</b>；單選和多選長得像、但多選有打勾、單選沒有，好分辨。②<b>多選下拉多了「完成」鈕</b>：勾完按一下就收起來、顯示「已選 N 個」，不用再點旁邊空白。③<b>版面對照改成更直覺的流程</b>：先選 1 個<b>主角帳號</b> → 系統用相似度<b>建議「適合跟誰比」排在最前（標建議）</b> → 勾 1–3 個比較對象（連主角共 2–4 個）→ 按「並排比較」；當然也能不靠建議、自己直接勾。④<b>並排比的每個帳號可以點一下直接開原頁（IG／原連結，新分頁）</b>。＊只動選單與版面對照流程，其他功能、資料、icon 都沒動到。<br>
+    <b>v170：</b>把 v168 換 icon 時漏掉的符號補乾淨。影片庫的「編輯數據」鈕和「去填」（鉛筆）、帳號健檢的「儲存」（書籤）、客戶交付的「下載 .txt」（下載）、商業閉環等「在新分頁開啟／外連」（外連箭頭）、還有各處按鈕的「複製」字符，<b>全部換成跟 v168 同一套單色線條 icon（主紅）</b>。維持原樣不動的有：資料待補／日期估算的<b>紅黃狀態點</b>、AI 提示詞裡的禁止標記、範例文字裡的職業圖示、流程方向箭頭與勾／警告／星（注意：只有「開新分頁／外連」用的箭頭換成 icon，純指方向的箭頭不動）。＊只換顯示符號，按鈕功能、流程、v168 已換好的其他 icon 都沒動到。<br>
     <b>v169：</b>修掉一個大問題、順手把選帳號全面升級。①<b>【最重要】帳號搜尋框打字當機修好了</b>：之前在「選擇要比較的帳號」「對標帳號」那些搜尋框打字（尤其打中文）會卡死，原因是每按一個字就把整份清單重算一次相似度。現在改成<b>打字只即時篩選、不重算</b>，還特別處理了中文輸入法組字，<b>桌機和手機連續打中英文都不會卡</b>。②<b>「系統建議」真的會排序了</b>：選好「你的客戶」後，系統會用領域／產業／身份／量級跟客戶比相似度，把<b>最該對標的排到最前面、標上紅色「建議」</b>，其餘往下。③<b>所有選帳號的地方都統一了</b>：版面對照、智能對標推薦、客戶交付的帳號選單，現在<b>都有搜尋框＋金線分隔線</b>（多選的可打勾），長相一致。④新增<b>「依成效」排序</b>：依你資料最齊的<b>觀看數＋互動率</b>把帳號由高到低排，沒填數字的排後面（之後可再加儲存率／轉換率）。＊只動了選單體驗，每顆按鈕功能、會跑的流程、剛換好的圖示都沒動到。<br>
     <b>v168：</b>把工具裡那些<b>卡通 emoji 全部換成自繪的品牌線條圖示</b>（單色描邊、主紅 #A51820，跟畫廊同一個風格，不再是系統彩色 emoji）。像「帳號健檢／客戶診斷／更多分析工具」「成功庫對標」「工具箱」「借技法寫腳本」「客戶前置問診」「帳號清單」「九宮格速記庫」「怎麼開始服務客戶」這些大功能鈕，還有「市場熱度」「重複清理」「提示」「待核對清單」這些小標記，全部換成內嵌的線條 icon。功能性的符號（箭頭、勾／叉、警告、星號、紅黃狀態點、禁止標記）<b>維持原樣不動</b>。＊重點：<b>只換了顯示的圖示，每顆按鈕的功能、會跑的流程完全沒變</b>。<br>
     <b>v167：</b>把「<b>選帳號</b>」整個變聰明了。①版面對照那兩串攤開的清單（「選擇要比較的帳號」「② 對標帳號」）<b>改成點 ▾ 才打開的下拉</b>，預設收合、不再一大片攤在外面；面板在頁面裡、跟著捲動、不會飛出去。②下拉打開後由上到下是：<b>搜尋框</b>（打字即時找：帳號名／中文名／領域）、<b>排序切換</b>（系統建議／產業·領域／案例類型／A–Z）、還有<b>系統建議區</b>——只要你先選了「① 你的客戶」，它會用「成功庫對標」那套引擎把<b>最該對標的排在最上面</b>。每一列之間都有<b>細分隔線</b>，不會黏成一團。③<b>打勾複選</b>：對標最多勾 10 個、比較最多勾 4 個，勾到的有明顯勾記號＋底色，收起來時按鈕會顯示「<b>已選 N 個</b>」。④客戶交付「請選擇客戶帳號」、版面對照「① 你的客戶」維持<b>單選</b>，但<b>搜尋框收進下拉面板裡</b>，體驗一致。＊重點：只換了外觀和操作方式，<b>選到的值、會跑的流程跟之前完全一樣</b>。（emoji 換品牌圖示還是另一包。）<br>
@@ -4332,6 +4336,7 @@ function renderAccounts(){
   box.querySelectorAll('[data-acc-case]').forEach(function(s){ s.onchange=function(){ setAccCase(s.dataset.accCase,s.value); }; });
   box.querySelectorAll('[data-acc-del]').forEach(b=>b.onclick=()=>delAccount(b.dataset.accDel));
 }
+function _accURL(a){ if(!a) return ''; var h=(a.handle||'').replace(/^@/,'').trim(); if(!h) return ''; if((a.handle||'').startsWith('http')) return a.handle; var p=a.platform; return p==='TikTok'?'https://www.tiktok.com/@'+h:(p==='YouTube'?'https://www.youtube.com/@'+h:(p==='Threads'?'https://www.threads.net/@'+h:(p==='X'?'https://x.com/'+h:(p==='FB'?'https://www.facebook.com/'+h:'https://www.instagram.com/'+h+'/')))); }
 function setAccCase(id,val){ var a=accounts.find(function(x){return x.id===id;}); if(!a) return; a.caseType=val||''; a.updatedAt=Date.now(); if(typeof saveAccounts==='function') saveAccounts(); if(typeof toast==='function') toast(val==='low'?'已標記：失敗／低效案例':(val==='success'?'已標記：成功標竿':'已清除案例類型標記')); }
 function accCard(a){
   const f=latestFollowers(a);
@@ -5080,8 +5085,9 @@ function renderAccountMultiPicker(cfg){
     +'<input class="csel-search mp-search" type="text" placeholder="搜尋帳號名／中文名／領域" value="'+esc(st.q||'')+'">'
     +'<div class="mp-sort">'+sorts.map(function(s){return '<button type="button" class="mp-sort-b'+(st.sort===s[0]?' on':'')+'" data-sort="'+s[0]+'">'+s[1]+'</button>';}).join('')+'</div>'
     +'<div class="mp-list">'+listHTML()+'</div>'
+    +'<button type="button" class="mp-done">完成（已選 '+cfg.set.size+' 個）</button>'
     +'</div></div>';
-  var root=box.querySelector('.mp-root'); var panel=box.querySelector('.mp-panel'); var btn=box.querySelector('.mp-btn'); var listEl=panel.querySelector('.mp-list'); var labEl=box.querySelector('.csel-label'); var si=panel.querySelector('.mp-search');
+  var root=box.querySelector('.mp-root'); var panel=box.querySelector('.mp-panel'); var btn=box.querySelector('.mp-btn'); var listEl=panel.querySelector('.mp-list'); var labEl=box.querySelector('.csel-label'); var si=panel.querySelector('.mp-search'); var doneEl=panel.querySelector('.mp-done');
   function applyFilter(){
     var q=(st.q||'').trim().toLowerCase(); var rows=listEl.querySelectorAll('.mp-row');
     for(var i=0;i<rows.length;i++){ var ok=!q||(rows[i].getAttribute('data-s')||'').indexOf(q)>=0; rows[i].style.display=ok?'':'none'; }
@@ -5095,6 +5101,7 @@ function renderAccountMultiPicker(cfg){
         if(cfg.set.has(id)){ cfg.set.delete(id); r.classList.remove('on'); var c=r.querySelector('.mp-check'); if(c) c.textContent=''; }
         else { if(cfg.max&&cfg.set.size>=cfg.max){ if(typeof toast==='function') toast('最多選 '+cfg.max+' 個'); return; } cfg.set.add(id); r.classList.add('on'); var c2=r.querySelector('.mp-check'); if(c2) c2.textContent='✓'; }
         if(labEl) labEl.textContent=btnLabel();
+        if(doneEl) doneEl.textContent='完成（已選 '+cfg.set.size+' 個）';
       };
     });
   }
@@ -5109,21 +5116,37 @@ function renderAccountMultiPicker(cfg){
   }
   panel.querySelectorAll('.mp-sort-b').forEach(function(b){ b.onclick=function(e){ e.preventDefault(); st.sort=b.getAttribute('data-sort'); panel.querySelectorAll('.mp-sort-b').forEach(function(x){ x.classList.toggle('on', x.getAttribute('data-sort')===st.sort); }); listEl.innerHTML=listHTML(); bindRows(); applyFilter(); }; });
   bindRows(); applyFilter();
+  if(doneEl) doneEl.onclick=function(e){ e.preventDefault(); closeMenu(); };
   if(st.open){ if(!st._off){ st._off=function(e){ if(!box.contains(e.target)){ closeMenu(); } }; document.addEventListener('mousedown',st._off,true); } if(si) setTimeout(function(){ try{ if(document.activeElement!==si && (st.q||'')==='') si.focus(); }catch(e){} },0); }
 }
 let cmpSelected=new Set();
 var cmpExpanded=false,_cmpLastQ=null;
+function populateCmpHero(){
+  var sel=document.getElementById('cmpHero'); if(!sel) return;
+  var cur=sel.value;
+  if(!accounts.length){ sel.innerHTML='<option value="">（尚無帳號）</option>'; return; }
+  sel.innerHTML='<option value="">— 請選擇主角帳號 —</option>'+accounts.map(function(a){
+    return '<option value="'+a.id+'">'+esc(a.handle||'?')+(a.jobTitle?'（'+esc(a.jobTitle)+'）':'')+'</option>';
+  }).join('');
+  if(cur)sel.value=cur;
+}
 function renderComparePicker(){
   const box=$('cmpPicker'); if(!box) return;
+  if(typeof populateCmpHero==='function') populateCmpHero();
   if(typeof populateOptClient==='function'){ populateOptClient(); renderOptPicker(); }
   if(typeof populateRecClient==='function') populateRecClient();
   var _ext=$('cmpSearch'); if(_ext) _ext.style.display='none';
   if(!accounts.length){ box.style.cssText=''; box.innerHTML='<div class="empty-res" style="margin:0">尚無帳號可比較。先到「帳號管理」新增帳號並記錄版面快照。</div>'; return; }
-  renderAccountMultiPicker({ boxId:'cmpPicker', set:cmpSelected, max:4, key:'cmp', placeholder:'點開選擇要比較的帳號（2–4 個）…', clientGetter:null });
+  var heroId=($('cmpHero')||{value:''}).value;
+  renderAccountMultiPicker({ boxId:'cmpPicker', set:cmpSelected, max:(heroId?3:4), key:'cmp', placeholder:(heroId?'點開勾選比較對象（連主角共 2–4 個）…':'點開選擇要比較的帳號（2–4 個）…'), clientGetter:function(){ return ($('cmpHero')||{value:''}).value; } });
 }
 function runCompare(){
-  if(cmpSelected.size<2){ toast('請至少選 2 個帳號'); return; }
-  const sel=[...cmpSelected].map(id=>accounts.find(a=>a.id===id)).filter(Boolean);
+  var heroId=($('cmpHero')||{value:''}).value;
+  var ids=[]; if(heroId) ids.push(heroId);
+  cmpSelected.forEach(function(id){ if(id!==heroId && ids.indexOf(id)<0) ids.push(id); });
+  if(ids.length<2){ toast('請至少選 2 個帳號（含主角）'); return; }
+  if(ids.length>4){ toast('最多比較 4 個帳號'); return; }
+  const sel=ids.map(id=>accounts.find(a=>a.id===id)).filter(Boolean);
   // 取每個帳號最新一筆版面快照
   const profs=sel.map(a=>{
     const list=(a.profileSnapshots||[]).slice().sort((x,y)=>(y.date||'').localeCompare(x.date||''));
@@ -5157,7 +5180,9 @@ function runCompare(){
   let html='<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:13px;background:#fff"><thead><tr><th style="text-align:left;padding:10px 12px;border-bottom:2px solid var(--rouge);font-family:\'Cormorant Garamond\',serif;color:var(--rouge);letter-spacing:1px;font-size:11px">FIELD</th>';
   profs.forEach(p=>{
     const f=latestFollowers(p.acc);
-    html+=`<th style="text-align:left;padding:10px 12px;border-bottom:2px solid var(--rouge);min-width:180px"><div style="font-weight:900;color:var(--rouge)">${esc(p.acc.handle||'?')}</div><div style="font-size:11px;color:var(--text);font-weight:400;margin-top:2px">${esc((p.acc.types||[]).join('·'))} · ${f?f.toLocaleString()+' 粉':'—'}</div></th>`;
+    const _u=_accURL(p.acc);
+    const _hd=_u?`<a href="${esc(_u)}" target="_blank" rel="noopener" style="font-weight:900;color:var(--rouge);text-decoration:none">${esc(p.acc.handle||'?')} <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="#A51820" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-1px"><path d="M14 5h5v5"/><path d="M19 5l-8 8"/><path d="M19 13v5a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg></a>`:`<span style="font-weight:900;color:var(--rouge)">${esc(p.acc.handle||'?')}</span>`;
+    html+=`<th style="text-align:left;padding:10px 12px;border-bottom:2px solid var(--rouge);min-width:180px"><div>${_hd}</div><div style="font-size:11px;color:var(--text);font-weight:400;margin-top:2px">${esc((p.acc.types||[]).join('·'))} · ${f?f.toLocaleString()+' 粉':'—'}</div></th>`;
   });
   html+='</tr></thead><tbody>';
   fields.forEach((field,fi)=>{
@@ -5507,6 +5532,7 @@ function bindAccountUI(){
   if($('accClr')) $('accClr').onclick=()=>{ $('accSearch').value=''; renderAccounts(); };
   if($('cmpRun')) $('cmpRun').onclick=runCompare;
   if($('cmpClear')) $('cmpClear').onclick=()=>{ cmpSelected.clear(); renderComparePicker(); $('cmpResult').innerHTML=''; };
+  if($('cmpHero')) $('cmpHero').addEventListener('change',function(){ var h=$('cmpHero').value; if(h&&cmpSelected.has(h)) cmpSelected.delete(h); renderComparePicker(); });
   if($('optRun')) $('optRun').onclick=buildOptimizePrompt;
   if($('optClear')) $('optClear').onclick=()=>{ optSelected.clear(); renderOptPicker(); };
   if($('optClient')) $('optClient').addEventListener('change',()=>{ optSelected.clear(); renderOptPicker(); });
@@ -7364,6 +7390,8 @@ document.addEventListener('DOMContentLoaded',function(){
 .csel-list .csel-opt{border-top:1px solid var(--gold-soft)}
 .csel-list .csel-opt:first-child{border-top:0}
 .mp-panel{max-height:360px}
+.mp-done{display:block;width:100%;margin-top:8px;padding:9px 12px;border:0;border-radius:8px;background:var(--rouge);color:#fff;font-weight:800;font-size:13px;font-family:inherit;cursor:pointer;position:sticky;bottom:0}
+.mp-done:hover{background:var(--primary-deep,#7A1318)}
 @media print{.csel-panel{display:none!important}.csel-native{position:static!important;width:auto;height:auto;opacity:1;clip:auto}.csel-btn,.csel-caret{display:none!important}.acc-more{display:none!important}}
 </style>
 <script>
@@ -7390,10 +7418,25 @@ document.addEventListener('DOMContentLoaded',function(){
       var panel=document.createElement('div'); panel.className='csel-panel';
       wrap.appendChild(btn); wrap.appendChild(panel);
       function label(){ labSpan.textContent=cselText(sel); }
+      var _accSort='suggest';
+      function applyAccSort(){
+        var list=panel.querySelector('.csel-list'); if(!list) return;
+        var nodes=[].slice.call(list.querySelectorAll('.csel-opt'));
+        var head=[], body=[], tail=[];
+        nodes.forEach(function(node){ var i=parseInt(node.getAttribute('data-i'),10); var o=sel.options[i]; if(!o){ tail.push(node); return; } if(o.value===''){ if(o.disabled) tail.push(node); else head.push(node); } else if(o.disabled){ tail.push(node); } else { body.push({node:node, acc:(typeof accounts!=='undefined'&&accounts)?accounts.find(function(a){return a.id===o.value;}):null}); } });
+        var srt=_accSort;
+        if(srt==='perf'&&typeof _accPerf==='function'){ var pm={}; body.forEach(function(b){ pm[b.acc?b.acc.id:'']=b.acc?_accPerf(b.acc.id).score:-1; }); body.sort(function(x,y){ return (pm[y.acc?y.acc.id:'']||-1)-(pm[x.acc?x.acc.id:'']||-1); }); }
+        else if(srt==='industry'){ body.sort(function(x,y){ return (((x.acc&&(x.acc.industry||x.acc.domain))||'zzz')+'').localeCompare((((y.acc&&(y.acc.industry||y.acc.domain))||'zzz')+'')); }); }
+        else if(srt==='case'){ var rk={success:0,low:1,'':2}; body.sort(function(x,y){ var cx=(x.acc&&x.acc.caseType)||'',cy=(y.acc&&y.acc.caseType)||''; return (rk[cx]-rk[cy])||(((x.acc&&x.acc.handle)||'').localeCompare((y.acc&&y.acc.handle)||'')); }); }
+        else if(srt==='az'){ body.sort(function(x,y){ return (((x.acc&&x.acc.handle)||'').toLowerCase()).localeCompare(((y.acc&&y.acc.handle)||'').toLowerCase()); }); }
+        head.concat(body.map(function(b){return b.node;})).concat(tail).forEach(function(n){ list.appendChild(n); });
+      }
       function build(){
         var withSearch=sel.options.length>8||sel.getAttribute('data-csearch')==='1';
+        var accpick=sel.getAttribute('data-accpick')==='1';
         var h='';
         if(withSearch) h+='<input class="csel-search" type="text" placeholder="搜尋…" autocomplete="off">';
+        if(accpick){ var sorts=[['suggest','系統建議'],['perf','依成效'],['industry','產業·領域'],['case','案例類型'],['az','A–Z']]; h+='<div class="mp-sort csel-sort">'+sorts.map(function(s){return '<button type="button" class="mp-sort-b'+(_accSort===s[0]?' on':'')+'" data-sort="'+s[0]+'">'+s[1]+'</button>';}).join('')+'</div>'; }
         h+='<div class="csel-list">';
         for(var i=0;i<sel.options.length;i++){ var o=sel.options[i];
           var t=(typeof esc==='function')?esc(o.textContent||''):(o.textContent||'');
@@ -7402,6 +7445,7 @@ document.addEventListener('DOMContentLoaded',function(){
         h+='</div>';
         panel.innerHTML=h;
         if(withSearch){ var si=panel.querySelector('.csel-search'); if(si){ si.addEventListener('mousedown',function(e){e.stopPropagation();}); si.addEventListener('click',function(e){e.stopPropagation();}); si.addEventListener('input',function(){ var qq=si.value.trim().toLowerCase(); var opts=panel.querySelectorAll('.csel-opt'); for(var j=0;j<opts.length;j++){ opts[j].style.display=(!qq||(opts[j].textContent||'').toLowerCase().indexOf(qq)>=0)?'':'none'; } }); } }
+        if(accpick){ applyAccSort(); panel.querySelectorAll('.mp-sort-b').forEach(function(b){ b.addEventListener('mousedown',function(e){e.stopPropagation();}); b.addEventListener('click',function(e){ e.preventDefault(); e.stopPropagation(); _accSort=b.getAttribute('data-sort'); panel.querySelectorAll('.mp-sort-b').forEach(function(x){ x.classList.toggle('on', x.getAttribute('data-sort')===_accSort); }); applyAccSort(); }); }); }
       }
       function outside(e){ if(!wrap.contains(e.target)) close(); }
       function open(){ build(); wrap.classList.add('open'); document.addEventListener('mousedown',outside,true); var s=panel.querySelector('.csel-opt.sel'); if(s&&s.scrollIntoView){ try{ s.scrollIntoView({block:'nearest'}); }catch(e){} } var si=panel.querySelector('.csel-search'); if(si) setTimeout(function(){ try{ si.focus(); }catch(e){} },0); }
