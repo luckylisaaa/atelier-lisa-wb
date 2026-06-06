@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="color-scheme" content="light only">
 <meta name="supported-color-schemes" content="light">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v159 (版本號僅留註解，不顯示於畫面)
+<!-- ATELIER 影片診斷工作台 · 內部版本 v160 (版本號僅留註解，不顯示於畫面)
+     v160 更新（交辦單：修匯入歸類卡的「提前建檔」與「重複帳號」bug，批次匯入 ~40 張卡前先修，全 additive、不動既有資料結構）：①新增全域 normAccHandle(h)（trim＋toLowerCase＋去網址 scheme/www＋遇 domain/xxx 取末段 handle＋取第一個空白前 token 去顯示名＋去 @／尾斜線／query/hash）取代 parseBtn／bulkBtn／ingestAccountCard 原本只 toLowerCase＋去@＋去尾斜線的弱正規化，重複偵測不再因格式/大小寫/尾斜線/夾帶顯示名而失靈。②parseBtn 與 bulkBtn 偵測既有帳號改用 find 取得帳號物件：已存在時彈窗只給「累積／覆蓋／只建影片」（移除「建立新帳號」分支避免重複）、title 標「⚠️ 此帳號已存在」、desc 帶顯示名＋上次更新日；所有建立／累積／覆蓋鈕 sub 明確標「按下＝立即建檔／更新到帳號管理」、只建影片標「不會建檔」，釐清建檔時機。③ingestAccountCard 的 find-or-create 改用 normAccHandle（即使彈窗誤判也不會再建出重複列，為真正安全網）。④新增重複帳號清理工具：帳號管理「🧰 工具箱」子頁籤 checkListPanel 後新增 #dupCleanPanel（🧹）＋#dupCleanBox；新增全域 _dupGroups／_accRichness／_dupSort／renderDupClean（用 normAccHandle 分組、列出每組各筆的影片/版面/粉絲快照/健檢數與更新日、標保留資料最多且最新的那筆）／mergeDupAccounts（保留主筆、把其餘帳號影片改掛主筆 accountId/Handle、合併粉絲/版面/健檢快照與 profile 空欄/types/relatedAccounts、修正全庫 relatedAccounts 指向被刪 id→主筆、刪除多餘帳號、saveAccounts＋saveVideos＋renderAccounts＋renderAll），合併前 confirm。renderAccounts 開頭新增呼叫 renderDupClean()。新區塊先單獨 node --check；全檔 node --check 全過、div 1030／details 43／CSS 開閉平衡。
      v159 更新（交辦單：帳號管理頁新增「🪪 帳號健檢」填寫表，全 additive、不動既有流程與資料結構、只加帳號層不碰單片層）：①新增全域 const HEALTH_DIMS（8 維度：三秒定位／簡介五要素／頭像視覺一致／置頂貼文／精選限動分類／九宮格主題一致／三類片配比／互動數據面；各含 label／一句說明／5·3·1 判準錨點，判準以知識地圖 Step 3 為準、工具內僅對照）。②新增全域 openAccountHealthCheck(accId)（置於 closeModal 後）：重用 #modal／#sheet，逐項 1–5 評分（手填、不自動評分）→ 即時算總分(/40)＋已評 N/8＋自動標最低分 top3；可「產生報告」(textarea 可複製 copyVal／可下載 .txt via Blob)；「儲存健檢快照」比照 addProfileSnapshot push 進 a.healthChecks=[{date,total,dims:[{key,score,note}x8],top3:[key,key,key]}]＋saveAccounts＋renderAccounts；未滿 8 項存檔前 confirm。③新增全域 _healthCheckBlock(client)（比照 v156 _clientTranscriptBlock）：回傳最近一次健檢總分＋逐項＋top3 文字區塊；buildIP 在 roundBlock 之後、_toneRulesBlock 之前以 typeof 守門注入（先健檢、再產 IP 定位，健檢成為定位輸入）。④renderAccountCard：「更多分析工具」摺疊內 +版面快照 旁新增 data-acc-hcheck 入口(🪪、teal #2F7A6B，與既有 🩺 帳號體檢／🩺 卡片補完健檢明確區隔)、bindAccountUI 綁 openAccountHealthCheck；卡上常駐顯示「🪪 最近健檢：日期 · 總分/40 · 待修 top3」；歷史快照後新增「🪪 健檢紀錄（N 筆）」摺疊。命名未覆蓋既有 data-acc-health(帳號體檢)與 cardFix(卡片補完健檢)。新模組先單獨 node --check、_healthCheckBlock 走 Python 字面 \n 注入；全檔 node --check 全過、div 1021／details 42／CSS 開閉平衡。第二塊（知識地圖 Step 3 帳號健檢判準）為另一檔 atelier-map、另行交付，不在本檔。
      v158 更新（交辦單：客戶版一頁診斷書 buildClientOnePager 全面升級五組一次到位，全 additive、維持 contenteditable、不動內部三關提示詞術語與既有資料結構）：集中改 deliver IIFE 內 OP_GLABEL→buildClientOnePager 整段（以 node --check 過的獨立區塊單次 splice）＋ #clientOnePager 列印 CSS。第一組（自動灌入＋修列印爆框）：①新增 _intakeTopics(pf) 容錯解析 profile.intakeCard 抽候選主題；現況／問題／機會沿用 _accVidStats 推導並全部白話化（去 G 代號），問題與機會欄各帶為什麼說明。②@media print 對 #opPaper 加 max-width:100%／width:100%／box-sizing:border-box／padding 縮小／border:0／margin:0，#clientOnePager 加 box-sizing，避免固定 px 寬溢出與尾頁空白。第二組（一句話定位候選＋顧問首選）：新增 _posCands(c,pf) 從定位／人設／受眾／職稱產業／問診卡衍生 3–5 候選，首選標「顧問首選」其餘「備選」各附適合情境；op-noprint radio 可即時切換 #opPosMain 主定位；備選清單 op-alt 僅在勾「列印備選」時印出。第三組（為什麼這樣判斷）：定位／受眾／問題／機會／建議方向各帶 _whyLine() 淺色斜體可編輯小字，來源為問診卡與現況數據、零代號。第四組（大綱候選池）：這一輪建議方向改為候選池＝本輪支數(dl-count)＋緩衝(10→16)，前 N 標「建議先拍」其餘標「備選」(op-alt)，每列 op-pick checkbox 可即時採用／備選互換並改標籤。第五組（雙語白話＋專業註記開關）：新增 LABEL_MAP 把 G1–G5／A–E 全翻白話、客戶面一律白話；#opShowCodes 開關預設關，開了才顯示漏斗代號（op-code，CSS show-codes 控制）；內部 buildIP／buildOutline／buildScript 術語完全未動。未動三關按鈕(#dlIP #dlOutline #dlScript)觸發與 populateDlClient／存檔結構；新區塊先單獨 node --check、全檔 node --check 全過、div 1006／details 40／CSS 開閉平衡。
      v157 更新（交辦單 C 組：人設關鍵字別被誤讀成「對人嗆聲」，併入 TONE_RULES；A／B 組 v156 已完成、本版只補 C，全 additive）：在共用常數 TONE_RULES（const D 之後、layers 之前的單行字串）尾端新增三條鐵律——⑧人設關鍵字（直率／犀利／霸氣／敢說／毒舌／高冷…）一律理解為「個人風格與視覺氣質」、不是「對觀眾說話態度」；除非 profile 明確標註要對人強勢，否則語氣預設平等親和，嚴禁把人設翻成嗆觀眾／訓觀眾／貶低觀眾。⑨標題與 Hook 一律邀請式平視句型（我也有過／我跟你講／我發現／我們一起），嚴禁指正式俯視句型（你不是＿＿你是＿＿／你打算＿＿多久／少外行了／別再裝懂了），先用自身視角承接再邀請。⑩「跩」要跩在畫面／品味／選物／剪輯節奏／觀點銳利度上，不要跩在貶低觀眾。因 TONE_RULES 已由 _toneRulesBlock 自動植入全部 7 個產提示詞按鈕（IP定位／腳本大綱／腳本／問診／借技法寫腳本／賣點翻譯／帳號體檢），C 組三條同步生效，未逐個改 builder。TONE_RULES 以 Python 字面換行符取代、assert 命中 1 次、單次寫檔、仍為單行；未動 A／B 組（_clientTranscriptBlock／updateDlVideoWarn／三關按鈕觸發）與既有資料結構；node --check 全過、div／details／CSS 開閉平衡。
@@ -716,7 +717,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v159</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v160</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -1792,6 +1793,11 @@ if('serviceWorker' in navigator){
     <div id="gridLibList" style="margin-top:8px"></div>
   </details>
   <div id="checkListPanel" style="margin-top:14px"></div>
+  <details class="vstrat" id="dupCleanPanel" style="margin-top:14px"><summary>🧹 重複帳號清理（偵測同一帳號被建了多筆，可一鍵合併）</summary>
+    <div class="tip" style="margin:8px 0">用正規化後的 handle 比對（去 @／大小寫／尾斜線／顯示名／網址）。合併會把影片改掛到「資料最多的那筆」、併入快照與資料後刪除多餘帳號。批次匯入前後可先來這裡掃一遍。</div>
+    <div style="text-align:right;margin-bottom:6px"><button class="btn btn-ghost" id="dupCleanRefresh" style="width:auto;font-size:12px;padding:5px 12px">重新偵測</button></div>
+    <div id="dupCleanBox"></div>
+  </details>
   </div>
 </div>
 
@@ -2375,19 +2381,21 @@ $('parseBtn').onclick=async function(){
   var vidM=rawAll.match(/={2,}\s*ATELIER\s*歸類卡\s*={2,}([\s\S]*?)={2,}\s*結束\s*={2,}/);
   if(accM){
     var hM=accM[1].match(/@?帳號\s*[：:]\s*(\S+)/); var hn=hM?(hM[1].startsWith('@')?hM[1]:'@'+hM[1]):'這個帳號';
-    var _nh=function(x){return (x||'').toLowerCase().replace(/^@/,'').replace(/\/+$/,'');};
-    var _exists=(typeof accounts!=='undefined'&&accounts||[]).some(function(x){return _nh(x.handle)===_nh(hn);});
+    var _nh=function(x){return (typeof normAccHandle==='function')?normAccHandle(x):(x||'').toLowerCase().replace(/^@/,'').replace(/\/+$/,'');};
+    var _exacc=((typeof accounts!=='undefined'&&accounts)||[]).find(function(x){return _nh(x.handle)===_nh(hn);});
+    var _exists=!!_exacc;
+    var _exinfo=_exists?((_exacc.displayName?('（'+_exacc.displayName+'）'):'')+(_exacc.updatedAt?('，上次更新 '+new Date(_exacc.updatedAt).toISOString().slice(0,10)):'')):'';
     var _btns=_exists?[
-        {label:'同步帳號 · 累積（建議）', sub:'新增一筆版面快照，留著舊版做前後對比', value:'history', primary:true},
-        {label:'同步帳號 · 覆蓋', sub:'用這張取代今天的版本、不另外多留一筆', value:'overwrite'},
-        {label:'只建影片', sub:'這次不動帳號管理', value:'skip'}
+        {label:'同步帳號 · 累積（建議）', sub:'按下＝立即更新到帳號管理：新增一筆版面快照、留舊版前後對比', value:'history', primary:true},
+        {label:'同步帳號 · 覆蓋', sub:'按下＝立即更新到帳號管理：用這張取代今天的版本、不另外多留一筆', value:'overwrite'},
+        {label:'只建影片', sub:'這次不動帳號管理（不會建檔）', value:'skip'}
       ]:[
-        {label:'建立帳號（同步到帳號管理）', sub:'第一次建立這個帳號，影片照常建檔', value:'history', primary:true},
-        {label:'只建影片', sub:'這次先不建帳號', value:'skip'}
+        {label:'建立帳號', sub:'按下＝立即建檔到帳號管理（第一次建立這個帳號），影片照常建檔', value:'history', primary:true},
+        {label:'只建影片', sub:'這次先不建帳號（不會建檔）', value:'skip'}
       ];
     var _mode=await atelierChoose({
-      title:(_exists?'偵測到帳號分析段：':'第一次偵測到新帳號：')+hn,
-      desc:(_exists?'帳號管理裡已經有這個帳號，要怎麼更新？':'帳號管理裡還沒有這個帳號，要幫你建立嗎？'),
+      title:(_exists?'⚠️ 此帳號已存在：':'第一次偵測到新帳號：')+hn,
+      desc:(_exists?('帳號管理裡已經有這個帳號'+_exinfo+'。為避免重複，這裡只能更新、不會再建一筆。按下任一個更新鈕＝立即寫入帳號管理。'):'帳號管理裡還沒有這個帳號。按「建立帳號」＝立即建檔到帳號管理。'),
       buttons:_btns,
       cancelValue:'skip'
     });
@@ -2705,19 +2713,21 @@ $('bulkBtn').onclick=async function(){
   var _accM=raw.match(/={2,}\s*ATELIER\s*帳號分析卡\s*={2,}([\s\S]*?)={2,}\s*卡片結束\s*={2,}/);
   if(_accM){
     var _hM=_accM[1].match(/@?帳號\s*[：:]\s*(\S+)/); var _hn=_hM?(_hM[1].startsWith('@')?_hM[1]:'@'+_hM[1]):'這個帳號';
-    var _nh2=function(x){return (x||'').toLowerCase().replace(/^@/,'').replace(/\/+$/,'');};
-    var _ex2=(typeof accounts!=='undefined'&&accounts||[]).some(function(x){return _nh2(x.handle)===_nh2(_hn);});
+    var _nh2=function(x){return (typeof normAccHandle==='function')?normAccHandle(x):(x||'').toLowerCase().replace(/^@/,'').replace(/\/+$/,'');};
+    var _exacc2=((typeof accounts!=='undefined'&&accounts)||[]).find(function(x){return _nh2(x.handle)===_nh2(_hn);});
+    var _ex2=!!_exacc2;
+    var _exinfo2=_ex2?((_exacc2.displayName?('（'+_exacc2.displayName+'）'):'')+(_exacc2.updatedAt?('，上次更新 '+new Date(_exacc2.updatedAt).toISOString().slice(0,10)):'')):'';
     var _b2=_ex2?[
-        {label:'同步帳號 · 累積（建議）', sub:'新增一筆版面快照，留著舊版做前後對比', value:'history', primary:true},
-        {label:'同步帳號 · 覆蓋', sub:'用這張取代今天的版本、不另外多留一筆', value:'overwrite'},
-        {label:'只建影片', sub:'這次不動帳號管理', value:'skip'}
+        {label:'同步帳號 · 累積（建議）', sub:'按下＝立即更新到帳號管理：新增一筆版面快照、留舊版前後對比', value:'history', primary:true},
+        {label:'同步帳號 · 覆蓋', sub:'按下＝立即更新到帳號管理：用這張取代今天的版本、不另外多留一筆', value:'overwrite'},
+        {label:'只建影片', sub:'這次不動帳號管理（不會建檔）', value:'skip'}
       ]:[
-        {label:'建立帳號（同步到帳號管理）', sub:'第一次建立這個帳號，影片照常批次建檔', value:'history', primary:true},
-        {label:'只建影片', sub:'這次先不建帳號', value:'skip'}
+        {label:'建立帳號', sub:'按下＝立即建檔到帳號管理（第一次建立），影片照常批次建檔', value:'history', primary:true},
+        {label:'只建影片', sub:'這次先不建帳號（不會建檔）', value:'skip'}
       ];
     var _m2=await atelierChoose({
-      title:(_ex2?'偵測到帳號分析段：':'第一次偵測到新帳號：')+_hn,
-      desc:(_ex2?'帳號管理裡已經有這個帳號，要怎麼更新？':'帳號管理裡還沒有這個帳號，要幫你建立嗎？'),
+      title:(_ex2?'⚠️ 此帳號已存在：':'第一次偵測到新帳號：')+_hn,
+      desc:(_ex2?('帳號管理裡已經有這個帳號'+_exinfo2+'。為避免重複，這裡只能更新、不會再建一筆。按下任一個更新鈕＝立即寫入帳號管理。'):'帳號管理裡還沒有這個帳號。按「建立帳號」＝立即建檔到帳號管理。'),
       buttons:_b2,
       cancelValue:'skip'
     });
@@ -3343,7 +3353,8 @@ function renderManual(){
   <div class="form-card" style="border-left:3px solid var(--gold)">
     <div class="stitle" style="font-size:15px;color:var(--rouge)">更新紀錄 · 還沒做的</div>
     <p style="font-size:13px;color:var(--text);line-height:1.85;margin-top:8px">
-    <b>v159（這版）：</b>帳號管理頁新增「<b>🪪 帳號健檢</b>」。①每張帳號卡的「🔬 更多分析工具」裡多一顆 <b>🪪 帳號健檢</b>（用 🪪 跟原本的 🩺 卡片補完健檢分清楚，不會搞混），點開就是這個帳號的健檢表。②<b>8 個維度各打 1–5 分</b>（三秒定位、簡介五要素、頭像視覺一致、置頂貼文、精選分類、九宮格主題、三類片配比、互動數據），打完<b>自動算總分（滿分 40）＋自動標出最該先修的 3 項</b>；評分標準在表單最下方「評分參考」，跟知識地圖 Step 3 同一套。③可<b>一鍵產生健檢報告</b>（複製或下載 .txt 當建檔交付物），也能<b>存成快照</b>，之後每次健檢都留一筆、看得到改善。④帳號卡會<b>常駐顯示</b>「最近健檢：日期 · 總分/40 · 待修前三項」，一眼看到。⑤<b>最重要</b>：之後產「IP 定位診斷書」時，會<b>自動把最近一次健檢的總分＋待修 top3 帶進提示詞</b>——等於先健檢、再定位，定位會呼應健檢結果。（評分判準那塊住在「知識地圖 Step 3」，我另外給妳貼上去的內容。）<br>
+    <b>v160（這版）：</b>修匯入歸類卡的兩個老問題，<b>批次匯入 40 張卡前先修好</b>。①<b>重複帳號不再亂長</b>：以前同一個帳號因為大小寫／@／尾斜線／後面夾了顯示名或網址，系統會認不出是同一個、又建一筆。現在改用「正規化 handle」嚴格比對，<b>偵測到已存在就只給「累積／覆蓋」、不再給「建立新帳號」</b>，標題會跳「⚠️ 此帳號已存在」並顯示它的名字和上次更新日；連實際寫入那層也用同一套比對當安全網，幾乎不會再生出重複。②<b>建檔時機講清楚</b>：那個彈窗的每顆鈕現在都寫明「<b>按下＝立即建檔／更新到帳號管理</b>」，不會再讓妳以為後面還有一顆才是真的建檔；「只建影片」也標明「不會建檔」。③<b>新增「🧹 重複帳號清理」</b>：在帳號管理「🧰 工具箱」裡，會<b>自動找出被建多筆的同一帳號</b>，列出每筆的影片／快照／健檢數，一鍵「<b>合併</b>」——把影片改掛到資料最多的那筆、併入快照與資料後刪掉多餘的，現有重複可以一次清乾淨。<br>
+    <b>v159：</b>帳號管理頁新增「<b>🪪 帳號健檢</b>」。①每張帳號卡的「🔬 更多分析工具」裡多一顆 <b>🪪 帳號健檢</b>（用 🪪 跟原本的 🩺 卡片補完健檢分清楚，不會搞混），點開就是這個帳號的健檢表。②<b>8 個維度各打 1–5 分</b>（三秒定位、簡介五要素、頭像視覺一致、置頂貼文、精選分類、九宮格主題、三類片配比、互動數據），打完<b>自動算總分（滿分 40）＋自動標出最該先修的 3 項</b>；評分標準在表單最下方「評分參考」，跟知識地圖 Step 3 同一套。③可<b>一鍵產生健檢報告</b>（複製或下載 .txt 當建檔交付物），也能<b>存成快照</b>，之後每次健檢都留一筆、看得到改善。④帳號卡會<b>常駐顯示</b>「最近健檢：日期 · 總分/40 · 待修前三項」，一眼看到。⑤<b>最重要</b>：之後產「IP 定位診斷書」時，會<b>自動把最近一次健檢的總分＋待修 top3 帶進提示詞</b>——等於先健檢、再定位，定位會呼應健檢結果。（評分判準那塊住在「知識地圖 Step 3」，我另外給妳貼上去的內容。）<br>
     <b>v158：</b>「<b>客戶版一頁診斷書</b>」大升級，按一下就接近能交出去。①<b>結論自動帶入＋修列印爆框</b>：選好客戶按產生，問題／機會／建議方向會用<b>白話</b>先幫妳填好，列印或存 PDF 不再跑出半空白的尾頁。②<b>一句話定位給選項</b>：一次出 3–5 個候選、幫妳標一個<b>顧問首選</b>，其他列備選、各附「適合什麼情況」，點一下就能換主定位；列印可選<b>只印首選</b>或<b>首選＋備選</b>。③<b>每個欄位都附「為什麼這樣判斷」</b>：定位／受眾／問題／機會／建議方向下面都有一行淺色說明，講清楚這個結論怎麼來的，也能改。④<b>大綱給更多候選</b>：這一輪建議方向會比合作支數多列幾個（例：10 支會出 16 個），前面標「<b>建議先拍</b>」、後面標「<b>備選</b>」，勾選就能採用或換掉。⑤<b>客戶面零代號</b>：所有給客戶看的字一律白話（例「給馬上能用的方法」而不是 G4），需要時可開「<b>顯示專業註記</b>」才看得到代號，內部產提示詞的術語完全不變。<br>
     <b>v157：</b>幫腳本「<b>人設別被 AI 誤會成對觀眾嗆聲</b>」。①以後 AI 看到客戶人設關鍵字（直率／犀利／霸氣／敢說…）會理解成「<b>這個人的風格與視覺氣質</b>」，<b>不是</b>「對觀眾說話的態度」——除非妳在客戶口吻欄特別寫明要對人強勢，否則語氣一律維持<b>平等、親和、像同行分享</b>。②標題跟 Hook 一律走「<b>邀請、平視</b>」的講法（我也有過／我跟你講／我們一起），<b>不准</b>出現「你不是＿＿你是＿＿、你打算＿＿多久、少外行了」這種<b>居高臨下指正</b>的句子。③提醒 AI：人設要跩，就跩在<b>畫面、品味、選物、剪輯節奏</b>上，不要跩在貶低觀眾上。這三條會自動套用到妳全部 <b>7 個產提示詞按鈕</b>，不用逐個客戶設定。<br>
     <b>v156：</b>客戶交付腳本「餵真實口吻＋全庫姿態鐵律」一次到位。①產<b>腳本大綱／腳本</b>時，系統會自動把<b>客戶自己前 5 支影片</b>的 Hook、完整文案、逐字稿節選餵給 AI，要求新腳本「<b>延續他本人的說話方式</b>、不可套用通用勵志／說教／導購／網紅公式」。②選客戶後若該客戶<b>系統內已拆解影片 &lt; 3 支</b>，三關按鈕上方會出現<b>紅色提醒</b>，告訴你 AI 沒看到他真實口吻、腳本會偏通用，建議先到影片庫補拆幾支再回來產。③新增<b>全庫共用「口吻鐵律」</b>：分清楚「<b>教育與否</b>」跟「<b>姿態高低</b>」——<b>可以教育、給知識、給方法</b>，但語氣<b>一律平等、謙卑、像同行分享</b>；嚴禁高姿態說教、命令、貶低觀眾、Hook 與結尾禁「你不是＿＿你是＿＿」這種訓人句式。這條鐵律會自動植入到 IP定位／腳本大綱／腳本／問診／借技法／賣點翻譯／帳號體檢<b>所有 7 個產提示詞按鈕</b>，不必逐客戶填。④若某客戶 profile 口吻欄另有更嚴格設定(例 Sunny ＝只陳述觀點完全不教育)，<b>客戶設定優先級更高</b>，會疊加在通則之上。<br>
@@ -4036,6 +4047,7 @@ function renderCheckList(){
 }
 function renderAccounts(){
   if(typeof renderCheckList==='function') renderCheckList();
+  if(typeof renderDupClean==='function') renderDupClean();
   if(typeof fillGridDumpAcc==='function') fillGridDumpAcc();
   if(typeof renderGridLib==='function') renderGridLib();
   const q=($('accSearch')||{value:''}).value.trim().toLowerCase();
@@ -4177,7 +4189,7 @@ async function ingestAccountCard(raw, opt){
   }
   const c=readAccountCard(raw);
   if(!c.handle){ toast('⚠️ 卡片裡找不到「@帳號：」這行，請確認貼的是帳號分析卡'); return null; }
-  const norm=s=>(s||'').toLowerCase().replace(/^@/,'').replace(/\/+$/,'');
+  const norm=s=>(typeof normAccHandle==='function')?normAccHandle(s):(s||'').toLowerCase().replace(/^@/,'').replace(/\/+$/,'');
   let acc=accounts.find(x=>norm(x.handle)===norm(c.handle));
   const isNew=!acc;
   if(isNew){ acc={id:'acc_'+Date.now()+'_'+Math.random().toString(36).slice(2,7), platform:c.platform||'IG', handle:c.handle, displayName:'', types:[], domain:'', jobTitle:'', industry:'', relatedAccounts:[], note:'(由帳號分析卡建檔)', fanSnapshots:[], profileSnapshots:[], profile:{}, createdAt:Date.now(), updatedAt:Date.now()}; accounts.unshift(acc); }
@@ -4339,6 +4351,89 @@ async function delAccount(id){
   accounts.forEach(a=>{ a.relatedAccounts=(a.relatedAccounts||[]).filter(x=>x!==id); });
   await saveAccounts(); await saveVideos(); renderAccounts(); renderAll(); toast('已刪除');
 }
+
+/* ===== v160：強化 handle 正規化（全庫共用）＋重複帳號清理 ===== */
+function normAccHandle(h){
+  var s=(h==null?'':String(h)).trim().toLowerCase();
+  if(!s) return '';
+  s=s.replace(/^https?:\/\//,'').replace(/^www\./,'');
+  if(s.indexOf('/')>=0 && /\./.test(s.split('/')[0])){ var ps=s.split('/').filter(Boolean); s=ps[ps.length-1]||''; }
+  s=(s.split(/\s+/)[0]||'');
+  s=s.replace(/^@+/,'').replace(/[?#].*$/,'').replace(/\/+$/,'');
+  return s;
+}
+function _accRichness(a){
+  if(!a) return 0;
+  var vN=(typeof videosOfAccount==='function')?videosOfAccount(a.id).length:0;
+  return ((a.fanSnapshots||[]).length)+((a.profileSnapshots||[]).length)+((a.healthChecks||[]).length)+vN;
+}
+function _dupGroups(){
+  var map={};
+  ((typeof accounts!=='undefined'&&accounts)||[]).forEach(function(a){ var k=normAccHandle(a.handle); if(!k) return; (map[k]=map[k]||[]).push(a); });
+  return Object.keys(map).filter(function(k){return map[k].length>1;}).map(function(k){ return {key:k, accs:map[k]}; });
+}
+function _dupSort(accs){
+  return accs.slice().sort(function(x,y){ var rx=_accRichness(x), ry=_accRichness(y); if(ry!==rx) return ry-rx; return (y.updatedAt||0)-(x.updatedAt||0); });
+}
+function renderDupClean(){
+  var box=document.getElementById('dupCleanBox'); if(!box) return;
+  var rb=document.getElementById('dupCleanRefresh'); if(rb) rb.onclick=function(){ renderDupClean(); };
+  var groups=_dupGroups();
+  if(!groups.length){ box.innerHTML='<div style="font-size:12.5px;color:var(--gold-dark)">✓ 目前沒有重複帳號（用正規化後的 handle 比對：去 @／大小寫／尾斜線／顯示名／網址）。</div>'; box.__groups=[]; return; }
+  var html='<div style="font-size:12.5px;color:#A51820;font-weight:700;margin-bottom:8px">偵測到 '+groups.length+' 組重複帳號（同一個帳號被建了多筆）：</div>';
+  groups.forEach(function(g,gi){
+    var sorted=_dupSort(g.accs); var primary=sorted[0];
+    html+='<div style="border:1px solid var(--gold-soft);border-radius:9px;padding:10px 12px;margin-bottom:9px;background:#fff">';
+    html+='<div style="font-size:13px;font-weight:800;color:var(--ink);margin-bottom:4px">@'+esc(g.key)+'（'+g.accs.length+' 筆）</div>';
+    sorted.forEach(function(a,i){
+      var keep=(i===0);
+      html+='<div class="vstrat-row" style="'+(i?'':'border-top:0')+'">'
+        +'<span class="vs-tag '+(keep?'vs-apply':'vs-why')+'">'+(keep?'保留':'併入後刪')+'</span>'
+        +'<span style="white-space:pre-wrap">'+esc(a.handle||'')+(a.displayName?('（'+esc(a.displayName)+'）'):'')
+        +' · 影片 '+((typeof videosOfAccount==='function')?videosOfAccount(a.id).length:0)
+        +' · 版面 '+((a.profileSnapshots||[]).length)
+        +' · 粉絲快照 '+((a.fanSnapshots||[]).length)
+        +' · 健檢 '+((a.healthChecks||[]).length)
+        +(a.updatedAt?(' · 更新 '+new Date(a.updatedAt).toISOString().slice(0,10)):'')+'</span></div>';
+    });
+    html+='<div style="display:flex;gap:8px;margin-top:8px"><button class="btn btn-go" data-dup-merge="'+gi+'" style="flex:1;font-size:12px;padding:7px 10px">合併這組（保留資料最多的那筆，其餘併入後刪除）</button></div>';
+    html+='</div>';
+  });
+  box.innerHTML=html;
+  box.__groups=groups.map(function(g){ var sorted=_dupSort(g.accs); return {key:g.key, primaryId:sorted[0].id, otherIds:sorted.slice(1).map(function(a){return a.id;})}; });
+  [].slice.call(box.querySelectorAll('[data-dup-merge]')).forEach(function(b){
+    b.onclick=function(){ var gi=parseInt(b.getAttribute('data-dup-merge'),10); var grp=box.__groups&&box.__groups[gi]; if(grp) mergeDupAccounts(grp.primaryId, grp.otherIds); };
+  });
+}
+async function mergeDupAccounts(primaryId, otherIds){
+  var primary=accounts.find(function(a){return a.id===primaryId;}); if(!primary) return;
+  if(!confirm('確定把這組重複帳號合併成 1 筆？\n會把其餘帳號的影片改掛到保留的那筆、合併快照與資料後，刪除多餘帳號。此動作無法復原。')) return;
+  primary.fanSnapshots=primary.fanSnapshots||[]; primary.profileSnapshots=primary.profileSnapshots||[]; primary.healthChecks=primary.healthChecks||[];
+  primary.profile=primary.profile||{}; primary.relatedAccounts=primary.relatedAccounts||[]; primary.types=primary.types||[];
+  (otherIds||[]).forEach(function(oid){
+    var o=accounts.find(function(a){return a.id===oid;}); if(!o) return;
+    if(typeof videos!=='undefined'&&videos) videos.forEach(function(v){ if(v.accountId===oid){ v.accountId=primary.id; v.accountHandle=primary.handle; } });
+    if(o.fanSnapshots) primary.fanSnapshots=primary.fanSnapshots.concat(o.fanSnapshots);
+    if(o.profileSnapshots) primary.profileSnapshots=primary.profileSnapshots.concat(o.profileSnapshots);
+    if(o.healthChecks) primary.healthChecks=primary.healthChecks.concat(o.healthChecks);
+    ['displayName','domain','jobTitle','industry','platform','note'].forEach(function(k){ if(!primary[k]&&o[k]) primary[k]=o[k]; });
+    if(o.profile) Object.keys(o.profile).forEach(function(k){ if(!primary.profile[k]&&o.profile[k]) primary.profile[k]=o.profile[k]; });
+    (o.types||[]).forEach(function(t){ if(primary.types.indexOf(t)<0) primary.types.push(t); });
+    (o.relatedAccounts||[]).forEach(function(rid){ if(rid!==primary.id&&primary.relatedAccounts.indexOf(rid)<0) primary.relatedAccounts.push(rid); });
+  });
+  function _sd(arr){ return arr.slice().sort(function(x,y){ return String(x.date||'').localeCompare(String(y.date||'')); }); }
+  primary.fanSnapshots=_sd(primary.fanSnapshots); primary.profileSnapshots=_sd(primary.profileSnapshots); primary.healthChecks=_sd(primary.healthChecks);
+  accounts.forEach(function(a){
+    if(!a.relatedAccounts) return;
+    var seen={}; a.relatedAccounts=a.relatedAccounts.map(function(rid){ return (otherIds.indexOf(rid)>=0)?primary.id:rid; }).filter(function(rid){ if(rid===a.id||seen[rid]) return false; seen[rid]=1; return true; });
+  });
+  accounts=accounts.filter(function(a){ return otherIds.indexOf(a.id)<0; });
+  primary.updatedAt=Date.now();
+  await saveAccounts(); if(typeof saveVideos==='function') await saveVideos(); renderAccounts(); if(typeof renderAll==='function') renderAll();
+  if(typeof toast==='function') toast('✓ 已合併重複帳號（保留 '+(primary.handle||'')+'）');
+  renderDupClean();
+}
+
 
 /* ─── 粉絲快照 ─── */
 function addFanSnapshot(accId){
