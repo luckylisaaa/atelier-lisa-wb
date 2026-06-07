@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="color-scheme" content="light only">
 <meta name="supported-color-schemes" content="light">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v175 (版本號僅留註解，不顯示於畫面)
+<!-- ATELIER 影片診斷工作台 · 內部版本 v176 (版本號僅留註解，不顯示於畫面)
+     v176 更新（交辦單：真實測試後修正，接 v175、不改功能/id/onchange/下游、沿用品牌色與既有 icon）：【P0 一頁診斷書 PDF 真正修好】真實輸出顯示客戶版 11 頁／顧問版 18 頁、建議卡「一字一行」、產出很慢，而版面對照（table）PDF 乾淨——病根＝一頁診斷書的 grid/flex 列印時欄寬塌成 0。修法：@media print 內對 #clientOnePager 的所有 grid/flex（[style*=display:grid]／[style*=display:flex]）強制 display:block，並把 .op-row 改 block（隱藏其勾選 label、子 div 改 block 滿欄），文字一律以全欄寬正常橫排、不再依賴 flex 軌道寬度，配合既有 page-break-inside:avoid 控分頁→頁數正常（各約 2–4 頁）、快。【A 客戶版／顧問版輸出 PPT】把投影片下載抽成共用 window._downloadSlide(title,inner,fileBase)（16:9、可編輯 HTML），版面對照沿用之；一頁診斷書按鈕列新增 #dlOnePagerPpt「下載投影片（PPT）」（產生後與列印鈕一起顯示）＋ window.exportOnePagerSlide（複製 #clientOnePager、去除 op-noprint、依 op-advisor 命名顧問/客戶版），下載後可自行編輯文字（同時滿足「可不可以自己改資料」）。因單檔鐵則不引入外部 pptx 函式庫，PPT 以可投影／可編輯／可另存 PDF 的 HTML 投影片提供。【B 並排比較表排版】table 改 table-layout:fixed＋FIELD 欄固定寬，帳號欄等寬；FIELD／帳號欄之間與帳號之間加金色直線分隔（border-right var(--gold-soft)）；新增 _cmpCell：每格內容若有換行／分號則拆成「1. 2. 3.」逐條列，不再擠成一坨。【C 並排比較／清除選擇 按鈕】合成一排（移除換行）：並排比較＝主要（flex:1、放大字級/內距），清除選擇＝次要（auto 寬、小字、次要色）。【D 客戶交付刪重複搜尋框】移除上方 #dlClientSearch 輸入框（下拉 #dlClient 自帶 data-csearch 搜尋；filterDlClient 已防呆，搜尋框不存在時不過濾，無下游影響）。【E 開新分頁外連補 icon】把 8 個開新分頁的工具捷徑與商業閉環連結（開 Claude×3／toolzin／Cobalt／Gemini／改開新分頁／在新分頁開啟）改為在標籤後內嵌 external-link 線條 icon（currentColor 隨按鈕色、可 grep 可見）；移除 v174 對 a.btn 的 ::after（避免雙重），保留 .vlink 的 ::after 給內文連結；純方向箭頭不動。全檔 node --check 全過（15 script）、div 1117／details 44／CSS 開閉平衡；v168/v170 icon 未動（emoji/符號殘留＝0）。
      v175 更新（交辦單：收尾，接 v174、不改功能/id/onchange/下游、沿用品牌色與既有 csel/icon）：【★B 單選＝多選的精緻列（保留不打勾差異）】csel enhanceSelect 的 build() 對 data-accpick 單選改渲染豐富列：依 option value 反查 accounts，套與多選相同的 mp-h（帳號名粗體）＋mp-id（金色中文名/身分，用 _mpIdent）＋mp-case 徽章（_mpCaseLabel）＋·無版面（.csel-opt-acc，比照 mp-row 間距；.csel-opt.sel 時 mp-h/mp-id/mp-noprof 轉白字）；placeholder/disabled 維持純文字。唯一差別＝無打勾框、無完成鈕，點一列＝設 select.value＋派發 change＋收起（沿用既有 csel 點選邏輯，未改 value/onchange/下游）。搜尋因 textContent 含帳號名/中文名仍正常。【面板高度與捲動】csel open() 高度上限 262→340（一次看得到約 6–8 筆）、保留 v173 靠底部往上翻（flip）與 overflow 捲動。【依產業·領域以主角為準】多選 ordered() 的 industry 排序改為「有主角/客戶時」依相關度：同產業=3、與主角關鍵字（產業/職稱/領域斷詞）有交集=2、其餘=0，降冪後再字母序（律師主角→法律相關職業先出來）；無主角維持字母序。【版面對照版面重設計】拿掉 #cmpPicker 殘留的空白邊框（下拉自帶外觀，避免「用途不明的大空白框」）；「並排比較／清除選擇」「產生對標優化提示詞／清除勾選」按鈕列改 flex-wrap＋主鈕 flex:1 1 auto;min-width＋white-space:nowrap、次鈕 flex:0 0 auto（修「直排時字被壓縮」、依文字與重要性給合理大小）。【並排比較輸出 PPT/PDF】新增通用 printElementPortal(el,title)（複製目標進 body 直屬 #genPrintPortal＋body.op? 用 gen-printing class，@media print 只印它；opPrintPrepare 加 gen-printing guard 避免與一頁診斷書衝突）＋ window.exportCompare(kind)：runCompare 結果頂端加 op-noprint 工具列「輸出 PDF」（portal 列印比較表，列印視窗可另存 PDF）與「下載投影片」（產生 16:9 .html 投影片檔下載，可全螢幕投影或再列印存 PDF；因單檔規則不引入外部 pptx 函式庫，故以可投影 HTML＋PDF 滿足帶開會需求）。【確認 v174 已到位】A 系統建議每筆「建議」於列下顯示「為什麼：…」（_smReasonShort）；C 帳號管理篩選列 @media(max-width:560px) 一排塞下；D copyPrompt 產生後彈預覽看全文＋按鈕 title 說明；E 外連箭頭以 CSS ::after 給 a.btn[target=_blank] 與 .vlink[target=_blank]（含商業閉環，不限數量）補 external-link icon、純方向不動——皆確認在。全檔 node --check 全過（15 script）、div 1116／details 44／CSS 開閉平衡；v168/v170 icon 未動。
      v174 更新（交辦單：總整理收尾 A–E，接 v173、不改功能/id/onchange/下游、沿用品牌色與既有 csel/icon；P0 兩項 v173 已修，本版確認未回歸）：【A 系統建議顯示為什麼】新增全域 _smReasonShort(cand,sc)（依 v169 _smScore 結果輸出一句白話原因：同產業·X／同類型·Y／量級相近·Z／領域相近／內容結構相近／整體輪廓接近）；多選 renderAccountMultiPicker 的建議列（sug 且已選客戶）在「建議」徽章後換行顯示「為什麼：…」（新增 .mp-why，.mp-row-main 改 flex-wrap 讓原因獨佔一行）。【B 單選加搜尋】確認 #cmpHero／#optClient／#recClient／#dlClient 自 v171 起皆有 data-csearch（csel build 先渲染 .csel-search 再排序頁籤＋金線），打開即「搜尋＋頁籤＋金線」對齊②，單選點一下即定；本版無需改碼，僅驗證。【C 帳號管理篩選列手機一排】新增 @media(max-width:560px)：.filterrow 改 nowrap、隱藏「篩選」字、三個下拉 flex:1 1 0;min-width:0 等分、縮 padding/字級、.csel-label 溢出省略，避免擠成兩行。【D 消除盲盒感】新增全域 copyPrompt(text,label)＝沿用 copyVal 複製後，於 #modal/#sheet 彈出預覽（標題＋說明＋可捲動 <pre> 完整提示詞＋「再複製一次／關閉」）；buildOptimizePrompt／buildRecommendPrompt／buildIP／buildOutline／buildScript 五個產生器改呼叫 copyPrompt（產生後直接看得到內容）；optRun／recRun／dlIP／dlOutline／dlScript／cmpRun 加 title 小說明（桌機 hover、手機長按顯示「這顆在做什麼／怎麼用」）。【E ↗ 外連補 icon】以一條 CSS ::after 給 a.btn[target=_blank] 與 .vlink[target=_blank]（工具捷徑 claude/gemini/toolzin/cobalt/atelier-subtype、商業閉環 atelier-map、影片開啟、看主頁等開新分頁連結）補上 external-link 線條 icon（內嵌 data-URI、主紅 #A51820），列印時隱藏；純方向箭頭與已內嵌外連 icon 的連結不受影響、不重覆。未動任何 value/onchange/下游與既有 icon；全檔 node --check 全過（15 script）、div 1112／details 44／CSS 開閉平衡；v168/v170 icon 未動（emoji/符號殘留＝0）。
      v173 更新（交辦單：總整理，分段做——本版＝先做 🔴 P0 兩個會擋使用的 bug，A–E 下一版；接 v172、不改功能/id/onchange/下游、沿用品牌色與既有 csel/icon）：【P0-1 案例類型等所有 csel 下拉手機底部滑不到底】.csel-panel 原本只往下開（top:100%），手機底部打開時面板掉出視窗被切、看不到最後選項。修：新增 .csel.csel-up>.csel-panel{top:auto;bottom:calc(100%+4px)}，並在 csel open() 量測按鈕 getBoundingClientRect，下方空間不足（<210px）且上方較大時加 .csel-up 往上翻，並把 panel.maxHeight 限到可用空間（140–262px，保留既有 overflow-y:auto 可捲）；多選 openMenu 同套（<260px 翻上、maxHeight 160–360）。涵蓋帳號卡 acc-case-sel 與所有 csel/多選下拉；確認帳號卡容器無 overflow:hidden 夾住。【P0-2 客戶版一頁診斷書列印第二頁起爆框/撐多頁/很慢（v172 portal 已做、再加核心保險）】雖模板無 break-all、列為 grid，為徹底壓制：opPrintPrepare 複製出列印用紙後，直接對 clone 的 #opPaper 寫死 inline 樣式（width/max-width:100%、margin:0、padding:16/18、border:0、box-shadow:0、word-break:normal、overflow-wrap:break-word），對每個 .op-row/details/.vstrat-row/.op-why 設 page-break-inside:avoid，圖片/SVG max-width:100%；@media print 另加 #clientOnePager *{word-break:normal!important;overflow-wrap:break-word!important} 與卡片 break-inside:avoid。確保整張紙以全頁寬正常橫排、每張卡不被切到下一頁、頁數正常且只排版這一張（快）。未動一頁診斷書內容/欄位/三關/任何 id/onclick/下游；全檔 node --check 全過（15 script）、div 1108／details 44／CSS 開閉平衡；v168/v170 icon 未動。A–E（系統建議為什麼、單選加搜尋、手機篩選列、提示詞預覽＋說明、↗ 補漏）排下一版。
@@ -298,8 +299,8 @@ input,select,textarea{color-scheme:light}
   font-weight:700;padding:2px 8px;border-radius:8px;margin-top:6px}
 .vcard .vact{position:absolute;right:10px;bottom:10px;display:flex;gap:8px}
 .vcard .vlink{font-size:11px;color:var(--gold-dark);text-decoration:none;font-weight:700}
-a.btn[target="_blank"]::after,.vlink[target="_blank"]::after{content:"";display:inline-block;width:11px;height:11px;margin-left:4px;vertical-align:-1px;background:center/contain no-repeat;background-image:url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='%23A51820'%20stroke-width='2'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Cpath%20d='M14%205h5v5'/%3E%3Cpath%20d='M19%205l-8%208'/%3E%3Cpath%20d='M19%2013v5a1%201%200%200%201-1%201H6a1%201%200%200%201-1-1V7a1%201%200%200%201%201-1h5'/%3E%3C/svg%3E")}
-@media print{a.btn[target="_blank"]::after,.vlink[target="_blank"]::after{display:none}}
+.vlink[target="_blank"]::after{content:"";display:inline-block;width:11px;height:11px;margin-left:4px;vertical-align:-1px;background:center/contain no-repeat;background-image:url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='%23A51820'%20stroke-width='2'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Cpath%20d='M14%205h5v5'/%3E%3Cpath%20d='M19%205l-8%208'/%3E%3Cpath%20d='M19%2013v5a1%201%200%200%201-1%201H6a1%201%200%200%201-1-1V7a1%201%200%200%201%201-1h5'/%3E%3C/svg%3E")}
+@media print{.vlink[target="_blank"]::after{display:none}}
 .vcard .vdel{font-size:11px;color:var(--sub);cursor:pointer}
 .vsel{display:inline-block;vertical-align:middle}
 
@@ -742,7 +743,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v175</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v176</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -794,7 +795,7 @@ if('serviceWorker' in navigator){
         <div style="font-size:12.5px;color:var(--text);margin-bottom:8px"><svg class="aico" viewBox="0 0 24 24"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg> 看到影片立刻做：把<b>帳號連結 + 這支影片連結</b> ＋ <b>一張影片畫面截圖</b>丟給 Claude → 它回你<b>資料夾名稱</b>（YYYY-MM-DD_創作者_主題）和 <code>07_連結_創作者_主題.txt</code>（可直接下載）。照名稱建資料夾、存連結檔。這一步<b>只做建檔</b>就好（用下面「只建檔」那顆）；帳號分析留到下一步 ② 單獨做。下面「電腦建檔助手」是想手動命名/查捷徑時才點。</div>
         <div style="font-size:11.5px;color:var(--gold-dark);margin:0 0 12px;display:flex;gap:6px;align-items:flex-start"><svg class="aico" viewBox="0 0 24 24" style="flex:none;margin-top:1px"><circle cx="12" cy="12" r="9"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg><span>效益：先把資料夾與命名建好，之後每支影片、每個帳號都歸得了位、找得回來。</span></div>
         <div style="display:flex;gap:6px;flex-wrap:wrap">
-          <a href="https://claude.ai/" target="_blank" class="btn btn-ghost" style="text-decoration:none;font-size:12px;padding:6px 12px"><svg class="aico" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.07 0l3-3a5 5 0 1 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.07 0l-3 3a5 5 0 1 0 7.07 7.07l1.71-1.71"/></svg> 開 Claude</a>
+          <a href="https://claude.ai/" target="_blank" class="btn btn-ghost" style="text-decoration:none;font-size:12px;padding:6px 12px"><svg class="aico" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.07 0l3-3a5 5 0 1 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.07 0l-3 3a5 5 0 1 0 7.07 7.07l1.71-1.71"/></svg> 開 Claude<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-1px;margin-left:4px"><path d="M14 5h5v5"/><path d="M19 5l-8 8"/><path d="M19 13v5a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg></a>
           <button class="btn btn-ghost" id="copyPrompt0A" style="font-size:12px;padding:6px 12px;border-color:var(--rouge);color:var(--rouge)"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#A51820" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:3px"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/></svg>建檔＋帳號（一次跑·想省步驟才用）</button>
           <button class="btn btn-ghost" id="copyPrompt0" style="font-size:12px;padding:6px 12px;border-color:var(--rouge);color:var(--rouge)"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#A51820" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:3px"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/></svg>只建檔（建議）</button>
         </div>
@@ -894,7 +895,7 @@ if('serviceWorker' in navigator){
         <div style="font-size:12.5px;color:var(--text);margin-bottom:6px"><svg class="aico" viewBox="0 0 24 24"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg> 給 Claude：<b>帳號連結</b> + <b>帳號頁＋貼文九宮格＋影片九宮格</b>，再加 <b>貼1～貼9、片1～片9（逐格截圖）</b> → 身份、粉絲量級、版面策略、貼文vs影片比例、發文頻率、每篇文案與戰術，並出一份逐格盤點.txt。<br><span style="color:var(--gold-dark);font-size:11.5px">貼1–9／片1–9 不只看日期——每格的標題／文案、用了什麼鉤子／爆點／CTA 都會抓進逐格盤點；畫面有圖示沒數字＝0。</span><br><span style="color:var(--gold-dark);font-size:11.5px">↳ 這步可與下面 ③ 下載 / ④ 逐字稿<b>同時進行</b>，不用等。</span></div>
         <div style="font-size:11.5px;color:var(--gold-dark);margin:0 0 12px;display:flex;gap:6px;align-items:flex-start"><svg class="aico" viewBox="0 0 24 24" style="flex:none;margin-top:1px"><circle cx="12" cy="12" r="9"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg><span>效益：先看懂這個人靠什麼經營，後面的影片診斷和給客戶的建議才有根據、不會空談。</span></div>
         <div style="display:flex;gap:6px;flex-wrap:wrap">
-          <a href="https://claude.ai/" target="_blank" class="btn btn-ghost" style="text-decoration:none;font-size:12px;padding:6px 12px"><svg class="aico" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.07 0l3-3a5 5 0 1 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.07 0l-3 3a5 5 0 1 0 7.07 7.07l1.71-1.71"/></svg> 開 Claude</a>
+          <a href="https://claude.ai/" target="_blank" class="btn btn-ghost" style="text-decoration:none;font-size:12px;padding:6px 12px"><svg class="aico" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.07 0l3-3a5 5 0 1 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.07 0l-3 3a5 5 0 1 0 7.07 7.07l1.71-1.71"/></svg> 開 Claude<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-1px;margin-left:4px"><path d="M14 5h5v5"/><path d="M19 5l-8 8"/><path d="M19 13v5a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg></a>
           <button class="btn btn-ghost" id="copyPromptA" style="font-size:12px;padding:6px 12px"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#A51820" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:3px"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/></svg>複製提示詞 A（帳號分析）</button>
         </div>
         <div style="margin-top:8px;padding-top:8px;border-top:1px dashed var(--gold-soft)">
@@ -917,8 +918,8 @@ if('serviceWorker' in navigator){
         <div style="font-size:12.5px;color:var(--text);margin-bottom:8px">用 toolzin（手機可）或 Cobalt 把這輪要深挖的「主」影片＋封面＋文案抓下來（帳號分析要的截圖在 ② 已備齊）。<br><span style="color:var(--gold-dark);font-size:11.5px">↳ 可與 ② 帳號分析並行。</span></div>
         <div style="font-size:11.5px;color:var(--gold-dark);margin:0 0 12px;display:flex;gap:6px;align-items:flex-start"><svg class="aico" viewBox="0 0 24 24" style="flex:none;margin-top:1px"><circle cx="12" cy="12" r="9"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg><span>效益：把要分析的影片和封面抓下來，AI 才看得到實體、判得準。</span></div>
         <div style="display:flex;gap:6px;flex-wrap:wrap">
-          <a href="https://toolzin.com/" target="_blank" class="btn btn-ghost" style="text-decoration:none;font-size:12px;padding:6px 12px"><svg class="aico" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.07 0l3-3a5 5 0 1 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.07 0l-3 3a5 5 0 1 0 7.07 7.07l1.71-1.71"/></svg> 開 toolzin（推薦·一站抓齊）</a>
-          <a href="https://cobalt.tools/" target="_blank" class="btn btn-ghost" style="text-decoration:none;font-size:12px;padding:6px 12px"><svg class="aico" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.07 0l3-3a5 5 0 1 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.07 0l-3 3a5 5 0 1 0 7.07 7.07l1.71-1.71"/></svg> 開 Cobalt</a>
+          <a href="https://toolzin.com/" target="_blank" class="btn btn-ghost" style="text-decoration:none;font-size:12px;padding:6px 12px"><svg class="aico" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.07 0l3-3a5 5 0 1 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.07 0l-3 3a5 5 0 1 0 7.07 7.07l1.71-1.71"/></svg> 開 toolzin（推薦·一站抓齊）<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-1px;margin-left:4px"><path d="M14 5h5v5"/><path d="M19 5l-8 8"/><path d="M19 13v5a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg></a>
+          <a href="https://cobalt.tools/" target="_blank" class="btn btn-ghost" style="text-decoration:none;font-size:12px;padding:6px 12px"><svg class="aico" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.07 0l3-3a5 5 0 1 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.07 0l-3 3a5 5 0 1 0 7.07 7.07l1.71-1.71"/></svg> 開 Cobalt<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-1px;margin-left:4px"><path d="M14 5h5v5"/><path d="M19 5l-8 8"/><path d="M19 13v5a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg></a>
         </div>
       </div>
 
@@ -937,7 +938,7 @@ if('serviceWorker' in navigator){
         <div style="font-size:12.5px;color:var(--text);margin-bottom:6px"><svg class="aico" viewBox="0 0 24 24"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg> 給 Gemini：<b>影片連結</b> + <b>影片檔（上傳）</b> + <b>剪映 SRT 逐字稿</b> → Gemini 給你主題判斷、爆紅歸因、客戶落地、腳本分析。<br><span style="color:var(--gold-dark);font-size:11.5px"><svg class="aico" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><path d="M12 9v4M12 17h.01"/></svg> 數字/身份/粉絲它一律「待補」，不要它猜</span></div>
         <div style="font-size:11.5px;color:var(--gold-dark);margin:0 0 12px;display:flex;gap:6px;align-items:flex-start"><svg class="aico" viewBox="0 0 24 24" style="flex:none;margin-top:1px"><circle cx="12" cy="12" r="9"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg><span>效益：用最會看影片的 AI 拆主題與爆紅原因，這是整張歸類卡的骨架。</span></div>
         <div style="display:flex;gap:6px;flex-wrap:wrap">
-          <a href="https://gemini.google.com/" target="_blank" class="btn btn-ghost" style="text-decoration:none;font-size:12px;padding:6px 12px"><svg class="aico" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.07 0l3-3a5 5 0 1 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.07 0l-3 3a5 5 0 1 0 7.07 7.07l1.71-1.71"/></svg> 開 Gemini</a>
+          <a href="https://gemini.google.com/" target="_blank" class="btn btn-ghost" style="text-decoration:none;font-size:12px;padding:6px 12px"><svg class="aico" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.07 0l3-3a5 5 0 1 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.07 0l-3 3a5 5 0 1 0 7.07 7.07l1.71-1.71"/></svg> 開 Gemini<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-1px;margin-left:4px"><path d="M14 5h5v5"/><path d="M19 5l-8 8"/><path d="M19 13v5a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg></a>
           <button class="btn btn-ghost" id="gemCopy" style="font-size:12px;padding:6px 12px"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#A51820" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:3px"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/></svg>複製提示詞 B（影片分析）</button>
         </div>
         <details class="prompt-peek" style="margin-top:8px;border:1px dashed var(--gold-soft);border-radius:8px;background:var(--warm)">
@@ -954,7 +955,7 @@ if('serviceWorker' in navigator){
         <div style="font-size:11.5px;color:var(--gold-dark);margin:0 0 12px;display:flex;gap:6px;align-items:flex-start"><svg class="aico" viewBox="0 0 24 24" style="flex:none;margin-top:1px"><circle cx="12" cy="12" r="9"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg><span>效益：把主題收斂到最精準的那一個子題型，分類才細、之後找參照才對得上。</span></div>
         <div style="display:flex;gap:6px;flex-wrap:wrap">
           <button type="button" class="btn btn-go" style="font-size:12px;padding:6px 12px" onclick="toggleSubtypeEmbed(this)">▾ 就地展開使用（免開新分頁）</button>
-          <a href="https://luckylisaaa.github.io/atelier-subtype/" target="_blank" class="btn btn-ghost" style="text-decoration:none;font-size:12px;padding:6px 12px"><svg class="aico" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.07 0l3-3a5 5 0 1 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.07 0l-3 3a5 5 0 1 0 7.07 7.07l1.71-1.71"/></svg> 改開新分頁</a>
+          <a href="https://luckylisaaa.github.io/atelier-subtype/" target="_blank" class="btn btn-ghost" style="text-decoration:none;font-size:12px;padding:6px 12px"><svg class="aico" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.07 0l3-3a5 5 0 1 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.07 0l-3 3a5 5 0 1 0 7.07 7.07l1.71-1.71"/></svg> 改開新分頁<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-1px;margin-left:4px"><path d="M14 5h5v5"/><path d="M19 5l-8 8"/><path d="M19 13v5a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg></a>
         </div>
         <div id="subtypeEmbed" style="display:none;margin-top:10px"></div>
       </div>
@@ -966,7 +967,7 @@ if('serviceWorker' in navigator){
         <div style="font-size:12.5px;color:var(--text);margin-bottom:6px"><svg class="aico" viewBox="0 0 24 24"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg> 回到 STEP ① 那個 Claude 對話框（它已經有帳號分析了），補上：<b>數據截圖</b> + <b>Gemini 影片分析結果</b> + <b>子題型</b> → Claude 讀正確數字、驗證分類，最後給你<b>三份</b>：卡A 影片×帳號合併／卡B 單一影片歸類卡／卡C 帳號整理（②已做過帳號分析的話卡C 可省）。</div>
         <div style="font-size:11.5px;color:var(--gold-dark);margin:0 0 12px;display:flex;gap:6px;align-items:flex-start"><svg class="aico" viewBox="0 0 24 24" style="flex:none;margin-top:1px"><circle cx="12" cy="12" r="9"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg><span>效益：讓 Claude 把數字、影片分析、子題型對齊成可信的卡，避免 AI 讀錯數字。</span></div>
         <div style="display:flex;gap:6px;flex-wrap:wrap">
-          <a href="https://claude.ai/" target="_blank" class="btn btn-ghost" style="text-decoration:none;font-size:12px;padding:6px 12px"><svg class="aico" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.07 0l3-3a5 5 0 1 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.07 0l-3 3a5 5 0 1 0 7.07 7.07l1.71-1.71"/></svg> 開 Claude</a>
+          <a href="https://claude.ai/" target="_blank" class="btn btn-ghost" style="text-decoration:none;font-size:12px;padding:6px 12px"><svg class="aico" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.07 0l3-3a5 5 0 1 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.07 0l-3 3a5 5 0 1 0 7.07 7.07l1.71-1.71"/></svg> 開 Claude<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-1px;margin-left:4px"><path d="M14 5h5v5"/><path d="M19 5l-8 8"/><path d="M19 13v5a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg></a>
           <button class="btn btn-ghost" id="copyPromptC" style="font-size:12px;padding:6px 12px"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#A51820" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:3px"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/></svg>複製提示詞 C（讀數字+合併）</button>
         </div>
         <details class="prompt-peek" style="margin-top:8px;border:1px dashed var(--gold-soft);border-radius:8px;background:var(--warm)">
@@ -1846,9 +1847,9 @@ if('serviceWorker' in navigator){
     <div style="font-size:13px;color:var(--ink);margin-bottom:6px;font-weight:700">② 選比較對象（連主角共 2–4 個）：<span style="font-weight:400;color:var(--sub);font-size:12px">選了主角後，系統會用相似度把「最適合對標的」排在最前（標「建議」）；也可自己直接勾。</span></div>
     <input id="cmpSearch" type="text" oninput="renderComparePicker()" placeholder="打字找帳號：英文 handle（如 sunny）或中文名／職稱（如 王陽明、律師）" style="width:100%;max-width:420px;box-sizing:border-box;padding:9px 11px;margin-bottom:10px;border:1px solid var(--border);border-radius:8px;background:var(--warm-white,#FDFBF8);color:var(--ink);font-family:inherit;font-size:14px;display:block">
     <div id="cmpPicker"></div>
-    <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
-      <button class="btn btn-go" id="cmpRun" style="flex:1 1 auto;min-width:150px;white-space:nowrap" title="把主角＋勾選的比較對象並排比 Bio／置頂／Highlight／視覺風格，找出版面策略的差異與共同點。">並排比較</button>
-      <button class="btn btn-ghost" id="cmpClear" style="flex:0 0 auto;white-space:nowrap">清除選擇</button>
+    <div style="margin-top:12px;display:flex;gap:8px;align-items:stretch">
+      <button class="btn btn-go" id="cmpRun" style="flex:1 1 auto;white-space:nowrap;font-size:15px;padding:12px 18px" title="把主角＋勾選的比較對象並排比 Bio／置頂／Highlight／視覺風格，找出版面策略的差異與共同點。">並排比較</button>
+      <button class="btn btn-ghost" id="cmpClear" style="flex:0 0 auto;white-space:nowrap;font-size:12.5px;padding:0 14px;color:var(--sub)">清除選擇</button>
     </div>
   </div>
   <div id="cmpResult"></div>
@@ -1931,7 +1932,6 @@ if('serviceWorker' in navigator){
 
   <div class="card" style="margin-bottom:14px">
     <div style="font-size:13px;font-weight:600;color:var(--ink);margin-bottom:6px">先選這次要服務的客戶帳號：</div>
-    <input id="dlClientSearch" type="text" oninput="filterDlClient()" placeholder="打字找客戶：英文 handle（如 sunny）或中文名／職稱（如 王陽明、演員）" style="width:100%;max-width:420px;box-sizing:border-box;padding:9px 11px;margin-bottom:8px;border:1px solid var(--border);border-radius:8px;background:var(--warm-white,#FDFBF8);color:var(--ink);font-family:inherit;font-size:14px;display:block">
     <select id="dlClient" data-csearch="1" data-accpick="1" onchange="updateDlVideoWarn();if(typeof renderMarketCard==='function')renderMarketCard()" style="width:100%;max-width:420px;box-sizing:border-box;padding:9px 11px;border:1px solid var(--border);border-radius:8px;background:var(--warm-white,#FDFBF8);color:var(--ink);font-family:inherit;font-size:14px;display:block"></select>
     <div style="font-size:11.5px;color:var(--sub);margin-top:8px">客戶資料越完整（貼過帳號分析卡、拆解過影片），診斷書越準。沒有客戶帳號就先到「帳號管理」新增。</div>
     <div id="marketCard" class="op-noprint" style="margin-top:10px"></div>
@@ -2041,6 +2041,10 @@ if('serviceWorker' in navigator){
     #clientOnePager #opPaper{max-width:100%!important;width:100%!important;box-sizing:border-box!important;padding:14px 16px!important;border:0!important;margin:0!important;box-shadow:none!important}
     #clientOnePager img,#clientOnePager svg{max-width:100%!important;height:auto!important}
     #clientOnePager,#clientOnePager *{word-break:normal!important;overflow-wrap:break-word!important}
+    #clientOnePager [style*="display:grid"],#clientOnePager [style*="display:flex"]{display:block!important}
+    #clientOnePager .op-row{display:block!important;padding:10px 0!important}
+    #clientOnePager .op-row>label{display:none!important}
+    #clientOnePager .op-row>div{display:block!important;width:auto!important;max-width:100%!important;margin:0 0 3px!important}
     #clientOnePager .op-row,#clientOnePager details,#clientOnePager .vstrat-row,#clientOnePager .op-why{page-break-inside:avoid;break-inside:avoid}
     .op-noprint{display:none!important}
     #clientOnePager:not(.print-alt) .op-alt{display:none!important}
@@ -2096,6 +2100,31 @@ if('serviceWorker' in navigator){
     }
     window.printElementPortal=printElementPortal;
     function _cmpDateStr(){ var d=new Date(); return d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2); }
+    function _downloadSlide(title, innerHTML, fileBase){
+      var slide='<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>'+title+' '+_cmpDateStr()+'</title>'
+        +'<style>*{box-sizing:border-box}body{margin:0;background:#2B2521;font-family:"Noto Sans TC",system-ui,sans-serif;display:flex;align-items:flex-start;justify-content:center;min-height:100vh;padding:24px}'
+        +'.slide{width:100%;max-width:1280px;min-height:680px;background:#FDFBF8;border-radius:14px;box-shadow:0 18px 50px rgba(0,0,0,.4);padding:40px 44px;overflow:auto}'
+        +'.slide h1{font-family:"Noto Serif TC",serif;color:#7A1318;font-size:26px;margin:0 0 6px}.slide .sub{color:#9C8A66;font-size:13px;margin-bottom:18px}'
+        +'.slide table{width:100%;border-collapse:collapse;font-size:13px}.slide th,.slide td{border-bottom:1px solid #E2D2A8;padding:8px 10px;text-align:left;vertical-align:top}'
+        +'.slide th{color:#7A1318}.slide [contenteditable]{outline:none}.slide img,.slide svg{max-width:100%;height:auto}'
+        +'@media print{body{background:#fff;padding:0}.slide{box-shadow:none;border-radius:0;max-width:100%;min-height:0}}</style></head>'
+        +'<body><div class="slide"><h1>'+title+'</h1><div class="sub">ATELIER · '+_cmpDateStr()+'　（可全螢幕投影；要 PDF 可在瀏覽器按列印→存成 PDF。此檔為 HTML 投影片，文字可直接編輯後再用。）</div>'+innerHTML+'</div></body></html>';
+      try{
+        var blob=new Blob([slide],{type:'text/html;charset=utf-8'}); var url=URL.createObjectURL(blob);
+        var a=document.createElement('a'); a.href=url; a.download=fileBase+'_'+_cmpDateStr()+'.html'; document.body.appendChild(a); a.click(); document.body.removeChild(a);
+        setTimeout(function(){ URL.revokeObjectURL(url); },2000);
+        if(typeof toast==='function') toast('✓ 已下載投影片（.html，可投影／編輯／另存 PDF）');
+      }catch(e){ if(typeof toast==='function') toast('下載失敗，請改用「輸出 PDF」'); }
+    }
+    window._downloadSlide=_downloadSlide;
+    window.exportOnePagerSlide=function(){
+      var src=document.getElementById('clientOnePager'); if(!src || !src.innerHTML.trim()){ if(typeof toast==='function') toast('先按「產生一頁診斷書」'); return; }
+      var clone=src.cloneNode(true);
+      clone.querySelectorAll('.op-noprint').forEach(function(n){ if(n.parentNode) n.parentNode.removeChild(n); });
+      var paper=clone.querySelector('#opPaper'); var inner=paper?paper.outerHTML:clone.innerHTML;
+      var isAdv=src.classList.contains('op-advisor');
+      _downloadSlide(isAdv?'顧問版底稿 · 一頁診斷書':'客戶版 · 一頁診斷書', inner, isAdv?'診斷書_顧問底稿':'診斷書_客戶版');
+    };
     window.exportCompare=function(kind){
       var res=document.getElementById('cmpResult'); if(!res || !res.innerHTML.trim()){ if(typeof toast==='function') toast('先按「並排比較」產生結果'); return; }
       var tbl=res.querySelector('table'); var inner=tbl?tbl.outerHTML:res.innerHTML;
@@ -2104,20 +2133,7 @@ if('serviceWorker' in navigator){
         printElementPortal(wrap,'版面對照_'+_cmpDateStr());
         return;
       }
-      // ppt：輸出可投影的 16:9 HTML 投影片檔（可全螢幕或再另存 PDF）
-      var slide='<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>版面對照 簡報 '+_cmpDateStr()+'</title>'
-        +'<style>*{box-sizing:border-box}body{margin:0;background:#2B2521;font-family:"Noto Sans TC",system-ui,sans-serif;display:flex;align-items:center;justify-content:center;min-height:100vh;padding:24px}'
-        +'.slide{width:100%;max-width:1280px;aspect-ratio:16/9;background:#FDFBF8;border-radius:14px;box-shadow:0 18px 50px rgba(0,0,0,.4);padding:40px 44px;overflow:auto}'
-        +'.slide h1{font-family:"Noto Serif TC",serif;color:#7A1318;font-size:26px;margin:0 0 6px}.slide .sub{color:#9C8A66;font-size:13px;margin-bottom:18px}'
-        +'.slide table{width:100%;border-collapse:collapse;font-size:13px}.slide th,.slide td{border-bottom:1px solid #E2D2A8;padding:8px 10px;text-align:left;vertical-align:top}'
-        +'.slide th{color:#7A1318}@media print{body{background:#fff;padding:0}.slide{box-shadow:none;border-radius:0;max-width:100%;aspect-ratio:auto}}</style></head>'
-        +'<body><div class="slide"><h1>版面對照</h1><div class="sub">ATELIER · '+_cmpDateStr()+'　（可全螢幕投影；要 PDF 可在瀏覽器按列印→存成 PDF）</div>'+inner+'</div></body></html>';
-      try{
-        var blob=new Blob([slide],{type:'text/html;charset=utf-8'}); var url=URL.createObjectURL(blob);
-        var a=document.createElement('a'); a.href=url; a.download='版面對照_簡報_'+_cmpDateStr()+'.html'; document.body.appendChild(a); a.click(); document.body.removeChild(a);
-        setTimeout(function(){ URL.revokeObjectURL(url); },2000);
-        if(typeof toast==='function') toast('✓ 已下載簡報投影片（.html，可投影或另存 PDF）');
-      }catch(e){ if(typeof toast==='function') toast('下載失敗，請改用「輸出 PDF」'); }
+      _downloadSlide('版面對照', inner, '版面對照_簡報');
     };
     window.addEventListener('beforeprint',opPrintPrepare);
     window.addEventListener('afterprint',opPrintCleanup);
@@ -2130,6 +2146,7 @@ if('serviceWorker' in navigator){
     <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
       <button class="btn btn-go" id="dlOnePager" style="width:auto;padding:10px 18px">產生一頁診斷書</button>
       <button class="btn btn-ghost" id="dlOnePagerPrint" style="width:auto;padding:10px 18px;display:none">列印 ／ 存成 PDF</button>
+      <button class="btn btn-ghost" id="dlOnePagerPpt" style="width:auto;padding:10px 18px;display:none" title="把這張一頁診斷書下載成投影片檔（.html，16:9），可直接全螢幕投影、用瀏覽器另存 PDF，或開啟後自行編輯文字再交付。">下載投影片（PPT）</button>
     </div>
     <div id="opModeWrap" class="op-noprint" style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-top:10px">
       <span style="font-size:12px;color:var(--gold-dark);font-weight:700;letter-spacing:1px">輸出模式</span>
@@ -2162,7 +2179,7 @@ if('serviceWorker' in navigator){
     <div class="ph-sub">嵌入你的「自媒體商業閉環知識地圖」。A 認知 → B 品牌 → C 信任 → D 轉化 → E 組織 的完整顧問診斷系統。</div>
   </div>
   <div style="margin-bottom:10px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">
-    <a href="https://luckylisaaa.github.io/atelier-map/" target="_blank" rel="noopener" class="btn btn-ghost" style="width:auto;font-size:13px;padding:8px 14px;text-decoration:none"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#A51820" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:3px"><path d="M14 5h5v5"/><path d="M19 5l-8 8"/><path d="M19 13v5a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg>在新分頁開啟</a>
+    <a href="https://luckylisaaa.github.io/atelier-map/" target="_blank" rel="noopener" class="btn btn-ghost" style="width:auto;font-size:13px;padding:8px 14px;text-decoration:none"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#A51820" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:3px"><path d="M14 5h5v5"/><path d="M19 5l-8 8"/><path d="M19 13v5a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg>在新分頁開啟<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-1px;margin-left:4px"><path d="M14 5h5v5"/><path d="M19 5l-8 8"/><path d="M19 13v5a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg></a>
     <span style="font-size:11.5px;color:var(--sub)">若下方空白，代表 atelier-map 還沒上傳內容（見下方說明）。</span>
   </div>
   <iframe src="https://luckylisaaa.github.io/atelier-map/" title="商業閉環知識地圖" style="width:100%;height:78vh;border:1px solid var(--gold-soft);border-radius:12px;background:#fff" loading="lazy"></iframe>
@@ -3564,7 +3581,8 @@ function renderManual(){
   <div class="form-card" style="border-left:3px solid var(--gold)">
     <div class="stitle" style="font-size:15px;color:var(--rouge)">更新紀錄 · 還沒做的</div>
     <p style="font-size:13px;color:var(--text);line-height:1.85;margin-top:8px">
-    <b>v175（這版）：</b>①<b>單選下拉變得跟多選一樣精緻</b>：主角／你的客戶／客戶交付／智能對標客戶這些單選，現在每一列都跟「對標帳號」一樣有<b>帳號名＋金色中文名/身分＋徽章＋一樣的間距</b>，只差<b>不打勾、沒有完成鈕</b>（點一列就選定並收起）——區別保留、質感拉齊。②下拉面板<b>一次看得到約 6–8 筆、可乾淨捲動、靠螢幕底部會往上翻</b>、不會切掉半行。③<b>「依產業·領域」會以主角為準</b>：選了主角後，<b>同產業／相關職業（例如律師→法律相關）會排到最前</b>。④<b>版面對照版面重整</b>：拿掉「清除選擇」旁那個用途不明的空白框；「並排比較／產生提示詞」等按鈕不再被壓縮、依文字大小排好。⑤<b>並排比較結果可輸出帶去開會</b>：新增「輸出 PDF」（可存成 PDF 檔）與「下載投影片」（16:9 簡報檔，可全螢幕投影或再存 PDF）。＊另確認上一版做的：系統建議每筆有「為什麼」、提示詞按下去看得到內容＋按鈕說明、手機篩選列一排、外連連結都有「開新分頁」小箭頭——都在。＊全部沿用既有功能與圖示，沒動到流程與資料。<br>
+    <b>v176（這版 · 真實測試後修正）：</b>①<b>【最重要】客戶版／顧問版一頁診斷書的 PDF 真的修好了</b>：之前列印會變成 11～18 頁、建議卡文字「一個字一行」、又慢；原因是那些卡片用了會在列印時「欄寬縮成 0」的排版。這版改成<b>列印時像版面對照表一樣穩</b>，文字正常滿欄橫排，<b>頁數正常（約 2～4 頁）、輸出變快</b>。②<b>客戶版／顧問版也能「輸出 PPT」了</b>：按鈕列多了「下載投影片（PPT）」，下載的是 16:9 投影片檔，<b>可全螢幕投影、另存 PDF，也能自己打開改文字</b>（解決「下載後想自己調整」）。③<b>並排比較表更整齊</b>：各欄<b>等寬對齊、帳號之間有金色直線分隔</b>，每格內容<b>一條一條列（1. 2. 3.）</b>不再擠成一坨。④<b>「並排比較／清除選擇」併成一排</b>：並排比較大顆顯眼、清除選擇小顆次要。⑤<b>客戶交付刪掉重複的搜尋框</b>：上面那個多餘的搜尋框拿掉了，直接用下拉自己的搜尋。⑥<b>開新分頁的連結（工具捷徑、商業閉環…）都加上「開新分頁」小箭頭 icon</b>。＊全部沿用既有功能與圖示，沒動流程與資料。<br>
+    <b>v175：</b>①<b>單選下拉變得跟多選一樣精緻</b>：主角／你的客戶／客戶交付／智能對標客戶這些單選，現在每一列都跟「對標帳號」一樣有<b>帳號名＋金色中文名/身分＋徽章＋一樣的間距</b>，只差<b>不打勾、沒有完成鈕</b>（點一列就選定並收起）——區別保留、質感拉齊。②下拉面板<b>一次看得到約 6–8 筆、可乾淨捲動、靠螢幕底部會往上翻</b>、不會切掉半行。③<b>「依產業·領域」會以主角為準</b>：選了主角後，<b>同產業／相關職業（例如律師→法律相關）會排到最前</b>。④<b>版面對照版面重整</b>：拿掉「清除選擇」旁那個用途不明的空白框；「並排比較／產生提示詞」等按鈕不再被壓縮、依文字大小排好。⑤<b>並排比較結果可輸出帶去開會</b>：新增「輸出 PDF」（可存成 PDF 檔）與「下載投影片」（16:9 簡報檔，可全螢幕投影或再存 PDF）。＊另確認上一版做的：系統建議每筆有「為什麼」、提示詞按下去看得到內容＋按鈕說明、手機篩選列一排、外連連結都有「開新分頁」小箭頭——都在。＊全部沿用既有功能與圖示，沒動到流程與資料。<br>
     <b>v174：</b>①<b>系統建議會寫「為什麼推薦」</b>了：在版面對照／對標優化選對標時，每個被「建議」的帳號下面會多一句白話原因（同產業·X／同類型·Y／量級相近…），不用猜為什麼撈它。②<b>單選下拉打開就有搜尋框</b>（主角／你的客戶／客戶交付／智能對標客戶）——這在前一版起其實就有了，這次確認過：打開＝搜尋＋排序頁籤＋金線分隔，點一下就定。③<b>手機上帳號管理的篩選列（全部身份／量級／最近更新）改成一排塞得下</b>，不再擠成兩行、字被壓。④<b>消除「盲盒感」</b>：客戶交付與版面對照那些「產生提示詞」的按鈕，現在<b>按下去會跳出預覽、直接看到整段提示詞內容</b>（還能再複製一次）；重要按鈕也加了<b>小說明</b>（電腦把游標移上去、手機長按，就會顯示「這顆在做什麼／怎麼用」）。⑤<b>開新分頁的外連連結（工具捷徑、商業閉環、開啟影片、看主頁…）都補上了「開新分頁」小箭頭 icon</b>，一看就知道會跳出去；純指方向的箭頭不動。＊全部只動顯示與輔助說明，沒動任何功能、流程、資料與既有圖示。<br>
     <b>v173：</b>①<b>手機上「案例類型」等下拉滑不到底修好了</b>：以前在手機螢幕底部打開下拉，面板會掉出畫面、看不到也滑不到最後一個選項；現在會<b>自動往上翻、並限制高度可以捲動</b>，所有下拉都套用。②<b>客戶版一頁診斷書列印／存 PDF 再加強</b>：在 v172 改成「只印那張診斷書」的基礎上，這版直接把列印用的那張紙<b>寫死成全頁寬、每張建議卡不被切到下一頁、文字照正常橫排換行</b>，確保不再爆框、頁數正常（約 2–3 頁）、又快。＊這版先處理這兩個最擋路的，其餘（系統建議寫「為什麼」、單選下拉加搜尋、手機篩選列、提示詞看得到內容＋按鈕說明、↗ 換 icon）我接著做下一版。<br>
     <b>v172：</b>修好「客戶版一頁診斷書」<b>列印／存 PDF 會爆框、撐成好幾頁、很慢</b>的問題。原因是舊的列印方式只是把其他內容「藏起來」、但它們還佔著版面高度，所以整份 PDF 被撐成跟整個工具一樣高（第 2 頁起一片空白）、而且要排版整個畫面所以很慢。現在改成<b>列印時只把那張診斷書複製出來單獨印</b>，其他完全不佔空間——<b>PDF 就乾乾淨淨只有診斷書那 1～2 頁、又快</b>（按「列印／存成 PDF」或用瀏覽器 Ctrl+P 都一樣）。客戶版／顧問版、要不要印備選與代號的設定都跟以前一樣。＊另外「↗ 開新分頁補漏」我整支重掃過，畫面上的外連箭頭在 v170 就都換成 icon 了（只剩 3 個在版本說明文字裡、屬於保留），所以這條已經完成、不用再做。<br>
@@ -5273,6 +5291,12 @@ function renderComparePicker(){
   var heroId=($('cmpHero')||{value:''}).value;
   renderAccountMultiPicker({ boxId:'cmpPicker', set:cmpSelected, max:(heroId?3:4), key:'cmp', placeholder:(heroId?'點開勾選比較對象（連主角共 2–4 個）…':'點開選擇要比較的帳號（2–4 個）…'), clientGetter:function(){ return ($('cmpHero')||{value:''}).value; } });
 }
+function _cmpCell(raw){
+  if(!raw && raw!==0) return '<span style="color:#bbb">—</span>';
+  var parts=String(raw).split(/\r?\n|；|;/).map(function(x){return x.trim();}).filter(Boolean);
+  if(parts.length<=1) return esc(String(raw));
+  return parts.map(function(t,i){ return '<div style="display:flex;gap:6px;margin:1px 0"><span style="color:var(--gold-dark);font-weight:700;flex:none">'+(i+1)+'.</span><span>'+esc(t)+'</span></div>'; }).join('');
+}
 function runCompare(){
   var heroId=($('cmpHero')||{value:''}).value;
   var ids=[]; if(heroId) ids.push(heroId);
@@ -5310,24 +5334,24 @@ function runCompare(){
     {key:'priceBarter', label:'接互惠?'},
     {key:'priceNote', label:'報價備註'}
   ];
-  let html='<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:13px;background:#fff"><thead><tr><th style="text-align:left;padding:10px 12px;border-bottom:2px solid var(--rouge);font-family:\'Cormorant Garamond\',serif;color:var(--rouge);letter-spacing:1px;font-size:11px">FIELD</th>';
+  let html='<div style="overflow-x:auto"><table style="width:100%;table-layout:fixed;border-collapse:collapse;font-size:13px;background:#fff"><thead><tr><th style="text-align:left;padding:10px 12px;border-bottom:2px solid var(--rouge);border-right:1px solid var(--gold-soft);font-family:\'Cormorant Garamond\',serif;color:var(--rouge);letter-spacing:1px;font-size:11px;width:118px">FIELD</th>';
   profs.forEach(p=>{
     const f=latestFollowers(p.acc);
     const _u=_accURL(p.acc);
     const _hd=_u?`<a href="${esc(_u)}" target="_blank" rel="noopener" style="font-weight:900;color:var(--rouge);text-decoration:none">${esc(p.acc.handle||'?')} <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="#A51820" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-1px"><path d="M14 5h5v5"/><path d="M19 5l-8 8"/><path d="M19 13v5a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg></a>`:`<span style="font-weight:900;color:var(--rouge)">${esc(p.acc.handle||'?')}</span>`;
-    html+=`<th style="text-align:left;padding:10px 12px;border-bottom:2px solid var(--rouge);min-width:180px"><div>${_hd}</div><div style="font-size:11px;color:var(--text);font-weight:400;margin-top:2px">${esc((p.acc.types||[]).join('·'))} · ${f?f.toLocaleString()+' 粉':'—'}</div></th>`;
+    html+=`<th style="text-align:left;padding:10px 12px;border-bottom:2px solid var(--rouge);border-right:1px solid var(--gold-soft);word-break:break-word"><div>${_hd}</div><div style="font-size:11px;color:var(--text);font-weight:400;margin-top:2px">${esc((p.acc.types||[]).join('·'))} · ${f?f.toLocaleString()+' 粉':'—'}</div></th>`;
   });
   html+='</tr></thead><tbody>';
   fields.forEach((field,fi)=>{
-    html+=`<tr style="background:${fi%2?'var(--warm)':'#fff'}"><td style="padding:9px 12px;font-weight:700;color:var(--gold-dark);font-size:12px;letter-spacing:.5px;border-right:1px solid var(--border);vertical-align:top">${field.label}</td>`;
+    html+=`<tr style="background:${fi%2?'var(--warm)':'#fff'}"><td style="padding:9px 12px;font-weight:700;color:var(--gold-dark);font-size:12px;letter-spacing:.5px;border-right:1px solid var(--gold-soft);vertical-align:top;word-break:break-word">${field.label}</td>`;
     const values=profs.map(p=>{ const pr=p.prof||{}; return (pr[field.key]||(field.old?pr[field.old]:'')||''); });
     const allEmpty=values.every(v=>!v);
     const allSame=values.length>1 && values.every(v=>v===values[0]) && values[0];
     profs.forEach((p,pi)=>{
       const raw=values[pi];
-      const cell = raw ? esc(raw) : '<span style="color:#bbb">—</span>';
+      const cell = _cmpCell(raw);
       const bg=allSame&&!allEmpty?'background:#F0F5EC;':'';
-      html+=`<td style="padding:9px 12px;vertical-align:top;border-right:1px solid var(--border);white-space:pre-wrap;${bg}">${cell}</td>`;
+      html+=`<td style="padding:9px 12px;vertical-align:top;border-right:1px solid var(--gold-soft);word-break:break-word;${bg}">${cell}</td>`;
     });
     html+='</tr>';
   });
@@ -6871,6 +6895,7 @@ window.addEventListener('DOMContentLoaded', function(){
     box.innerHTML=html;
     if(opMode==='advisor'){ box.classList.add('op-advisor'); box.classList.add('show-codes'); box.classList.add('print-alt'); }
     var pb=document.getElementById('dlOnePagerPrint'); if(pb) pb.style.display='';
+    var ppt=document.getElementById('dlOnePagerPpt'); if(ppt) ppt.style.display='';
     var add=document.getElementById('opAddRow');
     if(add) add.onclick=function(){ var rows=document.getElementById('opRows'); if(!rows) return; var n=('0'+(rows.querySelectorAll('.op-row').length+1)).slice(-2); rows.insertAdjacentHTML('beforeend',opRow(n,{},false)); wirePicks(); };
     /* 主定位切換 */
@@ -7117,6 +7142,7 @@ window.addEventListener('DOMContentLoaded', function(){
       window.print();
       setTimeout(function(){ try{ if(typeof opPrintCleanup==='function') opPrintCleanup(); }catch(e){} try{ document.title=oldT; }catch(e){} },800);
     }); }
+    var ppt=G('dlOnePagerPpt'); if(ppt&&!ppt.__w){ ppt.__w=1; ppt.addEventListener('click',function(){ if(typeof exportOnePagerSlide==='function') exportOnePagerSlide(); }); }
     var _mc=G('opModeClient'), _ma=G('opModeAdvisor');
     function _setOpMode(m){
       opMode=(m==='advisor')?'advisor':'client';
