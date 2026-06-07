@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="color-scheme" content="light only">
 <meta name="supported-color-schemes" content="light">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v177 (版本號僅留註解，不顯示於畫面)
+<!-- ATELIER 影片診斷工作台 · 內部版本 v178 (版本號僅留註解，不顯示於畫面)
+     v178 更新（交辦單：提示詞「自己勾」＋ 智能推薦「自己選人」，接 v177、全 additive、不改五大常數與 TONE_RULES 字串內容、不改任何 id/onchange/下游、沿用品牌色與既有 csel／mp 多選 UI）：【P1-A 對標優化提示詞可勾選】在「產生對標優化提示詞」按鈕上方新增一排輕量勾選 #optIncl（預設全勾＝維持 v177 行為）：客戶基本資料／定位、各對標帳號的關鍵欄位、重點規則（寫作鐵律）。只改 buildOptimizePrompt 的組裝邏輯讓它讀 #optInclClient／#optInclBm／#optInclRules 三個 checkbox 的 checked，勾掉就不串那一段；元件不存在時預設視為勾選（防呆）。經程式驗證：三項全勾的輸出與 v177 逐字相同（1155 字元 byte-identical），取消任一段＝該段精準消失、其餘段落正常。注意：交辦單原列「逐字稿節選／全庫口吻鐵律 TONE_RULES／這一輪目標」三項，經比對 v177 的 buildOptimizePrompt 實際並未組進那三段（它們在別的 builder 或推薦提示詞裡），依交辦單「依實際組進去的區塊為準、不要硬湊」原則，本版只對真正在裡面的三段做開關，未硬加不存在的段落（硬加會破壞「全勾＝v177 完全一樣」）。【P1-B 智能對標推薦可自己選人＋數量已可調】在 #recClient 下方新增 #recScope 區塊（兩個多選＋一顆清除鈕 #recScopeClear）：①「只從這些人裡面挑」#recOnlyPicker（留空＝全庫）②「一定要包含這幾位」#recMustPicker（可空，標 ★必含、提示詞要求 AI 務必納入並逐一說明）。兩個多選沿用既有 renderAccountMultiPicker（key:recOnly／recMust、max:0 不限、clientGetter 讀 #recClient 以排除客戶本人），新增全域 recOnlySelected／recMustSelected 兩個 Set 與 renderRecPickers（掛在 renderComparePicker 內 populateRecClient 之後刷新）。只改 buildRecommendPrompt 讀這兩個 Set 決定候選池與必含名單：only 非空＝候選池只剩所選（與必含取聯集確保必含一定在池內），both 空＝沿用整個帳號庫；必含區塊與必含鐵律在 must 非空時才出現。數量 #recTopN 沿用既有可調（已確認）。#recClient／#recGoal／#recTopN／recRun 的 id／onchange／下游一律未動。經程式驗證：兩欄留空的輸出與 v177 逐字相同（801 字元 byte-identical）；only 選 3＝候選池剩 3；must 選某人＝該人標必含＋提示詞要求納入；only＋must 聯集正確。版本號 4 處更新；全檔 node --check 全過（15 script）、div 1127／details 44／CSS 開閉平衡；五大常數＋TONE_RULES 經 md5 比對未變；v168/v170 icon 未動。
      v177 更新（交辦單：收尾兩件小事 D／E，接 v176、不改功能/id/onchange/下游、沿用品牌色與既有 icon）：【D 客戶交付刪重複搜尋框】確認 v176 已移除上方 #dlClientSearch 打字框，僅留下拉 #dlClient（自帶 data-csearch 搜尋）；filterDlClient 與其 wrapper 已無觸發來源、為無害死碼，保留不動以免影響下游（下拉搜尋仍正常）。【E 開新分頁外連補 icon——全部改成可見的內嵌 icon】v176 已把 8 個工具捷徑與商業閉環按鈕（開 Claude×3／toolzin／Cobalt／Gemini／改開新分頁／在新分頁開啟）內嵌 external-link 線條 icon；本版再把剩下 4 個 .vlink 外連（影片卡帳號連結、開啟影片、開啟、看主頁）也改為標籤後內嵌同款 external-link icon（currentColor 隨連結色、可 grep 可見），並移除 v174／v176 殘留的 .vlink ::after（含其列印隱藏規則），改為全部用內嵌 icon，避免「看不明顯」或重複。經全檔掃描：所有 target=_blank 外連皆已帶可見內嵌 icon（缺 0）；純方向箭頭不動。未動任何功能/id/onchange/下游與既有 icon；全檔 node --check 全過（15 script）、div 1117／details 44／CSS 開閉平衡；v168/v170 icon 未動（emoji/符號殘留＝0）。
      v176 更新（交辦單：真實測試後修正，接 v175、不改功能/id/onchange/下游、沿用品牌色與既有 icon）：【P0 一頁診斷書 PDF 真正修好】真實輸出顯示客戶版 11 頁／顧問版 18 頁、建議卡「一字一行」、產出很慢，而版面對照（table）PDF 乾淨——病根＝一頁診斷書的 grid/flex 列印時欄寬塌成 0。修法：@media print 內對 #clientOnePager 的所有 grid/flex（[style*=display:grid]／[style*=display:flex]）強制 display:block，並把 .op-row 改 block（隱藏其勾選 label、子 div 改 block 滿欄），文字一律以全欄寬正常橫排、不再依賴 flex 軌道寬度，配合既有 page-break-inside:avoid 控分頁→頁數正常（各約 2–4 頁）、快。【A 客戶版／顧問版輸出 PPT】把投影片下載抽成共用 window._downloadSlide(title,inner,fileBase)（16:9、可編輯 HTML），版面對照沿用之；一頁診斷書按鈕列新增 #dlOnePagerPpt「下載投影片（PPT）」（產生後與列印鈕一起顯示）＋ window.exportOnePagerSlide（複製 #clientOnePager、去除 op-noprint、依 op-advisor 命名顧問/客戶版），下載後可自行編輯文字（同時滿足「可不可以自己改資料」）。因單檔鐵則不引入外部 pptx 函式庫，PPT 以可投影／可編輯／可另存 PDF 的 HTML 投影片提供。【B 並排比較表排版】table 改 table-layout:fixed＋FIELD 欄固定寬，帳號欄等寬；FIELD／帳號欄之間與帳號之間加金色直線分隔（border-right var(--gold-soft)）；新增 _cmpCell：每格內容若有換行／分號則拆成「1. 2. 3.」逐條列，不再擠成一坨。【C 並排比較／清除選擇 按鈕】合成一排（移除換行）：並排比較＝主要（flex:1、放大字級/內距），清除選擇＝次要（auto 寬、小字、次要色）。【D 客戶交付刪重複搜尋框】移除上方 #dlClientSearch 輸入框（下拉 #dlClient 自帶 data-csearch 搜尋；filterDlClient 已防呆，搜尋框不存在時不過濾，無下游影響）。【E 開新分頁外連補 icon】把 8 個開新分頁的工具捷徑與商業閉環連結（開 Claude×3／toolzin／Cobalt／Gemini／改開新分頁／在新分頁開啟）改為在標籤後內嵌 external-link 線條 icon（currentColor 隨按鈕色、可 grep 可見）；移除 v174 對 a.btn 的 ::after（避免雙重），保留 .vlink 的 ::after 給內文連結；純方向箭頭不動。全檔 node --check 全過（15 script）、div 1117／details 44／CSS 開閉平衡；v168/v170 icon 未動（emoji/符號殘留＝0）。
      v175 更新（交辦單：收尾，接 v174、不改功能/id/onchange/下游、沿用品牌色與既有 csel/icon）：【★B 單選＝多選的精緻列（保留不打勾差異）】csel enhanceSelect 的 build() 對 data-accpick 單選改渲染豐富列：依 option value 反查 accounts，套與多選相同的 mp-h（帳號名粗體）＋mp-id（金色中文名/身分，用 _mpIdent）＋mp-case 徽章（_mpCaseLabel）＋·無版面（.csel-opt-acc，比照 mp-row 間距；.csel-opt.sel 時 mp-h/mp-id/mp-noprof 轉白字）；placeholder/disabled 維持純文字。唯一差別＝無打勾框、無完成鈕，點一列＝設 select.value＋派發 change＋收起（沿用既有 csel 點選邏輯，未改 value/onchange/下游）。搜尋因 textContent 含帳號名/中文名仍正常。【面板高度與捲動】csel open() 高度上限 262→340（一次看得到約 6–8 筆）、保留 v173 靠底部往上翻（flip）與 overflow 捲動。【依產業·領域以主角為準】多選 ordered() 的 industry 排序改為「有主角/客戶時」依相關度：同產業=3、與主角關鍵字（產業/職稱/領域斷詞）有交集=2、其餘=0，降冪後再字母序（律師主角→法律相關職業先出來）；無主角維持字母序。【版面對照版面重設計】拿掉 #cmpPicker 殘留的空白邊框（下拉自帶外觀，避免「用途不明的大空白框」）；「並排比較／清除選擇」「產生對標優化提示詞／清除勾選」按鈕列改 flex-wrap＋主鈕 flex:1 1 auto;min-width＋white-space:nowrap、次鈕 flex:0 0 auto（修「直排時字被壓縮」、依文字與重要性給合理大小）。【並排比較輸出 PPT/PDF】新增通用 printElementPortal(el,title)（複製目標進 body 直屬 #genPrintPortal＋body.op? 用 gen-printing class，@media print 只印它；opPrintPrepare 加 gen-printing guard 避免與一頁診斷書衝突）＋ window.exportCompare(kind)：runCompare 結果頂端加 op-noprint 工具列「輸出 PDF」（portal 列印比較表，列印視窗可另存 PDF）與「下載投影片」（產生 16:9 .html 投影片檔下載，可全螢幕投影或再列印存 PDF；因單檔規則不引入外部 pptx 函式庫，故以可投影 HTML＋PDF 滿足帶開會需求）。【確認 v174 已到位】A 系統建議每筆「建議」於列下顯示「為什麼：…」（_smReasonShort）；C 帳號管理篩選列 @media(max-width:560px) 一排塞下；D copyPrompt 產生後彈預覽看全文＋按鈕 title 說明；E 外連箭頭以 CSS ::after 給 a.btn[target=_blank] 與 .vlink[target=_blank]（含商業閉環，不限數量）補 external-link icon、純方向不動——皆確認在。全檔 node --check 全過（15 script）、div 1116／details 44／CSS 開閉平衡；v168/v170 icon 未動。
@@ -742,7 +743,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v177</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v178</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -1869,6 +1870,14 @@ if('serviceWorker' in navigator){
     <select id="optClient" data-csearch="1" data-accpick="1" style="width:100%;max-width:420px;padding:8px 10px;border:1px solid var(--border);border-radius:8px;background:#fff;color:var(--ink);font-family:inherit;font-size:13px;margin-bottom:14px"></select>
     <div style="font-size:13px;color:var(--ink);margin-bottom:6px;font-weight:600">② 對標帳號（勾 1–10 個，當參考標竿）：</div>
     <div id="optPicker" style="display:flex;flex-wrap:wrap;gap:8px"></div>
+    <div id="optIncl" style="margin-top:14px;padding:10px 12px;border:1px dashed var(--gold-soft);border-radius:9px;background:var(--warm,#FBF7F2)">
+      <div style="font-size:12px;font-weight:700;color:var(--gold-dark);margin-bottom:7px">要放進提示詞的內容（預設全帶；取消勾選＝那一段就不放進去）：</div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px 16px">
+        <label style="display:flex;gap:6px;align-items:center;font-size:12.5px;color:var(--ink);cursor:pointer"><input type="checkbox" id="optInclClient" checked style="accent-color:var(--rouge)">客戶基本資料／定位</label>
+        <label style="display:flex;gap:6px;align-items:center;font-size:12.5px;color:var(--ink);cursor:pointer"><input type="checkbox" id="optInclBm" checked style="accent-color:var(--rouge)">各對標帳號的關鍵欄位</label>
+        <label style="display:flex;gap:6px;align-items:center;font-size:12.5px;color:var(--ink);cursor:pointer"><input type="checkbox" id="optInclRules" checked style="accent-color:var(--rouge)">重點規則（寫作鐵律）</label>
+      </div>
+    </div>
     <div style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap">
       <button class="btn btn-go" id="optRun" style="flex:1 1 auto;min-width:200px;white-space:nowrap" title="把「你的客戶」＋勾選的對標帳號整理成一段提示詞並自動複製，接著跳出預覽讓你看完整內容；貼到 ChatGPT／Claude／Gemini 就會幫客戶做落差診斷與優化建議。">產生對標優化提示詞</button>
       <button class="btn btn-ghost" id="optClear" style="flex:0 0 auto;white-space:nowrap">清除勾選</button>
@@ -1886,6 +1895,14 @@ if('serviceWorker' in navigator){
     </div>
     <div style="font-size:13px;color:var(--ink);margin-bottom:6px;font-weight:600">① 你的客戶（要被服務的那一個）：</div>
     <select id="recClient" data-csearch="1" data-accpick="1" style="width:100%;max-width:420px;padding:8px 10px;border:1px solid var(--border);border-radius:8px;background:#fff;color:var(--ink);font-family:inherit;font-size:13px"></select>
+    <div id="recScope" style="margin:12px 0 0;padding:11px 12px;border:1px dashed var(--gold-soft);border-radius:9px;background:var(--warm,#FBF7F2)">
+      <div style="font-size:12px;font-weight:700;color:var(--gold-dark);margin-bottom:8px">② 想自己框範圍嗎？（兩欄都留空＝沿用原本「整個帳號庫」，不影響舊用法）</div>
+      <div style="font-size:12.5px;color:var(--ink);margin-bottom:4px;font-weight:600">只從這些人裡面挑（留空＝全庫）：</div>
+      <div id="recOnlyPicker" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px"></div>
+      <div style="font-size:12.5px;color:var(--ink);margin-bottom:4px;font-weight:600">一定要包含這幾位（可空，會要求 AI 務必納入並逐一說明）：</div>
+      <div id="recMustPicker" style="display:flex;flex-wrap:wrap;gap:8px"></div>
+      <div style="text-align:right;margin-top:8px"><button class="btn btn-ghost" id="recScopeClear" style="width:auto;font-size:11.5px;padding:4px 11px;color:var(--sub)">清除指定／必含</button></div>
+    </div>
     <div style="display:grid;grid-template-columns:1fr 120px;gap:10px;margin:12px 0 14px">
       <label style="font-size:12px;color:var(--ink)">這一輪目標<select id="recGoal" data-csearch="1" style="width:100%;margin-top:3px;padding:8px 10px;border:1px solid var(--border);border-radius:8px;background:#fff"><option value="">（讓 AI 依資料判斷）</option><option>曝光為主</option><option>人設共鳴為主</option><option>需求教育為主</option><option>信任建立為主</option><option>導流轉化為主</option><option>人設升級為主</option></select></label>
       <label style="font-size:12px;color:var(--ink)">要幾個<input id="recTopN" type="number" value="3" min="1" style="width:100%;margin-top:3px;padding:8px 10px;border:1px solid var(--border);border-radius:8px"></label>
@@ -3580,7 +3597,8 @@ function renderManual(){
   <div class="form-card" style="border-left:3px solid var(--gold)">
     <div class="stitle" style="font-size:15px;color:var(--rouge)">更新紀錄 · 還沒做的</div>
     <p style="font-size:13px;color:var(--text);line-height:1.85;margin-top:8px">
-    <b>v177（這版 · 收尾兩件小事）：</b>①<b>客戶交付上方那個重複的搜尋框拿掉了</b>，直接用下拉自己的搜尋（功能一樣、少一個多餘欄位）。②<b>所有「開新分頁」的連結都補上小箭頭 icon 了</b>：除了工具捷徑（開 Claude／toolzin／Cobalt／Gemini）和商業閉環，這次連影片卡的帳號連結、「開啟影片」「開啟」「看主頁」也都加上「開新分頁」小箭頭，<b>一看就知道會跳到外部新分頁</b>；純指方向的箭頭不動。＊只動顯示、沒動功能與資料。<br>
+    <b>v178（這版 · 提示詞自己勾、推薦自己選人）：</b>①<b>「對標優化」的提示詞，現在你可以自己勾要放什麼進去了</b>：在「產生對標優化提示詞」按鈕上方多了一排勾選（預設全勾，跟以前完全一樣），可以自由關掉「客戶基本資料／定位」「各對標帳號的關鍵欄位」「重點規則」其中任一段——例如資料太多想精簡時，取消勾選那段就不會放進提示詞，<b>看得到也控制得了裡面放了什麼</b>。②<b>「智能對標推薦」可以自己框人了</b>：客戶下面多了兩個欄位——<b>「只從這些人裡面挑」</b>（留空＝跟以前一樣用整個帳號庫；選了就只從你挑的這幾位裡排）、<b>「一定要包含這幾位」</b>（選了就會要求 AI 一定把他們納入排名並逐一說明）。要幾個（Top N）本來就能調。＊兩個都留空＝跟舊版一模一樣，不影響原本用法。＊只加功能，沒動五大提示詞與口吻鐵律的內容，也沒動任何既有流程與資料。<br>
+    <b>v177：</b>①<b>客戶交付上方那個重複的搜尋框拿掉了</b>，直接用下拉自己的搜尋（功能一樣、少一個多餘欄位）。②<b>所有「開新分頁」的連結都補上小箭頭 icon 了</b>：除了工具捷徑（開 Claude／toolzin／Cobalt／Gemini）和商業閉環，這次連影片卡的帳號連結、「開啟影片」「開啟」「看主頁」也都加上「開新分頁」小箭頭，<b>一看就知道會跳到外部新分頁</b>；純指方向的箭頭不動。＊只動顯示、沒動功能與資料。<br>
     <b>v176：</b>①<b>【最重要】客戶版／顧問版一頁診斷書的 PDF 真的修好了</b>：之前列印會變成 11～18 頁、建議卡文字「一個字一行」、又慢；原因是那些卡片用了會在列印時「欄寬縮成 0」的排版。這版改成<b>列印時像版面對照表一樣穩</b>，文字正常滿欄橫排，<b>頁數正常（約 2～4 頁）、輸出變快</b>。②<b>客戶版／顧問版也能「輸出 PPT」了</b>：按鈕列多了「下載投影片（PPT）」，下載的是 16:9 投影片檔，<b>可全螢幕投影、另存 PDF，也能自己打開改文字</b>（解決「下載後想自己調整」）。③<b>並排比較表更整齊</b>：各欄<b>等寬對齊、帳號之間有金色直線分隔</b>，每格內容<b>一條一條列（1. 2. 3.）</b>不再擠成一坨。④<b>「並排比較／清除選擇」併成一排</b>：並排比較大顆顯眼、清除選擇小顆次要。⑤<b>客戶交付刪掉重複的搜尋框</b>：上面那個多餘的搜尋框拿掉了，直接用下拉自己的搜尋。⑥<b>開新分頁的連結（工具捷徑、商業閉環…）都加上「開新分頁」小箭頭 icon</b>。＊全部沿用既有功能與圖示，沒動流程與資料。<br>
     <b>v175：</b>①<b>單選下拉變得跟多選一樣精緻</b>：主角／你的客戶／客戶交付／智能對標客戶這些單選，現在每一列都跟「對標帳號」一樣有<b>帳號名＋金色中文名/身分＋徽章＋一樣的間距</b>，只差<b>不打勾、沒有完成鈕</b>（點一列就選定並收起）——區別保留、質感拉齊。②下拉面板<b>一次看得到約 6–8 筆、可乾淨捲動、靠螢幕底部會往上翻</b>、不會切掉半行。③<b>「依產業·領域」會以主角為準</b>：選了主角後，<b>同產業／相關職業（例如律師→法律相關）會排到最前</b>。④<b>版面對照版面重整</b>：拿掉「清除選擇」旁那個用途不明的空白框；「並排比較／產生提示詞」等按鈕不再被壓縮、依文字大小排好。⑤<b>並排比較結果可輸出帶去開會</b>：新增「輸出 PDF」（可存成 PDF 檔）與「下載投影片」（16:9 簡報檔，可全螢幕投影或再存 PDF）。＊另確認上一版做的：系統建議每筆有「為什麼」、提示詞按下去看得到內容＋按鈕說明、手機篩選列一排、外連連結都有「開新分頁」小箭頭——都在。＊全部沿用既有功能與圖示，沒動到流程與資料。<br>
     <b>v174：</b>①<b>系統建議會寫「為什麼推薦」</b>了：在版面對照／對標優化選對標時，每個被「建議」的帳號下面會多一句白話原因（同產業·X／同類型·Y／量級相近…），不用猜為什麼撈它。②<b>單選下拉打開就有搜尋框</b>（主角／你的客戶／客戶交付／智能對標客戶）——這在前一版起其實就有了，這次確認過：打開＝搜尋＋排序頁籤＋金線分隔，點一下就定。③<b>手機上帳號管理的篩選列（全部身份／量級／最近更新）改成一排塞得下</b>，不再擠成兩行、字被壓。④<b>消除「盲盒感」</b>：客戶交付與版面對照那些「產生提示詞」的按鈕，現在<b>按下去會跳出預覽、直接看到整段提示詞內容</b>（還能再複製一次）；重要按鈕也加了<b>小說明</b>（電腦把游標移上去、手機長按，就會顯示「這顆在做什麼／怎麼用」）。⑤<b>開新分頁的外連連結（工具捷徑、商業閉環、開啟影片、看主頁…）都補上了「開新分頁」小箭頭 icon</b>，一看就知道會跳出去；純指方向的箭頭不動。＊全部只動顯示與輔助說明，沒動任何功能、流程、資料與既有圖示。<br>
@@ -5286,6 +5304,7 @@ function renderComparePicker(){
   if(typeof populateCmpHero==='function') populateCmpHero();
   if(typeof populateOptClient==='function'){ populateOptClient(); renderOptPicker(); }
   if(typeof populateRecClient==='function') populateRecClient();
+  if(typeof renderRecPickers==='function') renderRecPickers();
   var _ext=$('cmpSearch'); if(_ext) _ext.style.display='none';
   if(!accounts.length){ box.style.cssText=''; box.innerHTML='<div class="empty-res" style="margin:0">尚無帳號可比較。先到「帳號管理」新增帳號並記錄版面快照。</div>'; return; }
   var heroId=($('cmpHero')||{value:''}).value;
@@ -5488,16 +5507,19 @@ function buildOptimizePrompt(){
   }).join('\n\n');
   var p='【任務】我是短影音代理營運。我要優化「我的客戶」這個帳號的內容定位與賣點表達。'
     +'下面給你：我的客戶現況，以及我精選的 '+bms.length+' 個對標帳號（已驗證的標竿／競品／同師承）。'
-    +'請拿這些對標當參考，幫我客戶找出可以調整、補強、學起來的地方——不是要客戶變成別人，是把對標有效的邏輯，翻成適合我客戶職業的版本。\n\n'
-    +'【我的客戶】'+cHead+'\n'+(clientBlock.length?clientBlock.join('\n'):'（資料較少，請先依職稱產業合理推斷並標明）')+'\n\n'
-    +'【對標帳號（參考標竿）】\n'+bmText+'\n\n'
-    +'【請你依序產出五段】\n'
+    +'請拿這些對標當參考，幫我客戶找出可以調整、補強、學起來的地方——不是要客戶變成別人，是把對標有效的邏輯，翻成適合我客戶職業的版本。\n\n';
+  var _oIncClient=!document.getElementById('optInclClient')||document.getElementById('optInclClient').checked;
+  var _oIncBm=!document.getElementById('optInclBm')||document.getElementById('optInclBm').checked;
+  var _oIncRules=!document.getElementById('optInclRules')||document.getElementById('optInclRules').checked;
+  if(_oIncClient) p+='【我的客戶】'+cHead+'\n'+(clientBlock.length?clientBlock.join('\n'):'（資料較少，請先依職稱產業合理推斷並標明）')+'\n\n';
+  if(_oIncBm) p+='【對標帳號（參考標竿）】\n'+bmText+'\n\n';
+  p+='【請你依序產出五段】\n'
     +'STEP 1 對標共同點：這些對標帳號在「人群／產品／人設／版面（Bio・置頂・視覺・內容比例）」上，有哪些反覆出現的共同打法？哪些是「換職業也通用」、哪些是「該職業專屬」不能照搬？\n'
     +'STEP 2 客戶落差診斷：拿我客戶的現況逐項對照對標，指出我客戶在 人群（痛點/誤區）、產品（賣點/案例）、人設（身分/理念）、版面 這四塊各缺了什麼、哪裡可以更強。\n'
     +'STEP 3 特點→賣點翻譯：把我客戶現有的專業特點／資源，逐條用「特點→優勢→利益」翻成觀眾有感的賣點，每條收尾用句型「不是只告訴你我有＿＿，而是讓你＿＿。」並標出打中的人群痛點或誤區；專業術語一律翻成白話好處，不要留在文案裡。\n'
     +'STEP 4 優化建議（可直接照做）：給我客戶 ① 新的帳號定位一句話 ② Bio 三行改寫 ③ 置頂貼文／Reels 該放哪三種題材 ④ 視覺風格與內容比例建議。每一條都說明「是參考哪個對標、為什麼換到我客戶身上一樣成立」。\n'
-    +'STEP 5 三個內容方向：依優化後的定位，給 3 個能馬上拍的選題方向（各標：打中的人群痛點、屬於哪個漏斗階段 G1–G5、Hook 怎麼開）。\n\n'
-    +'【重點規則】\n'
+    +'STEP 5 三個內容方向：依優化後的定位，給 3 個能馬上拍的選題方向（各標：打中的人群痛點、屬於哪個漏斗階段 G1–G5、Hook 怎麼開）。\n\n';
+  if(_oIncRules) p+='【重點規則】\n'
     +'- 全程用「特點→賣點」思維：先講觀眾能得到什麼，再帶到專業，不要只報功能。\n'
     +'- 一定要同時顧到三大要素：人群（痛點/誤區）、產品（賣點/案例）、人設（身分/理念），最後落在「曝光 × 需求 × 信任」。\n'
     +'- 換成我客戶真實職業的語境、案例、合規用語，不要殘留對標的原職業。\n'
@@ -5505,6 +5527,14 @@ function buildOptimizePrompt(){
   copyPrompt(p,'客戶對標優化提示詞（'+bms.length+' 個對標）');
 }
 
+var recOnlySelected=new Set();
+var recMustSelected=new Set();
+function renderRecPickers(){
+  if(typeof accounts==='undefined'||!accounts||!accounts.length) return;
+  var cg=function(){ return (document.getElementById('recClient')||{value:''}).value; };
+  if(document.getElementById('recOnlyPicker')) renderAccountMultiPicker({ boxId:'recOnlyPicker', set:recOnlySelected, max:0, key:'recOnly', placeholder:'留空＝整個帳號庫；或點開只挑幾個當候選…', clientGetter:cg });
+  if(document.getElementById('recMustPicker')) renderAccountMultiPicker({ boxId:'recMustPicker', set:recMustSelected, max:0, key:'recMust', placeholder:'可不選；選了就要求 AI 一定納入…', clientGetter:cg });
+}
 function populateRecClient(){
   var sel=document.getElementById('recClient'); if(!sel) return;
   var cur=sel.value;
@@ -5519,7 +5549,11 @@ function buildRecommendPrompt(){
   if(!clientId){ toast('先選一個「你的客戶」帳號'); return; }
   var client=accounts.find(function(a){return a.id===clientId;});
   if(!client){ toast('找不到客戶帳號'); return; }
-  var pool=accounts.filter(function(a){return a.id!==clientId;});
+  var _onlyIds=(typeof recOnlySelected!=='undefined')?recOnlySelected:null;
+  var _mustIds=(typeof recMustSelected!=='undefined')?recMustSelected:null;
+  var pool;
+  if(_onlyIds && _onlyIds.size){ pool=accounts.filter(function(a){ return a.id!==clientId && (_onlyIds.has(a.id)||(_mustIds&&_mustIds.has(a.id))); }); }
+  else { pool=accounts.filter(function(a){return a.id!==clientId;}); }
   if(!pool.length){ toast('帳號庫裡還沒有其他帳號可推薦。先到「帳號管理」多累積幾個。'); return; }
   var goal=(document.getElementById('recGoal')||{value:''}).value;
   var topN=parseInt((document.getElementById('recTopN')||{value:'3'}).value,10)||3;
@@ -5527,16 +5561,19 @@ function buildRecommendPrompt(){
   var clientBlock=accProfileBlock(client);
   var cHead='@'+(client.handle||'?').replace(/^@/,'')+(client.displayName?'（'+client.displayName+'）':'');
   var poolText=pool.map(function(a,i){
-    var who='@'+(a.handle||'?').replace(/^@/,'')+(a.jobTitle?'／'+a.jobTitle:'')+(a.industry?'／'+a.industry:'');
+    var who='@'+(a.handle||'?').replace(/^@/,'')+(a.jobTitle?'／'+a.jobTitle:'')+(a.industry?'／'+a.industry:'')+((_mustIds&&_mustIds.has(a.id))?' ★必含':'');
     var vc=(typeof videosOfAccount==='function'?videosOfAccount(a.id).length:0);
     var pf=a.profile||{};
     var key=[pf.positioning?'定位:'+pf.positioning:'',pf.persona?'人設:'+pf.persona:'',pf.icpAudience?'人群:'+pf.icpAudience:'',pf.icpProduct?'產品:'+pf.icpProduct:''].filter(Boolean).join('｜');
     return '('+(i+1)+') '+who+(vc?'（已拆解 '+vc+' 支影片）':'（尚未拆解影片）')+(key?'\n    '+key:'');
   }).join('\n');
+  var _mustAcc=_mustIds?pool.filter(function(a){return _mustIds.has(a.id);}):[];
+  var _mustLine=_mustAcc.length?('【一定要納入排名的帳號（必含）】\n'+_mustAcc.map(function(a){return '· @'+(a.handle||'?').replace(/^@/,'')+(a.jobTitle?'（'+a.jobTitle+'）':'');}).join('\n')+'\n（這幾位務必納入上面的 Top 排名並逐一說明；即使你判斷它不是最該對標，也要解釋為什麼仍納入或為何排在後面，不可略過。）\n\n'):'';
   var p='【任務】我是短影音代理營運，手上有一個帳號庫。請你當我的策略顧問，從下面整個帳號庫裡，依「我客戶的現況＋這一輪的目標」，排出我客戶這一輪最該對標學習的 Top '+topN+' 名＋理由。不是挑最相似的，是挑「學了最能幫到我客戶這一輪目標」的。\n\n'
     +'【我的客戶】'+cHead+'\n'+(clientBlock.length?clientBlock.join('\n'):'（資料較少，請先依職稱產業合理推斷並標明）')+'\n\n'
     +'【這一輪目標】'+(goal||'（我沒指定，請你依客戶現況判斷這輪最該打的目標，並說明判斷理由）')+'\n\n'
     +'【我的帳號庫（共 '+pool.length+' 個，候選對標）】\n'+poolText+'\n\n'
+    +_mustLine
     +'【請你產出】\n'
     +'一、Top '+topN+' 推薦對標（排序，最該對標排第一）。每一個寫：\n'
     +'　1) 帳號（@與職業）\n'
@@ -5550,7 +5587,8 @@ function buildRecommendPrompt(){
     +'- 只能從上面帳號庫裡挑，不要舉庫以外的帳號。\n'
     +'- 用我客戶「真實職業」的語境判斷；對標職業不同沒關係，重點是邏輯能不能搬過來。\n'
     +'- 資料少的帳號可以選，但要註明「資料較少、建議補完再深入」。\n'
-    +'- 用專家口吻直接給結論與排序，不要反問。';
+    +'- 用專家口吻直接給結論與排序，不要反問。'
+    +(_mustAcc.length?'\n- 標記「★必含」的帳號一定要出現在 Top 排名裡並逐一說明，不可略過或只一筆帶過。':'');
   copyPrompt(p,'智能對標推薦提示詞（從 '+pool.length+' 個帳號挑 Top '+topN+'）');
 }
 
@@ -5695,6 +5733,7 @@ function bindAccountUI(){
   if($('optClear')) $('optClear').onclick=()=>{ optSelected.clear(); renderOptPicker(); };
   if($('optClient')) $('optClient').addEventListener('change',()=>{ optSelected.clear(); renderOptPicker(); });
   if($('recRun')) $('recRun').onclick=buildRecommendPrompt;
+  if($('recScopeClear')) $('recScopeClear').onclick=function(){ if(typeof recOnlySelected!=='undefined')recOnlySelected.clear(); if(typeof recMustSelected!=='undefined')recMustSelected.clear(); if(typeof renderRecPickers==='function')renderRecPickers(); };
   if($('cardFixRun')) $('cardFixRun').onclick=function(){ buildCardCompletePrompt('cardFixPaste','cardFixMsg'); };
   if($('gridDumpSave')) $('gridDumpSave').onclick=saveGridDump;
   if($('gridSearch')) $('gridSearch').oninput=function(){ renderGridLib(); };
