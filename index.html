@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="color-scheme" content="light only">
 <meta name="supported-color-schemes" content="light">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v179 (版本號僅留註解，不顯示於畫面)
+<!-- ATELIER 影片診斷工作台 · 內部版本 v180 (版本號僅留註解，不顯示於畫面)
+     v180 更新（交辦單：匯入體驗＋資料防誤，接 v179、全 additive 低風險、不改五大常數與 TONE_RULES 字串內容、不改任何既有功能/id/onchange/data-*/下游/資料結構、沿用品牌色與既有 csel／彈窗範式／icon）：【P1 待核對清單防誤改＋缺什麼講清楚】(1) renderCheckList 新增固定圖例（紅＝缺關鍵欄位會影響對標/推薦準度、黃＝缺次要欄位補了更完整），純文字不改判斷。(2) 待補殘留鍵名以新增 _clKeyZh（由既有 ACC_PROFILE_FIELDS 動態建表）轉成中文顯示（如 relatedLinks→其他帳號與相關連結、priceNote→報價備註），只改顯示文字、miss 判斷不動。(3) 新增 _clHighlightFields／_clFocusAccMiss／_clFocusVidMiss：點「編輯補上」開既有編輯視窗後，自動展開折疊區、捲到並 focus 第一個缺欄、那幾格加金框＋標籤後「· 待補」小字；data-cl-edit／data-cl-vedit 屬性名與 dataset 觸發完全未改名，只在綁定裡編輯後追加聚焦呼叫；帳號儲存仍為「更新非重建」（openAccountModal 讀既有 a 物件、只覆寫表單欄位），其他已填欄位一格不動。【P2 存檔成功明確停得住】toast 新增可選第三參數 ms（向後相容，預設仍 1900/6000）；影片新建成功改為「✓ 已存入「標題」· @帳號 · 這是第 N 支」（N＝存後 videos.length；覆蓋走「✓ 已更新「標題」· @帳號」），停留 2800ms；保留 v161「存檔成功整張表單清空」行為不變；三處帳號成功 toast（卡片匯入／編輯視窗／快速建檔）措辭不變、停留同步拉到 2800ms。【P3 右下同步筆數拆分】把兩處 _fbStatus 文案由「已同步 N 筆」改為「已同步 影片 X 支 · 帳號 M 個」（只改顯示字串、_fbStatus 與同步邏輯不動；accounts 以 typeof 防呆）。【P4 重複偵測加第二道（只提示絕不自動擋）】saveBtn 在既有網址正規化比對（normVideoUrl）沒抓到重複時，再做一次標題相似比對：新增 _normTitle（全形轉半形＋小寫＋去空白標點）與 _titleSim（嚴格門檻：正規化後完全相同，或一方完整包含另一方且長度比 ≥0.8 且短者 ≥6 字；寧漏報不誤報）；命中才跳溫和 atelierChoose 提醒（仍要新增＝預設／我先去看看＝取消這次存檔），絕不自動擋/合併/覆蓋；原網址重複（覆蓋/略過/仍新增）邏輯與行為完全不變（新增 _urlDup 旗標確保網址已判定重複時不再二次提醒）。版本號 4 處更新；五大常數＋TONE_RULES 經 md5 比對未變；全檔 node --check 全過（15 script）、div 1129／details 44／CSS 612 平衡；v177（PDF 只印內容、外連 icon）／v178（對標 3 勾選、推薦只挑誰）／v179（提示詞可編輯預覽、產生腳本範本選客戶）四項功能未壞。
      v179 更新（交辦單：提示詞「看得到、改得動」＋ 產生腳本範本「可選客戶」，接 v178、全 additive 低風險、不改五大常數與 TONE_RULES 字串內容、不改任何 builder 與 id/onchange/下游、沿用品牌色與既有 csel／彈窗範式）：【P1 共用 copyPrompt 預覽：唯讀→可編輯】只改 copyPrompt 這一個共用函式內部（不動任何呼叫它的 builder、不動 copyVal、不動 closeModal 與 modal 全域開關邏輯）：把原本唯讀的 pre 換成可編輯 textarea #pp-edit（同暖白底／金線框／可捲動高度 max-height:52vh、字級行高沿用）；按鈕改成主鈕「複製（含我的修改）」＝讀 #pp-edit.value 複製，次鈕「關閉」，另保留小字「複製原始版（還原我的修改）」；說明文字改為「先看過、可直接在上面改字（手動或貼 AI 改回來）、改好按複製含修改」。彈窗置中＋夠寬＝沿用 atelierChoose 既有範式：暫存 _prevOv=modal.onclick，設 inline modal.style.alignItems=center／sheet maxWidth:min(720px,92vw)／width:100%／borderRadius:16px／animation:none，關閉時（按鈕／點背景／Esc）一律 _ppClose 還原全部 inline style 與 modal.onclick、清空 sheet，零殘留不影響其他彈窗。所有提示詞產生器（對標優化／智能推薦／IP定位／腳本大綱／腳本／賣點翻譯／卡片補完…）因共用此函式一起升級為可編輯預覽。【P2 影片庫「產生腳本範本」可選客戶＋預覽】①結尾 copyVal 改 copyPrompt，自動套上 P1 可編輯預覽。②工具列「產生腳本範本」旁新增客戶單選 #tplClient（data-csearch data-accpick，沿用既有帳號下拉寫法；新增 populateTplClient 掛在 renderLibrary 開頭刷新）：留空＝維持現狀＝輸出 ____ 空白樣板給使用者手填；選了客戶＝buildTemplatePrompt 把「【我的客戶】」那段的 ____ 換成該客戶實際資料（沿用 accProfileBlock＋_clientTranscriptBlock，同 buildOutline／buildScript 作法），客戶＋所選範本影片一起餵更精準。未改 #bulkTemplate 的 id 與選影片邏輯（libSelIds／videos.filter）、未動其他工具列按鈕。經程式驗證：copyPrompt 新版 node --check 過；buildTemplatePrompt 不選客戶輸出與 v178 逐字相同（1345 字元 byte-identical）、選客戶＝自動帶入職業／產業／定位／逐字稿節選且不再有 ____。版本號 4 處更新；五大常數＋TONE_RULES 經 md5 比對未變；copyVal 未動；全檔 node --check 全過（15 script）、div 1128／details 44／CSS 612 平衡；v177 收尾（PDF portal、外連 icon）與 v178 功能未壞。
      v178 更新（交辦單：提示詞「自己勾」＋ 智能推薦「自己選人」，接 v177、全 additive、不改五大常數與 TONE_RULES 字串內容、不改任何 id/onchange/下游、沿用品牌色與既有 csel／mp 多選 UI）：【P1-A 對標優化提示詞可勾選】在「產生對標優化提示詞」按鈕上方新增一排輕量勾選 #optIncl（預設全勾＝維持 v177 行為）：客戶基本資料／定位、各對標帳號的關鍵欄位、重點規則（寫作鐵律）。只改 buildOptimizePrompt 的組裝邏輯讓它讀 #optInclClient／#optInclBm／#optInclRules 三個 checkbox 的 checked，勾掉就不串那一段；元件不存在時預設視為勾選（防呆）。經程式驗證：三項全勾的輸出與 v177 逐字相同（1155 字元 byte-identical），取消任一段＝該段精準消失、其餘段落正常。注意：交辦單原列「逐字稿節選／全庫口吻鐵律 TONE_RULES／這一輪目標」三項，經比對 v177 的 buildOptimizePrompt 實際並未組進那三段（它們在別的 builder 或推薦提示詞裡），依交辦單「依實際組進去的區塊為準、不要硬湊」原則，本版只對真正在裡面的三段做開關，未硬加不存在的段落（硬加會破壞「全勾＝v177 完全一樣」）。【P1-B 智能對標推薦可自己選人＋數量已可調】在 #recClient 下方新增 #recScope 區塊（兩個多選＋一顆清除鈕 #recScopeClear）：①「只從這些人裡面挑」#recOnlyPicker（留空＝全庫）②「一定要包含這幾位」#recMustPicker（可空，標 ★必含、提示詞要求 AI 務必納入並逐一說明）。兩個多選沿用既有 renderAccountMultiPicker（key:recOnly／recMust、max:0 不限、clientGetter 讀 #recClient 以排除客戶本人），新增全域 recOnlySelected／recMustSelected 兩個 Set 與 renderRecPickers（掛在 renderComparePicker 內 populateRecClient 之後刷新）。只改 buildRecommendPrompt 讀這兩個 Set 決定候選池與必含名單：only 非空＝候選池只剩所選（與必含取聯集確保必含一定在池內），both 空＝沿用整個帳號庫；必含區塊與必含鐵律在 must 非空時才出現。數量 #recTopN 沿用既有可調（已確認）。#recClient／#recGoal／#recTopN／recRun 的 id／onchange／下游一律未動。經程式驗證：兩欄留空的輸出與 v177 逐字相同（801 字元 byte-identical）；only 選 3＝候選池剩 3；must 選某人＝該人標必含＋提示詞要求納入；only＋must 聯集正確。版本號 4 處更新；全檔 node --check 全過（15 script）、div 1127／details 44／CSS 開閉平衡；五大常數＋TONE_RULES 經 md5 比對未變；v168/v170 icon 未動。
      v177 更新（交辦單：收尾兩件小事 D／E，接 v176、不改功能/id/onchange/下游、沿用品牌色與既有 icon）：【D 客戶交付刪重複搜尋框】確認 v176 已移除上方 #dlClientSearch 打字框，僅留下拉 #dlClient（自帶 data-csearch 搜尋）；filterDlClient 與其 wrapper 已無觸發來源、為無害死碼，保留不動以免影響下游（下拉搜尋仍正常）。【E 開新分頁外連補 icon——全部改成可見的內嵌 icon】v176 已把 8 個工具捷徑與商業閉環按鈕（開 Claude×3／toolzin／Cobalt／Gemini／改開新分頁／在新分頁開啟）內嵌 external-link 線條 icon；本版再把剩下 4 個 .vlink 外連（影片卡帳號連結、開啟影片、開啟、看主頁）也改為標籤後內嵌同款 external-link icon（currentColor 隨連結色、可 grep 可見），並移除 v174／v176 殘留的 .vlink ::after（含其列印隱藏規則），改為全部用內嵌 icon，避免「看不明顯」或重複。經全檔掃描：所有 target=_blank 外連皆已帶可見內嵌 icon（缺 0）；純方向箭頭不動。未動任何功能/id/onchange/下游與既有 icon；全檔 node --check 全過（15 script）、div 1117／details 44／CSS 開閉平衡；v168/v170 icon 未動（emoji/符號殘留＝0）。
@@ -744,7 +745,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v179</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v180</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -2410,11 +2411,11 @@ async function saveVideos(){
 
 /* ---- Toast ---- */
 let tTimer;
-function toast(msg, undoFn){
+function toast(msg, undoFn, ms){
   const t=$('toast'); t.textContent=msg; t.classList.add('show');
   clearTimeout(tTimer);
-  if(undoFn){ t.style.cursor='pointer'; t.onclick=function(){ t.classList.remove('show'); t.onclick=null; t.style.cursor=''; undoFn(); }; tTimer=setTimeout(function(){t.classList.remove('show');t.onclick=null;t.style.cursor='';},6000); }
-  else { t.onclick=null; t.style.cursor=''; tTimer=setTimeout(()=>t.classList.remove('show'),1900); }
+  if(undoFn){ t.style.cursor='pointer'; t.onclick=function(){ t.classList.remove('show'); t.onclick=null; t.style.cursor=''; undoFn(); }; tTimer=setTimeout(function(){t.classList.remove('show');t.onclick=null;t.style.cursor='';},ms||6000); }
+  else { t.onclick=null; t.style.cursor=''; tTimer=setTimeout(()=>t.classList.remove('show'),ms||1900); }
 }
 
 /* ---- 分頁切換 ---- */
@@ -3010,10 +3011,12 @@ $('saveBtn').onclick=async function(){
     ts:Date.now()
   };
   var _did=false;
+  var _urlDup=false;
   var _nu=(typeof normVideoUrl==='function')?normVideoUrl(v.url):'';
   if(_nu){
     var _dupV=videos.find(function(x){ return x.url && normVideoUrl(x.url)===_nu; });
     if(_dupV){
+      _urlDup=true;
       var _act=await atelierChoose({
         title:'⚠️ 這支影片已建檔過',
         desc:'影片庫裡已經有相同連結的影片：「'+(_dupV.title||'未命名')+'」'+(_dupV.date?('（'+_dupV.date+'）'):'')+(_dupV.ts?('，建檔 '+new Date(_dupV.ts).toISOString().slice(0,10)):'')+'。要怎麼處理？',
@@ -3026,6 +3029,24 @@ $('saveBtn').onclick=async function(){
       });
       if(_act==='skip'){ toast('已略過，未新增重複影片'); return; }
       if(_act==='overwrite'){ v.id=_dupV.id; v.ts=_dupV.ts||Date.now(); var _ix=videos.indexOf(_dupV); if(_ix>=0) videos[_ix]=v; else videos.unshift(v); _did=true; }
+    }
+  }
+  if(!_did && !_urlDup){
+    var _ntNew=(typeof _normTitle==='function')?_normTitle(v.title):'';
+    if(_ntNew && _ntNew.length>=6){
+      var _simV=videos.find(function(x){ return x.id!==v.id && _titleSim(_normTitle(x.title), _ntNew); });
+      if(_simV){
+        var _act2=await atelierChoose({
+          title:'🔎 標題很像，是同一支嗎？',
+          desc:'庫裡已有標題很像的「'+(_simV.title||'未命名')+'」'+(_simV.accountHandle?('（'+_simV.accountHandle+'）'):'')+'。網址不一樣，所以系統沒有自動當成重複——請你確認一下再決定。',
+          buttons:[
+            {label:'仍要新增（確定不是同一支）', sub:'兩支都留', value:'add', primary:true},
+            {label:'我先去看看（取消這次存檔）', sub:'這次先不存，回去比對', value:'cancel'}
+          ],
+          cancelValue:'cancel'
+        });
+        if(_act2==='cancel'){ toast('已取消這次存檔，沒有新增。'); return; }
+      }
     }
   }
   if(!_did) videos.unshift(v);
@@ -3047,7 +3068,9 @@ $('saveBtn').onclick=async function(){
   renderInsight(); renderGoalKit();
   $('pasteBox').value=''; $('parseMsg').innerHTML='';
   $('f-title').focus();
-  toast('✓ 已存第 '+videos.length+' 支');
+  var _vh=v.accountHandle?(' · '+v.accountHandle):'';
+  if(_did) toast('✓ 已更新「'+title+'」'+_vh, null, 2800);
+  else toast('✓ 已存入「'+title+'」'+_vh+' · 這是第 '+videos.length+' 支', null, 2800);
 };
 $('clearBtn').onclick=()=>{
   ['f-title','f-url','f-date','f-client','f-note'].forEach(i=>$(i).value=''); try{ $('f-date').dataset.raw=''; $('f-date').dataset.numcheck=''; }catch(e){}
@@ -3630,7 +3653,8 @@ function renderManual(){
   <div class="form-card" style="border-left:3px solid var(--gold)">
     <div class="stitle" style="font-size:15px;color:var(--rouge)">更新紀錄 · 還沒做的</div>
     <p style="font-size:13px;color:var(--text);line-height:1.85;margin-top:8px">
-    <b>v179（這版 · 提示詞看得到也改得動、產生腳本範本可先選客戶）：</b>①<b>每一顆「產生提示詞」按下去，現在跳出的是「可以直接打字改」的完整內容</b>：以前是唯讀、又擠在一起像當機；這版改成<b>可編輯的大框、置中、完整顯示、可捲動</b>，你可以先看過、直接在上面改字（手動改，或貼到 AI 改完再貼回來都行），改好按<b>「複製（含我的修改）」</b>就會把改過的版本放進剪貼簿（也保留「複製原始版」小按鈕）。這顆改動讓<b>所有產生提示詞的地方（對標優化、智能推薦、IP 定位、腳本大綱、腳本、賣點翻譯…）一起升級</b>。②<b>影片庫「產生腳本範本」可以先選客戶了</b>：按鈕旁多了一個<b>客戶下拉</b>——留空＝跟以前一樣輸出空白樣板（____）給你手填；<b>選了客戶＝提示詞會自動帶入他的職業／產業／主打與本人逐字稿節選</b>，客戶資料＋你挑的範本影片一起餵，AI 寫得更準。按下去一樣跳可編輯預覽。＊留空＝跟舊版一模一樣；只加功能，沒動五大提示詞與口吻鐵律的內容，也沒動任何既有流程與資料。<br>
+    <b>v180（這版 · 匯入更安心：存了沒、會不會重複、別點壞）：</b>①<b>待核對清單看得更懂、補得更安全</b>：清單最上面加了固定圖例（<span style="color:#C0392B">🔴 缺關鍵欄位</span>＝會影響對標／推薦準度、<span style="color:#B8860B">🟡 缺次要欄位</span>＝補了更完整）；缺什麼一律用中文欄位名顯示（不再露出英文鍵名）；按「編輯補上」會<b>自動跳到並用金框標出要補的那幾格（標籤後加「· 待補」）</b>，其他已經填好的資料一格都不會動。②<b>存檔成功講清楚、停得住</b>：影片存好會跳「<b>✓ 已存入「標題」· @帳號 · 這是第 N 支</b>」並停留久一點（不再一閃而過）；表單照常清空（這是刻意的批量設計）；帳號存檔提示也停久一點。③<b>右下同步筆數拆成兩個數字</b>：「已同步 影片 X 支 · 帳號 M 個」，不再只一個含糊的「N 筆」。④<b>重複偵測加第二道（只提醒、絕不自動擋）</b>：就算網址不一樣，只要<b>標題很像</b>也會跳一個溫和提醒問「是同一支嗎？」，預設仍可「仍要新增」，也可「我先去看看（取消這次存檔）」；門檻抓很嚴、寧可漏報也不亂報，原本的網址重複判斷完全沒變。＊全部只加功能，沒動五大提示詞與口吻鐵律的內容，也沒動任何既有流程與資料。<br>
+    <b>v179：</b>①<b>每一顆「產生提示詞」按下去，現在跳出的是「可以直接打字改」的完整內容</b>：以前是唯讀、又擠在一起像當機；這版改成<b>可編輯的大框、置中、完整顯示、可捲動</b>，你可以先看過、直接在上面改字（手動改，或貼到 AI 改完再貼回來都行），改好按<b>「複製（含我的修改）」</b>就會把改過的版本放進剪貼簿（也保留「複製原始版」小按鈕）。這顆改動讓<b>所有產生提示詞的地方（對標優化、智能推薦、IP 定位、腳本大綱、腳本、賣點翻譯…）一起升級</b>。②<b>影片庫「產生腳本範本」可以先選客戶了</b>：按鈕旁多了一個<b>客戶下拉</b>——留空＝跟以前一樣輸出空白樣板（____）給你手填；<b>選了客戶＝提示詞會自動帶入他的職業／產業／主打與本人逐字稿節選</b>，客戶資料＋你挑的範本影片一起餵，AI 寫得更準。按下去一樣跳可編輯預覽。＊留空＝跟舊版一模一樣；只加功能，沒動五大提示詞與口吻鐵律的內容，也沒動任何既有流程與資料。<br>
     <b>v178：</b>①<b>「對標優化」的提示詞，現在你可以自己勾要放什麼進去了</b>：在「產生對標優化提示詞」按鈕上方多了一排勾選（預設全勾，跟以前完全一樣），可以自由關掉「客戶基本資料／定位」「各對標帳號的關鍵欄位」「重點規則」其中任一段——例如資料太多想精簡時，取消勾選那段就不會放進提示詞，<b>看得到也控制得了裡面放了什麼</b>。②<b>「智能對標推薦」可以自己框人了</b>：客戶下面多了兩個欄位——<b>「只從這些人裡面挑」</b>（留空＝跟以前一樣用整個帳號庫；選了就只從你挑的這幾位裡排）、<b>「一定要包含這幾位」</b>（選了就會要求 AI 一定把他們納入排名並逐一說明）。要幾個（Top N）本來就能調。＊兩個都留空＝跟舊版一模一樣，不影響原本用法。＊只加功能，沒動五大提示詞與口吻鐵律的內容，也沒動任何既有流程與資料。<br>
     <b>v177：</b>①<b>客戶交付上方那個重複的搜尋框拿掉了</b>，直接用下拉自己的搜尋（功能一樣、少一個多餘欄位）。②<b>所有「開新分頁」的連結都補上小箭頭 icon 了</b>：除了工具捷徑（開 Claude／toolzin／Cobalt／Gemini）和商業閉環，這次連影片卡的帳號連結、「開啟影片」「開啟」「看主頁」也都加上「開新分頁」小箭頭，<b>一看就知道會跳到外部新分頁</b>；純指方向的箭頭不動。＊只動顯示、沒動功能與資料。<br>
     <b>v176：</b>①<b>【最重要】客戶版／顧問版一頁診斷書的 PDF 真的修好了</b>：之前列印會變成 11～18 頁、建議卡文字「一個字一行」、又慢；原因是那些卡片用了會在列印時「欄寬縮成 0」的排版。這版改成<b>列印時像版面對照表一樣穩</b>，文字正常滿欄橫排，<b>頁數正常（約 2～4 頁）、輸出變快</b>。②<b>客戶版／顧問版也能「輸出 PPT」了</b>：按鈕列多了「下載投影片（PPT）」，下載的是 16:9 投影片檔，<b>可全螢幕投影、另存 PDF，也能自己打開改文字</b>（解決「下載後想自己調整」）。③<b>並排比較表更整齊</b>：各欄<b>等寬對齊、帳號之間有金色直線分隔</b>，每格內容<b>一條一條列（1. 2. 3.）</b>不再擠成一坨。④<b>「並排比較／清除選擇」併成一排</b>：並排比較大顆顯眼、清除選擇小顆次要。⑤<b>客戶交付刪掉重複的搜尋框</b>：上面那個多餘的搜尋框拿掉了，直接用下拉自己的搜尋。⑥<b>開新分頁的連結（工具捷徑、商業閉環…）都加上「開新分頁」小箭頭 icon</b>。＊全部沿用既有功能與圖示，沒動流程與資料。<br>
@@ -4431,6 +4455,42 @@ function saveGridDump(){
   fillGridDumpAcc(); renderGridLib();
 }
 
+var _clKeyZhMap=null;
+function _clKeyZh(k){
+  if(!_clKeyZhMap){ _clKeyZhMap={}; (typeof ACC_PROFILE_FIELDS!=='undefined'?ACC_PROFILE_FIELDS:[]).forEach(function(f){ _clKeyZhMap[f[0]]=f[1]; }); }
+  return _clKeyZhMap[k]||k;
+}
+function _clHighlightFields(ids){
+  setTimeout(function(){
+    var first=null;
+    (ids||[]).forEach(function(id){
+      var el=document.getElementById(id); if(!el) return;
+      var dd=el.closest?el.closest('details'):null; if(dd&&!dd.open) dd.open=true;
+      el.style.outline='2px solid var(--gold,#D4A574)'; el.style.outlineOffset='1px'; el.style.background='var(--warm-white,#FDFBF8)';
+      var fld=el.closest?el.closest('.fld'):null; var lab=fld?fld.querySelector('label'):null;
+      if(lab&&!lab.querySelector('.cl-todo')){ var s=document.createElement('span'); s.className='cl-todo'; s.style.cssText='color:var(--gold-dark);font-size:11px;font-weight:700;margin-left:5px'; s.textContent='· 待補'; lab.appendChild(s); }
+      if(!first) first=el;
+    });
+    if(first){ try{ first.scrollIntoView({block:'center',behavior:'smooth'}); }catch(e){} setTimeout(function(){ try{ first.focus({preventScroll:true}); }catch(e){ try{ first.focus(); }catch(_){} } },140); }
+  },60);
+}
+function _clFocusAccMiss(a){
+  if(!a) return; var pf=a.profile||{}; var ids=[];
+  if(!a.jobTitle) ids.push('ma-jobTitle');
+  if(!a.industry) ids.push('ma-industry');
+  if(!pf.linkedAccounts) ids.push('ma-linkedAccounts');
+  if(!pf.relatedLinks) ids.push('ma-relatedLinks');
+  if(!pf.icpAudience&&!pf.icpProduct&&!pf.icpPersona) ids.push('ma-icpAudience');
+  if(!pf.proFeatures) ids.push('ma-proFeatures');
+  _clHighlightFields(ids);
+}
+function _clFocusVidMiss(v){
+  if(!v) return; var ids=[];
+  if(!v.views&&!v.likes&&!v.comments) ids.push('ev-views');
+  if(!v.date) ids.push('ev-date');
+  if(!v.url) ids.push('ev-url');
+  _clHighlightFields(ids);
+}
 function renderCheckList(){
   var box=document.getElementById('checkListPanel'); if(!box) return;
   var PH=/待補|截圖待補|未提供|需查證|查不到|待詢|需人工核對/;
@@ -4448,7 +4508,7 @@ function renderCheckList(){
     var resid=[]; Object.keys(pf).forEach(function(k){ if(PH.test(pf[k]||'')) resid.push(k); });
     if(a.jobTitle&&PH.test(a.jobTitle)) resid.push('職稱'); if(a.industry&&PH.test(a.industry)) resid.push('產業');
     if(miss.length||resid.length){
-      var tags=[]; if(miss.length) tags.push('缺：'+miss.join('、')); if(resid.length) tags.push('待補殘留：'+resid.slice(0,5).join('、'));
+      var tags=[]; if(miss.length) tags.push('缺：'+miss.join('、')); if(resid.length) tags.push('待補殘留：'+resid.slice(0,5).map(function(k){return _clKeyZh(k);}).join('、'));
       accRows.push('<div style="display:flex;gap:8px;align-items:flex-start;flex-wrap:wrap;padding:7px 0;border-top:1px solid var(--line)"><span style="flex:none;margin-top:1px">🔴</span><div style="flex:1;font-size:12.5px;color:var(--ink)"><b>'+esc(a.handle||'@?')+'</b>'+(a.displayName?' '+esc(a.displayName):'')+'<div style="font-size:11.5px;color:var(--sub);margin-top:2px">'+esc(tags.join('｜'))+'</div></div><button class="btn btn-ghost" style="flex:none;width:auto;white-space:nowrap;font-size:11px;padding:4px 10px" data-cl-edit="'+a.id+'">編輯補上</button></div>');
     }
   });
@@ -4472,13 +4532,14 @@ function renderCheckList(){
   var total=accRows.length+vidRows.length;
   if(!total){ box.innerHTML='<div class="card" style="border:1px solid var(--gold-soft);background:var(--warm)"><div style="font-size:13px;color:var(--ink)"><b><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#A51820" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:3px"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4-4"/></svg>待核對清單</b>　<span style="color:#0F6E56;font-weight:700">全部齊全 ✓ 目前沒有要補的</span></div></div>'; return; }
   var html='<details class="card" open style="border:1.5px solid var(--rouge)"><summary style="cursor:pointer;font-size:14px;font-weight:800;color:var(--rouge)"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#A51820" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:3px"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4-4"/></svg>待核對清單（'+total+' 筆要補｜帳號 '+accRows.length+'、影片 '+vidRows.length+'）</summary>';
-  html+='<div style="font-size:11.5px;color:var(--sub);margin:6px 0 4px">只列有缺漏的。帳號與影片都可直接點「編輯補上」就地修——帳號開編輯視窗、影片補數字／日期／連結，補完就從清單消失。</div>';
+  html+='<div style="font-size:11.5px;color:var(--ink);margin:6px 0 2px;font-weight:600"><span style="color:#C0392B">🔴 缺關鍵欄位</span>（不補會影響對標／推薦準度）　<span style="color:#B8860B">🟡 缺次要欄位</span>（補了更完整）</div>';
+  html+='<div style="font-size:11.5px;color:var(--sub);margin:2px 0 4px">只列有缺漏的。帳號與影片都可直接點「編輯補上」就地修——點下去會自動跳到並標出要補的那幾格（金框＋「· 待補」），其餘已填資料一格都不會動，補完就從清單消失。</div>';
   if(accRows.length) html+='<div style="margin-top:8px;font-size:12px;font-weight:700;color:var(--gold-dark)">帳號（'+accRows.length+'）</div>'+accRows.join('');
   if(vidRows.length) html+='<div style="margin-top:12px;font-size:12px;font-weight:700;color:var(--gold-dark)">影片（'+vidRows.length+'）</div>'+vidRows.join('');
   html+='</details>';
   box.innerHTML=html;
-  box.querySelectorAll('[data-cl-edit]').forEach(function(b){ b.onclick=function(){ if(typeof editAccount==='function') editAccount(b.dataset.clEdit); }; });
-  box.querySelectorAll('[data-cl-vedit]').forEach(function(b){ b.onclick=function(){ if(typeof editVideoModal==='function') editVideoModal(b.dataset.clVedit); }; });
+  box.querySelectorAll('[data-cl-edit]').forEach(function(b){ b.onclick=function(){ var id=b.dataset.clEdit; if(typeof editAccount==='function'){ editAccount(id); var a=(accounts||[]).find(function(x){return x.id===id;}); if(typeof _clFocusAccMiss==='function') _clFocusAccMiss(a); } }; });
+  box.querySelectorAll('[data-cl-vedit]').forEach(function(b){ b.onclick=function(){ var id=b.dataset.clVedit; if(typeof editVideoModal==='function'){ editVideoModal(id); var v=(videos||[]).find(function(x){return x.id===id;}); if(typeof _clFocusVidMiss==='function') _clFocusVidMiss(v); } }; });
 }
 function renderAccounts(){
   if(typeof renderCheckList==='function') renderCheckList();
@@ -4667,7 +4728,7 @@ async function ingestAccountCard(raw, opt){
   }
   acc.updatedAt=Date.now();
   await saveAccounts(); renderAccounts(); if(typeof renderComparePicker==='function') renderComparePicker(); if(typeof renderAll==='function') renderAll();
-  toast((isNew?'✓ 已建帳號 ':'已更新帳號 ')+acc.handle+(opt.mode==='history'?'（已新增一筆版面快照·可前後對比）':opt.mode==='overwrite'?'（已覆蓋今天的版面快照）':'（版面解析已存）')+fanMsg);
+  toast((isNew?'✓ 已建帳號 ':'已更新帳號 ')+acc.handle+(opt.mode==='history'?'（已新增一筆版面快照·可前後對比）':opt.mode==='overwrite'?'（已覆蓋今天的版面快照）':'（版面解析已存）')+fanMsg, null, 2800);
   if(typeof lightFilingBoard==='function'){ try{ lightFilingBoard(acc); }catch(e){} }
   return acc;
 }
@@ -4781,7 +4842,7 @@ function openAccountModal(a){
     // 雙向關聯：把自己加進對方的 relatedAccounts
     (a.relatedAccounts||[]).forEach(rid=>{ const r=accounts.find(x=>x.id===rid); if(r){ r.relatedAccounts=r.relatedAccounts||[]; if(!r.relatedAccounts.includes(a.id)) r.relatedAccounts.push(a.id); }});
     await saveAccounts(); renderAccounts(); renderComparePicker(); closeModal();
-    toast(isNew?'✓ 帳號已建立':'✓ 帳號已更新');
+    toast(isNew?'✓ 帳號已建立':'✓ 帳號已更新', null, 2800);
   };
 }
 function editAccount(id){ const a=accounts.find(x=>x.id===id); if(a) openAccountModal(a); }
@@ -4885,6 +4946,20 @@ function normVideoUrl(u){
   s=s.split('#')[0].split('?')[0];
   s=s.replace(/\/+$/,'');
   return s;
+}
+function _normTitle(s){
+  s=(s||'').toString();
+  s=s.replace(/[\uFF01-\uFF5E]/g,function(c){return String.fromCharCode(c.charCodeAt(0)-0xFEE0);}).replace(/\u3000/g,' ');
+  s=s.toLowerCase().replace(/\s+/g,'');
+  s=s.replace(/[、，,。.！!？?～~\-_:：;；'"“”‘’`|/\\()（）\[\]【】「」『』#＃*]/g,'');
+  return s;
+}
+function _titleSim(aT,bT){
+  if(!aT||!bT) return false;
+  if(aT===bT) return true;
+  var lo=aT.length<=bT.length?aT:bT, hi=aT.length<=bT.length?bT:aT;
+  if(lo.length>=6 && hi.indexOf(lo)>=0 && (lo.length/hi.length)>=0.8) return true;
+  return false;
 }
 function _vidFilled(v){
   var n=0; ['title','date','views','likes','comments','hook','caption','transcript','themeId','stage','goal','trig','form'].forEach(function(k){ if(v[k]!=null && String(v[k]).trim()!=='') n++; }); return n;
@@ -5746,7 +5821,7 @@ function bindAccountUI(){
       existing={id:'acc_'+Date.now()+'_'+Math.random().toString(36).slice(2,7), platform:'IG', handle:handle, displayName:'', types:[], domain:'', jobTitle:($('f-jobTitle')?$('f-jobTitle').value.trim():''), industry:($('f-industry')?$('f-industry').value.trim():''), relatedAccounts:[], note:'(快速建檔，請到帳號管理補完整資訊)', fanSnapshots:[], profileSnapshots:[], createdAt:Date.now(), updatedAt:Date.now()};
       accounts.unshift(existing);
       await saveAccounts();
-      toast('✓ 已建帳號 '+handle+'（請到帳號管理補身份/粉絲快照）');
+      toast('✓ 已建帳號 '+handle+'（請到帳號管理補身份/粉絲快照）', null, 2800);
     } else {
       toast('帳號已存在，已自動連結');
     }
@@ -6507,7 +6582,7 @@ function _fbSubscribe(){
             videos=d.videos;
             try{ localStorage.setItem(ATELIER_LS_KEY, JSON.stringify(videos)); }catch(e){}
             if(typeof renderAll==='function') renderAll();
-            _fbStatus('connected','已同步 '+videos.length+' 筆');
+            _fbStatus('connected','已同步 影片 '+videos.length+' 支 · 帳號 '+((typeof accounts!=='undefined'&&accounts)?accounts.length:0)+' 個');
           }
         }
       } else {
@@ -6556,7 +6631,7 @@ function _fbPush(){
   _fbStatus('syncing','儲存中…');
   _fbDB.collection(ATELIER_COLLECTION).doc(ATELIER_DOC_ID)
     .set({ videos: videos, updatedAt: Date.now(), count: videos.length }, {merge:true})
-    .then(function(){ _fbStatus('connected','已同步 '+videos.length+' 筆'); })
+    .then(function(){ _fbStatus('connected','已同步 影片 '+videos.length+' 支 · 帳號 '+((typeof accounts!=='undefined'&&accounts)?accounts.length:0)+' 個'); })
     .catch(function(err){
       console.error('[ATELIER FB] 寫入失敗',err);
       _fbStatus('offline','⚠️ 雲端寫入失敗（本機已存）');
