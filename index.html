@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="color-scheme" content="light only">
 <meta name="supported-color-schemes" content="light">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v184 (版本號僅留註解，不顯示於畫面)
+<!-- ATELIER 影片診斷工作台 · 內部版本 v185 (版本號僅留註解，不顯示於畫面)
+v185 更新（交辦單：影片庫主角客戶＋對標對象兩選擇器＋客戶選擇器修好＋視覺＋對標變準，接 v184）：【P2】renderAll 加 populateCmpHero()，一進影片庫客戶下拉就有帳號。【P3】#libClientRow 加 border-bottom 分隔線＋margin；「客戶」chip 去掉 rouge 色避免跟動作鈕撞色。【P4】csel applyAccSort 新增 suggest（_smScore）＋ industry（_smTokens/_indRel）排序，跟 multi-picker 一致；選了律師主角→排序優先浮出同領域。P1（影片庫兩選擇器重構）風險最高、延到 v186。版本號4處；常數未變；15 script；div 1140/details 45/CSS 平衡。
 v184 更新（交辦單：v183 實測 bug 修正＋小優化，B 區兩模式重構留到 v185）：【A1】影片卡分析工具「@@」雙 @ 修正（replace ^@+）。【A2】存檔後帳號建檔收集盤（filingBoardBoxInput）收合＋歸零。【A3】建檔 pending 帳號改用獨立 _pendingAcc 物件（不加入 accounts 陣列→計數不提前跳）；確認彈窗偵測 _pendingAcc → 新帳號顯示「新增 @xxx（第一次）」；確定才 unshift+saveAccounts；取消則移除 temp option。【A4】populateCmpHero 重建 options 後同步更新 csel 觸發鈕文字，帳號到齊後不再殘留「尚無帳號」。【A5】csel 桌機 maxHeight 下限提高 150→240、上限 340→400，modal 內下拉不再被壓到只剩 3 行。【A6】影片卡分析工具 foldout 改金線框＋暖白底（非 vstrat 粉底），與腳本靈感區隔。【A7】快速篩選新增「客戶」來源鈕（libClient=__client__ 篩 accountId 有值者）。【A8】工具說明從「做什麼」擴充為「目的＋使用邏輯＋做法」。B 區（影片庫兩模式重構＋多維篩選對標）風險過高、工程量大，依規則 6 延到 v185。版本號 4 處；常數未變；15 script；div 1140/details 45/CSS 平衡。
 v183 更新（交辦單：建檔流程修對＋手機版選擇器修好＋配色根治＋影片庫工具補齊，接 v182）：【P1】card parsing 不再立刻 saveAccounts，改暫存 _pendingAccId；確認彈窗偵測 pending 顯示「新增 @handle」；按確定才 saveAccounts，取消移除。【P2】csel 搜尋框/排序鍵補 touchstart；outside 加 touchstart；手機<=640px 改 fixed 置中浮層。【P3】同 csel 自動套用。【P4】全域 a{color:var(--rouge)}。【P5】影片卡加「@handle 的分析工具」foldout。【P6】帳號管理 accPage 10筆/頁＋上下換頁。【P7】acc-case-sel 字級/間距微調。版本號4處；v180拔「（這版）」；常數未變；15 script；div 1139/details 45/CSS 平衡。
 v182 更新（交辦單：讓工具變準變專業，接 v181、會動邏輯與新增功能、每項獨立互不影響；不改五大常數與 TONE_RULES）：【P1 建檔送出前確認】saveBtn 在 v180 重複偵測之後、正式寫入之前，加 atelierChoose 確認摘要——帳號已存在：顯示「@handle 已在帳號庫（第 N 支影片，帳號資料不覆蓋）」；帳號不存在：顯示「將新增影片＋帳號」；按「確定建檔」才寫入。【P2 系統建議變準＋理由具體】(1) _smTokens 增加 domain/positioning 欄位＋ _SM_SYN 同義詞組擴展（律師/法律、醫師/醫療等 12 組），Jaccard 相似度自動升高；(2) _smReasonShort 改為具體理由（「同為律師」「同屬法律領域」等），資料不足說「資料較少、建議補齊」；(3) 建議名單從 5→8 個；三處（版面對照/智能推薦/成功庫對標）共用同一套。【P3 影片庫借技法】影片卡底部新增「借技法」連結＋ openBorrowFromVideo(videoId) 函式：選客戶帳號→產生借技法腳本提示詞＋ copyPrompt 可編輯預覽；buildBorrowTechniquePrompt 升級 copyVal→copyPrompt 兩路皆享預覽。【P4 版面對照顧問版/客戶版】新增 _cmpMode/_cmpNotes 全域變數＋ _cmpSetMode 切換函式；runCompare 並排表工具列新增「客戶版/顧問版」切換鈕；顧問版每列多一欄「顧問解說＋備註」（自動摘要＋可填 textarea），切客戶版乾淨無痕；輸出 PDF/PPT 依當下模式。【P5 未做】P5（客戶交付規格化提示詞＋ AI 回填解析）涉及新的大段提示詞＋ 20+ 欄位回填解析器，工程量最大且牽動客戶交付敏感欄位，依規則 6 留給 v183 獨立做。【P6 小顯示】(1) 影片卡 badge 擴展為「目標層＋漏斗＋主題」三段（例 C 信任層 · G4 · G4-1 知識輸出），沿用既有 goal/stage/themeId；(2) 影片庫工具列 tip 增加各工具白話說明、帳號卡「更多分析工具」foldout 增加工具一句話描述。版本號 4 處更新；五大常數＋TONE_RULES 經 md5 比對未變；全檔 node --check 全過（15 script）、div 1137／details 44／CSS 平衡。
@@ -757,7 +758,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v184</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v185</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -1488,7 +1489,7 @@ if('serviceWorker' in navigator){
     <select id="libTypeF" style="width:100%;min-width:0;padding:7px 6px;border:1px solid var(--border);border-radius:8px;background:#fff;color:var(--ink);font-family:inherit;font-size:12px"><option value="">全部身份</option><option>KOL</option><option>KOC</option><option>個人IP</option><option>Youtuber</option><option>內容創作者</option><option>素人</option><option>品牌號</option><option>企業家</option><option>名人</option><option>演員</option><option>歌手</option></select>
     </div>
   </div>
-  <div class="filterrow" id="libClientRow"></div>
+  <div class="filterrow" id="libClientRow" style="margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--gold-soft)"></div>
   <div id="libBulk" style="display:flex;gap:6px;align-items:center;margin-bottom:8px;flex-wrap:wrap">
     <button class="btn btn-ghost" id="libSelAllBtn" style="width:auto;font-size:12px;padding:6px 12px">全選</button>
     <span id="libSelCount" style="font-size:12px;color:var(--gold-dark)"></span>
@@ -3276,7 +3277,7 @@ function renderClientFilter(){
   /* v184 A7：新增「客戶」篩選（有連結帳號的影片） */
   var hasClientVids=videos.some(function(v){return !!v.accountId;});
   row.innerHTML='<div class="fbtn '+(libClient===''?'on':'')+'" data-c="">全部來源</div>'+
-    (hasClientVids?'<div class="fbtn '+(libClient==='__client__'?'on':'')+'" data-c="__client__" style="color:var(--rouge);font-weight:700">客戶</div>':'')+
+    (hasClientVids?'<div class="fbtn '+(libClient==='__client__'?'on':'')+'" data-c="__client__" style="font-weight:700">客戶</div>':'')+
     clients.map(c=>`<div class="fbtn ${libClient===c?'on':''}" data-c="${esc(c)}">${esc(c)}</div>`).join('');
   row.querySelectorAll('.fbtn').forEach(b=>b.onclick=()=>{ libClient=b.dataset.c; renderClientFilter(); renderLibrary(); });
 }
@@ -3729,7 +3730,8 @@ function renderManual(){
   <div class="form-card" style="border-left:3px solid var(--gold)">
     <div class="stitle" style="font-size:15px;color:var(--rouge)">更新紀錄 · 還沒做的</div>
     <p style="font-size:13px;color:var(--text);line-height:1.85;margin-top:8px">
-    <b>v184（這版 · v183 實測修好＋小優化）：</b>①<b>@@雙 @ 修掉</b>：影片卡「分析工具」只有一個 @。②<b>存檔後收集盤歸零</b>：「帳號建檔收集盤」存完影片會自動收合清空，不殘留上一個帳號。③<b>新帳號不再提前跳數字</b>：pending 帳號改用獨立物件，按確定之前帳號計數不變；確認彈窗清楚寫「新增 @xxx（第一次）」不再誤標「既有」。④<b>客戶選擇不再空白</b>：帳號到齊後 csel 觸發鈕文字自動更新，不卡在「尚無帳號」。⑤<b>借技法下拉不再被壓扁</b>：modal 內下拉最小可視高度拉高，看得到多列選項。⑥<b>分析工具好辨識</b>：金線框暖白底（不再跟腳本靈感撞色）。⑦<b>來源多一顆「客戶」</b>：快速篩選加了客戶來源鈕，一鍵篩出有連結帳號的影片。⑧<b>工具說明更完整</b>：講清楚目的＋使用邏輯＋做法。＊B 區（影片庫兩模式重構）風險高、工程量大，留到 v185。五大提示詞與口吻鐵律一字未動。<br>
+    <b>v185（這版 · 客戶選擇器修好＋視覺分群＋對標變準）：</b>①<b>客戶選擇不再空白</b>：一進影片庫就呼叫 populateCmpHero，下拉立刻列出全部客戶。②<b>來源列跟動作鈕分開了</b>：加了分隔線＋間距，「客戶」chip 不再跟「產生腳本範本」撞色。③<b>對標找人變準了</b>：csel 的「系統建議」和「產業·領域」排序接上 _smScore / _smTokens 同義詞引擎——選了律師主角，同領域的人會優先浮上來。＊P1（影片庫兩選擇器重構）風險最高留到 v186。五大提示詞與口吻鐵律一字未動。<br>
+    <b>v184（ · v183 實測修好＋小優化）：</b>①<b>@@雙 @ 修掉</b>：影片卡「分析工具」只有一個 @。②<b>存檔後收集盤歸零</b>：「帳號建檔收集盤」存完影片會自動收合清空，不殘留上一個帳號。③<b>新帳號不再提前跳數字</b>：pending 帳號改用獨立物件，按確定之前帳號計數不變；確認彈窗清楚寫「新增 @xxx（第一次）」不再誤標「既有」。④<b>客戶選擇不再空白</b>：帳號到齊後 csel 觸發鈕文字自動更新，不卡在「尚無帳號」。⑤<b>借技法下拉不再被壓扁</b>：modal 內下拉最小可視高度拉高，看得到多列選項。⑥<b>分析工具好辨識</b>：金線框暖白底（不再跟腳本靈感撞色）。⑦<b>來源多一顆「客戶」</b>：快速篩選加了客戶來源鈕，一鍵篩出有連結帳號的影片。⑧<b>工具說明更完整</b>：講清楚目的＋使用邏輯＋做法。＊B 區（影片庫兩模式重構）風險高、工程量大，留到 v185。五大提示詞與口吻鐵律一字未動。<br>
     <b>v183（ · 建檔流程修對＋手機版修好＋配色根治＋影片庫工具補齊）：</b>①<b>建檔改成「按確定才建」</b>：以前按「產生歸類卡」帳號就直接存進帳號管理了，現在改成暫存——確認彈窗會清楚分兩行寫「帳號＝新增 @xxx」或「既有 @xxx（第 N 支，不覆蓋）」＋「影片＝新增 1 支」，按「確定建檔」帳號和影片才一起存，取消就什麼都不存。②<b>手機版客戶選擇器修好</b>：下拉在手機上改成畫面正中央的浮層＋半透明遮罩，能打字搜尋、不再飛到角落；桌機不變。③<b>藍色連結根治</b>：加了全域 CSS 規則，全站連結統一品牌酒紅色，不再有瀏覽器預設藍。④<b>影片庫也有分析工具了</b>：每支影片卡底部多了「@帳號的分析工具」摺疊（特點→賣點／帳號體檢／客戶診斷／成功庫對標），直接呼叫帳號管理那批既有函式。⑤<b>帳號管理分頁</b>：10 個一頁、上下都有換頁鍵，不用一直滑。⑥<b>案例類型下拉美化</b>：字級間距微調、跟旁邊的「編輯/問診/刪除」協調不突兀。＊P5（客戶交付規格化提示詞＋AI 回填）留到 v184。五大提示詞與口吻鐵律一字未動。<br>
     <b>v182（讓工具變準、變專業）：</b>①<b>建檔前先確認</b>：存影片前多一步摘要確認——帳號已存在會說「這是第 N 支、帳號不覆蓋」，帳號是新的會說「將新增帳號＋影片」，按「確定建檔」才真的存，不怕填錯。②<b>系統建議變準了</b>：律師現在找得到律師了——同義詞擴展（律師/法律、醫師/醫療等 12 組）讓領域配對大幅提升；建議理由改成具體的「同為律師」「同屬法律領域」（講不出就說「資料較少、建議補齊」）；建議名單從 5 增到 8 個；版面對照/智能推薦/成功庫對標三處共用同一套。③<b>影片庫「借技法寫腳本」</b>：每支影片卡底部新增「借技法」連結——選你的客戶帳號＋這支當參照→產生提示詞＋可編輯預覽，跟帳號管理的借技法同一套邏輯。④<b>版面對照可切「客戶版／顧問版」</b>：工具列多了切換鈕——客戶版乾淨不帶備註，顧問版每列多一欄自動解說＋可填備註，輸出 PDF/投影片依當下模式。⑤<b>影片卡資訊更完整</b>：badge 從只寫「G4」擴展為「C 信任層 · G4 · G4-1 知識輸出」三段。⑥<b>工具都有白話說明了</b>：影片庫工具列和帳號卡「更多分析工具」裡，每個工具加了一句「這個做什麼、怎麼用」。＊P5（客戶交付規格化提示詞＋AI 回填）工程量最大且牽動敏感欄位，依風險控管留到 v183 獨立做。五大提示詞與口吻鐵律一字未動。<br>
     <b>v181（小修小美：先把卡 0 的 bug、刺眼配色、按鈕大小、下拉與影片庫排版收乾淨）：</b>①<b>右下同步那行的「帳號 N 個」不再一開始卡在 0</b>：以前剛開啟時影片先到、帳號慢半拍，那行會先寫成「帳號 0 個」要等下次才更新；現在帳號一到齊就立刻刷新成正確數字。②<b>右上也一起顯示帳號數</b>：改成「已存 影片 N 支 · 帳號 M 個」，跟右下一致。③<b>配色收乾淨</b>：產生腳本範本等彈窗的「複製」鍵紅金不再打架（主鈕柔化酒紅、次鈕金線細框）；帳號管理裡突兀的藍綠色「帳號健檢」改回品牌金；「案例類型」下拉沿用暖白底金線框美化、字放大；並排比/版面對照「整列共同點」的綠改成更貼品牌的柔和橄欖色。④<b>版面對照按鈕＋收起</b>：「並排比較」做大、主色，「清除選擇」變小且不爆框；影片並排對比結果<b>右上角加了收起鈕（✕）</b>，不用滑到最下面也能收。⑤<b>下拉加大＋影片庫更舒服</b>：影片庫「客戶」下拉變寬、字變大好讀；影片庫整頁的行距、區塊間距、卡片留白都放鬆了一點。＊這版刻意只修 bug、改外觀與顯示，沒動任何存檔／重複偵測／對標推薦邏輯與資料，五大提示詞與口吻鐵律也一字未動。<br>
@@ -3958,6 +3960,8 @@ function renderStats(){
 
 function renderAll(){
   renderStats(); renderLibrary(); renderClientFilter(); renderGaps();
+  /* v185 P2：進影片庫就 populate 客戶選擇器，不再空白 */
+  if(typeof populateCmpHero==='function') populateCmpHero();
 }
 
 /* ═══════════ v45 帳號管理模組（CREATOR ACCOUNT MATRIX）═══════════
@@ -7912,8 +7916,27 @@ document.addEventListener('DOMContentLoaded',function(){
         var head=[], body=[], tail=[];
         nodes.forEach(function(node){ var i=parseInt(node.getAttribute('data-i'),10); var o=sel.options[i]; if(!o){ tail.push(node); return; } if(o.value===''){ if(o.disabled) tail.push(node); else head.push(node); } else if(o.disabled){ tail.push(node); } else { body.push({node:node, acc:(typeof accounts!=='undefined'&&accounts)?accounts.find(function(a){return a.id===o.value;}):null}); } });
         var srt=_accSort;
-        if(srt==='perf'&&typeof _accPerf==='function'){ var pm={}; body.forEach(function(b){ pm[b.acc?b.acc.id:'']=b.acc?_accPerf(b.acc.id).score:-1; }); body.sort(function(x,y){ return (pm[y.acc?y.acc.id:'']||-1)-(pm[x.acc?x.acc.id:'']||-1); }); }
-        else if(srt==='industry'){ body.sort(function(x,y){ return (((x.acc&&(x.acc.industry||x.acc.domain))||'zzz')+'').localeCompare((((y.acc&&(y.acc.industry||y.acc.domain))||'zzz')+'')); }); }
+        /* v185 P4：csel suggest + industry 排序也用 _smScore/_smTokens（跟 multi-picker 一致） */
+        if(srt==='suggest' && typeof _smScore==='function'){
+          var _hero=sel.getAttribute('data-accpick')==='1'&&typeof accounts!=='undefined'?null:null;
+          try{ var _hid=(document.getElementById('cmpHero')||{value:''}).value; if(_hid) _hero=accounts.find(function(a){return a.id===_hid;}); }catch(e){}
+          if(_hero){ var _sm={}; body.forEach(function(b){ _sm[b.acc?b.acc.id:'']=b.acc?_smScore(_hero,b.acc).score:-1; }); body.sort(function(x,y){ return (_sm[y.acc?y.acc.id:'']||-1)-(_sm[x.acc?x.acc.id:'']||-1); }); }
+          else { body.sort(function(x,y){ return (((x.acc&&x.acc.handle)||'').toLowerCase()).localeCompare(((y.acc&&y.acc.handle)||'').toLowerCase()); }); }
+        }
+        else if(srt==='perf'&&typeof _accPerf==='function'){ var pm={}; body.forEach(function(b){ pm[b.acc?b.acc.id:'']=b.acc?_accPerf(b.acc.id).score:-1; }); body.sort(function(x,y){ return (pm[y.acc?y.acc.id:'']||-1)-(pm[x.acc?x.acc.id:'']||-1); }); }
+        else if(srt==='industry'){
+          var _heroI=null; try{ var _hid2=(document.getElementById('cmpHero')||{value:''}).value; if(_hid2&&typeof accounts!=='undefined') _heroI=accounts.find(function(a){return a.id===_hid2;}); }catch(e){}
+          if(_heroI && typeof _smTokens==='function'){
+            var _cTok=_smTokens(_heroI), _cInd=(typeof _smNormStr==='function'?_smNormStr(_heroI.industry):(_heroI.industry||''));
+            body.sort(function(x,y){
+              var xa=x.acc,ya=y.acc;
+              function _ir(a){ if(!a) return 0; var ai=(typeof _smNormStr==='function'?_smNormStr(a.industry):(a.industry||'')); if(ai&&_cInd&&ai===_cInd) return 3; var at=_smTokens(a); var ov=at.filter(function(t){return _cTok.indexOf(t)>=0;}).length; return ov>0?2:0; }
+              return (_ir(ya)-_ir(xa))||(((xa&&(xa.industry||xa.domain))||'zzz')+'').localeCompare((((ya&&(ya.industry||ya.domain))||'zzz')+''));
+            });
+          } else {
+            body.sort(function(x,y){ return (((x.acc&&(x.acc.industry||x.acc.domain))||'zzz')+'').localeCompare((((y.acc&&(y.acc.industry||y.acc.domain))||'zzz')+'')); });
+          }
+        }
         else if(srt==='case'){ var rk={success:0,low:1,'':2}; body.sort(function(x,y){ var cx=(x.acc&&x.acc.caseType)||'',cy=(y.acc&&y.acc.caseType)||''; return (rk[cx]-rk[cy])||(((x.acc&&x.acc.handle)||'').localeCompare((y.acc&&y.acc.handle)||'')); }); }
         else if(srt==='az'){ body.sort(function(x,y){ return (((x.acc&&x.acc.handle)||'').toLowerCase()).localeCompare(((y.acc&&y.acc.handle)||'').toLowerCase()); }); }
         head.concat(body.map(function(b){return b.node;})).concat(tail).forEach(function(n){ list.appendChild(n); });
