@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="color-scheme" content="light only">
 <meta name="supported-color-schemes" content="light">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v186 (版本號僅留註解，不顯示於畫面)
+<!-- ATELIER 影片診斷工作台 · 內部版本 v187 (版本號僅留註解，不顯示於畫面)
+v187 更新（交辦單：v186 實測 migration 補完＋搜尋擴充＋配色＋工具卡片化＋undo stack，接 v186）：【A1】成功庫對標 copy（~4328）＋卡片補完提示詞 copy（~4117）遷移至 copyPrompt（2 處，各加 if copyPrompt else copyVal）。【A3】populateCmpHero 結尾加 600ms setTimeout 再同步一次 csel label。【A4】搜尋 haystack 新增 themeId/stage/goal/displayName/domain 5 個欄位。【A5】影片卡借技法 SVG stroke #A51820→currentColor；複製這支/編輯數據 color rouge/gold-dark→var(--sub)。【A6】影片卡 4 工具從 flex 橫排改成 4 列獨立行（border-bottom 分隔＋各自 icon＋右側灰字說明）。【A8】copyPrompt undo stack：blur 時存快照；「↩返回」pop 一步；新增「↺還原全部」回原版。A2（parseBtn/bulkBtn pending）未做——涉及兩條 card-parse 路徑＋批次匯入，牽動面廣。A7（全站彈窗定位盤查）未做——範圍太廣。B1（兩選擇器重構）延至 v188。常數未變；15 script；div 1144/det 45/CSS 平衡。
 v186 更新（交辦單：客戶選擇器首載修好＋工具區別化＋copyPrompt 標準化＋彈窗定位修正，接 v185）：【A1】Firebase onSnapshot 帳號到齊後明確呼叫 populateCmpHero＋初始 HTML 加 placeholder option。【A2】4 個分析工具統一 gold-dark＋各自 SVG icon 區分；客戶診斷漏斗「缺」從 rouge 改 gold-dark＋加說明文字。【A3】copyPrompt 升級：預設唯讀＋✏️編輯鎖＋↩還原＋右上 ✕；客戶診斷/問診整理/特點→賣點/帳號體檢 4 處遷移至 copyPrompt。【A4】csel 在 modal 內也走 fixed 置中（偵測 btn.closest modal），不再卡底部。B1（兩選擇器重構）延到 v187。常數未變；15 script；div 1140/det 45/CSS 平衡。
 v185 更新（交辦單：影片庫主角客戶＋對標對象兩選擇器＋客戶選擇器修好＋視覺＋對標變準，接 v184）：【P2】renderAll 加 populateCmpHero()，一進影片庫客戶下拉就有帳號。【P3】#libClientRow 加 border-bottom 分隔線＋margin；「客戶」chip 去掉 rouge 色避免跟動作鈕撞色。【P4】csel applyAccSort 新增 suggest（_smScore）＋ industry（_smTokens/_indRel）排序，跟 multi-picker 一致；選了律師主角→排序優先浮出同領域。P1（影片庫兩選擇器重構）風險最高、延到 v186。版本號4處；常數未變；15 script；div 1140/details 45/CSS 平衡。
 v184 更新（交辦單：v183 實測 bug 修正＋小優化，B 區兩模式重構留到 v185）：【A1】影片卡分析工具「@@」雙 @ 修正（replace ^@+）。【A2】存檔後帳號建檔收集盤（filingBoardBoxInput）收合＋歸零。【A3】建檔 pending 帳號改用獨立 _pendingAcc 物件（不加入 accounts 陣列→計數不提前跳）；確認彈窗偵測 _pendingAcc → 新帳號顯示「新增 @xxx（第一次）」；確定才 unshift+saveAccounts；取消則移除 temp option。【A4】populateCmpHero 重建 options 後同步更新 csel 觸發鈕文字，帳號到齊後不再殘留「尚無帳號」。【A5】csel 桌機 maxHeight 下限提高 150→240、上限 340→400，modal 內下拉不再被壓到只剩 3 行。【A6】影片卡分析工具 foldout 改金線框＋暖白底（非 vstrat 粉底），與腳本靈感區隔。【A7】快速篩選新增「客戶」來源鈕（libClient=__client__ 篩 accountId 有值者）。【A8】工具說明從「做什麼」擴充為「目的＋使用邏輯＋做法」。B 區（影片庫兩模式重構＋多維篩選對標）風險過高、工程量大，依規則 6 延到 v185。版本號 4 處；常數未變；15 script；div 1140/details 45/CSS 平衡。
@@ -759,7 +760,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v186</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v187</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -2358,7 +2359,8 @@ function copyPrompt(text,label){
       +'<div style="font-size:12px;color:var(--sub);line-height:1.6;margin-bottom:8px">已複製原始版到剪貼簿。預設唯讀——按 ✏️ 編輯鍵才能改字；改完按「複製」。</div>'
       +'<div style="display:flex;gap:8px;margin-bottom:6px;align-items:center">'
       +'<button id="pp-editlock" style="background:var(--warm-white,#FDFBF8);border:1px solid var(--gold-soft);border-radius:6px;padding:4px 10px;font-size:12px;cursor:pointer;color:var(--gold-dark);font-family:inherit" title="切換編輯 / 唯讀">✏️ 編輯</button>'
-      +'<button id="pp-undo" style="background:var(--warm-white,#FDFBF8);border:1px solid var(--gold-soft);border-radius:6px;padding:4px 10px;font-size:12px;cursor:pointer;color:var(--gold-dark);font-family:inherit" title="還原成原始版">↩ 還原</button>'
+      +'<button id="pp-undo" style="background:var(--warm-white,#FDFBF8);border:1px solid var(--gold-soft);border-radius:6px;padding:4px 10px;font-size:12px;cursor:pointer;color:var(--gold-dark);font-family:inherit" title="回退一步">↩ 返回</button>'
+      +'<button id="pp-resetall" style="background:var(--warm-white,#FDFBF8);border:1px solid var(--gold-soft);border-radius:6px;padding:4px 10px;font-size:12px;cursor:pointer;color:var(--gold-dark);font-family:inherit" title="還原成系統預設原版">↺ 還原全部</button>'
       +'<span id="pp-lockstate" style="font-size:11px;color:var(--sub)">🔒 唯讀中</span></div>'
       +'<textarea id="pp-edit" spellcheck="false" readonly style="display:block;width:100%;box-sizing:border-box;white-space:pre-wrap;word-break:break-word;font-size:12.5px;line-height:1.6;background:var(--warm-white,#FDFBF8);border:1px solid var(--gold-soft);border-radius:8px;padding:12px;min-height:200px;max-height:52vh;overflow:auto;color:var(--ink);font-family:inherit;resize:vertical;opacity:.85">'+safe+'</textarea>'
       +'<div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">'
@@ -2374,8 +2376,14 @@ function copyPrompt(text,label){
     var ls=document.getElementById('pp-lockstate');
     /* 編輯鎖切換 */
     var el=document.getElementById('pp-editlock'); if(el) el.onclick=function(){ if(ed.readOnly){ ed.readOnly=false; ed.style.opacity='1'; el.textContent='🔒 唯讀'; if(ls) ls.textContent='✏️ 編輯中'; } else { ed.readOnly=true; ed.style.opacity='.85'; el.textContent='✏️ 編輯'; if(ls) ls.textContent='🔒 唯讀中'; } };
-    /* 還原 */
-    var un=document.getElementById('pp-undo'); if(un) un.onclick=function(){ if(ed) ed.value=text; toast('已還原成原始版'); };
+    /* v187 A8：undo stack — 返回一步 / 還原全部 */
+    var _ppHistory=[text];
+    var _ppSnap=function(){ if(ed && _ppHistory[_ppHistory.length-1]!==ed.value) _ppHistory.push(ed.value); };
+    if(ed) ed.addEventListener('blur', _ppSnap);
+    /* 還原：回退一步 */
+    var un=document.getElementById('pp-undo'); if(un) un.onclick=function(){ _ppSnap(); if(_ppHistory.length>1){ _ppHistory.pop(); if(ed) ed.value=_ppHistory[_ppHistory.length-1]; toast('已回退一步'); } else { toast('已是最初版本'); } };
+    /* 還原全部：直接回原版 */
+    var ra=document.getElementById('pp-resetall'); if(ra) ra.onclick=function(){ if(ed) ed.value=text; _ppHistory=[text]; toast('已還原成系統預設原版'); };
     var cp=document.getElementById('pp-copy'); if(cp) cp.onclick=function(){ copyVal((ed?ed.value:text),label); };
     var cl=document.getElementById('pp-close'); if(cl) cl.onclick=function(){ _ppClose(); };
     var xt=document.getElementById('pp-xtop'); if(xt) xt.onclick=function(){ _ppClose(); };
@@ -3173,7 +3181,7 @@ function renderLibrary(){
     if(libTypeF){ const _ta=accounts.find(x=>x.id===v.accountId)||{}; if(!(_ta.types||[]).includes(libTypeF)) return false; }
     if(q){
       const _a=accounts.find(x=>x.id===v.accountId)||{};
-      const hay=(v.title+' '+v.themeName+' '+v.matName+' '+v.sub+' '+v.trig+' '+v.client+' '+v.note+' '+(v.accountHandle||'')+' '+(_a.jobTitle||'')+' '+(_a.industry||'')+' '+(_a.types||[]).join(' ')).toLowerCase();
+      const hay=(v.title+' '+v.themeName+' '+(v.themeId||'')+' '+(v.stage||'')+' '+(v.goal||'')+' '+v.matName+' '+v.sub+' '+v.trig+' '+v.client+' '+v.note+' '+(v.accountHandle||'')+' '+(_a.displayName||'')+' '+(_a.jobTitle||'')+' '+(_a.industry||'')+' '+(_a.domain||'')+' '+(_a.types||[]).join(' ')).toLowerCase();
       if(!hay.includes(q)) return false;
     }
     return true;
@@ -3254,12 +3262,12 @@ function vcard(v){
     <div class="vmeta" style="margin-top:8px;display:flex;gap:14px;align-items:center;flex-wrap:wrap">
       ${v.logdate?`<span style="font-size:11px;color:var(--gold-dark)">建檔 ${esc(v.logdate)}</span>`:''}
       ${v.url?`<a class="vlink" href="${esc(v.url)}" target="_blank">開啟影片<svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-1px;margin-left:3px"><path d="M14 5h5v5"/><path d="M19 5l-8 8"/><path d="M19 13v5a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg></a>`:''}
-      <span style="font-size:11px;color:var(--gold-dark);cursor:pointer;font-weight:700" onclick="openBorrowFromVideo('${v.id}')"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#A51820" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:3px"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 9h16M9 4v16"/></svg>借技法</span>
-      <span style="font-size:11px;color:var(--rouge);cursor:pointer" onclick="copyVideoAll('${v.id}')"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#A51820" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:3px"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/></svg>複製這支</span>
-      <span class="vedit vlink" style="font-size:11px;color:var(--gold-dark);cursor:pointer" data-id="${v.id}"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#A51820" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:3px"><path d="M4 20h4L18 10l-4-4L4 16z"/><path d="M13 7l4 4"/></svg>編輯數據</span>
+      <span style="font-size:11px;color:var(--gold-dark);cursor:pointer;font-weight:700" onclick="openBorrowFromVideo('${v.id}')"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:3px"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 9h16M9 4v16"/></svg>借技法</span>
+      <span style="font-size:11px;color:var(--sub);cursor:pointer" onclick="copyVideoAll('${v.id}')"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:3px"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/></svg>複製這支</span>
+      <span class="vedit vlink" style="font-size:11px;color:var(--sub);cursor:pointer" data-id="${v.id}"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:3px"><path d="M4 20h4L18 10l-4-4L4 16z"/><path d="M13 7l4 4"/></svg>編輯數據</span>
       <span class="vdel" data-id="${v.id}">刪除</span>
     </div>
-    ${v.accountId?`<details style="margin-top:8px;border:1px solid var(--gold-soft);border-radius:8px;padding:0;background:var(--warm-white,#FDFBF8)"><summary style="font-size:11px;color:var(--gold-dark);padding:8px 12px;cursor:pointer;list-style:none;display:flex;align-items:center;gap:4px"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="var(--gold-dark)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 013 3L7 19l-4 1 1-4z"/></svg>@${esc((v.accountHandle||v.client||'').replace(/^@+/,''))} 的分析工具</summary><div style="padding:6px 12px 10px;display:flex;gap:14px;flex-wrap:wrap"><span class="vlink" style="cursor:pointer;color:var(--gold-dark);font-weight:800" onclick="if(typeof buildFabPrompt==='function')buildFabPrompt('${v.accountId}')">特點→賣點</span><span class="vlink" style="cursor:pointer;font-weight:800" onclick="if(typeof buildAccountHealthPrompt==='function')buildAccountHealthPrompt('${v.accountId}')">帳號體檢</span><span class="vlink" style="cursor:pointer;color:var(--rouge);font-weight:800" onclick="if(typeof openClientDiagnosis==='function')openClientDiagnosis('${v.accountId}')">客戶診斷</span><span class="vlink" style="cursor:pointer;font-weight:800" onclick="if(typeof openSuccessMatch==='function')openSuccessMatch('${v.accountId}')">成功庫對標</span></div></details>`:''}
+    ${v.accountId?`<details style="margin-top:8px;border:1px solid var(--gold-soft);border-radius:8px;padding:0;background:var(--warm-white,#FDFBF8)"><summary style="font-size:11px;color:var(--gold-dark);padding:8px 12px;cursor:pointer;list-style:none;display:flex;align-items:center;gap:4px"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="var(--gold-dark)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 013 3L7 19l-4 1 1-4z"/></svg>@${esc((v.accountHandle||v.client||'').replace(/^@+/,''))} 的分析工具</summary><div style="padding:4px 0"><div class="vlink" style="display:flex;align-items:center;gap:6px;padding:7px 12px;cursor:pointer;border-bottom:1px solid var(--gold-soft);color:var(--gold-dark);font-weight:700;font-size:12px" onclick="if(typeof buildFabPrompt==='function')buildFabPrompt('${v.accountId}')"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 013 3L7 19l-4 1 1-4z"/></svg>特點→賣點<span style="font-weight:400;color:var(--sub);font-size:11px;margin-left:auto">把專業翻成人話</span></div><div class="vlink" style="display:flex;align-items:center;gap:6px;padding:7px 12px;cursor:pointer;border-bottom:1px solid var(--gold-soft);color:var(--gold-dark);font-weight:700;font-size:12px" onclick="if(typeof buildAccountHealthPrompt==='function')buildAccountHealthPrompt('${v.accountId}')"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>帳號體檢<span style="font-weight:400;color:var(--sub);font-size:11px;margin-left:auto">8維度打分找弱項</span></div><div class="vlink" style="display:flex;align-items:center;gap:6px;padding:7px 12px;cursor:pointer;border-bottom:1px solid var(--gold-soft);color:var(--gold-dark);font-weight:700;font-size:12px" onclick="if(typeof openClientDiagnosis==='function')openClientDiagnosis('${v.accountId}')"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>客戶診斷<span style="font-weight:400;color:var(--sub);font-size:11px;margin-left:auto">三關產物一次看</span></div><div class="vlink" style="display:flex;align-items:center;gap:6px;padding:7px 12px;cursor:pointer;color:var(--gold-dark);font-weight:700;font-size:12px" onclick="if(typeof openSuccessMatch==='function')openSuccessMatch('${v.accountId}')"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><path d="M4 16l5-5 4 4 7-7"/><path d="M16 8h5v5"/></svg>成功庫對標<span style="font-weight:400;color:var(--sub);font-size:11px;margin-left:auto">自動撈最像的標竿</span></div></div></details>`:''}
   </div>`;
 }
 async function delVideo(id){
@@ -3741,7 +3749,8 @@ function renderManual(){
   <div class="form-card" style="border-left:3px solid var(--gold)">
     <div class="stitle" style="font-size:15px;color:var(--rouge)">更新紀錄 · 還沒做的</div>
     <p style="font-size:13px;color:var(--text);line-height:1.85;margin-top:8px">
-    <b>v186（這版 · 客戶選擇器真正修好＋提示詞預覽標準化＋工具辨識＋彈窗不再卡底部）：</b>①<b>客戶選擇器首載真正修好</b>：Firebase 帳號一到齊就刷新下拉（不再等別的動作才跳出）＋初始 HTML 有佔位選項。②<b>四個分析工具一眼分得出</b>：統一 gold-dark 色＋各自不同 SVG icon（鉛筆/心電圖/放大鏡/趨勢線）；客戶診斷「缺 G1/G2」紅色改成柔和金＋加了說明文字。③<b>所有提示詞都有標準預覽了</b>：copyPrompt 升級為預設唯讀＋✏️編輯鎖＋↩還原成原版＋右上 ✕ 關閉；客戶診斷/問診整理/特點→賣點/帳號體檢全部遷移到這顆標準元件。④<b>彈窗不再卡底部</b>：csel 偵測到在 modal 內就自動走置中浮層，桌機也不再掉到畫面底部。＊B1（影片庫兩選擇器重構）留到 v187。五大提示詞與口吻鐵律一字未動。<br>
+    <b>v187（這版 · migration 補完＋搜尋擴充＋配色＋工具卡片化＋undo）：</b>①<b>成功庫對標＋卡片補完：複製鍵遷到 copyPrompt</b>——按下去會跳標準預覽（唯讀＋編輯＋還原＋關閉），不再直接吐司。②<b>客戶選擇器 label 延遲再同步一次</b>：防止 csel 覆蓋。③<b>搜尋擴充</b>：影片庫搜尋現在能用「G3」「C 信任層」「律師」「KOL」搜到對應影片（新增 themeId/stage/goal/displayName/domain 5 欄位）。④<b>影片卡紅金不再撞色</b>：複製/編輯改 muted、借技法 icon 跟文字同色。⑤<b>分析工具 4 列獨立行</b>：各有 icon＋灰字說明＋分隔線，一眼看出 4 個獨立工具。⑥<b>copyPrompt undo stack</b>：「↩返回」一次回退一步、「↺還原全部」回系統預設原版。＊A2（parseBtn/bulkBtn pending）和 A7（全站彈窗盤查）範圍廣、留到 v188。B1（兩選擇器重構）留到 v188。五大提示詞與口吻鐵律一字未動。<br>
+    <b>v186（ · 客戶選擇器真正修好＋提示詞預覽標準化＋工具辨識＋彈窗不再卡底部）：</b>①<b>客戶選擇器首載真正修好</b>：Firebase 帳號一到齊就刷新下拉（不再等別的動作才跳出）＋初始 HTML 有佔位選項。②<b>四個分析工具一眼分得出</b>：統一 gold-dark 色＋各自不同 SVG icon（鉛筆/心電圖/放大鏡/趨勢線）；客戶診斷「缺 G1/G2」紅色改成柔和金＋加了說明文字。③<b>所有提示詞都有標準預覽了</b>：copyPrompt 升級為預設唯讀＋✏️編輯鎖＋↩還原成原版＋右上 ✕ 關閉；客戶診斷/問診整理/特點→賣點/帳號體檢全部遷移到這顆標準元件。④<b>彈窗不再卡底部</b>：csel 偵測到在 modal 內就自動走置中浮層，桌機也不再掉到畫面底部。＊B1（影片庫兩選擇器重構）留到 v187。五大提示詞與口吻鐵律一字未動。<br>
     <b>v185（ · 客戶選擇器修好＋視覺分群＋對標變準）：</b>①<b>客戶選擇不再空白</b>：一進影片庫就呼叫 populateCmpHero，下拉立刻列出全部客戶。②<b>來源列跟動作鈕分開了</b>：加了分隔線＋間距，「客戶」chip 不再跟「產生腳本範本」撞色。③<b>對標找人變準了</b>：csel 的「系統建議」和「產業·領域」排序接上 _smScore / _smTokens 同義詞引擎——選了律師主角，同領域的人會優先浮上來。＊P1（影片庫兩選擇器重構）風險最高留到 v186。五大提示詞與口吻鐵律一字未動。<br>
     <b>v184（ · v183 實測修好＋小優化）：</b>①<b>@@雙 @ 修掉</b>：影片卡「分析工具」只有一個 @。②<b>存檔後收集盤歸零</b>：「帳號建檔收集盤」存完影片會自動收合清空，不殘留上一個帳號。③<b>新帳號不再提前跳數字</b>：pending 帳號改用獨立物件，按確定之前帳號計數不變；確認彈窗清楚寫「新增 @xxx（第一次）」不再誤標「既有」。④<b>客戶選擇不再空白</b>：帳號到齊後 csel 觸發鈕文字自動更新，不卡在「尚無帳號」。⑤<b>借技法下拉不再被壓扁</b>：modal 內下拉最小可視高度拉高，看得到多列選項。⑥<b>分析工具好辨識</b>：金線框暖白底（不再跟腳本靈感撞色）。⑦<b>來源多一顆「客戶」</b>：快速篩選加了客戶來源鈕，一鍵篩出有連結帳號的影片。⑧<b>工具說明更完整</b>：講清楚目的＋使用邏輯＋做法。＊B 區（影片庫兩模式重構）風險高、工程量大，留到 v185。五大提示詞與口吻鐵律一字未動。<br>
     <b>v183（ · 建檔流程修對＋手機版修好＋配色根治＋影片庫工具補齊）：</b>①<b>建檔改成「按確定才建」</b>：以前按「產生歸類卡」帳號就直接存進帳號管理了，現在改成暫存——確認彈窗會清楚分兩行寫「帳號＝新增 @xxx」或「既有 @xxx（第 N 支，不覆蓋）」＋「影片＝新增 1 支」，按「確定建檔」帳號和影片才一起存，取消就什麼都不存。②<b>手機版客戶選擇器修好</b>：下拉在手機上改成畫面正中央的浮層＋半透明遮罩，能打字搜尋、不再飛到角落；桌機不變。③<b>藍色連結根治</b>：加了全域 CSS 規則，全站連結統一品牌酒紅色，不再有瀏覽器預設藍。④<b>影片庫也有分析工具了</b>：每支影片卡底部多了「@帳號的分析工具」摺疊（特點→賣點／帳號體檢／客戶診斷／成功庫對標），直接呼叫帳號管理那批既有函式。⑤<b>帳號管理分頁</b>：10 個一頁、上下都有換頁鍵，不用一直滑。⑥<b>案例類型下拉美化</b>：字級間距微調、跟旁邊的「編輯/問診/刪除」協調不突兀。＊P5（客戶交付規格化提示詞＋AI 回填）留到 v184。五大提示詞與口吻鐵律一字未動。<br>
@@ -4114,7 +4123,7 @@ function buildCardCompletePrompt(pasteId,msgId){
     +'4. 一行一欄位、用全形冒號「：」、欄位名一字不差，輸出完整的「'+cardName+'」（從卡頭 ===…=== 到結尾標記，前面不要加任何字）。\n'
     +(gaps.length?('\n【目前偵測到還缺／待補的欄位，請優先補這些】\n'+gaps.join('、')+'\n'):'')
     +'\n【原卡內容】\n'+raw;
-  if(typeof copyVal==='function') copyVal(p,'卡片補完提示詞（'+cardName+'）');
+  if(typeof copyPrompt==='function') copyPrompt(p,'卡片補完提示詞（'+cardName+'）'); else if(typeof copyVal==='function') copyVal(p,'卡片補完提示詞（'+cardName+'）');
 }
 function _clNum(x){ return parseFloat(x)||0; }
 function _accVidStats(accId){
@@ -4325,7 +4334,7 @@ function openSuccessMatch(clientId){
     top.forEach(function(t,i){ var a=t.a; lines.push((i+1)+'. '+(a.handle||'@?')+(ident(a)?'（'+ident(a)+'）':'')+'｜相近度 '+simLabel(t.sc.score)); lines.push('   '+_smReason(c,a,t.sc)); lines.push(''); });
     lines.push('（用途：新客戶 '+(c.handle||'')+' 進來時，這 5 個是最適合拿來示範與借鏡的對標帳號。）');
     if(fails.length){ lines.push(''); lines.push('【避坑對標 · 同領域失敗／低效案例】'); fails.forEach(function(f){ lines.push('· '+(f.a.handle||'@?')+(ident(f.a)?'（'+ident(f.a)+'）':'')+'：卡在 '+f.reason+' → 要避開'); }); }
-    if(typeof copyVal==='function') copyVal(lines.join('\n'),'成功庫對標 Top 5（@'+(c.handle||'')+'）');
+    if(typeof copyPrompt==='function') copyPrompt(lines.join('\n'),'成功庫對標 Top 5（@'+(c.handle||'')+'）'); else if(typeof copyVal==='function') copyVal(lines.join('\n'),'成功庫對標 Top 5（@'+(c.handle||'')+'）');
   };
 }
 
@@ -5564,7 +5573,9 @@ function populateCmpHero(){
     if(cur)sel.value=cur;
   }
   /* v184 A4：帳號到齊後同步更新 csel 觸發鈕的文字，避免顯示殘留的「尚無帳號」 */
-  try{ var _wrap=sel.closest('.csel'); if(_wrap){ var _lb=_wrap.querySelector('.csel-label'); if(_lb) _lb.textContent=sel.options[sel.selectedIndex]?sel.options[sel.selectedIndex].textContent:''; } }catch(e){}
+  try{ var _wrap=sel.closest('.csel'); if(_wrap){ var _lb=_wrap.querySelector('.csel-label'); if(_lb){ var _t=sel.options[sel.selectedIndex]?sel.options[sel.selectedIndex].textContent:''; _lb.textContent=_t; } } }catch(e){}
+  /* v187 A3：延遲再同步一次（防止 enhanceSelect 尚未完成、或 MutationObserver 重建覆蓋） */
+  setTimeout(function(){ try{ var _s2=document.getElementById('cmpHero'); if(!_s2) return; var _w2=_s2.closest('.csel'); if(_w2){ var _l2=_w2.querySelector('.csel-label'); if(_l2){ var _t2=_s2.options[_s2.selectedIndex]?_s2.options[_s2.selectedIndex].textContent:''; if(_l2.textContent!==_t2) _l2.textContent=_t2; } } }catch(e){} },600);
 }
 function renderComparePicker(){
   const box=$('cmpPicker'); if(!box) return;
