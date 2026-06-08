@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="color-scheme" content="light only">
 <meta name="supported-color-schemes" content="light">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v187 (版本號僅留註解，不顯示於畫面)
+<!-- ATELIER 影片診斷工作台 · 內部版本 v188 (版本號僅留註解，不顯示於畫面)
+v188 更新（交辦單：大掃除版，接 v187）：【A1 copyPrompt migration 驗證＋補完】確認 v186/v187 的 migration 皆已在 code 中（13 calls），新增帳號健檢報告（hc-copy ~5423）→ 共 14 calls。逐行 grep 證實。【A2 parseBtn/bulkBtn pending】ingestAccountCard isNew 分支（~4860）accounts.unshift→改 _pendingAcc/_pendingAccId+temp option；saveAccounts 加 if(!isNew) 守衛（~4894）；parseBtn(~2633)+bulkBtn(~2997) 的 populateAccountSelect 後補回 pending option。【A3 紅金配色】bulkTemplate（~1498）去掉 gold-dark 色改 ghost＋SVG stroke→currentColor；bulkCopy（~1502）SVG→currentColor。A4/A5/B1/B2 延至 v189。常數未變；15 script；div 1144/det 45/CSS 平衡。
 v187 更新（交辦單：v186 實測 migration 補完＋搜尋擴充＋配色＋工具卡片化＋undo stack，接 v186）：【A1】成功庫對標 copy（~4328）＋卡片補完提示詞 copy（~4117）遷移至 copyPrompt（2 處，各加 if copyPrompt else copyVal）。【A3】populateCmpHero 結尾加 600ms setTimeout 再同步一次 csel label。【A4】搜尋 haystack 新增 themeId/stage/goal/displayName/domain 5 個欄位。【A5】影片卡借技法 SVG stroke #A51820→currentColor；複製這支/編輯數據 color rouge/gold-dark→var(--sub)。【A6】影片卡 4 工具從 flex 橫排改成 4 列獨立行（border-bottom 分隔＋各自 icon＋右側灰字說明）。【A8】copyPrompt undo stack：blur 時存快照；「↩返回」pop 一步；新增「↺還原全部」回原版。A2（parseBtn/bulkBtn pending）未做——涉及兩條 card-parse 路徑＋批次匯入，牽動面廣。A7（全站彈窗定位盤查）未做——範圍太廣。B1（兩選擇器重構）延至 v188。常數未變；15 script；div 1144/det 45/CSS 平衡。
 v186 更新（交辦單：客戶選擇器首載修好＋工具區別化＋copyPrompt 標準化＋彈窗定位修正，接 v185）：【A1】Firebase onSnapshot 帳號到齊後明確呼叫 populateCmpHero＋初始 HTML 加 placeholder option。【A2】4 個分析工具統一 gold-dark＋各自 SVG icon 區分；客戶診斷漏斗「缺」從 rouge 改 gold-dark＋加說明文字。【A3】copyPrompt 升級：預設唯讀＋✏️編輯鎖＋↩還原＋右上 ✕；客戶診斷/問診整理/特點→賣點/帳號體檢 4 處遷移至 copyPrompt。【A4】csel 在 modal 內也走 fixed 置中（偵測 btn.closest modal），不再卡底部。B1（兩選擇器重構）延到 v187。常數未變；15 script；div 1140/det 45/CSS 平衡。
 v185 更新（交辦單：影片庫主角客戶＋對標對象兩選擇器＋客戶選擇器修好＋視覺＋對標變準，接 v184）：【P2】renderAll 加 populateCmpHero()，一進影片庫客戶下拉就有帳號。【P3】#libClientRow 加 border-bottom 分隔線＋margin；「客戶」chip 去掉 rouge 色避免跟動作鈕撞色。【P4】csel applyAccSort 新增 suggest（_smScore）＋ industry（_smTokens/_indRel）排序，跟 multi-picker 一致；選了律師主角→排序優先浮出同領域。P1（影片庫兩選擇器重構）風險最高、延到 v186。版本號4處；常數未變；15 script；div 1140/details 45/CSS 平衡。
@@ -760,7 +761,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v187</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v188</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -1495,11 +1496,11 @@ if('serviceWorker' in navigator){
   <div id="libBulk" style="display:flex;gap:6px;align-items:center;margin-bottom:8px;flex-wrap:wrap">
     <button class="btn btn-ghost" id="libSelAllBtn" style="width:auto;font-size:12px;padding:6px 12px">全選</button>
     <span id="libSelCount" style="font-size:12px;color:var(--gold-dark)"></span>
-    <button class="btn btn-ghost" id="bulkTemplate" style="width:auto;font-size:12px;padding:6px 12px;border-color:var(--gold-dark);color:var(--gold-dark)"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#A51820" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:3px"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/></svg>產生腳本範本</button>
+    <button class="btn btn-ghost" id="bulkTemplate" style="width:auto;font-size:12px;padding:6px 12px"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:3px"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/></svg>產生腳本範本</button>
     <label style="display:inline-flex;align-items:center;gap:5px;font-size:11.5px;color:var(--gold-dark)" title="選了客戶＝範本提示詞會自動帶入他的職業／產業／主打與逐字稿節選；留空＝輸出空白樣板（____）給你手填，跟以前一樣。">客戶<select id="tplClient" data-csearch="1" data-accpick="1" style="max-width:320px;padding:9px 12px;border:1px solid var(--gold-soft);border-radius:8px;background:#fff;color:var(--ink);font-family:inherit;font-size:14px"><option value="">— 不選客戶（空白樣板）—</option></select></label>
     <button class="btn btn-ghost" id="bulkCompare" style="width:auto;font-size:12px;padding:6px 12px;border-color:var(--rouge);color:var(--rouge)">並排對比</button>
     <button class="btn btn-ghost" id="bulkExport" style="width:auto;font-size:12px;padding:6px 12px">匯出選取</button>
-    <button class="btn btn-ghost" id="bulkCopy" style="width:auto;font-size:12px;padding:6px 12px"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#A51820" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:3px"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/></svg>複製選取</button>
+    <button class="btn btn-ghost" id="bulkCopy" style="width:auto;font-size:12px;padding:6px 12px"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:3px"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/></svg>複製選取</button>
     <button class="btn btn-ghost" id="exportBtn" style="width:auto;font-size:12px;padding:6px 12px;margin-left:auto">↓ 匯出全部CSV</button>
     <label style="display:none"><input type="checkbox" id="libSelAll"></label>
   </div>
@@ -2630,7 +2631,12 @@ $('parseBtn').onclick=async function(){
     });
     if(_mode!=='skip'){
       var _acc=null; try{ _acc=await ingestAccountCard('===ATELIER帳號分析卡==='+accM[1]+'===卡片結束===',{mode:_mode}); }catch(e){}
-      if(_acc){ try{ populateAccountSelect(); if($('f-account')) $('f-account').value=_acc.id; if(typeof syncAccountJobFields==='function') syncAccountJobFields(); if($('f-profBox')) $('f-profBox').open=true; var _fb=$('filingBoardBoxInput'); if(_fb) _fb.open=true; }catch(e){} }
+      if(_acc){ try{ populateAccountSelect();
+        /* v188 A2：若帳號是 pending，populateAccountSelect 會蓋掉 temp option，這裡補回 */
+        if(window._pendingAcc && window._pendingAccId && _acc.id===window._pendingAccId){
+          var _sel2=$('f-account'); if(_sel2){ var _po=document.getElementById('_pendingOpt'); if(!_po){ _po=document.createElement('option'); _po.id='_pendingOpt'; _po.value=window._pendingAccId; _po.textContent=(window._pendingAcc.handle||'@?')+' （待確認）'; _sel2.appendChild(_po); } }
+        }
+        if($('f-account')) $('f-account').value=_acc.id; if(typeof syncAccountJobFields==='function') syncAccountJobFields(); if($('f-profBox')) $('f-profBox').open=true; var _fb=$('filingBoardBoxInput'); if(_fb) _fb.open=true; }catch(e){} }
     }
     if(!vidM){ return; } // 只有帳號段（卡C）→ 帳號已處理、沒有影片可填
   }
@@ -2989,7 +2995,12 @@ $('bulkBtn').onclick=async function(){
     });
     if(_m2!=='skip'){
       var _acc=null; try{ _acc=await ingestAccountCard('===ATELIER帳號分析卡==='+_accM[1]+'===卡片結束===',{mode:_m2}); }catch(e){}
-      if(_acc){ try{ populateAccountSelect(); if($('f-account')) $('f-account').value=_acc.id; if(typeof syncAccountJobFields==='function') syncAccountJobFields(); if($('f-profBox')) $('f-profBox').open=true; var _fb2=$('filingBoardBoxInput'); if(_fb2) _fb2.open=true; }catch(e){} }
+      if(_acc){ try{ populateAccountSelect();
+        /* v188 A2：bulkBtn 同理——pending 帳號補回 temp option */
+        if(window._pendingAcc && window._pendingAccId && _acc.id===window._pendingAccId){
+          var _sel3=$('f-account'); if(_sel3){ var _po3=document.getElementById('_pendingOpt'); if(!_po3){ _po3=document.createElement('option'); _po3.id='_pendingOpt'; _po3.value=window._pendingAccId; _po3.textContent=(window._pendingAcc.handle||'@?')+' （待確認）'; _sel3.appendChild(_po3); } }
+        }
+        if($('f-account')) $('f-account').value=_acc.id; if(typeof syncAccountJobFields==='function') syncAccountJobFields(); if($('f-profBox')) $('f-profBox').open=true; var _fb2=$('filingBoardBoxInput'); if(_fb2) _fb2.open=true; }catch(e){} }
     }
   }
   // 以「結束」切成一塊塊，每塊含 [標記]...歸類卡
@@ -3749,7 +3760,8 @@ function renderManual(){
   <div class="form-card" style="border-left:3px solid var(--gold)">
     <div class="stitle" style="font-size:15px;color:var(--rouge)">更新紀錄 · 還沒做的</div>
     <p style="font-size:13px;color:var(--text);line-height:1.85;margin-top:8px">
-    <b>v187（這版 · migration 補完＋搜尋擴充＋配色＋工具卡片化＋undo）：</b>①<b>成功庫對標＋卡片補完：複製鍵遷到 copyPrompt</b>——按下去會跳標準預覽（唯讀＋編輯＋還原＋關閉），不再直接吐司。②<b>客戶選擇器 label 延遲再同步一次</b>：防止 csel 覆蓋。③<b>搜尋擴充</b>：影片庫搜尋現在能用「G3」「C 信任層」「律師」「KOL」搜到對應影片（新增 themeId/stage/goal/displayName/domain 5 欄位）。④<b>影片卡紅金不再撞色</b>：複製/編輯改 muted、借技法 icon 跟文字同色。⑤<b>分析工具 4 列獨立行</b>：各有 icon＋灰字說明＋分隔線，一眼看出 4 個獨立工具。⑥<b>copyPrompt undo stack</b>：「↩返回」一次回退一步、「↺還原全部」回系統預設原版。＊A2（parseBtn/bulkBtn pending）和 A7（全站彈窗盤查）範圍廣、留到 v188。B1（兩選擇器重構）留到 v188。五大提示詞與口吻鐵律一字未動。<br>
+    <b>v188（這版 · 大掃除：copyPrompt 真的接好＋建檔 pending 堵漏＋紅金收尾）：</b>①<b>copyPrompt 呼叫驗證＋補完</b>：逐行 grep 確認 v186/v187 migration 皆已在 code（客戶診斷/問診整理/特點→賣點/帳號體檢/成功庫對標/卡片補完/借技法共 7 處），新增帳號健檢報告 → 共 14 個 copyPrompt 呼叫點。②<b>parseBtn/bulkBtn 建檔 pending 堵漏</b>：歸類卡 ingestAccountCard 新帳號不再立刻 unshift+saveAccounts，改走 _pendingAcc 暫存；parseBtn 和 bulkBtn 後續 populateAccountSelect 會補回 pending option → 帳號數不提前跳、確認彈窗正確顯示「新增」。③<b>紅金收尾</b>：影片庫「產生腳本範本」去金改 ghost、「複製選取」SVG 改 currentColor，不再跟紅色「並排對比」撞色。＊A4（彈窗定位盤查）/A5（PDF空白格）/B1（兩選擇器重構）/B2（對帳總表）留到 v189。五大提示詞與口吻鐵律一字未動。<br>
+    <b>v187（ · migration 補完＋搜尋擴充＋配色＋工具卡片化＋undo）：</b>①<b>成功庫對標＋卡片補完：複製鍵遷到 copyPrompt</b>——按下去會跳標準預覽（唯讀＋編輯＋還原＋關閉），不再直接吐司。②<b>客戶選擇器 label 延遲再同步一次</b>：防止 csel 覆蓋。③<b>搜尋擴充</b>：影片庫搜尋現在能用「G3」「C 信任層」「律師」「KOL」搜到對應影片（新增 themeId/stage/goal/displayName/domain 5 欄位）。④<b>影片卡紅金不再撞色</b>：複製/編輯改 muted、借技法 icon 跟文字同色。⑤<b>分析工具 4 列獨立行</b>：各有 icon＋灰字說明＋分隔線，一眼看出 4 個獨立工具。⑥<b>copyPrompt undo stack</b>：「↩返回」一次回退一步、「↺還原全部」回系統預設原版。＊A2（parseBtn/bulkBtn pending）和 A7（全站彈窗盤查）範圍廣、留到 v188。B1（兩選擇器重構）留到 v188。五大提示詞與口吻鐵律一字未動。<br>
     <b>v186（ · 客戶選擇器真正修好＋提示詞預覽標準化＋工具辨識＋彈窗不再卡底部）：</b>①<b>客戶選擇器首載真正修好</b>：Firebase 帳號一到齊就刷新下拉（不再等別的動作才跳出）＋初始 HTML 有佔位選項。②<b>四個分析工具一眼分得出</b>：統一 gold-dark 色＋各自不同 SVG icon（鉛筆/心電圖/放大鏡/趨勢線）；客戶診斷「缺 G1/G2」紅色改成柔和金＋加了說明文字。③<b>所有提示詞都有標準預覽了</b>：copyPrompt 升級為預設唯讀＋✏️編輯鎖＋↩還原成原版＋右上 ✕ 關閉；客戶診斷/問診整理/特點→賣點/帳號體檢全部遷移到這顆標準元件。④<b>彈窗不再卡底部</b>：csel 偵測到在 modal 內就自動走置中浮層，桌機也不再掉到畫面底部。＊B1（影片庫兩選擇器重構）留到 v187。五大提示詞與口吻鐵律一字未動。<br>
     <b>v185（ · 客戶選擇器修好＋視覺分群＋對標變準）：</b>①<b>客戶選擇不再空白</b>：一進影片庫就呼叫 populateCmpHero，下拉立刻列出全部客戶。②<b>來源列跟動作鈕分開了</b>：加了分隔線＋間距，「客戶」chip 不再跟「產生腳本範本」撞色。③<b>對標找人變準了</b>：csel 的「系統建議」和「產業·領域」排序接上 _smScore / _smTokens 同義詞引擎——選了律師主角，同領域的人會優先浮上來。＊P1（影片庫兩選擇器重構）風險最高留到 v186。五大提示詞與口吻鐵律一字未動。<br>
     <b>v184（ · v183 實測修好＋小優化）：</b>①<b>@@雙 @ 修掉</b>：影片卡「分析工具」只有一個 @。②<b>存檔後收集盤歸零</b>：「帳號建檔收集盤」存完影片會自動收合清空，不殘留上一個帳號。③<b>新帳號不再提前跳數字</b>：pending 帳號改用獨立物件，按確定之前帳號計數不變；確認彈窗清楚寫「新增 @xxx（第一次）」不再誤標「既有」。④<b>客戶選擇不再空白</b>：帳號到齊後 csel 觸發鈕文字自動更新，不卡在「尚無帳號」。⑤<b>借技法下拉不再被壓扁</b>：modal 內下拉最小可視高度拉高，看得到多列選項。⑥<b>分析工具好辨識</b>：金線框暖白底（不再跟腳本靈感撞色）。⑦<b>來源多一顆「客戶」</b>：快速篩選加了客戶來源鈕，一鍵篩出有連結帳號的影片。⑧<b>工具說明更完整</b>：講清楚目的＋使用邏輯＋做法。＊B 區（影片庫兩模式重構）風險高、工程量大，留到 v185。五大提示詞與口吻鐵律一字未動。<br>
@@ -4853,7 +4865,11 @@ async function ingestAccountCard(raw, opt){
   const norm=s=>(typeof normAccHandle==='function')?normAccHandle(s):(s||'').toLowerCase().replace(/^@/,'').replace(/\/+$/,'');
   let acc=accounts.find(x=>norm(x.handle)===norm(c.handle));
   const isNew=!acc;
-  if(isNew){ acc={id:'acc_'+Date.now()+'_'+Math.random().toString(36).slice(2,7), platform:c.platform||'IG', handle:c.handle, displayName:'', types:[], domain:'', jobTitle:'', industry:'', relatedAccounts:[], note:'(由帳號分析卡建檔)', fanSnapshots:[], profileSnapshots:[], profile:{}, createdAt:Date.now(), updatedAt:Date.now()}; accounts.unshift(acc); }
+  if(isNew){ acc={id:'acc_'+Date.now()+'_'+Math.random().toString(36).slice(2,7), platform:c.platform||'IG', handle:c.handle, displayName:'', types:[], domain:'', jobTitle:'', industry:'', relatedAccounts:[], note:'(由帳號分析卡建檔)', fanSnapshots:[], profileSnapshots:[], profile:{}, createdAt:Date.now(), updatedAt:Date.now()};
+    /* v188 A2：新帳號改 pending，不立刻 unshift+saveAccounts，等 saveBtn「確定建檔」才 commit */
+    window._pendingAcc=acc; window._pendingAccId=acc.id;
+    var _sel=$('f-account'); if(_sel){ var _po=document.getElementById('_pendingOpt'); if(_po) _po.remove(); var _o=document.createElement('option'); _o.value=acc.id; _o.textContent=(acc.handle||'@?')+' （待確認）'; _o.id='_pendingOpt'; _sel.appendChild(_o); _sel.value=acc.id; }
+  }
   if(c.platform) acc.platform=c.platform;
   if(c.displayName) acc.displayName=c.displayName;
   if(c.domain) acc.domain=c.domain;
@@ -4883,7 +4899,9 @@ async function ingestAccountCard(raw, opt){
     if(lastSnap && (lastSnap.date===today2 || (lastSnap.date||'').slice(0,10)===today2)) acc.profileSnapshots[acc.profileSnapshots.length-1]=snap; else acc.profileSnapshots.push(snap);
   }
   acc.updatedAt=Date.now();
-  await saveAccounts(); renderAccounts(); if(typeof renderComparePicker==='function') renderComparePicker(); if(typeof renderAll==='function') renderAll();
+  /* v188 A2：新帳號是 pending，不立刻 saveAccounts；既有帳號更新照常存 */
+  if(!isNew){ await saveAccounts(); }
+  renderAccounts(); if(typeof renderComparePicker==='function') renderComparePicker(); if(typeof renderAll==='function') renderAll();
   toast((isNew?'✓ 已建帳號 ':'已更新帳號 ')+acc.handle+(opt.mode==='history'?'（已新增一筆版面快照·可前後對比）':opt.mode==='overwrite'?'（已覆蓋今天的版面快照）':'（版面解析已存）')+fanMsg, null, 2800);
   if(typeof lightFilingBoard==='function'){ try{ lightFilingBoard(acc); }catch(e){} }
   return acc;
@@ -5420,7 +5438,7 @@ function openAccountHealthCheck(accId){
   }
   $('hc-cancel').onclick=closeModal;
   $('hc-report').onclick=function(){ var w=$('hc-out-wrap'); var o=$('hc-out'); if(o) o.value=reportText(); if(w) w.style.display='block'; if(w) w.scrollIntoView({behavior:'smooth',block:'nearest'}); };
-  $('hc-copy').onclick=function(){ var txt=reportText(); if(typeof copyVal==='function') copyVal(txt,'帳號健檢報告'); else if(navigator.clipboard){ navigator.clipboard.writeText(txt); if(typeof toast==='function') toast('已複製健檢報告'); } };
+  $('hc-copy').onclick=function(){ var txt=reportText(); if(typeof copyPrompt==='function') copyPrompt(txt,'帳號健檢報告（'+(a.handle||'帳號')+'）'); else if(typeof copyVal==='function') copyVal(txt,'帳號健檢報告'); };
   $('hc-download').onclick=function(){
     var dt=($('hc-date')&&$('hc-date').value)||today; var fn='帳號健檢報告_'+(a.handle||'帳號').replace(/^@/,'')+'_'+dt+'.txt';
     try{ var b=new Blob([reportText()],{type:'text/plain;charset=utf-8'}); var u=URL.createObjectURL(b); var el=document.createElement('a'); el.href=u; el.download=fn; document.body.appendChild(el); el.click(); setTimeout(function(){ URL.revokeObjectURL(u); el.remove(); },500); }
