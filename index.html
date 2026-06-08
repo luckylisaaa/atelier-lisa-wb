@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="color-scheme" content="light only">
 <meta name="supported-color-schemes" content="light">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v185 (版本號僅留註解，不顯示於畫面)
+<!-- ATELIER 影片診斷工作台 · 內部版本 v186 (版本號僅留註解，不顯示於畫面)
+v186 更新（交辦單：客戶選擇器首載修好＋工具區別化＋copyPrompt 標準化＋彈窗定位修正，接 v185）：【A1】Firebase onSnapshot 帳號到齊後明確呼叫 populateCmpHero＋初始 HTML 加 placeholder option。【A2】4 個分析工具統一 gold-dark＋各自 SVG icon 區分；客戶診斷漏斗「缺」從 rouge 改 gold-dark＋加說明文字。【A3】copyPrompt 升級：預設唯讀＋✏️編輯鎖＋↩還原＋右上 ✕；客戶診斷/問診整理/特點→賣點/帳號體檢 4 處遷移至 copyPrompt。【A4】csel 在 modal 內也走 fixed 置中（偵測 btn.closest modal），不再卡底部。B1（兩選擇器重構）延到 v187。常數未變；15 script；div 1140/det 45/CSS 平衡。
 v185 更新（交辦單：影片庫主角客戶＋對標對象兩選擇器＋客戶選擇器修好＋視覺＋對標變準，接 v184）：【P2】renderAll 加 populateCmpHero()，一進影片庫客戶下拉就有帳號。【P3】#libClientRow 加 border-bottom 分隔線＋margin；「客戶」chip 去掉 rouge 色避免跟動作鈕撞色。【P4】csel applyAccSort 新增 suggest（_smScore）＋ industry（_smTokens/_indRel）排序，跟 multi-picker 一致；選了律師主角→排序優先浮出同領域。P1（影片庫兩選擇器重構）風險最高、延到 v186。版本號4處；常數未變；15 script；div 1140/details 45/CSS 平衡。
 v184 更新（交辦單：v183 實測 bug 修正＋小優化，B 區兩模式重構留到 v185）：【A1】影片卡分析工具「@@」雙 @ 修正（replace ^@+）。【A2】存檔後帳號建檔收集盤（filingBoardBoxInput）收合＋歸零。【A3】建檔 pending 帳號改用獨立 _pendingAcc 物件（不加入 accounts 陣列→計數不提前跳）；確認彈窗偵測 _pendingAcc → 新帳號顯示「新增 @xxx（第一次）」；確定才 unshift+saveAccounts；取消則移除 temp option。【A4】populateCmpHero 重建 options 後同步更新 csel 觸發鈕文字，帳號到齊後不再殘留「尚無帳號」。【A5】csel 桌機 maxHeight 下限提高 150→240、上限 340→400，modal 內下拉不再被壓到只剩 3 行。【A6】影片卡分析工具 foldout 改金線框＋暖白底（非 vstrat 粉底），與腳本靈感區隔。【A7】快速篩選新增「客戶」來源鈕（libClient=__client__ 篩 accountId 有值者）。【A8】工具說明從「做什麼」擴充為「目的＋使用邏輯＋做法」。B 區（影片庫兩模式重構＋多維篩選對標）風險過高、工程量大，依規則 6 延到 v185。版本號 4 處；常數未變；15 script；div 1140/details 45/CSS 平衡。
 v183 更新（交辦單：建檔流程修對＋手機版選擇器修好＋配色根治＋影片庫工具補齊，接 v182）：【P1】card parsing 不再立刻 saveAccounts，改暫存 _pendingAccId；確認彈窗偵測 pending 顯示「新增 @handle」；按確定才 saveAccounts，取消移除。【P2】csel 搜尋框/排序鍵補 touchstart；outside 加 touchstart；手機<=640px 改 fixed 置中浮層。【P3】同 csel 自動套用。【P4】全域 a{color:var(--rouge)}。【P5】影片卡加「@handle 的分析工具」foldout。【P6】帳號管理 accPage 10筆/頁＋上下換頁。【P7】acc-case-sel 字級/間距微調。版本號4處；v180拔「（這版）」；常數未變；15 script；div 1139/details 45/CSS 平衡。
@@ -758,7 +759,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v185</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v186</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -1859,7 +1860,7 @@ if('serviceWorker' in navigator){
 
   <div class="card" style="margin-bottom:14px">
     <div style="font-size:13px;color:var(--ink);margin-bottom:6px;font-weight:700">① 先選 1 個主角帳號（要被分析、放在最左邊的那一個）：</div>
-    <select id="cmpHero" data-csearch="1" data-accpick="1" style="width:100%;max-width:420px;padding:8px 10px;border:1px solid var(--border);border-radius:8px;background:#fff;color:var(--ink);font-family:inherit;font-size:13px;margin-bottom:12px"></select>
+    <select id="cmpHero" data-csearch="1" data-accpick="1" style="width:100%;max-width:420px;padding:8px 10px;border:1px solid var(--border);border-radius:8px;background:#fff;color:var(--ink);font-family:inherit;font-size:13px;margin-bottom:12px"><option value="">— 請選擇主角帳號 —</option></select>
     <div style="font-size:13px;color:var(--ink);margin-bottom:6px;font-weight:700">② 選比較對象（連主角共 2–4 個）：<span style="font-weight:400;color:var(--sub);font-size:12px">選了主角後，系統會用相似度把「最適合對標的」排在最前（標「建議」）；也可自己直接勾。</span></div>
     <input id="cmpSearch" type="text" oninput="renderComparePicker()" placeholder="打字找帳號：英文 handle（如 sunny）或中文名／職稱（如 王陽明、律師）" style="width:100%;max-width:420px;box-sizing:border-box;padding:9px 11px;margin-bottom:10px;border:1px solid var(--border);border-radius:8px;background:var(--warm-white,#FDFBF8);color:var(--ink);font-family:inherit;font-size:14px;display:block">
     <div id="cmpPicker"></div>
@@ -2350,14 +2351,19 @@ function copyPrompt(text,label){
   try{
     var sh=document.getElementById('sheet'), md=document.getElementById('modal'); if(!sh||!md) return;
     var safe=esc(text||'');
-    sh.innerHTML='<div style="padding:18px 18px 16px">'
-      +'<div style="font-family:\'Noto Serif TC\',serif;font-size:17px;font-weight:900;margin-bottom:4px">'+esc(label||'提示詞')+'</div>'
-      +'<div style="font-size:12px;color:var(--sub);line-height:1.6;margin-bottom:10px">已先複製原始版到剪貼簿。你可以先看過，並直接在下面修改文字（手動改，或貼到 AI 改完再貼回來都行）；改好按「複製（含我的修改）」就會把改過的版本放進剪貼簿。</div>'
-      +'<textarea id="pp-edit" spellcheck="false" style="display:block;width:100%;box-sizing:border-box;white-space:pre-wrap;word-break:break-word;font-size:12.5px;line-height:1.6;background:var(--warm-white,#FDFBF8);border:1px solid var(--gold-soft);border-radius:8px;padding:12px;min-height:200px;max-height:52vh;overflow:auto;color:var(--ink);font-family:inherit;resize:vertical">'+safe+'</textarea>'
+    /* v186 A3：標準化「提示詞預覽」元件——預設唯讀、按筆才能改、可還原、右上 X */
+    sh.innerHTML='<div style="padding:18px 18px 16px;position:relative">'
+      +'<button id="pp-xtop" style="position:absolute;top:12px;right:14px;background:none;border:none;font-size:20px;color:var(--sub);cursor:pointer;line-height:1;font-family:inherit" title="關閉">✕</button>'
+      +'<div style="font-family:\'Noto Serif TC\',serif;font-size:17px;font-weight:900;margin-bottom:4px;padding-right:30px">'+esc(label||'提示詞')+'</div>'
+      +'<div style="font-size:12px;color:var(--sub);line-height:1.6;margin-bottom:8px">已複製原始版到剪貼簿。預設唯讀——按 ✏️ 編輯鍵才能改字；改完按「複製」。</div>'
+      +'<div style="display:flex;gap:8px;margin-bottom:6px;align-items:center">'
+      +'<button id="pp-editlock" style="background:var(--warm-white,#FDFBF8);border:1px solid var(--gold-soft);border-radius:6px;padding:4px 10px;font-size:12px;cursor:pointer;color:var(--gold-dark);font-family:inherit" title="切換編輯 / 唯讀">✏️ 編輯</button>'
+      +'<button id="pp-undo" style="background:var(--warm-white,#FDFBF8);border:1px solid var(--gold-soft);border-radius:6px;padding:4px 10px;font-size:12px;cursor:pointer;color:var(--gold-dark);font-family:inherit" title="還原成原始版">↩ 還原</button>'
+      +'<span id="pp-lockstate" style="font-size:11px;color:var(--sub)">🔒 唯讀中</span></div>'
+      +'<textarea id="pp-edit" spellcheck="false" readonly style="display:block;width:100%;box-sizing:border-box;white-space:pre-wrap;word-break:break-word;font-size:12.5px;line-height:1.6;background:var(--warm-white,#FDFBF8);border:1px solid var(--gold-soft);border-radius:8px;padding:12px;min-height:200px;max-height:52vh;overflow:auto;color:var(--ink);font-family:inherit;resize:vertical;opacity:.85">'+safe+'</textarea>'
       +'<div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">'
-      +'<button class="btn" id="pp-copy" style="flex:1 1 auto;min-width:180px;background:#8E2A2E;color:#fff;-webkit-text-fill-color:#fff;box-shadow:0 2px 8px rgba(140,43,48,.16)">複製（含我的修改）</button>'
+      +'<button class="btn" id="pp-copy" style="flex:1 1 auto;min-width:180px;background:#8E2A2E;color:#fff;-webkit-text-fill-color:#fff;box-shadow:0 2px 8px rgba(140,43,48,.16)">複製（含修改）</button>'
       +'<button class="btn btn-ghost" id="pp-close" style="flex:0 0 auto;background:var(--warm-white,#FDFBF8);color:#8E2A2E;border:1px solid var(--gold-soft)">關閉</button></div>'
-      +'<div style="text-align:right;margin-top:8px"><button id="pp-copyorig" style="background:none;border:none;color:var(--sub);font-size:11.5px;text-decoration:underline;cursor:pointer;font-family:inherit">複製原始版（還原我的修改）</button></div>'
       +'</div>';
     var _prevOv=md.onclick;
     md.style.alignItems='center'; sh.style.borderRadius='16px'; sh.style.maxWidth='min(720px,92vw)'; sh.style.width='100%'; sh.style.animation='none';
@@ -2365,9 +2371,14 @@ function copyPrompt(text,label){
     function _ppClose(){ md.classList.remove('show'); sh.innerHTML=''; md.style.alignItems=''; sh.style.borderRadius=''; sh.style.maxWidth=''; sh.style.width=''; sh.style.animation=''; document.removeEventListener('keydown',_ppKey); md.onclick=_prevOv; }
     function _ppKey(e){ if(e.key==='Escape') _ppClose(); }
     var ed=document.getElementById('pp-edit');
+    var ls=document.getElementById('pp-lockstate');
+    /* 編輯鎖切換 */
+    var el=document.getElementById('pp-editlock'); if(el) el.onclick=function(){ if(ed.readOnly){ ed.readOnly=false; ed.style.opacity='1'; el.textContent='🔒 唯讀'; if(ls) ls.textContent='✏️ 編輯中'; } else { ed.readOnly=true; ed.style.opacity='.85'; el.textContent='✏️ 編輯'; if(ls) ls.textContent='🔒 唯讀中'; } };
+    /* 還原 */
+    var un=document.getElementById('pp-undo'); if(un) un.onclick=function(){ if(ed) ed.value=text; toast('已還原成原始版'); };
     var cp=document.getElementById('pp-copy'); if(cp) cp.onclick=function(){ copyVal((ed?ed.value:text),label); };
-    var co=document.getElementById('pp-copyorig'); if(co) co.onclick=function(){ if(ed) ed.value=text; copyVal(text,label); };
     var cl=document.getElementById('pp-close'); if(cl) cl.onclick=function(){ _ppClose(); };
+    var xt=document.getElementById('pp-xtop'); if(xt) xt.onclick=function(){ _ppClose(); };
     md.onclick=function(e){ if(e.target===md) _ppClose(); };
     document.addEventListener('keydown',_ppKey);
   }catch(e){}
@@ -3730,7 +3741,8 @@ function renderManual(){
   <div class="form-card" style="border-left:3px solid var(--gold)">
     <div class="stitle" style="font-size:15px;color:var(--rouge)">更新紀錄 · 還沒做的</div>
     <p style="font-size:13px;color:var(--text);line-height:1.85;margin-top:8px">
-    <b>v185（這版 · 客戶選擇器修好＋視覺分群＋對標變準）：</b>①<b>客戶選擇不再空白</b>：一進影片庫就呼叫 populateCmpHero，下拉立刻列出全部客戶。②<b>來源列跟動作鈕分開了</b>：加了分隔線＋間距，「客戶」chip 不再跟「產生腳本範本」撞色。③<b>對標找人變準了</b>：csel 的「系統建議」和「產業·領域」排序接上 _smScore / _smTokens 同義詞引擎——選了律師主角，同領域的人會優先浮上來。＊P1（影片庫兩選擇器重構）風險最高留到 v186。五大提示詞與口吻鐵律一字未動。<br>
+    <b>v186（這版 · 客戶選擇器真正修好＋提示詞預覽標準化＋工具辨識＋彈窗不再卡底部）：</b>①<b>客戶選擇器首載真正修好</b>：Firebase 帳號一到齊就刷新下拉（不再等別的動作才跳出）＋初始 HTML 有佔位選項。②<b>四個分析工具一眼分得出</b>：統一 gold-dark 色＋各自不同 SVG icon（鉛筆/心電圖/放大鏡/趨勢線）；客戶診斷「缺 G1/G2」紅色改成柔和金＋加了說明文字。③<b>所有提示詞都有標準預覽了</b>：copyPrompt 升級為預設唯讀＋✏️編輯鎖＋↩還原成原版＋右上 ✕ 關閉；客戶診斷/問診整理/特點→賣點/帳號體檢全部遷移到這顆標準元件。④<b>彈窗不再卡底部</b>：csel 偵測到在 modal 內就自動走置中浮層，桌機也不再掉到畫面底部。＊B1（影片庫兩選擇器重構）留到 v187。五大提示詞與口吻鐵律一字未動。<br>
+    <b>v185（ · 客戶選擇器修好＋視覺分群＋對標變準）：</b>①<b>客戶選擇不再空白</b>：一進影片庫就呼叫 populateCmpHero，下拉立刻列出全部客戶。②<b>來源列跟動作鈕分開了</b>：加了分隔線＋間距，「客戶」chip 不再跟「產生腳本範本」撞色。③<b>對標找人變準了</b>：csel 的「系統建議」和「產業·領域」排序接上 _smScore / _smTokens 同義詞引擎——選了律師主角，同領域的人會優先浮上來。＊P1（影片庫兩選擇器重構）風險最高留到 v186。五大提示詞與口吻鐵律一字未動。<br>
     <b>v184（ · v183 實測修好＋小優化）：</b>①<b>@@雙 @ 修掉</b>：影片卡「分析工具」只有一個 @。②<b>存檔後收集盤歸零</b>：「帳號建檔收集盤」存完影片會自動收合清空，不殘留上一個帳號。③<b>新帳號不再提前跳數字</b>：pending 帳號改用獨立物件，按確定之前帳號計數不變；確認彈窗清楚寫「新增 @xxx（第一次）」不再誤標「既有」。④<b>客戶選擇不再空白</b>：帳號到齊後 csel 觸發鈕文字自動更新，不卡在「尚無帳號」。⑤<b>借技法下拉不再被壓扁</b>：modal 內下拉最小可視高度拉高，看得到多列選項。⑥<b>分析工具好辨識</b>：金線框暖白底（不再跟腳本靈感撞色）。⑦<b>來源多一顆「客戶」</b>：快速篩選加了客戶來源鈕，一鍵篩出有連結帳號的影片。⑧<b>工具說明更完整</b>：講清楚目的＋使用邏輯＋做法。＊B 區（影片庫兩模式重構）風險高、工程量大，留到 v185。五大提示詞與口吻鐵律一字未動。<br>
     <b>v183（ · 建檔流程修對＋手機版修好＋配色根治＋影片庫工具補齊）：</b>①<b>建檔改成「按確定才建」</b>：以前按「產生歸類卡」帳號就直接存進帳號管理了，現在改成暫存——確認彈窗會清楚分兩行寫「帳號＝新增 @xxx」或「既有 @xxx（第 N 支，不覆蓋）」＋「影片＝新增 1 支」，按「確定建檔」帳號和影片才一起存，取消就什麼都不存。②<b>手機版客戶選擇器修好</b>：下拉在手機上改成畫面正中央的浮層＋半透明遮罩，能打字搜尋、不再飛到角落；桌機不變。③<b>藍色連結根治</b>：加了全域 CSS 規則，全站連結統一品牌酒紅色，不再有瀏覽器預設藍。④<b>影片庫也有分析工具了</b>：每支影片卡底部多了「@帳號的分析工具」摺疊（特點→賣點／帳號體檢／客戶診斷／成功庫對標），直接呼叫帳號管理那批既有函式。⑤<b>帳號管理分頁</b>：10 個一頁、上下都有換頁鍵，不用一直滑。⑥<b>案例類型下拉美化</b>：字級間距微調、跟旁邊的「編輯/問診/刪除」協調不突兀。＊P5（客戶交付規格化提示詞＋AI 回填）留到 v184。五大提示詞與口吻鐵律一字未動。<br>
     <b>v182（讓工具變準、變專業）：</b>①<b>建檔前先確認</b>：存影片前多一步摘要確認——帳號已存在會說「這是第 N 支、帳號不覆蓋」，帳號是新的會說「將新增帳號＋影片」，按「確定建檔」才真的存，不怕填錯。②<b>系統建議變準了</b>：律師現在找得到律師了——同義詞擴展（律師/法律、醫師/醫療等 12 組）讓領域配對大幅提升；建議理由改成具體的「同為律師」「同屬法律領域」（講不出就說「資料較少、建議補齊」）；建議名單從 5 增到 8 個；版面對照/智能推薦/成功庫對標三處共用同一套。③<b>影片庫「借技法寫腳本」</b>：每支影片卡底部新增「借技法」連結——選你的客戶帳號＋這支當參照→產生提示詞＋可編輯預覽，跟帳號管理的借技法同一套邏輯。④<b>版面對照可切「客戶版／顧問版」</b>：工具列多了切換鈕——客戶版乾淨不帶備註，顧問版每列多一欄自動解說＋可填備註，輸出 PDF/投影片依當下模式。⑤<b>影片卡資訊更完整</b>：badge 從只寫「G4」擴展為「C 信任層 · G4 · G4-1 知識輸出」三段。⑥<b>工具都有白話說明了</b>：影片庫工具列和帳號卡「更多分析工具」裡，每個工具加了一句「這個做什麼、怎麼用」。＊P5（客戶交付規格化提示詞＋AI 回填）工程量最大且牽動敏感欄位，依風險控管留到 v183 獨立做。五大提示詞與口吻鐵律一字未動。<br>
@@ -4145,7 +4157,7 @@ function openClientDiagnosis(id){
     html+='<div style="font-size:12.5px;color:var(--ink);background:var(--warm);border-radius:8px;padding:9px 11px">庫裡還沒有其他帳號可以當「成功標準」比對——先多建幾個成功帳號，這裡就會自動算出落差。</div>';
   }
   html+='<div style="margin-top:12px;font-size:12.5px;color:var(--ink)"><b>發文節奏：</b>'+esc((c.profile&&c.profile.postFreq)||'（未填，建議補——這是診斷客戶最關鍵的一項）')+'</div>';
-  html+='<div style="margin-top:6px;font-size:12.5px;color:var(--ink)"><b>漏斗涵蓋：</b>'+(cs.stages.length?esc(cs.stages.join('、')):'（尚無影片分類）')+(missingStages.length?'　<span style="color:var(--rouge)">缺 '+esc(missingStages.join('、'))+'</span>':'')+'</div>';
+  html+='<div style="margin-top:6px;font-size:12.5px;color:var(--ink)"><b>漏斗涵蓋：</b>'+(cs.stages.length?esc(cs.stages.join('、')):'（尚無影片分類）')+(missingStages.length?'　<span style="color:var(--gold-dark);font-weight:700">尚缺 '+esc(missingStages.join('、'))+'</span><span style="font-size:11px;color:var(--sub)">（有些階段還沒有影片，補齊後診斷更完整）</span>':'')+'</div>';
   html+='<div style="margin-top:14px;font-size:11.5px;color:var(--sub)">下面這顆會把客戶資料＋成功庫摘要組成提示詞，貼去 Claude／ChatGPT，它會給你完整落差診斷＋「該問客戶的 8-10 個針對性問題」。</div>';
   html+='<button class="btn btn-go" id="cdx-prompt" style="width:100%;margin-top:10px"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#A51820" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:3px"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/></svg>複製「客戶診斷＋該問的問題」提示詞</button>';
   html+='<button class="btn btn-ghost" id="cdx-close" style="width:100%;margin-top:8px">關閉</button>';
@@ -4172,7 +4184,7 @@ function buildClientQuestionsPrompt(id){
     +'2. 他現在最可能卡在哪（一句話講白）。\n'
     +'3. 下一步可直接做的 3 件事。\n'
     +'4. 我第一次跟客戶聊時該問的 8-10 個針對性問題（依上面落差客製、非罐頭問題，目的是補齊會影響診斷、但我還不知道的資訊）。\n';
-  if(typeof copyVal==='function') copyVal(p,'客戶診斷＋問題（@'+(c.handle||'')+'）');
+  if(typeof copyPrompt==='function') copyPrompt(p,'客戶診斷＋問題（@'+(c.handle||'')+'）'); else if(typeof copyVal==='function') copyVal(p,'客戶診斷＋問題（@'+(c.handle||'')+'）');
 }
 
 /* ===== v162：成功庫對標引擎 v1（客戶帳號 → Top5 最相近成功帳號＋一句原因＋一鍵複製；純讀 accounts+videos） ===== */
@@ -4424,7 +4436,7 @@ ${bmLine}
 【我的客戶問診會議內容（逐字稿或筆記）】
 （請把問診筆記貼在這一行底下，再送出）
 `;
-  if(typeof copyVal==='function') copyVal(p,'問診整理提示詞（@'+(c.handle||'')+'）');
+  if(typeof copyPrompt==='function') copyPrompt(p,'問診整理提示詞（@'+(c.handle||'')+'）'); else if(typeof copyVal==='function') copyVal(p,'問診整理提示詞（@'+(c.handle||'')+'）');
 }
 function saveIntakeCard(id){
   var c=accounts.find(function(x){return x.id===id;}); if(!c){ toast('找不到帳號'); return; }
@@ -4761,10 +4773,10 @@ function accCard(a){
     <details class="vstrat" style="margin-top:6px"><summary>更多分析工具（特點→賣點／帳號體檢／帳號健檢／客戶診斷／成功庫對標／借技法／快照）</summary>
     <div style="font-size:11px;color:var(--sub);margin:6px 0 4px;line-height:1.6">「<b>特點→賣點</b>」把專業翻成人話　「<b>帳號體檢/健檢</b>」8維度打分找弱項　「<b>客戶診斷</b>」三關產物一次看　「<b>成功庫對標</b>」自動撈最像的標竿　「<b>借技法</b>」借別人的招式幫客戶寫腳本</div>
     <div class="vmeta" style="margin-top:8px;display:flex;gap:14px;flex-wrap:wrap">
-      <span class="vlink" style="cursor:pointer;color:var(--gold-dark);font-weight:800" data-acc-fab="${a.id}">特點→賣點翻譯</span>
-      <span class="vlink" style="cursor:pointer;color:var(--primary-deep);font-weight:800" data-acc-health="${a.id}">帳號體檢</span>
-      <span class="vlink" style="cursor:pointer;color:var(--rouge);font-weight:800" data-acc-clientdx="${a.id}"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#A51820" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:3px"><path d="M3 12h4l2 7 4-14 2 7h5"/></svg>客戶診斷</span>
-      <span class="vlink" style="cursor:pointer;color:var(--primary);font-weight:800" data-acc-success="${a.id}"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#A51820" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:3px"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3.5"/></svg>成功庫對標</span>
+      <span class="vlink" style="cursor:pointer;color:var(--gold-dark);font-weight:800" data-acc-fab="${a.id}"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:2px"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 013 3L7 19l-4 1 1-4z"/></svg>特點→賣點</span>
+      <span class="vlink" style="cursor:pointer;color:var(--gold-dark);font-weight:800" data-acc-health="${a.id}"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:2px"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>帳號體檢</span>
+      <span class="vlink" style="cursor:pointer;color:var(--gold-dark);font-weight:800" data-acc-clientdx="${a.id}"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:2px"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>客戶診斷</span>
+      <span class="vlink" style="cursor:pointer;color:var(--gold-dark);font-weight:800" data-acc-success="${a.id}"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:2px"><path d="M4 16l5-5 4 4 7-7"/><path d="M16 8h5v5"/></svg>成功庫對標</span>
       <span class="vlink" style="cursor:pointer;color:var(--gold-dark);font-weight:800" data-acc-borrow="${a.id}"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#A51820" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:3px"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 9h16M9 4v16"/></svg>借技法寫腳本</span>
       <span class="vlink" style="cursor:pointer" data-acc-snap="${a.id}">+ 粉絲快照</span>
       <span class="vlink" style="cursor:pointer" data-acc-prof="${a.id}">+ 版面快照</span>
@@ -5710,7 +5722,7 @@ function buildFabPrompt(id){
     +'　並標明：這條打中的是上面人群的哪一個痛點或誤區。\n'
     +'　特點裡若有專業術語，一定翻成一般人聽得懂的好處，不要把術語留在文案裡。\n\n'
     +'【規則】講人話、不要學術腔。一個特點一段、清楚分開。用專家口吻直接給，不要反問。';
-  copyVal(p,'特點→賣點翻譯提示詞（'+(a.handle||'帳號')+'）');
+  if(typeof copyPrompt==='function') copyPrompt(p,'特點→賣點翻譯提示詞（'+(a.handle||'帳號')+'）'); else copyVal(p,'特點→賣點翻譯提示詞（'+(a.handle||'帳號')+'）');
 }
 // v138 帳號體檢：把帳號資料＋他的影片表現組成提示詞，讓 AI 評優缺點/市場位置/下一步/提案我懂你
 function buildAccountHealthPrompt(id){
@@ -5746,7 +5758,7 @@ function buildAccountHealthPrompt(id){
     +'五、下一步（可直接做）：給①一句話新定位（需微調才給）②Bio 三行改寫方向 ③接下來該主打的 3 個選題方向（各標打哪個漏斗階段、打中什麼痛點）④發文節奏建議。每條說明為什麼。\n'
     +'六、提案用「我懂你」：寫一段 3–5 句、可直接放進提案開頭的話，用「你」稱呼他，點出他現在的處境、想去的地方、我能怎麼幫他——讓他第一句就覺得「原來你真的懂我」。\n\n'
     +'【規則】全程用「特點→賣點」思維（先講客戶／觀眾得到什麼）；判斷扣著上面的真實資料、不要空泛；資料不足處標明是推斷。';
-  copyVal(p,'帳號體檢提示詞（'+(a.handle||'帳號')+'）');
+  if(typeof copyPrompt==='function') copyPrompt(p,'帳號體檢提示詞（'+(a.handle||'帳號')+'）'); else copyVal(p,'帳號體檢提示詞（'+(a.handle||'帳號')+'）');
 }
 
 /* ===== v89 客戶對標優化 ===== */
@@ -6778,6 +6790,8 @@ function _accFbSubscribe(){
             accounts=d.accounts;
             try{ localStorage.setItem(ACC_LS_KEY, JSON.stringify(accounts)); }catch(e){}
             renderAccounts(); renderComparePicker();
+            /* v186 A1：帳號到齊後明確刷新影片庫客戶下拉（renderComparePicker 已呼叫 populateCmpHero，這裡額外保險一次） */
+            if(typeof populateCmpHero==='function') populateCmpHero();
             if($('accBadge')) $('accBadge').textContent=accounts.length;
             _renderTopAcc();
             _fbStatus('connected',_fbConnText());  /* v181 P1：帳號到齊後刷新右下狀態字，帳號數不再卡 0 */
@@ -7969,8 +7983,9 @@ document.addEventListener('DOMContentLoaded',function(){
       }
       function outside(e){ if(!wrap.contains(e.target)) close(); }
       var _cselMobile=window.matchMedia&&window.matchMedia('(max-width:640px)').matches;
+      var _cselInModal=!!btn.closest('.modal,.sheet,[id="modal"],[id="sheet"]');
       function open(){ build(); wrap.classList.add('open'); document.addEventListener('mousedown',outside,true); document.addEventListener('touchstart',outside,true);
-        if(_cselMobile){
+        if(_cselMobile || _cselInModal){
           /* v183 P2：手機版改為畫面置中浮層 */
           panel.style.cssText='position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:90vw;max-height:80vh;overflow-y:auto;z-index:10001;border-radius:12px;border:1px solid var(--gold-soft);box-shadow:0 8px 30px rgba(0,0,0,.25)';
           if(!document.getElementById('csel-backdrop')){var bd=document.createElement('div');bd.id='csel-backdrop';bd.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.3);z-index:10000';bd.onclick=function(){close();};document.body.appendChild(bd);}
@@ -7979,7 +7994,7 @@ document.addEventListener('DOMContentLoaded',function(){
         }
         var s=panel.querySelector('.csel-opt.sel'); if(s&&s.scrollIntoView){ try{ s.scrollIntoView({block:'nearest'}); }catch(e){} } var si=panel.querySelector('.csel-search'); if(si) setTimeout(function(){ try{ si.focus(); }catch(e){} },0); }
       function close(){ wrap.classList.remove('open'); document.removeEventListener('mousedown',outside,true); document.removeEventListener('touchstart',outside,true);
-        if(_cselMobile){ panel.style.cssText=''; var bd=document.getElementById('csel-backdrop'); if(bd) bd.remove(); }
+        if(_cselMobile || _cselInModal){ panel.style.cssText=''; var bd=document.getElementById('csel-backdrop'); if(bd) bd.remove(); }
       }
       btn.addEventListener('click',function(e){ e.preventDefault();
         if(wrap.classList.contains('open')){ close(); }
