@@ -276,6 +276,26 @@ details.cat .cat-body{padding:14px 15px}
 
 .service-corner{position:absolute;left:0;top:0;background:#D4A574;color:#fff;font-size:11px;font-weight:800;padding:3px 10px;border-radius:0 0 8px 0;letter-spacing:.5px;z-index:2}
 .cli-card.cur{padding-top:22px}
+
+/* === Stage 1 - 4 tab 系統 v2.5 === */
+.s1tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin:18px 0 22px;border-bottom:1px solid var(--line);position:relative}
+.s1tab{background:transparent;border:none;border-bottom:3px solid transparent;padding:14px 16px 14px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;font-family:inherit;font-size:14.5px;color:var(--sub);transition:all .22s ease;position:relative}
+.s1tab .s1tab-num{font-family:'Cormorant Garamond',serif;font-size:19px;color:var(--gold);font-weight:600}
+.s1tab .s1tab-label{font-weight:600;letter-spacing:1px}
+.s1tab .s1tab-info{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;background:transparent;border:1px solid #DCC8CB;color:#8A7274;font-size:11px;margin-left:4px;cursor:pointer;transition:all .2s ease;font-style:normal}
+.s1tab .s1tab-info:hover{background:#FAF3F4;color:var(--rouge);border-color:var(--rouge)}
+.s1tab:hover{color:var(--text)}
+.s1tab.active{color:var(--rouge);border-bottom-color:var(--rouge)}
+.s1tab.active .s1tab-num{color:var(--rouge)}
+.s1tab-pane{display:none;animation:s1fade .3s ease}
+.s1tab-pane.active{display:block}
+@keyframes s1fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+.ai-fill-hint{font-size:11px;font-style:italic;color:var(--gold);margin-top:6px;text-align:center}
+@media (max-width:760px){
+  .s1tab .s1tab-label{font-size:13px}
+  .s1tab{padding:12px 8px}
+  .s1tab .s1tab-info{display:none}
+}
 </style>
 </head>
 <body>
@@ -310,9 +330,9 @@ details.cat .cat-body{padding:14px 15px}
 <!-- ═══ 頂部 ═══ -->
 <div class="topbar">
   <div class="brand">
-    <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+    <span class="brand-icon"><svg viewBox="0 0 200 200"><circle cx="100" cy="100" r="68" stroke="#FDFBF8" stroke-width="5" fill="none"/><ellipse cx="100" cy="100" rx="68" ry="28" stroke="#FDFBF8" stroke-width="3.5" fill="none"/><ellipse cx="100" cy="100" rx="28" ry="68" stroke="#FDFBF8" stroke-width="3.5" fill="none"/><line x1="32" y1="100" x2="168" y2="100" stroke="#FDFBF8" stroke-width="3.5"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">客戶服務台</span></span>
-    <span id="verBadge">cs-v2.4</span>
+    <span id="verBadge">cs-v2.5</span>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button type="button" id="popoutBtn" class="popout-btn" title="把客戶服務台開成獨立小視窗"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6"/><path d="M20 4l-9 9"/><path d="M14 12v7H5V10h7"/></svg>小視窗</button>
@@ -920,7 +940,6 @@ function renderStage1(){
   var a=curAcc(); var box=$('view-stage1');
   if(!a){ box.innerHTML=needClientHTML('① 公開資料初診'); return; }
   var f=ensureFlow(a); var st=(f.stage1_initial&&f.stage1_initial.data)||{};
-  /* === 一次性遷移：舊版單欄 result → 新版 resultClient/resultAdvisor === */
   if(st.result && (st.resultClient==null && st.resultAdvisor==null)){
     var migr=splitVersions(st.result);
     st.resultClient=migr.client||''; st.resultAdvisor=migr.advisor||'';
@@ -940,33 +959,67 @@ function renderStage1(){
   }).join('');
   var parsedC=st.resultClient||'', parsedA=st.resultAdvisor||'';
   window._verCache.s1={client:parsedC, advisor:parsedA, split:!!(parsedC||parsedA)};
-  box.innerHTML=
-    '<div class="page-head"><div class="ph-en">STAGE ① · INITIAL SCAN</div><h2 class="ph-title">公開資料初診</h2></div>'
-    +stageHead('只用公開資料，判斷這位客戶目前在市場上「被看見的樣子」——還沒跟客戶深聊就能做的分析。','stage1_initial')
-    +'<div class="section-card ai-fill"><h3>'+ICN.spark+'用 AI 一次幫你查好、填好（建議先做這步）</h3>'
+  
+  // 4 tab 結構：① 蒐集 / ② 產生 / ③ 交付 / ④ 總和
+  // 每個 tab 含說明書 (info button)
+  
+  var tabHTML = '<div class="s1tabs">'
+    + '<button class="s1tab active" data-s1tab="gather" onclick="switchS1Tab(\'gather\')">'
+    +   '<span class="s1tab-num">①</span><span class="s1tab-label">蒐集</span>'
+    +   '<span class="s1tab-info" onclick="event.stopPropagation();openS1TabInfo(\'gather\')" title="點開看為什麼這步要這樣做">ⓘ</span>'
+    + '</button>'
+    + '<button class="s1tab" data-s1tab="produce" onclick="switchS1Tab(\'produce\')">'
+    +   '<span class="s1tab-num">②</span><span class="s1tab-label">產生</span>'
+    +   '<span class="s1tab-info" onclick="event.stopPropagation();openS1TabInfo(\'produce\')">ⓘ</span>'
+    + '</button>'
+    + '<button class="s1tab" data-s1tab="deliver" onclick="switchS1Tab(\'deliver\')">'
+    +   '<span class="s1tab-num">③</span><span class="s1tab-label">交付</span>'
+    +   '<span class="s1tab-info" onclick="event.stopPropagation();openS1TabInfo(\'deliver\')">ⓘ</span>'
+    + '</button>'
+    + '<button class="s1tab" data-s1tab="export" onclick="switchS1Tab(\'export\')">'
+    +   '<span class="s1tab-num">④</span><span class="s1tab-label">總和</span>'
+    +   '<span class="s1tab-info" onclick="event.stopPropagation();openS1TabInfo(\'export\')">ⓘ</span>'
+    + '</button>'
+    + '</div>';
+  
+  // 各 tab 內容包裝
+  var aiFillHTML = '<div class="section-card ai-fill"><h3>'+ICN.spark+'用 AI 一次幫你查好、填好（建議先做這步）</h3>'
     +'<div class="sc-note">不用一條一條自己找。按下產生提示詞，讓 AI 用公開資料逐條把 '+CHECK_SOURCES.length+' 個來源 ＋ 5 個進階判斷查好、整理成一張《初診資料卡》→ 你把卡貼回下面 → 一鍵填進整張頁面；之後再按「產生初診提示詞」做正式分析。</div>'
     +'<div class="fld"><label>（選填）任何你已經知道、想讓 AI 一起參考的資料</label><textarea id="s1extra" placeholder="例如：客戶官網連結、過去合作的觀察…（沒有也可以留空）"></textarea></div>'
-    +'<button class="btn btn-gold" onclick="buildStage1FillPrompt()">'+ICN.prompt+'產生資料蒐集提示詞</button>'
-    +'<div class="fld" style="margin-top:12px"><label>把 AI 整理好的《初診資料卡》貼回這裡</label><textarea class="paste-box" id="s1card" placeholder="貼回 ===ATELIER 初診資料卡=== 那整段…"></textarea></div>'
-    +'<button class="btn btn-go" onclick="parseStage1Card()">解析並填入下方所有欄位</button>'
-    +'<div id="s1parseMsg" style="font-size:12px;margin-top:8px;line-height:1.7"></div></div>'
-    +'<div class="section-card"><h3>① 資料來源核對清單（'+CHECK_SOURCES.length+' 個）</h3><div class="sc-note">勾選你查過的來源，旁邊可貼連結或備註。下面產生提示詞時，這些備註會自動帶進去。</div>'+rows+'</div>'
-    +'<div class="section-card"><h3>② 進階初診判斷（5 個讓提案變強的前置框架）</h3><div class="sc-note">這 5 項可以自己填，也會被「用 AI 一次填好」一起寫進來。寫完按下方「儲存初診結果」。</div><button class="btn btn-ghost" style="max-width:320px;margin:0 auto 14px" onclick="openSimilarClients()">🔍 從你 52 個客戶找類似案例</button>'+fwRows+'</div>'
-    +'<div class="section-card"><h3>③ 提示詞產生器（產出正式分析）</h3><div class="sc-note">按下會把客戶基本資訊＋上面所有備註與 5 個判斷組成完整提示詞，複製到 AI 對話框去跑，得出《會前初步觀察與需求對焦》。</div>'
-    +'<button class="btn btn-gold" onclick="buildStage1Prompt()">'+ICN.prompt+'產生初診提示詞</button>'
-    +'<div style="font-size:11px;font-style:italic;color:#D4A574;margin-top:6px;text-align:center">⚙ 已套用 ATELIER 七維診斷框架</div></div>'
-    +'<div class="section-card"><h3>④ 把 AI 產出貼回（分成「客戶版」「顧問版」兩個獨立框）</h3>'
+    +'<button class="btn btn-go" onclick="genS1AIPrompt()">'+ICN.spark+'產生資料蒐集提示詞</button>'
+    +'<div class="fld" style="margin-top:14px"><label>把 AI 整理好的《初診資料卡》貼回這裡</label><textarea id="s1aiPaste" placeholder="貼 ===ATELIER 初診資料卡=== 那整段…"></textarea></div>'
+    +'<button class="btn btn-go" onclick="applyS1AIPaste()">解析並填入下方所有欄位</button>'
+    +'</div>';
+  
+  var sourcesHTML = '<div class="section-card"><h3>① 資料來源核對清單（'+CHECK_SOURCES.length+' 個）</h3>'
+    +'<div class="sc-note">勾選你查過的來源，旁邊可貼連結或備註。下面產生提示詞時，這些備註會自動帶進去。</div>'
+    +rows+'</div>';
+  
+  var fwHTML = '<div class="section-card"><h3>② 進階初診判斷（5 個讓提案變強的前置框架）</h3>'
+    +'<div class="sc-note">這 5 項可以自己填，也會被「用 AI 一次填好」一起寫進來。寫完按下方「儲存初診結果」。</div>'
+    +fwRows+'</div>';
+  
+  var promptHTML = '<div class="section-card"><h3>③ 提示詞產生器（產出正式分析）</h3>'
+    +'<div class="sc-note">按下會把客戶基本資訊＋上面所有備註與 5 個判斷組成完整提示詞，複製到 AI 對話框去跑，得出《會前初步觀察與需求對焦》。</div>'
+    +'<button class="btn btn-go" onclick="genS1Prompt()">'+ICN.note+' 產生初診提示詞</button>'
+    +'<div class="ai-fill-hint">⚙ 已套用 ATELIER 七維診斷框架</div>'
+    +'</div>';
+  
+  var pasteHTML = '<div class="section-card"><h3>④ 把 AI 產出貼回（分成「客戶版」「顧問版」兩個獨立框）</h3>'
     +'<div class="sc-note">兩個框各自獨立——你想把 AI 整段放哪邊就放哪邊；不再依賴自動拆。每邊都可以「清除」單獨重貼。</div>'
-    +'<div class="fld"><label>客戶版（給客戶看的乾淨版）<span class="char-stat">客戶版 · 已輸入 '+parsedC.length+' 字</span></label>'
-    +'<textarea class="paste-box large-ver-textarea" id="s1resultC" placeholder="把 AI 整理出的「客戶版」整段貼回這裡…">'+esc(parsedC)+'</textarea>'
-    +'<button class="btn btn-ghost" style="margin-top:6px;font-size:12px" onclick="clearStage1Ver(\'C\')">清除此版</button></div>'
-    +'<div class="fld"><label>顧問版（保留判斷理由與風險）<span class="char-stat">顧問版 · 已輸入 '+parsedA.length+' 字</span></label>'
-    +'<textarea class="paste-box large-ver-textarea" id="s1resultA" placeholder="把 AI 整理出的「顧問版」整段貼回這裡…">'+esc(parsedA)+'</textarea>'
-    +'<button class="btn btn-ghost" style="margin-top:6px;font-size:12px" onclick="clearStage1Ver(\'A\')">清除此版</button></div>'
-    +'<button class="btn btn-go" style="margin-top:6px" onclick="saveStage1()">儲存初診結果</button></div>'
-    +'<div class="section-card"><h3>⑤ 交付物《會前初步觀察與需求對焦》</h3>'+verBlock('s1',{client:parsedC,advisor:parsedA,split:!!(parsedC||parsedA)})+'</div>'
-    +'<div class="section-card deliver-card"><h3>⑥ 產出檔案規格（PDF / HTML / PPT）</h3>'
-    +'<div class="sc-note">這裡是初診階段最後的交付出口。cs-v2.0 已重做 HTML / PDF / PPTX 三格式，統一對齊 ATELIER 真實品牌視覺：奶油白底、紅色重點、黑字主體、暖灰輔助與大量留白。</div>'
+    +'<div class="fld"><label>客戶版（給客戶看的乾淨版）</label><textarea id="s1resultC" oninput="onResultEdit(\'client\')" placeholder="貼客戶版整段…">'+esc(parsedC)+'</textarea></div>'
+    +'<button class="btn btn-ghost" onclick="clearS1Result(\'client\')">清除此版</button>'
+    +'<div class="fld" style="margin-top:14px"><label>顧問版（保留判斷理由與風險）</label><textarea id="s1resultA" oninput="onResultEdit(\'advisor\')" placeholder="貼顧問版整段…">'+esc(parsedA)+'</textarea></div>'
+    +'<button class="btn btn-ghost" onclick="clearS1Result(\'advisor\')">清除此版</button>'
+    +'<button class="btn btn-go" style="margin-top:18px" onclick="saveS1Result()">儲存初診結果</button>'
+    +'</div>';
+  
+  var deliveryHTML = '<div class="section-card"><h3>⑤ 交付物《會前初步觀察與需求對焦》</h3>'
+    + (window.renderS1VersionToggleHTML?window.renderS1VersionToggleHTML({client:parsedC,advisor:parsedA,split:!!(parsedC||parsedA)}):'')
+    + '</div>';
+  
+  var exportHTML = '<div class="section-card deliver-card"><h3>⑥ 產出檔案規格（PDF / HTML / PPT）</h3>'
+    +'<div class="sc-note">這裡是初診階段最後的交付出口。cs-v2.5 已重做 HTML / PDF / PPTX 三格式，統一對齊 ATELIER 真實品牌視覺：奶油白底、紅色重點、黑字主體、暖灰輔助與大量留白。</div>'
     +'<div class="deliver-grid"><div class="fld"><label>交付物標題</label><input id="s1outTitle" value="ATELIER × '+esc(a.displayName||a.handle||'客戶')+'｜會前初步觀察與需求對焦"></div>'
     +'<div class="fld"><label>輸出版本</label><select id="s1outAudience"><option value="client">只輸出客戶版｜乾淨、可寄送、可簡報</option><option value="advisor">只輸出顧問版｜內部判斷、風險、策略備忘</option><option value="both">完整包｜客戶版＋顧問版</option></select></div>'
     +'<div class="fld"><label>備註／檔名補充</label><input id="s1outNote" placeholder="例如：理鴻法律事務所／會前初診／v1"></div></div>'
@@ -974,6 +1027,15 @@ function renderStage1(){
     +'<div class="btn-row"><button class="btn btn-gold" onclick="exportStage1HTML()">下載設計版 HTML</button><button class="btn btn-gold" onclick="exportStage1PDF()">列印 / 另存 PDF</button><button class="btn btn-gold" onclick="exportStage1PPTX()">直接下載 PPTX</button><button class="btn btn-ghost" onclick="copyStage1OutputSpec()">複製三格式規格</button></div>'
     +'<div class="print-hint">列印 / 另存 PDF 會跳出列印視窗，請在目的地選擇「另存為 PDF」。</div>'
     +'<div id="s1exportMsg" style="font-size:12px;color:var(--sub);line-height:1.7;margin-top:8px">PPTX 會直接產出檔案；若瀏覽器第一次擋下載，請允許此網站下載多個檔案。</div></div>';
+  
+  box.innerHTML=
+    '<div class="page-head"><div class="ph-en">STAGE ① · INITIAL SCAN</div><h2 class="ph-title">公開資料初診</h2></div>'
+    +stageHead('只用公開資料，判斷這位客戶目前在市場上「被看見的樣子」——還沒跟客戶深聊就能做的分析。','stage1_initial')
+    +tabHTML
+    +'<div class="s1tab-pane active" data-s1pane="gather">'+aiFillHTML+sourcesHTML+fwHTML+'</div>'
+    +'<div class="s1tab-pane" data-s1pane="produce">'+promptHTML+pasteHTML+'</div>'
+    +'<div class="s1tab-pane" data-s1pane="deliver">'+deliveryHTML+'</div>'
+    +'<div class="s1tab-pane" data-s1pane="export">'+exportHTML+'</div>';
 }
 function clearStage1Ver(which){
   if(!window.confirm('要清除這版的內容嗎？（這個動作會被「上一步」記下，可以回退）')) return;
@@ -2345,7 +2407,7 @@ window.addEventListener('DOMContentLoaded', function(){
           s.addText('Inspire · Create · Shine.',{x:4.6,y:3.28,w:4.1,h:.25,fontSize:16,italic:true,color:C.primary,fontFace:'Cormorant Garamond',align:'center'});
           s.addText('是承接折射的工坊',{x:4.6,y:3.72,w:4.1,h:.22,fontSize:13,color:C.text2,fontFace:'Noto Sans TC,Microsoft JhengHei,sans-serif',align:'center'});
           [['— Email —',1.5],['— Web —',4.0],['— IG —',6.5],['— LINE —',9.0]].forEach(function(x){ s.addShape('rect',{x:x[1],y:5.35,w:2.0,h:.58,fill:{color:C.bg,transparency:100},line:{color:C.line,width:1,dash:'dash'}}); s.addText(x[0],{x:x[1],y:5.55,w:2.0,h:.14,fontSize:10,color:C.text4,fontFace:'Cormorant Garamond',align:'center'}); });
-          s.addText('cs-v2.4 · '+d,{x:5.2,y:7.08,w:3,h:.14,fontSize:8,color:C.text4,fontFace:'Cormorant Garamond',align:'center'});
+          s.addText('cs-v2.5 · '+d,{x:5.2,y:7.08,w:3,h:.14,fontSize:8,color:C.text4,fontFace:'Cormorant Garamond',align:'center'});
         }
       });
       var out=safeFileName(b.title)+'_'+b.audience+'.pptx';
@@ -2366,6 +2428,71 @@ window.addEventListener('DOMContentLoaded', function(){
   window.copyStage1OutputSpec=function(){ var b=getS1Bundle(); if(!b){toast(ICN.warn+' 尚未選定客戶');return;} var spec='【ATELIER 初診交付物三格式產出規格｜cs-v2.1】\n\n標題：'+b.title+'\n客戶：'+(b.a.handle||'')+' '+(b.a.displayName||'')+'\n輸出版本：'+audienceLabel(b.audience)+'\n備註：'+(b.note||'無')+'\n\n品牌視覺：\n- 背景固定奶油白 #FDFBF8\n- 主紅 #B73441 只用於章節、副標、數字與重點\n- 主文字 #2A1A1C，輔助文字 #8A7274 / #C4B5B8\n- 鎏金 #D4A574 只作細線或高級感點綴\n- 大量留白、左對齊、編輯感排版，不做滿版紅底\n\n三格式：\n1. HTML：可直接下載設計版網頁檔。\n2. PDF：透過瀏覽器列印視窗另存 PDF。\n3. PPTX：使用 pptxgenjs 直接產生 13.333 × 7.5 inch 寬版簡報。\n\n【客戶版重點卡】\n'+(b.clientCards.map(function(c){return c.k+'. '+c.title+'：'+c.body;}).join('\n')||'')+'\n\n【顧問版重點卡】\n'+(b.advisorCards.map(function(c){return c.k+'. '+c.title+'：'+c.body;}).join('\n')||'')+'\n\n【資料來源】\n'+(b.sources.map(function(s){return '- '+s.label+(s.note?'：'+s.note:'');}).join('\n')||'')+'\n\n【進階初診判斷】\n'+(b.frameworks.map(function(f){return '- '+f.label+'：'+f.text;}).join('\n')||''); copyPrompt(spec,'初診三格式設計版規格'); };
 
 })();
+
+
+/* === Stage 1 - 4 tab switching & info panel === */
+window.switchS1Tab=function(name){
+  var tabs=document.querySelectorAll('.s1tab');
+  var panes=document.querySelectorAll('.s1tab-pane');
+  tabs.forEach(function(t){ t.classList.toggle('active', t.getAttribute('data-s1tab')===name); });
+  panes.forEach(function(p){ p.classList.toggle('active', p.getAttribute('data-s1pane')===name); });
+  try{ window.scrollTo({top:0,behavior:'smooth'}); }catch(e){}
+};
+window.openS1TabInfo=function(name){
+  var content={
+    gather:{
+      title:'① 蒐集 · 為什麼這步要這樣做',
+      kicker:'STAGE 1 · GATHER · WHY & HOW',
+      lines:[
+        ['📋','收集前的核心問題','在還沒跟客戶深聊前，能用「公開資料」回答三個問題：他被市場看到的樣子？他的可見度有沒有斷層？他有沒有過去的內容資產？'],
+        ['🔍','為什麼是 16 個來源','16 個來源不是隨便定的數字，而是涵蓋「主動曝光（官網、IG、YT、FB）」+「被動曝光（Google、Maps、新聞）」+「轉換入口（LINE、表單）」+「同行對標」這四大類。少了任何一類，後續策略都會有盲點。'],
+        ['🎯','為什麼還要 5 個進階框架','這 5 個框架（搜尋入口地圖／信任路徑／爆款題型／缺口清單／會前問題）是把資料蒐集從「列舉」升級到「判斷」。沒有判斷只是堆資料，有判斷才能寫提案。'],
+        ['💡','AI 輔助的角色','AI 不是替你想，而是替你「快速收齊」。你的價值在於補上 AI 看不到的脈絡（內幕、人情、市場時機）。']
+      ]
+    },
+    produce:{
+      title:'② 產生 · 為什麼這步要這樣做',
+      kicker:'STAGE 1 · PRODUCE · WHY & HOW',
+      lines:[
+        ['🧪','為什麼要產提示詞','要 AI 寫出可用的分析，必須給三樣東西：客戶背景＋蒐集結果＋我們的判斷框架。三者缺一，AI 會寫出泛泛之論。'],
+        ['🪞','為什麼分客戶版 / 顧問版','客戶版是「對外溝通版」，去掉內部判斷理由、只留可對外說明的觀察；顧問版保留全部判斷、風險、邊界——這份不會被傳出去。同一個內容兩種包裝，是顧問業的標準做法。'],
+        ['⚙','已套用 ATELIER 七維診斷框架','觀察維度／判斷層面／分析角度／歷史脈絡／同類對標／影片連動／行動建議 —— 七個維度確保產出不會只停在「我看到了什麼」，而會推到「所以該怎麼辦」。']
+      ]
+    },
+    deliver:{
+      title:'③ 交付 · 為什麼這步要這樣做',
+      kicker:'STAGE 1 · DELIVER · WHY & HOW',
+      lines:[
+        ['📤','交付前最後一次自審','把 AI 產出整理到「客戶版」「顧問版」兩個獨立框 —— 不是直接生 PPT，是先看完字、確認沒有寫錯人名公司、沒有偏離事實。'],
+        ['🎨','為什麼用 ATELIER 設計版','設計版＝品牌視覺一致＋字體一致＋留白一致。客戶第一眼看到不是「資料報告」是「精品提案」。這個視覺差異，會決定客戶後續報價接受度。'],
+        ['📝','備註欄的用法','備註可寫「會前要對焦」「不能寫進對外版的事項」「下次補資料的提醒」——這是給未來的自己看的留言。']
+      ]
+    },
+    export:{
+      title:'④ 總和 · 為什麼這步要這樣做',
+      kicker:'STAGE 1 · EXPORT · WHY & HOW',
+      lines:[
+        ['📦','三格式並存的理由','HTML＝可寄信、可線上開、有互動 hover；PDF＝可印、不可改；PPTX＝可口頭簡報、客戶現場驗收。三種場合都用得到。'],
+        ['📐','PPT 套用 SCR 國際敘事','Situation（你的現況）→ Complication（你的痛點）→ Resolution（我的解法）—— 這是 McKinsey 等顧問公司用 50 年的提案結構，比「資料 dump」更能讓客戶動心。'],
+        ['💰','PRICING 頁的角色','把合作方案放在 PPT 最後，不是急著賣，是讓客戶看完痛點與解法後「自然有想合作的衝動」。順序錯了，再好的方案也賣不出去。']
+      ]
+    }
+  };
+  var data=content[name]; if(!data) return;
+  var sh=$('sheet'), md=$('modal'); if(!sh||!md) return;
+  var rows=data.lines.map(function(l){
+    return '<div style="display:grid;grid-template-columns:48px 1fr;gap:14px;margin:18px 0;align-items:flex-start"><div style="font-size:24px;text-align:center">'+l[0]+'</div><div><div style="font-weight:700;color:#2A1A1C;font-size:14.5px;margin-bottom:4px;font-family:Noto Serif TC,serif">'+l[1]+'</div><div style="color:#5C4248;font-size:13px;line-height:1.85">'+l[2]+'</div></div></div>';
+  }).join('');
+  sh.innerHTML='<div class="preview-paper" style="background:#FDFBF8;border:1px solid #E8E3DA;border-radius:14px;padding:36px;max-height:78vh;overflow:auto;position:relative">'
+    +'<button onclick="closeModal()" aria-label="關閉" style="position:absolute;top:14px;right:14px;background:transparent;border:none;font-size:24px;color:#8A7274;cursor:pointer;line-height:1;padding:4px 8px;border-radius:6px;z-index:9" onmouseover="this.style.color=\'#B73441\';this.style.background=\'#FAF3F4\'" onmouseout="this.style.color=\'#8A7274\';this.style.background=\'transparent\'">✕</button>'
+    +'<div style="font-family:Cormorant Garamond,serif;letter-spacing:4px;color:#D4A574;font-size:12px;margin-bottom:8px">'+data.kicker+'</div>'
+    +'<h2 style="font-family:Noto Serif TC,serif;font-size:24px;color:#2A1A1C;margin:0 0 6px">'+data.title+'</h2>'
+    +'<div style="height:2px;width:60px;background:#D4A574;margin:14px 0 4px"></div>'
+    +rows
+    +'<div style="margin-top:24px;padding-top:14px;border-top:1px solid #E8E3DA;color:#8A7274;font-size:11px;font-style:italic">底層邏輯說明書 · ATELIER Methodology Note · 此說明是給顧問自己看的，不會匯出到客戶版。</div>'
+    +'</div>';
+  md.classList.add('show');
+};
 </script>
 </body>
 </html>
