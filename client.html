@@ -179,7 +179,7 @@ details.cat .cat-body{padding:14px 15px}
 .btn-go{background:var(--rouge);color:#fff;-webkit-text-fill-color:#fff}
 .btn-go:active{background:var(--primary)}
 .btn-ghost{background:var(--warm);color:var(--text);border:1px solid var(--border);font-size:13px;padding:11px;font-weight:600}
-.btn-gold{background:var(--rouge-soft);color:#fff;-webkit-text-fill-color:#fff}
+.btn-gold{background:#B82935;color:#fff;-webkit-text-fill-color:#fff;font-weight:600;letter-spacing:.5px;box-shadow:0 2px 6px rgba(184,41,53,0.18);border:1px solid rgba(255,255,255,0.12)}.btn-gold:hover{background:#A11F2A;box-shadow:0 3px 9px rgba(184,41,53,0.28)}.btn-gold:active{transform:translateY(1px)}
 .btn-gold:active{background:var(--rouge)}
 .btn-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
 .btn-row .btn{flex:1;min-width:140px}
@@ -312,7 +312,7 @@ details.cat .cat-body{padding:14px 15px}
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">客戶服務台</span></span>
-    <span id="verBadge">cs-v2.1.1</span>
+    <span id="verBadge">cs-v2.2</span>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button type="button" id="popoutBtn" class="popout-btn" title="把客戶服務台開成獨立小視窗"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6"/><path d="M20 4l-9 9"/><path d="M14 12v7H5V10h7"/></svg>小視窗</button>
@@ -1516,7 +1516,7 @@ function healthOverviewHTML(items,entry){
   var per=(entry&&entry.delta&&entry.delta.perItem)||[];
   return '<div class="health-overview"><div style="display:flex;align-items:flex-end;gap:12px;margin-bottom:12px"><div><div class="health-total-big">'+total+'<span style="font-size:16px;color:#8A7274"> / 50</span></div><span class="health-status-label">目前狀態</span></div><div style="font-size:12px;color:#8A7274;margin-bottom:8px">評分總覽 · 箭頭為歷史變化欄位</div></div>'
     +(items||[]).map(function(it,i){ var d=per[i]; var arrow=(d==null?'—':(d>0?'↑ +'+d:(d<0?'↓ '+d:'→ 0'))); return '<div class="health-bar-row"><span>'+it.id+'. '+esc(it.label)+'</span><span class="health-bar"><i style="width:'+((it.score||0)/5*100)+'%"></i></span><b>'+(it.score||'—')+'</b><span class="health-delta '+(d>0?'up':d<0?'down':'')+'">'+arrow+'</span></div>';}).join('')
-    +'<button class="btn btn-ghost" style="margin-top:14px" onclick="downloadHealthHTML()">下載評分表（HTML / PDF）</button></div>';
+    +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px"><button class="btn btn-ghost" onclick="previewHealthReport()" style="font-size:13px">⊞ 預覽評分表</button><button class="btn btn-ghost" style="margin-top:14px" onclick="downloadHealthHTML()">下載評分表（HTML / PDF）</button></div></div>';
 }
 function openHealthEditor(pref){
   var a=curAcc(); if(!a){ toast(ICN.warn+' 尚未選定客戶'); return; }
@@ -1598,12 +1598,23 @@ function parseHealthCard(){
   var t=0; document.querySelectorAll('.hr-scores').forEach(function(grp){ var on=grp.querySelector('.sc.on'); if(on) t+=parseInt(on.dataset.hsc)||0; }); if($('heTotal')) $('heTotal').textContent=t;
   toast(count?ICN.check+' 已解析健康評分卡，填入 '+count+' 項':'沒有解析到分數，請確認格式');
 }
-function downloadHealthHTML(){
+
+window.previewHealthReport=function(){
+  var a=curAcc(); if(!a){toast(ICN.warn+' 尚未選定客戶');return;}
+  saveHealth();
+  var items=healthOf(a), total=healthTotal(a).total, d=new Date().toISOString().slice(0,10);
+  var bars=items.map(function(it){return '<div style=\"display:grid;grid-template-columns:160px 1fr 32px;gap:12px;align-items:center;margin:10px 0\"><b style=\"font-size:13px;color:#2A1A1C\">'+it.id+'. '+esc(it.label)+'</b><span style=\"height:8px;background:#F4F1EC;border-radius:99px;display:block\"><i style=\"display:block;height:100%;background:#A51820;border-radius:99px;width:'+((it.score||0)/5*100)+'%\"></i></span><b style=\"color:#A51820;font-weight:700\">'+(it.score||'—')+'</b></div>'+(it.noteClient||it.noteAdvisor?'<div style=\"color:#8A7274;font-size:11.5px;line-height:1.6;margin:2px 0 14px 0\">'+(it.noteClient?'客戶版：'+esc(it.noteClient):'')+(it.noteClient&&it.noteAdvisor?'<br>':'')+(it.noteAdvisor?'顧問版：'+esc(it.noteAdvisor):'')+'</div>':'');}).join('');
+  var sh=$('sheet'), md=$('modal'); if(!sh||!md) return;
+  sh.innerHTML='<div class=\"preview-paper\" style=\"background:#FDFBF8;border:1px solid #E8E3DA;border-radius:14px;padding:36px;max-height:78vh;overflow:auto\"><div style=\"display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px\"><div><div style=\"font-family:Cormorant Garamond,serif;letter-spacing:4px;color:#D4A574;font-size:12px\">ATELIER · HEALTH SCORE PREVIEW</div><h2 style=\"font-family:Noto Serif TC,serif;font-size:26px;color:#2A1A1C;margin:8px 0 4px\">'+esc(a.displayName||a.handle||'客戶')+'｜健康評分表</h2><div style=\"font-size:12px;color:#8A7274\">'+d+' · 此版為預覽，按下方下載才會保存</div></div><div style=\"text-align:right\"><div style=\"font-family:Cormorant Garamond,serif;font-size:54px;color:#A51820;line-height:1\">'+total+'</div><div style=\"font-size:11px;color:#8A7274\">/ 50 目前狀態</div></div></div><div style=\"height:2px;width:60px;background:#D4A574;margin:14px 0 20px\"></div>'+bars+'<div style=\"margin-top:24px;padding-top:14px;border-top:1px solid #E8E3DA;display:flex;justify-content:space-between\"><button onclick=\"closeModal()\" style=\"background:transparent;border:1px solid #DCC8CB;color:#5C0F14;padding:8px 18px;border-radius:8px;cursor:pointer;font-size:13px\">關閉預覽</button><button onclick=\"downloadHealthHTML();closeModal()\" style=\"background:#B82935;color:#fff;border:none;padding:8px 18px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600\">確認下載 HTML</button></div></div>';
+  md.classList.add('show');
+};
+
+  function downloadHealthHTML(){
   var a=curAcc(); if(!a){toast(ICN.warn+' 尚未選定客戶');return;}
   saveHealth();
   var items=healthOf(a), total=healthTotal(a).total, d=new Date().toISOString().slice(0,10);
   var html='<!DOCTYPE html><html lang="zh-Hant"><head><meta charset="UTF-8"><title>ATELIER 健康評分表</title><style>body{background:#FDFBF8;color:#2A1A1C;font-family:"Noto Sans TC",sans-serif;padding:48px}h1{font-family:"Noto Serif TC",serif;font-size:34px}.k{font-family:"Cormorant Garamond",serif;color:#D4A574;letter-spacing:4px}.total{font-family:"Cormorant Garamond",serif;font-size:54px;color:#D4A574}.row{display:grid;grid-template-columns:180px 1fr 40px;gap:14px;align-items:center;margin:14px 0}.bar{height:10px;background:#F4F1EC;border-radius:99px}.bar i{display:block;height:100%;background:#A51820;border-radius:99px}.note{color:#8A7274;font-size:13px;line-height:1.7;margin:6px 0 18px 0}</style></head><body><div class="k">ATELIER · HEALTH SCORE</div><h1>'+esc(a.displayName||a.handle||'客戶')+'｜內容健康評分表</h1><div class="total">'+total+'<span style="font-size:18px;color:#8A7274"> / 50</span></div>'+items.map(function(it){return '<div class="row"><b>'+it.id+'. '+esc(it.label)+'</b><span class="bar"><i style="width:'+((it.score||0)/5*100)+'%"></i></span><b>'+(it.score||'—')+'</b></div><div class="note">客戶版：'+esc(it.noteClient||'')+'<br>顧問版：'+esc(it.noteAdvisor||'')+'</div>';}).join('')+'<div style="margin-top:40px;color:#C4B5B8">cs-v2.1 · '+d+'</div></body></html>';
-  downloadBlob(safeFileName('ATELIER_健康評分表_'+(a.displayName||a.handle||'client'))+'.html',html,'text/html;charset=utf-8');
+  downloadBlob(html,'text/html;charset=utf-8',safeFileName('ATELIER_健康評分表_'+(a.displayName||a.handle||'client'))+'.html');
 }
 function buildHealthPrompt(){
   var a=curAcc(); if(!a){ toast(ICN.warn+' 尚未選定客戶'); return; }
@@ -1709,7 +1720,7 @@ function historyDetailHTML(entry){ var items=normalizeHealthItems(entry&&entry.i
 function renderHealthTimeline(mode){ var a=curAcc(), sh=$('healthHistoryBody'); if(!a||!sh)return; var hist=healthHistoryOf(a).slice().sort(function(x,y){return (y.createdAt||0)-(x.createdAt||0);}); if(mode==='chart'){ sh.innerHTML=renderHealthChart(hist.slice().reverse()); return; } sh.innerHTML=hist.length?hist.map(function(h,i){ var total=healthEntryTotal(h), d=h.delta&&h.delta.total; return '<div class="history-row" onclick="var n=this.nextElementSibling;if(n)n.classList.toggle(\'open\')"><span class="history-date">'+fmtDotDate(h.createdAt)+'</span><span class="history-label">'+esc(h.cycleLabel||'評分')+'</span><span class="history-score">'+total+'/50</span><span class="history-delta '+(d>0?'up':d<0?'down':'')+'">'+(d==null?'—':(d>=0?'↑ +':'↓ ')+Math.abs(d))+'</span></div><div class="history-detail">'+historyDetailHTML(h)+'</div>'; }).join(''):'<div class="preview-field"><div class="pk">EMPTY</div><div class="pl">尚無評分歷史</div></div>'; }
 function renderHealthChart(hist){ if(!hist.length) return '<div class="history-chart">尚無趨勢資料</div>'; var w=660,h=220,p=24,max=50; var pts=hist.map(function(e,i){ var x=hist.length===1?w/2:p+(w-2*p)*(i/(hist.length-1)); var y=h-p-(healthEntryTotal(e)/max)*(h-2*p); return {x:x,y:y,e:e}; }); var line=pts.map(function(p,i){return (i?'L':'M')+p.x.toFixed(1)+' '+p.y.toFixed(1);}).join(' '); var circles=pts.map(function(p){ var color={initial:'#A51820',cycle:'#D4A574',video:'#8A7274',final:'#2A1A1C'}[p.e.type]||'#D4A574'; return '<circle cx="'+p.x+'" cy="'+p.y+'" r="5" fill="'+color+'"><title>'+fmtDotDate(p.e.createdAt)+' '+(p.e.cycleLabel||'評分')+' '+healthEntryTotal(p.e)+'/50</title></circle>'; }).join(''); return '<div class="history-chart"><svg width="660" height="220" viewBox="0 0 660 220"><line x1="24" y1="196" x2="636" y2="196" stroke="#E8E3DA"/><line x1="24" y1="24" x2="24" y2="196" stroke="#E8E3DA"/><path d="'+line+'" fill="none" stroke="#D4A574" stroke-width="1.5"/>'+circles+'</svg></div>'; }
 function openHealthHistory(){ var a=curAcc(); if(!a){toast(ICN.warn+' 尚未選定客戶');return;} var sh=$('sheet'),md=$('modal'); if(!sh||!md)return; sh.innerHTML='<div class="preview-wrap"><div class="preview-actions"><button class="preview-modal-btn" onclick="downloadHealthHistoryHTML()">下載評分歷史報表 HTML</button><button class="preview-modal-btn" onclick="closeModal()">關閉</button></div><div class="preview-paper"><div class="preview-kicker">HEALTH HISTORY</div><h2>評分歷史 · '+esc(a.displayName||a.handle||'客戶')+'</h2><div class="preview-gold-line"></div><div class="history-toggle"><button class="mini-link-btn" onclick="renderHealthTimeline(\'list\')">⌗ 列表</button><button class="mini-link-btn" onclick="renderHealthTimeline(\'chart\')">📈 趨勢線</button></div><div id="healthHistoryBody"></div></div></div>'; md.classList.add('show'); renderHealthTimeline('list'); md.onclick=function(e){if(e.target===md)closeModal();}; }
-function downloadHealthHistoryHTML(){ var a=curAcc(); if(!a)return; var hist=healthHistoryOf(a); var html='<!DOCTYPE html><html lang="zh-Hant"><head><meta charset="UTF-8"><title>ATELIER 評分歷史</title><style>body{background:#FDFBF8;color:#2A1A1C;font-family:Noto Sans TC,sans-serif;padding:44px}h1{font-family:Noto Serif TC,serif}.k{font-family:Cormorant Garamond,serif;color:#D4A574;letter-spacing:4px}.row{border-bottom:1px solid #E8E3DA;padding:14px 0}.score{color:#A51820;font-weight:900}</style></head><body><div class="k">HEALTH HISTORY</div><h1>'+esc(a.displayName||a.handle||'客戶')+'｜評分歷史</h1>'+hist.map(function(h){return '<div class="row"><b>'+fmtDotDate(h.createdAt)+' '+esc(h.cycleLabel||'評分')+'</b> <span class="score">'+healthEntryTotal(h)+'/50</span></div>';}).join('')+'</body></html>'; downloadBlob(safeFileName('ATELIER_評分歷史_'+(a.displayName||a.handle||'client'))+'.html',html,'text/html;charset=utf-8'); }
+function downloadHealthHistoryHTML(){ var a=curAcc(); if(!a)return; var hist=healthHistoryOf(a); var html='<!DOCTYPE html><html lang="zh-Hant"><head><meta charset="UTF-8"><title>ATELIER 評分歷史</title><style>body{background:#FDFBF8;color:#2A1A1C;font-family:Noto Sans TC,sans-serif;padding:44px}h1{font-family:Noto Serif TC,serif}.k{font-family:Cormorant Garamond,serif;color:#D4A574;letter-spacing:4px}.row{border-bottom:1px solid #E8E3DA;padding:14px 0}.score{color:#A51820;font-weight:900}</style></head><body><div class="k">HEALTH HISTORY</div><h1>'+esc(a.displayName||a.handle||'客戶')+'｜評分歷史</h1>'+hist.map(function(h){return '<div class="row"><b>'+fmtDotDate(h.createdAt)+' '+esc(h.cycleLabel||'評分')+'</b> <span class="score">'+healthEntryTotal(h)+'/50</span></div>';}).join('')+'</body></html>'; downloadBlob(html,'text/html;charset=utf-8',safeFileName('ATELIER_評分歷史_'+(a.displayName||a.handle||'client'))+'.html'); }
 function enhanceCurrentView(){ var v=document.querySelector('.view.on'); if(v){ injectRelatedVideosSection(v); enhanceSections(v); if(v.id==='view-stage1') groupStage1(); } }
 setInterval(enhanceCurrentView,900);
 
@@ -2087,18 +2098,54 @@ window.addEventListener('DOMContentLoaded', function(){
   function pptFactory(){ var C=window.pptxgen||window.PptxGenJS; return new C(); }
   function pptPalette(){ return {primary:'A51820',deep:'7A1018',dark:'5C0F14',text:'2A1A1C',text2:'8A7274',text3:'A89498',text4:'C4B5B8',line:'E8E3DA',gold:'D4A574',bg:'FDFBF8',card:'F4F1EC',accent:'FAE8EA'}; }
   function addPptFooter(slide){ var C=pptPalette(); slide.addText('ATELIER',{x:.8,y:7.0,w:1.4,h:.16,fontSize:9,color:C.text4,fontFace:'Cormorant Garamond'}); slide.addText('Inspire · Create · Shine.',{x:8.5,y:7.0,w:3.5,h:.16,fontSize:9,color:C.text4,fontFace:'Cormorant Garamond',italic:true,align:'right'}); }
-  function addPptHeader(slide,kicker,page,total,title,sub){ var C=pptPalette(); slide.background={color:C.bg}; slide.addText(kicker,{x:.8,y:.6,w:5.3,h:.22,fontSize:11,color:C.text3,fontFace:'Cormorant Garamond',charSpace:4}); slide.addText(String(page).padStart(2,'0')+' / '+String(total).padStart(2,'0'),{x:11.0,y:.6,w:1.3,h:.18,fontSize:10,color:C.text4,fontFace:'Cormorant Garamond',align:'right'}); slide.addText(title,{x:.8,y:1.2,w:12,h:.58,fontSize:38,bold:true,color:C.text,fontFace:'Microsoft JhengHei,Noto Sans TC,sans-serif',fit:'shrink'}); if(sub) slide.addText(sub,{x:.8,y:2.1,w:9,h:.25,fontSize:14,color:C.primary,fontFace:'Microsoft JhengHei,Noto Sans TC,sans-serif'}); addPptFooter(slide); }
+  function addPptHeader(slide,kicker,page,total,title,sub){ var C=pptPalette(); slide.background={color:C.bg}; slide.addText(kicker,{x:.8,y:.6,w:5.3,h:.22,fontSize:11,color:C.text3,fontFace:'Cormorant Garamond',charSpace:4}); slide.addText(String(page).padStart(2,'0')+' / '+String(total).padStart(2,'0'),{x:11.0,y:.6,w:1.3,h:.18,fontSize:10,color:C.text4,fontFace:'Cormorant Garamond',align:'right'}); slide.addText(title,{x:.8,y:1.2,w:12,h:.58,fontSize:38,bold:true,color:C.text,fontFace:'Noto Sans TC,Microsoft JhengHei,sans-serif',fit:'shrink'}); if(sub) slide.addText(sub,{x:.8,y:2.1,w:9,h:.25,fontSize:14,color:C.primary,fontFace:'Noto Sans TC,Microsoft JhengHei,sans-serif'}); addPptFooter(slide); }
   function cardChunks(cards,per){ var out=[]; for(var i=0;i<cards.length;i+=per) out.push(cards.slice(i,i+per)); return out; }
-  function addThreeColumns(slide,items,useRoman){ var C=pptPalette(); var xs=[.8,4.8,8.9], nums=useRoman?['I','II','III']:['01','02','03']; items.slice(0,3).forEach(function(it,i){ var x=xs[i]; slide.addText(nums[i],{x:x,y:3.3,w:1.2,h:.48,fontSize:32,bold:true,color:C.primary,fontFace:'Cormorant Garamond'}); slide.addText(it.title||('重點 '+(i+1)),{x:x,y:4.0,w:3.65,h:.44,fontSize:17,bold:true,color:C.text,fontFace:'Microsoft JhengHei,Noto Sans TC,sans-serif',fit:'shrink'}); slide.addText(it.body||'',{x:x,y:4.6,w:3.65,h:1.55,fontSize:13,color:C.text2,fontFace:'Microsoft JhengHei,Noto Sans TC,sans-serif',fit:'shrink',breakLine:false,valign:'top'}); }); }
-  function addSixGrid(slide,items,kind){ var C=pptPalette(); var pos=[[.8,3.1],[4.8,3.1],[8.8,3.1],[.8,4.7],[4.8,4.7],[8.8,4.7]]; items.slice(0,6).forEach(function(it,i){ var x=pos[i][0], y=pos[i][1]; slide.addShape('rect',{x:x,y:y,w:3.55,h:1.25,fill:{color:C.bg,transparency:100},line:{color:C.line,width:.8,dash:'dash'}}); slide.addText(it.title||'',{x:x+.12,y:y+.1,w:3.25,h:.26,fontSize:kind==='framework'?14:16,bold:true,color:C.primary,fontFace:'Microsoft JhengHei,Noto Sans TC,sans-serif',fit:'shrink'}); if(kind==='framework'&&it.desc) slide.addText(it.desc,{x:x+.12,y:y+.39,w:3.25,h:.18,fontSize:9,italic:true,color:C.text4,fontFace:'Cormorant Garamond',fit:'shrink'}); slide.addText(it.body||'',{x:x+.12,y:y+(kind==='framework'?.62:.48),w:3.25,h:kind==='framework'?.55:.62,fontSize:11,color:kind==='framework'?C.text:C.text2,fontFace:'Microsoft JhengHei,Noto Sans TC,sans-serif',fit:'shrink',valign:'top'}); }); }
+  function addThreeColumns(slide,items,useRoman){
+    var C=pptPalette();
+    var xs=[.8,4.8,8.9], nums=useRoman?['I','II','III']:['01','02','03'];
+    items.slice(0,3).forEach(function(it,i){
+      var x=xs[i];
+      slide.addText(nums[i],{x:x,y:3.05,w:1.2,h:.48,fontSize:30,bold:true,color:C.primary,fontFace:'Cormorant Garamond'});
+      slide.addText(it.title||'',{x:x,y:3.6,w:3.8,h:.42,fontSize:17,bold:true,color:C.text,fontFace:'Noto Serif TC,Microsoft JhengHei,serif',fit:'shrink'});
+      if(it.keyLine && it.keyLine !== it.body){
+        slide.addText(it.keyLine,{x:x,y:4.12,w:3.8,h:.7,fontSize:13.5,bold:true,italic:true,color:C.primary,fontFace:'Noto Serif TC,Microsoft JhengHei,serif',fit:'shrink',valign:'top'});
+        slide.addText(clipText(it.body||'',95),{x:x,y:4.95,w:3.8,h:1.85,fontSize:10.5,color:C.text2,fontFace:'Noto Sans TC,Microsoft JhengHei,sans-serif',fit:'shrink',valign:'top',breakLine:false});
+      } else {
+        slide.addText(clipText(it.body||it.keyLine||'',150),{x:x,y:4.18,w:3.8,h:2.4,fontSize:11.5,color:C.text2,fontFace:'Noto Sans TC,Microsoft JhengHei,sans-serif',fit:'shrink',valign:'top',breakLine:false});
+      }
+    });
+  }
+  function addSixGrid(slide,items,kind){ var C=pptPalette(); var pos=[[.8,3.1],[4.8,3.1],[8.8,3.1],[.8,4.7],[4.8,4.7],[8.8,4.7]]; items.slice(0,6).forEach(function(it,i){ var x=pos[i][0], y=pos[i][1]; slide.addShape('rect',{x:x,y:y,w:3.55,h:1.25,fill:{color:C.bg,transparency:100},line:{color:C.line,width:.8,dash:'dash'}}); slide.addText(it.title||'',{x:x+.12,y:y+.1,w:3.25,h:.26,fontSize:kind==='framework'?14:16,bold:true,color:C.primary,fontFace:'Noto Sans TC,Microsoft JhengHei,sans-serif',fit:'shrink'}); if(kind==='framework'&&it.desc) slide.addText(it.desc,{x:x+.12,y:y+.39,w:3.25,h:.18,fontSize:9,italic:true,color:C.text4,fontFace:'Cormorant Garamond',fit:'shrink'}); slide.addText(it.body||'',{x:x+.12,y:y+(kind==='framework'?.62:.48),w:3.25,h:kind==='framework'?.55:.62,fontSize:11,color:kind==='framework'?C.text:C.text2,fontFace:'Noto Sans TC,Microsoft JhengHei,sans-serif',fit:'shrink',valign:'top'}); }); }
   function buildPptJobs(b){
-    var jobs=[{type:'cover'},{type:'delivery'}];
-    if((b.audience==='client'||b.audience==='both')&&b.clientCards.length){ cardChunks(b.clientCards,3).forEach(function(ch,i){ jobs.push({type:'points',kicker:'OBSERVATIONS',title:'客戶版重點摘要'+(i?' · 續':''),sub:'Client Version · Pre-meeting Insights',items:ch}); }); }
-    if((b.audience==='advisor'||b.audience==='both')&&b.advisorCards.length){ cardChunks(b.advisorCards,3).forEach(function(ch,i){ jobs.push({type:'points',kicker:'ADVISOR NOTES',title:'顧問版重點摘要'+(i?' · 續':''),sub:'Internal Strategy · Confidential',items:ch}); }); }
-    if(b.sources&&b.sources.length){ cardChunks(b.sources.map(function(x){return {title:x.label,body:x.note||''};}),6).forEach(function(ch){ jobs.push({type:'grid',kicker:'SOURCE CHECK',title:'資料來源核對',sub:'Public Source Review',items:ch,kind:'source'}); }); }
-    if(b.frameworks&&b.frameworks.length){ jobs.push({type:'grid',kicker:'FRAMEWORK',title:'進階初診判斷',sub:'Strategic Reading Before Meeting',items:b.frameworks.map(function(x){return {title:x.label,desc:x.desc,body:clipText(x.text,150)};}),kind:'framework'}); }
-    var steps=extractNextSteps(b); if(steps.length) jobs.push({type:'steps',kicker:'NEXT STEPS',title:'下一步建議',sub:'Next Steps · 會前對焦三件事',items:steps});
-    jobs.push({type:'end'}); return jobs;
+    var jobs=[{type:'cover'}];
+    jobs.push({type:'about'});
+    jobs.push({type:'services'});
+    jobs.push({type:'snapshot', account:b.account||null});
+    if((b.audience==='client'||b.audience==='both')&&b.clientCards.length){ 
+      var cs=b.clientCards.map(function(c){ return enrichCard(c); });
+      cardChunks(cs,3).forEach(function(ch,i){ jobs.push({type:'points',kicker:'OBSERVATIONS',title:'我看到的觀察'+(i?' · 續':''),sub:'Client-Facing Insights',items:ch}); }); 
+    }
+    if((b.audience==='advisor'||b.audience==='both')&&b.advisorCards.length){ 
+      var as_=b.advisorCards.map(function(c){ return enrichCard(c); });
+      cardChunks(as_,3).forEach(function(ch,i){ jobs.push({type:'points',kicker:'ADVISOR NOTES',title:'內部判斷'+(i?' · 續':''),sub:'Internal Strategy · Confidential',items:ch}); }); 
+    }
+    if(b.frameworks&&b.frameworks.length){ jobs.push({type:'grid',kicker:'FRAMEWORK',title:'進階初診判斷',sub:'Strategic Reading Before Meeting',items:b.frameworks.map(function(x){return {title:x.label,desc:clipText(x.desc,40),body:clipText(x.text,110)};}),kind:'framework'}); }
+    if(b.sources&&b.sources.length){ cardChunks(b.sources.map(function(x){return {title:x.label,body:clipText(x.note||'',110)};}),6).forEach(function(ch){ jobs.push({type:'grid',kicker:'SOURCE CHECK',title:'資料來源核對',sub:'Public Source Review',items:ch,kind:'source'}); }); }
+    var steps=extractNextSteps(b); if(steps.length) jobs.push({type:'steps',kicker:'NEXT STEPS',title:'下一步建議',sub:'會前對焦三件事',items:steps});
+    jobs.push({type:'end'}); 
+    return jobs; 
+  }
+  
+  function enrichCard(c){
+    var title=c.title||'';
+    var body=(c.body||'').replace(/\s+/g,' ').trim();
+    var keyLine='';
+    var m=body.match(/^[^。！？!?]{6,35}[。！？!?]/);
+    if(m){ keyLine=m[0].replace(/[。！？!?]$/,''); }
+    else { keyLine=body.slice(0,32) + (body.length>32?'…':''); }
+    var rest=body.slice(keyLine.length+1).trim();
+    rest=clipText(rest, 110);
+    return { title:title, keyLine:keyLine, body:rest||keyLine };
   }
   window.exportStage1PPTX=async function(){
     var b=getS1Bundle(); if(!b){toast(ICN.warn+' 尚未選定客戶');return;}
@@ -2115,32 +2162,53 @@ window.addEventListener('DOMContentLoaded', function(){
       setMsg('正在產生 PPTX（這需要 5-15 秒）');
       console.log('[PPTX] step 3: building bundle');
       var pptx=pptFactory(); var NS=window.pptxgen||window.PptxGenJS; var C=pptPalette();
-      pptx.layout='LAYOUT_WIDE'; pptx.author='ATELIER'; pptx.company='ATELIER'; pptx.subject='會前初步觀察與需求對焦'; pptx.theme={headFontFace:'Microsoft JhengHei,Noto Sans TC,sans-serif',bodyFontFace:'Microsoft JhengHei,Noto Sans TC,sans-serif',lang:'zh-TW'};
+      pptx.layout='LAYOUT_WIDE'; pptx.author='ATELIER'; pptx.company='ATELIER'; pptx.subject='會前初步觀察與需求對焦'; pptx.theme={headFontFace:'Noto Serif TC,Microsoft JhengHei,serif',bodyFontFace:'Noto Sans TC,Microsoft JhengHei,sans-serif',lang:'zh-TW'};
       var jobs=buildPptJobs(b), total=jobs.length, page=0, year=dateYear(b.date), d=dateDots(), name=clientName(b);
       jobs.forEach(function(job){ page++; console.log('[PPTX] step 4: adding slide '+page); var s=pptx.addSlide(); s.background={color:C.bg};
         if(job.type==='cover'){
           s.addText('ATELIER × '+String(name||'CLIENT NAME').toUpperCase(),{x:.8,y:1.3,w:7,h:.24,fontSize:12,color:C.text3,fontFace:'Cormorant Garamond',charSpace:6});
-          s.addText('ATELIER × '+name,{x:.8,y:2.3,w:12,h:1.0,fontSize:54,bold:true,color:C.text,fontFace:'Microsoft JhengHei,Noto Sans TC,sans-serif',fit:'shrink'});
-          s.addText('會前初步觀察與需求對焦',{x:.8,y:4.1,w:7,h:.34,fontSize:22,color:C.primary,fontFace:'Microsoft JhengHei,Noto Sans TC,sans-serif'});
+          s.addText('ATELIER × '+name,{x:.8,y:2.3,w:12,h:1.0,fontSize:54,bold:true,color:C.text,fontFace:'Noto Sans TC,Microsoft JhengHei,sans-serif',fit:'shrink'});
+          s.addText('會前初步觀察與需求對焦',{x:.8,y:4.1,w:7,h:.34,fontSize:22,color:C.primary,fontFace:'Noto Sans TC,Microsoft JhengHei,sans-serif'});
           s.addText('Pre-meeting Brief · '+year,{x:.8,y:4.8,w:4,h:.22,fontSize:14,color:C.text2,fontFace:'Cormorant Garamond'});
           s.addText('Inspire · Create · Shine.',{x:.8,y:6.8,w:3.5,h:.18,fontSize:11,italic:true,color:C.text3,fontFace:'Cormorant Garamond'});
         } else if(job.type==='delivery'){
           addPptHeader(s,'DELIVERY',page,total,'交付資訊','Pre-meeting Brief · '+audienceLabel(b.audience));
           s.addText('PROJECT',{x:1.05,y:3.1,w:3.5,h:.22,fontSize:12,color:C.primary,fontFace:'Cormorant Garamond',charSpace:3});
-          s.addText('客戶名稱｜'+name+'\n產業｜'+(clientIndustry(b)||'—')+'\n對接人｜'+(clientOwner(b)||'—')+'\n日期｜'+d,{x:1.05,y:3.55,w:4.7,h:1.55,fontSize:17,color:C.text,fontFace:'Microsoft JhengHei,Noto Sans TC,sans-serif',breakLine:false,fit:'shrink'});
+          s.addText('客戶名稱｜'+name+'\n產業｜'+(clientIndustry(b)||'—')+'\n對接人｜'+(clientOwner(b)||'—')+'\n日期｜'+d,{x:1.05,y:3.55,w:4.7,h:1.55,fontSize:17,color:C.text,fontFace:'Noto Sans TC,Microsoft JhengHei,sans-serif',breakLine:false,fit:'shrink'});
           s.addText('PURPOSE',{x:6.8,y:3.1,w:3.5,h:.22,fontSize:12,color:C.primary,fontFace:'Cormorant Garamond',charSpace:3});
-          s.addText(b.note||'將公開資料初診整理成可溝通、可簡報、可留存的會前觀察文件。',{x:6.8,y:3.55,w:4.9,h:1.6,fontSize:16,color:C.text2,fontFace:'Microsoft JhengHei,Noto Sans TC,sans-serif',fit:'shrink',valign:'top'});
+          s.addText(b.note||'將公開資料初診整理成可溝通、可簡報、可留存的會前觀察文件。',{x:6.8,y:3.55,w:4.9,h:1.6,fontSize:16,color:C.text2,fontFace:'Noto Sans TC,Microsoft JhengHei,sans-serif',fit:'shrink',valign:'top'});
         } else if(job.type==='points'){
           addPptHeader(s,job.kicker,page,total,job.title,job.sub); addThreeColumns(s,job.items,false);
         } else if(job.type==='grid'){
           addPptHeader(s,job.kicker,page,total,job.title,job.sub); addSixGrid(s,job.items,job.kind);
         } else if(job.type==='steps'){
           addPptHeader(s,job.kicker,page,total,job.title,job.sub); addThreeColumns(s,job.items,true);
+        } else if(job.type==='about'){
+          addPptHeader(s,'ABOUT',page,total,'ATELIER 工坊','Inspire · Create · Shine.');
+          s.addText('我們相信短影音不是流量比賽，而是品牌折射光的方式。',{x:.8,y:3.0,w:11.7,h:.6,fontSize:22,italic:true,bold:true,color:C.text,fontFace:'Noto Serif TC,Microsoft JhengHei,serif',fit:'shrink'});
+          s.addText('ATELIER 是承接折射的工坊。我們用一雙發現美的眼睛，協助專業服務者把所累積的時間、經驗與真誠，轉譯成讓人停下來的瞬間。',{x:.8,y:3.85,w:11.7,h:.95,fontSize:14,color:C.text2,fontFace:'Noto Sans TC,Microsoft JhengHei,sans-serif',valign:'top'});
+          var about=[['13Y','創作者經歷'],['52+','合作品牌'],['7','服務階段']];
+          about.forEach(function(a,i){ var x=.8+i*4.05; s.addText(a[0],{x:x,y:5.05,w:1.8,h:.85,fontSize:48,bold:true,color:C.primary,fontFace:'Cormorant Garamond'}); s.addText(a[1],{x:x,y:5.95,w:3.8,h:.32,fontSize:12,color:C.text2,fontFace:'Noto Sans TC,Microsoft JhengHei,sans-serif'}); });
+        } else if(job.type==='services'){
+          addPptHeader(s,'SERVICES',page,total,'七階段服務流程','從定位到交付，每一步都建立在清楚的方向上');
+          var stages=[['I','初診','公開資料觀察'],['II','建檔','客戶資產盤點'],['III','問診','深度訪談對焦'],['IV','診斷','內容路徑判讀'],['V','盤點','素材內容彙整'],['VI','企劃','劇本與架構'],['VII','交付','成品輸出回饋']];
+          var grid=[[.8,3.0],[4.8,3.0],[8.8,3.0],[.8,4.55],[4.8,4.55],[8.8,4.55],[2.8,6.1]];
+          stages.forEach(function(st,i){ var pos=grid[i]; s.addText(st[0],{x:pos[0],y:pos[1],w:.6,h:.45,fontSize:24,bold:true,color:C.primary,fontFace:'Cormorant Garamond'}); s.addText(st[1],{x:pos[0]+.7,y:pos[1]+.02,w:1.5,h:.4,fontSize:16,bold:true,color:C.text,fontFace:'Noto Serif TC,Microsoft JhengHei,serif'}); s.addText(st[2],{x:pos[0]+.7,y:pos[1]+.5,w:3.2,h:.32,fontSize:11,color:C.text2,fontFace:'Noto Sans TC,Microsoft JhengHei,sans-serif'}); });
+        } else if(job.type==='snapshot'){
+          addPptHeader(s,'SNAPSHOT',page,total,'客戶現況快照','Where we are starting from');
+          var a=job.account||{};
+          var stats=[
+            [String(a.followers||a.profile?.followers||'—'),'粉絲數'],
+            [String(a.videoCount||'—'),'影片數量'],
+            [(a.contentHealthScore?.items||[]).filter(function(x){return x&&x.score>0;}).reduce(function(s,x){return s+(x.score||0);},0)+'/50','健康評分'],
+            [String(a.platform||a.profile?.platform||'IG'),'主力平台']
+          ];
+          stats.forEach(function(st,i){ var col=i%2, row=Math.floor(i/2); var x=1.3+col*5.5, y=3.1+row*1.85; s.addText(st[0],{x:x,y:y,w:5,h:.85,fontSize:54,bold:true,color:C.primary,fontFace:'Cormorant Garamond'}); s.addText(st[1],{x:x,y:y+.95,w:5,h:.32,fontSize:13,color:C.text2,fontFace:'Noto Sans TC,Microsoft JhengHei,sans-serif'}); });
         } else if(job.type==='end'){
           s.addText('ATELIER',{x:3.7,y:2.0,w:6,h:.65,fontSize:48,color:C.text,fontFace:'Cormorant Garamond',charSpace:16,align:'center'});
           s.addShape('line',{x:6.05,y:2.95,w:1.2,h:0,line:{color:C.gold,width:1.2}});
           s.addText('Inspire · Create · Shine.',{x:4.6,y:3.28,w:4.1,h:.25,fontSize:16,italic:true,color:C.primary,fontFace:'Cormorant Garamond',align:'center'});
-          s.addText('是承接折射的工坊',{x:4.6,y:3.72,w:4.1,h:.22,fontSize:13,color:C.text2,fontFace:'Microsoft JhengHei,Noto Sans TC,sans-serif',align:'center'});
+          s.addText('是承接折射的工坊',{x:4.6,y:3.72,w:4.1,h:.22,fontSize:13,color:C.text2,fontFace:'Noto Sans TC,Microsoft JhengHei,sans-serif',align:'center'});
           [['— Email —',1.5],['— Web —',4.0],['— IG —',6.5],['— LINE —',9.0]].forEach(function(x){ s.addShape('rect',{x:x[1],y:5.35,w:2.0,h:.58,fill:{color:C.bg,transparency:100},line:{color:C.line,width:1,dash:'dash'}}); s.addText(x[0],{x:x[1],y:5.55,w:2.0,h:.14,fontSize:10,color:C.text4,fontFace:'Cormorant Garamond',align:'center'}); });
           s.addText('cs-v2.1 · '+d,{x:5.2,y:7.08,w:3,h:.14,fontSize:8,color:C.text4,fontFace:'Cormorant Garamond',align:'center'});
         }
