@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="color-scheme" content="light only">
 <meta name="supported-color-schemes" content="light">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v190 (版本號僅留註解，不顯示於畫面)
+<!-- ATELIER 影片診斷工作台 · 內部版本 v191 (版本號僅留註解，不顯示於畫面)
+v191 hotfix（v190 實測 bug：貼卡A 建新帳號→影片有存、帳號沒存，接 v190）：【P2 卡A 帳號儲存 bug · root-cause fix】根因＝v188 引入的「pending 暫存機制」過頭：新帳號用 window._pendingAcc 存記憶體、不放進 accounts[]，等到 saveBtn「確定建檔」才 unshift+saveAccounts。但只要任何一條路徑沒走到那個 commit 區塊（影片 URL 重複選了覆蓋舊的→_did=true 整段被跳過／使用者只想存帳號不存影片／流程中斷），pending 帳號就默默丟失，帳號數沒跳。修法＝恢復 v124 行為，按「建立帳號」立刻 accounts.unshift+saveAccounts；_pendingAcc/_pendingAccId 改用作「本 session 剛建」標記（讓 saveBtn 確認彈窗繼續顯示「新增 @xxx 第一次建檔」、v190 P1 表單欄位填寫照常運作）。共 6 處改動：①ingestAccountCard isNew 分支 accounts.unshift+移除 _pendingOpt 手動加 option（~4892）；②ingestAccountCard 末尾移除 if(!isNew) 守衛、永遠 saveAccounts（~4921）；③parseBtn 移除 _pendingOpt 重加（~2647）；④bulkBtn 移除 _pendingOpt 重加（~3011）；⑤saveBtn 確認取消區塊不再刪帳號／不重置下拉（~3132）；⑥saveBtn 確認 OK 區塊不再 unshift（帳號已存）只清標記（~3142）。版本號 4 處 v190→v191；六常數依守門 md5（7c8bc3efbfc92d316b511a13b91a49bd）驗證未動；node --check 15/15 pass；div 1177/details 49/CSS 平衡。
 v190 更新（交辦單：先修 P1 一個會擋工作流程的 bug＋A 區影片層分析工具與全站 icon 統一＋B2 對帳總表；B1 雙選擇器仍卡 UX 決策、第三次擱置並標出待對齊問題，接 v189）：【P1 貼卡A 建新帳號表單空白 bug】根因確認：syncAccountJobFields(~5972)/renderProfFields/writeProfFields 只查 accounts[]，新帳號是 pending（在 _pendingAcc）所以查不到→表單中間職稱/產業/版面解析全空。五步修：①syncAccountJobFields 加 pending 分支；②renderProfFields 加 pending 分支；③writeProfFields 加 pending 分支（pending 期間改 profile 寫入 _pendingAcc 暫存、不 saveAccounts，toast 標「待確認」）；④ingestAccountCard isNew 路徑末端主動呼叫 syncAccountJobFields+open f-profBox+filingBoardBoxInput（belt-and-suspenders 給所有 caller）；⑤saveBtn commit unshift 後再 syncAccountJobFields 一次保險。驗證流程：貼卡A→按建立帳號→表單立刻有資料→按確定建檔→帳號管理數字+1。【A1 影片層分析工具】vcard 在現有「@xxx 的分析工具」（金線）下方新增「這支影片的分析工具」（酒紅線區隔），含「影片特點→賣點翻譯」按鈕；新增 buildVideoSellingPointPrompt(vid)（~5783）純用影片自身欄位（主題/拍攝素材/逐字稿/爆紅歸因/Hook/CTA/Hook 規格/換鏡節奏/情緒起伏/表現），不依賴帳號 profile；缺逐字稿/爆紅歸因時按鈕旁顯示「⚠ 需逐字稿/爆紅歸因資料」提示；buildFabPrompt（帳號層）一字未動。【A2 icon 統一】聚焦改 3 處真正當 icon 用的：①待核對清單帳號列首 🔴(~4679) → SVG 紅圓；②圖例 🔴/🟡(~4702) → SVG 紅黃圓；③showDeliverSample modal 「關閉 ✕」(~7988) → SVG X icon。不改：toast/狀態文字（'✓ 已存'/'✗ 未達'屬有色文字標籤而非 icon）、<option> 內 emoji（不允許 inline HTML）、placeholder 範例文字、SVG 內<text>、changelog/comment 內 emoji；copyPrompt 內部 icon 依交辦單暫不動。【B2 對帳總表】accsub-tools 末尾新增 details#reconBox（ontoggle 自動 render + 重新整理鈕）；新增 renderReconciliation()（~5114）：表格列出每帳號的影片數/有Hook比例/G1-G5 階段分布/最近發布日（按影片數降冪），下方列「沒掛影片的帳號」與「孤兒影片」（accountId 為空或指向不存在帳號，可點「編輯補上」開 editVideoModal）。純讀、不改 accounts/videos 資料結構。【B1 雙選擇器 · 第三次擱置】仍卡三個 UX 決策（v189 已標出但本版交辦單未回答）：(a) 影片庫加主角＋對標後，現有 libSelIds 自由勾選工具列怎麼共存？(b) 帳號管理進入「主角＋對標」要做什麼（並排比/產提示詞/跳對應入口）？(c) 主角是否跨頁面記憶？硬做風險過高且範圍翻倍，依交辦單「做不完就擱置」原則不硬上。版本號 4 處更新；六常數依守門 md5（7c8bc3efbfc92d316b511a13b91a49bd）驗證未動；全檔 node --check 全過（15 script）、div/details/CSS 平衡。
 v189 更新（交辦單：本版特別授權替換 PROMPT_C/PROMPT_0 兩常數＋A 區收 v188 沒做完＋實測新 bug＋影片庫流程加變體；B 區雙選擇器擱置並老實回報，接 v188）：【P1 PROMPT_C 替換】用 Python json.dumps(ensure_ascii=False) + re.sub callable repl（避開 \\n 被 re 當 escape 解讀的陷阱）替換為「最後整合審查提示詞_更新版.txt」逐字內容（5425 字），反跳脫後與 txt 比對 byte-identical。【P2 PROMPT_0 替換】同上做法替換為「第一次建檔提示詞_更新版.txt」（1679 字），反跳脫後 byte-identical。GEM_PROMPT/PROMPT_A/PROMPT_0A/TONE_RULES raw 串接 md5 守門值＝5151197cf26ebb2e20d035a014769d68，本版交付前驗證仍相符（四常數未被碰）。【A1 影片庫「尚無帳號」bug】根因：_accFbSubscribe(~6822) 帳號到齊只刷 populateCmpHero，漏 populateTplClient。修：6824 加一行呼叫＋populateTplClient(~3378) 加 csel-label 即時＋600ms 同步（鏡像 cmpHero）。populateOptClient/RecClient 透過 renderComparePicker 已涵蓋。populateAccountSelect/DlClient 屬「動作時 populate」非同類 bug、不動。【A2 使用說明可收合】影片庫 .tip(~1511) 外層包進 details（summary「ℹ️ 使用說明（點開看）」、預設收合），內層文字＋style 一字未動。details 45→46（平衡）。【A3 全站彈窗統一中央】根改 .modal(~344) align-items:flex-end→center、.sheet border-radius 改 18px 四面圓角＋padding 收尾。所有用 #modal/.sheet 的彈窗（atelierChoose、openAccountModal、openClientDiagnosis、openSuccessMatch、openBorrowFromVideo、editVideoModal、openMarketData、showDeliverSample、copyPrompt、addProfileSnapshot 等）一次中央化。csel-in-modal 已 v186 處理、csel mobile 已 v183 處理。#auth-overlay（全頁登入）、右下 Firebase badge（角落小徽章）刻意不改。【A4 客戶版 PDF 06-10 空白不印】opPrintPrepare(~2105) clone 階段加：若非 op-advisor，移除 .op-row 中 topic 為空或仍是「主題（點這裡打字或貼上）」預設的列；顧問版照印全部。【A5 操作流程加兩變體】IIFE(~7602) 內新增 opGuideHTML_v2（流程② 同帳號＋多影片，5 步：截圖→選配存檔→Gemini→子題型→只請卡B）與 opGuideHTML_v3（流程③ 只分析帳號，4 步：四張帳號素材→帳號分析提示詞→拿到分析卡含 Top9→貼回累積或覆蓋）、FLOW_TABS 三顆切換鈕、window.opGuideShowFlow(n) 切換器；只動 #opGuideInput 的 mount 加 tab 包裝，#opGuideManual（說明書）不動，opGuideHTML 原函式一字不動。【B1 雙選擇器重構 · 擱置】範圍從影片庫單側擴大成影片庫＋帳號管理雙頁面，且需先對齊 UX 決策（模式 A/B 切換邏輯、不破壞既有 libSelIds 自由勾選）。風險高、需先對齊規格、本版老實擱置以保 P＋A 區可上線。版本號 4 處更新；常數依守門法驗證；全檔 node --check 全過（15 script）、div/details/CSS 平衡。
 v188 更新（交辦單：大掃除版，接 v187）：【A1 copyPrompt migration 驗證＋補完】確認 v186/v187 的 migration 皆已在 code 中（13 calls），新增帳號健檢報告（hc-copy ~5423）→ 共 14 calls。逐行 grep 證實。【A2 parseBtn/bulkBtn pending】ingestAccountCard isNew 分支（~4860）accounts.unshift→改 _pendingAcc/_pendingAccId+temp option；saveAccounts 加 if(!isNew) 守衛（~4894）；parseBtn(~2633)+bulkBtn(~2997) 的 populateAccountSelect 後補回 pending option。【A3 紅金配色】bulkTemplate（~1498）去掉 gold-dark 色改 ghost＋SVG stroke→currentColor；bulkCopy（~1502）SVG→currentColor。A4/A5/B1/B2 延至 v189。常數未變；15 script；div 1144/det 45/CSS 平衡。
@@ -764,7 +765,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v190</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v191</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -2649,10 +2650,7 @@ $('parseBtn').onclick=async function(){
     if(_mode!=='skip'){
       var _acc=null; try{ _acc=await ingestAccountCard('===ATELIER帳號分析卡==='+accM[1]+'===卡片結束===',{mode:_mode}); }catch(e){}
       if(_acc){ try{ populateAccountSelect();
-        /* v188 A2：若帳號是 pending，populateAccountSelect 會蓋掉 temp option，這裡補回 */
-        if(window._pendingAcc && window._pendingAccId && _acc.id===window._pendingAccId){
-          var _sel2=$('f-account'); if(_sel2){ var _po=document.getElementById('_pendingOpt'); if(!_po){ _po=document.createElement('option'); _po.id='_pendingOpt'; _po.value=window._pendingAccId; _po.textContent=(window._pendingAcc.handle||'@?')+' （待確認）'; _sel2.appendChild(_po); } }
-        }
+        /* v190 P2：帳號已即時寫入 accounts[]，populateAccountSelect 會把它畫成正常項；不再需要 _pendingOpt「（待確認）」 */
         if($('f-account')) $('f-account').value=_acc.id; if(typeof syncAccountJobFields==='function') syncAccountJobFields(); if($('f-profBox')) $('f-profBox').open=true; var _fb=$('filingBoardBoxInput'); if(_fb) _fb.open=true; }catch(e){} }
     }
     if(!vidM){ return; } // 只有帳號段（卡C）→ 帳號已處理、沒有影片可填
@@ -2778,10 +2776,17 @@ $('parseBtn').onclick=async function(){
       // 粉絲數快照
       const fc=parseInt(numUnit(F['粉絲數']||''))||0;
       if(fc) acc.fanSnapshots.push({date:new Date().toISOString().slice(0,10), count:fc, note:'歸類卡自動建檔'});
-      /* v184 A3（改寫 v183 P1）：不 unshift 進 accounts（避免計數提前跳），改存 _pendingAcc 獨立物件；手動加 option 到 f-account */
+      /* v191 P2：恢復 v124 行為——立刻 accounts.unshift+saveAccounts，避免 pending 暫存在「影片重複覆蓋」等路徑下默默丟失帳號（同 ingestAccountCard 修法）。
+         _pendingAcc/_pendingAccId 保留為「本 session 剛建」標記，讓 saveBtn 確認彈窗顯示「新增 @xxx（第一次建檔）」。 */
+      accounts.unshift(acc);
       window._pendingAcc=acc;
       window._pendingAccId=acc.id;
-      var _sel=$('f-account'); if(_sel){ var _o=document.createElement('option'); _o.value=acc.id; _o.textContent=(acc.handle||'@?')+' '+(acc.displayName||'')+'（待確認）'; _o.id='_pendingOpt'; _sel.appendChild(_o); _sel.value=acc.id; }
+      try{ if(typeof saveAccounts==='function') await saveAccounts(); }catch(e){}
+      var _sel=$('f-account'); if(_sel){
+        var _po=document.getElementById('_pendingOpt'); if(_po) _po.remove(); /* 清舊版「（待確認）」選項 */
+        if(typeof populateAccountSelect==='function') populateAccountSelect();
+        _sel.value=acc.id;
+      }
       got.push('+ 新帳號 '+h+(()=>{const seg=[];if((acc.types||[]).length)seg.push('身份:'+acc.types.join('、'));if(acc.jobTitle)seg.push('職稱:'+acc.jobTitle);if(acc.industry)seg.push('產業:'+acc.industry);return seg.length?'（已存到帳號→'+seg.join('・')+'）':'';})());
     } else {
       // ─── 帳號重複偵測 + 變化比對（雙向第一步：粉絲數）───
@@ -3013,10 +3018,7 @@ $('bulkBtn').onclick=async function(){
     if(_m2!=='skip'){
       var _acc=null; try{ _acc=await ingestAccountCard('===ATELIER帳號分析卡==='+_accM[1]+'===卡片結束===',{mode:_m2}); }catch(e){}
       if(_acc){ try{ populateAccountSelect();
-        /* v188 A2：bulkBtn 同理——pending 帳號補回 temp option */
-        if(window._pendingAcc && window._pendingAccId && _acc.id===window._pendingAccId){
-          var _sel3=$('f-account'); if(_sel3){ var _po3=document.getElementById('_pendingOpt'); if(!_po3){ _po3=document.createElement('option'); _po3.id='_pendingOpt'; _po3.value=window._pendingAccId; _po3.textContent=(window._pendingAcc.handle||'@?')+' （待確認）'; _sel3.appendChild(_po3); } }
-        }
+        /* v190 P2：帳號已即時寫入 accounts[]，populateAccountSelect 會把它畫成正常項；不再需要 _pendingOpt「（待確認）」 */
         if($('f-account')) $('f-account').value=_acc.id; if(typeof syncAccountJobFields==='function') syncAccountJobFields(); if($('f-profBox')) $('f-profBox').open=true; var _fb2=$('filingBoardBoxInput'); if(_fb2) _fb2.open=true; }catch(e){} }
     }
   }
@@ -3136,23 +3138,15 @@ $('saveBtn').onclick=async function(){
       cancelValue:'back'
     });
     if(_conf!=='ok'){
-      /* v184 A3：取消→移除 pending option、清 _pendingAcc */
-      if(window._pendingAcc){
-        var _po=document.getElementById('_pendingOpt'); if(_po) _po.remove();
-        window._pendingAcc=null; window._pendingAccId=null;
-        if($('f-account')) $('f-account').selectedIndex=0;
-      }
+      /* v190 P2：取消→帳號已於 ingestAccountCard 即時寫入 accounts[]（非 pending 暫存），不刪帳號、不重置下拉選擇；只清「本 session 剛建」標記 */
+      if(window._pendingAcc){ window._pendingAcc=null; window._pendingAccId=null; }
       return;
     }
-    /* v184 A3：確定建檔→若帳號是 pending，此刻才真的加入 accounts + 存 */
+    /* v190 P2：確定建檔→帳號已即時寫入 accounts[]，不再 unshift；只清「剛建」標記＋populateAccountSelect 確保下拉乾淨 */
     if(_isPending && window._pendingAcc){
-      accounts.unshift(window._pendingAcc);
-      var _po2=document.getElementById('_pendingOpt'); if(_po2) _po2.remove();
-      await saveAccounts();
       populateAccountSelect();
       if($('f-account')) $('f-account').value=window._pendingAccId;
       window._pendingAcc=null; window._pendingAccId=null;
-      /* v190 P1：commit 後再刷一次表單，讓中間欄位從 _pendingAcc 改為走 accounts[]（後續 form reset 仍會清空，這只是過渡保險） */
       try{ if(typeof syncAccountJobFields==='function') syncAccountJobFields(); }catch(e){}
     }
     /* 同步 v 的 accountHandle（pending 期間 accounts.find 找不到，這裡補） */
@@ -3784,7 +3778,8 @@ function renderManual(){
   <div class="form-card" style="border-left:3px solid var(--gold)">
     <div class="stitle" style="font-size:15px;color:var(--rouge)">更新紀錄 · 還沒做的</div>
     <p style="font-size:13px;color:var(--text);line-height:1.85;margin-top:8px">
-    <b>v190（這版 · 修建檔卡A 表單空白 bug＋影片層分析工具＋icon 統一＋對帳總表）：</b>①<b>P1 貼卡A 建新帳號後表單空白 bug 修好</b>：之前貼卡A → 按建立帳號 → 滑到表單中間發現職稱/產業/版面解析全空、⑥顯示「不指定」（明明資料都有解析到），現在會立刻填出來。根因是 pending 機制沒打通到表單欄位 sync，補了 5 個地方（syncAccountJobFields / renderProfFields / writeProfFields / ingestAccountCard / saveBtn commit）。pending 期間改 profile 也存得進去（暫存在 _pendingAcc，按確定建檔才正式入庫；toast 會標「待確認」）。②<b>A1 影片層的分析工具來了</b>：影片卡底部現有「@xxx 的分析工具」（金線、帳號層級）下方新增「這支影片的分析工具」（酒紅線、影片層級、視覺區隔），含「影片特點→賣點」按鈕；分析的是「這支影片本身的招式」——拍攝素材、主題、逐字稿、爆紅歸因、Hook 規格、換鏡節奏、CTA、表現都餵進去，不依賴帳號 profile。帳號是帳號、影片是影片，現在分得開。若該影片還缺逐字稿/爆紅歸因，按鈕旁會提示「⚠ 需逐字稿/爆紅歸因資料」。③<b>A2 icon 統一</b>：把 3 處真正當 icon 用的 emoji 換成品牌 SVG——待核對清單帳號列首的紅點、圖例的紅黃圓、交付樣張關閉鈕的 ✕。不改的：toast/狀態文字（那是有色文字標籤）、option 下拉內的 emoji（HTML 不允許 SVG 在 option 內）、placeholder 範例字、SVG 內的 text、changelog 文字；copyPrompt 內部 icon 依交辦單暫不動（之後你會指定）。④<b>B2 對帳總表來了</b>：帳號管理 → 工具箱底部新增「對帳總表」折疊，點開自動載入：每帳號掛了幾支、有 Hook 比例（綠/金/紅依比例上色）、G1–G5 各階段分布、最近發布日，按影片數降冪；下方另列「沒掛影片的帳號」與「孤兒影片」（accountId 為空或指向不存在帳號），孤兒可點「編輯補上」一鍵跳影片編輯框補連結。純讀盤點，不改任何資料結構。＊B1（雙選擇器重構）第三次擱置——仍卡 3 個 UX 決策（libSelIds 怎麼共存／帳號管理入口做什麼／主角是否跨頁記憶），這次交辦單沒回答，硬做風險過高。先回答這 3 個再做才安全。<br>
+    <b>v191（這版 · hotfix · 修「卡A 建新帳號→帳號沒存」實測 bug · root cause）：</b>你在 v190 實測抓到的 bug：貼卡A 按「建立帳號」→ 表單中間有填好（v190 P1 修的部分有效）→ 按儲存影片 → 影片數有跳、<b>帳號數沒跳</b>。根因找到了，是 v188 引入的「pending 暫存」設計過頭——新帳號被放在記憶體裡的 _pendingAcc，不在 accounts[]，等到 saveBtn 走到確定建檔那段才真的存。但只要任何一條路徑沒走到那個 commit（影片連結已存在選了覆蓋／使用者只想存帳號不存影片／中斷流程），帳號就默默丟失。修法：恢復 v124 行為，<b>按「建立帳號」就立刻存帳號（accounts.unshift + saveAccounts）</b>，帳號數立刻 +1；_pendingAcc 仍保留作為「本 session 剛建」標記，讓「確認建檔」彈窗繼續顯示「新增 @xxx（第一次建檔）」、v190 P1 表單填欄位機制照常運作。<b>影響</b>：以後貼卡A → 建立帳號 → 帳號管理數字立刻 +1、按確定建檔／或中途取消／或影片重複覆蓋 → 帳號都不會再丟。共動 6 處（ingestAccountCard×2、parseBtn、bulkBtn、saveBtn 取消／確定）。六常數一字未動。<br>
+    <b>v190（修建檔卡A 表單空白 bug＋影片層分析工具＋icon 統一＋對帳總表）：</b>①<b>P1 貼卡A 建新帳號後表單空白 bug 修好</b>：之前貼卡A → 按建立帳號 → 滑到表單中間發現職稱/產業/版面解析全空、⑥顯示「不指定」（明明資料都有解析到），現在會立刻填出來。根因是 pending 機制沒打通到表單欄位 sync，補了 5 個地方（syncAccountJobFields / renderProfFields / writeProfFields / ingestAccountCard / saveBtn commit）。pending 期間改 profile 也存得進去（暫存在 _pendingAcc，按確定建檔才正式入庫；toast 會標「待確認」）。②<b>A1 影片層的分析工具來了</b>：影片卡底部現有「@xxx 的分析工具」（金線、帳號層級）下方新增「這支影片的分析工具」（酒紅線、影片層級、視覺區隔），含「影片特點→賣點」按鈕；分析的是「這支影片本身的招式」——拍攝素材、主題、逐字稿、爆紅歸因、Hook 規格、換鏡節奏、CTA、表現都餵進去，不依賴帳號 profile。帳號是帳號、影片是影片，現在分得開。若該影片還缺逐字稿/爆紅歸因，按鈕旁會提示「⚠ 需逐字稿/爆紅歸因資料」。③<b>A2 icon 統一</b>：把 3 處真正當 icon 用的 emoji 換成品牌 SVG——待核對清單帳號列首的紅點、圖例的紅黃圓、交付樣張關閉鈕的 ✕。不改的：toast/狀態文字（那是有色文字標籤）、option 下拉內的 emoji（HTML 不允許 SVG 在 option 內）、placeholder 範例字、SVG 內的 text、changelog 文字；copyPrompt 內部 icon 依交辦單暫不動（之後你會指定）。④<b>B2 對帳總表來了</b>：帳號管理 → 工具箱底部新增「對帳總表」折疊，點開自動載入：每帳號掛了幾支、有 Hook 比例（綠/金/紅依比例上色）、G1–G5 各階段分布、最近發布日，按影片數降冪；下方另列「沒掛影片的帳號」與「孤兒影片」（accountId 為空或指向不存在帳號），孤兒可點「編輯補上」一鍵跳影片編輯框補連結。純讀盤點，不改任何資料結構。＊B1（雙選擇器重構）第三次擱置——仍卡 3 個 UX 決策（libSelIds 怎麼共存／帳號管理入口做什麼／主角是否跨頁記憶），這次交辦單沒回答，硬做風險過高。先回答這 3 個再做才安全。<br>
     <b>v189（提示詞兩常數更新＋實測 bug＋影片庫流程加變體＋全站彈窗中央化）：</b>①<b>P 區（特別授權）</b>：依交辦單把工具裡 ChatGPT/Claude 用的兩段提示詞——「最後整合審查」「第一次建檔」——換成你提供的更新版（5425＋1679 字逐字相同，反跳脫驗證 byte-identical）；另外四個常數＋口吻鐵律經守門 md5 驗證一字未動。②<b>A1 影片庫客戶下拉「尚無帳號」bug 修</b>：根因找到了——雲端帳號到齊後，主角下拉有刷、產生腳本範本旁的下拉沒刷。已補上，冷啟動進影片庫兩個下拉都有帳號、不必離開再進來。③<b>A2 影片庫使用說明改可收合</b>：那段長長的「工具目的＋使用邏輯」包進「ℹ️ 使用說明（點開看）」、預設收起，影片庫一進來乾淨多了；文字一字沒改。④<b>A3 全站彈窗統一螢幕中央</b>：根改 .modal 從底部彈出改置中（接 v188 A4 沒做完），所有點開後跳出來的彈窗（智慧貼上確認、新增帳號、客戶診斷、成功庫對標、避坑對標、借技法、編輯影片、市場熱度、交付樣張、提示詞預覽等）全部在畫面中央、不卡底部。⑤<b>A4 客戶版 PDF 06-10 空白不印</b>（接 v188 A5 沒做完）：列印客戶版時，標題還是預設「主題（點這裡打字或貼上）」或為空的建議方向會自動跳過；首選＋有填內容照印；顧問版照舊全印。⑥<b>A5 「② 操作流程」加兩種變體</b>：頁面最上方多了三顆 tab——<b>流程① 新帳號＋新影片</b>（原本那條，照舊）／<b>流程② 同帳號＋多影片</b>（帳號已建過、只加新影片，5 步：截 3 張→選配存檔→Gemini→子題型→只請卡B；強調 @handle 一定要純）／<b>流程③ 只分析帳號</b>（不分析影片，每週／兩週回測，4 步：四張帳號素材→帳號分析提示詞→拿到含 Top9 的分析卡→貼回「累積」或「覆蓋」；不用 Gemini、不用最後整合）。＊B1（影片庫＋帳號管理雙選擇器重構）擱置——範圍擴大且需先對齊 UX 決策，本版老實留下，下個版本獨立做。<br>
     <b>v188（大掃除：copyPrompt 真的接好＋建檔 pending 堵漏＋紅金收尾）：</b>①<b>copyPrompt 呼叫驗證＋補完</b>：逐行 grep 確認 v186/v187 migration 皆已在 code（客戶診斷/問診整理/特點→賣點/帳號體檢/成功庫對標/卡片補完/借技法共 7 處），新增帳號健檢報告 → 共 14 個 copyPrompt 呼叫點。②<b>parseBtn/bulkBtn 建檔 pending 堵漏</b>：歸類卡 ingestAccountCard 新帳號不再立刻 unshift+saveAccounts，改走 _pendingAcc 暫存；parseBtn 和 bulkBtn 後續 populateAccountSelect 會補回 pending option → 帳號數不提前跳、確認彈窗正確顯示「新增」。③<b>紅金收尾</b>：影片庫「產生腳本範本」去金改 ghost、「複製選取」SVG 改 currentColor，不再跟紅色「並排對比」撞色。＊A4（彈窗定位盤查）/A5（PDF空白格）/B1（兩選擇器重構）/B2（對帳總表）留到 v189。五大提示詞與口吻鐵律一字未動。<br>
     <b>v187（ · migration 補完＋搜尋擴充＋配色＋工具卡片化＋undo）：</b>①<b>成功庫對標＋卡片補完：複製鍵遷到 copyPrompt</b>——按下去會跳標準預覽（唯讀＋編輯＋還原＋關閉），不再直接吐司。②<b>客戶選擇器 label 延遲再同步一次</b>：防止 csel 覆蓋。③<b>搜尋擴充</b>：影片庫搜尋現在能用「G3」「C 信任層」「律師」「KOL」搜到對應影片（新增 themeId/stage/goal/displayName/domain 5 欄位）。④<b>影片卡紅金不再撞色</b>：複製/編輯改 muted、借技法 icon 跟文字同色。⑤<b>分析工具 4 列獨立行</b>：各有 icon＋灰字說明＋分隔線，一眼看出 4 個獨立工具。⑥<b>copyPrompt undo stack</b>：「↩返回」一次回退一步、「↺還原全部」回系統預設原版。＊A2（parseBtn/bulkBtn pending）和 A7（全站彈窗盤查）範圍廣、留到 v188。B1（兩選擇器重構）留到 v188。五大提示詞與口吻鐵律一字未動。<br>
@@ -4892,9 +4887,15 @@ async function ingestAccountCard(raw, opt){
   let acc=accounts.find(x=>norm(x.handle)===norm(c.handle));
   const isNew=!acc;
   if(isNew){ acc={id:'acc_'+Date.now()+'_'+Math.random().toString(36).slice(2,7), platform:c.platform||'IG', handle:c.handle, displayName:'', types:[], domain:'', jobTitle:'', industry:'', relatedAccounts:[], note:'(由帳號分析卡建檔)', fanSnapshots:[], profileSnapshots:[], profile:{}, createdAt:Date.now(), updatedAt:Date.now()};
-    /* v188 A2：新帳號改 pending，不立刻 unshift+saveAccounts，等 saveBtn「確定建檔」才 commit */
+    /* v190 P2：恢復 v124 行為——新帳號立刻寫入 accounts[]+saveAccounts，避免 v188 的「pending 暫存機制」在任何沒走到 saveBtn 確定建檔的路徑下默默丟失帳號（實測 bug：貼卡A 建新帳號→帳號數沒跳）。
+       _pendingAcc/_pendingAccId 保留為「本 session 剛建立」的標記，讓 saveBtn 確認彈窗繼續顯示「新增 @xxx（第一次建檔）」、滑到表單中間能找到該帳號的 profile 填欄位。 */
+    accounts.unshift(acc);
     window._pendingAcc=acc; window._pendingAccId=acc.id;
-    var _sel=$('f-account'); if(_sel){ var _po=document.getElementById('_pendingOpt'); if(_po) _po.remove(); var _o=document.createElement('option'); _o.value=acc.id; _o.textContent=(acc.handle||'@?')+' （待確認）'; _o.id='_pendingOpt'; _sel.appendChild(_o); _sel.value=acc.id; }
+    var _sel=$('f-account'); if(_sel){
+      var _po=document.getElementById('_pendingOpt'); if(_po) _po.remove(); /* 清舊版「（待確認）」選項，避免重複 */
+      if(typeof populateAccountSelect==='function') populateAccountSelect();
+      _sel.value=acc.id;
+    }
   }
   if(c.platform) acc.platform=c.platform;
   if(c.displayName) acc.displayName=c.displayName;
@@ -4925,8 +4926,8 @@ async function ingestAccountCard(raw, opt){
     if(lastSnap && (lastSnap.date===today2 || (lastSnap.date||'').slice(0,10)===today2)) acc.profileSnapshots[acc.profileSnapshots.length-1]=snap; else acc.profileSnapshots.push(snap);
   }
   acc.updatedAt=Date.now();
-  /* v188 A2：新帳號是 pending，不立刻 saveAccounts；既有帳號更新照常存 */
-  if(!isNew){ await saveAccounts(); }
+  /* v190 P2：永遠 saveAccounts（v188 的「新帳號不存」守衛已於本版改回 v124 行為） */
+  await saveAccounts();
   renderAccounts(); if(typeof renderComparePicker==='function') renderComparePicker(); if(typeof renderAll==='function') renderAll();
   toast((isNew?'✓ 已建帳號 ':'已更新帳號 ')+acc.handle+(opt.mode==='history'?'（已新增一筆版面快照·可前後對比）':opt.mode==='overwrite'?'（已覆蓋今天的版面快照）':'（版面解析已存）')+fanMsg, null, 2800);
   if(typeof lightFilingBoard==='function'){ try{ lightFilingBoard(acc); }catch(e){} }
@@ -6144,16 +6145,19 @@ function renderProfFields(){
   if(a) wrap.querySelectorAll('[data-pf]').forEach(function(el){ el.addEventListener('change',writeProfFields); });
 }
 function writeProfFields(){
-  /* v190 P1：pending 帳號也允許就地編輯 profile；寫進 _pendingAcc 暫存、不 saveAccounts（等「確定建檔」隨 unshift 一起入庫） */
+  /* v191 P2：帳號已即時寫入 accounts[]（v124 行為），profile 編輯永遠 saveAccounts；
+     仍保留 _pendingAcc 分支當「本 session 剛建」標記，但不影響存檔行為。 */
   const id=$('f-account')?$('f-account').value:''; if(!id) return;
-  const isPending=!!(window._pendingAcc && window._pendingAccId && id===window._pendingAccId);
-  const a=isPending?window._pendingAcc:accounts.find(x=>x.id===id); if(!a) return;
+  const a=(window._pendingAcc && window._pendingAccId && id===window._pendingAccId)
+    ? window._pendingAcc
+    : accounts.find(x=>x.id===id);
+  if(!a) return;
   a.profile=a.profile||{};
   $('f-profFields').querySelectorAll('[data-pf]').forEach(function(el){ a.profile[el.dataset.pf]=el.value.trim(); });
   if(Object.values(a.profile).some(function(v){return v;})){ a.profileSnapshots=a.profileSnapshots||[]; const td=new Date().toISOString().slice(0,10); const snp=Object.assign({date:td},a.profile); const ls=a.profileSnapshots[a.profileSnapshots.length-1]; if(ls&&ls.date===td) a.profileSnapshots[a.profileSnapshots.length-1]=snp; else a.profileSnapshots.push(snp); }
   a.updatedAt=Date.now();
-  if(!isPending){ saveAccounts(); if(typeof renderAccounts==='function') renderAccounts(); if(typeof renderComparePicker==='function') renderComparePicker(); }
-  toast('✓ 已存到帳號 '+(a.handle||'')+(isPending?'（待確認，按「確定建檔」才會正式入庫）':''));
+  saveAccounts(); if(typeof renderAccounts==='function') renderAccounts(); if(typeof renderComparePicker==='function') renderComparePicker();
+  toast('✓ 已存到帳號 '+(a.handle||''));
 }
 // v72：在影片頁改職稱/產業 → 寫回所選帳號（單一來源）
 function writeAccountJobFields(){
