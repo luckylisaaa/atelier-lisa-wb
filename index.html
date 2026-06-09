@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="color-scheme" content="light only">
 <meta name="supported-color-schemes" content="light">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v193 (版本號僅留註解，不顯示於畫面)
+<!-- ATELIER 影片診斷工作台 · 內部版本 v194 (版本號僅留註解，不顯示於畫面)
+v194 更新（交辦單：Lisa 實測抓三個 bug 一次修：①卡C only 流程死路 ②清空按鈕沒清乾淨 ③雙選擇器第 5 次提出必須做，接 v193）：【P1 parseBtn 卡C only 走不下去】Lisa 場景：在「③ 歸類卡」貼**只有帳號分析卡（卡C）、沒有影片段**的文字 → atelierChoose「第一次偵測到新帳號 @qbeetw」彈窗 → 選「建立帳號」→ pending 帳號設好＋表單填好 → **但整頁只有「儲存這支影片」按鈕**，因為沒影片標題會跳「至少要填影片名稱」警示 → 帳號永遠卡在 pending 入不了庫。根因：parseBtn line 2683 `if(!vidM){return;}` 直接 return，pending 帳號沒被 commit。修法：return 前判斷 _mode!=='skip'＋ pending 物件存在 → 立刻 accounts.unshift+saveAccounts+清 pending option+populateAccountSelect+toast「✓ 已建立新帳號 @xxx（帳號管理 +1）」。bulkBtn 是批次處理多張卡，路徑不同，本版不動。【P2 clearBtn 沒清乾淨】Lisa 場景：按「清空表單」鈕，帳號 ⑥下拉/職稱/產業/版面解析/九宮格收集盤都沒清掉。對齊 saveBtn 成功後的完整清空邏輯，補 6 項：①f-account selectedIndex=0 + syncAccountJobFields；②清掉 pending 帳號（_pendingAcc / _pendingAccId / _pendingOpt option）；③收合並清空 filingBoardBoxInput 九宮格；④f-srctype；⑤f-account-quick；⑥pasteBox（智慧貼上 textarea）+ parseMsg；⑦syncProdStatus；⑧renderGoalKit。【A1 影片庫＋帳號管理 雙選擇器 · 第 5 次必須做了】Lisa 反覆要求：「影片庫跟帳號管理我是需要他像版面對照一樣有兩個可以選擇」。最小可行做法：①view-library 頂部（sumrow 之前）+ view-accounts 帳號清單頂部（+新增帳號 之前）各加一個 details#vlibCompareHelper / #accCompareHelper「對標助手」折疊區，預設收起、ontoggle 展開時自動 _vchPopulate；②兩個 details 內部結構一致——主角單選 `<select>` + 對標 `<select multiple size="6">`（HTML 原生多選，按住 Cmd/Ctrl 選 1-3 個）+「跳到版面對照並比較」按鈕；③新增 window._vchPopulate(prefix='vlib'|'acc')—— populate accounts 到兩個 select（handle + displayName/jobTitle 顯示），保留上次選擇；④新增 window._vchGoCompare(prefix)——驗證主角＋對標數量、自動 click 「.tab[data-view='compare']」切換版面對照分頁、setTimeout 350ms 後設 cmpHero.value + 清空 cmpSelected + add(rivalIds) + renderComparePicker + runCompare。不破壞既有 libSelIds 自由勾選工具列、不動 cmpHero/cmpPicker 的既有 csel 結構。版本號 4 處 v193→v194；六常數依守門 md5（7c8bc3efbfc92d316b511a13b91a49bd）驗證未動；全檔 node --check 全過（15 script）、div/details/CSS 平衡。
 v193 更新（交辦單：v192 流程鳥瞰圖被埋太深 Lisa 看不到、流程② / ③ 沒有對應 sopBlock 那種「大張詳細版」；加「客戶服務台」導覽連結，接 v192）：【P1 sopBlock 加流程 1/2/3 切換】根因：v192 我把鳥瞰圖+三流程詳細塞在 #opGuideInput 那個預設收起的 details 折疊區內，Lisa 切到「② 操作流程」分頁看到的是預設展開的 #sopBlock 8 步驟（流程①），自然以為「只有流程①、沒有 ②／③」。修法：①sopBlock 上方加 3 顆切換鈕（流程①／②／③，flex 均寬、選中酒紅實心 / 未選紅邊框透明），點下去用 window.sopFlowShow(n) 切換顯隱（簡單 display:none 切換不重 mount）；②sopBlock 標記 data-sopflow="1"；③sopBlock 之後新增 #sopBlock_v2（流程② SOP details · gem-box 同樣式 · open · 預設 display:none）與 #sopBlock_v3（流程③ SOP details）；④#sopBlock_v2_body / _v3_body 由 IIFE mount() 函式自動注入 opGuideHTML_v2() / opGuideHTML_v3() 內容（含 v192 已做好的鳥瞰圖＋詳細步驟）。既有 #opGuideInput 折疊區保留不動（裡面也有同樣的三流程切換 tab，是另一個入口）。【P2 客戶服務台導覽連結】.tabs 內「客戶交付」之後加一個 a.tab href="client.html"——使用 a 而非 div+data-view，避開既有 view 切換邏輯直接跳外部 URL；text-decoration:none；icon 用「圓圈內箭頭右指」暗示外連跳轉。樣式套用既有 .tab CSS（display:inline-flex 在 a 上同樣 work）。版本號 4 處 v192→v193；六常數依守門 md5（7c8bc3efbfc92d316b511a13b91a49bd）驗證未動；全檔 node --check 全過（15 script）、div/details/CSS 平衡。
 v192 更新（交辦單：把 v191 的「立刻 commit」UX 改回 v188/v190「最後確認才建檔」，但徹底修 v188 留下的真正 bug＋三條流程都加上鳥瞰圖，接 v190；v191 hotfix 對 UX 來說修過頭，本版回到正確設計）：【P1 saveBtn 整段重構 · 從 v190 出發】使用者回饋：v191 改成「按建立帳號就 +1 帳號數」感覺被搶跑——應該回到 v188/v190 的「按建立帳號只是先記下、最後按確定建檔才真的存」UX。但 v188 留了真正的 bug：影片 URL 重複選了覆蓋 → _did=true → 整段確認彈窗 + pending commit 區塊被跳過 → pending 帳號默默丟失。本版做法：①revert v191 P2 八處改動回到 v190 P1 狀態（pending 暫存機制）；②從 var _did=false; 到 if(_did){...} 那段整段重構：URL 重複「略過」return 前清 pending+移除 _pendingOpt+f-account 重置；URL 重複「覆蓋」改用 _willOverwrite 標記、延後 videos 寫入到「確定建檔」之後；標題相似「取消」return 前同樣清 pending；**拿掉 if(!_did) 守衛**——確認彈窗 + pending commit 必須在所有路徑下都跑到（覆蓋路徑與新增路徑都會走確認）；確認彈窗 desc 條件式顯示「覆蓋既有影片」或「新增 1 支影片」；取消彈窗時影片不需要 rollback（因延後寫入）；OK 時 commit pending 帳號 + 條件式 commit 影片（_did+_willOverwrite 用 indexOf 替換 / 否則 unshift）。【B2 三條流程都加鳥瞰圖】每個流程上方一行水平 chip（ovStep helper），看一眼知道「STEP N／步驟名／AI／提示詞／輸出」：流程① 5 步（建檔/Claude/第一次建檔提示詞→帳號分析/Claude/帳號分析提示詞→深挖影片/Gemini/Gemini 歸類→整合三份卡/Claude/最後整合審查→客戶交付/工作台內建/三關產生）；流程② 5 步（截圖+連結/無AI→封存選配/Claude/第一次建檔→Gemini 影片分析→子題型工具/工具網頁→最後整合只要卡B/Claude/最後整合審查）；流程③ 4 步（截四張帳號素材/無AI→帳號分析/Claude/帳號分析提示詞→拿到帳號分析卡含 Top9/輸出→貼回工作台/工作台內建/貼帳號分析卡）。詳細步驟保留不大改，只在 intro 後 steps 前加 overview。三個流程函式內 ovStep/ovArrow helper 各自定義（避免相互影響）。【A1 雙選擇器 · 第四次擱置】使用者本輪再次提出影片庫＋帳號管理要像版面對照那樣有主角+對標兩排選擇器。實話實說：本版 P1 整段重構 + B2 三流程鳥瞰圖已是大工作量，A1 牽涉影片庫＋帳號管理兩個頁面工具列改造、且上版三個 UX 決策（libSelIds 共存／帳號管理進入做什麼／主角是否跨頁記憶）使用者本輪仍未明確回答，硬上半成品比較傷。本版老實擱置並在報告主動列出三個待回答問題，下版專心做。版本號 4 處 v190→v192；六常數依守門 md5（7c8bc3efbfc92d316b511a13b91a49bd）驗證未動；全檔 node --check 全過（15 script）、div/details/CSS 平衡。
 v190 更新（交辦單：先修 P1 一個會擋工作流程的 bug＋A 區影片層分析工具與全站 icon 統一＋B2 對帳總表；B1 雙選擇器仍卡 UX 決策、第三次擱置並標出待對齊問題，接 v189）：【P1 貼卡A 建新帳號表單空白 bug】根因確認：syncAccountJobFields(~5972)/renderProfFields/writeProfFields 只查 accounts[]，新帳號是 pending（在 _pendingAcc）所以查不到→表單中間職稱/產業/版面解析全空。五步修：①syncAccountJobFields 加 pending 分支；②renderProfFields 加 pending 分支；③writeProfFields 加 pending 分支（pending 期間改 profile 寫入 _pendingAcc 暫存、不 saveAccounts，toast 標「待確認」）；④ingestAccountCard isNew 路徑末端主動呼叫 syncAccountJobFields+open f-profBox+filingBoardBoxInput（belt-and-suspenders 給所有 caller）；⑤saveBtn commit unshift 後再 syncAccountJobFields 一次保險。驗證流程：貼卡A→按建立帳號→表單立刻有資料→按確定建檔→帳號管理數字+1。【A1 影片層分析工具】vcard 在現有「@xxx 的分析工具」（金線）下方新增「這支影片的分析工具」（酒紅線區隔），含「影片特點→賣點翻譯」按鈕；新增 buildVideoSellingPointPrompt(vid)（~5783）純用影片自身欄位（主題/拍攝素材/逐字稿/爆紅歸因/Hook/CTA/Hook 規格/換鏡節奏/情緒起伏/表現），不依賴帳號 profile；缺逐字稿/爆紅歸因時按鈕旁顯示「⚠ 需逐字稿/爆紅歸因資料」提示；buildFabPrompt（帳號層）一字未動。【A2 icon 統一】聚焦改 3 處真正當 icon 用的：①待核對清單帳號列首 🔴(~4679) → SVG 紅圓；②圖例 🔴/🟡(~4702) → SVG 紅黃圓；③showDeliverSample modal 「關閉 ✕」(~7988) → SVG X icon。不改：toast/狀態文字（'✓ 已存'/'✗ 未達'屬有色文字標籤而非 icon）、<option> 內 emoji（不允許 inline HTML）、placeholder 範例文字、SVG 內<text>、changelog/comment 內 emoji；copyPrompt 內部 icon 依交辦單暫不動。【B2 對帳總表】accsub-tools 末尾新增 details#reconBox（ontoggle 自動 render + 重新整理鈕）；新增 renderReconciliation()（~5114）：表格列出每帳號的影片數/有Hook比例/G1-G5 階段分布/最近發布日（按影片數降冪），下方列「沒掛影片的帳號」與「孤兒影片」（accountId 為空或指向不存在帳號，可點「編輯補上」開 editVideoModal）。純讀、不改 accounts/videos 資料結構。【B1 雙選擇器 · 第三次擱置】仍卡三個 UX 決策（v189 已標出但本版交辦單未回答）：(a) 影片庫加主角＋對標後，現有 libSelIds 自由勾選工具列怎麼共存？(b) 帳號管理進入「主角＋對標」要做什麼（並排比/產提示詞/跳對應入口）？(c) 主角是否跨頁面記憶？硬做風險過高且範圍翻倍，依交辦單「做不完就擱置」原則不硬上。版本號 4 處更新；六常數依守門 md5（7c8bc3efbfc92d316b511a13b91a49bd）驗證未動；全檔 node --check 全過（15 script）、div/details/CSS 平衡。
@@ -766,7 +767,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v193</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v194</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -1491,6 +1492,18 @@ if('serviceWorker' in navigator){
 
 <!-- 影片庫 -->
 <div class="view" id="view-library">
+  <!-- v194 A1：對標助手（影片庫版）——選 1 主角＋對標（2-4 個），按鈕跳到版面對照頁並自動帶入比較。Lisa 第 5 次提出要求，本版做最小可行版（純 additive，不影響既有工具列、libSelIds 自由勾選） -->
+  <details id="vlibCompareHelper" style="margin:0 0 14px;border:1px solid var(--gold-soft);border-radius:10px;background:var(--warm)" ontoggle="if(this.open && typeof _vchPopulate==='function') _vchPopulate('vlib')">
+    <summary style="padding:11px 14px;font-weight:700;color:var(--rouge);font-size:13.5px;cursor:pointer;letter-spacing:.4px"><svg viewBox="0 0 24 24" style="width:15px;height:15px;display:inline-block;vertical-align:-3px;margin-right:5px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round"><rect x="4" y="4" width="7" height="16" rx="1.5"/><rect x="13" y="4" width="7" height="16" rx="1.5"/><path d="M11 10h2M11 14h2"/></svg>對標助手 · 主角＋對標 → 跳到版面對照（像「版面對照」頁的兩排選擇器）</summary>
+    <div style="padding:2px 14px 12px">
+      <div style="font-size:12px;color:var(--text);line-height:1.6;margin:0 0 8px">先選 1 個主角＋對標帳號 2-4 個，按下方按鈕<b>自動切到「版面對照」頁並立刻比對</b>，省去切分頁再手動選一遍。</div>
+      <div style="font-size:11px;letter-spacing:.4px;color:var(--gold-dark);font-weight:700;margin:4px 0 4px">① 主角帳號（要被分析的那一個）</div>
+      <select id="vch_vlib_hero" style="width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:8px;background:#fff;color:var(--ink);font-family:inherit;font-size:13px"><option value="">— 請選擇主角帳號 —</option></select>
+      <div style="font-size:11px;letter-spacing:.4px;color:var(--gold-dark);font-weight:700;margin:10px 0 4px">② 對標帳號（按住 Cmd／Ctrl 多選 1–3 個；連同主角共 2–4 個）</div>
+      <select id="vch_vlib_rivals" multiple size="6" style="width:100%;padding:6px 8px;border:1px solid var(--border);border-radius:8px;background:#fff;color:var(--ink);font-family:inherit;font-size:13px"></select>
+      <button class="btn btn-go" type="button" onclick="_vchGoCompare('vlib')" style="margin-top:10px;width:100%"><svg viewBox="0 0 24 24" style="width:15px;height:15px;display:inline-block;vertical-align:-3px;margin-right:5px;stroke:currentColor;fill:none;stroke-width:2"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>跳到版面對照並比較</button>
+    </div>
+  </details>
   <div class="sumrow">
     <div class="sumcard c-all on" data-tf="all"><div class="num" id="s-all">0</div><div class="lbl">全部</div></div>
     <div class="sumcard c-hot" data-tf="hot"><div class="num" id="s-hot">0</div><div class="lbl">當紅<br>2週內</div></div>
@@ -1665,6 +1678,18 @@ if('serviceWorker' in navigator){
     <button id="accsubtab-tools" onclick="showAccSub('tools')" style="background:none;border:none;border-bottom:2px solid transparent;color:#9a8e8e;font-weight:500;font-size:14px;padding:8px 18px;cursor:pointer;font-family:inherit"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#A51820" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:3px"><rect x="3" y="8" width="18" height="12" rx="2"/><path d="M8 8V6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M3 13h18"/></svg>工具箱</button>
   </div>
   <div id="accsub-list">
+  <!-- v194 A1：對標助手（帳號管理版）——同 view-library 那個，從帳號管理頁也能快速跳版面對照 -->
+  <details id="accCompareHelper" style="margin:0 0 14px;border:1px solid var(--gold-soft);border-radius:10px;background:var(--warm)" ontoggle="if(this.open && typeof _vchPopulate==='function') _vchPopulate('acc')">
+    <summary style="padding:11px 14px;font-weight:700;color:var(--rouge);font-size:13.5px;cursor:pointer;letter-spacing:.4px"><svg viewBox="0 0 24 24" style="width:15px;height:15px;display:inline-block;vertical-align:-3px;margin-right:5px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round"><rect x="4" y="4" width="7" height="16" rx="1.5"/><rect x="13" y="4" width="7" height="16" rx="1.5"/><path d="M11 10h2M11 14h2"/></svg>對標助手 · 主角＋對標 → 跳到版面對照（像「版面對照」頁的兩排選擇器）</summary>
+    <div style="padding:2px 14px 12px">
+      <div style="font-size:12px;color:var(--text);line-height:1.6;margin:0 0 8px">先選 1 個主角＋對標帳號 2-4 個，按下方按鈕<b>自動切到「版面對照」頁並立刻比對</b>，省去切分頁再手動選一遍。</div>
+      <div style="font-size:11px;letter-spacing:.4px;color:var(--gold-dark);font-weight:700;margin:4px 0 4px">① 主角帳號（要被分析的那一個）</div>
+      <select id="vch_acc_hero" style="width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:8px;background:#fff;color:var(--ink);font-family:inherit;font-size:13px"><option value="">— 請選擇主角帳號 —</option></select>
+      <div style="font-size:11px;letter-spacing:.4px;color:var(--gold-dark);font-weight:700;margin:10px 0 4px">② 對標帳號（按住 Cmd／Ctrl 多選 1–3 個；連同主角共 2–4 個）</div>
+      <select id="vch_acc_rivals" multiple size="6" style="width:100%;padding:6px 8px;border:1px solid var(--border);border-radius:8px;background:#fff;color:var(--ink);font-family:inherit;font-size:13px"></select>
+      <button class="btn btn-go" type="button" onclick="_vchGoCompare('acc')" style="margin-top:10px;width:100%"><svg viewBox="0 0 24 24" style="width:15px;height:15px;display:inline-block;vertical-align:-3px;margin-right:5px;stroke:currentColor;fill:none;stroke-width:2"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>跳到版面對照並比較</button>
+    </div>
+  </details>
   <div class="card" style="margin-bottom:14px">
     <button class="btn btn-go" id="acc-add-btn" style="width:100%"><svg viewBox="0 0 24 24" style="width:16px;height:16px;vertical-align:-3px;margin-right:6px"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg>新增帳號</button>
   </div>
@@ -2680,7 +2705,25 @@ $('parseBtn').onclick=async function(){
         }
         if($('f-account')) $('f-account').value=_acc.id; if(typeof syncAccountJobFields==='function') syncAccountJobFields(); if($('f-profBox')) $('f-profBox').open=true; var _fb=$('filingBoardBoxInput'); if(_fb) _fb.open=true; }catch(e){} }
     }
-    if(!vidM){ return; } // 只有帳號段（卡C）→ 帳號已處理、沒有影片可填
+    if(!vidM){
+      /* v194 P1：只有帳號分析卡段（沒有影片段）→ pending 帳號要直接 commit、不能繼續暫存。
+         Lisa 實測 bug：貼只有帳號的卡C→按「建立帳號」→ pending 設好但沒有影片可儲存→「儲存影片」會跳「至少填影片名稱」警示→帳號永遠卡在 pending 無法入庫。
+         修法：使用者明確選了「建立帳號」(_mode!=='skip')，這時就是「只想建帳號」的場景，當下直接 unshift+saveAccounts；既然沒影片要建，最後確認彈窗也不會跑到。 */
+      if(_mode!=='skip' && window._pendingAcc && window._pendingAccId){
+        try{
+          accounts.unshift(window._pendingAcc);
+          var _po2=document.getElementById('_pendingOpt'); if(_po2) _po2.remove();
+          await saveAccounts();
+          populateAccountSelect();
+          if($('f-account')) $('f-account').value=window._pendingAccId;
+          var _newHandle=window._pendingAcc.handle||'@?';
+          window._pendingAcc=null; window._pendingAccId=null;
+          if(typeof syncAccountJobFields==='function') syncAccountJobFields();
+          toast('✓ 已建立新帳號 '+_newHandle+'（帳號管理 +1）', null, 2800);
+        }catch(e){ console.error('v194 P1 commit pending account (account-only card) failed:', e); }
+      }
+      return; // 只有帳號段（卡C）→ 帳號已處理／commit，沒有影片可填
+    }
   }
   const raw = vidM ? vidM[0] : rawAll; // 有影片段就只解析影片段，避免帳號欄位污染
   // 逐行抓「欄位：值」
@@ -3240,11 +3283,25 @@ $('clearBtn').onclick=()=>{
   $('contentHook').value=''; $('contentCover').value=''; $('f-headline').value='';
   $('contentCaption').value=''; $('contentHashtag').value=''; $('contentWhy').value=''; $('contentApply').value=''; $('contentTranscript').value=''; if($('contentLang'))$('contentLang').value=''; updateHashtagCount(); if($('f-cta-type'))$('f-cta-type').selectedIndex=0; if($('f-cta-auto'))$('f-cta-auto').checked=false; if($('f-cta-text'))$('f-cta-text').value=''; if($('f-jobTitle'))$('f-jobTitle').value=''; if($('f-industry'))$('f-industry').value='';
   ['specDur','specHookType','specPace','specSub','specEmotion','specHookSec'].forEach(i=>$(i).value='');
-  $('contentPlatform').selectedIndex=0; $('productionStatus').selectedIndex=0;
+  $('contentPlatform').selectedIndex=0; $('productionStatus').selectedIndex=0; if(typeof syncProdStatus==='function'){ try{ syncProdStatus(); }catch(e){} }
   ['f-stage','f-theme','f-mat','f-sub','f-trig','f-form','f-goal'].forEach(i=>$(i).selectedIndex=0);
   $('f-stage').onchange(); $('f-gap').checked=false;
   ['f-views','f-likes','f-comments','f-reposts','f-shares','f-saves','f-reach','f-engrate','f-complete'].forEach(i=>$(i).value='');
-  renderInsight(); syncProdStatus(); renderGoalKit();
+  /* v194 P2：補齊清空項目（對齊 saveBtn 成功儲存後的清空邏輯）*/
+  if($('f-account-quick'))$('f-account-quick').value='';
+  if($('f-srctype'))$('f-srctype').selectedIndex=0;
+  if($('f-account')){ $('f-account').selectedIndex=0; }
+  /* v194 P2：清掉 pending 帳號暫存（_pendingAcc/_pendingAccId/_pendingOpt option）——避免上一輪「建立帳號」沒走完 commit 殘留到下一輪誤觸發 */
+  if(window._pendingAcc){
+    var _po=document.getElementById('_pendingOpt'); if(_po) _po.remove();
+    window._pendingAcc=null; window._pendingAccId=null;
+  }
+  if(typeof syncAccountJobFields==='function'){ try{ syncAccountJobFields(); }catch(e){} }
+  /* v194 P2：收合並清空「帳號建檔收集盤」九宮格 */
+  try{ var _fb=$('filingBoardBoxInput'); if(_fb){ _fb.removeAttribute('open'); var _fbc=_fb.querySelector('.fb-body'); if(_fbc) _fbc.innerHTML=''; var _fba=_fb.querySelector('.fb-acct'); if(_fba) _fba.selectedIndex=0; } }catch(e){}
+  /* v194 P2：清空智慧貼上的 textarea＋訊息（避免上次貼的卡A 殘留）*/
+  try{ if($('pasteBox')) $('pasteBox').value=''; if($('parseMsg')) $('parseMsg').innerHTML=''; }catch(e){}
+  renderInsight(); if(typeof renderGoalKit==='function') renderGoalKit();
   toast('已清空');
 };
 
@@ -3835,7 +3892,8 @@ function renderManual(){
   <div class="form-card" style="border-left:3px solid var(--gold)">
     <div class="stitle" style="font-size:15px;color:var(--rouge)">更新紀錄 · 還沒做的</div>
     <p style="font-size:13px;color:var(--text);line-height:1.85;margin-top:8px">
-    <b>v193（這版 · 修「② 操作流程看不到流程② / ③」＋加客戶服務台導覽連結）：</b>①<b>你回報「現在展示出來的是 8 步驟，這個是流程①，那 ②／③ 在哪？」</b>——v192 我把流程鳥瞰圖+三流程詳細**塞在另一個預設收起的折疊區**「+ 操作流程 · 開始前要準備什麼」裡，你切到「② 操作流程」分頁看到的是預設展開的「8 步驟」（這的確是流程①），就以為「只有流程①、沒有 ②／③」。本版修法：<b>在 8 步驟上方加 3 顆切換鈕</b>「流程① 從沒建過 · 完整建檔（8 步驟）」、「流程② 帳號已建過 · 只加新影片（5 步驟）」、「流程③ 只重新分析帳號（4 步驟）」——點哪顆就顯示對應的詳細 SOP，三選一切換。**流程② / ③ 的詳細內容**用 v192 已經做好的 opGuideHTML_v2 / _v3（含鳥瞰圖 + 詳細步驟）自動注入到新增的 #sopBlock_v2 / #sopBlock_v3，跟流程① 的 8 步驟同樣以 gem-box 大張詳細卡呈現。預設停在流程①（保持你既有習慣不被嚇到）。②<b>導覽列加「客戶服務台」按鈕</b>連到 client.html，放在「客戶交付」右邊，icon 用「圓圈內箭頭右指」暗示外連跳轉。<br>
+    <b>v194（這版 · 你實測抓的 3 個 bug 一次修：①卡C only 走不下去 ②清空沒清乾淨 ③雙選擇器第 5 次必須做了）：</b>①<b>P1 「只貼帳號分析卡」流程死路修好</b>：你場景——在「③ 歸類卡」只貼了帳號分析卡（沒影片段）→ atelierChoose 跳「第一次偵測到新帳號 @qbeetw」→ 你選「建立帳號」→ 表單填好→<b>但整頁只有「儲存這支影片」按鈕</b>→ 你按下去跳「至少要填影片名稱」警示，帳號永遠存不進去。修法：parseBtn 偵測到「只有帳號段、沒有影片段」時，**只要你按了「建立帳號」（不是「只建影片」/「skip」），立刻把帳號 commit 到帳號管理**（accounts.unshift + saveAccounts），不再卡 pending；toast 會顯示「✓ 已建立新帳號 @xxx（帳號管理 +1）」。②<b>P2 「清空表單」鈕沒清乾淨</b>修好：你按清空後職稱/產業/⑥下拉/九宮格收集盤都沒清掉。對齊「儲存影片成功後」的完整清空邏輯，補了 8 個項目——f-account、pending 帳號暫存（_pendingAcc / 待確認 option）、九宮格收集盤（收合 + 內容清空 + 帳號下拉歸零）、f-srctype、f-account-quick、智慧貼上 textarea + 訊息、syncProdStatus、renderGoalKit。③<b>A1 影片庫＋帳號管理 雙選擇器來了</b>：你第 5 次提的「像版面對照一樣有兩個可以選擇」。本版做最小可行版——**影片庫頂部、帳號管理頂部各加一個「對標助手」折疊區**（預設收起，點 summary 展開），裡面結構跟版面對照頁一樣：① 主角帳號單選 ② 對標帳號多選（按住 Cmd/Ctrl 選 1-3 個）→ 按「跳到版面對照並比較」按鈕 → **自動切到版面對照分頁、自動帶入你的選擇、自動跑並排比較**，省去切分頁手動選兩遍。不影響既有的「全選 / 並排對比 / 匯出選取」工具列（兩條路徑並存）。<br>
+    <b>v193（修「② 操作流程看不到流程② / ③」＋加客戶服務台導覽連結）：</b>①<b>你回報「現在展示出來的是 8 步驟，這個是流程①，那 ②／③ 在哪？」</b>——v192 我把流程鳥瞰圖+三流程詳細**塞在另一個預設收起的折疊區**「+ 操作流程 · 開始前要準備什麼」裡，你切到「② 操作流程」分頁看到的是預設展開的「8 步驟」（這的確是流程①），就以為「只有流程①、沒有 ②／③」。本版修法：<b>在 8 步驟上方加 3 顆切換鈕</b>「流程① 從沒建過 · 完整建檔（8 步驟）」、「流程② 帳號已建過 · 只加新影片（5 步驟）」、「流程③ 只重新分析帳號（4 步驟）」——點哪顆就顯示對應的詳細 SOP，三選一切換。**流程② / ③ 的詳細內容**用 v192 已經做好的 opGuideHTML_v2 / _v3（含鳥瞰圖 + 詳細步驟）自動注入到新增的 #sopBlock_v2 / #sopBlock_v3，跟流程① 的 8 步驟同樣以 gem-box 大張詳細卡呈現。預設停在流程①（保持你既有習慣不被嚇到）。②<b>導覽列加「客戶服務台」按鈕</b>連到 client.html，放在「客戶交付」右邊，icon 用「圓圈內箭頭右指」暗示外連跳轉。<br>
     <b>v192（把 v191 的「立刻 commit」改回「最後確認才建檔」UX＋徹底修 v188 真正的 bug＋三條流程都加鳥瞰圖）：</b>①<b>P1 把 UX 改回對的</b>：v191 為了修「帳號建檔丟失」改成「按建立帳號就立刻 +1 帳號數」——你回饋這太搶跑、應該是「按建立帳號只是先記下、滑下去檢查內容、最後按確定建檔才真的存」。本版回到 v188/v190 的設計，但<b>徹底修掉 v188 留下的真正 bug</b>——之前影片連結重複選了「覆蓋舊的」，整段確認彈窗 + pending commit 區塊會被跳過，帳號就默默丟失。修法：①URL 重複「略過」/ 標題相似「取消」/ 確認「再改一下」三條 return 路徑都會清掉 pending（不會殘留）；②URL 重複「覆蓋舊的」改成<b>先記下、延後寫入</b>——只有按了最後的「確定建檔」才會真的覆蓋（之前是按下覆蓋當下就寫了、取消後也救不回來）；③<b>拿掉 if(!_did) 守衛</b>——確認彈窗 + pending commit 必須在所有路徑（含覆蓋）下都跑到，這是修 v188 那個 bug 的關鍵。確認彈窗會根據情境顯示「覆蓋既有影片『xxx』」或「新增 1 支影片『xxx』」，不會搞混。<b>影響</b>：以後不管影片是新的還是覆蓋，按了確定建檔之前都會看到完整的確認摘要；任何取消或略過的路徑帳號都不會默默被建出來。②<b>B2 三條流程都加上鳥瞰圖</b>：點開「② 操作流程」，每個流程上方多了一條「<b>流程鳥瞰圖 · OVERVIEW</b>」——一行 5 個方塊（或 4 個），每個方塊顯示「STEP N／步驟名／<span style='color:var(--rouge);font-weight:700'>用什麼 AI</span>／<span style='color:var(--gold-dark)'>用哪段提示詞</span>／<span style='color:#0F6E56'>輸出什麼</span>」，看一眼就知道整條流程的走法、不用滑下去看詳細步驟。詳細步驟原樣保留沒大改。流程① 5 步：建檔/Claude/第一次建檔提示詞→帳號分析/Claude/帳號分析提示詞→深挖影片/Gemini/Gemini 歸類→整合三份卡/Claude/最後整合審查→客戶交付/工作台內建/三關產生。流程② 5 步：截圖+連結/無AI→封存選配/Claude→Gemini 影片分析→子題型工具/工具網頁→最後整合只要卡B/Claude。流程③ 4 步：截四張帳號素材/無AI→帳號分析/Claude→拿到帳號分析卡含 Top9→貼回工作台/工作台內建。＊<b>A1 雙選擇器（影片庫＋帳號管理像版面對照那樣的主角+對標）老實擱置·第四次</b>：你本輪再次提出，但本版 P1 整段重構 + B2 三流程鳥瞰圖工程量已經滿了；A1 還卡上版三個 UX 決策（libSelIds 怎麼共存／帳號管理入口做什麼／主角是否跨頁記憶）你本輪仍沒明確回答。我寧可下版專心做一次到位，不要這版硬上半成品（之前 v186/v187 兩次寫了沒做你抓得很準，這版繼續守規矩）。下面我會把 3 個 UX 問題整理成具體選項，下版你回答了就做。<br>
     <b>v190（修建檔卡A 表單空白 bug＋影片層分析工具＋icon 統一＋對帳總表）：</b>①<b>P1 貼卡A 建新帳號後表單空白 bug 修好</b>：之前貼卡A → 按建立帳號 → 滑到表單中間發現職稱/產業/版面解析全空、⑥顯示「不指定」（明明資料都有解析到），現在會立刻填出來。根因是 pending 機制沒打通到表單欄位 sync，補了 5 個地方（syncAccountJobFields / renderProfFields / writeProfFields / ingestAccountCard / saveBtn commit）。pending 期間改 profile 也存得進去（暫存在 _pendingAcc，按確定建檔才正式入庫；toast 會標「待確認」）。②<b>A1 影片層的分析工具來了</b>：影片卡底部現有「@xxx 的分析工具」（金線、帳號層級）下方新增「這支影片的分析工具」（酒紅線、影片層級、視覺區隔），含「影片特點→賣點」按鈕；分析的是「這支影片本身的招式」——拍攝素材、主題、逐字稿、爆紅歸因、Hook 規格、換鏡節奏、CTA、表現都餵進去，不依賴帳號 profile。帳號是帳號、影片是影片，現在分得開。若該影片還缺逐字稿/爆紅歸因，按鈕旁會提示「⚠ 需逐字稿/爆紅歸因資料」。③<b>A2 icon 統一</b>：把 3 處真正當 icon 用的 emoji 換成品牌 SVG——待核對清單帳號列首的紅點、圖例的紅黃圓、交付樣張關閉鈕的 ✕。不改的：toast/狀態文字（那是有色文字標籤）、option 下拉內的 emoji（HTML 不允許 SVG 在 option 內）、placeholder 範例字、SVG 內的 text、changelog 文字；copyPrompt 內部 icon 依交辦單暫不動（之後你會指定）。④<b>B2 對帳總表來了</b>：帳號管理 → 工具箱底部新增「對帳總表」折疊，點開自動載入：每帳號掛了幾支、有 Hook 比例（綠/金/紅依比例上色）、G1–G5 各階段分布、最近發布日，按影片數降冪；下方另列「沒掛影片的帳號」與「孤兒影片」（accountId 為空或指向不存在帳號），孤兒可點「編輯補上」一鍵跳影片編輯框補連結。純讀盤點，不改任何資料結構。＊B1（雙選擇器重構）第三次擱置——仍卡 3 個 UX 決策（libSelIds 怎麼共存／帳號管理入口做什麼／主角是否跨頁記憶），這次交辦單沒回答，硬做風險過高。先回答這 3 個再做才安全。<br>
     <b>v189（提示詞兩常數更新＋實測 bug＋影片庫流程加變體＋全站彈窗中央化）：</b>①<b>P 區（特別授權）</b>：依交辦單把工具裡 ChatGPT/Claude 用的兩段提示詞——「最後整合審查」「第一次建檔」——換成你提供的更新版（5425＋1679 字逐字相同，反跳脫驗證 byte-identical）；另外四個常數＋口吻鐵律經守門 md5 驗證一字未動。②<b>A1 影片庫客戶下拉「尚無帳號」bug 修</b>：根因找到了——雲端帳號到齊後，主角下拉有刷、產生腳本範本旁的下拉沒刷。已補上，冷啟動進影片庫兩個下拉都有帳號、不必離開再進來。③<b>A2 影片庫使用說明改可收合</b>：那段長長的「工具目的＋使用邏輯」包進「ℹ️ 使用說明（點開看）」、預設收起，影片庫一進來乾淨多了；文字一字沒改。④<b>A3 全站彈窗統一螢幕中央</b>：根改 .modal 從底部彈出改置中（接 v188 A4 沒做完），所有點開後跳出來的彈窗（智慧貼上確認、新增帳號、客戶診斷、成功庫對標、避坑對標、借技法、編輯影片、市場熱度、交付樣張、提示詞預覽等）全部在畫面中央、不卡底部。⑤<b>A4 客戶版 PDF 06-10 空白不印</b>（接 v188 A5 沒做完）：列印客戶版時，標題還是預設「主題（點這裡打字或貼上）」或為空的建議方向會自動跳過；首選＋有填內容照印；顧問版照舊全印。⑥<b>A5 「② 操作流程」加兩種變體</b>：頁面最上方多了三顆 tab——<b>流程① 新帳號＋新影片</b>（原本那條，照舊）／<b>流程② 同帳號＋多影片</b>（帳號已建過、只加新影片，5 步：截 3 張→選配存檔→Gemini→子題型→只請卡B；強調 @handle 一定要純）／<b>流程③ 只分析帳號</b>（不分析影片，每週／兩週回測，4 步：四張帳號素材→帳號分析提示詞→拿到含 Top9 的分析卡→貼回「累積」或「覆蓋」；不用 Gemini、不用最後整合）。＊B1（影片庫＋帳號管理雙選擇器重構）擱置——範圍擴大且需先對齊 UX 決策，本版老實留下，下個版本獨立做。<br>
@@ -5745,6 +5803,56 @@ function renderAccountMultiPicker(cfg){
   if(st.open){ if(!st._off){ st._off=function(e){ if(!box.contains(e.target)){ closeMenu(); } }; document.addEventListener('mousedown',st._off,true); } if(si) setTimeout(function(){ try{ if(document.activeElement!==si && (st.q||'')==='') si.focus(); }catch(e){} },0); }
 }
 let cmpSelected=new Set();
+/* v194 A1：對標助手（影片庫＋帳號管理頂部都用）——選 1 主角+對標 2-4，按鈕跳「版面對照」自動帶入並執行 runCompare */
+window._vchPopulate=function(prefix){
+  var heroSel=document.getElementById('vch_'+prefix+'_hero');
+  var rivalsSel=document.getElementById('vch_'+prefix+'_rivals');
+  if(!heroSel || !rivalsSel) return;
+  if(typeof accounts==='undefined' || !accounts) return;
+  var prevHero=heroSel.value;
+  var prevRivals=Array.prototype.slice.call(rivalsSel.selectedOptions||[]).map(function(o){return o.value;});
+  if(!accounts.length){
+    heroSel.innerHTML='<option value="">（尚無帳號，請先建檔）</option>';
+    rivalsSel.innerHTML='';
+    return;
+  }
+  var opts='<option value="">— 請選擇主角帳號 —</option>';
+  var ropts='';
+  accounts.forEach(function(a){
+    var name=(a.handle||'@?')+(a.displayName?(' · '+a.displayName):(a.jobTitle?(' · '+a.jobTitle):''));
+    name=name.replace(/</g,'&lt;');
+    opts+='<option value="'+a.id+'">'+name+'</option>';
+    ropts+='<option value="'+a.id+'">'+name+'</option>';
+  });
+  heroSel.innerHTML=opts; if(prevHero) heroSel.value=prevHero;
+  rivalsSel.innerHTML=ropts;
+  prevRivals.forEach(function(id){ var o=rivalsSel.querySelector('option[value="'+id+'"]'); if(o) o.selected=true; });
+};
+window._vchGoCompare=function(prefix){
+  var heroSel=document.getElementById('vch_'+prefix+'_hero');
+  var rivalsSel=document.getElementById('vch_'+prefix+'_rivals');
+  if(!heroSel || !rivalsSel) return;
+  var heroId=heroSel.value;
+  if(!heroId){ if(typeof toast==='function') toast('請先選主角帳號'); return; }
+  var rivalIds=Array.prototype.slice.call(rivalsSel.selectedOptions).map(function(o){return o.value;}).filter(function(id){return id && id!==heroId;});
+  if(rivalIds.length<1){ if(typeof toast==='function') toast('請選至少 1 個對標帳號（按住 Cmd／Ctrl 多選）'); return; }
+  if(rivalIds.length>3){ if(typeof toast==='function') toast('最多 3 個對標（連同主角共 4 個），自動取前 3 個'); rivalIds=rivalIds.slice(0,3); }
+  var tab=document.querySelector('.tab[data-view="compare"]');
+  if(tab) tab.click();
+  setTimeout(function(){
+    try{
+      var hero=document.getElementById('cmpHero');
+      if(hero){
+        hero.value=heroId;
+        try{ var ev=new Event('change',{bubbles:true}); hero.dispatchEvent(ev); }catch(e){}
+        try{ var _wrap=hero.closest('.csel'); if(_wrap){ var _lb=_wrap.querySelector('.csel-label'); if(_lb){ var _t=hero.options[hero.selectedIndex]?hero.options[hero.selectedIndex].textContent:''; _lb.textContent=_t; } } }catch(e){}
+      }
+      if(typeof cmpSelected!=='undefined' && cmpSelected.clear){ cmpSelected.clear(); rivalIds.forEach(function(id){ cmpSelected.add(id); }); }
+      if(typeof renderComparePicker==='function') renderComparePicker();
+      if(typeof runCompare==='function') runCompare();
+    }catch(e){ console.error('_vchGoCompare failed:', e); }
+  },350);
+};
 var cmpExpanded=false,_cmpLastQ=null;
 function populateCmpHero(){
   var sel=document.getElementById('cmpHero'); if(!sel) return;
