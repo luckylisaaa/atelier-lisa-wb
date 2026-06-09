@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ATELIER 客戶服務台</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="ATELIER 客戶服務台">
+<meta name="theme-color" content="#A51820">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700;900&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet">
+<style>
+/* ═══ 品牌底層（與 index.html 影片診斷工作台一致）═══ */
+:root{
+  --primary:#A51820; --rouge:#A51820;
+  --gold:#D4A574; --gold-soft:#EDE3D4; --gold-dark:#9C7D4A;
+  --ink:#2A1A1C; --text:#5C4248; --sub:#8A7274;
+  --bg:#FCFAF8; --warm:#FDF6F5; --card:#FFFFFF; --warm-white:#FDFBF8;
+  --border:#E8E3DA; --line:#F2EDE5;
+  --hot:#A51820; --watch:#9C7D4A; --green:#6E8678;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{color-scheme:light only}
+html,body{background:var(--bg);color:var(--ink);
+  font-family:'Noto Sans TC','PingFang TC','Helvetica Neue',sans-serif;
+  font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased}
+input,select,textarea{color-scheme:light}
+a{color:var(--rouge)}
+
+/* 頂部標題 */
+.topbar{position:sticky;top:0;z-index:50;background:linear-gradient(135deg,#A51820 0%,#7A1018 100%);border-bottom:3px solid var(--gold);
+  padding:12px 18px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.topbar .brand{display:flex;align-items:center;gap:10px}
+.topbar .brand-icon svg{width:30px;height:30px;display:block;animation:breathe 4s ease-in-out infinite}
+@keyframes breathe{0%,100%{opacity:.78}50%{opacity:1}}
+.topbar .brand-txt{font-family:'Cormorant Garamond','Noto Serif TC',serif;font-size:21px;font-weight:600;letter-spacing:5px;color:#FDFBF8;-webkit-text-fill-color:#FDFBF8;display:flex;flex-direction:column;line-height:1.05}
+.topbar .brand-sub{font-family:'Noto Sans TC',sans-serif;font-size:9.5px;font-weight:400;letter-spacing:3px;color:#E8C5C2;-webkit-text-fill-color:#E8C5C2;margin-top:3px}
+.topbar .stat{font-size:11px;color:#F0D8D5;-webkit-text-fill-color:#F0D8D5;text-align:right;line-height:1.4}
+.topbar .stat b{color:#FDFBF8;-webkit-text-fill-color:#FDFBF8;font-size:14px}
+#verBadge{margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap}
+
+/* 分頁列 */
+.tabs{position:sticky;top:60px;z-index:49;display:flex;background:rgba(255,255,255,.96);
+  backdrop-filter:blur(8px);border-bottom:1px solid var(--border);overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tab{flex:0 0 auto;padding:11px 14px;font-size:13px;font-weight:700;color:var(--sub);
+  border-bottom:2.5px solid transparent;cursor:pointer;white-space:nowrap;letter-spacing:.5px;display:inline-flex;align-items:center;gap:6px;text-decoration:none}
+.tab .tic{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.6;flex:0 0 auto;opacity:.75}
+.tab.on .tic{opacity:1}
+.tab.on{color:var(--rouge);border-bottom-color:var(--rouge)}
+.tab.disabled{color:#C9BEB8;cursor:default}
+.tab.disabled .soon{font-size:9px;font-weight:700;color:#C9BEB8;border:1px solid #E6DDD5;border-radius:6px;padding:0 5px;margin-left:3px}
+.tab.back{color:var(--gold-dark);margin-left:auto;border-left:1px solid var(--border)}
+
+.view{display:none;padding:16px 14px 90px;max-width:780px;margin:0 auto}
+.view.on{display:block;animation:fade .2s}
+@keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+
+.page-head{text-align:center;padding:12px 0 18px}
+.page-head .ph-en{font-family:'Cormorant Garamond',serif;font-size:11px;letter-spacing:4px;color:var(--gold-dark);margin-bottom:7px}
+.page-head .ph-title{font-family:'Noto Serif TC',serif;font-size:25px;font-weight:500;letter-spacing:3px;color:var(--primary);margin:0}
+.page-head .ph-sub{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:13px;letter-spacing:1px;color:var(--sub);margin-top:7px}
+
+.hint{background:var(--warm);border:1px solid var(--border);border-radius:12px;
+  padding:12px 14px;font-size:12.5px;color:var(--text);line-height:1.75;margin-bottom:16px}
+.hint b{color:var(--rouge)}
+
+/* 目前服務對象提示條 */
+.cs-banner{position:sticky;top:103px;z-index:40;background:linear-gradient(135deg,#FBF0EF,#FDF6F5);border:1px solid #EAD9D6;border-radius:0;
+  padding:9px 14px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:12.5px;color:var(--text);border-left:0;border-right:0}
+.cs-banner .who{font-weight:800;color:var(--rouge)}
+.cs-banner .hs{font-size:11.5px;color:var(--gold-dark);font-weight:700}
+.cs-banner .hs b{color:var(--rouge)}
+.cs-banner .mini-btn{font-size:11px;font-weight:700;color:#fff;background:var(--gold-dark);border:none;border-radius:8px;padding:4px 11px;cursor:pointer;font-family:inherit}
+.cs-banner.empty{background:var(--warm);color:var(--sub)}
+
+/* 搜尋框 */
+.searchbar{position:relative;margin-bottom:14px}
+.searchbar input{width:100%;font-size:16px;padding:13px 16px;border:1px solid #EDE3D4;border-radius:10px;background:var(--card);color:var(--ink);outline:none}
+.searchbar input:focus{border-color:var(--gold)}
+
+/* 客戶卡 */
+.cli-card{background:var(--card);border:1px solid #F0E9E4;border-radius:11px;box-shadow:0 1px 3px rgba(90,40,45,.04),0 4px 14px rgba(90,40,45,.025);
+  padding:14px 15px;margin-bottom:10px;cursor:pointer;transition:.15s;position:relative;overflow:hidden}
+.cli-card:hover{border-color:var(--gold);box-shadow:0 2px 10px rgba(90,40,45,.07)}
+.cli-card.cur{border-color:var(--rouge);border-width:1.5px;background:#FFFDFC}
+.cli-card .cc-top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+.cli-card .cc-handle{font-size:15px;font-weight:800;color:var(--ink)}
+.cli-card .cc-name{font-weight:400;color:var(--text)}
+.cli-card .cc-plat{font-size:10px;font-weight:700;padding:3px 8px;border-radius:9px;background:#E5EDE9;color:var(--green);white-space:nowrap;flex:0 0 auto}
+.cli-card .cc-meta{font-size:11.5px;color:var(--text);margin-top:7px;line-height:1.7}
+.cli-card .cc-meta .lab{color:var(--gold-dark);font-weight:700}
+.cli-card .cc-flow{display:flex;gap:5px;margin-top:9px;flex-wrap:wrap}
+.flow-dot{font-size:10px;font-weight:700;padding:2px 8px;border-radius:8px;border:1px solid var(--border);color:var(--sub);background:var(--warm)}
+.flow-dot.done{background:#E5EDE9;color:var(--green);border-color:#CFE0D7}
+.flow-dot.prog{background:#F3EAD8;color:var(--watch);border-color:#E7D7B6}
+.cli-card .cc-health{margin-top:9px;display:flex;align-items:center;gap:8px}
+.cli-card .cc-health .hbar{flex:1;height:7px;border-radius:4px;background:var(--line);overflow:hidden}
+.cli-card .cc-health .hbar i{display:block;height:100%;background:linear-gradient(90deg,var(--gold),var(--rouge))}
+.cli-card .cc-health .hnum{font-size:11px;font-weight:800;color:var(--gold-dark);white-space:nowrap}
+.empty-res{text-align:center;color:var(--sub);font-size:13px;padding:30px 12px;line-height:1.9}
+
+/* 階段頁通用 */
+.stage-head{margin-bottom:14px}
+.stage-head .sh-purpose{font-size:13px;color:var(--text);line-height:1.7;background:var(--warm);border:1px solid var(--border);border-left:4px solid var(--gold);border-radius:10px;padding:11px 14px;margin-top:6px}
+.status-pill{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;padding:5px 13px;border-radius:20px;border:1px solid var(--border);background:var(--warm);color:var(--sub)}
+.status-pill.done{background:#E5EDE9;color:var(--green);border-color:#CFE0D7}
+.status-pill.prog{background:#F3EAD8;color:var(--watch);border-color:#E7D7B6}
+.status-pill .pdot{width:8px;height:8px;border-radius:50%;background:currentColor}
+
+.section-card{background:var(--card);border:1px solid #F0E9E4;border-radius:11px;box-shadow:0 1px 3px rgba(90,40,45,.04);padding:16px 16px;margin-bottom:14px}
+.section-card>h3{font-family:'Noto Serif TC',serif;font-size:15px;font-weight:700;color:var(--ink);letter-spacing:.5px;margin-bottom:4px;display:flex;align-items:center;gap:8px}
+.section-card .sc-note{font-size:12px;color:var(--sub);line-height:1.7;margin-bottom:12px}
+
+.fld{margin-bottom:12px}
+.fld label{display:block;font-size:12px;font-weight:700;color:var(--ink);letter-spacing:.5px;margin-bottom:5px}
+.fld input,.fld select,.fld textarea{width:100%;min-width:0;max-width:100%;font-size:15px;padding:10px 12px;border:1px solid var(--border);border-radius:9px;background:#fff;color:var(--ink);outline:none;font-family:inherit;-webkit-appearance:none;appearance:none}
+.fld input:focus,.fld select:focus,.fld textarea:focus{border-color:var(--gold)}
+.fld textarea{resize:vertical;min-height:54px;line-height:1.6}
+.fld .pre{font-size:10px;font-weight:700;color:var(--gold-dark);background:var(--gold-soft);border-radius:6px;padding:1px 6px;margin-left:6px}
+
+/* 初診核對清單 */
+.chk-row{display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-bottom:1px solid var(--line)}
+.chk-row:last-child{border-bottom:none}
+.chk-row .cb{flex:0 0 auto;margin-top:9px}
+.chk-row input[type=checkbox]{width:18px;height:18px;accent-color:var(--rouge)}
+.chk-row .cbody{flex:1;min-width:0}
+.chk-row .cbody .clab{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:4px}
+.chk-row .cbody input[type=text]{width:100%;font-size:13px;padding:7px 10px;border:1px solid var(--border);border-radius:7px;background:#fff;color:var(--ink);outline:none;font-family:inherit}
+.chk-row .cbody input[type=text]:focus{border-color:var(--gold)}
+
+/* 8 大類完整度方塊 */
+.comp-squares{display:grid;grid-template-columns:repeat(8,1fr);gap:6px;margin:4px 0 6px}
+@media(max-width:520px){.comp-squares{grid-template-columns:repeat(4,1fr)}}
+.comp-sq{border-radius:8px;padding:8px 4px;text-align:center;border:1px solid var(--border)}
+.comp-sq .cs-i{font-size:13px;font-weight:900}
+.comp-sq .cs-p{font-size:10px;margin-top:2px}
+.comp-sq.hi{background:#E5EDE9;border-color:#CFE0D7;color:var(--green)}
+.comp-sq.mid{background:#F3EAD8;border-color:#E7D7B6;color:var(--watch)}
+.comp-sq.lo{background:#FBF0EF;border-color:#EAD9D6;color:var(--rouge)}
+.cat-summary{font-size:11px;color:var(--gold-dark);font-weight:700;float:right}
+
+details.cat{background:var(--card);border:1px solid var(--gold-soft);border-radius:10px;margin-bottom:9px;overflow:hidden}
+details.cat>summary{cursor:pointer;padding:12px 15px;font-size:14px;font-weight:700;color:var(--ink);list-style:none;display:flex;justify-content:space-between;align-items:center;gap:8px}
+details.cat>summary::-webkit-details-marker{display:none}
+details.cat[open]>summary{border-bottom:1px solid var(--line)}
+details.cat .cat-body{padding:14px 15px}
+
+/* 客戶版／顧問版分頁 */
+.ver-switch{display:flex;gap:8px;margin-bottom:12px}
+.ver-btn{flex:1;text-align:center;background:#fff;border:1px solid var(--border);border-radius:9px;padding:9px 6px;font-size:13px;font-weight:700;color:var(--sub);cursor:pointer;transition:.15s}
+.ver-btn.on{background:var(--primary);color:#fff;-webkit-text-fill-color:#fff;border-color:var(--primary)}
+.ver-body{background:var(--warm);border:1px solid var(--border);border-radius:10px;padding:14px;font-size:13px;line-height:1.85;color:var(--ink);white-space:pre-wrap;max-height:440px;overflow-y:auto}
+.ver-body.empty{color:var(--sub);font-style:italic;text-align:center;padding:24px 12px}
+
+/* 健康分數編輯 */
+.health-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}
+.health-row:last-child{border-bottom:none}
+.health-row .hr-lab{flex:1;min-width:0;font-size:13px;font-weight:700;color:var(--ink)}
+.health-row .hr-scores{display:flex;gap:4px;flex:0 0 auto}
+.hr-scores .sc{width:30px;height:30px;border-radius:7px;border:1px solid var(--border);background:#fff;font-size:13px;font-weight:800;color:var(--sub);cursor:pointer;font-family:inherit}
+.hr-scores .sc.on{background:var(--rouge);color:#fff;border-color:var(--rouge)}
+.hr-scores .sc.z{font-size:11px}
+.health-note{width:100%;font-size:12px;padding:7px 10px;border:1px solid var(--border);border-radius:7px;margin-top:6px;font-family:inherit;color:var(--ink);outline:none}
+.health-note:focus{border-color:var(--gold)}
+
+.btn{display:block;width:100%;font-size:15px;font-weight:800;letter-spacing:1px;padding:13px;border:none;border-radius:12px;cursor:pointer;text-align:center;font-family:inherit}
+.btn-go{background:var(--rouge);color:#fff;-webkit-text-fill-color:#fff}
+.btn-go:active{background:var(--primary)}
+.btn-ghost{background:var(--warm);color:var(--text);border:1px solid var(--border);font-size:13px;padding:11px;font-weight:600}
+.btn-gold{background:var(--gold-dark);color:#fff;-webkit-text-fill-color:#fff}
+.btn-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.btn-row .btn{flex:1;min-width:140px}
+
+.paste-box{width:100%;min-height:130px;font-size:14px;padding:13px;border:1px solid #EDE3D4;border-radius:9px;background:#fff;color:var(--ink);outline:none;font-family:inherit;line-height:1.7;resize:vertical}
+.paste-box:focus{border-color:var(--gold)}
+
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(80px);
+  background:var(--ink);color:#fff;font-size:13px;padding:11px 22px;border-radius:24px;
+  z-index:300;opacity:0;transition:.3s;box-shadow:0 6px 20px rgba(0,0,0,.25);white-space:nowrap}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+
+/* 彈窗（與 index.html 一致 · 中央） */
+.modal{display:none;position:fixed;inset:0;z-index:200;background:rgba(42,32,36,.5);align-items:center;justify-content:center;padding:16px;box-sizing:border-box}
+.modal.show{display:flex}
+.sheet{background:var(--bg);width:100%;max-width:640px;max-height:90vh;overflow-y:auto;border-radius:18px;padding:20px 16px 24px;box-sizing:border-box}
+
+.locked-wrap{text-align:center;padding:50px 20px;color:var(--sub)}
+.locked-wrap .lk-ic{font-size:40px;margin-bottom:14px;opacity:.5}
+.locked-wrap h2{font-family:'Noto Serif TC',serif;font-size:20px;color:var(--gold-dark);margin-bottom:8px}
+.locked-wrap p{font-size:13px;line-height:1.9;max-width:440px;margin:0 auto}
+</style>
+</head>
+<body>
+
+<!-- ═══ 登入鎖（與 index.html 同一組帳號）═══ -->
+<div id="auth-overlay" style="display:none;position:fixed;inset:0;z-index:99999;background:linear-gradient(135deg,#FDFBF8 0%,#FDF3F4 100%);overflow-y:auto">
+  <div style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:40px 20px">
+    <div style="max-width:420px;width:100%;background:#fff;border:1px solid #E8E3DA;border-radius:12px;padding:32px 24px;box-shadow:0 16px 48px rgba(42,26,28,.08)">
+      <div style="text-align:center;margin-bottom:28px">
+        <div style="width:72px;height:72px;margin:0 auto 16px;border-radius:16px;background:radial-gradient(circle at 50% 30%,#AE2F36,#94151C);color:#FDFBF8;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond','Noto Serif TC',serif;font-size:34px;font-weight:600;box-shadow:0 12px 32px rgba(165,24,32,.25)">A</div>
+        <div style="font-family:'Noto Serif TC',serif;font-size:22px;font-weight:900;color:#2A1A1C;margin-bottom:4px">ATELIER 客戶服務台</div>
+        <div style="font-size:11px;color:#A51820;letter-spacing:.25em;font-weight:700;margin-bottom:8px">PRIVATE · FOUNDERS ONLY</div>
+        <div style="font-size:12px;color:#7A5A5E;font-style:italic">請登入以繼續</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div>
+          <label style="display:block;font-size:11px;color:#7A5A5E;font-weight:700;letter-spacing:1px;margin-bottom:6px">電子郵件</label>
+          <input type="email" id="auth-email" autocomplete="email" style="width:100%;padding:12px 14px;border:1px solid #E8E3DA;border-radius:6px;font-size:14px;font-family:inherit;box-sizing:border-box;background:#FDFBF8" placeholder="your@email.com">
+        </div>
+        <div>
+          <label style="display:block;font-size:11px;color:#7A5A5E;font-weight:700;letter-spacing:1px;margin-bottom:6px">密碼</label>
+          <input type="password" id="auth-password" autocomplete="current-password" style="width:100%;padding:12px 14px;border:1px solid #E8E3DA;border-radius:6px;font-size:14px;font-family:inherit;box-sizing:border-box;background:#FDFBF8" placeholder="••••••••••••">
+        </div>
+        <div id="auth-error" style="display:none;background:#FAE8EA;color:#A51820;font-size:12px;padding:10px 12px;border-radius:6px;border:1px solid #F0C8CC"></div>
+        <button id="auth-btn" style="width:100%;padding:13px;border:none;border-radius:6px;background:linear-gradient(135deg,#B51E28,#7A1018);color:#fff;font-size:15px;font-weight:700;letter-spacing:2px;cursor:pointer;font-family:'Noto Sans TC',sans-serif;margin-top:4px">登 入</button>
+        <div style="text-align:center;font-size:11px;color:#B09498;margin-top:8px;letter-spacing:.2em;font-family:'Cormorant Garamond',serif;font-style:italic">INSPIRE · CREATE · SHINE</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ 頂部 ═══ -->
+<div class="topbar">
+  <div class="brand">
+    <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+    <span class="brand-txt">ATELIER<span class="brand-sub">客戶服務台</span></span>
+    <span id="verBadge">cs-v1</span>
+  </div>
+  <div style="display:flex;align-items:center;gap:10px">
+    <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
+    <div class="stat">已存 <b id="cliCount">0</b> 個客戶</div>
+  </div>
+</div>
+
+<!-- ═══ 分頁列 ═══ -->
+<div class="tabs" id="tabs">
+  <div class="tab on" data-view="select"><svg class="tic" viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-3.9 3.1-7 7-7s7 3.1 7 7" stroke-linecap="round"/></svg>選擇客戶</div>
+  <div class="tab" data-view="stage1"><svg class="tic" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4-4" stroke-linecap="round"/></svg>① 初診</div>
+  <div class="tab" data-view="stage2"><svg class="tic" viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6z" stroke-linejoin="round"/><path d="M9 9h6M9 13h6M9 17h4" stroke-linecap="round"/></svg>② 建檔</div>
+  <div class="tab" data-view="stage3"><svg class="tic" viewBox="0 0 24 24"><path d="M21 12a8 8 0 01-11.6 7.1L4 20l1-5A8 8 0 1121 12z" stroke-linejoin="round"/></svg>③ 問診</div>
+  <div class="tab disabled" title="下一版"><svg class="tic" viewBox="0 0 24 24"><path d="M3 12h4l2 7 4-14 2 7h5" stroke-linecap="round" stroke-linejoin="round"/></svg>④ 診斷<span class="soon">下一版</span></div>
+  <div class="tab disabled" title="下一版"><svg class="tic" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 9h16M9 4v16" stroke-linecap="round"/></svg>⑤ 盤點<span class="soon">下一版</span></div>
+  <div class="tab disabled" title="下一版"><svg class="tic" viewBox="0 0 24 24"><path d="M5 4h11a2 2 0 012 2v14H7a2 2 0 01-2-2z" stroke-linejoin="round"/></svg>⑥ 企劃<span class="soon">下一版</span></div>
+  <div class="tab disabled" title="下一版"><svg class="tic" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 013 3L7 19l-4 1 1-4z"/></svg>⑦ 交付<span class="soon">下一版</span></div>
+  <a class="tab back" href="index.html"><svg class="tic" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>回診斷工作台</a>
+</div>
+
+<!-- ═══ 目前服務對象提示條 ═══ -->
+<div class="cs-banner empty" id="csBanner">
+  <span>尚未選定服務對象 — 請到「選擇客戶」挑一位</span>
+</div>
+
+<!-- ═══ 選擇客戶（預設頁）═══ -->
+<div class="view on" id="view-select">
+  <div class="page-head">
+    <div class="ph-en">CLIENT SERVICE DESK</div>
+    <h2 class="ph-title">選擇客戶</h2>
+    <div class="ph-sub">Pick one client. Walk the whole cycle, from intake to delivery.</div>
+  </div>
+  <div class="hint">這裡列出帳號管理裡的所有帳號（與診斷工作台共用同一個資料庫）。<b>點一張卡＝選定為當前服務對象</b>，接下來的 ①初診 / ②建檔 / ③問診 全部圍繞這位客戶。資料即時存回雲端，診斷工作台那邊也讀得到。</div>
+  <div class="searchbar"><input id="cliSearch" placeholder="搜尋：@帳號 / 顯示名稱 / 產業…" oninput="renderSelect()"></div>
+  <div id="cliList"></div>
+</div>
+
+<!-- ═══ ① 公開資料初診 ═══ -->
+<div class="view" id="view-stage1"></div>
+
+<!-- ═══ ② 客戶資料建檔 ═══ -->
+<div class="view" id="view-stage2"></div>
+
+<!-- ═══ ③ 深度問診 ═══ -->
+<div class="view" id="view-stage3"></div>
+
+<!-- 彈窗 + Toast -->
+<div class="modal" id="modal"><div class="sheet" id="sheet"></div></div>
+<div class="toast" id="toast"></div>
+
+<!-- ═══════════════ Firebase（與 index.html 共用 lucky-handbook）═══════════════ -->
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+
+<script>
+/* ─── 0) 共用小工具 ─── */
+const $=id=>document.getElementById(id);
+const esc=s=>(s==null?'':String(s)).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+let _tTimer;
+function toast(msg,ms){ const t=$('toast'); if(!t) return; t.textContent=msg; t.classList.add('show'); clearTimeout(_tTimer); _tTimer=setTimeout(()=>t.classList.remove('show'),ms||1900); }
+function copyVal(text,label){
+  if(!text){ toast('沒有內容可複製'); return; }
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(()=>toast('✓ 已複製'+(label?'：'+label:''))).catch(()=>_copyFallback(text,label));
+  } else { _copyFallback(text,label); }
+}
+function _copyFallback(text,label){
+  try{ const t=document.createElement('textarea'); t.value=text; t.style.position='fixed'; t.style.opacity='0'; document.body.appendChild(t); t.select(); document.execCommand('copy'); document.body.removeChild(t); toast('✓ 已複製'+(label?'：'+label:'')); }
+  catch(e){ toast('複製失敗，請手動選取'); }
+}
+/* 提示詞預覽彈窗（與 index.html copyPrompt 同範式：唯讀預設＋編輯鎖＋還原＋複製） */
+function copyPrompt(text,label){
+  copyVal(text,label);
+  try{
+    var sh=$('sheet'), md=$('modal'); if(!sh||!md) return;
+    var safe=esc(text||'');
+    sh.innerHTML='<div style="padding:18px 18px 16px;position:relative">'
+      +'<button id="pp-xtop" style="position:absolute;top:12px;right:14px;background:none;border:none;font-size:20px;color:var(--sub);cursor:pointer;line-height:1;font-family:inherit" title="關閉">✕</button>'
+      +'<div style="font-family:\'Noto Serif TC\',serif;font-size:17px;font-weight:900;margin-bottom:4px;padding-right:30px">'+esc(label||'提示詞')+'</div>'
+      +'<div style="font-size:12px;color:var(--sub);line-height:1.6;margin-bottom:8px">已複製原始版到剪貼簿。預設唯讀——按 ✏️ 編輯鍵才能改字；改完按「複製（含修改）」。</div>'
+      +'<div style="display:flex;gap:8px;margin-bottom:6px;align-items:center;flex-wrap:wrap">'
+      +'<button id="pp-editlock" style="background:var(--warm-white);border:1px solid var(--gold-soft);border-radius:6px;padding:4px 10px;font-size:12px;cursor:pointer;color:var(--gold-dark);font-family:inherit">✏️ 編輯</button>'
+      +'<button id="pp-resetall" style="background:var(--warm-white);border:1px solid var(--gold-soft);border-radius:6px;padding:4px 10px;font-size:12px;cursor:pointer;color:var(--gold-dark);font-family:inherit">↺ 還原全部</button>'
+      +'<span id="pp-lockstate" style="font-size:11px;color:var(--sub)">🔒 唯讀中</span></div>'
+      +'<textarea id="pp-edit" spellcheck="false" readonly style="display:block;width:100%;box-sizing:border-box;white-space:pre-wrap;word-break:break-word;font-size:12.5px;line-height:1.6;background:var(--warm-white);border:1px solid var(--gold-soft);border-radius:8px;padding:12px;min-height:220px;max-height:52vh;overflow:auto;color:var(--ink);font-family:inherit;resize:vertical;opacity:.85">'+safe+'</textarea>'
+      +'<div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">'
+      +'<button class="btn" id="pp-copy" style="flex:1 1 auto;min-width:180px;background:#8E2A2E;color:#fff;-webkit-text-fill-color:#fff">複製（含修改）</button>'
+      +'<button class="btn btn-ghost" id="pp-close" style="flex:0 0 auto;background:var(--warm-white);color:#8E2A2E;border:1px solid var(--gold-soft)">關閉</button></div>'
+      +'</div>';
+    md.classList.add('show');
+    function _close(){ md.classList.remove('show'); sh.innerHTML=''; document.removeEventListener('keydown',_key); md.onclick=null; }
+    function _key(e){ if(e.key==='Escape') _close(); }
+    var ed=$('pp-edit'), ls=$('pp-lockstate');
+    var el=$('pp-editlock'); if(el) el.onclick=function(){ if(ed.readOnly){ ed.readOnly=false; ed.style.opacity='1'; el.textContent='🔒 唯讀'; if(ls) ls.textContent='✏️ 編輯中'; } else { ed.readOnly=true; ed.style.opacity='.85'; el.textContent='✏️ 編輯'; if(ls) ls.textContent='🔒 唯讀中'; } };
+    var ra=$('pp-resetall'); if(ra) ra.onclick=function(){ if(ed) ed.value=text; toast('已還原成原版'); };
+    var cp=$('pp-copy'); if(cp) cp.onclick=function(){ copyVal((ed?ed.value:text),label); };
+    var cl=$('pp-close'); if(cl) cl.onclick=_close;
+    var xt=$('pp-xtop'); if(xt) xt.onclick=_close;
+    md.onclick=function(e){ if(e.target===md) _close(); };
+    document.addEventListener('keydown',_key);
+  }catch(e){}
+}
+function closeModal(){ var md=$('modal'); if(md){ md.classList.remove('show'); $('sheet').innerHTML=''; md.onclick=null; } }
+
+/* ─── 1) Firebase 設定（原樣複製自 index.html，連同一個資料庫）─── */
+const ATELIER_FB_CONFIG = {
+  apiKey: "AIzaSyDSw-N0KsSXUdKHEatiJa3tut0m279C_38",
+  authDomain: "lucky-handbook.firebaseapp.com",
+  projectId: "lucky-handbook",
+  storageBucket: "lucky-handbook.firebasestorage.app",
+  messagingSenderId: "618597633790",
+  appId: "1:618597633790:web:e25c4c7b48406b99d6dfaf"
+};
+const ATELIER_FOUNDER_UID = "7PVhEyBe9XbEcdAqbq2uLtEqRLC2";
+const ACC_COLLECTION  = "creator_accounts";   // 帳號（與 index.html 共用）
+const VID_COLLECTION  = "diagnostic_videos";  // 影片（與 index.html 共用）
+const ATELIER_DOC_ID  = "main";
+const ACC_LS_KEY      = "atelier_accounts";
+const VID_LS_KEY      = "atelier_videos";
+
+let accounts=[], videos=[];
+let _fbDB=null,_fbAuth=null,_fbUser=null,_fbReady=false,_accUnsub=null,_vidUnsub=null;
+let currentClientId = '';
+try{ currentClientId = sessionStorage.getItem('atelier_cs_current')||''; }catch(e){}
+
+/* ─── 2) 右下角同步小燈 ─── */
+function _fbStatus(state,text){
+  let el=$('fbSyncStatus');
+  if(!el){ el=document.createElement('div'); el.id='fbSyncStatus';
+    el.style.cssText='position:fixed;right:14px;bottom:14px;z-index:9998;font-size:11px;letter-spacing:.5px;padding:6px 12px;border-radius:20px;font-family:"Noto Sans TC",sans-serif;box-shadow:0 4px 14px rgba(42,26,28,.12);pointer-events:none;background:#fff;border:1px solid #E8E3DA';
+    document.body.appendChild(el); }
+  const c={connected:'#6E8678',syncing:'#9C7D4A',offline:'#A51820',local:'#7A5A5E'};
+  el.style.color=c[state]||'#7A5A5E'; el.textContent=text;
+}
+function _fbLogoutBtn(show){
+  var b=$('fbLogoutBtn');
+  if(show){
+    if(!b){ b=document.createElement('button'); b.id='fbLogoutBtn'; b.type='button'; b.textContent='登出';
+      b.style.cssText='position:fixed;right:14px;bottom:46px;z-index:9999;font-size:12px;padding:6px 14px;border-radius:20px;font-family:"Noto Sans TC",sans-serif;background:#fff;border:1px solid #E8E3DA;color:#A51820;box-shadow:0 4px 14px rgba(42,26,28,.12);cursor:pointer';
+      b.onclick=function(){ if(confirm('要登出嗎？\n登出後用同一個帳號重新登入，雲端資料會自動同步回來。')){ try{ if(_accUnsub)_accUnsub(); }catch(e){} try{ if(_vidUnsub)_vidUnsub(); }catch(e){} try{ firebase.auth().signOut(); }catch(e){} } };
+      document.body.appendChild(b); }
+    b.style.display='block';
+  } else if(b){ b.style.display='none'; }
+}
+function _connText(){ return '已同步 客戶 '+(accounts?accounts.length:0)+' 位 · 影片 '+(videos?videos.length:0)+' 支'; }
+
+/* ─── 3) 初始化 + 登入 ─── */
+function _fbInit(){
+  if(typeof firebase==='undefined'){
+    console.info('[ATELIER CS] 雲端元件未載入（預覽/離線），改用本機模式。');
+    _fbStatus('local','本機模式'); _localLoad();
+    var ov0=$('auth-overlay'); if(ov0) ov0.style.display='none';
+    return;
+  }
+  try{
+    firebase.initializeApp(ATELIER_FB_CONFIG);
+    _fbDB=firebase.firestore(); _fbAuth=firebase.auth();
+    _fbAuth.onAuthStateChanged(function(user){
+      if(user && user.uid===ATELIER_FOUNDER_UID){
+        _fbUser=user; _fbReady=true;
+        $('auth-overlay').style.display='none';
+        _fbStatus('syncing','連線中…');
+        _accSubscribe(); _vidSubscribe(); _fbLogoutBtn(true);
+      } else if(user){
+        _fbAuth.signOut(); _fbShowAuthError('此帳號無權限');
+      } else {
+        _fbReady=false; $('auth-overlay').style.display='block';
+        _fbStatus('offline','請先登入'); _fbLogoutBtn(false);
+      }
+    });
+  }catch(e){
+    console.info('[ATELIER CS] 雲端未連線，改用本機模式。');
+    _fbStatus('local','本機模式'); _localLoad();
+    var ov=$('auth-overlay'); if(ov) ov.style.display='none';
+  }
+}
+function _fbShowAuthError(msg){ var e=$('auth-error'); if(e){ e.textContent=msg; e.style.display='block'; } }
+function _fbLogin(){
+  var email=($('auth-email')||{}).value||'', pwd=($('auth-password')||{}).value||'', btn=$('auth-btn');
+  if(!email||!pwd){ _fbShowAuthError('請輸入 email 和密碼'); return; }
+  if(btn){ btn.textContent='登入中…'; btn.disabled=true; }
+  _fbAuth.signInWithEmailAndPassword(email,pwd).then(function(){}).catch(function(err){
+    if(btn){ btn.textContent='登 入'; btn.disabled=false; }
+    var map={'auth/invalid-email':'email 格式不對','auth/user-not-found':'查無此帳號','auth/wrong-password':'密碼錯誤','auth/invalid-credential':'帳號或密碼錯誤','auth/too-many-requests':'嘗試太多次，請稍後再試'};
+    _fbShowAuthError(map[err.code]||('登入失敗：'+err.code));
+  });
+}
+function _localLoad(){
+  try{ var a=localStorage.getItem(ACC_LS_KEY); accounts=a?JSON.parse(a):[]; }catch(e){ accounts=[]; }
+  try{ var v=localStorage.getItem(VID_LS_KEY); videos=v?JSON.parse(v):[]; }catch(e){ videos=[]; }
+  _afterData();
+}
+/* ─── 4) 帳號 / 影片 即時訂閱 ─── */
+function _accSubscribe(){
+  if(_accUnsub) _accUnsub();
+  _accUnsub=_fbDB.collection(ACC_COLLECTION).doc(ATELIER_DOC_ID).onSnapshot(function(doc){
+    if(doc.exists){ var d=doc.data(); if(d&&Array.isArray(d.accounts)){
+      accounts=d.accounts;
+      try{ localStorage.setItem(ACC_LS_KEY, JSON.stringify(accounts)); }catch(e){}
+      _afterData(); _fbStatus('connected',_connText());
+    }}
+  }, function(err){ console.error('[CS acc]',err); _fbStatus('offline','⚠️ 同步中斷（本機仍可用）'); });
+}
+function _vidSubscribe(){
+  if(_vidUnsub) _vidUnsub();
+  _vidUnsub=_fbDB.collection(VID_COLLECTION).doc(ATELIER_DOC_ID).onSnapshot(function(doc){
+    if(doc.exists){ var d=doc.data(); if(d&&Array.isArray(d.videos)){
+      videos=d.videos;
+      try{ localStorage.setItem(VID_LS_KEY, JSON.stringify(videos)); }catch(e){}
+      renderSelect(); _fbStatus('connected',_connText());
+    }}
+  }, function(err){ console.error('[CS vid]',err); });
+}
+/* ─── 5) 把整個 accounts 陣列寫回雲端（掛在既有帳號物件上，不另開 collection）─── */
+function _accPush(){
+  if(!_fbReady||!_fbDB){ try{ localStorage.setItem(ACC_LS_KEY, JSON.stringify(accounts)); }catch(e){} return; }
+  if(!accounts||!accounts.length) return;
+  _fbStatus('syncing','儲存中…');
+  _fbDB.collection(ACC_COLLECTION).doc(ATELIER_DOC_ID)
+    .set({ accounts: accounts, updatedAt: Date.now(), count: accounts.length }, {merge:true})
+    .then(function(){ _fbStatus('connected',_connText()); })
+    .catch(function(err){ console.error('[CS acc push]',err); _fbStatus('offline','⚠️ 雲端寫入失敗（本機已存）'); });
+  try{ localStorage.setItem(ACC_LS_KEY, JSON.stringify(accounts)); }catch(e){}
+}
+
+/* 資料到齊後刷新（只刷選擇頁＋提示條＋計數；階段表單在進頁時才重建，避免蓋掉正在打的字） */
+function _afterData(){
+  if($('cliCount')) $('cliCount').textContent=(accounts?accounts.length:0);
+  renderSelect(); renderBanner();
+}
+
+/* ─── 6) 客戶資料存取小工具 ─── */
+function curAcc(){ return accounts.find(a=>a.id===currentClientId)||null; }
+function fanLatest(a){ if(!a||!a.fanSnapshots||!a.fanSnapshots.length) return null; var s=[...a.fanSnapshots].sort((x,y)=>(y.date||'').localeCompare(x.date||'')); return parseInt(s[0].count)||null; }
+function vidCountOf(a){ if(!a) return 0; return videos.filter(v=>v.accountId===a.id).length; }
+function ensureFlow(a){ if(!a.clientFlow) a.clientFlow={}; return a.clientFlow; }
+function flowStatus(a,key){ var f=(a&&a.clientFlow&&a.clientFlow[key])||null; return f&&f.status?f.status:'not-started'; }
+function statusLabel(s){ return s==='done'?'已完成':s==='in-progress'?'進行中':'未開始'; }
+function fmtDate(ts){ if(!ts) return ''; try{ var d=new Date(ts); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }catch(e){ return ''; } }
+function saveCurrent(silent){
+  var a=curAcc(); if(!a){ toast('⚠️ 尚未選定客戶'); return; }
+  a.updatedAt=Date.now();
+  _accPush();
+  if(!silent) toast('✓ 已儲存並同步');
+  renderSelect(); renderBanner();
+}
+
+/* ─── 7) 提示條 ─── */
+function renderBanner(){
+  var b=$('csBanner'); if(!b) return;
+  var a=curAcc();
+  if(!a){ b.className='cs-banner empty'; b.innerHTML='<span>尚未選定服務對象 — 請到「選擇客戶」挑一位</span>'; return; }
+  var hs=healthTotal(a);
+  b.className='cs-banner';
+  b.innerHTML='<span>目前服務：<span class="who">'+esc(a.handle||'@?')+' '+esc(a.displayName||'')+'</span></span>'
+    +'<span class="hs">內容健康分數 <b>'+(hs.has?hs.total:'—')+'</b>/50</span>'
+    +'<button class="mini-btn" onclick="openHealthEditor()">評分</button>';
+}
+
+/* ─── 8) 選擇客戶頁 ─── */
+function renderSelect(){
+  var box=$('cliList'); if(!box) return;
+  if($('cliCount')) $('cliCount').textContent=(accounts?accounts.length:0);
+  if(!accounts||!accounts.length){
+    box.innerHTML='<div class="empty-res">帳號管理裡還沒有任何帳號。<br>請先到<a href="index.html">診斷工作台</a>，在「帳號管理」建立帳號後再回來。</div>';
+    return;
+  }
+  var q=(($('cliSearch')||{value:''}).value||'').trim().toLowerCase();
+  var list=accounts.filter(function(a){
+    if(!q) return true;
+    var hay=((a.handle||'')+' '+(a.displayName||'')+' '+(a.industry||'')+' '+(a.jobTitle||'')+' '+(a.domain||'')).toLowerCase();
+    return hay.indexOf(q)>=0;
+  }).sort((a,b)=>(b.updatedAt||0)-(a.updatedAt||0));
+  if(!list.length){ box.innerHTML='<div class="empty-res">找不到符合「'+esc(q)+'」的客戶</div>'; return; }
+  box.innerHTML=list.map(cliCard).join('');
+  box.querySelectorAll('[data-pick]').forEach(function(el){ el.onclick=function(){ pickClient(el.dataset.pick); }; });
+}
+function cliCard(a){
+  var f=fanLatest(a), vc=vidCountOf(a), cur=(a.id===currentClientId);
+  var s1=flowStatus(a,'stage1_initial'), s2=flowStatus(a,'stage2_filing'), s3=flowStatus(a,'stage3_interview');
+  function dot(lbl,s){ var c=s==='done'?'done':s==='in-progress'?'prog':''; return '<span class="flow-dot '+c+'">'+lbl+'·'+statusLabel(s)+'</span>'; }
+  var hs=healthTotal(a);
+  var hbar=hs.has?('<div class="cc-health"><div class="hbar"><i style="width:'+Math.round(hs.total/50*100)+'%"></i></div><span class="hnum">健康 '+hs.total+'/50</span></div>'):'';
+  return '<div class="cli-card'+(cur?' cur':'')+'" data-pick="'+a.id+'">'
+    +'<div class="cc-top"><div class="cc-handle">'+(cur?'<span style="color:var(--rouge);font-size:11px;font-weight:800;margin-right:5px">● 服務中</span>':'')+esc(a.handle||'@?')+' <span class="cc-name">'+esc(a.displayName||'')+'</span></div>'
+    +'<div class="cc-plat">'+esc(a.platform||'IG')+'</div></div>'
+    +'<div class="cc-meta">'
+    +(a.industry?'<span class="lab">產業</span> '+esc(a.industry)+'　·　':'')
+    +(a.jobTitle?'<span class="lab">職稱</span> '+esc(a.jobTitle)+'　·　':'')
+    +'<span class="lab">粉絲</span> '+(f?f.toLocaleString():'—')+'　·　'
+    +'<span class="lab">影片</span> '+vc+' 支　·　'
+    +'<span class="lab">更新</span> '+(fmtDate(a.updatedAt)||'—')
+    +'</div>'
+    +'<div class="cc-flow">'+dot('①初診',s1)+dot('②建檔',s2)+dot('③問診',s3)+'</div>'
+    +hbar
+    +'</div>';
+}
+function pickClient(id){
+  currentClientId=id;
+  try{ sessionStorage.setItem('atelier_cs_current',id); }catch(e){}
+  renderBanner(); renderSelect();
+  var a=curAcc();
+  toast('已選定服務對象：'+((a&&a.handle)||''));
+  switchTo('stage1');
+}
+
+/* ─── 9) 版本拆分（客戶版／顧問版）─── */
+function splitVersions(text){
+  text=text||'';
+  var cIdx=text.search(/【\s*客戶版\s*】/), aIdx=text.search(/【\s*顧問版\s*】/);
+  if(cIdx<0 && aIdx<0) return { client:'', advisor:text.trim(), split:false };
+  var client='', advisor='';
+  if(cIdx>=0 && aIdx>=0){
+    if(cIdx<aIdx){ client=text.slice(cIdx,aIdx); advisor=text.slice(aIdx); }
+    else { advisor=text.slice(aIdx,cIdx); client=text.slice(cIdx); }
+  } else if(cIdx>=0){ client=text.slice(cIdx); } else { advisor=text.slice(aIdx); }
+  client=client.replace(/【\s*客戶版\s*】/,'').trim();
+  advisor=advisor.replace(/【\s*顧問版\s*】/,'').trim();
+  return { client:client, advisor:advisor, split:true };
+}
+function verBlock(prefix,parsed){
+  return '<div class="ver-switch">'
+    +'<button class="ver-btn on" id="'+prefix+'-cbtn" onclick="verSwitch(\''+prefix+'\',\'client\')">客戶版</button>'
+    +'<button class="ver-btn" id="'+prefix+'-abtn" onclick="verSwitch(\''+prefix+'\',\'advisor\')">顧問版</button></div>'
+    +'<div class="ver-body'+(parsed.client?'':' empty')+'" id="'+prefix+'-cbody">'+(parsed.client?esc(parsed.client):(parsed.split?'（這版沒拆出客戶版）':'AI 沒有分版輸出 — 請回 AI 對話框，要求用【客戶版】【顧問版】兩段重給，再貼回。'))+'</div>'
+    +'<div class="ver-body empty" id="'+prefix+'-abody" style="display:none">'+(parsed.advisor?esc(parsed.advisor):'（無內容）')+'</div>'
+    +'<div class="btn-row">'
+    +'<button class="btn btn-ghost" onclick="copyVal(_verText(\''+prefix+'\',\'client\'),\'客戶版\')">複製客戶版</button>'
+    +'<button class="btn btn-ghost" onclick="copyVal(_verText(\''+prefix+'\',\'advisor\'),\'顧問版\')">複製顧問版</button></div>'
+    +'<div style="font-size:11px;color:var(--sub);text-align:center;margin-top:8px">未來版本：匯出 PDF</div>';
+}
+window._verCache={};
+function _verText(prefix,which){ var c=window._verCache[prefix]||{}; return which==='client'?(c.client||''):(c.advisor||''); }
+function verSwitch(prefix,which){
+  var cb=$(prefix+'-cbtn'),ab=$(prefix+'-abtn'),cbody=$(prefix+'-cbody'),abody=$(prefix+'-abody');
+  if(!cb) return;
+  if(which==='client'){ cb.classList.add('on'); ab.classList.remove('on'); cbody.style.display='block'; abody.style.display='none'; }
+  else { ab.classList.add('on'); cb.classList.remove('on'); abody.style.display='block'; cbody.style.display='none'; }
+}
+
+/* ═══════════════ 階段 ① 公開資料初診 ═══════════════ */
+var CHECK_SOURCES=[
+  ['web','官網'],['google','Google 搜尋結果（搜品牌名＋主力服務）'],['maps','Google Maps 評價'],
+  ['igHome','IG 首頁（Bio / 置頂 / Highlight）'],['igGrid','IG 貼文九宮格'],['igReels','IG Reels 九宮格'],
+  ['service','服務頁 / 價目'],['people','人物介紹頁'],['entry','LINE / 表單 / 預約入口'],
+  ['pastData','過去影片數據（觀看／互動）'],['rivals','同行對標帳號']
+];
+function renderStage1(){
+  var a=curAcc(); var box=$('view-stage1');
+  if(!a){ box.innerHTML=needClientHTML('① 公開資料初診'); return; }
+  var f=ensureFlow(a); var st=(f.stage1_initial&&f.stage1_initial.data)||{};
+  var savedSrc=st.sources||{};
+  var rows=CHECK_SOURCES.map(function(s){
+    var v=savedSrc[s[0]]||{checked:false,note:''};
+    return '<div class="chk-row"><span class="cb"><input type="checkbox" id="s1c-'+s[0]+'" '+(v.checked?'checked':'')+'></span>'
+      +'<div class="cbody"><div class="clab">'+esc(s[1])+'</div>'
+      +'<input type="text" id="s1n-'+s[0]+'" value="'+esc(v.note||'')+'" placeholder="貼連結或簡短備註…"></div></div>';
+  }).join('');
+  var parsed=splitVersions(st.result||'');
+  window._verCache.s1=parsed;
+  box.innerHTML=
+    '<div class="page-head"><div class="ph-en">STAGE ① · INITIAL SCAN</div><h2 class="ph-title">公開資料初診</h2></div>'
+    +stageHead('只用公開資料，判斷這位客戶目前在市場上「被看見的樣子」——還沒跟客戶深聊就能做的分析。','stage1_initial')
+    +'<div class="section-card"><h3>① 資料來源核對清單</h3><div class="sc-note">勾選你查過的來源，旁邊可貼連結或備註。下面產生提示詞時，這些備註會自動帶進去。</div>'+rows+'</div>'
+    +'<div class="section-card"><h3>② 提示詞產生器</h3><div class="sc-note">按下會把客戶基本資訊＋你上面填的備註組成完整提示詞，複製到 ChatGPT／Claude／Gemini 去跑。</div>'
+    +'<button class="btn btn-gold" onclick="buildStage1Prompt()">📋 產生初診提示詞</button></div>'
+    +'<div class="section-card"><h3>③ 把 AI 產出貼回這裡</h3><div class="sc-note">貼回後按儲存，系統會自動拆「客戶版／顧問版」。</div>'
+    +'<textarea class="paste-box" id="s1result" placeholder="把 AI 產出的《會前初步觀察與需求對焦》整段貼回這裡…">'+esc(st.result||'')+'</textarea>'
+    +'<button class="btn btn-go" style="margin-top:10px" onclick="saveStage1()">儲存初診結果</button></div>'
+    +'<div class="section-card"><h3>④ 交付物《會前初步觀察與需求對焦》</h3>'+verBlock('s1',parsed)+'</div>';
+}
+function readStage1Sources(){
+  var out={};
+  CHECK_SOURCES.forEach(function(s){
+    var cb=$('s1c-'+s[0]), nt=$('s1n-'+s[0]);
+    out[s[0]]={ checked:cb?cb.checked:false, note:nt?nt.value.trim():'' };
+  });
+  return out;
+}
+function buildStage1Prompt(){
+  var a=curAcc(); if(!a){ toast('⚠️ 尚未選定客戶'); return; }
+  var src=readStage1Sources();
+  var lines=[];
+  CHECK_SOURCES.forEach(function(s){
+    var v=src[s[0]];
+    if(v.checked||v.note) lines.push('・'+s[1]+'：'+(v.note||'（已查看，無特別備註）'));
+  });
+  var dataBlock=lines.length?lines.join('\n'):'（尚未填寫公開資料備註，請先在上面核對清單裡補上）';
+  var p='我要幫一個客戶做「公開資料初診」。這是 ATELIER 客戶導入流程的第一步——只用公開資料，判斷這個客戶目前在市場上被看見的樣子。\n\n'
+    +'【客戶基本資訊】\n'
+    +'品牌/帳號：'+(a.handle||'')+'\n'
+    +'顯示名稱：'+(a.displayName||'')+'\n'
+    +'產業：'+(a.industry||'')+'\n'
+    +'職稱：'+(a.jobTitle||'')+'\n\n'
+    +'【我查到的公開資料】（貼在下面）\n'+dataBlock+'\n\n'
+    +'【請你分析並產出《會前初步觀察與需求對焦》】\n'
+    +'請包含：\n'
+    +'1. 品牌的市場可見度（Google 搜得到什麼、搜不到什麼）\n'
+    +'2. IG 帳號第一印象（Bio 清不清楚、視覺有沒有統一、內容在講什麼）\n'
+    +'3. 目前內容與商業目標的落差\n'
+    +'4. 轉換路徑是否通暢（從看到→想了解→聯繫→成交，哪裡斷掉）\n'
+    +'5. 同行對標初步觀察（他的競爭者在做什麼、他沒做什麼）\n'
+    +'6. 初步建議方向（2-3 句，不用太細，給會前對焦用）\n\n'
+    +'請分成兩個版本輸出：\n'
+    +'【客戶版】乾淨、可給客戶看、不出現過度尖銳評論\n'
+    +'【顧問版】完整、犀利、保留判斷理由與風險';
+  copyPrompt(p,'初診提示詞');
+}
+function saveStage1(){
+  var a=curAcc(); if(!a){ toast('⚠️ 尚未選定客戶'); return; }
+  var f=ensureFlow(a);
+  var result=($('s1result')||{value:''}).value.trim();
+  var src=readStage1Sources();
+  f.stage1_initial={ status: result?'done':'in-progress', updatedAt:Date.now(), data:{ sources:src, result:result } };
+  saveCurrent(true);
+  toast(result?'✓ 初診結果已儲存（已完成）':'✓ 已暫存（尚未貼回 AI 產出）');
+  renderStage1();
+}
+
+/* ═══════════════ 階段 ② 客戶資料建檔 ═══════════════ */
+var PROFILE_CATS=[
+  ['identity','❶ 基本身份',[
+    ['brandName','品牌名',function(a){return a.displayName||'';}],
+    ['ownerName','負責人姓名',null],
+    ['jobTitle','職稱',function(a){return a.jobTitle||'';}],
+    ['industry','產業',function(a){return a.industry||'';}],
+    ['region','服務地區',null]
+  ]],
+  ['service','❷ 服務內容',[
+    ['mainService','主力服務',null],
+    ['pushService','最想推的服務',null],
+    ['profitService','最賺錢服務',null],
+    ['easyService','最容易成交服務',null],
+    ['priceRange','服務價位帶',function(a){var p=a.profile||{};return p.priceShort||p.priceNote||'';}]
+  ]],
+  ['audience','❸ 目標人群',[
+    ['whoBuys','誰會買',null],
+    ['whoPain','誰最痛',function(a){return (a.profile||{}).icpAudience||'';}],
+    ['whoBudget','誰最有預算',null],
+    ['whoUrgent','誰最急',null],
+    ['idealPersona','理想客戶畫像',function(a){return (a.profile||{}).icpPersona||'';}]
+  ]],
+  ['content','❹ 內容現況',[
+    ['igFollowers','IG 粉絲數',function(a){var f=fanLatest(a);return f?String(f):'';}],
+    ['hasWeb','官網有無',null],
+    ['pastVideos','過去影片數',function(a){return String(vidCountOf(a)||'');}],
+    ['postFreq','貼文頻率',function(a){return (a.profile||{}).postFreq||'';}],
+    ['updateFreq','更新頻率',null],
+    ['lastPost','上次發文日期',null]
+  ]],
+  ['trust','❺ 信任資產',[
+    ['education','學經歷',null],
+    ['cases','代表案例',function(a){return (a.profile||{}).icpProduct||'';}],
+    ['clientTypes','客戶類型',null],
+    ['collab','合作經驗',null],
+    ['media','媒體曝光',null],
+    ['certs','證照／獎項',function(a){return (a.profile||{}).proFeatures||'';}]
+  ]],
+  ['convert','❻ 轉換路徑',[
+    ['line','LINE',null],['form','表單',null],['web','官網',function(a){return (a.profile||{}).bioCTA||'';}],
+    ['booking','預約流程',null],['consultFee','諮詢費用',null],['dealFlow','成交流程',null],['dealCycle','平均成交週期',null]
+  ]],
+  ['compete','❼ 競爭位置',[
+    ['rivals','同行對標帳號 1-3 個',null],
+    ['diff','差異化',function(a){return (a.profile||{}).positioning||'';}],
+    ['gap','市場空缺',null],
+    ['whyYou','客戶為什麼選你不選別人',function(a){return (a.profile||{}).icpAxis||'';}]
+  ]],
+  ['shoot','❽ 拍攝條件',[
+    ['onCamera','誰出鏡',null],['location','場地',null],['shootTime','可拍時間',null],
+    ['legalReview','法務審稿流程',null],['taboo','禁忌題目',null],['budget','預算範圍',null]
+  ]]
+];
+function profileVal(a,catKey,fieldKey,prefillFn){
+  var cp=a.clientProfile||{};
+  if(cp[fieldKey]!=null && cp[fieldKey]!=='') return cp[fieldKey];
+  if(prefillFn){ try{ return prefillFn(a)||''; }catch(e){ return ''; } }
+  return '';
+}
+function catCompleteness(a,cat){
+  var fields=cat[2], filled=0;
+  fields.forEach(function(fd){ var v=profileVal(a,cat[0],fd[0],fd[2]); if(v&&String(v).trim()) filled++; });
+  return { filled:filled, total:fields.length, pct:Math.round(filled/fields.length*100) };
+}
+function renderStage2(){
+  var a=curAcc(); var box=$('view-stage2');
+  if(!a){ box.innerHTML=needClientHTML('② 客戶資料建檔'); return; }
+  var squares=PROFILE_CATS.map(function(cat){
+    var c=catCompleteness(a,cat); var cls=c.pct>80?'hi':c.pct>=40?'mid':'lo';
+    var num=cat[1].replace(/[^❶-❽]/g,'')||cat[1].slice(0,1);
+    return '<div class="comp-sq '+cls+'"><div class="cs-i">'+num+'</div><div class="cs-p">'+c.pct+'%</div></div>';
+  }).join('');
+  var cats=PROFILE_CATS.map(function(cat){
+    var c=catCompleteness(a,cat);
+    var body=cat[2].map(function(fd){
+      var v=profileVal(a,cat[0],fd[0],fd[2]);
+      var cp=a.clientProfile||{};
+      var prefilled=(cp[fd[0]]==null||cp[fd[0]]==='')&&fd[2]&&v;
+      return '<div class="fld"><label>'+esc(fd[1])+(prefilled?'<span class="pre">已從帳號檔帶入</span>':'')+'</label>'
+        +'<input type="text" id="p2-'+fd[0]+'" value="'+esc(v)+'"></div>';
+    }).join('');
+    return '<details class="cat"><summary>'+esc(cat[1])+'<span class="cat-summary">'+c.filled+'/'+c.total+' 格</span></summary><div class="cat-body">'+body+'</div></details>';
+  }).join('');
+  box.innerHTML=
+    '<div class="page-head"><div class="ph-en">STAGE ② · CLIENT FILING</div><h2 class="ph-title">客戶資料建檔</h2></div>'
+    +stageHead('把客戶變成工作台裡可被分析、可被比對的完整資料物件。帳號管理裡若已有 ICP／版面解析，會自動帶入、不必重填。','stage2_filing')
+    +'<div class="section-card"><h3>完整度總覽</h3><div class="sc-note">綠＝80% 以上、黃＝40–80%、紅＝低於 40%。</div><div class="comp-squares">'+squares+'</div>'
+    +'<div id="p2missBox" style="margin-top:8px"></div></div>'
+    +'<div class="section-card"><h3>8 大類資料</h3><div class="sc-note">每填一格按下方「儲存」就會即時更新完整度。</div>'+cats+'</div>'
+    +'<button class="btn btn-go" onclick="saveStage2()">儲存客戶資料</button>'
+    +'<button class="btn btn-ghost" style="margin-top:8px" onclick="copyStage2Missing()">複製「不夠完整的欄位」清單（去問客戶）</button>';
+  renderStage2Missing();
+}
+function readStage2(){
+  var out={};
+  PROFILE_CATS.forEach(function(cat){ cat[2].forEach(function(fd){ var el=$('p2-'+fd[0]); if(el){ var v=el.value.trim(); if(v) out[fd[0]]=v; } }); });
+  return out;
+}
+function stage2Missing(a){
+  var miss=[];
+  PROFILE_CATS.forEach(function(cat){ cat[2].forEach(function(fd){ var v=profileVal(a,cat[0],fd[0],fd[2]); if(!v||!String(v).trim()) miss.push(cat[1]+' → '+fd[1]); }); });
+  return miss;
+}
+function renderStage2Missing(){
+  var a=curAcc(); if(!a) return; var box=$('p2missBox'); if(!box) return;
+  var miss=stage2Missing(a);
+  if(!miss.length){ box.innerHTML='<div style="font-size:12px;color:var(--green);font-weight:700">✓ 8 大類全部填齊了</div>'; return; }
+  box.innerHTML='<div style="font-size:12px;color:var(--gold-dark);font-weight:700;margin-bottom:4px">還缺 '+miss.length+' 格：</div>'
+    +'<div style="font-size:11.5px;color:var(--text);line-height:1.8">'+miss.map(esc).join('、')+'</div>';
+}
+function saveStage2(){
+  var a=curAcc(); if(!a){ toast('⚠️ 尚未選定客戶'); return; }
+  var data=readStage2();
+  a.clientProfile=Object.assign({}, a.clientProfile||{}, data);
+  var f=ensureFlow(a);
+  var anyFilled=Object.keys(a.clientProfile).some(function(k){ return a.clientProfile[k]&&String(a.clientProfile[k]).trim(); });
+  f.stage2_filing={ status:anyFilled?'done':'in-progress', updatedAt:Date.now(), data:{ savedAt:Date.now() } };
+  saveCurrent(true);
+  toast('✓ 客戶資料已儲存並同步');
+  renderStage2();
+}
+function copyStage2Missing(){
+  var a=curAcc(); if(!a) return;
+  var miss=stage2Missing(a);
+  if(!miss.length){ toast('沒有缺漏欄位'); return; }
+  var t='想跟你確認幾項資料，補齊後我們能把內容做得更準：\n\n'+miss.map(function(m,i){ return (i+1)+'. '+m.replace(/^[❶-❽][^→]*→\s*/,''); }).join('\n');
+  copyVal(t,'待補欄位清單');
+}
+
+/* ═══════════════ 階段 ③ 深度問診 ═══════════════ */
+var INTERVIEW_Q=[
+  '你最想吸引哪一種客戶？（具體描述，不要只說「有需要的人」）',
+  '你最不想接哪一種案子？為什麼？',
+  '過去客戶最常問你的問題前三名？',
+  '客戶最常誤解你們什麼？',
+  '哪一項服務最希望透過短影音被看見？',
+  '過去成交最順的案子，客戶為什麼信任你？',
+  '如果觀眾只記得你一句話，你希望他記得什麼？',
+  '你的專業裡，有什麼是一般人搞錯但很重要的事？',
+  '你做這行最有成就感的一刻？',
+  '你覺得同行都在拍什麼？你想跟他們不一樣的地方？'
+];
+function renderStage3(){
+  var a=curAcc(); var box=$('view-stage3');
+  if(!a){ box.innerHTML=needClientHTML('③ 深度問診'); return; }
+  var f=ensureFlow(a); var st=(f.stage3_interview&&f.stage3_interview.data)||{};
+  var ans=st.answers||{};
+  var qFields=INTERVIEW_Q.map(function(q,i){
+    return '<div class="fld"><label>'+(i+1)+'. '+esc(q)+'</label><textarea id="q3-'+i+'" placeholder="記錄客戶回答…">'+esc(ans[i]||'')+'</textarea></div>';
+  }).join('');
+  var parsed=splitVersions(st.result||'');
+  window._verCache.s3=parsed;
+  box.innerHTML=
+    '<div class="page-head"><div class="ph-en">STAGE ③ · DEEP INTERVIEW</div><h2 class="ph-title">深度問診</h2></div>'
+    +stageHead('挖出客戶自己沒說清楚的價值，把專業語言翻成市場語言。','stage3_interview')
+    +'<div class="section-card"><h3>① 產生問診提綱</h3><div class="sc-note">會帶入建檔（階段②）已填的客戶背景，請 AI 整理一份問診提綱，並可依產業特性追加客製問題。</div>'
+    +'<button class="btn btn-gold" onclick="buildStage3Prompt()">📋 產生問診提綱</button></div>'
+    +'<div class="section-card"><h3>② 問診記錄</h3><div class="sc-note">可以直接打字記錄客戶回答，也可把 AI 整理過的逐題結果貼進對應欄位。</div>'+qFields+'</div>'
+    +'<div class="section-card"><h3>③ 把 AI 整理的《深度問診整理書》貼回這裡</h3>'
+    +'<textarea class="paste-box" id="s3result" placeholder="貼回 AI 整理的整段（含【客戶版】【顧問版】）…">'+esc(st.result||'')+'</textarea>'
+    +'<button class="btn btn-go" style="margin-top:10px" onclick="saveStage3()">儲存問診結果</button></div>'
+    +'<div class="section-card"><h3>④ 交付物《深度問診整理書》</h3>'+verBlock('s3',parsed)+'</div>';
+}
+function buildStage3Prompt(){
+  var a=curAcc(); if(!a){ toast('⚠️ 尚未選定客戶'); return; }
+  var bgLines=[];
+  PROFILE_CATS.forEach(function(cat){
+    cat[2].forEach(function(fd){ var v=profileVal(a,cat[0],fd[0],fd[2]); if(v&&String(v).trim()) bgLines.push('・'+fd[1]+'：'+v); });
+  });
+  var bg=bgLines.length?bgLines.join('\n'):'（階段②尚未建檔，背景資料較少，請先盡量問出基本資訊）';
+  var p='我要幫客戶 '+(a.displayName||a.handle||'')+'（'+(a.industry||'產業未填')+'，'+(a.jobTitle||'職稱未填')+'）做深度問診。\n'
+    +'請根據以下背景，幫我整理一份深度問診提綱。\n\n'
+    +'【客戶背景】\n'+bg+'\n\n'
+    +'【請產出問診提綱，至少包含以下方向】\n'
+    +INTERVIEW_Q.map(function(q,i){ return (i+1)+'. '+q; }).join('\n')+'\n\n'
+    +'可依客戶產業特性追加 3-5 個客製問題。\n'
+    +'最後整理成《深度問診整理書》，分客戶版＋顧問版。\n'
+    +'【客戶版】乾淨、可給客戶看\n'
+    +'【顧問版】完整、保留判斷理由與風險';
+  copyPrompt(p,'問診提綱提示詞');
+}
+function saveStage3(){
+  var a=curAcc(); if(!a){ toast('⚠️ 尚未選定客戶'); return; }
+  var f=ensureFlow(a);
+  var ans={}; INTERVIEW_Q.forEach(function(q,i){ var el=$('q3-'+i); if(el&&el.value.trim()) ans[i]=el.value.trim(); });
+  var result=($('s3result')||{value:''}).value.trim();
+  var done=result||Object.keys(ans).length>=5;
+  f.stage3_interview={ status:done?'done':'in-progress', updatedAt:Date.now(), data:{ answers:ans, result:result } };
+  saveCurrent(true);
+  toast('✓ 問診結果已儲存並同步');
+  renderStage3();
+}
+
+/* ═══════════════ 內容健康分數 ═══════════════ */
+var HEALTH_ITEMS=[
+  [1,'定位清楚度'],[2,'服務可理解度'],[3,'目標客群明確度'],[4,'內容一致性'],[5,'專業信任感'],
+  [6,'人格記憶點'],[7,'視覺辨識度'],[8,'CTA 與轉換路徑'],[9,'內容資產可延展性'],[10,'拍攝執行成熟度']
+];
+function healthOf(a){
+  if(!a) return [];
+  var saved=(a.contentHealthScore&&a.contentHealthScore.items)||[];
+  return HEALTH_ITEMS.map(function(it){
+    var s=saved.find(function(x){ return x.id===it[0]; })||{};
+    return { id:it[0], label:it[1], score:(typeof s.score==='number'?s.score:0), note:s.note||'' };
+  });
+}
+function healthTotal(a){
+  var items=healthOf(a); var total=items.reduce(function(s,x){ return s+(x.score||0); },0);
+  var has=items.some(function(x){ return x.score>0; });
+  return { total:total, has:has };
+}
+function openHealthEditor(){
+  var a=curAcc(); if(!a){ toast('⚠️ 尚未選定客戶'); return; }
+  var sh=$('sheet'), md=$('modal'); if(!sh||!md) return;
+  var items=healthOf(a);
+  var rows=items.map(function(it){
+    var scs=[0,1,2,3,4,5].map(function(n){
+      return '<button class="sc'+(n===0?' z':'')+(it.score===n?' on':'')+'" data-hid="'+it.id+'" data-hsc="'+n+'">'+(n===0?'—':n)+'</button>';
+    }).join('');
+    return '<div class="health-row" style="flex-direction:column;align-items:stretch">'
+      +'<div style="display:flex;align-items:center;gap:10px"><span class="hr-lab">'+it.id+'. '+esc(it.label)+'</span><span class="hr-scores">'+scs+'</span></div>'
+      +'<input class="health-note" id="hn-'+it.id+'" value="'+esc(it.note)+'" placeholder="評分依據／備註（顧問版會保留）…"></div>';
+  }).join('');
+  var hs=healthTotal(a);
+  sh.innerHTML='<div style="padding:6px 4px 4px;position:relative">'
+    +'<button onclick="closeModal()" style="position:absolute;top:0;right:4px;background:none;border:none;font-size:22px;color:var(--sub);cursor:pointer;line-height:1">✕</button>'
+    +'<div style="font-family:\'Noto Serif TC\',serif;font-size:18px;font-weight:900;color:var(--rouge);padding-right:30px">內容健康分數</div>'
+    +'<div style="font-size:12px;color:var(--sub);margin:4px 0 12px">'+esc(a.handle||'')+' '+esc(a.displayName||'')+' · 10 項各 1–5 分，0＝待評分。目前 <b id="heTotal">'+hs.total+'</b>/50</div>'
+    +'<button class="btn btn-gold" style="margin-bottom:12px" onclick="buildHealthPrompt()">📋 產生健康評分提示詞（帶入已收集的客戶資料）</button>'
+    +rows
+    +'<div class="btn-row"><button class="btn btn-go" onclick="saveHealth()">儲存健康分數</button>'
+    +'<button class="btn btn-ghost" onclick="closeModal()">關閉</button></div></div>';
+  md.classList.add('show');
+  md.onclick=function(e){ if(e.target===md) closeModal(); };
+  sh.querySelectorAll('.sc').forEach(function(b){
+    b.onclick=function(){
+      var hid=b.dataset.hid;
+      sh.querySelectorAll('.sc[data-hid="'+hid+'"]').forEach(function(x){ x.classList.remove('on'); });
+      b.classList.add('on');
+      var t=0; sh.querySelectorAll('.hr-scores').forEach(function(grp){ var on=grp.querySelector('.sc.on'); if(on) t+=parseInt(on.dataset.hsc)||0; });
+      if($('heTotal')) $('heTotal').textContent=t;
+    };
+  });
+}
+function saveHealth(){
+  var a=curAcc(); if(!a){ toast('⚠️ 尚未選定客戶'); return; }
+  var sh=$('sheet');
+  var items=HEALTH_ITEMS.map(function(it){
+    var on=sh.querySelector('.sc.on[data-hid="'+it[0]+'"]');
+    var note=($('hn-'+it[0])||{value:''}).value.trim();
+    return { id:it[0], label:it[1], score:on?(parseInt(on.dataset.hsc)||0):0, note:note };
+  });
+  a.contentHealthScore={ items:items, updatedAt:Date.now() };
+  saveCurrent(true);
+  toast('✓ 健康分數已儲存並同步');
+  closeModal(); renderBanner(); renderSelect();
+}
+function buildHealthPrompt(){
+  var a=curAcc(); if(!a){ toast('⚠️ 尚未選定客戶'); return; }
+  var f=ensureFlow(a);
+  var parts=[];
+  parts.push('【客戶基本】\n品牌/帳號：'+(a.handle||'')+'\n顯示名稱：'+(a.displayName||'')+'\n產業：'+(a.industry||'')+'\n職稱：'+(a.jobTitle||''));
+  var s1=(f.stage1_initial&&f.stage1_initial.data&&f.stage1_initial.data.result)||'';
+  if(s1) parts.push('【初診結果】\n'+s1);
+  var bgLines=[];
+  PROFILE_CATS.forEach(function(cat){ cat[2].forEach(function(fd){ var v=profileVal(a,cat[0],fd[0],fd[2]); if(v&&String(v).trim()) bgLines.push('・'+fd[1]+'：'+v); }); });
+  if(bgLines.length) parts.push('【建檔資料】\n'+bgLines.join('\n'));
+  var s3=(f.stage3_interview&&f.stage3_interview.data&&f.stage3_interview.data.result)||'';
+  if(s3) parts.push('【問診整理】\n'+s3);
+  var p='我要幫這個客戶評「ATELIER 內容健康分數」。請根據以下已收集的所有資料，替 10 個面向各打 1–5 分（5 最好），並各寫一句評分依據。\n\n'
+    +parts.join('\n\n')+'\n\n'
+    +'【請評分的 10 個面向】\n'+HEALTH_ITEMS.map(function(it){ return it[0]+'. '+it[1]; }).join('\n')+'\n\n'
+    +'請輸出兩個版本：\n'
+    +'【客戶版】只給分數＋一句話說明＋「優先改善」建議（挑最該補的 2-3 項）\n'
+    +'【顧問版】保留每一項的評分依據、風險、缺口與推論';
+  copyPrompt(p,'健康評分提示詞');
+}
+
+/* ═══════════════ 共用片段 ═══════════════ */
+function stageHead(purpose,flowKey){
+  var a=curAcc(); var st=flowStatus(a,flowKey);
+  var cls=st==='done'?'done':st==='in-progress'?'prog':'';
+  return '<div class="stage-head"><span class="status-pill '+cls+'"><span class="pdot"></span>這位客戶在這階段：'+statusLabel(st)+'</span>'
+    +'<div class="sh-purpose">'+esc(purpose)+'</div></div>';
+}
+function needClientHTML(title){
+  return '<div class="locked-wrap"><div class="lk-ic">👤</div><h2>'+esc(title)+'</h2>'
+    +'<p>還沒選定服務對象。請先到「<a href="#" onclick="switchTo(\'select\');return false;">選擇客戶</a>」挑一位，再回到這個階段。</p></div>';
+}
+
+/* ═══════════════ 分頁切換 ═══════════════ */
+function switchTo(view){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('on',t.dataset&&t.dataset.view===view));
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('on'));
+  var el=$('view-'+view); if(el) el.classList.add('on');
+  if(view==='select') renderSelect();
+  else if(view==='stage1') renderStage1();
+  else if(view==='stage2') renderStage2();
+  else if(view==='stage3') renderStage3();
+  window.scrollTo(0,0);
+}
+document.querySelectorAll('.tab').forEach(function(tab){
+  if(tab.classList.contains('disabled')) return;
+  if(tab.classList.contains('back')) return; // 連結，讓瀏覽器自己跳 index.html
+  if(!tab.dataset.view) return;
+  tab.onclick=function(){ switchTo(tab.dataset.view); };
+});
+
+/* ═══════════════ 啟動 ═══════════════ */
+window.addEventListener('DOMContentLoaded', function(){
+  var btn=$('auth-btn'); if(btn) btn.addEventListener('click',_fbLogin);
+  ['auth-email','auth-password'].forEach(function(id){ var el=$(id); if(el) el.addEventListener('keydown',function(e){ if(e.key==='Enter') _fbLogin(); }); });
+  var rb=$('reloadBtn'); if(rb) rb.addEventListener('click',function(){ location.reload(); });
+  renderBanner();
+  _fbInit();
+});
+</script>
+</body>
+</html>
