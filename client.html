@@ -225,7 +225,7 @@ details.cat .cat-body{padding:14px 15px}
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">客戶服務台</span></span>
-    <span id="verBadge">cs-v1</span>
+    <span id="verBadge">cs-v1.1</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -706,19 +706,43 @@ function profileVal(a,catKey,fieldKey,prefillFn){
   if(prefillFn){ try{ return prefillFn(a)||''; }catch(e){ return ''; } }
   return '';
 }
+/* 讀「目前畫面上」的值：表單已渲染就讀 input（解析卡填入後也算），否則退回已存/帶入值 */
+function fieldVal(a,fd){
+  var el=$('p2-'+fd[0]);
+  if(el) return (el.value||'').trim();
+  return profileVal(a,null,fd[0],fd[2]);
+}
 function catCompleteness(a,cat){
   var fields=cat[2], filled=0;
-  fields.forEach(function(fd){ var v=profileVal(a,cat[0],fd[0],fd[2]); if(v&&String(v).trim()) filled++; });
+  fields.forEach(function(fd){ var v=fieldVal(a,fd); if(v&&String(v).trim()) filled++; });
   return { filled:filled, total:fields.length, pct:Math.round(filled/fields.length*100) };
+}
+/* 卡片解析共用：標籤正規化、欄位對照表、提示/空值判斷 */
+function _normLabel(s){ return String(s==null?'':s).replace(/\s+/g,'').replace(/／/g,'/').toLowerCase(); }
+function buildP2LabelMap(){
+  var m={};
+  PROFILE_CATS.forEach(function(cat){ cat[2].forEach(function(fd){ m[_normLabel(fd[1])]=fd[0]; }); });
+  return m;
+}
+function isHintVal(v){
+  if(!v) return true; v=String(v).trim();
+  if(v==='') return true;
+  if(/^[（(].*[）)]$/.test(v)) return true;
+  if(/^(待詢|待查|待補|待填|無|未填|未知|不明|查不到|沒有資料|n\/a|na|—|-|–)$/i.test(v)) return true;
+  return false;
+}
+/* 把「欄位：值」逐行拆出 → {標籤:值}（容許行首編號、項目符號） */
+function parseCardLines(raw){
+  var out=[];
+  (raw||'').split(/\r?\n/).forEach(function(line){
+    var m=line.match(/^\s*[*\-•·◦▪]?\s*(?:[\d０-９]{1,2}[a-zA-Z]?[.、)）]\s*)?([^：:]{1,24})\s*[：:]\s*(.+?)\s*$/);
+    if(m) out.push([m[1].trim(), m[2].trim()]);
+  });
+  return out;
 }
 function renderStage2(){
   var a=curAcc(); var box=$('view-stage2');
   if(!a){ box.innerHTML=needClientHTML('② 客戶資料建檔'); return; }
-  var squares=PROFILE_CATS.map(function(cat){
-    var c=catCompleteness(a,cat); var cls=c.pct>80?'hi':c.pct>=40?'mid':'lo';
-    var num=cat[1].replace(/[^❶-❽]/g,'')||cat[1].slice(0,1);
-    return '<div class="comp-sq '+cls+'"><div class="cs-i">'+num+'</div><div class="cs-p">'+c.pct+'%</div></div>';
-  }).join('');
   var cats=PROFILE_CATS.map(function(cat){
     var c=catCompleteness(a,cat);
     var body=cat[2].map(function(fd){
@@ -728,17 +752,88 @@ function renderStage2(){
       return '<div class="fld"><label>'+esc(fd[1])+(prefilled?'<span class="pre">已從帳號檔帶入</span>':'')+'</label>'
         +'<input type="text" id="p2-'+fd[0]+'" value="'+esc(v)+'"></div>';
     }).join('');
-    return '<details class="cat"><summary>'+esc(cat[1])+'<span class="cat-summary">'+c.filled+'/'+c.total+' 格</span></summary><div class="cat-body">'+body+'</div></details>';
+    return '<details class="cat"><summary>'+esc(cat[1])+'<span class="cat-summary" id="catsum-'+cat[0]+'">'+c.filled+'/'+c.total+' 格</span></summary><div class="cat-body">'+body+'</div></details>';
   }).join('');
   box.innerHTML=
     '<div class="page-head"><div class="ph-en">STAGE ② · CLIENT FILING</div><h2 class="ph-title">客戶資料建檔</h2></div>'
     +stageHead('把客戶變成工作台裡可被分析、可被比對的完整資料物件。帳號管理裡若已有 ICP／版面解析，會自動帶入、不必重填。','stage2_filing')
-    +'<div class="section-card"><h3>完整度總覽</h3><div class="sc-note">綠＝80% 以上、黃＝40–80%、紅＝低於 40%。</div><div class="comp-squares">'+squares+'</div>'
+    +'<div class="section-card" style="border-left:4px solid var(--gold)"><h3>⚡ 用 AI 一次填好（建議先做這步）</h3>'
+    +'<div class="sc-note">不用一格一格打字。按下產生提示詞 → 丟到 ChatGPT／Claude／Gemini，它會幫你查公開資料、把 8 大類欄位填成一張「建檔卡」→ 你把卡貼回下面 → 一鍵填入整張表單，再逐格檢查、修正，最後按「儲存客戶資料」。</div>'
+    +'<div class="fld"><label>（選填）任何你已經知道、想讓 AI 一起參考的資料</label><textarea id="s2extra" placeholder="例如：客戶官網連結、主力服務、之前聊到的重點…（沒有也可以留空）"></textarea></div>'
+    +'<button class="btn btn-gold" onclick="buildStage2FillPrompt()">📋 產生建檔提示詞</button>'
+    +'<div class="fld" style="margin-top:12px"><label>把 AI 填好的「建檔卡」貼回這裡</label><textarea class="paste-box" id="s2card" placeholder="貼回 ===ATELIER 客戶建檔卡=== 那整段…"></textarea></div>'
+    +'<button class="btn btn-go" onclick="parseStage2Card()">解析並填入下面表單</button>'
+    +'<div id="s2parseMsg" style="font-size:12px;margin-top:8px;line-height:1.7"></div></div>'
+    +'<div class="section-card"><h3>完整度總覽</h3><div class="sc-note">綠＝80% 以上、黃＝40–80%、紅＝低於 40%（會跟著你填的字即時更新）。</div><div class="comp-squares" id="p2squares"></div>'
     +'<div id="p2missBox" style="margin-top:8px"></div></div>'
-    +'<div class="section-card"><h3>8 大類資料</h3><div class="sc-note">每填一格按下方「儲存」就會即時更新完整度。</div>'+cats+'</div>'
-    +'<button class="btn btn-go" onclick="saveStage2()">儲存客戶資料</button>'
+    +'<div class="section-card" id="p2section"><h3>8 大類資料</h3><div class="sc-note">解析卡會把值填進這裡；你可以逐格檢查、修改。填完按下方「儲存」即建檔並同步。</div>'+cats+'</div>'
+    +'<button class="btn btn-go" onclick="saveStage2()">儲存客戶資料（建檔）</button>'
     +'<button class="btn btn-ghost" style="margin-top:8px" onclick="copyStage2Missing()">複製「不夠完整的欄位」清單（去問客戶）</button>';
+  recomputeStage2();
+  var sec=$('p2section'); if(sec) sec.querySelectorAll('input').forEach(function(el){ el.addEventListener('input',recomputeStage2); });
+}
+/* 重算完整度方塊＋各類「X/Y 格」＋缺漏清單（全部讀目前畫面上的值，解析填入後也會更新） */
+function recomputeStage2(){
+  var a=curAcc(); if(!a) return;
+  var sq=$('p2squares');
+  if(sq){ sq.innerHTML=PROFILE_CATS.map(function(cat){
+    var c=catCompleteness(a,cat); var cls=c.pct>80?'hi':c.pct>=40?'mid':'lo';
+    var num=cat[1].replace(/[^❶-❽]/g,'')||cat[1].slice(0,1);
+    var ss=$('catsum-'+cat[0]); if(ss) ss.textContent=c.filled+'/'+c.total+' 格';
+    return '<div class="comp-sq '+cls+'"><div class="cs-i">'+num+'</div><div class="cs-p">'+c.pct+'%</div></div>';
+  }).join(''); }
   renderStage2Missing();
+}
+function buildStage2FillPrompt(){
+  var a=curAcc(); if(!a){ toast('⚠️ 尚未選定客戶'); return; }
+  var f=ensureFlow(a);
+  var extra=($('s2extra')||{value:''}).value.trim();
+  /* 把已知的東西先攤給 AI 當底（基本資訊＋初診結果＋帳號既有 ICP），它只要補沒填的 */
+  var known=[];
+  if(a.handle) known.push('品牌/帳號：'+a.handle);
+  if(a.displayName) known.push('顯示名稱：'+a.displayName);
+  if(a.industry) known.push('產業：'+a.industry);
+  if(a.jobTitle) known.push('職稱：'+a.jobTitle);
+  var s1=(f.stage1_initial&&f.stage1_initial.data&&f.stage1_initial.data.result)||'';
+  /* 欄位清單（照 8 大類列出，AI 一字不差照抄欄位名稱） */
+  var catList=PROFILE_CATS.map(function(cat){
+    return cat[1]+'\n'+cat[2].map(function(fd){ return '  - '+fd[1]; }).join('\n');
+  }).join('\n');
+  var p='我要幫一個客戶「建檔」。請你用公開資料（官網、IG、Google、Google Maps）研究這個客戶，盡量把下面所有欄位填出來，產出一張「ATELIER 客戶建檔卡」。\n\n'
+    +'【已知資訊】\n'+(known.length?known.join('\n'):'（很少，請盡量查）')+'\n\n'
+    +(s1?('【會前初診觀察（可參考）】\n'+s1+'\n\n'):'')
+    +(extra?('【我額外提供的資料】\n'+extra+'\n\n'):'')
+    +'【請填寫的欄位（8 大類）】\n'+catList+'\n\n'
+    +'【輸出規則 · 很重要】\n'
+    +'1. 用「欄位名稱：值」格式，一行一個欄位，欄位名稱請一字不差照抄上面的字（不要改寫、不要加註）。\n'
+    +'2. 查得到就填具體內容；真的查不到的欄位填「待詢」。不要整段省略，每個欄位都要出現一行。\n'
+    +'3. 不要寫多餘的解釋或前後語，只輸出卡片本身。\n'
+    +'4. 第一行寫 ===ATELIER 客戶建檔卡=== ，最後一行寫 ===卡片結束=== 。\n\n'
+    +'請開始。';
+  copyPrompt(p,'建檔提示詞（AI 一次填好）');
+}
+function parseStage2Card(){
+  var a=curAcc(); if(!a){ toast('⚠️ 尚未選定客戶'); return; }
+  var raw=($('s2card')||{value:''}).value;
+  var msg=$('s2parseMsg');
+  if(!raw.trim()){ if(msg) msg.innerHTML='<span style="color:var(--rouge)">⚠️ 貼回框是空的——先把 AI 產出的建檔卡貼進來。</span>'; return; }
+  var map=buildP2LabelMap();
+  var pairs=parseCardLines(raw);
+  var filled=0, skipped=0, unmatched=[];
+  pairs.forEach(function(pr){
+    var key=map[_normLabel(pr[0])];
+    if(!key){ if(!/^=+/.test(pr[0])) unmatched.push(pr[0]); return; }
+    if(isHintVal(pr[1])){ skipped++; return; }
+    var el=$('p2-'+key); if(el){ el.value=pr[1]; filled++; }
+  });
+  recomputeStage2();
+  if(msg){
+    if(!filled && !skipped){ msg.innerHTML='<span style="color:var(--rouge)">⚠️ 一格都沒對上。請確認你貼的是「建檔卡」（每行是「欄位名稱：值」），不是提示詞本身。</span>'; }
+    else { msg.innerHTML='<span style="color:var(--green);font-weight:700">✓ 已填入 '+filled+' 格</span>'+(skipped?'<span style="color:var(--gold-dark)">　·　跳過 '+skipped+' 格（值是「待詢」之類的空值）</span>':'')
+      +(unmatched.length?('<div style="color:var(--sub);margin-top:4px">沒對上的欄位名（已略過）：'+esc(unmatched.slice(0,8).join('、'))+(unmatched.length>8?' …':'')+'</div>'):'')
+      +'<div style="color:var(--sub);margin-top:4px">請往下逐格檢查、修正，再按「儲存客戶資料（建檔）」。</div>'; }
+  }
+  toast(filled?('✓ 已填入 '+filled+' 格，請檢查後儲存'):'沒有對上的欄位');
 }
 function readStage2(){
   var out={};
@@ -747,7 +842,7 @@ function readStage2(){
 }
 function stage2Missing(a){
   var miss=[];
-  PROFILE_CATS.forEach(function(cat){ cat[2].forEach(function(fd){ var v=profileVal(a,cat[0],fd[0],fd[2]); if(!v||!String(v).trim()) miss.push(cat[1]+' → '+fd[1]); }); });
+  PROFILE_CATS.forEach(function(cat){ cat[2].forEach(function(fd){ var v=fieldVal(a,fd); if(!v||!String(v).trim()) miss.push(cat[1]+' → '+fd[1]); }); });
   return miss;
 }
 function renderStage2Missing(){
@@ -804,11 +899,56 @@ function renderStage3(){
     +stageHead('挖出客戶自己沒說清楚的價值，把專業語言翻成市場語言。','stage3_interview')
     +'<div class="section-card"><h3>① 產生問診提綱</h3><div class="sc-note">會帶入建檔（階段②）已填的客戶背景，請 AI 整理一份問診提綱，並可依產業特性追加客製問題。</div>'
     +'<button class="btn btn-gold" onclick="buildStage3Prompt()">📋 產生問診提綱</button></div>'
-    +'<div class="section-card"><h3>② 問診記錄</h3><div class="sc-note">可以直接打字記錄客戶回答，也可把 AI 整理過的逐題結果貼進對應欄位。</div>'+qFields+'</div>'
-    +'<div class="section-card"><h3>③ 把 AI 整理的《深度問診整理書》貼回這裡</h3>'
+    +'<div class="section-card" style="border-left:4px solid var(--gold)"><h3>⚡ ② 讓 AI 先擬答、回填 10 題（選用）</h3>'
+    +'<div class="sc-note">想先有個底稿？按下產生提示詞，讓 AI 依客戶背景＋初診，先替 10 題各擬一份「可能的回答重點」→ 貼回下面 → 一鍵填進 10 題，之後正式問診時再跟客戶逐題核對、修正。</div>'
+    +'<button class="btn btn-gold" onclick="buildStage3DraftPrompt()">📋 產生問診初稿提示詞</button>'
+    +'<div class="fld" style="margin-top:12px"><label>把 AI 擬好的 10 題初稿貼回這裡</label><textarea class="paste-box" id="s3draft" placeholder="貼回「第1題：… / 第2題：…」那整段…"></textarea></div>'
+    +'<button class="btn btn-go" onclick="parseStage3Draft()">解析並回填 10 題</button>'
+    +'<div id="s3parseMsg" style="font-size:12px;margin-top:8px;line-height:1.7"></div></div>'
+    +'<div class="section-card"><h3>③ 問診記錄</h3><div class="sc-note">可以直接打字記錄客戶回答，AI 初稿也會填進這裡，正式問診時逐題核對、修改。</div>'+qFields+'</div>'
+    +'<div class="section-card"><h3>④ 把 AI 整理的《深度問診整理書》貼回這裡</h3>'
     +'<textarea class="paste-box" id="s3result" placeholder="貼回 AI 整理的整段（含【客戶版】【顧問版】）…">'+esc(st.result||'')+'</textarea>'
     +'<button class="btn btn-go" style="margin-top:10px" onclick="saveStage3()">儲存問診結果</button></div>'
-    +'<div class="section-card"><h3>④ 交付物《深度問診整理書》</h3>'+verBlock('s3',parsed)+'</div>';
+    +'<div class="section-card"><h3>⑤ 交付物《深度問診整理書》</h3>'+verBlock('s3',parsed)+'</div>';
+}
+function buildStage3DraftPrompt(){
+  var a=curAcc(); if(!a){ toast('⚠️ 尚未選定客戶'); return; }
+  var f=ensureFlow(a);
+  var bgLines=[];
+  PROFILE_CATS.forEach(function(cat){ cat[2].forEach(function(fd){ var v=profileVal(a,cat[0],fd[0],fd[2]); if(v&&String(v).trim()) bgLines.push('・'+fd[1]+'：'+v); }); });
+  var bg=bgLines.length?bgLines.join('\n'):'（階段②尚未建檔，背景較少，請依公開資料盡量推測）';
+  var s1=(f.stage1_initial&&f.stage1_initial.data&&f.stage1_initial.data.result)||'';
+  var p='我要幫客戶 '+(a.displayName||a.handle||'')+'（'+(a.industry||'產業未填')+'，'+(a.jobTitle||'職稱未填')+'）做深度問診。\n'
+    +'在正式跟客戶談之前，請你依下面背景，替每一題「先擬一份可能的回答重點」當作我的底稿（之後我會跟客戶逐題核對）。\n\n'
+    +'【客戶背景】\n'+bg+'\n\n'
+    +(s1?('【會前初診觀察（可參考）】\n'+s1+'\n\n'):'')
+    +'【要擬答的 10 題】\n'+INTERVIEW_Q.map(function(q,i){ return (i+1)+'. '+q; }).join('\n')+'\n\n'
+    +'【輸出規則 · 很重要】\n'
+    +'1. 用「第N題：<回答重點>」格式，一題一行（第1題到第10題都要有）。\n'
+    +'2. 每題的回答重點請壓在同一行內，若有多個重點用「；」分隔，不要換行、不要分段。\n'
+    +'3. 這是「推測的底稿」，不確定處可標（待向客戶確認）。\n'
+    +'4. 只輸出這 10 行，前後不要多餘說明。\n\n'
+    +'請開始。';
+  copyPrompt(p,'問診初稿提示詞');
+}
+function parseStage3Draft(){
+  var a=curAcc(); if(!a){ toast('⚠️ 尚未選定客戶'); return; }
+  var raw=($('s3draft')||{value:''}).value;
+  var msg=$('s3parseMsg');
+  if(!raw.trim()){ if(msg) msg.innerHTML='<span style="color:var(--rouge)">⚠️ 貼回框是空的。</span>'; return; }
+  var filled=0;
+  raw.split(/\r?\n/).forEach(function(line){
+    var m=line.match(/^\s*第\s*([\d０-９]{1,2})\s*題\s*[：:]\s*(.+?)\s*$/) || line.match(/^\s*([\d０-９]{1,2})\s*[.、)）]\s*(.+?)\s*$/);
+    if(!m) return;
+    var n=parseInt(String(m[1]).replace(/[０-９]/g,function(d){return '０１２３４５６７８９'.indexOf(d);}),10);
+    if(!(n>=1&&n<=INTERVIEW_Q.length)) return;
+    if(isHintVal(m[2])) return;
+    var el=$('q3-'+(n-1)); if(el){ el.value=m[2]; filled++; }
+  });
+  if(msg){ msg.innerHTML = filled
+    ? '<span style="color:var(--green);font-weight:700">✓ 已回填 '+filled+' 題</span><span style="color:var(--sub)">　·　請往下逐題核對、修改後按「儲存問診結果」。</span>'
+    : '<span style="color:var(--rouge)">⚠️ 一題都沒對上。請確認格式是「第N題：…」一題一行。</span>'; }
+  toast(filled?('✓ 已回填 '+filled+' 題'):'沒有對上的題目');
 }
 function buildStage3Prompt(){
   var a=curAcc(); if(!a){ toast('⚠️ 尚未選定客戶'); return; }
