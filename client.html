@@ -13,7 +13,7 @@
 <style>
 /* ═══ 品牌底層（與 index.html 影片診斷工作台一致）═══ */
 :root{
-  --primary:#A51820; --rouge:#A51820; --rouge-soft:#8E2A2E;
+  --primary:#A51820; --rouge:#A51820; --rouge-soft:#7A1518;
   --gold:#D4A574; --gold-soft:#EDE3D4; --gold-dark:#9C7D4A;
   --ink:#2A1A1C; --text:#5C4248; --sub:#8A7274;
   --bg:#FCFAF8; --warm:#FDF6F5; --card:#FFFFFF; --warm-white:#FDFBF8;
@@ -237,7 +237,7 @@ details.cat .cat-body{padding:14px 15px}
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">客戶服務台</span></span>
-    <span id="verBadge">cs-v1.2</span>
+    <span id="verBadge">cs-v1.3</span>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button type="button" id="popoutBtn" class="popout-btn" title="把客戶服務台開成獨立小視窗"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6"/><path d="M20 4l-9 9"/><path d="M14 12v7H5V10h7"/></svg>小視窗</button>
@@ -445,9 +445,28 @@ function _fbLogin(){
     _fbShowAuthError(map[err.code]||('登入失敗：'+err.code));
   });
 }
+/* ─── 一次性資料遷移：把 cs-v1.2 之前的單欄 result 拆成新版 resultClient/resultAdvisor，
+   讓所有後續流程（renderStage1/3、autosave、undo）都只看新欄位，不再為「該不該遷移」煩惱。 */
+function _migrateAccount(a){
+  if(!a) return;
+  var f=a.clientFlow; if(!f) return;
+  var s1=f.stage1_initial&&f.stage1_initial.data;
+  if(s1 && s1.result && (s1.resultClient==null && s1.resultAdvisor==null)){
+    var m1=splitVersions(s1.result);
+    s1.resultClient=m1.client||''; s1.resultAdvisor=m1.advisor||'';
+  }
+  var s3=f.stage3_interview&&f.stage3_interview.data;
+  if(s3 && s3.result && (s3.resultClient==null && s3.resultAdvisor==null)){
+    var m3=splitVersions(s3.result);
+    s3.resultClient=m3.client||''; s3.resultAdvisor=m3.advisor||'';
+  }
+}
+function _migrateAll(){ if(Array.isArray(accounts)) accounts.forEach(_migrateAccount); }
+
 function _localLoad(){
   try{ var a=localStorage.getItem(ACC_LS_KEY); accounts=a?JSON.parse(a):[]; }catch(e){ accounts=[]; }
   try{ var v=localStorage.getItem(VID_LS_KEY); videos=v?JSON.parse(v):[]; }catch(e){ videos=[]; }
+  _migrateAll();
   _afterData();
 }
 /* ─── 4) 帳號 / 影片 即時訂閱 ─── */
@@ -456,6 +475,7 @@ function _accSubscribe(){
   _accUnsub=_fbDB.collection(ACC_COLLECTION).doc(ATELIER_DOC_ID).onSnapshot(function(doc){
     if(doc.exists){ var d=doc.data(); if(d&&Array.isArray(d.accounts)){
       accounts=d.accounts;
+      _migrateAll();
       try{ localStorage.setItem(ACC_LS_KEY, JSON.stringify(accounts)); }catch(e){}
       _afterData(); _fbStatus('connected',_connText());
     }}
@@ -525,10 +545,14 @@ function _currentSnap(){
 /* 把目前 DOM 上的 stage 1/2/3 輸入讀進 a.clientFlow / a.clientProfile（沒渲染的階段就跳過） */
 function _readStage1ToData(a){
   if(!$('s1c-web')) return false;
-  var sources={}; CHECK_SOURCES.forEach(function(s){ var cb=$('s1c-'+s[0]),nt=$('s1n-'+s[0]); sources[s[0]]={checked:cb?cb.checked:false, note:nt?nt.value.trim():''}; });
-  var result=($('s1result')||{value:''}).value.trim();
+  var sources={}; CHECK_SOURCES.forEach(function(s){ var cb=$('s1c-'+s[0]),nt=$('s1n-'+s[0]); if(!cb&&!nt) return; sources[s[0]]={checked:cb?cb.checked:false, note:nt?nt.value.trim():''}; });
+  var frameworks={}; STAGE1_FRAMEWORKS.forEach(function(fw){ var ta=$('s1fw-'+fw[0]); if(ta&&ta.value.trim()) frameworks[fw[0]]=ta.value.trim(); });
+  var resultC=($('s1resultC')||{value:''}).value.trim();
+  var resultA=($('s1resultA')||{value:''}).value.trim();
   var f=ensureFlow(a); var existed=f.stage1_initial||{};
-  f.stage1_initial={status:existed.status==='done'?'done':(result?'done':'in-progress'), updatedAt:Date.now(), data:{sources:sources, result:result}};
+  var done=(resultC||resultA)?'done':existed.status;
+  f.stage1_initial={status:existed.status==='done'?'done':(done||'in-progress'), updatedAt:Date.now(),
+    data:{sources:sources, frameworks:frameworks, resultClient:resultC, resultAdvisor:resultA, /* 留著舊欄位以相容 */ result:(existed.data&&existed.data.result)||''}};
   return true;
 }
 function _readStage2ToData(a){
@@ -545,10 +569,12 @@ function _readStage2ToData(a){
 function _readStage3ToData(a){
   if(!$('q3-0')) return false;
   var ans={}; INTERVIEW_Q.forEach(function(q,i){ var el=$('q3-'+i); if(el&&el.value.trim()) ans[i]=el.value.trim(); });
-  var result=($('s3result')||{value:''}).value.trim();
+  var resultC=($('s3resultC')||{value:''}).value.trim();
+  var resultA=($('s3resultA')||{value:''}).value.trim();
   var f=ensureFlow(a); var existed=f.stage3_interview||{};
-  var done = result || Object.keys(ans).length>=5;
-  f.stage3_interview={status:existed.status==='done'?'done':(done?'done':'in-progress'), updatedAt:Date.now(), data:{answers:ans, result:result}};
+  var done = (resultC||resultA) || Object.keys(ans).length>=5;
+  f.stage3_interview={status:existed.status==='done'?'done':(done?'done':'in-progress'), updatedAt:Date.now(),
+    data:{answers:ans, resultClient:resultC, resultAdvisor:resultA, result:(existed.data&&existed.data.result)||''}};
   return true;
 }
 function _draftSaveAll(){
@@ -590,6 +616,55 @@ function undoLast(){
   toast(ICN.undo+' 已回到上一步');
 }
 
+/* ─── 7b) 查看全貌：把這位客戶到目前為止「所有」收集到的資料攤平在一個彈窗 ─── */
+function openOverview(){
+  var a=curAcc(); if(!a){ toast(ICN.warn+' 尚未選定客戶'); return; }
+  /* 先把畫面上未存的東西寫進 data，再讀 */
+  _flushAutoSave();
+  var sh=$('sheet'), md=$('modal'); if(!sh||!md) return;
+  var f=a.clientFlow||{}; var cp=a.clientProfile||{};
+  function block(title,bodyHTML){ return '<details class="ovBlock" open style="border:1px solid var(--border);border-radius:9px;padding:10px 12px;margin-bottom:10px;background:#fff"><summary style="cursor:pointer;font-weight:700;color:var(--ink);font-size:13.5px">'+esc(title)+'</summary><div style="margin-top:8px;font-size:13px;line-height:1.7;color:var(--text)">'+bodyHTML+'</div></details>'; }
+  function kv(k,v){ if(v==null||String(v).trim()==='') return ''; return '<div style="margin-bottom:4px"><span style="color:var(--sub);font-size:11.5px">'+esc(k)+'：</span><span>'+esc(v)+'</span></div>'; }
+  function pre(text){ if(!text||!String(text).trim()) return '<div style="color:var(--sub);font-size:12px">（尚未填）</div>'; return '<pre style="white-space:pre-wrap;word-break:break-word;font-family:inherit;background:var(--warm);border-radius:6px;padding:8px 10px;font-size:12.5px;line-height:1.7;color:var(--ink);margin:0">'+esc(text)+'</pre>'; }
+  /* ① 初診 來源 + 5 框架 + 兩版交付物 */
+  var s1=(f.stage1_initial&&f.stage1_initial.data)||{};
+  var s1Sources=Object.keys(s1.sources||{}).map(function(k){ var lab=(CHECK_SOURCES.filter(function(s){return s[0]===k;})[0]||['',k])[1]; var v=s1.sources[k]||{}; return (v.note?kv(lab,v.note):''); }).filter(Boolean).join('') || '<div style="color:var(--sub);font-size:12px">（沒有任何來源備註）</div>';
+  var s1Fws=Object.keys(s1.frameworks||{}).map(function(k){ var lab=(STAGE1_FRAMEWORKS.filter(function(s){return s[0]===k;})[0]||['',k])[1]; return kv(lab, s1.frameworks[k]); }).filter(Boolean).join('') || '<div style="color:var(--sub);font-size:12px">（5 個進階判斷尚未填）</div>';
+  var s1Ver='<div style="font-weight:700;margin:6px 0 4px;color:var(--rouge)">客戶版</div>'+pre(s1.resultClient||'')
+           +'<div style="font-weight:700;margin:8px 0 4px;color:var(--rouge)">顧問版</div>'+pre(s1.resultAdvisor||'');
+  /* ② 8 大類 */
+  var s2Body=PROFILE_CATS.map(function(cat){
+    var lines=cat[2].map(function(fd){ var v=cp[fd[0]]; return v?kv(fd[1],v):''; }).filter(Boolean).join('');
+    if(!lines) return '';
+    return '<div style="margin-top:8px;font-weight:700;color:var(--ink);font-size:13px">'+esc(cat[1])+'</div>'+lines;
+  }).filter(Boolean).join('') || '<div style="color:var(--sub);font-size:12px">（8 大類尚未開始填）</div>';
+  /* ③ 10 問 + 兩版交付物 */
+  var s3=(f.stage3_interview&&f.stage3_interview.data)||{};
+  var s3Ans=Object.keys(s3.answers||{}).sort(function(a,b){return +a-+b;}).map(function(i){ return kv((+i+1)+'. '+(INTERVIEW_Q[+i]||''), s3.answers[i]); }).join('') || '<div style="color:var(--sub);font-size:12px">（10 問尚未開始）</div>';
+  var s3Ver='<div style="font-weight:700;margin:6px 0 4px;color:var(--rouge)">客戶版</div>'+pre(s3.resultClient||'')
+           +'<div style="font-weight:700;margin:8px 0 4px;color:var(--rouge)">顧問版</div>'+pre(s3.resultAdvisor||'');
+  /* 健康分數 */
+  var hs=healthTotal(a); var hsItems=hs.has?healthOf(a):[];
+  var hsBody=hs.has?('<div style="font-weight:700;margin-bottom:6px">總分 <span style="color:var(--rouge)">'+hs.total+'</span> / 50</div>'
+    +hsItems.map(function(it){ return '<div style="margin-bottom:6px"><span style="color:var(--sub);font-size:11.5px">'+it.id+'. '+esc(it.label)+'</span>　<b>'+(it.score||'—')+'</b>'+(it.note?('<div style="font-size:12px;color:var(--text);margin-top:2px;padding-left:8px">'+esc(it.note)+'</div>'):'')+'</div>'; }).join('')) : '<div style="color:var(--sub);font-size:12px">（健康分數尚未評）</div>';
+  /* 組合彈窗 */
+  sh.innerHTML='<div style="padding:18px 18px 16px;position:relative">'
+    +'<button onclick="closeModal()" style="position:absolute;top:12px;right:14px;background:none;border:none;color:var(--sub);cursor:pointer;line-height:1;padding:4px" title="關閉">'+ICN.close+'</button>'
+    +'<div style="font-family:\'Noto Serif TC\',serif;font-size:18px;font-weight:900;color:var(--rouge);padding-right:30px">查看全貌</div>'
+    +'<div style="font-size:12px;color:var(--sub);margin:4px 0 14px">'+esc(a.handle||'')+' '+esc(a.displayName||'')+(a.industry?' · '+esc(a.industry):'')+(a.jobTitle?' · '+esc(a.jobTitle):'')+' — 把這位客戶到目前為止所有填好的資料一次看完。</div>'
+    +block('① 公開資料初診 · 資料來源備註', s1Sources)
+    +block('① 公開資料初診 · 5 個進階判斷', s1Fws)
+    +block('① 公開資料初診 · 交付物', s1Ver)
+    +block('② 客戶資料建檔 · 8 大類', s2Body)
+    +block('③ 深度問診 · 10 題回答', s3Ans)
+    +block('③ 深度問診 · 交付物', s3Ver)
+    +block('內容健康分數', hsBody)
+    +'<div class="btn-row" style="margin-top:14px"><button class="btn btn-ghost" onclick="closeModal()">關閉</button></div>'
+    +'</div>';
+  md.classList.add('show');
+  md.onclick=function(e){ if(e.target===md) closeModal(); };
+}
+
 /* ─── 7) 提示條（含「上一步」與「自動暫存」狀態）─── */
 function renderBanner(flash){
   var b=$('csBanner'); if(!b) return;
@@ -602,6 +677,7 @@ function renderBanner(flash){
   b.innerHTML='<span>目前服務：<span class="who">'+esc(a.handle||'@?')+' '+esc(a.displayName||'')+'</span></span>'
     +'<span class="hs">內容健康分數 <b>'+(hs.has?hs.total:'—')+'</b>/50</span>'
     +'<button class="mini-btn" onclick="openHealthEditor()">評分</button>'
+    +'<button class="mini-btn" onclick="openOverview()" title="把這位客戶目前所有已填資料一次看完">查看全貌</button>'
     +'<button class="mini-btn" onclick="undoLast()"'+(canUndo?'':' disabled')+' title="把目前畫面回退到上一個自動暫存點">'+ICN.undo+' 上一步'+(canUndo?(' ('+(_undoStack.length-1)+')'):'')+'</button>'
     +'<span class="savestate'+(flash?' flash':'')+'" id="ssBadge">'+(flash?ICN.check:'')+' '+esc(sstxt)+'</span>';
   if(flash){ setTimeout(function(){ var ss=$('ssBadge'); if(ss) ss.classList.remove('flash'); },1100); }
@@ -646,13 +722,23 @@ function cliCard(a){
     +'</div>';
 }
 function pickClient(id){
+  /* 先把目前這位客戶（如果有的話）的未存內容存起來，避免換人時把舊 DOM 灌到新人身上 */
+  if(curAcc()) _flushAutoSave();
   currentClientId=id;
   try{ sessionStorage.setItem('atelier_cs_current',id); }catch(e){}
-  _undoStack=[]; _lastDraftAt=''; _pushSnap(_currentSnap());
+  /* 清掉所有階段視圖的 DOM——這樣下一次 switchTo→_flushAutoSave 時，
+     $('s1c-web') / $('p2-brandName') / $('q3-0') 都不存在，_readStageNToData 會乾淨地 bail，
+     不會把上一位客戶的內容寫到新客戶身上 */
+  ['view-stage1','view-stage2','view-stage3'].forEach(function(vid){ var v=$(vid); if(v) v.innerHTML=''; });
+  /* 再保險一次：確保剛載入的這位客戶資料是最新格式 */
+  _migrateAccount(curAcc());
+  _undoStack=[]; _lastDraftAt='';
   renderBanner(); renderSelect();
   var a=curAcc();
   toast('已選定服務對象：'+((a&&a.handle)||''));
   switchTo('stage1');
+  /* switchTo 觸發 renderStage1，DOM 已經帶著（遷移過的）正確內容。現在再抓一張初始快照給 undo 用。 */
+  _pushSnap(_currentSnap());
 }
 
 /* ─── 9) 版本拆分（客戶版／顧問版）─── */
@@ -670,15 +756,16 @@ function splitVersions(text){
   return { client:client, advisor:advisor, split:true };
 }
 function verBlock(prefix,parsed){
+  var hasC=!!(parsed&&parsed.client), hasA=!!(parsed&&parsed.advisor);
   return '<div class="ver-switch">'
-    +'<button class="ver-btn on" id="'+prefix+'-cbtn" onclick="verSwitch(\''+prefix+'\',\'client\')">客戶版</button>'
-    +'<button class="ver-btn" id="'+prefix+'-abtn" onclick="verSwitch(\''+prefix+'\',\'advisor\')">顧問版</button></div>'
-    +'<div class="ver-body'+(parsed.client?'':' empty')+'" id="'+prefix+'-cbody">'+(parsed.client?esc(parsed.client):(parsed.split?'（這版沒拆出客戶版）':'AI 沒有分版輸出 — 請回 AI 對話框，要求用【客戶版】【顧問版】兩段重給，再貼回。'))+'</div>'
-    +'<div class="ver-body empty" id="'+prefix+'-abody" style="display:none">'+(parsed.advisor?esc(parsed.advisor):'（無內容）')+'</div>'
+    +'<button class="ver-btn on" id="'+prefix+'-cbtn" onclick="verSwitch(\''+prefix+'\',\'client\')">客戶版'+(hasC?' '+ICN.check:'')+'</button>'
+    +'<button class="ver-btn" id="'+prefix+'-abtn" onclick="verSwitch(\''+prefix+'\',\'advisor\')">顧問版'+(hasA?' '+ICN.check:'')+'</button></div>'
+    +'<div class="ver-body'+(hasC?'':' empty')+'" id="'+prefix+'-cbody">'+(hasC?esc(parsed.client):'尚未貼入客戶版內容 — 請到上面「客戶版」框貼入並儲存。')+'</div>'
+    +'<div class="ver-body'+(hasA?'':' empty')+'" id="'+prefix+'-abody" style="display:none">'+(hasA?esc(parsed.advisor):'尚未貼入顧問版內容 — 請到上面「顧問版」框貼入並儲存。')+'</div>'
     +'<div class="btn-row">'
     +'<button class="btn btn-ghost" onclick="copyVal(_verText(\''+prefix+'\',\'client\'),\'客戶版\')">複製客戶版</button>'
     +'<button class="btn btn-ghost" onclick="copyVal(_verText(\''+prefix+'\',\'advisor\'),\'顧問版\')">複製顧問版</button></div>'
-    +'<div style="font-size:11px;color:var(--sub);text-align:center;margin-top:8px">未來版本：匯出 PDF</div>';
+    +'<div style="font-size:11px;color:var(--sub);text-align:center;margin-top:8px">未來版本：匯出 PDF / HTML / PPT</div>';
 }
 window._verCache={};
 function _verText(prefix,which){ var c=window._verCache[prefix]||{}; return which==='client'?(c.client||''):(c.advisor||''); }
@@ -694,38 +781,74 @@ var CHECK_SOURCES=[
   ['web','官網'],['google','Google 搜尋結果（搜品牌名＋主力服務）'],['maps','Google Maps 評價'],
   ['igHome','IG 首頁（Bio / 置頂 / Highlight）'],['igGrid','IG 貼文九宮格'],['igReels','IG Reels 九宮格'],
   ['service','服務頁 / 價目'],['people','人物介紹頁'],['entry','LINE / 表單 / 預約入口'],
-  ['pastData','過去影片數據（觀看／互動）'],['rivals','同行對標帳號']
+  ['pastData','過去影片數據（觀看／互動）'],['rivals','同行對標帳號'],
+  ['fb','Facebook'],['threads','Threads'],['youtube','YouTube'],
+  ['otherSite','其他官方網站／部落格'],['news','新聞媒體報導／公開輿論']
+];
+/* 「進階初診判斷」5 個框架（讓提案變強的前置） */
+var STAGE1_FRAMEWORKS=[
+  ['searchMap','搜尋入口地圖','記錄觀眾從哪裡找到他（Google / IG / Maps / LINE / 官網 / 新聞 / Threads / YouTube），以及哪一個入口主導第一印象。'],
+  ['trustPath','信任路徑檢查','從觀眾看到 → 想聯絡的路徑上，每一段有沒有斷：Bio 清楚？置頂建立信任？官網有案例／背書？LINE CTA 明確？服務頁讓人知道可以買什麼？'],
+  ['hitTopics','爆款題型反推','從過去觀看／互動最高的內容，反推他真正的爆點是什麼題型；分成 To-C 流量題 / To-B 精準轉化題 / 信任題 三條線。'],
+  ['gapList','缺口清單','現在「少」了什麼。例：Highlight 未分眾、Reels 產量低、服務入口不明、企業案例未短影音化、差異定位可再鮮明。'],
+  ['preQs','會前問題清單','正式提案前要直接問客戶的問題：最想賣哪項服務？想吸引企業主或一般民眾？LINE 詢問最多的是什麼？哪些案型最有利潤？哪些內容不能碰？']
 ];
 function renderStage1(){
   var a=curAcc(); var box=$('view-stage1');
   if(!a){ box.innerHTML=needClientHTML('① 公開資料初診'); return; }
   var f=ensureFlow(a); var st=(f.stage1_initial&&f.stage1_initial.data)||{};
+  /* === 一次性遷移：舊版單欄 result → 新版 resultClient/resultAdvisor === */
+  if(st.result && (st.resultClient==null && st.resultAdvisor==null)){
+    var migr=splitVersions(st.result);
+    st.resultClient=migr.client||''; st.resultAdvisor=migr.advisor||'';
+  }
   var savedSrc=st.sources||{};
+  var savedFw=st.frameworks||{};
   var rows=CHECK_SOURCES.map(function(s){
     var v=savedSrc[s[0]]||{checked:false,note:''};
     return '<div class="chk-row"><span class="cb"><input type="checkbox" id="s1c-'+s[0]+'" '+(v.checked?'checked':'')+'></span>'
       +'<div class="cbody"><div class="clab">'+esc(s[1])+'</div>'
       +'<input type="text" id="s1n-'+s[0]+'" value="'+esc(v.note||'')+'" placeholder="貼連結或簡短備註…"></div></div>';
   }).join('');
-  var parsed=splitVersions(st.result||'');
-  window._verCache.s1=parsed;
+  var fwRows=STAGE1_FRAMEWORKS.map(function(fw){
+    var v=savedFw[fw[0]]||'';
+    return '<div class="fld"><label>'+esc(fw[1])+'<span class="pre" style="background:transparent;border:0;color:var(--sub);font-weight:500">'+esc(fw[2])+'</span></label>'
+      +'<textarea id="s1fw-'+fw[0]+'" placeholder="會看完公開資料後寫下你的判斷…">'+esc(v)+'</textarea></div>';
+  }).join('');
+  var parsedC=st.resultClient||'', parsedA=st.resultAdvisor||'';
+  window._verCache.s1={client:parsedC, advisor:parsedA, split:!!(parsedC||parsedA)};
   box.innerHTML=
     '<div class="page-head"><div class="ph-en">STAGE ① · INITIAL SCAN</div><h2 class="ph-title">公開資料初診</h2></div>'
     +stageHead('只用公開資料，判斷這位客戶目前在市場上「被看見的樣子」——還沒跟客戶深聊就能做的分析。','stage1_initial')
-    +'<div class="section-card ai-fill"><h3>'+ICN.spark+'用 AI 一次幫你查好、填好下方核對清單（建議先做這步）</h3>'
-    +'<div class="sc-note">不用一條一條自己找。按下產生提示詞，讓 AI 用公開資料（官網、IG、Google、Google Maps…）逐條把 11 個來源查好、整理成一張《初診資料卡》→ 你把卡貼回下面 → 一鍵填進核對清單；之後再按「產生初診提示詞」做正式分析。</div>'
+    +'<div class="section-card ai-fill"><h3>'+ICN.spark+'用 AI 一次幫你查好、填好（建議先做這步）</h3>'
+    +'<div class="sc-note">不用一條一條自己找。按下產生提示詞，讓 AI 用公開資料逐條把 '+CHECK_SOURCES.length+' 個來源 ＋ 5 個進階判斷查好、整理成一張《初診資料卡》→ 你把卡貼回下面 → 一鍵填進整張頁面；之後再按「產生初診提示詞」做正式分析。</div>'
     +'<div class="fld"><label>（選填）任何你已經知道、想讓 AI 一起參考的資料</label><textarea id="s1extra" placeholder="例如：客戶官網連結、過去合作的觀察…（沒有也可以留空）"></textarea></div>'
     +'<button class="btn btn-gold" onclick="buildStage1FillPrompt()">'+ICN.prompt+'產生資料蒐集提示詞</button>'
     +'<div class="fld" style="margin-top:12px"><label>把 AI 整理好的《初診資料卡》貼回這裡</label><textarea class="paste-box" id="s1card" placeholder="貼回 ===ATELIER 初診資料卡=== 那整段…"></textarea></div>'
-    +'<button class="btn btn-go" onclick="parseStage1Card()">解析並填入下方核對清單</button>'
+    +'<button class="btn btn-go" onclick="parseStage1Card()">解析並填入下方所有欄位</button>'
     +'<div id="s1parseMsg" style="font-size:12px;margin-top:8px;line-height:1.7"></div></div>'
-    +'<div class="section-card"><h3>① 資料來源核對清單</h3><div class="sc-note">勾選你查過的來源，旁邊可貼連結或備註。下面產生提示詞時，這些備註會自動帶進去。</div>'+rows+'</div>'
-    +'<div class="section-card"><h3>② 提示詞產生器</h3><div class="sc-note">按下會把客戶基本資訊＋你上面填的備註組成完整提示詞，複製到 ChatGPT／Claude／Gemini 去跑。</div>'
+    +'<div class="section-card"><h3>① 資料來源核對清單（'+CHECK_SOURCES.length+' 個）</h3><div class="sc-note">勾選你查過的來源，旁邊可貼連結或備註。下面產生提示詞時，這些備註會自動帶進去。</div>'+rows+'</div>'
+    +'<div class="section-card"><h3>② 進階初診判斷（5 個讓提案變強的前置框架）</h3><div class="sc-note">這 5 項可以自己填，也會被「用 AI 一次填好」一起寫進來。寫完按下方「儲存初診結果」。</div>'+fwRows+'</div>'
+    +'<div class="section-card"><h3>③ 提示詞產生器（產出正式分析）</h3><div class="sc-note">按下會把客戶基本資訊＋上面所有備註與 5 個判斷組成完整提示詞，複製到 AI 對話框去跑，得出《會前初步觀察與需求對焦》。</div>'
     +'<button class="btn btn-gold" onclick="buildStage1Prompt()">'+ICN.prompt+'產生初診提示詞</button></div>'
-    +'<div class="section-card"><h3>③ 把 AI 產出貼回這裡</h3><div class="sc-note">貼回後按儲存，系統會自動拆「客戶版／顧問版」。</div>'
-    +'<textarea class="paste-box" id="s1result" placeholder="把 AI 產出的《會前初步觀察與需求對焦》整段貼回這裡…">'+esc(st.result||'')+'</textarea>'
-    +'<button class="btn btn-go" style="margin-top:10px" onclick="saveStage1()">儲存初診結果</button></div>'
-    +'<div class="section-card"><h3>④ 交付物《會前初步觀察與需求對焦》</h3>'+verBlock('s1',parsed)+'</div>';
+    +'<div class="section-card"><h3>④ 把 AI 產出貼回（分成「客戶版」「顧問版」兩個獨立框）</h3>'
+    +'<div class="sc-note">兩個框各自獨立——你想把 AI 整段放哪邊就放哪邊；不再依賴自動拆。每邊都可以「清除」單獨重貼。</div>'
+    +'<div class="fld"><label>客戶版（給客戶看的乾淨版）</label>'
+    +'<textarea class="paste-box" id="s1resultC" placeholder="把 AI 整理出的「客戶版」整段貼回這裡…">'+esc(parsedC)+'</textarea>'
+    +'<button class="btn btn-ghost" style="margin-top:6px;font-size:12px" onclick="clearStage1Ver(\'C\')">清除此版</button></div>'
+    +'<div class="fld"><label>顧問版（保留判斷理由與風險）</label>'
+    +'<textarea class="paste-box" id="s1resultA" placeholder="把 AI 整理出的「顧問版」整段貼回這裡…">'+esc(parsedA)+'</textarea>'
+    +'<button class="btn btn-ghost" style="margin-top:6px;font-size:12px" onclick="clearStage1Ver(\'A\')">清除此版</button></div>'
+    +'<button class="btn btn-go" style="margin-top:6px" onclick="saveStage1()">儲存初診結果</button></div>'
+    +'<div class="section-card"><h3>⑤ 交付物《會前初步觀察與需求對焦》</h3>'+verBlock('s1',{client:parsedC,advisor:parsedA,split:!!(parsedC||parsedA)})+'</div>';
+}
+function clearStage1Ver(which){
+  if(!window.confirm('要清除這版的內容嗎？（這個動作會被「上一步」記下，可以回退）')) return;
+  var id = which==='C'?'s1resultC':'s1resultA';
+  var el=$(id); if(el) el.value='';
+  _flushAutoSave();
+  toast(ICN.check+' 已清除「'+(which==='C'?'客戶版':'顧問版')+'」並暫存');
+  renderStage1();
 }
 function buildStage1FillPrompt(){
   var a=curAcc(); if(!a){ toast(ICN.warn+' 尚未選定客戶'); return; }
@@ -736,16 +859,18 @@ function buildStage1FillPrompt(){
   if(a.industry) known.push('產業：'+a.industry);
   if(a.jobTitle) known.push('職稱：'+a.jobTitle);
   var srcList=CHECK_SOURCES.map(function(s){ return '  - '+s[1]; }).join('\n');
-  var p='我要幫一個客戶做「公開資料初診」的前置作業：把該查的 11 個來源逐條去查好、整理成一張《ATELIER 初診資料卡》。\n\n'
+  var p='我要幫一個客戶做「公開資料初診」的前置作業：把該查的來源逐條查好、再給出 5 個讓提案變強的前置判斷，整理成一張《ATELIER 初診資料卡》。\n\n'
     +'【已知資訊】\n'+(known.length?known.join('\n'):'（很少，請盡量查）')+'\n\n'
     +(extra?('【我額外提供的資料】\n'+extra+'\n\n'):'')
-    +'【請逐條查並填寫的 11 個來源】\n'+srcList+'\n\n'
+    +'【A. 請逐條查並填寫的資料來源（'+CHECK_SOURCES.length+' 個）】\n'+srcList+'\n\n'
+    +'【B. 進階初診判斷（5 個框架，必填）】\n'+STAGE1_FRAMEWORKS.map(function(fw){ return '  - '+fw[1]+'（'+fw[2]+'）'; }).join('\n')+'\n\n'
     +'【輸出規則 · 很重要】\n'
-    +'1. 用「來源名稱：值」格式，一行一個來源，來源名稱請一字不差照抄上面的字（不要改寫）。\n'
-    +'2. 「值」請寫 2-4 句的客觀觀察或關鍵連結／重點：例如 IG Bio 寫了什麼、置頂在講什麼、九宮格視覺風格、Google Maps 平均星等與評價方向、有沒有官網、服務頁列了哪些服務等。\n'
-    +'3. 查得到就具體寫；真的查不到的來源填「待詢」。每個來源都要出現一行、不要省略。\n'
-    +'4. 第一行寫 ===ATELIER 初診資料卡=== ，最後一行寫 ===卡片結束=== 。\n'
-    +'5. 不要寫多餘的解釋或前後語，只輸出卡片本身。\n\n'
+    +'1. 用「欄位名稱：值」格式，一行一個欄位，欄位名稱請一字不差照抄上面 A、B 兩段所列的字（不要改寫、不要加括號內容）。\n'
+    +'2. A 段每個來源寫 2-4 句客觀觀察或關鍵連結／重點（IG Bio 內容、置頂在講什麼、九宮格視覺、Maps 星等／評價方向、官網列了哪些服務等）。\n'
+    +'3. B 段每個框架寫一段（不換行；如要多點用「；」分隔），是「你看完公開資料後的判斷」，不要再列定義。\n'
+    +'4. 查得到就具體寫；真的查不到的填「待詢」。每個欄位都要出現一行、不要省略。\n'
+    +'5. 第一行寫 ===ATELIER 初診資料卡=== ，最後一行寫 ===卡片結束=== 。\n'
+    +'6. 不要寫多餘的解釋或前後語，只輸出卡片本身。\n\n'
     +'請開始。';
   copyPrompt(p,'初診資料蒐集提示詞');
 }
@@ -754,27 +879,47 @@ function parseStage1Card(){
   var raw=($('s1card')||{value:''}).value;
   var msg=$('s1parseMsg');
   if(!raw.trim()){ if(msg) msg.innerHTML='<span style="color:var(--rouge);display:inline-flex;align-items:center;gap:4px">'+ICN.warn+' 貼回框是空的——先把 AI 產出的資料卡貼進來。</span>'; return; }
-  /* 建 label→key 對照表 */
+  /* 建 label→{kind,key} 多變體對照表：
+     - 完整原字
+     - 去掉括號內容（「IG 首頁（Bio / 置頂 / Highlight）」→「IG 首頁」）
+     - 取斜線前第一段（「LINE / 表單 / 預約入口」→「LINE」） */
   var labelMap={};
-  CHECK_SOURCES.forEach(function(s){ labelMap[_normLabel(s[1])]=s[0]; });
-  /* 部分簡寫對應，AI 可能省略括號 */
-  CHECK_SOURCES.forEach(function(s){ var short=s[1].replace(/[（(].*$/,'').replace(/\s+/g,' ').trim(); if(short&&short!==s[1]) labelMap[_normLabel(short)]=s[0]; });
-  var pairs=parseCardLines(raw);
-  var filled=0, skipped=0, unmatched=[];
-  pairs.forEach(function(pr){
-    var key=labelMap[_normLabel(pr[0])];
-    if(!key){ if(!/^=+/.test(pr[0])) unmatched.push(pr[0]); return; }
-    if(isHintVal(pr[1])){ skipped++; return; }
-    var nt=$('s1n-'+key); var cb=$('s1c-'+key);
-    if(nt){ nt.value=pr[1]; filled++; if(cb) cb.checked=true; }
+  function addVar(label,kind,key){
+    if(!label) return;
+    var n=_normLabel(label); if(n && !labelMap[n]) labelMap[n]={kind:kind,key:key};
+  }
+  CHECK_SOURCES.forEach(function(s){
+    var full=s[1];
+    var noParen=full.replace(/[（(][^）)]*[）)]/g,'').replace(/\s+/g,' ').trim();
+    var firstSeg=noParen.split(/[\/／]/)[0].trim();
+    addVar(full,'src',s[0]); addVar(noParen,'src',s[0]); addVar(firstSeg,'src',s[0]);
   });
+  STAGE1_FRAMEWORKS.forEach(function(fw){
+    var full=fw[1];
+    var noParen=full.replace(/[（(][^）)]*[）)]/g,'').replace(/\s+/g,' ').trim();
+    addVar(full,'fw',fw[0]); addVar(noParen,'fw',fw[0]);
+  });
+  var pairs=parseCardLines(raw);
+  var filledSrc=0, filledFw=0, skipped=0, unmatched=[];
+  pairs.forEach(function(pr){
+    var hit=labelMap[_normLabel(pr[0])];
+    if(!hit){ if(!/^=+/.test(pr[0])) unmatched.push(pr[0]); return; }
+    if(isHintVal(pr[1])){ skipped++; return; }
+    if(hit.kind==='src'){
+      var nt=$('s1n-'+hit.key); var cb=$('s1c-'+hit.key);
+      if(nt){ nt.value=pr[1]; filledSrc++; if(cb) cb.checked=true; }
+    } else { /* framework */
+      var ta=$('s1fw-'+hit.key); if(ta){ ta.value=pr[1]; filledFw++; }
+    }
+  });
+  var filled=filledSrc+filledFw;
   if(msg){
-    if(!filled && !skipped){ msg.innerHTML='<span style="color:var(--rouge);display:inline-flex;align-items:center;gap:4px">'+ICN.warn+' 一條都沒對上。請確認你貼的是「初診資料卡」（每行是「來源名稱：值」），不是提示詞本身。</span>'; }
-    else { msg.innerHTML='<span style="color:var(--green);font-weight:700;display:inline-flex;align-items:center;gap:4px">'+ICN.check+' 已填入 '+filled+' 條</span>'+(skipped?'<span style="color:var(--sub)">　·　跳過 '+skipped+' 條（值是「待詢」之類的空值）</span>':'')
-      +(unmatched.length?('<div style="color:var(--sub);margin-top:4px">沒對上的來源名（已略過）：'+esc(unmatched.slice(0,8).join('、'))+(unmatched.length>8?' …':'')+'</div>'):'')
+    if(!filled && !skipped){ msg.innerHTML='<span style="color:var(--rouge);display:inline-flex;align-items:center;gap:4px">'+ICN.warn+' 一條都沒對上。請確認你貼的是「初診資料卡」（每行是「欄位名稱：值」），不是提示詞本身。</span>'; }
+    else { msg.innerHTML='<span style="color:var(--green);font-weight:700;display:inline-flex;align-items:center;gap:4px">'+ICN.check+' 已填入 '+filledSrc+' 條來源 ＋ '+filledFw+' 個進階判斷</span>'+(skipped?'<span style="color:var(--sub)">　·　跳過 '+skipped+' 條（值是「待詢」之類的空值）</span>':'')
+      +(unmatched.length?('<div style="color:var(--sub);margin-top:4px">沒對上的欄位名（已略過）：'+esc(unmatched.slice(0,8).join('、'))+(unmatched.length>8?' …':'')+'</div>'):'')
       +'<div style="color:var(--sub);margin-top:4px">已自動勾選對應的來源；請往下檢查、修改後，再按下面「產生初診提示詞」做正式分析。</div>'; }
   }
-  toast(filled?(ICN.check+' 已填入 '+filled+' 條，請檢查'):'沒有對上的來源');
+  toast(filled?(ICN.check+' 已填入 '+filled+' 格'):'沒有對上的欄位');
 }
 function readStage1Sources(){
   var out={};
@@ -793,34 +938,40 @@ function buildStage1Prompt(){
     if(v.checked||v.note) lines.push('・'+s[1]+'：'+(v.note||'（已查看，無特別備註）'));
   });
   var dataBlock=lines.length?lines.join('\n'):'（尚未填寫公開資料備註，請先在上面核對清單裡補上）';
+  /* 帶入 5 個進階判斷（若有填）讓 AI 接著深化 */
+  var fwLines=[];
+  STAGE1_FRAMEWORKS.forEach(function(fw){ var el=$('s1fw-'+fw[0]); var v=el?el.value.trim():''; if(v) fwLines.push('・'+fw[1]+'：'+v); });
+  var fwBlock=fwLines.length?('\n【我先做出的 5 個進階判斷（請接著深化／挑戰）】\n'+fwLines.join('\n')+'\n'):'';
   var p='我要幫一個客戶做「公開資料初診」。這是 ATELIER 客戶導入流程的第一步——只用公開資料，判斷這個客戶目前在市場上被看見的樣子。\n\n'
     +'【客戶基本資訊】\n'
     +'品牌/帳號：'+(a.handle||'')+'\n'
     +'顯示名稱：'+(a.displayName||'')+'\n'
     +'產業：'+(a.industry||'')+'\n'
     +'職稱：'+(a.jobTitle||'')+'\n\n'
-    +'【我查到的公開資料】（貼在下面）\n'+dataBlock+'\n\n'
+    +'【我查到的公開資料】\n'+dataBlock+'\n'
+    +fwBlock+'\n'
     +'【請你分析並產出《會前初步觀察與需求對焦》】\n'
     +'請包含：\n'
     +'1. 品牌的市場可見度（Google 搜得到什麼、搜不到什麼）\n'
-    +'2. IG 帳號第一印象（Bio 清不清楚、視覺有沒有統一、內容在講什麼）\n'
+    +'2. IG／FB／Threads／YouTube 第一印象（Bio 清不清楚、視覺有沒有統一、內容在講什麼）\n'
     +'3. 目前內容與商業目標的落差\n'
     +'4. 轉換路徑是否通暢（從看到→想了解→聯繫→成交，哪裡斷掉）\n'
-    +'5. 同行對標初步觀察（他的競爭者在做什麼、他沒做什麼）\n'
-    +'6. 初步建議方向（2-3 句，不用太細，給會前對焦用）\n\n'
-    +'請分成兩個版本輸出：\n'
-    +'【客戶版】乾淨、可給客戶看、不出現過度尖銳評論\n'
-    +'【顧問版】完整、犀利、保留判斷理由與風險';
+    +'5. 同行對標初步觀察（競爭者在做什麼、他沒做什麼）\n'
+    +'6. 初步建議方向（2-3 句，給會前對焦用）\n\n'
+    +'【請用兩個版本各自獨立輸出，前後用 ===== 分隔，方便我複製】\n'
+    +'===== 客戶版（給客戶看的乾淨版，不出現過度尖銳評論）=====\n'
+    +'…正文…\n'
+    +'===== 顧問版（完整、犀利、保留判斷理由與風險）=====\n'
+    +'…正文…';
   copyPrompt(p,'初診提示詞');
 }
 function saveStage1(){
   var a=curAcc(); if(!a){ toast(ICN.warn+' 尚未選定客戶'); return; }
-  var f=ensureFlow(a);
-  var result=($('s1result')||{value:''}).value.trim();
-  var src=readStage1Sources();
-  f.stage1_initial={ status: result?'done':'in-progress', updatedAt:Date.now(), data:{ sources:src, result:result } };
+  _readStage1ToData(a);
+  var st=(a.clientFlow&&a.clientFlow.stage1_initial&&a.clientFlow.stage1_initial.data)||{};
+  var anyResult=(st.resultClient||st.resultAdvisor);
   _pushSnap(_currentSnap()); _lastDraftAt=_nowHM(); saveCurrent(true);
-  toast(result?ICN.check+' 初診結果已儲存（已完成）':ICN.check+' 已暫存（尚未貼回 AI 產出）');
+  toast(anyResult?ICN.check+' 初診結果已儲存（已完成）':ICN.check+' 已暫存（尚未貼回 AI 產出）');
   renderStage1();
 }
 
@@ -913,7 +1064,7 @@ function isHintVal(v){
 function parseCardLines(raw){
   var out=[];
   (raw||'').split(/\r?\n/).forEach(function(line){
-    var m=line.match(/^\s*[*\-•·◦▪]?\s*(?:[\d０-９]{1,2}[a-zA-Z]?[.、)）]\s*)?([^：:]{1,24})\s*[：:]\s*(.+?)\s*$/);
+    var m=line.match(/^\s*[*\-•·◦▪]?\s*(?:[\d０-９]{1,2}[a-zA-Z]?[.、)）]\s*)?([^：:]{1,60})\s*[：:]\s*(.+?)\s*$/);
     if(m) out.push([m[1].trim(), m[2].trim()]);
   });
   return out;
@@ -1066,12 +1217,17 @@ function renderStage3(){
   var a=curAcc(); var box=$('view-stage3');
   if(!a){ box.innerHTML=needClientHTML('③ 深度問診'); return; }
   var f=ensureFlow(a); var st=(f.stage3_interview&&f.stage3_interview.data)||{};
+  /* === 一次性遷移：舊版 result → 新版 resultClient/resultAdvisor === */
+  if(st.result && (st.resultClient==null && st.resultAdvisor==null)){
+    var migr3=splitVersions(st.result);
+    st.resultClient=migr3.client||''; st.resultAdvisor=migr3.advisor||'';
+  }
   var ans=st.answers||{};
   var qFields=INTERVIEW_Q.map(function(q,i){
     return '<div class="fld"><label>'+(i+1)+'. '+esc(q)+'</label><textarea id="q3-'+i+'" placeholder="記錄客戶回答…">'+esc(ans[i]||'')+'</textarea></div>';
   }).join('');
-  var parsed=splitVersions(st.result||'');
-  window._verCache.s3=parsed;
+  var parsedC3=st.resultClient||'', parsedA3=st.resultAdvisor||'';
+  window._verCache.s3={client:parsedC3, advisor:parsedA3, split:!!(parsedC3||parsedA3)};
   box.innerHTML=
     '<div class="page-head"><div class="ph-en">STAGE ③ · DEEP INTERVIEW</div><h2 class="ph-title">深度問診</h2></div>'
     +stageHead('挖出客戶自己沒說清楚的價值，把專業語言翻成市場語言。','stage3_interview')
@@ -1084,10 +1240,24 @@ function renderStage3(){
     +'<button class="btn btn-go" onclick="parseStage3Draft()">解析並回填 10 題</button>'
     +'<div id="s3parseMsg" style="font-size:12px;margin-top:8px;line-height:1.7"></div></div>'
     +'<div class="section-card"><h3>③ 問診記錄</h3><div class="sc-note">可以直接打字記錄客戶回答，AI 初稿也會填進這裡，正式問診時逐題核對、修改。</div>'+qFields+'</div>'
-    +'<div class="section-card"><h3>④ 把 AI 整理的《深度問診整理書》貼回這裡</h3>'
-    +'<textarea class="paste-box" id="s3result" placeholder="貼回 AI 整理的整段（含【客戶版】【顧問版】）…">'+esc(st.result||'')+'</textarea>'
-    +'<button class="btn btn-go" style="margin-top:10px" onclick="saveStage3()">儲存問診結果</button></div>'
-    +'<div class="section-card"><h3>⑤ 交付物《深度問診整理書》</h3>'+verBlock('s3',parsed)+'</div>';
+    +'<div class="section-card"><h3>④ 把 AI 整理的《深度問診整理書》貼回（分成「客戶版」「顧問版」兩個獨立框）</h3>'
+    +'<div class="sc-note">兩個框各自獨立；每邊都可以「清除」單獨重貼。</div>'
+    +'<div class="fld"><label>客戶版（給客戶看的乾淨版）</label>'
+    +'<textarea class="paste-box" id="s3resultC" placeholder="把 AI 整理出的「客戶版」整段貼回這裡…">'+esc(parsedC3)+'</textarea>'
+    +'<button class="btn btn-ghost" style="margin-top:6px;font-size:12px" onclick="clearStage3Ver(\'C\')">清除此版</button></div>'
+    +'<div class="fld"><label>顧問版（完整、保留判斷理由與風險）</label>'
+    +'<textarea class="paste-box" id="s3resultA" placeholder="把 AI 整理出的「顧問版」整段貼回這裡…">'+esc(parsedA3)+'</textarea>'
+    +'<button class="btn btn-ghost" style="margin-top:6px;font-size:12px" onclick="clearStage3Ver(\'A\')">清除此版</button></div>'
+    +'<button class="btn btn-go" style="margin-top:6px" onclick="saveStage3()">儲存問診結果</button></div>'
+    +'<div class="section-card"><h3>⑤ 交付物《深度問診整理書》</h3>'+verBlock('s3',{client:parsedC3,advisor:parsedA3,split:!!(parsedC3||parsedA3)})+'</div>';
+}
+function clearStage3Ver(which){
+  if(!window.confirm('要清除這版的內容嗎？（這個動作會被「上一步」記下，可以回退）')) return;
+  var id = which==='C'?'s3resultC':'s3resultA';
+  var el=$(id); if(el) el.value='';
+  _flushAutoSave();
+  toast(ICN.check+' 已清除「'+(which==='C'?'客戶版':'顧問版')+'」並暫存');
+  renderStage3();
 }
 function buildStage3DraftPrompt(){
   var a=curAcc(); if(!a){ toast(ICN.warn+' 尚未選定客戶'); return; }
@@ -1148,11 +1318,7 @@ function buildStage3Prompt(){
 }
 function saveStage3(){
   var a=curAcc(); if(!a){ toast(ICN.warn+' 尚未選定客戶'); return; }
-  var f=ensureFlow(a);
-  var ans={}; INTERVIEW_Q.forEach(function(q,i){ var el=$('q3-'+i); if(el&&el.value.trim()) ans[i]=el.value.trim(); });
-  var result=($('s3result')||{value:''}).value.trim();
-  var done=result||Object.keys(ans).length>=5;
-  f.stage3_interview={ status:done?'done':'in-progress', updatedAt:Date.now(), data:{ answers:ans, result:result } };
+  _readStage3ToData(a);
   _pushSnap(_currentSnap()); _lastDraftAt=_nowHM(); saveCurrent(true);
   toast(ICN.check+' 問診結果已儲存並同步');
   renderStage3();
@@ -1185,8 +1351,8 @@ function openHealthEditor(){
       return '<button class="sc'+(n===0?' z':'')+(it.score===n?' on':'')+'" data-hid="'+it.id+'" data-hsc="'+n+'">'+(n===0?'—':n)+'</button>';
     }).join('');
     return '<div class="health-row" style="flex-direction:column;align-items:stretch">'
-      +'<div style="display:flex;align-items:center;gap:10px"><span class="hr-lab">'+it.id+'. '+esc(it.label)+'</span><span class="hr-scores">'+scs+'</span></div>'
-      +'<input class="health-note" id="hn-'+it.id+'" value="'+esc(it.note)+'" placeholder="評分依據／備註（顧問版會保留）…"></div>';
+      +'<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><span class="hr-lab">'+it.id+'. '+esc(it.label)+'</span><span class="hr-scores">'+scs+'</span></div>'
+      +'<textarea class="health-note" id="hn-'+it.id+'" placeholder="評分依據／備註（顧問版會保留）…" style="width:100%;min-height:56px;font-size:13px;padding:8px 10px;border:1px solid var(--border);border-radius:8px;background:#fff;color:var(--ink);outline:none;font-family:inherit;line-height:1.6;resize:vertical;margin-top:6px">'+esc(it.note||'')+'</textarea></div>';
   }).join('');
   var hs=healthTotal(a);
   sh.innerHTML='<div style="padding:6px 4px 4px;position:relative">'
