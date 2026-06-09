@@ -43,7 +43,7 @@ svg.ic{vertical-align:-2px;flex:0 0 auto}
 
 /* 分頁列 */
 .tabs{position:sticky;top:60px;z-index:49;display:flex;background:rgba(255,255,255,.96);
-  backdrop-filter:blur(8px);border-bottom:1px solid var(--border);overflow-x:auto;-webkit-overflow-scrolling:touch}
+  ;border-bottom:1px solid var(--border);overflow-x:auto;-webkit-overflow-scrolling:touch}
 .tab{flex:0 0 auto;padding:11px 14px;font-size:13px;font-weight:700;color:var(--sub);
   border-bottom:2.5px solid transparent;cursor:pointer;white-space:nowrap;letter-spacing:.5px;display:inline-flex;align-items:center;gap:6px;text-decoration:none}
 .tab .tic{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.6;flex:0 0 auto;opacity:.75}
@@ -201,6 +201,30 @@ details.cat .cat-body{padding:14px 15px}
 .locked-wrap .lk-ic{margin:0 auto 14px;opacity:.4;color:var(--sub)}
 .locked-wrap h2{font-family:'Noto Serif TC',serif;font-size:20px;color:var(--text);margin-bottom:8px;letter-spacing:1px}
 .locked-wrap p{font-size:13px;line-height:1.9;max-width:440px;margin:0 auto}
+
+/* ═══ cs-v1.7 extended stages ═══ */
+.stage-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:640px){.stage-grid{grid-template-columns:1fr}}
+.matrix-card{background:var(--warm-white);border:1px solid var(--border);border-radius:10px;padding:12px;margin:8px 0}
+.matrix-card .m-title{font-size:12px;font-weight:900;color:var(--rouge);letter-spacing:.5px;margin-bottom:6px}
+.mini-output{font-size:12.5px;line-height:1.75;color:var(--text);background:#fff;border:1px dashed var(--gold-soft);border-radius:9px;padding:10px;margin-top:8px;white-space:pre-wrap}
+.flow-dot.next{background:#FBF0EF;color:var(--rouge);border-color:#EAD9D6}
+
+/* cs-v1.7：初診三格式產出 */
+.deliver-card{border-left:3px solid var(--rouge);background:linear-gradient(180deg,#FFFCFB 0%,#FFFFFF 75%)}
+.save-dot{width:9px;height:9px;border-radius:50%;background:var(--green);display:inline-block;box-shadow:0 0 0 3px rgba(110,134,120,.14)}
+.print-hint{font-size:11.5px;color:var(--sub);line-height:1.7;margin-top:6px}
+@media(max-width:520px){
+  .cs-banner{gap:6px;padding:7px 10px;font-size:11.5px;align-items:center}
+  .cs-banner .hs{font-size:10.5px;border:1px solid var(--border);border-radius:999px;padding:3px 8px;background:#fff}
+  .cs-banner .mini-btn{font-size:0;padding:5px 8px;gap:0}
+  .cs-banner .mini-btn::after{font-size:11px;content:attr(data-short)}
+  .cs-banner .savestate{font-size:0;margin-left:auto}
+  .cs-banner .savestate .save-dot{font-size:0}
+}
+.deliver-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.export-spec{font-size:12.5px;line-height:1.8;color:var(--text);background:var(--warm);border:1px solid var(--border);border-radius:10px;padding:10px 12px;margin:6px 0 10px}
+@media(max-width:620px){.deliver-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -237,7 +261,7 @@ details.cat .cat-body{padding:14px 15px}
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">客戶服務台</span></span>
-    <span id="verBadge">cs-v1.3</span>
+    <span id="verBadge">cs-v1.7</span>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button type="button" id="popoutBtn" class="popout-btn" title="把客戶服務台開成獨立小視窗"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6"/><path d="M20 4l-9 9"/><path d="M14 12v7H5V10h7"/></svg>小視窗</button>
@@ -252,10 +276,10 @@ details.cat .cat-body{padding:14px 15px}
   <div class="tab" data-view="stage1"><svg class="tic" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4-4" stroke-linecap="round"/></svg>① 初診</div>
   <div class="tab" data-view="stage2"><svg class="tic" viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6z" stroke-linejoin="round"/><path d="M9 9h6M9 13h6M9 17h4" stroke-linecap="round"/></svg>② 建檔</div>
   <div class="tab" data-view="stage3"><svg class="tic" viewBox="0 0 24 24"><path d="M21 12a8 8 0 01-11.6 7.1L4 20l1-5A8 8 0 1121 12z" stroke-linejoin="round"/></svg>③ 問診</div>
-  <div class="tab disabled" title="下一版"><svg class="tic" viewBox="0 0 24 24"><path d="M3 12h4l2 7 4-14 2 7h5" stroke-linecap="round" stroke-linejoin="round"/></svg>④ 診斷<span class="soon">下一版</span></div>
-  <div class="tab disabled" title="下一版"><svg class="tic" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 9h16M9 4v16" stroke-linecap="round"/></svg>⑤ 盤點<span class="soon">下一版</span></div>
-  <div class="tab disabled" title="下一版"><svg class="tic" viewBox="0 0 24 24"><path d="M5 4h11a2 2 0 012 2v14H7a2 2 0 01-2-2z" stroke-linejoin="round"/></svg>⑥ 企劃<span class="soon">下一版</span></div>
-  <div class="tab disabled" title="下一版"><svg class="tic" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 013 3L7 19l-4 1 1-4z"/></svg>⑦ 交付<span class="soon">下一版</span></div>
+  <div class="tab" data-view="stage4"><svg class="tic" viewBox="0 0 24 24"><path d="M3 12h4l2 7 4-14 2 7h5" stroke-linecap="round" stroke-linejoin="round"/></svg>④ 診斷</div>
+  <div class="tab" data-view="stage5"><svg class="tic" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 9h16M9 4v16" stroke-linecap="round"/></svg>⑤ 盤點</div>
+  <div class="tab" data-view="stage6"><svg class="tic" viewBox="0 0 24 24"><path d="M5 4h11a2 2 0 012 2v14H7a2 2 0 01-2-2z" stroke-linejoin="round"/></svg>⑥ 企劃</div>
+  <div class="tab" data-view="stage7"><svg class="tic" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 013 3L7 19l-4 1 1-4z"/></svg>⑦ 交付</div>
   <a class="tab back" href="index.html" target="_blank" rel="noopener" title="在新分頁開啟（這頁保留）"><svg class="tic" viewBox="0 0 24 24"><path d="M14 4h6v6"/><path d="M20 4l-10 10"/><path d="M14 12v7H5V10h7"/></svg>回診斷工作台</a>
 </div>
 
@@ -284,6 +308,29 @@ details.cat .cat-body{padding:14px 15px}
 
 <!-- ═══ ③ 深度問診 ═══ -->
 <div class="view" id="view-stage3"></div>
+
+<!-- ═══ ④ 內容診斷 ═══ -->
+<div class="view" id="view-stage4"></div>
+
+<!-- ═══ ⑤ 素材盤點 ═══ -->
+<div class="view" id="view-stage5"></div>
+
+<!-- ═══ ⑥ 企劃提案 ═══ -->
+<div class="view" id="view-stage6"></div>
+
+<!-- ═══ ⑦ 交付追蹤 ═══ -->
+<div class="view" id="view-stage7"></div>
+<!-- ═══ ④ 內容診斷 ═══ -->
+<div class="view" id="view-stage4"></div>
+
+<!-- ═══ ⑤ 素材盤點 ═══ -->
+<div class="view" id="view-stage5"></div>
+
+<!-- ═══ ⑥ 企劃提案 ═══ -->
+<div class="view" id="view-stage6"></div>
+
+<!-- ═══ ⑦ 交付追蹤 ═══ -->
+<div class="view" id="view-stage7"></div>
 
 <!-- 彈窗 + Toast -->
 <div class="modal" id="modal"><div class="sheet" id="sheet"></div></div>
@@ -675,11 +722,11 @@ function renderBanner(flash){
   var sstxt = _lastDraftAt ? ('自動暫存於 '+_lastDraftAt) : '尚未變更';
   b.className='cs-banner';
   b.innerHTML='<span>目前服務：<span class="who">'+esc(a.handle||'@?')+' '+esc(a.displayName||'')+'</span></span>'
-    +'<span class="hs">內容健康分數 <b>'+(hs.has?hs.total:'—')+'</b>/50</span>'
-    +'<button class="mini-btn" onclick="openHealthEditor()">評分</button>'
-    +'<button class="mini-btn" onclick="openOverview()" title="把這位客戶目前所有已填資料一次看完">查看全貌</button>'
-    +'<button class="mini-btn" onclick="undoLast()"'+(canUndo?'':' disabled')+' title="把目前畫面回退到上一個自動暫存點">'+ICN.undo+' 上一步'+(canUndo?(' ('+(_undoStack.length-1)+')'):'')+'</button>'
-    +'<span class="savestate'+(flash?' flash':'')+'" id="ssBadge">'+(flash?ICN.check:'')+' '+esc(sstxt)+'</span>';
+    +'<span class="hs" title="內容健康分數"><span>健康</span> <b>'+(hs.has?hs.total:'—')+'</b>/50</span>'
+    +'<button class="mini-btn" data-short="評分" onclick="openHealthEditor()">評分</button>'
+    +'<button class="mini-btn" data-short="全貌" onclick="openOverview()" title="把這位客戶目前所有已填資料一次看完">查看全貌</button>'
+    +'<button class="mini-btn" data-short="上一步" onclick="undoLast()"'+(canUndo?'':' disabled')+' title="把目前畫面回退到上一個自動暫存點">'+ICN.undo+' 上一步'+(canUndo?(' ('+(_undoStack.length-1)+')'):'')+'</button>'
+    +'<span class="savestate'+(flash?' flash':'')+'" id="ssBadge" title="'+esc(sstxt)+'">'+(flash?ICN.check:'<span class="save-dot"></span>')+' <span class="save-text">'+esc(sstxt)+'</span></span>';
   if(flash){ setTimeout(function(){ var ss=$('ssBadge'); if(ss) ss.classList.remove('flash'); },1100); }
 }
 
@@ -729,7 +776,7 @@ function pickClient(id){
   /* 清掉所有階段視圖的 DOM——這樣下一次 switchTo→_flushAutoSave 時，
      $('s1c-web') / $('p2-brandName') / $('q3-0') 都不存在，_readStageNToData 會乾淨地 bail，
      不會把上一位客戶的內容寫到新客戶身上 */
-  ['view-stage1','view-stage2','view-stage3'].forEach(function(vid){ var v=$(vid); if(v) v.innerHTML=''; });
+  ['view-stage1','view-stage2','view-stage3','view-stage4','view-stage5','view-stage6','view-stage7'].forEach(function(vid){ var v=$(vid); if(v) v.innerHTML=''; });
   /* 再保險一次：確保剛載入的這位客戶資料是最新格式 */
   _migrateAccount(curAcc());
   _undoStack=[]; _lastDraftAt='';
@@ -765,7 +812,7 @@ function verBlock(prefix,parsed){
     +'<div class="btn-row">'
     +'<button class="btn btn-ghost" onclick="copyVal(_verText(\''+prefix+'\',\'client\'),\'客戶版\')">複製客戶版</button>'
     +'<button class="btn btn-ghost" onclick="copyVal(_verText(\''+prefix+'\',\'advisor\'),\'顧問版\')">複製顧問版</button></div>'
-    +'<div style="font-size:11px;color:var(--sub);text-align:center;margin-top:8px">未來版本：匯出 PDF / HTML / PPT</div>';
+    +'<div style="font-size:11px;color:var(--sub);text-align:center;margin-top:8px">完成盤點後，可到 ⑥ 產出 HTML / PDF / PPTX 版本。</div>';
 }
 window._verCache={};
 function _verText(prefix,which){ var c=window._verCache[prefix]||{}; return which==='client'?(c.client||''):(c.advisor||''); }
@@ -840,7 +887,16 @@ function renderStage1(){
     +'<textarea class="paste-box" id="s1resultA" placeholder="把 AI 整理出的「顧問版」整段貼回這裡…">'+esc(parsedA)+'</textarea>'
     +'<button class="btn btn-ghost" style="margin-top:6px;font-size:12px" onclick="clearStage1Ver(\'A\')">清除此版</button></div>'
     +'<button class="btn btn-go" style="margin-top:6px" onclick="saveStage1()">儲存初診結果</button></div>'
-    +'<div class="section-card"><h3>⑤ 交付物《會前初步觀察與需求對焦》</h3>'+verBlock('s1',{client:parsedC,advisor:parsedA,split:!!(parsedC||parsedA)})+'</div>';
+    +'<div class="section-card"><h3>⑤ 交付物《會前初步觀察與需求對焦》</h3>'+verBlock('s1',{client:parsedC,advisor:parsedA,split:!!(parsedC||parsedA)})+'</div>'
+    +'<div class="section-card deliver-card"><h3>⑥ 產出檔案規格（PDF / HTML / PPT）</h3>'
+    +'<div class="sc-note">這裡是初診階段最後的交付出口。cs-v1.7 先保留真正有差異的「輸出版本」，版型統一採 ATELIER 設計版，避免使用者選了風格但實際檔案沒有改變。</div>'
+    +'<div class="deliver-grid"><div class="fld"><label>交付物標題</label><input id="s1outTitle" value="ATELIER × '+esc(a.displayName||a.handle||'客戶')+'｜會前初步觀察與需求對焦"></div>'
+    +'<div class="fld"><label>輸出版本</label><select id="s1outAudience"><option value="client">只輸出客戶版｜乾淨、可寄送、可簡報</option><option value="advisor">只輸出顧問版｜內部判斷、風險、策略備忘</option><option value="both">完整包｜客戶版＋顧問版</option></select></div>'
+    +'<div class="fld"><label>備註／檔名補充</label><input id="s1outNote" placeholder="例如：理鴻法律事務所／會前初診／v1"></div></div>'
+    +'<div class="export-spec"><b>輸出邏輯：</b>輸出版本會決定內容範圍：客戶版＝只保留可對外說明的重點；顧問版＝保留內部判斷與策略；完整包＝同時輸出兩版。排版目前統一採 ATELIER 設計版，避免不同格式造成內容落差。</div>'
+    +'<div class="btn-row"><button class="btn btn-gold" onclick="exportStage1HTML()">下載設計版 HTML</button><button class="btn btn-gold" onclick="exportStage1PDF()">列印 / 另存 PDF</button><button class="btn btn-gold" onclick="exportStage1PPTX()">直接下載 PPTX</button><button class="btn btn-ghost" onclick="copyStage1OutputSpec()">複製三格式規格</button></div>'
+    +'<div class="print-hint">列印 / 另存 PDF 會跳出列印視窗，請在目的地選擇「另存為 PDF」。</div>'
+    +'<div id="s1exportMsg" style="font-size:12px;color:var(--sub);line-height:1.7;margin-top:8px">PPTX 會直接產出檔案；若瀏覽器第一次擋下載，請允許此網站下載多個檔案。</div></div>';
 }
 function clearStage1Ver(which){
   if(!window.confirm('要清除這版的內容嗎？（這個動作會被「上一步」記下，可以回退）')) return;
@@ -1454,7 +1510,7 @@ window.addEventListener('DOMContentLoaded', function(){
     }catch(e){ toast(ICN.warn+' 開啟失敗'); }
   });
   /* 一次掛上 input 事件監聽：所有階段 input/textarea/checkbox 變動 → 自動暫存 */
-  ['view-stage1','view-stage2','view-stage3'].forEach(function(vid){
+  ['view-stage1','view-stage2','view-stage3','view-stage4','view-stage5','view-stage6','view-stage7'].forEach(function(vid){
     var v=$(vid); if(v){ v.addEventListener('input',_scheduleAutoSave); v.addEventListener('change',_scheduleAutoSave); }
   });
   /* 離開頁面前再 flush 一次（避免最後 0.x 秒輸入沒寫進去就被導走） */
@@ -1462,6 +1518,269 @@ window.addEventListener('DOMContentLoaded', function(){
   renderBanner();
   _fbInit();
 });
+</script>
+
+<script>
+/* ═══════════════ cs-v1.7 擴充：④診斷 ⑤盤點 ⑥企劃 ⑦交付 ═══════════════ */
+(function(){
+  var STAGE_EXT={
+    stage4:{key:'stage4_diagnosis', no:'④', en:'STAGE ④ · CONTENT DIAGNOSIS', title:'內容診斷', purpose:'把初診、建檔、問診資料收斂成「可交付的策略判斷」：定位、受眾、內容缺口、轉換缺口與優先改善順序。',
+      fields:[['positioning','目前定位判斷','這個帳號目前市場上被理解成什麼？是否清楚？'],['audienceInsight','受眾心理洞察','觀眾／潛在客戶真正卡住的信任、理解、需求點。'],['contentGap','內容缺口','目前內容缺什麼主題、情緒、案例、信任證據或系列感？'],['conversionGap','轉換缺口','從看到內容到私訊／預約／成交，中間哪裡斷掉？'],['priorityAdvice','優先改善順序','最應該先改的 3 件事，依影響成交與執行難度排序。']]},
+    stage5:{key:'stage5_inventory', no:'⑤', en:'STAGE ⑤ · ASSET INVENTORY', title:'素材盤點', purpose:'把客戶手上的人設、服務、案例、場景、證據與可拍素材盤點出來，避免企劃時空想。',
+      fields:[['assets','既有內容資產','過去表現好的影片、文章、官網頁、簡報、案例、截圖、FAQ。'],['pillars','可延伸內容主軸','可長期拍攝的 3–5 條內容支柱。'],['stories','故事素材','老闆故事、客戶故事、失敗經驗、轉折、代表案例。'],['serviceProof','服務證據','成果、數據、客戶回饋、流程、專業證照、媒體或合作背書。'],['shootingAssets','拍攝素材條件','人、場地、物件、流程畫面、前後對比、可公開的文件。'],['missing','缺漏與待補資料','還缺哪些資料要再問客戶或安排拍攝補齊？']]},
+    stage6:{key:'stage6_planning', no:'⑥', en:'STAGE ⑥ · PROPOSAL PLANNING', title:'企劃提案', purpose:'把診斷結論轉成客戶看得懂、團隊可執行的提案方向：目標、主軸、題庫、時程、KPI。',
+      fields:[['goal','本階段合作目標','這一輪短影音最主要要完成什麼？品牌建立、引流、成交、招募或信任補強？'],['proposalAngle','提案核心角度','一句話說明這次提案的戰略主張。'],['contentPillars','內容主軸配置','3–5 個主軸與各自負責的功能。'],['topicList','首波題庫','可拍的題目清單，建議 10–20 題。'],['firstScripts','優先拍攝腳本方向','最值得先拍的 3–5 支，含原因。'],['timeline','執行時程','拍攝、審稿、剪輯、交付、上線節奏。'],['kpi','成效觀察指標','觀看、完播、互動、私訊、預約、成交或品牌搜尋。']]},
+    stage7:{key:'stage7_delivery', no:'⑦', en:'STAGE ⑦ · DELIVERY TRACKING', title:'交付追蹤', purpose:'把交付物、客戶回饋、修改紀錄、下一步與付款狀態集中管理，讓專案不散掉。',
+      fields:[['deliveredItems','已交付項目','已交付哪些文件／腳本／影片／封面／建議。'],['feedback','客戶回饋','客戶喜歡什麼、卡在哪裡、要求修改什麼。'],['revision','修改紀錄','每一輪修改重點與是否完成。'],['nextStep','下一步行動','接下來誰要做什麼、何時完成。'],['payment','款項／時數／互惠狀態','訂金、尾款、折抵時數、發票、收款日期。'],['internalReview','內部復盤','這個案子學到什麼？哪些流程可優化？'],['finalSummary','結案摘要','完成後可留下的客戶專案總結。']]}
+  };
+  window.ATELIER_STAGE_EXT=STAGE_EXT;
+  function flowData(a,conf){ var f=ensureFlow(a); var rec=f[conf.key]||{status:'not-started',data:{}}; if(!rec.data) rec.data={}; return rec; }
+  function readExtStageToData(stageId){
+    var conf=STAGE_EXT[stageId], a=curAcc(); if(!conf||!a) return false;
+    var marker=$('x-'+stageId+'-'+conf.fields[0][0]); if(!marker) return false;
+    var f=ensureFlow(a), rec=f[conf.key]||{status:'not-started',data:{}}; var data=rec.data||{}; var filled=0;
+    conf.fields.forEach(function(fd){ var el=$('x-'+stageId+'-'+fd[0]); if(el){ data[fd[0]]=el.value.trim(); if(data[fd[0]]) filled++; }});
+    var rc=$('x-'+stageId+'-resultClient'), ra=$('x-'+stageId+'-resultAdvisor'), ds=$('x-'+stageId+'-deliverySummary');
+    if(rc) data.resultClient=rc.value.trim(); if(ra) data.resultAdvisor=ra.value.trim(); if(ds) data.deliverySummary=ds.value.trim();
+    var done=(filled>=Math.max(2,Math.ceil(conf.fields.length*0.55))) || (data.resultClient||data.resultAdvisor||data.deliverySummary);
+    f[conf.key]={status:rec.status==='done'?'done':(done?'done':(filled?'in-progress':'not-started')),updatedAt:Date.now(),data:data};
+    return true;
+  }
+  window._readStage4ToData=function(a){return readExtStageToData('stage4')};
+  window._readStage5ToData=function(a){return readExtStageToData('stage5')};
+  window._readStage6ToData=function(a){return readExtStageToData('stage6')};
+  window._readStage7ToData=function(a){return readExtStageToData('stage7')};
+  var oldDraft=window._draftSaveAll;
+  window._draftSaveAll=function(){
+    var a=curAcc(); if(!a) return;
+    var changed=false;
+    try{ if(_readStage1ToData(a)) changed=true; }catch(e){}
+    try{ if(_readStage2ToData(a)) changed=true; }catch(e){}
+    try{ if(_readStage3ToData(a)) changed=true; }catch(e){}
+    ['stage4','stage5','stage6','stage7'].forEach(function(s){ try{ if(readExtStageToData(s)) changed=true; }catch(e){} });
+    if(!changed) return;
+    var snap=_currentSnap(); _pushSnap(snap); _lastDraftAt=_nowHM(); a.updatedAt=Date.now(); _accPush(); renderSelect(); renderBanner(true);
+  };
+  function extRows(stageId,conf,rec){
+    var d=rec.data||{};
+    return conf.fields.map(function(fd){ return '<div class="fld"><label>'+esc(fd[1])+'</label><textarea id="x-'+stageId+'-'+fd[0]+'" placeholder="'+esc(fd[2])+'">'+esc(d[fd[0]]||'')+'</textarea></div>'; }).join('');
+  }
+  function normLabel(x){ return String(x||'').replace(/[\s　＊*【】\[\]#：:：\-•]/g,'').trim(); }
+  function parseExtLines(text,conf,stageId){
+    var data={}, labels={};
+    conf.fields.forEach(function(fd){ labels[normLabel(fd[1])]=fd[0]; labels[normLabel(fd[0])]=fd[0]; });
+    labels[normLabel('客戶版')]='resultClient'; labels[normLabel('顧問版')]='resultAdvisor'; labels[normLabel('交付摘要')]='deliverySummary';
+    var current='';
+    (text||'').replace(//g,'').split('
+').forEach(function(raw){
+      var line=raw.trim(); if(!line) return;
+      var sec=line.match(/^=+\s*(客戶版|顧問版)\s*.*?=+$/) || line.match(/^【\s*(客戶版|顧問版)\s*】$/);
+      if(sec){ current=sec[1]==='客戶版'?'resultClient':'resultAdvisor'; if(!data[current]) data[current]=''; return; }
+      var m=line.match(/^\s*(?:[-•]\s*)?(.{1,24}?)[：:]\s*(.*)$/);
+      if(m){ var key=labels[normLabel(m[1])]; if(key){ current=key; data[current]=(data[current]?data[current]+'
+':'')+(m[2]||'').trim(); return; } }
+      if(current){ data[current]=(data[current]?data[current]+'
+':'')+line; }
+    });
+    if(stageId==='stage7' && !data.deliverySummary){
+      var m=(text||'').match(/(?:交付摘要|結案摘要)[：:]?\s*([\s\S]+)/); if(m) data.deliverySummary=m[1].trim();
+    }
+    return data;
+  }
+  window.parseExtStagePaste=function(stageId){
+    var conf=STAGE_EXT[stageId], a=curAcc(); if(!conf||!a){ toast(ICN.warn+' 尚未選定客戶'); return; }
+    var ta=$('x-'+stageId+'-paste'), text=ta?ta.value:''; if(!text.trim()){ toast('請先貼上 AI 回傳的欄位版'); return; }
+    var parsed=parseExtLines(text,conf,stageId), count=0;
+    Object.keys(parsed).forEach(function(k){ var el=$('x-'+stageId+'-'+k); if(el && parsed[k]){ el.value=parsed[k].trim(); count++; }});
+    readExtStageToData(stageId); _pushSnap(_currentSnap()); _lastDraftAt=_nowHM(); saveCurrent(true);
+    toast(count?ICN.check+' 已解析並填入 '+count+' 個欄位':'沒有找到可填入的欄位，請確認格式為「欄位名稱：內容」');
+  };
+  function collectContext(a){
+    var f=ensureFlow(a), lines=[];
+    lines.push('【客戶基本資訊】\n品牌/帳號：'+(a.handle||'')+'\n顯示名稱：'+(a.displayName||'')+'\n產業：'+(a.industry||'')+'\n職稱：'+(a.jobTitle||''));
+    var s1=f.stage1_initial&&f.stage1_initial.data; if(s1){ lines.push('【①初診摘要】\n客戶版：\n'+(s1.resultClient||'')+'\n顧問版：\n'+(s1.resultAdvisor||s1.result||'')); }
+    var cp=a.clientProfile||{}, p2=[]; if(typeof PROFILE_CATS!=='undefined'){ PROFILE_CATS.forEach(function(cat){cat[2].forEach(function(fd){ if(cp[fd[0]]) p2.push('・'+fd[1]+'：'+cp[fd[0]]);});}); }
+    if(p2.length) lines.push('【②建檔資料】\n'+p2.join('\n'));
+    var s3=f.stage3_interview&&f.stage3_interview.data; if(s3){ lines.push('【③問診摘要】\n客戶版：\n'+(s3.resultClient||'')+'\n顧問版：\n'+(s3.resultAdvisor||s3.result||'')); }
+    ['stage4','stage5','stage6','stage7'].forEach(function(s){ var c=STAGE_EXT[s], r=f[c.key]; if(r&&r.data){ var arr=[]; c.fields.forEach(function(fd){ if(r.data[fd[0]]) arr.push('・'+fd[1]+'：'+r.data[fd[0]]); }); if(r.data.deliverySummary) arr.push('・交付摘要：'+r.data.deliverySummary); if(arr.length) lines.push('【'+c.no+c.title+'】\n'+arr.join('\n')); }});
+    return lines.join('\n\n');
+  }
+  window.buildExtStagePrompt=function(stageId){
+    var conf=STAGE_EXT[stageId], a=curAcc(); if(!conf||!a){ toast(ICN.warn+' 尚未選定客戶'); return; }
+    var fields=conf.fields.map(function(fd){return '- '+fd[1]+'：'+fd[2];}).join('\n');
+    var extra=($('x-'+stageId+'-extra')||{value:''}).value.trim();
+    var ask={stage4:'請你幫我產出「內容診斷」：把資料收斂成定位、受眾、內容缺口、轉換缺口與優先改善順序。',stage5:'請你幫我產出「素材盤點」：整理客戶現有內容資產、可延伸主軸、故事素材、服務證據、拍攝素材與缺漏資料。',stage6:'請你幫我產出「企劃提案」：把診斷結論轉成可對客戶提案、可執行的短影音企劃。',stage7:'請你幫我產出「交付追蹤與結案整理」：整理已交付項目、客戶回饋、修改紀錄、下一步、款項狀態與內部復盤。'}[stageId];
+    var p='我是 ATELIER 短影音內容營運顧問。現在要處理客戶服務台的「'+conf.no+' '+conf.title+'」階段。\n\n'
+      +ask+'\n\n'
+      +'【目前已收集資料】\n'+collectContext(a)+'\n\n'
+      +(extra?'【我額外補充】\n'+extra+'\n\n':'')
+      +'【請依下列欄位輸出】\n'+fields+'\n\n'
+      +'【輸出格式】\n'
+      +'===== 客戶版（乾淨、專業、可直接給客戶看）=====\n'
+      +'請用清楚段落與小標，語氣專業但不尖銳。\n\n'
+      +'===== 顧問版（完整、犀利、保留判斷理由）=====\n'
+      +'請保留推論依據、風險、缺口、下一步建議，方便我內部決策。\n\n'
+      +'最後附上「可直接貼回工作台的欄位版」，每行使用「欄位名稱：內容」。';
+    copyPrompt(p,conf.title+'提示詞');
+  };
+  window.renderExtStage=function(stageId){
+    var conf=STAGE_EXT[stageId], box=$('view-'+stageId), a=curAcc(); if(!conf||!box) return;
+    if(!a){ box.innerHTML=needClientHTML(conf.no+' '+conf.title); return; }
+    var rec=flowData(a,conf), d=rec.data||{};
+    box.innerHTML='<div class="page-head"><div class="ph-en">'+conf.en+'</div><h2 class="ph-title">'+conf.title+'</h2></div>'
+      +stageHead(conf.purpose,conf.key)
+      +'<div class="section-card ai-fill"><h3>'+ICN.spark+'AI 輔助產出</h3><div class="sc-note">先按提示詞，把已收集的①～③資料帶給 AI；AI 產出後，把重點貼回下方欄位，這一階段就會成為後續提案與交付的依據。</div>'
+      +'<div class="fld"><label>額外補充給 AI 的資料</label><textarea id="x-'+stageId+'-extra" placeholder="例如：客戶臨時補充、你觀察到的重點、最新會議結論…"></textarea></div>'
+      +'<button class="btn btn-gold" onclick="buildExtStagePrompt(\''+stageId+'\')">'+ICN.prompt+'產生'+conf.title+'提示詞</button></div>'
+      +'<div class="section-card"><h3>'+conf.no+' '+conf.title+'工作區</h3><div class="sc-note">每一格都可以先粗填，系統會自動暫存。填越完整，後面的企劃、交付與結案就越穩。</div>'
+      +'<div class="stage-grid">'+extRows(stageId,conf,rec)+'</div></div>'
+      +'<div class="section-card"><h3>兩版交付整理</h3><div class="sc-note">客戶版＝可直接給客戶看；顧問版＝保留你的真實判斷與內部策略。兩者都會存回這位客戶的資料裡。</div>'
+      +'<div class="fld"><label>客戶版</label><textarea id="x-'+stageId+'-resultClient" placeholder="貼上整理後可給客戶看的版本…">'+esc(d.resultClient||'')+'</textarea></div>'
+      +'<div class="fld"><label>顧問版</label><textarea id="x-'+stageId+'-resultAdvisor" placeholder="貼上內部完整判斷、風險與推論…">'+esc(d.resultAdvisor||'')+'</textarea></div></div>'
+      +'<div class="btn-row"><button class="btn btn-go" onclick="saveExtStage(\''+stageId+'\')">儲存'+conf.title+'</button><button class="btn btn-ghost" onclick="copyExtStageSummary(\''+stageId+'\')">複製本階段摘要</button></div>';
+  };
+  window.saveExtStage=function(stageId){
+    var conf=STAGE_EXT[stageId], a=curAcc(); if(!conf||!a){ toast(ICN.warn+' 尚未選定客戶'); return; }
+    readExtStageToData(stageId);
+    var rec=(a.clientFlow||{})[conf.key]||{}; if(rec.status==='in-progress' || rec.status==='not-started') rec.status='done';
+    _pushSnap(_currentSnap()); _lastDraftAt=_nowHM(); saveCurrent(true); toast(ICN.check+' '+conf.title+'已儲存'); renderExtStage(stageId);
+  };
+  window.copyExtStageSummary=function(stageId){
+    var conf=STAGE_EXT[stageId], a=curAcc(); if(!conf||!a){ toast(ICN.warn+' 尚未選定客戶'); return; }
+    readExtStageToData(stageId); var rec=(a.clientFlow||{})[conf.key]||{data:{}}; var d=rec.data||{};
+    var out='【'+conf.no+' '+conf.title+'】\n'+conf.fields.map(function(fd){return fd[1]+'：'+(d[fd[0]]||'');}).join('\n')+'\n\n【客戶版】\n'+(d.resultClient||'')+'\n\n【顧問版】\n'+(d.resultAdvisor||'');
+    copyVal(out,conf.title+'摘要');
+  };
+  function extStatus(a,stageId){ var c=STAGE_EXT[stageId]; return flowStatus(a,c.key); }
+  var oldCliCard=window.cliCard;
+  window.cliCard=function(a){
+    var base=oldCliCard?oldCliCard(a):'';
+    try{
+      var more=['stage4','stage5','stage6','stage7'].map(function(s){ var c=STAGE_EXT[s], st=extStatus(a,s); var cls=st==='done'?'done':(st==='in-progress'?'prog':'next'); return '<span class="flow-dot '+cls+'">'+c.no+c.title+'·'+statusLabel(st)+'</span>'; }).join('');
+      base=base.replace('</div>'+'</div>', more+'</div></div>');
+    }catch(e){}
+    return base;
+  };
+  var oldUndo=window.undoLast;
+  window.undoLast=function(){
+    if(_undoStack.length<=1){ toast('沒有更早的版本可回退'); return; }
+    _undoStack.pop(); var prev=_undoStack[_undoStack.length-1], a=curAcc(); if(!a) return;
+    a.clientFlow=JSON.parse(JSON.stringify(prev.clientFlow||{})); a.clientProfile=JSON.parse(JSON.stringify(prev.clientProfile||{})); _skipNextAutoSave=true;
+    var cur=document.querySelector('.view.on'); var view=cur?cur.id.replace(/^view-/,''):'';
+    if(view==='stage1') renderStage1(); else if(view==='stage2') renderStage2(); else if(view==='stage3') renderStage3(); else if(STAGE_EXT[view]) renderExtStage(view);
+    a.updatedAt=Date.now(); _accPush(); renderSelect(); renderBanner(); toast(ICN.undo+' 已回到上一步');
+  };
+  window.switchTo=function(view){
+    if(curAcc()) _flushAutoSave();
+    document.querySelectorAll('.tab').forEach(function(t){ t.classList.toggle('on',t.dataset&&t.dataset.view===view); });
+    document.querySelectorAll('.view').forEach(function(v){ v.classList.remove('on'); });
+    var el=$('view-'+view); if(el) el.classList.add('on');
+    if(view==='select') renderSelect(); else if(view==='stage1') renderStage1(); else if(view==='stage2') renderStage2(); else if(view==='stage3') renderStage3(); else if(STAGE_EXT[view]) renderExtStage(view);
+    window.scrollTo(0,0);
+  };
+  document.addEventListener('DOMContentLoaded',function(){
+    ['view-stage4','view-stage5','view-stage6','view-stage7'].forEach(function(vid){ var v=$(vid); if(v){ v.addEventListener('input',_scheduleAutoSave); v.addEventListener('change',_scheduleAutoSave); }});
+  });
+})();
+</script>
+
+
+<script>
+/* ═══════════════ cs-v1.7 初診交付物：設計版 HTML / PDF / 直接 PPTX ═══════════════ */
+(function(){
+  function safeFileName(name){ return (name||'ATELIER_初診交付物').replace(/[\\/:*?"<>|\n\r]+/g,'_').replace(/\s+/g,'_').slice(0,80); }
+  function clipText(t,n){ t=(t||'').replace(/\s+/g,' ').trim(); n=n||180; return t.length>n ? t.slice(0,n-1)+'…' : t; }
+  function splitCards(text){
+    text=(text||'').replace(/\r/g,'').trim();
+    if(!text) return [];
+    var lines=text.split('\n').map(function(x){return x.trim();}).filter(Boolean);
+    var cards=[], cur=null;
+    function isHead(x){
+      var t=(x||'').trim();
+      if(/^(一|二|三|四|五|六|七|八|九|十)[、．.]\s*/.test(t) || /^\d+[、．.]\s*/.test(t) || /^【.+】$/.test(t) || /^#{1,4}\s*/.test(t)) return true;
+      if(/^\*\*[^*]{1,30}\*\*$/.test(t)) return true;
+      if(/^[•\-]\s*[^：:]{1,12}[：:]\s*$/.test(t)) return true;
+      if(t.length<30 && /^[^：:]{2,12}[：:]\s*$/.test(t)) return true;
+      return false;
+    }
+    lines.forEach(function(line){
+      if(isHead(line) || (!cur && line.length<34)){
+        if(cur) cards.push(cur);
+        cur={title:line.replace(/^#{1,3}\s*/,'').replace(/^【|】$/g,''), body:''};
+      }else{
+        if(!cur) cur={title:'核心觀察',body:''};
+        cur.body += (cur.body?'\n':'') + line;
+      }
+    });
+    if(cur) cards.push(cur);
+    if(cards.length===1 && cards[0].body.length>420){
+      var parts=cards[0].body.split(/(?=(?:一|二|三|四|五|六|七|八|九|十)[、．.]|\d+[、．.])/).filter(function(x){return x.trim();});
+      if(parts.length>1){ cards=parts.map(function(p,i){ var m=p.trim().match(/^(.{1,32}?)[：:\n]/); return {title:m?m[1].replace(/[：:]$/,''):'重點 '+(i+1), body:p.trim().replace(m?m[0]:'','').trim()}; }); }
+    }
+    return cards.slice(0,12).map(function(c,i){ return {k:i+1,title:clipText(c.title||('重點 '+(i+1)),34),body:clipText(c.body||c.title||'',260)}; });
+  }
+  function getS1Bundle(){
+    var a=curAcc(); if(!a) return null;
+    try{ _flushAutoSave(); }catch(e){}
+    var f=ensureFlow(a), st=(f.stage1_initial&&f.stage1_initial.data)||{};
+    var title=($('s1outTitle')||{value:''}).value.trim() || ('ATELIER × '+(a.displayName||a.handle||'客戶')+'｜會前初步觀察與需求對焦');
+    var audience=($('s1outAudience')||{value:'client'}).value;
+    var mode='cards';
+    var style='atelier';
+    var note=($('s1outNote')||{value:''}).value.trim();
+    var sources=[]; CHECK_SOURCES.forEach(function(s){ var v=(st.sources||{})[s[0]]||{}; if(v.checked||v.note) sources.push({label:s[1],note:v.note||''}); });
+    var fws=[]; STAGE1_FRAMEWORKS.forEach(function(fw){ var v=(st.frameworks||{})[fw[0]]||''; if(v) fws.push({label:fw[1],desc:fw[2],text:v}); });
+    var client=st.resultClient||'', advisor=st.resultAdvisor||st.result||'';
+    return {a:a, st:st, title:title, audience:audience, mode:mode, style:style, note:note, sources:sources, frameworks:fws,
+      client:client, advisor:advisor, clientCards:splitCards(client), advisorCards:splitCards(advisor), date:new Date().toLocaleDateString('zh-TW')};
+  }
+  function cardHTML(cards,empty){
+    if(!cards.length) return '<div class="empty-note">'+esc(empty||'尚未填入內容')+'</div>';
+    return '<div class="cards">'+cards.map(function(c){return '<article class="brief-card"><div class="num">0'+c.k+'</div><h3>'+esc(c.title)+'</h3><p>'+esc(c.body)+'</p></article>';}).join('')+'</div>';
+  }
+  function sourceHTML(b){
+    var s=b.sources.length?b.sources.slice(0,8).map(function(x){return '<li><b>'+esc(x.label)+'</b>'+(x.note?' <span>'+esc(x.note)+'</span>':'')+'</li>';}).join(''):'<li><b>尚未填入來源</b><span>可回到初診來源清單補齊。</span></li>';
+    return '<ul class="source-list">'+s+'</ul>';
+  }
+  function frameworkHTML(b){
+    if(!b.frameworks.length) return '<div class="empty-note">尚未填入進階初診判斷。</div>';
+    return '<div class="mini-grid">'+b.frameworks.map(function(x){return '<div class="mini"><h3>'+esc(x.label)+'</h3><p>'+esc(clipText(x.text,220))+'</p></div>';}).join('')+'</div>';
+  }
+  function buildS1HTMLDoc(b){
+    var showClient=b.audience==='client'||b.audience==='both';
+    var showAdvisor=b.audience==='advisor'||b.audience==='both';
+    var clientBlock=showClient?('<section class="section"><div class="eyebrow">CLIENT VERSION</div><h2>客戶版重點摘要</h2>'+cardHTML(b.clientCards,'客戶版尚未填入')+'</section>'):'';
+    var advisorBlock=showAdvisor?('<section class="section advisor"><div class="eyebrow">ADVISOR VERSION</div><h2>顧問版內部判斷</h2>'+cardHTML(b.advisorCards,'顧問版尚未填入')+'</section>'):'';
+    return '<!DOCTYPE html><html lang="zh-Hant"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>'+esc(b.title)+'</title><link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700;900&family=Noto+Sans+TC:wght@400;500;700;900&family=Cormorant+Garamond:wght@500;600&display=swap" rel="stylesheet"><style>:root{--primary:#A51820;--deep:#7A1018;--gold:#D4A574;--bg:#FDFBF8;--cream:#FFF8F5;--text:#2A1A1C;--sub:#7A5A5E;--line:#E8E3DA}*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top left,#fff 0,#FDFBF8 34%,#F6EEE9 100%);color:var(--text);font-family:"Noto Sans TC",sans-serif;line-height:1.75}.cover{min-height:330px;background:linear-gradient(135deg,var(--primary),var(--deep));color:#fff;padding:46px 48px 42px;position:relative;overflow:hidden;border-bottom:4px solid var(--gold)}.cover:after{content:"";position:absolute;right:-110px;top:-110px;width:320px;height:320px;border:1px solid rgba(212,165,116,.42);border-radius:50%}.brand{font-family:"Cormorant Garamond",serif;letter-spacing:10px;font-size:22px}.cover h1{font-family:"Noto Serif TC",serif;font-size:34px;line-height:1.35;margin:80px 0 12px;max-width:860px}.cover .sub{color:#F0D8D5;font-size:13px;letter-spacing:1px}.wrap{max-width:1040px;margin:0 auto;padding:34px 24px 80px}.info{display:grid;grid-template-columns:1.1fr .9fr;gap:18px;margin-top:-72px;position:relative;z-index:2}.panel,.section{background:rgba(255,255,255,.94);border:1px solid var(--line);border-radius:22px;padding:24px;box-shadow:0 18px 45px rgba(42,26,28,.08);}.panel h2,.section h2{font-family:"Noto Serif TC",serif;color:var(--primary);font-size:23px;margin:0 0 14px}.meta{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.meta div{background:#FFFCFB;border:1px solid #F0E6DE;border-radius:14px;padding:10px 12px;font-size:12px;color:var(--sub)}.meta b{display:block;color:var(--text);font-size:14px}.kicker{font-family:"Cormorant Garamond",serif;color:var(--gold);letter-spacing:3px;font-size:12px;margin-bottom:6px}.section{margin-top:22px;box-shadow:0 8px 28px rgba(42,26,28,.045)}.section.advisor{background:#FFFCFB}.eyebrow{font-family:"Cormorant Garamond",serif;color:var(--gold);letter-spacing:3px;font-size:12px;margin-bottom:6px}.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.brief-card{border:1px solid #F0E6DE;border-radius:18px;background:linear-gradient(180deg,#fff,#FFF9F7);padding:18px;min-height:170px}.brief-card .num{font-family:"Cormorant Garamond",serif;color:var(--gold);letter-spacing:2px;font-size:13px}.brief-card h3{font-family:"Noto Serif TC",serif;font-size:18px;color:var(--deep);margin:6px 0 10px}.brief-card p{font-size:13.5px;color:var(--text);margin:0}.source-list{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.source-list li{border:1px solid #F0E6DE;border-radius:14px;padding:12px;background:#fff}.source-list b{color:var(--deep);display:block}.source-list span{font-size:12px;color:var(--sub)}.mini-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.mini{background:#fff;border:1px solid #F0E6DE;border-radius:16px;padding:15px}.mini h3{margin:0 0 8px;color:var(--primary);font-size:15px}.mini p{margin:0;font-size:12.5px;color:var(--sub)}.empty-note{border:1px dashed var(--line);border-radius:16px;padding:22px;color:#B09498;text-align:center}.footer{text-align:center;color:#B09498;font-family:"Cormorant Garamond",serif;letter-spacing:2px;font-style:italic;margin-top:30px}@media(max-width:760px){.cover{padding:34px 24px}.cover h1{font-size:26px;margin-top:60px}.info,.cards,.source-list,.mini-grid{grid-template-columns:1fr}}@media print{body{background:#fff}.cover{break-after:avoid}.panel,.section{box-shadow:none;break-inside:avoid}.brief-card{break-inside:avoid}}</style></head><body><header class="cover"><div class="brand">ATELIER</div><h1>'+esc(b.title)+'</h1><div class="sub">Pre-meeting Brief · '+esc(b.date)+' · '+(b.audience==='client'?'Client Version':b.audience==='advisor'?'Advisor Version':'Complete Package')+'</div></header><main class="wrap"><div class="info"><section class="panel"><div class="kicker">BASIC INFO</div><h2>交付資訊</h2><div class="meta"><div>帳號<b>'+esc(b.a.handle||'')+'</b></div><div>名稱<b>'+esc(b.a.displayName||'')+'</b></div><div>產業<b>'+esc(b.a.industry||'')+'</b></div><div>職稱<b>'+esc(b.a.jobTitle||'')+'</b></div><div>版本<b>'+esc(b.audience)+'</b></div><div>版型<b>ATELIER 設計版</b></div></div></section><section class="panel"><div class="kicker">NOTE</div><h2>本次目的</h2><p>'+(b.note?esc(b.note):'將公開資料初診整理成可溝通、可簡報、可留存的會前觀察文件。')+'</p></section></div>'+clientBlock+advisorBlock+'<section class="section"><div class="eyebrow">SOURCE CHECK</div><h2>資料來源核對</h2>'+sourceHTML(b)+'</section><section class="section"><div class="eyebrow">FRAMEWORK</div><h2>進階初診判斷</h2>'+frameworkHTML(b)+'</section><div class="footer">ATELIER · Client Service Desk · cs-v1.7</div></main></body></html>';
+  }
+  function downloadBlob(content,mime,filename){ var blob=new Blob([content],{type:mime}); var url=URL.createObjectURL(blob); var a=document.createElement('a'); a.href=url; a.download=filename; document.body.appendChild(a); a.click(); setTimeout(function(){URL.revokeObjectURL(url); a.remove();},800); }
+  window.exportStage1HTML=function(){ var b=getS1Bundle(); if(!b){toast(ICN.warn+' 尚未選定客戶');return;} downloadBlob(buildS1HTMLDoc(b),'text/html;charset=utf-8',safeFileName(b.title)+'_'+b.audience+'.html'); toast(ICN.check+' 已下載設計版 HTML'); };
+  window.exportStage1PDF=function(){ var b=getS1Bundle(); if(!b){toast(ICN.warn+' 尚未選定客戶');return;} var w=window.open('','atelier_s1_pdf','width=1020,height=900,scrollbars=yes'); if(!w){toast(ICN.warn+' 瀏覽器擋住彈出視窗，請允許後再試');return;} w.document.open(); w.document.write(buildS1HTMLDoc(b)+'<script>setTimeout(function(){window.print()},650)<\/script>'); w.document.close(); toast('已開啟設計版列印視窗，可選「另存為 PDF」'); };
+  function loadPptx(cb){
+    function done(){ cb(!!(window.pptxgen||window.PptxGenJS)); }
+    if(window.pptxgen||window.PptxGenJS){ done(); return; }
+    var urls=['https://cdn.jsdelivr.net/npm/pptxgenjs@3.12.0/dist/pptxgen.bundle.js','https://unpkg.com/pptxgenjs@3.12.0/dist/pptxgen.bundle.js'];
+    function tryUrl(i){ if(i>=urls.length){ cb(false); return; } var s=document.createElement('script'); s.src=urls[i]; s.onload=done; s.onerror=function(){tryUrl(i+1)}; document.head.appendChild(s); }
+    tryUrl(0);
+  }
+  function pptFactory(){ var C=window.pptxgen||window.PptxGenJS; return new C(); }
+  function addTitle(slide,pptx,kicker,title){ slide.addText(kicker,{x:.62,y:.38,w:4,h:.25,fontSize:10,color:'D4A574',fontFace:'Cormorant Garamond',charSpace:2}); slide.addText(title,{x:.62,y:.72,w:8.5,h:.42,fontSize:23,bold:true,color:'A51820',fontFace:'Microsoft JhengHei'}); slide.addShape(pptx.ShapeType.line,{x:.62,y:1.24,w:2.2,h:0,line:{color:'D4A574',width:1}}); }
+  function footer(slide){ slide.addText('ATELIER · Inspire · Create · Shine.',{x:.55,y:7.05,w:12.2,h:.18,fontSize:8,color:'B09498',fontFace:'Cormorant Garamond',italic:true,align:'center'}); }
+  function addCard(slide,pptx,x,y,w,h,num,title,body){ slide.addShape(pptx.ShapeType.roundRect,{x:x,y:y,w:w,h:h,rectRadius:.12,fill:{color:'FFFFFF'},line:{color:'F0E6DE',width:1}}); slide.addText(num,{x:x+.18,y:y+.18,w:.6,h:.18,fontSize:9,color:'D4A574',fontFace:'Cormorant Garamond',charSpace:1}); slide.addText(title,{x:x+.18,y:y+.45,w:w-.36,h:.42,fontSize:14,bold:true,color:'7A1018',fontFace:'Microsoft JhengHei',fit:'shrink'}); slide.addText(body||'尚未填入',{x:x+.18,y:y+.95,w:w-.36,h:h-1.1,fontSize:10.5,color:'2A1A1C',fontFace:'Microsoft JhengHei',fit:'shrink',valign:'top'}); }
+  function addCardsSlides(pptx,pptxNS,label,title,cards){
+    cards=cards.length?cards:[{k:1,title:'尚未填入',body:'請回到客戶服務台補上內容。'}];
+    for(var i=0;i<cards.length;i+=4){ var s=pptx.addSlide(); s.background={color:'FDFBF8'}; addTitle(s,pptxNS,label,title); var chunk=cards.slice(i,i+4); [[.75,1.6,5.75,2.25],[6.75,1.6,5.75,2.25],[.75,4.05,5.75,2.25],[6.75,4.05,5.75,2.25]].forEach(function(pos,idx){ if(chunk[idx]) addCard(s,pptxNS,pos[0],pos[1],pos[2],pos[3],String(chunk[idx].k).padStart(2,'0'),chunk[idx].title,chunk[idx].body); }); footer(s); }
+  }
+  window.exportStage1PPTX=function(){ var b=getS1Bundle(); if(!b){toast(ICN.warn+' 尚未選定客戶');return;} var msg=$('s1exportMsg'); var btn=document.activeElement; if(btn&&btn.tagName==='BUTTON') btn.disabled=true; var t0=Date.now(), waits=[]; function setMsg(x){ if(msg) msg.textContent=x; } setMsg('正在載入 PPTX 函式庫…'); waits.push(setTimeout(function(){setMsg('仍在載入，第一次可能較久…');},5000)); waits.push(setTimeout(function(){setMsg('若網路較慢，請再等一下…');},10000)); loadPptx(function(ok){ waits.forEach(clearTimeout); if(btn&&btn.tagName==='BUTTON') btn.disabled=false; if(!ok){ copyStage1OutputSpec(); toast(ICN.warn+' PPTX 函式庫載入失敗，已複製規格'); if(msg) msg.textContent='PPTX 函式庫載入失敗，請改用 HTML / PDF 匯出，或重新整理後再試。'; return; } setMsg('正在直接產生 PPTX…'); var pptx=pptFactory(); var NS=window.pptxgen||window.PptxGenJS; pptx.layout='LAYOUT_WIDE'; pptx.author='ATELIER'; pptx.company='ATELIER'; pptx.subject='會前初步觀察與需求對焦'; pptx.theme={headFontFace:'Microsoft JhengHei',bodyFontFace:'Microsoft JhengHei',lang:'zh-TW'};
+    var s=pptx.addSlide(); s.background={color:'A51820'}; s.addText('ATELIER',{x:.7,y:.45,w:2.6,h:.3,fontSize:18,color:'FFFFFF',fontFace:'Cormorant Garamond',charSpace:5}); s.addText(b.title,{x:1.05,y:2.05,w:11.2,h:1.2,fontSize:27,bold:true,color:'FFFFFF',fontFace:'Microsoft JhengHei',align:'center',fit:'shrink'}); s.addText((b.audience==='client'?'Client Version':b.audience==='advisor'?'Advisor Version':'Complete Package')+' · '+b.date,{x:4.05,y:3.45,w:5.2,h:.3,fontSize:12,color:'F0D8D5',align:'center'}); s.addShape(NS.ShapeType.line,{x:5.25,y:4.05,w:2.8,h:0,line:{color:'D4A574',width:1.4}}); footer(s);
+    s=pptx.addSlide(); s.background={color:'FDFBF8'}; addTitle(s,NS,'BASIC INFO','交付資訊'); addCard(s,NS,.75,1.65,5.8,2.3,'01','客戶資料','帳號：'+(b.a.handle||'')+'\n名稱：'+(b.a.displayName||'')+'\n產業：'+(b.a.industry||'')+'\n職稱：'+(b.a.jobTitle||'')); addCard(s,NS,6.8,1.65,5.7,2.3,'02','輸出設定','版本：'+b.audience+'\n版型：ATELIER 設計版'); addCard(s,NS,.75,4.2,11.75,1.65,'03','本次目的',b.note||'將公開資料初診整理成可溝通、可簡報、可留存的會前觀察文件。'); footer(s);
+    if(b.audience==='client'||b.audience==='both') addCardsSlides(pptx,NS,'CLIENT VERSION','客戶版重點摘要',b.clientCards);
+    if(b.audience==='advisor'||b.audience==='both') addCardsSlides(pptx,NS,'ADVISOR VERSION','顧問版內部判斷',b.advisorCards);
+    s=pptx.addSlide(); s.background={color:'FDFBF8'}; addTitle(s,NS,'SOURCE & FRAMEWORK','資料來源與進階判斷'); var srcCards=b.sources.slice(0,4).map(function(x,i){return {k:i+1,title:x.label,body:x.note||'已核對'};}); var fwCards=b.frameworks.slice(0,4).map(function(x,i){return {k:i+1,title:x.label,body:clipText(x.text,180)};}); addCard(s,NS,.75,1.55,5.75,4.9,'01','資料來源',srcCards.map(function(x){return '・'+x.title+(x.body?'｜'+x.body:'');}).join('\n')||'尚未填入來源'); addCard(s,NS,6.75,1.55,5.75,4.9,'02','進階判斷',fwCards.map(function(x){return '【'+x.title+'】'+x.body;}).join('\n\n')||'尚未填入進階判斷'); footer(s);
+    var out=safeFileName(b.title)+'_'+b.audience+'.pptx'; var ret=pptx.writeFile({fileName:out}); if(ret&&ret.then){ret.then(function(){ if(msg) msg.textContent='PPTX 已直接下載：'+out; toast(ICN.check+' 已直接產生 PPTX'); }).catch(function(e){ if(msg) msg.textContent='PPTX 下載失敗：'+(e&&e.message?e.message:e); toast(ICN.warn+' PPTX 下載失敗'); });} else { if(msg) msg.textContent='PPTX 已直接下載：'+out; toast(ICN.check+' 已直接產生 PPTX'); }
+  }); };
+  window.copyStage1OutputSpec=function(){ var b=getS1Bundle(); if(!b){toast(ICN.warn+' 尚未選定客戶');return;} var spec='【ATELIER 初診交付物三格式產出規格｜v1.6】\n\n標題：'+b.title+'\n客戶：'+(b.a.handle||'')+' '+(b.a.displayName||'')+'\n輸出版本：'+b.audience+'\n內容呈現：'+b.mode+'\n風格：'+b.style+'\n備註：'+(b.note||'無')+'\n\n重要要求：\n1. 必須先依「客戶版 / 顧問版 / 完整包」分流輸出。\n2. 不要做成逐字稿，要轉成設計感卡片、重點頁、章節式版面。\n3. PPT 每頁最多 4 張重點卡；HTML/PDF 使用紅金精品感、留白、卡片式設計。\n\n【客戶版重點卡】\n'+(b.clientCards.map(function(c){return c.k+'. '+c.title+'：'+c.body;}).join('\n')||'尚未填入')+'\n\n【顧問版重點卡】\n'+(b.advisorCards.map(function(c){return c.k+'. '+c.title+'：'+c.body;}).join('\n')||'尚未填入'); copyPrompt(spec,'初診三格式設計版規格'); };
+})();
 </script>
 </body>
 </html>
