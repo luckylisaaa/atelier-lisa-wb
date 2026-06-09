@@ -13,7 +13,7 @@
 <style>
 /* ═══ 品牌底層（與 index.html 影片診斷工作台一致）═══ */
 :root{
-  --primary:#A51820; --rouge:#A51820;
+  --primary:#A51820; --rouge:#A51820; --rouge-soft:#8E2A2E;
   --gold:#D4A574; --gold-soft:#EDE3D4; --gold-dark:#9C7D4A;
   --ink:#2A1A1C; --text:#5C4248; --sub:#8A7274;
   --bg:#FCFAF8; --warm:#FDF6F5; --card:#FFFFFF; --warm-white:#FDFBF8;
@@ -27,6 +27,7 @@ html,body{background:var(--bg);color:var(--ink);
   font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased}
 input,select,textarea{color-scheme:light}
 a{color:var(--rouge)}
+svg.ic{vertical-align:-2px;flex:0 0 auto}
 
 /* 頂部標題 */
 .topbar{position:sticky;top:0;z-index:50;background:linear-gradient(135deg,#A51820 0%,#7A1018 100%);border-bottom:3px solid var(--gold);
@@ -69,15 +70,19 @@ a{color:var(--rouge)}
 .cs-banner{position:sticky;top:103px;z-index:40;background:linear-gradient(135deg,#FBF0EF,#FDF6F5);border:1px solid #EAD9D6;border-radius:0;
   padding:9px 14px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:12.5px;color:var(--text);border-left:0;border-right:0}
 .cs-banner .who{font-weight:800;color:var(--rouge)}
-.cs-banner .hs{font-size:11.5px;color:var(--gold-dark);font-weight:700}
+.cs-banner .hs{font-size:11.5px;color:var(--text);font-weight:600;display:inline-flex;align-items:center;gap:4px}
 .cs-banner .hs b{color:var(--rouge)}
-.cs-banner .mini-btn{font-size:11px;font-weight:700;color:#fff;background:var(--gold-dark);border:none;border-radius:8px;padding:4px 11px;cursor:pointer;font-family:inherit}
+.cs-banner .mini-btn{font-size:11px;font-weight:700;color:#fff;background:var(--rouge-soft);border:none;border-radius:8px;padding:5px 12px;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:4px}
+.cs-banner .mini-btn:hover{background:var(--rouge)}
+.cs-banner .mini-btn[disabled]{opacity:.35;cursor:default;background:var(--sub)}
+.cs-banner .savestate{font-size:11px;color:var(--sub);display:inline-flex;align-items:center;gap:4px}
+.cs-banner .savestate.flash{color:var(--green)}
 .cs-banner.empty{background:var(--warm);color:var(--sub)}
 
 /* 搜尋框 */
 .searchbar{position:relative;margin-bottom:14px}
 .searchbar input{width:100%;font-size:16px;padding:13px 16px;border:1px solid #EDE3D4;border-radius:10px;background:var(--card);color:var(--ink);outline:none}
-.searchbar input:focus{border-color:var(--gold)}
+.searchbar input:focus{border-color:var(--rouge)}
 
 /* 客戶卡 */
 .cli-card{background:var(--card);border:1px solid #F0E9E4;border-radius:11px;box-shadow:0 1px 3px rgba(90,40,45,.04),0 4px 14px rgba(90,40,45,.025);
@@ -109,15 +114,21 @@ a{color:var(--rouge)}
 .status-pill .pdot{width:8px;height:8px;border-radius:50%;background:currentColor}
 
 .section-card{background:var(--card);border:1px solid #F0E9E4;border-radius:11px;box-shadow:0 1px 3px rgba(90,40,45,.04);padding:16px 16px;margin-bottom:14px}
+.section-card.ai-fill{border-left:3px solid var(--rouge);background:linear-gradient(180deg,#FFFCFB 0%,#FFFFFF 60%)}
 .section-card>h3{font-family:'Noto Serif TC',serif;font-size:15px;font-weight:700;color:var(--ink);letter-spacing:.5px;margin-bottom:4px;display:flex;align-items:center;gap:8px}
+.section-card>h3 svg{flex:0 0 auto;color:var(--rouge)}
 .section-card .sc-note{font-size:12px;color:var(--sub);line-height:1.7;margin-bottom:12px}
+
+/* 跳工作台用：小視窗鈕（topbar） */
+.popout-btn{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap;display:inline-flex;align-items:center;gap:4px}
+.popout-btn:hover{background:rgba(255,255,255,.22)}
 
 .fld{margin-bottom:12px}
 .fld label{display:block;font-size:12px;font-weight:700;color:var(--ink);letter-spacing:.5px;margin-bottom:5px}
 .fld input,.fld select,.fld textarea{width:100%;min-width:0;max-width:100%;font-size:15px;padding:10px 12px;border:1px solid var(--border);border-radius:9px;background:#fff;color:var(--ink);outline:none;font-family:inherit;-webkit-appearance:none;appearance:none}
-.fld input:focus,.fld select:focus,.fld textarea:focus{border-color:var(--gold)}
+.fld input:focus,.fld select:focus,.fld textarea:focus{border-color:var(--rouge)}
 .fld textarea{resize:vertical;min-height:54px;line-height:1.6}
-.fld .pre{font-size:10px;font-weight:700;color:var(--gold-dark);background:var(--gold-soft);border-radius:6px;padding:1px 6px;margin-left:6px}
+.fld .pre{font-size:10px;font-weight:700;color:var(--sub);background:var(--warm);border:1px solid var(--border);border-radius:6px;padding:1px 6px;margin-left:6px}
 
 /* 初診核對清單 */
 .chk-row{display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-bottom:1px solid var(--line)}
@@ -127,7 +138,7 @@ a{color:var(--rouge)}
 .chk-row .cbody{flex:1;min-width:0}
 .chk-row .cbody .clab{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:4px}
 .chk-row .cbody input[type=text]{width:100%;font-size:13px;padding:7px 10px;border:1px solid var(--border);border-radius:7px;background:#fff;color:var(--ink);outline:none;font-family:inherit}
-.chk-row .cbody input[type=text]:focus{border-color:var(--gold)}
+.chk-row .cbody input[type=text]:focus{border-color:var(--rouge)}
 
 /* 8 大類完整度方塊 */
 .comp-squares{display:grid;grid-template-columns:repeat(8,1fr);gap:6px;margin:4px 0 6px}
@@ -164,16 +175,17 @@ details.cat .cat-body{padding:14px 15px}
 .health-note{width:100%;font-size:12px;padding:7px 10px;border:1px solid var(--border);border-radius:7px;margin-top:6px;font-family:inherit;color:var(--ink);outline:none}
 .health-note:focus{border-color:var(--gold)}
 
-.btn{display:block;width:100%;font-size:15px;font-weight:800;letter-spacing:1px;padding:13px;border:none;border-radius:12px;cursor:pointer;text-align:center;font-family:inherit}
+.btn{display:block;width:100%;font-size:15px;font-weight:800;letter-spacing:1px;padding:13px;border:none;border-radius:12px;cursor:pointer;text-align:center;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:6px}
 .btn-go{background:var(--rouge);color:#fff;-webkit-text-fill-color:#fff}
 .btn-go:active{background:var(--primary)}
 .btn-ghost{background:var(--warm);color:var(--text);border:1px solid var(--border);font-size:13px;padding:11px;font-weight:600}
-.btn-gold{background:var(--gold-dark);color:#fff;-webkit-text-fill-color:#fff}
+.btn-gold{background:var(--rouge-soft);color:#fff;-webkit-text-fill-color:#fff}
+.btn-gold:active{background:var(--rouge)}
 .btn-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
 .btn-row .btn{flex:1;min-width:140px}
 
 .paste-box{width:100%;min-height:130px;font-size:14px;padding:13px;border:1px solid #EDE3D4;border-radius:9px;background:#fff;color:var(--ink);outline:none;font-family:inherit;line-height:1.7;resize:vertical}
-.paste-box:focus{border-color:var(--gold)}
+.paste-box:focus{border-color:var(--rouge)}
 
 .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(80px);
   background:var(--ink);color:#fff;font-size:13px;padding:11px 22px;border-radius:24px;
@@ -186,8 +198,8 @@ details.cat .cat-body{padding:14px 15px}
 .sheet{background:var(--bg);width:100%;max-width:640px;max-height:90vh;overflow-y:auto;border-radius:18px;padding:20px 16px 24px;box-sizing:border-box}
 
 .locked-wrap{text-align:center;padding:50px 20px;color:var(--sub)}
-.locked-wrap .lk-ic{font-size:40px;margin-bottom:14px;opacity:.5}
-.locked-wrap h2{font-family:'Noto Serif TC',serif;font-size:20px;color:var(--gold-dark);margin-bottom:8px}
+.locked-wrap .lk-ic{margin:0 auto 14px;opacity:.4;color:var(--sub)}
+.locked-wrap h2{font-family:'Noto Serif TC',serif;font-size:20px;color:var(--text);margin-bottom:8px;letter-spacing:1px}
 .locked-wrap p{font-size:13px;line-height:1.9;max-width:440px;margin:0 auto}
 </style>
 </head>
@@ -225,10 +237,11 @@ details.cat .cat-body{padding:14px 15px}
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">客戶服務台</span></span>
-    <span id="verBadge">cs-v1.1</span>
+    <span id="verBadge">cs-v1.2</span>
   </div>
-  <div style="display:flex;align-items:center;gap:10px">
-    <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
+  <div style="display:flex;align-items:center;gap:8px">
+    <button type="button" id="popoutBtn" class="popout-btn" title="把客戶服務台開成獨立小視窗"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6"/><path d="M20 4l-9 9"/><path d="M14 12v7H5V10h7"/></svg>小視窗</button>
+    <button type="button" id="reloadBtn" class="popout-btn" title="重新整理（抓最新版）"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 4v5h-5"/></svg>重新整理</button>
     <div class="stat">已存 <b id="cliCount">0</b> 個客戶</div>
   </div>
 </div>
@@ -243,7 +256,7 @@ details.cat .cat-body{padding:14px 15px}
   <div class="tab disabled" title="下一版"><svg class="tic" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 9h16M9 4v16" stroke-linecap="round"/></svg>⑤ 盤點<span class="soon">下一版</span></div>
   <div class="tab disabled" title="下一版"><svg class="tic" viewBox="0 0 24 24"><path d="M5 4h11a2 2 0 012 2v14H7a2 2 0 01-2-2z" stroke-linejoin="round"/></svg>⑥ 企劃<span class="soon">下一版</span></div>
   <div class="tab disabled" title="下一版"><svg class="tic" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 013 3L7 19l-4 1 1-4z"/></svg>⑦ 交付<span class="soon">下一版</span></div>
-  <a class="tab back" href="index.html"><svg class="tic" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>回診斷工作台</a>
+  <a class="tab back" href="index.html" target="_blank" rel="noopener" title="在新分頁開啟（這頁保留）"><svg class="tic" viewBox="0 0 24 24"><path d="M14 4h6v6"/><path d="M20 4l-10 10"/><path d="M14 12v7H5V10h7"/></svg>回診斷工作台</a>
 </div>
 
 <!-- ═══ 目前服務對象提示條 ═══ -->
@@ -285,17 +298,35 @@ details.cat .cat-body{padding:14px 15px}
 /* ─── 0) 共用小工具 ─── */
 const $=id=>document.getElementById(id);
 const esc=s=>(s==null?'':String(s)).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+/* ─── 自繪 SVG icon set（取代 emoji；color 用 currentColor 跟著文字色）─── */
+function _svg(d,w,h){ w=w||14; h=h||14; return '<svg class="ic" width="'+w+'" height="'+h+'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">'+d+'</svg>'; }
+var ICN={
+  prompt:    _svg('<rect x="7" y="4" width="11" height="17" rx="1.5"/><path d="M10 4v2h5V4"/><path d="M10 11h5M10 15h4"/>'),
+  spark:    _svg('<path d="M13 3L4 14h7l-1 7 9-11h-7l1-7z"/>'),
+  check:    _svg('<path d="M5 12l4 4L19 6"/>',13,13),
+  warn:    _svg('<path d="M12 3l10 18H2z"/><path d="M12 10v5"/><circle cx="12" cy="18" r=".6" fill="currentColor" stroke="none"/>',13,13),
+  edit:    _svg('<path d="M4 20h4l11-11-4-4L4 16z"/><path d="M14 6l4 4"/>',13,13),
+  lockOn:    _svg('<rect x="5" y="11" width="14" height="9" rx="1.5"/><path d="M8 11V8a4 4 0 018 0v3"/>',13,13),
+  lockOff:    _svg('<rect x="5" y="11" width="14" height="9" rx="1.5"/><path d="M8 11V8a4 4 0 018-1"/>',13,13),
+  undo:    _svg('<path d="M9 14l-5-5 5-5"/><path d="M4 9h11a5 5 0 010 10h-4"/>',13,13),
+  reset:    _svg('<path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/>',13,13),
+  close:    _svg('<path d="M6 6l12 12M18 6L6 18"/>',16,16),
+  user:    _svg('<circle cx="12" cy="9" r="3.6"/><path d="M5 20c0-3.9 3.1-7 7-7s7 3.1 7 7"/>',44,44),
+  popout:    _svg('<path d="M14 4h6v6"/><path d="M20 4l-9 9"/><path d="M14 12v7H5V10h7"/>',13,13),
+  dot:    '<svg class="ic" width="8" height="8" viewBox="0 0 8 8"><circle cx="4" cy="4" r="3" fill="currentColor"/></svg>',
+  save:    _svg('<path d="M5 4h11l4 4v12H5z"/><path d="M8 4v5h8V4"/><circle cx="12" cy="14" r="2.2"/>',13,13)
+};
 let _tTimer;
-function toast(msg,ms){ const t=$('toast'); if(!t) return; t.textContent=msg; t.classList.add('show'); clearTimeout(_tTimer); _tTimer=setTimeout(()=>t.classList.remove('show'),ms||1900); }
+function toast(msg,ms){ const t=$('toast'); if(!t) return; t.innerHTML=msg; t.classList.add('show'); clearTimeout(_tTimer); _tTimer=setTimeout(()=>t.classList.remove('show'),ms||1900); }
 function copyVal(text,label){
   if(!text){ toast('沒有內容可複製'); return; }
   if(navigator.clipboard&&navigator.clipboard.writeText){
-    navigator.clipboard.writeText(text).then(()=>toast('✓ 已複製'+(label?'：'+label:''))).catch(()=>_copyFallback(text,label));
+    navigator.clipboard.writeText(text).then(()=>toast(ICN.check+' 已複製'+(label?'：'+label:''))).catch(()=>_copyFallback(text,label));
   } else { _copyFallback(text,label); }
 }
 function _copyFallback(text,label){
-  try{ const t=document.createElement('textarea'); t.value=text; t.style.position='fixed'; t.style.opacity='0'; document.body.appendChild(t); t.select(); document.execCommand('copy'); document.body.removeChild(t); toast('✓ 已複製'+(label?'：'+label:'')); }
-  catch(e){ toast('複製失敗，請手動選取'); }
+  try{ const t=document.createElement('textarea'); t.value=text; t.style.position='fixed'; t.style.opacity='0'; document.body.appendChild(t); t.select(); document.execCommand('copy'); document.body.removeChild(t); toast(ICN.check+' 已複製'+(label?'：'+label:'')); }
+  catch(e){ toast(ICN.warn+' 複製失敗，請手動選取'); }
 }
 /* 提示詞預覽彈窗（與 index.html copyPrompt 同範式：唯讀預設＋編輯鎖＋還原＋複製） */
 function copyPrompt(text,label){
@@ -304,23 +335,23 @@ function copyPrompt(text,label){
     var sh=$('sheet'), md=$('modal'); if(!sh||!md) return;
     var safe=esc(text||'');
     sh.innerHTML='<div style="padding:18px 18px 16px;position:relative">'
-      +'<button id="pp-xtop" style="position:absolute;top:12px;right:14px;background:none;border:none;font-size:20px;color:var(--sub);cursor:pointer;line-height:1;font-family:inherit" title="關閉">✕</button>'
+      +'<button id="pp-xtop" style="position:absolute;top:12px;right:14px;background:none;border:none;color:var(--sub);cursor:pointer;line-height:1;font-family:inherit;padding:4px" title="關閉">'+ICN.close+'</button>'
       +'<div style="font-family:\'Noto Serif TC\',serif;font-size:17px;font-weight:900;margin-bottom:4px;padding-right:30px">'+esc(label||'提示詞')+'</div>'
-      +'<div style="font-size:12px;color:var(--sub);line-height:1.6;margin-bottom:8px">已複製原始版到剪貼簿。預設唯讀——按 ✏️ 編輯鍵才能改字；改完按「複製（含修改）」。</div>'
+      +'<div style="font-size:12px;color:var(--sub);line-height:1.6;margin-bottom:8px">已複製原始版到剪貼簿。預設唯讀——按「編輯」鍵才能改字；改完按「複製（含修改）」。</div>'
       +'<div style="display:flex;gap:8px;margin-bottom:6px;align-items:center;flex-wrap:wrap">'
-      +'<button id="pp-editlock" style="background:var(--warm-white);border:1px solid var(--gold-soft);border-radius:6px;padding:4px 10px;font-size:12px;cursor:pointer;color:var(--gold-dark);font-family:inherit">✏️ 編輯</button>'
-      +'<button id="pp-resetall" style="background:var(--warm-white);border:1px solid var(--gold-soft);border-radius:6px;padding:4px 10px;font-size:12px;cursor:pointer;color:var(--gold-dark);font-family:inherit">↺ 還原全部</button>'
-      +'<span id="pp-lockstate" style="font-size:11px;color:var(--sub)">🔒 唯讀中</span></div>'
-      +'<textarea id="pp-edit" spellcheck="false" readonly style="display:block;width:100%;box-sizing:border-box;white-space:pre-wrap;word-break:break-word;font-size:12.5px;line-height:1.6;background:var(--warm-white);border:1px solid var(--gold-soft);border-radius:8px;padding:12px;min-height:220px;max-height:52vh;overflow:auto;color:var(--ink);font-family:inherit;resize:vertical;opacity:.85">'+safe+'</textarea>'
+      +'<button id="pp-editlock" style="display:inline-flex;align-items:center;gap:4px;background:var(--warm-white);border:1px solid var(--border);border-radius:6px;padding:4px 10px;font-size:12px;cursor:pointer;color:var(--text);font-family:inherit">'+ICN.edit+'編輯</button>'
+      +'<button id="pp-resetall" style="display:inline-flex;align-items:center;gap:4px;background:var(--warm-white);border:1px solid var(--border);border-radius:6px;padding:4px 10px;font-size:12px;cursor:pointer;color:var(--text);font-family:inherit">'+ICN.reset+'還原全部</button>'
+      +'<span id="pp-lockstate" style="display:inline-flex;align-items:center;gap:4px;font-size:11px;color:var(--sub)">'+ICN.lockOn+'唯讀中</span></div>'
+      +'<textarea id="pp-edit" spellcheck="false" readonly style="display:block;width:100%;box-sizing:border-box;white-space:pre-wrap;word-break:break-word;font-size:12.5px;line-height:1.6;background:var(--warm-white);border:1px solid var(--border);border-radius:8px;padding:12px;min-height:220px;max-height:52vh;overflow:auto;color:var(--ink);font-family:inherit;resize:vertical;opacity:.85">'+safe+'</textarea>'
       +'<div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">'
-      +'<button class="btn" id="pp-copy" style="flex:1 1 auto;min-width:180px;background:#8E2A2E;color:#fff;-webkit-text-fill-color:#fff">複製（含修改）</button>'
-      +'<button class="btn btn-ghost" id="pp-close" style="flex:0 0 auto;background:var(--warm-white);color:#8E2A2E;border:1px solid var(--gold-soft)">關閉</button></div>'
+      +'<button class="btn" id="pp-copy" style="flex:1 1 auto;min-width:180px;background:var(--rouge-soft);color:#fff;-webkit-text-fill-color:#fff">複製（含修改）</button>'
+      +'<button class="btn btn-ghost" id="pp-close" style="flex:0 0 auto;background:var(--warm-white);color:var(--rouge-soft);border:1px solid var(--border)">關閉</button></div>'
       +'</div>';
     md.classList.add('show');
     function _close(){ md.classList.remove('show'); sh.innerHTML=''; document.removeEventListener('keydown',_key); md.onclick=null; }
     function _key(e){ if(e.key==='Escape') _close(); }
     var ed=$('pp-edit'), ls=$('pp-lockstate');
-    var el=$('pp-editlock'); if(el) el.onclick=function(){ if(ed.readOnly){ ed.readOnly=false; ed.style.opacity='1'; el.textContent='🔒 唯讀'; if(ls) ls.textContent='✏️ 編輯中'; } else { ed.readOnly=true; ed.style.opacity='.85'; el.textContent='✏️ 編輯'; if(ls) ls.textContent='🔒 唯讀中'; } };
+    var el=$('pp-editlock'); if(el) el.onclick=function(){ if(ed.readOnly){ ed.readOnly=false; ed.style.opacity='1'; el.innerHTML=ICN.lockOn+'唯讀'; if(ls) ls.innerHTML=ICN.edit+'編輯中'; } else { ed.readOnly=true; ed.style.opacity='.85'; el.innerHTML=ICN.edit+'編輯'; if(ls) ls.innerHTML=ICN.lockOn+'唯讀中'; } };
     var ra=$('pp-resetall'); if(ra) ra.onclick=function(){ if(ed) ed.value=text; toast('已還原成原版'); };
     var cp=$('pp-copy'); if(cp) cp.onclick=function(){ copyVal((ed?ed.value:text),label); };
     var cl=$('pp-close'); if(cl) cl.onclick=_close;
@@ -428,7 +459,7 @@ function _accSubscribe(){
       try{ localStorage.setItem(ACC_LS_KEY, JSON.stringify(accounts)); }catch(e){}
       _afterData(); _fbStatus('connected',_connText());
     }}
-  }, function(err){ console.error('[CS acc]',err); _fbStatus('offline','⚠️ 同步中斷（本機仍可用）'); });
+  }, function(err){ console.error('[CS acc]',err); _fbStatus('offline','同步中斷（本機仍可用）'); });
 }
 function _vidSubscribe(){
   if(_vidUnsub) _vidUnsub();
@@ -448,7 +479,7 @@ function _accPush(){
   _fbDB.collection(ACC_COLLECTION).doc(ATELIER_DOC_ID)
     .set({ accounts: accounts, updatedAt: Date.now(), count: accounts.length }, {merge:true})
     .then(function(){ _fbStatus('connected',_connText()); })
-    .catch(function(err){ console.error('[CS acc push]',err); _fbStatus('offline','⚠️ 雲端寫入失敗（本機已存）'); });
+    .catch(function(err){ console.error('[CS acc push]',err); _fbStatus('offline','雲端寫入失敗（本機已存）'); });
   try{ localStorage.setItem(ACC_LS_KEY, JSON.stringify(accounts)); }catch(e){}
 }
 
@@ -467,23 +498,113 @@ function flowStatus(a,key){ var f=(a&&a.clientFlow&&a.clientFlow[key])||null; re
 function statusLabel(s){ return s==='done'?'已完成':s==='in-progress'?'進行中':'未開始'; }
 function fmtDate(ts){ if(!ts) return ''; try{ var d=new Date(ts); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }catch(e){ return ''; } }
 function saveCurrent(silent){
-  var a=curAcc(); if(!a){ toast('⚠️ 尚未選定客戶'); return; }
+  var a=curAcc(); if(!a){ toast(ICN.warn+' 尚未選定客戶'); return; }
   a.updatedAt=Date.now();
   _accPush();
-  if(!silent) toast('✓ 已儲存並同步');
+  if(!silent) toast(ICN.check+' 已儲存並同步');
   renderSelect(); renderBanner();
 }
 
-/* ─── 7) 提示條 ─── */
-function renderBanner(){
+/* ─── 7a) 自動暫存 + 復原（返回鍵）─── */
+/* 設計：客戶選定後，任何階段 input 變動 → 800ms 後自動把 DOM 讀進 clientFlow / clientProfile 並同步雲端，
+   同時把當下 client 狀態（clientFlow + clientProfile）快照入棧（上限 6 筆）。
+   按「上一步」會把棧頂彈掉、把上一筆狀態套回去並重渲染當前階段；切分頁時會先 flush 一次暫存以保證跨頁切換不掉資料。 */
+var _undoStack=[], _autoSaveTimer=null, _skipNextAutoSave=false, _lastDraftAt='';
+function _nowHM(){ var d=new Date(); function p(n){return String(n).padStart(2,'0');} return p(d.getHours())+':'+p(d.getMinutes())+':'+p(d.getSeconds()); }
+function _snapEq(a,b){ try{return JSON.stringify(a)===JSON.stringify(b);}catch(e){return false;} }
+function _pushSnap(snap){
+  if(!snap) return;
+  if(_undoStack.length && _snapEq(_undoStack[_undoStack.length-1],snap)) return;
+  _undoStack.push(snap);
+  if(_undoStack.length>6) _undoStack.shift();
+}
+function _currentSnap(){
+  var a=curAcc(); if(!a) return null;
+  return { clientFlow: JSON.parse(JSON.stringify(a.clientFlow||{})), clientProfile: JSON.parse(JSON.stringify(a.clientProfile||{})) };
+}
+/* 把目前 DOM 上的 stage 1/2/3 輸入讀進 a.clientFlow / a.clientProfile（沒渲染的階段就跳過） */
+function _readStage1ToData(a){
+  if(!$('s1c-web')) return false;
+  var sources={}; CHECK_SOURCES.forEach(function(s){ var cb=$('s1c-'+s[0]),nt=$('s1n-'+s[0]); sources[s[0]]={checked:cb?cb.checked:false, note:nt?nt.value.trim():''}; });
+  var result=($('s1result')||{value:''}).value.trim();
+  var f=ensureFlow(a); var existed=f.stage1_initial||{};
+  f.stage1_initial={status:existed.status==='done'?'done':(result?'done':'in-progress'), updatedAt:Date.now(), data:{sources:sources, result:result}};
+  return true;
+}
+function _readStage2ToData(a){
+  if(!$('p2-brandName')) return false;
+  var data={};
+  PROFILE_CATS.forEach(function(cat){ cat[2].forEach(function(fd){ var el=$('p2-'+fd[0]); if(el){ var v=el.value.trim(); if(v) data[fd[0]]=v; } }); });
+  a.clientProfile=data;
+  var f=ensureFlow(a);
+  var anyFilled=Object.keys(data).length>0;
+  var existed=f.stage2_filing||{};
+  f.stage2_filing={status:existed.status==='done'?'done':(anyFilled?'done':'in-progress'), updatedAt:Date.now(), data:{savedAt:Date.now()}};
+  return true;
+}
+function _readStage3ToData(a){
+  if(!$('q3-0')) return false;
+  var ans={}; INTERVIEW_Q.forEach(function(q,i){ var el=$('q3-'+i); if(el&&el.value.trim()) ans[i]=el.value.trim(); });
+  var result=($('s3result')||{value:''}).value.trim();
+  var f=ensureFlow(a); var existed=f.stage3_interview||{};
+  var done = result || Object.keys(ans).length>=5;
+  f.stage3_interview={status:existed.status==='done'?'done':(done?'done':'in-progress'), updatedAt:Date.now(), data:{answers:ans, result:result}};
+  return true;
+}
+function _draftSaveAll(){
+  var a=curAcc(); if(!a) return;
+  var changed=false;
+  if(_readStage1ToData(a)) changed=true;
+  if(_readStage2ToData(a)) changed=true;
+  if(_readStage3ToData(a)) changed=true;
+  if(!changed) return;
+  var snap=_currentSnap(); _pushSnap(snap);
+  _lastDraftAt=_nowHM();
+  a.updatedAt=Date.now(); _accPush();
+  renderSelect(); renderBanner(true);
+}
+function _scheduleAutoSave(){
+  clearTimeout(_autoSaveTimer);
+  _autoSaveTimer=setTimeout(function(){
+    if(_skipNextAutoSave){ _skipNextAutoSave=false; return; }
+    _draftSaveAll();
+  }, 800);
+}
+function _flushAutoSave(){ clearTimeout(_autoSaveTimer); _draftSaveAll(); }
+function undoLast(){
+  if(_undoStack.length<=1){ toast('沒有更早的版本可回退'); return; }
+  _undoStack.pop();
+  var prev=_undoStack[_undoStack.length-1];
+  var a=curAcc(); if(!a) return;
+  a.clientFlow=JSON.parse(JSON.stringify(prev.clientFlow||{}));
+  a.clientProfile=JSON.parse(JSON.stringify(prev.clientProfile||{}));
+  _skipNextAutoSave=true;
+  /* 重渲染目前所在階段 */
+  var cur=document.querySelector('.view.on');
+  var view=cur?cur.id.replace(/^view-/,''):'';
+  if(view==='stage1') renderStage1();
+  else if(view==='stage2') renderStage2();
+  else if(view==='stage3') renderStage3();
+  a.updatedAt=Date.now(); _accPush();
+  renderSelect(); renderBanner();
+  toast(ICN.undo+' 已回到上一步');
+}
+
+/* ─── 7) 提示條（含「上一步」與「自動暫存」狀態）─── */
+function renderBanner(flash){
   var b=$('csBanner'); if(!b) return;
   var a=curAcc();
   if(!a){ b.className='cs-banner empty'; b.innerHTML='<span>尚未選定服務對象 — 請到「選擇客戶」挑一位</span>'; return; }
   var hs=healthTotal(a);
+  var canUndo=_undoStack.length>1;
+  var sstxt = _lastDraftAt ? ('自動暫存於 '+_lastDraftAt) : '尚未變更';
   b.className='cs-banner';
   b.innerHTML='<span>目前服務：<span class="who">'+esc(a.handle||'@?')+' '+esc(a.displayName||'')+'</span></span>'
     +'<span class="hs">內容健康分數 <b>'+(hs.has?hs.total:'—')+'</b>/50</span>'
-    +'<button class="mini-btn" onclick="openHealthEditor()">評分</button>';
+    +'<button class="mini-btn" onclick="openHealthEditor()">評分</button>'
+    +'<button class="mini-btn" onclick="undoLast()"'+(canUndo?'':' disabled')+' title="把目前畫面回退到上一個自動暫存點">'+ICN.undo+' 上一步'+(canUndo?(' ('+(_undoStack.length-1)+')'):'')+'</button>'
+    +'<span class="savestate'+(flash?' flash':'')+'" id="ssBadge">'+(flash?ICN.check:'')+' '+esc(sstxt)+'</span>';
+  if(flash){ setTimeout(function(){ var ss=$('ssBadge'); if(ss) ss.classList.remove('flash'); },1100); }
 }
 
 /* ─── 8) 選擇客戶頁 ─── */
@@ -527,6 +648,7 @@ function cliCard(a){
 function pickClient(id){
   currentClientId=id;
   try{ sessionStorage.setItem('atelier_cs_current',id); }catch(e){}
+  _undoStack=[]; _lastDraftAt=''; _pushSnap(_currentSnap());
   renderBanner(); renderSelect();
   var a=curAcc();
   toast('已選定服務對象：'+((a&&a.handle)||''));
@@ -590,13 +712,69 @@ function renderStage1(){
   box.innerHTML=
     '<div class="page-head"><div class="ph-en">STAGE ① · INITIAL SCAN</div><h2 class="ph-title">公開資料初診</h2></div>'
     +stageHead('只用公開資料，判斷這位客戶目前在市場上「被看見的樣子」——還沒跟客戶深聊就能做的分析。','stage1_initial')
+    +'<div class="section-card ai-fill"><h3>'+ICN.spark+'用 AI 一次幫你查好、填好下方核對清單（建議先做這步）</h3>'
+    +'<div class="sc-note">不用一條一條自己找。按下產生提示詞，讓 AI 用公開資料（官網、IG、Google、Google Maps…）逐條把 11 個來源查好、整理成一張《初診資料卡》→ 你把卡貼回下面 → 一鍵填進核對清單；之後再按「產生初診提示詞」做正式分析。</div>'
+    +'<div class="fld"><label>（選填）任何你已經知道、想讓 AI 一起參考的資料</label><textarea id="s1extra" placeholder="例如：客戶官網連結、過去合作的觀察…（沒有也可以留空）"></textarea></div>'
+    +'<button class="btn btn-gold" onclick="buildStage1FillPrompt()">'+ICN.prompt+'產生資料蒐集提示詞</button>'
+    +'<div class="fld" style="margin-top:12px"><label>把 AI 整理好的《初診資料卡》貼回這裡</label><textarea class="paste-box" id="s1card" placeholder="貼回 ===ATELIER 初診資料卡=== 那整段…"></textarea></div>'
+    +'<button class="btn btn-go" onclick="parseStage1Card()">解析並填入下方核對清單</button>'
+    +'<div id="s1parseMsg" style="font-size:12px;margin-top:8px;line-height:1.7"></div></div>'
     +'<div class="section-card"><h3>① 資料來源核對清單</h3><div class="sc-note">勾選你查過的來源，旁邊可貼連結或備註。下面產生提示詞時，這些備註會自動帶進去。</div>'+rows+'</div>'
     +'<div class="section-card"><h3>② 提示詞產生器</h3><div class="sc-note">按下會把客戶基本資訊＋你上面填的備註組成完整提示詞，複製到 ChatGPT／Claude／Gemini 去跑。</div>'
-    +'<button class="btn btn-gold" onclick="buildStage1Prompt()">📋 產生初診提示詞</button></div>'
+    +'<button class="btn btn-gold" onclick="buildStage1Prompt()">'+ICN.prompt+'產生初診提示詞</button></div>'
     +'<div class="section-card"><h3>③ 把 AI 產出貼回這裡</h3><div class="sc-note">貼回後按儲存，系統會自動拆「客戶版／顧問版」。</div>'
     +'<textarea class="paste-box" id="s1result" placeholder="把 AI 產出的《會前初步觀察與需求對焦》整段貼回這裡…">'+esc(st.result||'')+'</textarea>'
     +'<button class="btn btn-go" style="margin-top:10px" onclick="saveStage1()">儲存初診結果</button></div>'
     +'<div class="section-card"><h3>④ 交付物《會前初步觀察與需求對焦》</h3>'+verBlock('s1',parsed)+'</div>';
+}
+function buildStage1FillPrompt(){
+  var a=curAcc(); if(!a){ toast(ICN.warn+' 尚未選定客戶'); return; }
+  var extra=($('s1extra')||{value:''}).value.trim();
+  var known=[];
+  if(a.handle) known.push('品牌/帳號：'+a.handle);
+  if(a.displayName) known.push('顯示名稱：'+a.displayName);
+  if(a.industry) known.push('產業：'+a.industry);
+  if(a.jobTitle) known.push('職稱：'+a.jobTitle);
+  var srcList=CHECK_SOURCES.map(function(s){ return '  - '+s[1]; }).join('\n');
+  var p='我要幫一個客戶做「公開資料初診」的前置作業：把該查的 11 個來源逐條去查好、整理成一張《ATELIER 初診資料卡》。\n\n'
+    +'【已知資訊】\n'+(known.length?known.join('\n'):'（很少，請盡量查）')+'\n\n'
+    +(extra?('【我額外提供的資料】\n'+extra+'\n\n'):'')
+    +'【請逐條查並填寫的 11 個來源】\n'+srcList+'\n\n'
+    +'【輸出規則 · 很重要】\n'
+    +'1. 用「來源名稱：值」格式，一行一個來源，來源名稱請一字不差照抄上面的字（不要改寫）。\n'
+    +'2. 「值」請寫 2-4 句的客觀觀察或關鍵連結／重點：例如 IG Bio 寫了什麼、置頂在講什麼、九宮格視覺風格、Google Maps 平均星等與評價方向、有沒有官網、服務頁列了哪些服務等。\n'
+    +'3. 查得到就具體寫；真的查不到的來源填「待詢」。每個來源都要出現一行、不要省略。\n'
+    +'4. 第一行寫 ===ATELIER 初診資料卡=== ，最後一行寫 ===卡片結束=== 。\n'
+    +'5. 不要寫多餘的解釋或前後語，只輸出卡片本身。\n\n'
+    +'請開始。';
+  copyPrompt(p,'初診資料蒐集提示詞');
+}
+function parseStage1Card(){
+  var a=curAcc(); if(!a){ toast(ICN.warn+' 尚未選定客戶'); return; }
+  var raw=($('s1card')||{value:''}).value;
+  var msg=$('s1parseMsg');
+  if(!raw.trim()){ if(msg) msg.innerHTML='<span style="color:var(--rouge);display:inline-flex;align-items:center;gap:4px">'+ICN.warn+' 貼回框是空的——先把 AI 產出的資料卡貼進來。</span>'; return; }
+  /* 建 label→key 對照表 */
+  var labelMap={};
+  CHECK_SOURCES.forEach(function(s){ labelMap[_normLabel(s[1])]=s[0]; });
+  /* 部分簡寫對應，AI 可能省略括號 */
+  CHECK_SOURCES.forEach(function(s){ var short=s[1].replace(/[（(].*$/,'').replace(/\s+/g,' ').trim(); if(short&&short!==s[1]) labelMap[_normLabel(short)]=s[0]; });
+  var pairs=parseCardLines(raw);
+  var filled=0, skipped=0, unmatched=[];
+  pairs.forEach(function(pr){
+    var key=labelMap[_normLabel(pr[0])];
+    if(!key){ if(!/^=+/.test(pr[0])) unmatched.push(pr[0]); return; }
+    if(isHintVal(pr[1])){ skipped++; return; }
+    var nt=$('s1n-'+key); var cb=$('s1c-'+key);
+    if(nt){ nt.value=pr[1]; filled++; if(cb) cb.checked=true; }
+  });
+  if(msg){
+    if(!filled && !skipped){ msg.innerHTML='<span style="color:var(--rouge);display:inline-flex;align-items:center;gap:4px">'+ICN.warn+' 一條都沒對上。請確認你貼的是「初診資料卡」（每行是「來源名稱：值」），不是提示詞本身。</span>'; }
+    else { msg.innerHTML='<span style="color:var(--green);font-weight:700;display:inline-flex;align-items:center;gap:4px">'+ICN.check+' 已填入 '+filled+' 條</span>'+(skipped?'<span style="color:var(--sub)">　·　跳過 '+skipped+' 條（值是「待詢」之類的空值）</span>':'')
+      +(unmatched.length?('<div style="color:var(--sub);margin-top:4px">沒對上的來源名（已略過）：'+esc(unmatched.slice(0,8).join('、'))+(unmatched.length>8?' …':'')+'</div>'):'')
+      +'<div style="color:var(--sub);margin-top:4px">已自動勾選對應的來源；請往下檢查、修改後，再按下面「產生初診提示詞」做正式分析。</div>'; }
+  }
+  toast(filled?(ICN.check+' 已填入 '+filled+' 條，請檢查'):'沒有對上的來源');
 }
 function readStage1Sources(){
   var out={};
@@ -607,7 +785,7 @@ function readStage1Sources(){
   return out;
 }
 function buildStage1Prompt(){
-  var a=curAcc(); if(!a){ toast('⚠️ 尚未選定客戶'); return; }
+  var a=curAcc(); if(!a){ toast(ICN.warn+' 尚未選定客戶'); return; }
   var src=readStage1Sources();
   var lines=[];
   CHECK_SOURCES.forEach(function(s){
@@ -636,13 +814,13 @@ function buildStage1Prompt(){
   copyPrompt(p,'初診提示詞');
 }
 function saveStage1(){
-  var a=curAcc(); if(!a){ toast('⚠️ 尚未選定客戶'); return; }
+  var a=curAcc(); if(!a){ toast(ICN.warn+' 尚未選定客戶'); return; }
   var f=ensureFlow(a);
   var result=($('s1result')||{value:''}).value.trim();
   var src=readStage1Sources();
   f.stage1_initial={ status: result?'done':'in-progress', updatedAt:Date.now(), data:{ sources:src, result:result } };
-  saveCurrent(true);
-  toast(result?'✓ 初診結果已儲存（已完成）':'✓ 已暫存（尚未貼回 AI 產出）');
+  _pushSnap(_currentSnap()); _lastDraftAt=_nowHM(); saveCurrent(true);
+  toast(result?ICN.check+' 初診結果已儲存（已完成）':ICN.check+' 已暫存（尚未貼回 AI 產出）');
   renderStage1();
 }
 
@@ -757,10 +935,10 @@ function renderStage2(){
   box.innerHTML=
     '<div class="page-head"><div class="ph-en">STAGE ② · CLIENT FILING</div><h2 class="ph-title">客戶資料建檔</h2></div>'
     +stageHead('把客戶變成工作台裡可被分析、可被比對的完整資料物件。帳號管理裡若已有 ICP／版面解析，會自動帶入、不必重填。','stage2_filing')
-    +'<div class="section-card" style="border-left:4px solid var(--gold)"><h3>⚡ 用 AI 一次填好（建議先做這步）</h3>'
+    +'<div class="section-card ai-fill"><h3>'+ICN.spark+'用 AI 一次填好（建議先做這步）</h3>'
     +'<div class="sc-note">不用一格一格打字。按下產生提示詞 → 丟到 ChatGPT／Claude／Gemini，它會幫你查公開資料、把 8 大類欄位填成一張「建檔卡」→ 你把卡貼回下面 → 一鍵填入整張表單，再逐格檢查、修正，最後按「儲存客戶資料」。</div>'
     +'<div class="fld"><label>（選填）任何你已經知道、想讓 AI 一起參考的資料</label><textarea id="s2extra" placeholder="例如：客戶官網連結、主力服務、之前聊到的重點…（沒有也可以留空）"></textarea></div>'
-    +'<button class="btn btn-gold" onclick="buildStage2FillPrompt()">📋 產生建檔提示詞</button>'
+    +'<button class="btn btn-gold" onclick="buildStage2FillPrompt()">'+ICN.prompt+'產生建檔提示詞</button>'
     +'<div class="fld" style="margin-top:12px"><label>把 AI 填好的「建檔卡」貼回這裡</label><textarea class="paste-box" id="s2card" placeholder="貼回 ===ATELIER 客戶建檔卡=== 那整段…"></textarea></div>'
     +'<button class="btn btn-go" onclick="parseStage2Card()">解析並填入下面表單</button>'
     +'<div id="s2parseMsg" style="font-size:12px;margin-top:8px;line-height:1.7"></div></div>'
@@ -785,7 +963,7 @@ function recomputeStage2(){
   renderStage2Missing();
 }
 function buildStage2FillPrompt(){
-  var a=curAcc(); if(!a){ toast('⚠️ 尚未選定客戶'); return; }
+  var a=curAcc(); if(!a){ toast(ICN.warn+' 尚未選定客戶'); return; }
   var f=ensureFlow(a);
   var extra=($('s2extra')||{value:''}).value.trim();
   /* 把已知的東西先攤給 AI 當底（基本資訊＋初診結果＋帳號既有 ICP），它只要補沒填的 */
@@ -813,10 +991,10 @@ function buildStage2FillPrompt(){
   copyPrompt(p,'建檔提示詞（AI 一次填好）');
 }
 function parseStage2Card(){
-  var a=curAcc(); if(!a){ toast('⚠️ 尚未選定客戶'); return; }
+  var a=curAcc(); if(!a){ toast(ICN.warn+' 尚未選定客戶'); return; }
   var raw=($('s2card')||{value:''}).value;
   var msg=$('s2parseMsg');
-  if(!raw.trim()){ if(msg) msg.innerHTML='<span style="color:var(--rouge)">⚠️ 貼回框是空的——先把 AI 產出的建檔卡貼進來。</span>'; return; }
+  if(!raw.trim()){ if(msg) msg.innerHTML='<span style="color:var(--rouge);display:inline-flex;align-items:center;gap:4px">'+ICN.warn+' 貼回框是空的——先把 AI 產出的建檔卡貼進來。</span>'; return; }
   var map=buildP2LabelMap();
   var pairs=parseCardLines(raw);
   var filled=0, skipped=0, unmatched=[];
@@ -828,12 +1006,12 @@ function parseStage2Card(){
   });
   recomputeStage2();
   if(msg){
-    if(!filled && !skipped){ msg.innerHTML='<span style="color:var(--rouge)">⚠️ 一格都沒對上。請確認你貼的是「建檔卡」（每行是「欄位名稱：值」），不是提示詞本身。</span>'; }
-    else { msg.innerHTML='<span style="color:var(--green);font-weight:700">✓ 已填入 '+filled+' 格</span>'+(skipped?'<span style="color:var(--gold-dark)">　·　跳過 '+skipped+' 格（值是「待詢」之類的空值）</span>':'')
+    if(!filled && !skipped){ msg.innerHTML='<span style="color:var(--rouge);display:inline-flex;align-items:center;gap:4px">'+ICN.warn+' 一格都沒對上。請確認你貼的是「建檔卡」（每行是「欄位名稱：值」），不是提示詞本身。</span>'; }
+    else { msg.innerHTML='<span style="color:var(--green);font-weight:700;display:inline-flex;align-items:center;gap:4px">'+ICN.check+' 已填入 '+filled+' 格</span>'+(skipped?'<span style="color:var(--gold-dark)">　·　跳過 '+skipped+' 格（值是「待詢」之類的空值）</span>':'')
       +(unmatched.length?('<div style="color:var(--sub);margin-top:4px">沒對上的欄位名（已略過）：'+esc(unmatched.slice(0,8).join('、'))+(unmatched.length>8?' …':'')+'</div>'):'')
       +'<div style="color:var(--sub);margin-top:4px">請往下逐格檢查、修正，再按「儲存客戶資料（建檔）」。</div>'; }
   }
-  toast(filled?('✓ 已填入 '+filled+' 格，請檢查後儲存'):'沒有對上的欄位');
+  toast(filled?(ICN.check+' 已填入 '+filled+' 格，請檢查後儲存'):'沒有對上的欄位');
 }
 function readStage2(){
   var out={};
@@ -848,19 +1026,19 @@ function stage2Missing(a){
 function renderStage2Missing(){
   var a=curAcc(); if(!a) return; var box=$('p2missBox'); if(!box) return;
   var miss=stage2Missing(a);
-  if(!miss.length){ box.innerHTML='<div style="font-size:12px;color:var(--green);font-weight:700">✓ 8 大類全部填齊了</div>'; return; }
+  if(!miss.length){ box.innerHTML='<div style="font-size:12px;color:var(--green);font-weight:700;display:inline-flex;align-items:center;gap:4px">'+ICN.check+' 8 大類全部填齊了</div>'; return; }
   box.innerHTML='<div style="font-size:12px;color:var(--gold-dark);font-weight:700;margin-bottom:4px">還缺 '+miss.length+' 格：</div>'
     +'<div style="font-size:11.5px;color:var(--text);line-height:1.8">'+miss.map(esc).join('、')+'</div>';
 }
 function saveStage2(){
-  var a=curAcc(); if(!a){ toast('⚠️ 尚未選定客戶'); return; }
+  var a=curAcc(); if(!a){ toast(ICN.warn+' 尚未選定客戶'); return; }
   var data=readStage2();
   a.clientProfile=Object.assign({}, a.clientProfile||{}, data);
   var f=ensureFlow(a);
   var anyFilled=Object.keys(a.clientProfile).some(function(k){ return a.clientProfile[k]&&String(a.clientProfile[k]).trim(); });
   f.stage2_filing={ status:anyFilled?'done':'in-progress', updatedAt:Date.now(), data:{ savedAt:Date.now() } };
-  saveCurrent(true);
-  toast('✓ 客戶資料已儲存並同步');
+  _pushSnap(_currentSnap()); _lastDraftAt=_nowHM(); saveCurrent(true);
+  toast(ICN.check+' 客戶資料已儲存並同步');
   renderStage2();
 }
 function copyStage2Missing(){
@@ -898,10 +1076,10 @@ function renderStage3(){
     '<div class="page-head"><div class="ph-en">STAGE ③ · DEEP INTERVIEW</div><h2 class="ph-title">深度問診</h2></div>'
     +stageHead('挖出客戶自己沒說清楚的價值，把專業語言翻成市場語言。','stage3_interview')
     +'<div class="section-card"><h3>① 產生問診提綱</h3><div class="sc-note">會帶入建檔（階段②）已填的客戶背景，請 AI 整理一份問診提綱，並可依產業特性追加客製問題。</div>'
-    +'<button class="btn btn-gold" onclick="buildStage3Prompt()">📋 產生問診提綱</button></div>'
-    +'<div class="section-card" style="border-left:4px solid var(--gold)"><h3>⚡ ② 讓 AI 先擬答、回填 10 題（選用）</h3>'
+    +'<button class="btn btn-gold" onclick="buildStage3Prompt()">'+ICN.prompt+'產生問診提綱</button></div>'
+    +'<div class="section-card ai-fill"><h3>'+ICN.spark+'讓 AI 先擬答、回填 10 題（選用）</h3>'
     +'<div class="sc-note">想先有個底稿？按下產生提示詞，讓 AI 依客戶背景＋初診，先替 10 題各擬一份「可能的回答重點」→ 貼回下面 → 一鍵填進 10 題，之後正式問診時再跟客戶逐題核對、修正。</div>'
-    +'<button class="btn btn-gold" onclick="buildStage3DraftPrompt()">📋 產生問診初稿提示詞</button>'
+    +'<button class="btn btn-gold" onclick="buildStage3DraftPrompt()">'+ICN.prompt+'產生問診初稿提示詞</button>'
     +'<div class="fld" style="margin-top:12px"><label>把 AI 擬好的 10 題初稿貼回這裡</label><textarea class="paste-box" id="s3draft" placeholder="貼回「第1題：… / 第2題：…」那整段…"></textarea></div>'
     +'<button class="btn btn-go" onclick="parseStage3Draft()">解析並回填 10 題</button>'
     +'<div id="s3parseMsg" style="font-size:12px;margin-top:8px;line-height:1.7"></div></div>'
@@ -912,7 +1090,7 @@ function renderStage3(){
     +'<div class="section-card"><h3>⑤ 交付物《深度問診整理書》</h3>'+verBlock('s3',parsed)+'</div>';
 }
 function buildStage3DraftPrompt(){
-  var a=curAcc(); if(!a){ toast('⚠️ 尚未選定客戶'); return; }
+  var a=curAcc(); if(!a){ toast(ICN.warn+' 尚未選定客戶'); return; }
   var f=ensureFlow(a);
   var bgLines=[];
   PROFILE_CATS.forEach(function(cat){ cat[2].forEach(function(fd){ var v=profileVal(a,cat[0],fd[0],fd[2]); if(v&&String(v).trim()) bgLines.push('・'+fd[1]+'：'+v); }); });
@@ -932,10 +1110,10 @@ function buildStage3DraftPrompt(){
   copyPrompt(p,'問診初稿提示詞');
 }
 function parseStage3Draft(){
-  var a=curAcc(); if(!a){ toast('⚠️ 尚未選定客戶'); return; }
+  var a=curAcc(); if(!a){ toast(ICN.warn+' 尚未選定客戶'); return; }
   var raw=($('s3draft')||{value:''}).value;
   var msg=$('s3parseMsg');
-  if(!raw.trim()){ if(msg) msg.innerHTML='<span style="color:var(--rouge)">⚠️ 貼回框是空的。</span>'; return; }
+  if(!raw.trim()){ if(msg) msg.innerHTML='<span style="color:var(--rouge);display:inline-flex;align-items:center;gap:4px">'+ICN.warn+' 貼回框是空的。</span>'; return; }
   var filled=0;
   raw.split(/\r?\n/).forEach(function(line){
     var m=line.match(/^\s*第\s*([\d０-９]{1,2})\s*題\s*[：:]\s*(.+?)\s*$/) || line.match(/^\s*([\d０-９]{1,2})\s*[.、)）]\s*(.+?)\s*$/);
@@ -946,12 +1124,12 @@ function parseStage3Draft(){
     var el=$('q3-'+(n-1)); if(el){ el.value=m[2]; filled++; }
   });
   if(msg){ msg.innerHTML = filled
-    ? '<span style="color:var(--green);font-weight:700">✓ 已回填 '+filled+' 題</span><span style="color:var(--sub)">　·　請往下逐題核對、修改後按「儲存問診結果」。</span>'
-    : '<span style="color:var(--rouge)">⚠️ 一題都沒對上。請確認格式是「第N題：…」一題一行。</span>'; }
-  toast(filled?('✓ 已回填 '+filled+' 題'):'沒有對上的題目');
+    ? '<span style="color:var(--green);font-weight:700;display:inline-flex;align-items:center;gap:4px">'+ICN.check+' 已回填 '+filled+' 題</span><span style="color:var(--sub)">　·　請往下逐題核對、修改後按「儲存問診結果」。</span>'
+    : '<span style="color:var(--rouge);display:inline-flex;align-items:center;gap:4px">'+ICN.warn+' 一題都沒對上。請確認格式是「第N題：…」一題一行。</span>'; }
+  toast(filled?(ICN.check+' 已回填 '+filled+' 題'):'沒有對上的題目');
 }
 function buildStage3Prompt(){
-  var a=curAcc(); if(!a){ toast('⚠️ 尚未選定客戶'); return; }
+  var a=curAcc(); if(!a){ toast(ICN.warn+' 尚未選定客戶'); return; }
   var bgLines=[];
   PROFILE_CATS.forEach(function(cat){
     cat[2].forEach(function(fd){ var v=profileVal(a,cat[0],fd[0],fd[2]); if(v&&String(v).trim()) bgLines.push('・'+fd[1]+'：'+v); });
@@ -969,14 +1147,14 @@ function buildStage3Prompt(){
   copyPrompt(p,'問診提綱提示詞');
 }
 function saveStage3(){
-  var a=curAcc(); if(!a){ toast('⚠️ 尚未選定客戶'); return; }
+  var a=curAcc(); if(!a){ toast(ICN.warn+' 尚未選定客戶'); return; }
   var f=ensureFlow(a);
   var ans={}; INTERVIEW_Q.forEach(function(q,i){ var el=$('q3-'+i); if(el&&el.value.trim()) ans[i]=el.value.trim(); });
   var result=($('s3result')||{value:''}).value.trim();
   var done=result||Object.keys(ans).length>=5;
   f.stage3_interview={ status:done?'done':'in-progress', updatedAt:Date.now(), data:{ answers:ans, result:result } };
-  saveCurrent(true);
-  toast('✓ 問診結果已儲存並同步');
+  _pushSnap(_currentSnap()); _lastDraftAt=_nowHM(); saveCurrent(true);
+  toast(ICN.check+' 問診結果已儲存並同步');
   renderStage3();
 }
 
@@ -999,7 +1177,7 @@ function healthTotal(a){
   return { total:total, has:has };
 }
 function openHealthEditor(){
-  var a=curAcc(); if(!a){ toast('⚠️ 尚未選定客戶'); return; }
+  var a=curAcc(); if(!a){ toast(ICN.warn+' 尚未選定客戶'); return; }
   var sh=$('sheet'), md=$('modal'); if(!sh||!md) return;
   var items=healthOf(a);
   var rows=items.map(function(it){
@@ -1012,10 +1190,10 @@ function openHealthEditor(){
   }).join('');
   var hs=healthTotal(a);
   sh.innerHTML='<div style="padding:6px 4px 4px;position:relative">'
-    +'<button onclick="closeModal()" style="position:absolute;top:0;right:4px;background:none;border:none;font-size:22px;color:var(--sub);cursor:pointer;line-height:1">✕</button>'
+    +'<button onclick="closeModal()" style="position:absolute;top:0;right:4px;background:none;border:none;color:var(--sub);cursor:pointer;line-height:1;padding:4px" title="關閉">'+ICN.close+'</button>'
     +'<div style="font-family:\'Noto Serif TC\',serif;font-size:18px;font-weight:900;color:var(--rouge);padding-right:30px">內容健康分數</div>'
     +'<div style="font-size:12px;color:var(--sub);margin:4px 0 12px">'+esc(a.handle||'')+' '+esc(a.displayName||'')+' · 10 項各 1–5 分，0＝待評分。目前 <b id="heTotal">'+hs.total+'</b>/50</div>'
-    +'<button class="btn btn-gold" style="margin-bottom:12px" onclick="buildHealthPrompt()">📋 產生健康評分提示詞（帶入已收集的客戶資料）</button>'
+    +'<button class="btn btn-gold" style="margin-bottom:12px" onclick="buildHealthPrompt()">'+ICN.prompt+'產生健康評分提示詞（帶入已收集的客戶資料）</button>'
     +rows
     +'<div class="btn-row"><button class="btn btn-go" onclick="saveHealth()">儲存健康分數</button>'
     +'<button class="btn btn-ghost" onclick="closeModal()">關閉</button></div></div>';
@@ -1032,7 +1210,7 @@ function openHealthEditor(){
   });
 }
 function saveHealth(){
-  var a=curAcc(); if(!a){ toast('⚠️ 尚未選定客戶'); return; }
+  var a=curAcc(); if(!a){ toast(ICN.warn+' 尚未選定客戶'); return; }
   var sh=$('sheet');
   var items=HEALTH_ITEMS.map(function(it){
     var on=sh.querySelector('.sc.on[data-hid="'+it[0]+'"]');
@@ -1040,12 +1218,12 @@ function saveHealth(){
     return { id:it[0], label:it[1], score:on?(parseInt(on.dataset.hsc)||0):0, note:note };
   });
   a.contentHealthScore={ items:items, updatedAt:Date.now() };
-  saveCurrent(true);
-  toast('✓ 健康分數已儲存並同步');
+  _pushSnap(_currentSnap()); _lastDraftAt=_nowHM(); saveCurrent(true);
+  toast(ICN.check+' 健康分數已儲存並同步');
   closeModal(); renderBanner(); renderSelect();
 }
 function buildHealthPrompt(){
-  var a=curAcc(); if(!a){ toast('⚠️ 尚未選定客戶'); return; }
+  var a=curAcc(); if(!a){ toast(ICN.warn+' 尚未選定客戶'); return; }
   var f=ensureFlow(a);
   var parts=[];
   parts.push('【客戶基本】\n品牌/帳號：'+(a.handle||'')+'\n顯示名稱：'+(a.displayName||'')+'\n產業：'+(a.industry||'')+'\n職稱：'+(a.jobTitle||''));
@@ -1073,12 +1251,14 @@ function stageHead(purpose,flowKey){
     +'<div class="sh-purpose">'+esc(purpose)+'</div></div>';
 }
 function needClientHTML(title){
-  return '<div class="locked-wrap"><div class="lk-ic">👤</div><h2>'+esc(title)+'</h2>'
+  return '<div class="locked-wrap"><div class="lk-ic">'+ICN.user+'</div><h2>'+esc(title)+'</h2>'
     +'<p>還沒選定服務對象。請先到「<a href="#" onclick="switchTo(\'select\');return false;">選擇客戶</a>」挑一位，再回到這個階段。</p></div>';
 }
 
 /* ═══════════════ 分頁切換 ═══════════════ */
 function switchTo(view){
+  /* 離開階段前，先把當下 DOM 內容暫存一次，確保跳到別的分頁或工作台後不掉資料 */
+  if(curAcc()) _flushAutoSave();
   document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('on',t.dataset&&t.dataset.view===view));
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('on'));
   var el=$('view-'+view); if(el) el.classList.add('on');
@@ -1090,7 +1270,7 @@ function switchTo(view){
 }
 document.querySelectorAll('.tab').forEach(function(tab){
   if(tab.classList.contains('disabled')) return;
-  if(tab.classList.contains('back')) return; // 連結，讓瀏覽器自己跳 index.html
+  if(tab.classList.contains('back')) return; // 連結，讓瀏覽器自己跳 index.html（新分頁）
   if(!tab.dataset.view) return;
   tab.onclick=function(){ switchTo(tab.dataset.view); };
 });
@@ -1100,6 +1280,19 @@ window.addEventListener('DOMContentLoaded', function(){
   var btn=$('auth-btn'); if(btn) btn.addEventListener('click',_fbLogin);
   ['auth-email','auth-password'].forEach(function(id){ var el=$(id); if(el) el.addEventListener('keydown',function(e){ if(e.key==='Enter') _fbLogin(); }); });
   var rb=$('reloadBtn'); if(rb) rb.addEventListener('click',function(){ location.reload(); });
+  /* 「小視窗」按鈕：把目前頁面以小視窗開啟（瀏覽器若不允許，會退化為新分頁） */
+  var po=$('popoutBtn'); if(po) po.addEventListener('click',function(){
+    try{ var w=window.open(location.href,'atelier-cs-mini','width=460,height=860,scrollbars=yes,resizable=yes');
+      if(w) toast(ICN.popout+' 已開啟小視窗（如果被擋，請允許彈出視窗）');
+      else toast(ICN.warn+' 瀏覽器擋住彈出視窗，請允許後再試');
+    }catch(e){ toast(ICN.warn+' 開啟失敗'); }
+  });
+  /* 一次掛上 input 事件監聽：所有階段 input/textarea/checkbox 變動 → 自動暫存 */
+  ['view-stage1','view-stage2','view-stage3'].forEach(function(vid){
+    var v=$(vid); if(v){ v.addEventListener('input',_scheduleAutoSave); v.addEventListener('change',_scheduleAutoSave); }
+  });
+  /* 離開頁面前再 flush 一次（避免最後 0.x 秒輸入沒寫進去就被導走） */
+  window.addEventListener('beforeunload', function(){ try{ _flushAutoSave(); }catch(e){} });
   renderBanner();
   _fbInit();
 });
