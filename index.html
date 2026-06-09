@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="color-scheme" content="light only">
 <meta name="supported-color-schemes" content="light">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v206 (版本號僅留註解，不顯示於畫面)
+<!-- ATELIER 影片診斷工作台 · 內部版本 v207 (版本號僅留註解，不顯示於畫面)
+v207 更新（修影片↔帳號連動＋客戶標記＋浮窗，無提示詞改動）：①parseBtn 卡B「IG帳號」分支的帳號比對由弱比對(a.handle===h)改 normAccHandle（v160 升級時漏掉這條，導致 @／大小寫／尾斜線差異配不到既有帳號→影片沒掛上）。②cardToVideo（bulkBtn 批次路徑）原本完全沒掛帳號，補上：讀 F[IG帳號]→normAccHandle 比對 accounts→寫入 accountId/accountHandle。③accCard 拆解過 0 支顯示「尚未收錄影片」。④vcard 有 accountHandle 但無對應帳號→顯示「此帳號尚未建檔（單片分析）」。⑤editVideoModal 新增 ev-client 欄位（v.client，留空＝網路自蒐／填＝我的客戶）＋存檔寫回。⑥#stickyCardSave 由 bottom:24/right:24/z9000 改 bottom:84/right:14/z10000，避開同步列(z9998)＋登出(z9999)。未動六守門常數（md5 93b202e4669ed0fddd1db2923c809e7b 不變）。版本號 4 處 v206→v207；check.js 16/16；div/details 平衡。
 v206 更新（流程② STEP5 加只出卡B 快速鈕，不動守門常數）：①新增 const ONLY_B=<前置規則字串>+PROMPT_C（串接、非重抄；前置規則寫死「流程②只加影片→整合審查全做但最後只輸出卡B、不出卡A/C、帳號層沿用既有卡C」）。②_atCopyPrompt map/labels 加 ONLY_B＝只出卡B（快速整合）。③opGuideHTML 與 opGuideHTML_v2 兩處同構 step() 的 lbl/lbl2 map（共4處）加 ONLY_B。④流程② STEP5 opts 加 copy2:ONLY_B、hint 補新鈕說明。PROMPT_C 本身未改、六守門常數 md5 仍 93b202e4669ed0fddd1db2923c809e7b（v205 值）未變。版本號 4 處 v205→v206；check.js 16/16；div/details 平衡。
 v205 更新（特別授權改 2 支守門常數，省重貼連結）：經使用者口頭特別授權，修改 PROMPT_C 與 GEM_PROMPT——PROMPT_C 在「帳號連結和影片連結一定要分別填進對應欄位」後加一條「先讀 07_連結.txt／任何含連結字樣的文字、直接填、別再要我重貼，完全沒附才寫未提供，不可沒讀就說沒收到」；GEM_PROMPT 把「影片連結：（若有提供則填，否則填 未提供）」改成「先讀 txt 連結、沒有才填未提供」。其餘四守門常數（PROMPT_A／PROMPT_0／PROMPT_0A／TONE_RULES）逐支比對未變。用 json 解碼→只加該段→重新編碼，避免手動跳脫。【守門值更新】舊 md5 7c8bc3efbfc92d316b511a13b91a49bd → 新 md5 93b202e4669ed0fddd1db2923c809e7b（下一手請改用新值）。版本號 4 處 v204→v205；check.js 16/16；div／details 平衡。
 v204 更新（量產提速，新增第 8 支提示詞＋流程④多篇）：①新增 const FAST_FILING（快速建檔：無分批協議、不反問、不等開始、支援多支靠代號、帳號連結可省、欄位同 PROMPT_0）；opGuideHTML_v2 step() 加 opts.copy2 第二顆複製鈕＋lbl 加 FAST_FILING（流程①②兩處同構 step() 一起加，流程①不會用到、無害），流程② STEP2 opts 加 copy2:FAST_FILING、hint 補量產。②POST_PROMPT（第 7 支、非守門）插入一次多篇規則；opGuideHTML_v4 STEP2 hint 補多篇。③_atCopyPrompt map／labels 加 FAST_FILING。未動六守門常數（md5 7c8bc3...未變）。版本號 4 處 v203→v204；check.js 16/16；div／details 平衡。
@@ -779,7 +780,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v206</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v207</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -2903,7 +2904,7 @@ $('parseBtn').onclick=async function(){
     const m=h.match(/instagram\.com\/([A-Za-z0-9._]+)/i);
     if(m) h='@'+m[1];
     else if(!h.startsWith('@')&&!h.startsWith('http')) h='@'+h.replace(/^@*/,'');
-    let acc=accounts.find(a=>a.handle===h || (a.handle||'').toLowerCase()===h.toLowerCase());
+    let acc=accounts.find(a=>(typeof normAccHandle==='function'?normAccHandle(a.handle)===normAccHandle(h):(a.handle===h||(a.handle||'').toLowerCase()===h.toLowerCase())));
     if(!acc){
       acc={id:'acc_'+Date.now()+'_'+Math.random().toString(36).slice(2,7), platform:'IG', handle:h, displayName:F['顯示名稱']||'', types:[], domain:F['領域']||F['主打主題']||'', jobTitle:(()=>{const x=(F['職稱']||F['職位']||F['職稱類別']||F['職業']||'').trim();return isHintText(x)?'':x;})(), industry:(()=>{const x=(F['產業']||F['行業']||'').trim();return isHintText(x)?'':x;})(), relatedAccounts:[], note:'(由歸類卡自動建檔)', fanSnapshots:[], profileSnapshots:[], createdAt:Date.now(), updatedAt:Date.now()};
       // 若 Gemini 有給身份分類，採用（但只限我們架構內的）
@@ -3080,6 +3081,7 @@ function parseCardText(block){
 }
 function cardToVideo(F){
   const skip=v=>!v||/^(未判定|未知|未提供|無|無資料)$/.test(v);
+  var _cv_h=(F['IG帳號']||F['帳號']||F['Instagram帳號']||F['創作者帳號']||'').trim(); var _cv_m=_cv_h.match(/instagram\.com\/([A-Za-z0-9._]+)/i); if(_cv_m)_cv_h='@'+_cv_m[1]; var _cv_hN=(typeof normAccHandle==='function')?normAccHandle(_cv_h):_cv_h.toLowerCase().replace(/^@/,''); var _cv_acc=_cv_hN?(((typeof accounts!=='undefined'&&accounts)||[]).find(function(a){return (typeof normAccHandle==='function'?normAccHandle(a.handle):(a.handle||'').toLowerCase().replace(/^@/,''))===_cv_hN;})):null;
   const t=findThemeByText(F['主題']||F['階段']);
   let matName='',sub='';
   if(t && !skip(F['拍攝素材'])){
@@ -3120,6 +3122,7 @@ function cardToVideo(F){
     why:'', apply:'', icp:(skip(F['目標人群'])?(skip(F['目標受眾'])?'':F['目標受眾']):F['目標人群']),
     goal:skip(F['合作目標層'])?'':F['合作目標層'],
     views:'',likes:'',comments:'',shares:'',saves:'',reach:'',engrate:'',complete:'',srctype:'public',
+    accountId:_cv_acc?_cv_acc.id:'', accountHandle:_cv_acc?(_cv_acc.handle||('@'+_cv_hN)):(_cv_hN?('@'+_cv_hN):''),
     gap:!!(F['是否超出架構']&&/^是/.test(F['是否超出架構'])),
     note:noteParts.join('；'), ts:Date.now()
   };
@@ -3497,6 +3500,7 @@ function vcard(v){
     </div>
     ${v.cover?`<div class="vmeta" style="font-style:italic;color:var(--rouge);margin-top:3px">「${esc(v.cover)}」</div>`:''}
     ${v.accountHandle?`<div class="vmeta" style="margin-top:3px"><span class="lab">帳號</span> <a href="https://www.instagram.com/${esc(v.accountHandle.replace(/^@/,''))}" target="_blank" class="vlink">${esc(v.accountHandle)}<svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-1px;margin-left:3px"><path d="M14 5h5v5"/><path d="M19 5l-8 8"/><path d="M19 13v5a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg></a></div>`:''}
+    ${(v.accountHandle&&!accounts.find(x=>x.id===v.accountId))?`<div class="vmeta" style="margin-top:3px;color:var(--sub);font-size:11px">此帳號尚未建檔（這支目前只是單片分析；去帳號管理建檔後會自動連動）</div>`:''}
     ${(()=>{const _a=accounts.find(x=>x.id===v.accountId)||{};const seg=[];if(_a.displayName)seg.push('<span class="lab">名稱</span> '+esc(_a.displayName));if((_a.types||[]).length)seg.push('<span class="lab">身份</span> '+esc((_a.types||[]).join('、')));if(_a.jobTitle)seg.push('<span class="lab">職稱</span> '+esc(_a.jobTitle));if(_a.industry)seg.push('<span class="lab">產業</span> '+esc(_a.industry));const _fs=(_a.fanSnapshots||[]);const _f=_fs.length?(parseInt(_fs[_fs.length-1].count)||0):0;if(_f)seg.push('<span class="lab">粉絲</span> '+_f.toLocaleString());return seg.length?`<div class="vmeta" style="margin-top:3px;color:var(--gold-dark)">${seg.join('　·　')}</div>`:'';})()}
     ${parts.length?`<div class="vmeta">${parts.join('　·　')}</div>`:''}
     ${(()=>{const n=x=>parseFloat(x)||0;const vw=n(v.views);const sr=vw?(((n(v.reposts)+n(v.shares))/vw)*100):null;const m=[];if(v.views)m.push('觀看 '+(+v.views).toLocaleString());if(v.likes)m.push('讚 '+(+v.likes).toLocaleString());if(v.saves)m.push('收藏 '+(+v.saves).toLocaleString());if(sr!=null)m.push('分享率 '+sr.toFixed(2)+'%');return m.length?`<div class="vmeta" style="margin-top:6px;font-weight:700;color:var(--rouge)">${m.join('　')}</div>`:'';})()}
@@ -4029,7 +4033,8 @@ function renderManual(){
   <div class="form-card" style="border-left:3px solid var(--gold)">
     <div class="stitle" style="font-size:15px;color:var(--rouge)">更新紀錄 · 還沒做的</div>
     <p style="font-size:13px;color:var(--text);line-height:1.85;margin-top:8px">
-    <b>v206（這版 · 流程② STEP 5 加一顆「只出卡B（快速整合）」鈕）：</b>①<b>新增 ONLY_B（第 9 支提示詞）</b>：＝一段「流程②只出卡B」前置規則 ＋ 串接 PROMPT_C 完整內容。整合與審查（讀數字／交叉複核 Gemini／污染自檢／回填鐵則／先讀 txt 連結）全部照做、品質不打折，差別只在<b>最後只輸出卡B</b>、不出卡A／卡C。因為是串接 PROMPT_C 不是另抄一份，所以 PROMPT_C 哪天改了它自動同步。②流程② STEP 5 旁多一顆「複製『只出卡B（快速整合）』」鈕（原本「最後整合審查」那顆保留），按它就直接拿乾淨卡B，不用每次自己交代「不要卡A／卡C」。③<b>未動六守門常數</b>（PROMPT_C 本身一字未改，ONLY_B 是新增第 9 支、靠串接引用）；md5 仍為 v205 的 93b202e4669ed0fddd1db2923c809e7b。<br>
+    <b>v207（這版 · 修影片↔帳號連動＋客戶標記＋浮窗被遮）：</b>①<b>影片掛不上帳號（主修）</b>：智慧貼上卡B 時，「IG帳號」改用 normAccHandle 比對（不再因 @／大小寫／尾斜線配不到既有帳號），影片會自動掛回既有帳號；批次匯入路徑（cardToVideo）也補上帳號掛載。修好後重貼卡B 就會正確連到 @kl.legal。②<b>帳號卡影片數</b>：掛帳號修好後，帳號管理每張卡的「拆解過 N 支影片」會正確計數；0 支顯示「尚未收錄影片」。③<b>影片卡雙向提示</b>：影片有帳號就顯示帳號行＋名稱/身份/職稱/產業/粉絲；有 handle 但帳號未建檔則顯示「此帳號尚未建檔（單片分析）」。④<b>設為我的客戶</b>：影片「編輯數據」新增「客戶 / 來源」欄位，留空＝網路自蒐、填客戶名＝我的客戶，事後可改。⑤<b>QUICK SAVE 浮窗</b>：移到右下角同步列/登出鈕上方並提高層級，不再被遮。未動任何提示詞常數（md5 不變）。<br>
+    <b>v206（流程② STEP 5 加一顆「只出卡B（快速整合）」鈕）：</b>①<b>新增 ONLY_B（第 9 支提示詞）</b>：＝一段「流程②只出卡B」前置規則 ＋ 串接 PROMPT_C 完整內容。整合與審查（讀數字／交叉複核 Gemini／污染自檢／回填鐵則／先讀 txt 連結）全部照做、品質不打折，差別只在<b>最後只輸出卡B</b>、不出卡A／卡C。因為是串接 PROMPT_C 不是另抄一份，所以 PROMPT_C 哪天改了它自動同步。②流程② STEP 5 旁多一顆「複製『只出卡B（快速整合）』」鈕（原本「最後整合審查」那顆保留），按它就直接拿乾淨卡B，不用每次自己交代「不要卡A／卡C」。③<b>未動六守門常數</b>（PROMPT_C 本身一字未改，ONLY_B 是新增第 9 支、靠串接引用）；md5 仍為 v205 的 93b202e4669ed0fddd1db2923c809e7b。<br>
     <b>v205（特別授權改 PROMPT_C／GEM_PROMPT：附 txt 就不用重貼連結）：</b>①<b>PROMPT_C（最後整合）</b>加一條：我若有附 07_連結.txt 或任何含「帳號連結：／影片連結：」的文字，它要先從裡面讀出兩個連結直接填、不要再叫我重貼；完全沒附才在備註寫「未提供連結」，不可以沒讀就說沒收到。②<b>GEM_PROMPT（Gemini）</b>的「影片連結」欄說明同步改成「先讀 txt 連結、沒有才填未提供」。③連結只拿來填欄位、AI 不必點開（IG 要登入打不開）；身份仍以帳號分析卡為準。<b>本版經你口頭特別授權改這兩支守門常數</b>，其餘四支（PROMPT_A／PROMPT_0／PROMPT_0A／TONE_RULES）未動；新六常數 md5＝93b202e4669ed0fddd1db2923c809e7b（守門值已更新）。<br>
     <b>v204（量產提速：新增「快速建檔提示詞」＋流程④貼文支援一次多篇）：</b>①<b>新增 FAST_FILING（第 8 支提示詞）</b>：流程② STEP 2 旁多一顆「複製『快速建檔』」鈕——拿掉分批協議、不先回報、不等你說開始，貼齊就直接生資料夾名稱＋07_連結.txt；支援一次丟多支（每支標 片1／片2…各出一組），帳號連結可省（建檔只是存電腦、進庫靠後面卡B 的 @handle）。原本「第一次建檔（分批版）」那顆保留，要分批傳還能用。②<b>流程④ 貼文支援一次多篇</b>：POST_PROMPT 加「一次多篇」規則（每篇標 貼1／貼2…、一篇一張卡、不跨篇配對、各自一個檔），STEP 說明同步更新。③貼文一律不需要 Gemini／SRT（截圖讀得到全部），分類用跟影片同一套 ATELIER 架構。未動六守門常數（md5 未變）。<br>
     <b>v203（流程①③ STEP 說明也比照流程② 寫清楚）：</b>①<b>流程①（第一次）STEP1／STEP4 改寫</b>：STEP1 補「建檔名來自截圖上的字、截到 @帳號＋名字才完整」；STEP4 把三張卡講清楚——卡A＝影片＋帳號合一（貼③歸類卡一次灌滿影片庫＋帳號管理、第一次最省）／卡B＝只影片（貼影片庫）／卡C＝只帳號（貼帳號管理），並提醒之後同帳號加新影片改走流程②只要卡B。②<b>流程③（回測帳號）STEP4 改寫</b>：講明系統靠 @handle 配對同一帳號、不會多建一筆，是「更新同一個帳號不是重建」，回測選累積看成長。純說明文字，未動提示詞常數與任何功能；六常數 md5 未動。<br>
@@ -4371,6 +4376,7 @@ function editVideoModal(id){
         <div class="fld"><label>儲存</label><input id="ev-saves" type="number" value="${nv(v.saves)}" style="width:100%;padding:8px;border:1px solid var(--border);border-radius:8px"></div>
       </div>
       <div class="fld"><label>備註</label><textarea id="ev-note" style="width:100%;padding:9px 10px;border:1px solid var(--border);border-radius:8px;min-height:54px">${esc(v.note||'')}</textarea></div>
+      <div class="fld"><label>客戶 / 來源（留空＝網路自蒐；填客戶名＝這是我的客戶）</label><input id="ev-client" value="${esc(v.client||'')}" placeholder="例：理鴻法律事務所" style="width:100%;padding:9px 10px;border:1px solid var(--border);border-radius:8px"></div>
       <div class="fld"><label>案例類型（手選 · 失敗案例庫用）</label><select id="ev-case" style="width:100%;padding:9px 10px;border:1px solid var(--border);border-radius:8px;background:var(--warm-white,#FDFBF8)"><option value="">未標</option><option value="success"${v.caseType==='success'?' selected':''}>成功標竿</option><option value="low"${v.caseType==='low'?' selected':''}>⚠️ 失敗／低效案例</option></select></div>
       <div style="display:flex;gap:8px;margin-top:14px">
         <button class="btn btn-ghost" id="ev-cancel" style="flex:1">取消</button>
@@ -4388,6 +4394,7 @@ function editVideoModal(id){
     v.reposts=$('ev-reposts').value.trim(); v.shares=$('ev-shares').value.trim(); v.saves=$('ev-saves').value.trim();
     v.note=$('ev-note').value.trim();
     if($('ev-case')) v.caseType=$('ev-case').value;
+    if($('ev-client')) v.client=$('ev-client').value.trim();
     v.numCheck=false;
     await saveVideos(); if(typeof renderAll==='function') renderAll();
     closeModal(); toast('✓ 已更新「'+(v.title||'這支')+'」');
@@ -5097,7 +5104,7 @@ function accCard(a){
       ${a.industry?`<span class="lab">產業</span> ${esc(a.industry)}　·　`:''}
       <span class="lab">粉絲</span> ${f?f.toLocaleString():'—'}　·　
       <span class="lab">量級</span> ${esc(tw)} / ${esc(intl)}　·　
-      <span class="lab">拆解過</span> ${vidCount} 支影片
+      <span class="lab">拆解過</span> ${vidCount>0?(vidCount+' 支影片'):'<span style="color:var(--sub)">尚未收錄影片</span>'}
     </div>
     <div class="vmeta" style="margin-top:5px"><span class="lab">30天成長</span> ${gText}</div>
     ${relList?`<div class="vmeta" style="margin-top:5px"><span class="lab">關聯</span> ${relList}</div>`:''}
@@ -8968,7 +8975,7 @@ document.addEventListener('DOMContentLoaded',function(){
 </script>
 
 <!-- v197 D2：歸類卡 sticky 儲存浮窗（fixed 右下角；偵測 pasteBox 有內容或 f-title 有值才浮出來） -->
-<div id="stickyCardSave" style="display:none;position:fixed;bottom:24px;right:24px;z-index:9000;flex-direction:column;gap:6px;background:#fff;border:1.5px solid var(--rouge);border-radius:12px;padding:10px 14px;box-shadow:0 6px 24px rgba(0,0,0,.15);max-width:280px">
+<div id="stickyCardSave" style="display:none;position:fixed;bottom:84px;right:14px;z-index:10000;flex-direction:column;gap:6px;background:#fff;border:1.5px solid var(--rouge);border-radius:12px;padding:10px 14px;box-shadow:0 6px 24px rgba(0,0,0,.15);max-width:280px">
   <div style="font-size:11px;color:var(--gold-dark);font-weight:700;letter-spacing:.4px;text-transform:uppercase">Quick Save · 快速儲存</div>
   <button class="btn btn-go" type="button" onclick="(function(){var b=document.getElementById('saveBtn');if(b){b.scrollIntoView({behavior:'smooth',block:'center'});setTimeout(function(){b.click();},350);}})()" style="width:100%;font-size:13px;padding:9px 14px"><svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;vertical-align:-2px;margin-right:4px"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8M7 3v5h8"/></svg>儲存這支影片＋</button>
   <div style="font-size:11px;color:var(--sub);line-height:1.4">不用滑到最底，這裡按就好</div>
