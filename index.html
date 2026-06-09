@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="color-scheme" content="light only">
 <meta name="supported-color-schemes" content="light">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v195 (版本號僅留註解，不顯示於畫面)
+<!-- ATELIER 影片診斷工作台 · 內部版本 v196 (版本號僅留註解，不顯示於畫面)
+v196 更新（交辦單：Lisa 從 claude.ai artifact preview 看到流程② 顯示「內容載入失敗：intro is not defined」——真正抓到 v195 我留下的嚴重 bug；同場加碼 ②歸類卡也要對應流程①／②／③ ③影片庫＋帳號管理要能用「同職稱／同產業」當篩選條件，接 v195）：【P1 真 hotfix · opGuideHTML_v2 缺 var intro=... 行】真因確認（用 node eval 實際跑 opGuideHTML_v2 dump 出 ReferenceError）：v195 我做 `function step(n,icon,title,provide,hint){...}` → `function step(...,opts){...複製按鈕...}` 的 str_replace 時，old_str/new_str 範圍**沒包含到下一行 var intro=...**，但因為兩段相連，導致實際 replace 後 step() 函式結尾 } 之後直接接 ovStep——`var intro` 整段被吃掉。流程③ 因為當時新增 P3 ④ 改的是另一段（包含 intro 一起 replace 並 new_str 完整保留），沒被波及。本版補回：line 8126 step 函式 } 後新增 var intro='<div style=...">適用情境：這個帳號之前<b>已經建檔過</b>...</div>';。實測 node eval：流程② 13,162 字 HTML + 3 顆 _atCopyPrompt 按鈕（PROMPT_0/GEM_PROMPT/PROMPT_C）+ 2 個開工具連結（Gemini/子題型工具）全部正確渲染。【P1B sopFlowShow 加 force mount 保險】保留 v196 P1 原本的 sopFlowShow 進入第一行 try{ mount(); }catch(e){}——切流程時強制呼叫 mount() 重新檢查並注入 sopBlock_v2_body / _v3_body 內容（mount() 內部已有 dataset.done 防重複機制，重複呼叫無副作用），不依賴 DOMContentLoaded 跑到。【P2 歸類卡分頁加流程對應說明】Lisa 問「歸類卡也有一個流程①／②／③ 的方式嗎？」實際上系統靠卡內 ===ATELIER... === 標記自動分流，使用者不需要選。本版在 #sub-card 的 paste-card 之前加 details 折疊區（預設收起）：含三組對照——卡A（影片＋帳號）=流程①／卡B（單支影片）=流程②／卡C（只有帳號分析）=流程③，每組標明系統怎麼判別，並補充「批次匯入可一次貼多張、單張用自動填入再檢查」。【P3-A1 影片庫加職稱／產業篩選】Lisa 核心需求：「我同樣是律師找律師同行影片」「我選擇相同的職業或是相同的身分或是相同的合作目標」。現有篩選僅階段／目標層／身份（粗類別）+ 來源 chip，沒有具體職稱（jobTitle）／產業（industry）。修法：①HTML 在「快速篩選」grid（3 欄）下新增第二行 grid（2 欄）放 #libJobF / #libIndF；②state 加 libJobF/libIndF 兩個空字串；③新增 populateLibAdvFilters() 從 accounts[].jobTitle/.industry dedupe sort 後動態填 options，保留 prev value；④renderLibrary 開頭呼叫 populate，filter 加兩條 if（v.accountId 反查 accounts 比對精確相等）；⑤sig 加入 libJobF/libIndF；⑥onchange 綁定。【P3-B1 帳號管理同樣加職稱／產業】帳號管理現有篩選列已含全部身份／全部量級／排序，本版在 accFilterTier 與 accSort 之間插入 #accFilterJob / #accFilterInd 兩個 select；renderAccounts 開頭呼叫 populateAccAdvFilters()；filter 加兩條精確比對；_accSig 加入；既有 event 綁定陣列加兩個 id。【未做·留下版】v194 「對標助手」（vlibCompareHelper / accCompareHelper）目前是「主角+對標多選→跳版面對照」設計，Lisa 真正要的是「選主角→一鍵套用同職稱／同產業篩選」。本版時間不夠+風險高，下版專心改造對標助手。版本號 4 處 v195→v196；六常數依守門 md5（7c8bc3efbfc92d316b511a13b91a49bd）驗證未動；全檔 node --check 全過（15 script）、div/details/CSS 平衡。
 v195 更新（交辦單：流程② / ③ 詳細 SOP 也要像流程① 一樣有「複製提示詞」按鈕可以直接按，接 v194）：【P3 流程② / ③ 加複製提示詞按鈕】Lisa 反饋：流程① sopBlock 每步有「複製提示詞 A/C/0/0A」按鈕（line 830/930/1002，attach() 綁定 PROMPT_A/C/0/0A 常數），但流程② / ③ 的內容（opGuideHTML_v2 / _v3）是 v189 A5 寫的「純說明書版」、**只有文字說明、沒有按鈕**。本版修法：①在 opGuideHTML 系列 IIFE 開頭加 window._atCopyPrompt(name) 全域函式（接 PROMPT_0/PROMPT_A/PROMPT_C/PROMPT_0A/GEM_PROMPT 5 個常數，clipboard.writeText + toast 顯示字數），不污染 IIFE scope（透過 typeof 防呆）；②opGuideHTML_v2 內 step() 函式加第 6 個 opts 參數（{copy, open, openLabel}），自動加複製按鈕（酒紅實心邊框）＋開工具連結（金邊鋸齒 anchor target=_blank），三步加 copy 標記：step 2={copy:'PROMPT_0'}（封存）、step 3={copy:'GEM_PROMPT',open:'https://gemini.google.com/app',openLabel:'開 Gemini'}（Gemini 影片分析）、step 5={copy:'PROMPT_C'}（最後整合·只要卡B）；step 4 加 open 到 https://luckylisaaa.github.io/atelier-subtype/（子題型工具網頁）；③opGuideHTML_v3 內 step() 函式同樣升級接 opts，step 2={copy:'PROMPT_A'}（帳號分析）。流程① sopBlock 既有 4 顆按鈕（line 830/930/1002，attach() 機制）保留不動；六常數本身一字未動，只是多了一個全域函式提供讀取入口。版本號 4 處 v194→v195；六常數依守門 md5（7c8bc3efbfc92d316b511a13b91a49bd）驗證未動；全檔 node --check 全過（15 script）、div/details/CSS 平衡。
 v194 更新（交辦單：Lisa 實測抓三個 bug 一次修：①卡C only 流程死路 ②清空按鈕沒清乾淨 ③雙選擇器第 5 次提出必須做，接 v193）：【P1 parseBtn 卡C only 走不下去】Lisa 場景：在「③ 歸類卡」貼**只有帳號分析卡（卡C）、沒有影片段**的文字 → atelierChoose「第一次偵測到新帳號 @qbeetw」彈窗 → 選「建立帳號」→ pending 帳號設好＋表單填好 → **但整頁只有「儲存這支影片」按鈕**，因為沒影片標題會跳「至少要填影片名稱」警示 → 帳號永遠卡在 pending 入不了庫。根因：parseBtn line 2683 `if(!vidM){return;}` 直接 return，pending 帳號沒被 commit。修法：return 前判斷 _mode!=='skip'＋ pending 物件存在 → 立刻 accounts.unshift+saveAccounts+清 pending option+populateAccountSelect+toast「✓ 已建立新帳號 @xxx（帳號管理 +1）」。bulkBtn 是批次處理多張卡，路徑不同，本版不動。【P2 clearBtn 沒清乾淨】Lisa 場景：按「清空表單」鈕，帳號 ⑥下拉/職稱/產業/版面解析/九宮格收集盤都沒清掉。對齊 saveBtn 成功後的完整清空邏輯，補 6 項：①f-account selectedIndex=0 + syncAccountJobFields；②清掉 pending 帳號（_pendingAcc / _pendingAccId / _pendingOpt option）；③收合並清空 filingBoardBoxInput 九宮格；④f-srctype；⑤f-account-quick；⑥pasteBox（智慧貼上 textarea）+ parseMsg；⑦syncProdStatus；⑧renderGoalKit。【A1 影片庫＋帳號管理 雙選擇器 · 第 5 次必須做了】Lisa 反覆要求：「影片庫跟帳號管理我是需要他像版面對照一樣有兩個可以選擇」。最小可行做法：①view-library 頂部（sumrow 之前）+ view-accounts 帳號清單頂部（+新增帳號 之前）各加一個 details#vlibCompareHelper / #accCompareHelper「對標助手」折疊區，預設收起、ontoggle 展開時自動 _vchPopulate；②兩個 details 內部結構一致——主角單選 `<select>` + 對標 `<select multiple size="6">`（HTML 原生多選，按住 Cmd/Ctrl 選 1-3 個）+「跳到版面對照並比較」按鈕；③新增 window._vchPopulate(prefix='vlib'|'acc')—— populate accounts 到兩個 select（handle + displayName/jobTitle 顯示），保留上次選擇；④新增 window._vchGoCompare(prefix)——驗證主角＋對標數量、自動 click 「.tab[data-view='compare']」切換版面對照分頁、setTimeout 350ms 後設 cmpHero.value + 清空 cmpSelected + add(rivalIds) + renderComparePicker + runCompare。不破壞既有 libSelIds 自由勾選工具列、不動 cmpHero/cmpPicker 的既有 csel 結構。版本號 4 處 v193→v194；六常數依守門 md5（7c8bc3efbfc92d316b511a13b91a49bd）驗證未動；全檔 node --check 全過（15 script）、div/details/CSS 平衡。
 v193 更新（交辦單：v192 流程鳥瞰圖被埋太深 Lisa 看不到、流程② / ③ 沒有對應 sopBlock 那種「大張詳細版」；加「客戶服務台」導覽連結，接 v192）：【P1 sopBlock 加流程 1/2/3 切換】根因：v192 我把鳥瞰圖+三流程詳細塞在 #opGuideInput 那個預設收起的 details 折疊區內，Lisa 切到「② 操作流程」分頁看到的是預設展開的 #sopBlock 8 步驟（流程①），自然以為「只有流程①、沒有 ②／③」。修法：①sopBlock 上方加 3 顆切換鈕（流程①／②／③，flex 均寬、選中酒紅實心 / 未選紅邊框透明），點下去用 window.sopFlowShow(n) 切換顯隱（簡單 display:none 切換不重 mount）；②sopBlock 標記 data-sopflow="1"；③sopBlock 之後新增 #sopBlock_v2（流程② SOP details · gem-box 同樣式 · open · 預設 display:none）與 #sopBlock_v3（流程③ SOP details）；④#sopBlock_v2_body / _v3_body 由 IIFE mount() 函式自動注入 opGuideHTML_v2() / opGuideHTML_v3() 內容（含 v192 已做好的鳥瞰圖＋詳細步驟）。既有 #opGuideInput 折疊區保留不動（裡面也有同樣的三流程切換 tab，是另一個入口）。【P2 客戶服務台導覽連結】.tabs 內「客戶交付」之後加一個 a.tab href="client.html"——使用 a 而非 div+data-view，避開既有 view 切換邏輯直接跳外部 URL；text-decoration:none；icon 用「圓圈內箭頭右指」暗示外連跳轉。樣式套用既有 .tab CSS（display:inline-flex 在 a 上同樣 work）。版本號 4 處 v192→v193；六常數依守門 md5（7c8bc3efbfc92d316b511a13b91a49bd）驗證未動；全檔 node --check 全過（15 script）、div/details/CSS 平衡。
@@ -768,7 +769,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v195</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v196</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -1038,6 +1039,19 @@ if('serviceWorker' in navigator){
   </details>
   </div>
   <div id="sub-card" style="display:none">
+  <!-- v196 P2：歸類卡與「② 操作流程」三個流程的對應關係（系統靠卡內 ===ATELIER... === 標記自動分流，不需要使用者選） -->
+  <details style="margin-bottom:12px;border:1px solid var(--gold-soft);border-radius:10px;background:var(--warm)">
+    <summary style="padding:11px 14px;font-weight:700;color:var(--rouge);font-size:13.5px;cursor:pointer;letter-spacing:.3px"><svg viewBox="0 0 24 24" style="width:15px;height:15px;display:inline-block;vertical-align:-3px;margin-right:5px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round"><circle cx="12" cy="12" r="9"/><path d="M12 16v-5M12 8h.01"/></svg>歸類卡也對應流程①／②／③？是的——但你不用選，系統自動分流（點開看對照）</summary>
+    <div style="padding:0 14px 12px;font-size:12.5px;line-height:1.75;color:var(--text)">
+      <div style="margin:2px 0 8px;color:var(--gold-dark);font-weight:600">系統靠卡內 <code style="background:#fff;padding:1px 5px;border:1px solid var(--gold-soft);border-radius:4px;font-size:11.5px">===ATELIER... ===</code> 標記自動判斷，貼進去就會走對的路：</div>
+      <div style="display:grid;grid-template-columns:1fr;gap:7px;margin-top:6px">
+        <div style="background:#fff;border-left:3px solid var(--rouge);border-radius:6px;padding:8px 11px"><b style="color:var(--rouge)">貼卡A（影片＋帳號合一）</b>＝走<b>流程①</b>：含 <code style="font-size:11px">===ATELIER歸類卡===</code> 跟 <code style="font-size:11px">===ATELIER帳號分析卡===</code> 兩段 → 同時新增影片＋建立或更新帳號。</div>
+        <div style="background:#fff;border-left:3px solid var(--rouge);border-radius:6px;padding:8px 11px"><b style="color:var(--rouge)">貼卡B（單支影片）</b>＝走<b>流程②</b>：只含 <code style="font-size:11px">===ATELIER歸類卡===</code> → 把這支影片掛到既有帳號（同帳號加新影片不重複建檔）。</div>
+        <div style="background:#fff;border-left:3px solid var(--rouge);border-radius:6px;padding:8px 11px"><b style="color:var(--rouge)">貼卡C（只有帳號分析）</b>＝走<b>流程③</b>：只含 <code style="font-size:11px">===ATELIER帳號分析卡===</code> → 只建／更新帳號，不建影片（v194 修好的：按「建立帳號」會立刻入庫，不會卡 pending）。</div>
+      </div>
+      <div style="margin-top:10px;padding:7px 11px;background:#FFFAF0;border:1px dashed var(--gold-soft);border-radius:6px;font-size:12px;color:var(--gold-dark)">補充：「<b>批次匯入</b>」按鈕可一次貼多張卡，系統會逐張分流；單張用「<b>自動填入下面欄位</b>」可在存檔前再檢查一次。</div>
+    </div>
+  </details>
   <div class="paste-card">
     <div style="font-family:'Cormorant Garamond',serif;font-size:11px;letter-spacing:3px;color:var(--gold-dark);margin-bottom:6px">QUICK INPUT · AUTO-CLASSIFY</div>
     <div class="paste-h">貼上歸類卡，自動填好</div>
@@ -1533,6 +1547,11 @@ if('serviceWorker' in navigator){
     <select id="libGoalF" style="width:100%;min-width:0;padding:7px 6px;border:1px solid var(--border);border-radius:8px;background:#fff;color:var(--ink);font-family:inherit;font-size:12px"><option value="">全部目標層</option><option value="A">A 認知（被看見）</option><option value="B">B 品牌（被記得）</option><option value="C">C 信任（被相信）</option><option value="D">D 轉化（被購買）</option><option value="E">E 組織（被裂變）</option></select>
     <select id="libTypeF" style="width:100%;min-width:0;padding:7px 6px;border:1px solid var(--border);border-radius:8px;background:#fff;color:var(--ink);font-family:inherit;font-size:12px"><option value="">全部身份</option><option>KOL</option><option>KOC</option><option>個人IP</option><option>Youtuber</option><option>內容創作者</option><option>素人</option><option>品牌號</option><option>企業家</option><option>名人</option><option>演員</option><option>歌手</option></select>
     </div>
+    <!-- v196 P3-A1：依帳號屬性篩同類型——選「律師」就只看律師的影片，選「醫美」就只看醫美的影片（options 從現有帳號的職稱／產業自動 dedupe） -->
+    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:6px;margin-top:6px">
+      <select id="libJobF" style="width:100%;min-width:0;padding:7px 6px;border:1px solid var(--gold-soft);border-radius:8px;background:#fff;color:var(--ink);font-family:inherit;font-size:12px"><option value="">全部職稱</option></select>
+      <select id="libIndF" style="width:100%;min-width:0;padding:7px 6px;border:1px solid var(--gold-soft);border-radius:8px;background:#fff;color:var(--ink);font-family:inherit;font-size:12px"><option value="">全部產業</option></select>
+    </div>
   </div>
   <div class="filterrow" id="libClientRow" style="margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--gold-soft)"></div>
   <div id="libBulk" style="display:flex;gap:6px;align-items:center;margin-bottom:8px;flex-wrap:wrap">
@@ -1731,6 +1750,9 @@ if('serviceWorker' in navigator){
       <option value="大型網紅">大型網紅 (500K–1M)</option>
       <option value="超級網紅">超級網紅 (1M+)</option>
     </select>
+    <!-- v196 P3-B1：帳號管理也加職稱／產業篩選（與影片庫一致；options 從 accounts[].jobTitle/.industry 動態 populate） -->
+    <select id="accFilterJob" style="flex:1;max-width:170px;padding:8px 10px;border:1px solid var(--gold-soft);border-radius:8px;background:#fff;color:var(--ink);font-family:inherit;font-size:13px"><option value="">全部職稱</option></select>
+    <select id="accFilterInd" style="flex:1;max-width:170px;padding:8px 10px;border:1px solid var(--gold-soft);border-radius:8px;background:#fff;color:var(--ink);font-family:inherit;font-size:13px"><option value="">全部產業</option></select>
     <select id="accSort" style="flex:1;max-width:160px;padding:8px 10px;border:1px solid var(--border);border-radius:8px;background:#fff;color:var(--ink);font-family:inherit;font-size:13px">
       <option value="updated">最近更新</option>
       <option value="followers">粉絲數 ↓</option>
@@ -2492,7 +2514,7 @@ const numUnit=raw=>{
 };
 
 let videos=[]; // 影片資料
-let libFilter='all', libClient='', searchScope='all', libStageF='', libGoalF='', libTypeF='', libShowN=20, _libSig='', libPage=1;
+let libFilter='all', libClient='', searchScope='all', libStageF='', libGoalF='', libTypeF='', libJobF='', libIndF='', libShowN=20, _libSig='', libPage=1;
 var accPage=1;
 
 /* ---- 持久儲存 ---- */
@@ -3307,8 +3329,30 @@ $('clearBtn').onclick=()=>{
 };
 
 /* ============ 影片庫 ============ */
+/* v196 P3-A1：影片庫「全部職稱／全部產業」下拉動態 populate——從 accounts[] 抽出已存在的職稱/產業（dedupe sort）；renderAll／_accFbSubscribe 都會呼叫 */
+function populateLibAdvFilters(){
+  if(typeof accounts==='undefined' || !accounts) return;
+  var jobs={}, inds={};
+  accounts.forEach(function(a){
+    var j=(a.jobTitle||'').trim(); if(j) jobs[j]=1;
+    var i=(a.industry||'').trim(); if(i) inds[i]=1;
+  });
+  var jKeys=Object.keys(jobs).sort(), iKeys=Object.keys(inds).sort();
+  var jSel=$('libJobF'), iSel=$('libIndF');
+  if(jSel){
+    var prevJ=jSel.value;
+    jSel.innerHTML='<option value="">全部職稱</option>'+jKeys.map(function(k){return '<option value="'+esc(k)+'">'+esc(k)+'</option>';}).join('');
+    if(prevJ) jSel.value=prevJ;
+  }
+  if(iSel){
+    var prevI=iSel.value;
+    iSel.innerHTML='<option value="">全部產業</option>'+iKeys.map(function(k){return '<option value="'+esc(k)+'">'+esc(k)+'</option>';}).join('');
+    if(prevI) iSel.value=prevI;
+  }
+}
 function renderLibrary(){
   if(typeof populateTplClient==='function') populateTplClient();
+  if(typeof populateLibAdvFilters==='function') populateLibAdvFilters();
   if(typeof renderDupVideos==='function') renderDupVideos();
   const q=$('libSearch').value.trim().toLowerCase();
   let list=videos.filter(v=>{
@@ -3318,6 +3362,9 @@ function renderLibrary(){
     if(libStageF){ if(libStageF.indexOf("t:")===0){ if(String(v.themeId||"")!==libStageF.slice(2)) return false; } else if(v.stage!==libStageF) return false; }
     if(libGoalF && !((v.goal||'').trim().toUpperCase().startsWith(libGoalF))) return false;
     if(libTypeF){ const _ta=accounts.find(x=>x.id===v.accountId)||{}; if(!(_ta.types||[]).includes(libTypeF)) return false; }
+    /* v196 P3-A1：職稱／產業反查 accounts——影片 v.accountId 拿到帳號的 jobTitle/industry 比對 */
+    if(libJobF){ const _ja=accounts.find(x=>x.id===v.accountId)||{}; if((_ja.jobTitle||'')!==libJobF) return false; }
+    if(libIndF){ const _ia=accounts.find(x=>x.id===v.accountId)||{}; if((_ia.industry||'')!==libIndF) return false; }
     if(q){
       const _a=accounts.find(x=>x.id===v.accountId)||{};
       const hay=(v.title+' '+v.themeName+' '+(v.themeId||'')+' '+(v.stage||'')+' '+(v.goal||'')+' '+v.matName+' '+v.sub+' '+v.trig+' '+v.client+' '+v.note+' '+(v.accountHandle||'')+' '+(_a.displayName||'')+' '+(_a.jobTitle||'')+' '+(_a.industry||'')+' '+(_a.domain||'')+' '+(_a.types||[]).join(' ')).toLowerCase();
@@ -3338,7 +3385,7 @@ function renderLibrary(){
   const box=$('libList');
   if(!list.length){ box.innerHTML='<div class="empty-res">沒有符合的影片。</div>'; return; }
   // v161 B1：每頁 10 支、頁碼列上下各一排（品牌酒紅/金）
-  const sig=[$('libSearch')?$('libSearch').value.trim():'',libFilter,libClient,libStageF,libGoalF,libTypeF,sortBy].join('|');
+  const sig=[$('libSearch')?$('libSearch').value.trim():'',libFilter,libClient,libStageF,libGoalF,libTypeF,libJobF,libIndF,sortBy].join('|');
   if(sig!==_libSig){ libPage=1; _libSig=sig; }
   const PER=10; const total=list.length; const pages=Math.max(1,Math.ceil(total/PER));
   if(libPage>pages) libPage=pages; if(libPage<1) libPage=1;
@@ -3421,6 +3468,9 @@ if($('libSort'))$('libSort').onchange=renderLibrary;
 if($('reloadBtn'))$('reloadBtn').onclick=function(){ location.href=location.pathname+'?v='+Date.now(); };
 if($('libStageF'))$('libStageF').onchange=function(){ libStageF=this.value; renderLibrary(); };
 if($('libGoalF'))$('libGoalF').onchange=function(){ libGoalF=this.value; renderLibrary(); };
+/* v196 P3-A1：libJobF/libIndF onchange */
+if($('libJobF'))$('libJobF').onchange=function(){ libJobF=this.value; renderLibrary(); };
+if($('libIndF'))$('libIndF').onchange=function(){ libIndF=this.value; renderLibrary(); };
 if($('libTypeF'))$('libTypeF').onchange=function(){ libTypeF=this.value; renderLibrary(); };
 $('libSearch').oninput=function(){ $('libClr').style.display=this.value?'block':'none'; $('libIc').style.display=this.value?'none':'block'; renderLibrary(); };
 $('libClr').onclick=()=>{ $('libSearch').value=''; $('libClr').style.display='none'; $('libIc').style.display='block'; renderLibrary(); };
@@ -3893,7 +3943,9 @@ function renderManual(){
   <div class="form-card" style="border-left:3px solid var(--gold)">
     <div class="stitle" style="font-size:15px;color:var(--rouge)">更新紀錄 · 還沒做的</div>
     <p style="font-size:13px;color:var(--text);line-height:1.85;margin-top:8px">
-    <b>v195（這版 · 流程② / ③ 也加上「複製提示詞」按鈕，跟流程① 一樣可以直接按複製）：</b>你抓到的：流程① 的 sopBlock 8 步驟每步都有「複製提示詞 A／C／0／0A」按鈕可以直接按複製。但流程② / ③ 我之前做的版本只是「說明書」、只有文字、<b>沒有按鈕</b>，所以你得自己回流程① 找對應按鈕來複製，很卡。本版修好：①<b>流程② 同帳號＋多影片（5 步）</b>——step 2「（選配）封存」加「<b>複製『第一次建檔提示詞』</b>」鈕；step 3「Gemini 影片分析」加「<b>複製『Gemini 影片分析提示詞』</b>」鈕＋「<b>開 Gemini</b>」連結；step 4「子題型工具」加「<b>開子題型工具</b>」連結；step 5「最後整合·只要卡B」加「<b>複製『最後整合審查提示詞』</b>」鈕。②<b>流程③ 只重新分析帳號（4 步）</b>——step 2「帳號分析」加「<b>複製『帳號分析提示詞』</b>」鈕。按鈕都是酒紅實心邊框、跟流程① 同款；按下去會 toast「✓ 已複製『xxx 提示詞』（N 字）」確認。底層用同一份提示詞常數（PROMPT_0／PROMPT_A／PROMPT_C／GEM_PROMPT），不會跟流程① 不一致。<br>
+    <b>v196（這版 · 你眼力太強了！抓到 v195 留下的真 bug：①「內容載入失敗」是 ReferenceError ②歸類卡對應流程說明 ③影片庫＋帳號管理加「同職稱／同產業」篩選）：</b>①<b>P1 真正抓到「內容載入失敗」的根因</b>：你說「流程二顯示內容載入失敗」——我把 v195 的 opGuideHTML_v2() 抽出來用 node 實際跑了一次，<b>抓到 ReferenceError: intro is not defined</b>！原來我 v195 改 step() 函式時 str_replace 範圍<b>沒包含到下一行 var intro=...</b>，導致 step() 結尾 } 後直接接 ovStep——var intro 整段被吃掉、函式內 return '＜div＞'+intro+overview+steps+'＜/div＞' 直接 throw、被 mount() 內 try/catch 接住顯示「內容載入失敗：intro is not defined」。流程③ 因為當時是另一段獨立 replace 沒被波及，所以你看得到 PROMPT_A 按鈕。本版補回 var intro 並用 node eval 實測：<b>流程② 13,162 字 HTML、3 顆複製按鈕 + 2 顆開工具連結全部正確渲染</b>。順便：補完 changelog 文字內誤用反引號導致 renderManual template literal 提早終止的 syntax 副作用（block#3 從 inline script 抓不到 unbalanced）。②<b>P2 歸類卡也對應流程①／②／③</b>：你問「歸類卡也有一個流程①／②／③ 的方式嗎？」<b>是的——但你不用選，系統自動分流</b>。在「③ 歸類卡」分頁最上方加一個折疊說明：卡A（含影片+帳號兩段）=流程①、卡B（只有影片段）=流程②、卡C（只有帳號分析段）=流程③，貼進去自動判別。③<b>P3 影片庫＋帳號管理加「同職稱／同產業」篩選</b>（你提的核心需求「我同樣是律師找律師同行影片」）：影片庫工具列加「<b>全部職稱</b>」「<b>全部產業</b>」兩個下拉、帳號管理篩選列也加同樣兩個。<b>options 自動從你既有帳號的職稱／產業 dedupe 列出</b>——所以你不用每次手打，建過幾個律師帳號，「全部職稱」就會出現「律師事務所合夥律師」「整形外科醫師」等選項，選下去就只看那個職稱的帳號／影片。<br>
+    ※「對標助手」（v194 那個「主角+對標→跳版面對照」）你說搞錯方向，下版會改造成「選主角→一鍵套用同職稱/同產業篩選」更貼近你的需求。<br>
+    <b>v195（流程② / ③ 也加上「複製提示詞」按鈕，跟流程① 一樣可以直接按複製）：</b>你抓到的：流程① 的 sopBlock 8 步驟每步都有「複製提示詞 A／C／0／0A」按鈕可以直接按複製。但流程② / ③ 我之前做的版本只是「說明書」、只有文字、<b>沒有按鈕</b>，所以你得自己回流程① 找對應按鈕來複製，很卡。本版修好：①<b>流程② 同帳號＋多影片（5 步）</b>——step 2「（選配）封存」加「<b>複製『第一次建檔提示詞』</b>」鈕；step 3「Gemini 影片分析」加「<b>複製『Gemini 影片分析提示詞』</b>」鈕＋「<b>開 Gemini</b>」連結；step 4「子題型工具」加「<b>開子題型工具</b>」連結；step 5「最後整合·只要卡B」加「<b>複製『最後整合審查提示詞』</b>」鈕。②<b>流程③ 只重新分析帳號（4 步）</b>——step 2「帳號分析」加「<b>複製『帳號分析提示詞』</b>」鈕。按鈕都是酒紅實心邊框、跟流程① 同款；按下去會 toast「✓ 已複製『xxx 提示詞』（N 字）」確認。底層用同一份提示詞常數（PROMPT_0／PROMPT_A／PROMPT_C／GEM_PROMPT），不會跟流程① 不一致。<br>
     <b>v194（你實測抓的 3 個 bug 一次修：①卡C only 走不下去 ②清空沒清乾淨 ③雙選擇器第 5 次必須做了）：</b>①<b>P1 「只貼帳號分析卡」流程死路修好</b>：你場景——在「③ 歸類卡」只貼了帳號分析卡（沒影片段）→ atelierChoose 跳「第一次偵測到新帳號 @qbeetw」→ 你選「建立帳號」→ 表單填好→<b>但整頁只有「儲存這支影片」按鈕</b>→ 你按下去跳「至少要填影片名稱」警示，帳號永遠存不進去。修法：parseBtn 偵測到「只有帳號段、沒有影片段」時，**只要你按了「建立帳號」（不是「只建影片」/「skip」），立刻把帳號 commit 到帳號管理**（accounts.unshift + saveAccounts），不再卡 pending；toast 會顯示「✓ 已建立新帳號 @xxx（帳號管理 +1）」。②<b>P2 「清空表單」鈕沒清乾淨</b>修好：你按清空後職稱/產業/⑥下拉/九宮格收集盤都沒清掉。對齊「儲存影片成功後」的完整清空邏輯，補了 8 個項目——f-account、pending 帳號暫存（_pendingAcc / 待確認 option）、九宮格收集盤（收合 + 內容清空 + 帳號下拉歸零）、f-srctype、f-account-quick、智慧貼上 textarea + 訊息、syncProdStatus、renderGoalKit。③<b>A1 影片庫＋帳號管理 雙選擇器來了</b>：你第 5 次提的「像版面對照一樣有兩個可以選擇」。本版做最小可行版——**影片庫頂部、帳號管理頂部各加一個「對標助手」折疊區**（預設收起，點 summary 展開），裡面結構跟版面對照頁一樣：① 主角帳號單選 ② 對標帳號多選（按住 Cmd/Ctrl 選 1-3 個）→ 按「跳到版面對照並比較」按鈕 → **自動切到版面對照分頁、自動帶入你的選擇、自動跑並排比較**，省去切分頁手動選兩遍。不影響既有的「全選 / 並排對比 / 匯出選取」工具列（兩條路徑並存）。<br>
     <b>v193（修「② 操作流程看不到流程② / ③」＋加客戶服務台導覽連結）：</b>①<b>你回報「現在展示出來的是 8 步驟，這個是流程①，那 ②／③ 在哪？」</b>——v192 我把流程鳥瞰圖+三流程詳細**塞在另一個預設收起的折疊區**「+ 操作流程 · 開始前要準備什麼」裡，你切到「② 操作流程」分頁看到的是預設展開的「8 步驟」（這的確是流程①），就以為「只有流程①、沒有 ②／③」。本版修法：<b>在 8 步驟上方加 3 顆切換鈕</b>「流程① 從沒建過 · 完整建檔（8 步驟）」、「流程② 帳號已建過 · 只加新影片（5 步驟）」、「流程③ 只重新分析帳號（4 步驟）」——點哪顆就顯示對應的詳細 SOP，三選一切換。**流程② / ③ 的詳細內容**用 v192 已經做好的 opGuideHTML_v2 / _v3（含鳥瞰圖 + 詳細步驟）自動注入到新增的 #sopBlock_v2 / #sopBlock_v3，跟流程① 的 8 步驟同樣以 gem-box 大張詳細卡呈現。預設停在流程①（保持你既有習慣不被嚇到）。②<b>導覽列加「客戶服務台」按鈕</b>連到 client.html，放在「客戶交付」右邊，icon 用「圓圈內箭頭右指」暗示外連跳轉。<br>
     <b>v192（把 v191 的「立刻 commit」改回「最後確認才建檔」UX＋徹底修 v188 真正的 bug＋三條流程都加鳥瞰圖）：</b>①<b>P1 把 UX 改回對的</b>：v191 為了修「帳號建檔丟失」改成「按建立帳號就立刻 +1 帳號數」——你回饋這太搶跑、應該是「按建立帳號只是先記下、滑下去檢查內容、最後按確定建檔才真的存」。本版回到 v188/v190 的設計，但<b>徹底修掉 v188 留下的真正 bug</b>——之前影片連結重複選了「覆蓋舊的」，整段確認彈窗 + pending commit 區塊會被跳過，帳號就默默丟失。修法：①URL 重複「略過」/ 標題相似「取消」/ 確認「再改一下」三條 return 路徑都會清掉 pending（不會殘留）；②URL 重複「覆蓋舊的」改成<b>先記下、延後寫入</b>——只有按了最後的「確定建檔」才會真的覆蓋（之前是按下覆蓋當下就寫了、取消後也救不回來）；③<b>拿掉 if(!_did) 守衛</b>——確認彈窗 + pending commit 必須在所有路徑（含覆蓋）下都跑到，這是修 v188 那個 bug 的關鍵。確認彈窗會根據情境顯示「覆蓋既有影片『xxx』」或「新增 1 支影片『xxx』」，不會搞混。<b>影響</b>：以後不管影片是新的還是覆蓋，按了確定建檔之前都會看到完整的確認摘要；任何取消或略過的路徑帳號都不會默默被建出來。②<b>B2 三條流程都加上鳥瞰圖</b>：點開「② 操作流程」，每個流程上方多了一條「<b>流程鳥瞰圖 · OVERVIEW</b>」——一行 5 個方塊（或 4 個），每個方塊顯示「STEP N／步驟名／<span style='color:var(--rouge);font-weight:700'>用什麼 AI</span>／<span style='color:var(--gold-dark)'>用哪段提示詞</span>／<span style='color:#0F6E56'>輸出什麼</span>」，看一眼就知道整條流程的走法、不用滑下去看詳細步驟。詳細步驟原樣保留沒大改。流程① 5 步：建檔/Claude/第一次建檔提示詞→帳號分析/Claude/帳號分析提示詞→深挖影片/Gemini/Gemini 歸類→整合三份卡/Claude/最後整合審查→客戶交付/工作台內建/三關產生。流程② 5 步：截圖+連結/無AI→封存選配/Claude→Gemini 影片分析→子題型工具/工具網頁→最後整合只要卡B/Claude。流程③ 4 步：截四張帳號素材/無AI→帳號分析/Claude→拿到帳號分析卡含 Top9→貼回工作台/工作台內建。＊<b>A1 雙選擇器（影片庫＋帳號管理像版面對照那樣的主角+對標）老實擱置·第四次</b>：你本輪再次提出，但本版 P1 整段重構 + B2 三流程鳥瞰圖工程量已經滿了；A1 還卡上版三個 UX 決策（libSelIds 怎麼共存／帳號管理入口做什麼／主角是否跨頁記憶）你本輪仍沒明確回答。我寧可下版專心做一次到位，不要這版硬上半成品（之前 v186/v187 兩次寫了沒做你抓得很準，這版繼續守規矩）。下面我會把 3 個 UX 問題整理成具體選項，下版你回答了就做。<br>
@@ -4828,22 +4880,50 @@ function renderCheckList(){
   box.querySelectorAll('[data-cl-edit]').forEach(function(b){ b.onclick=function(){ var id=b.dataset.clEdit; if(typeof editAccount==='function'){ editAccount(id); var a=(accounts||[]).find(function(x){return x.id===id;}); if(typeof _clFocusAccMiss==='function') _clFocusAccMiss(a); } }; });
   box.querySelectorAll('[data-cl-vedit]').forEach(function(b){ b.onclick=function(){ var id=b.dataset.clVedit; if(typeof editVideoModal==='function'){ editVideoModal(id); var v=(videos||[]).find(function(x){return x.id===id;}); if(typeof _clFocusVidMiss==='function') _clFocusVidMiss(v); } }; });
 }
+/* v196 P3-B1：帳號管理「全部職稱／全部產業」下拉動態 populate（與影片庫共用同樣 dedupe 邏輯） */
+function populateAccAdvFilters(){
+  if(typeof accounts==='undefined' || !accounts) return;
+  var jobs={}, inds={};
+  accounts.forEach(function(a){
+    var j=(a.jobTitle||'').trim(); if(j) jobs[j]=1;
+    var i=(a.industry||'').trim(); if(i) inds[i]=1;
+  });
+  var jKeys=Object.keys(jobs).sort(), iKeys=Object.keys(inds).sort();
+  var jSel=$('accFilterJob'), iSel=$('accFilterInd');
+  if(jSel){
+    var prevJ=jSel.value;
+    jSel.innerHTML='<option value="">全部職稱</option>'+jKeys.map(function(k){return '<option value="'+esc(k)+'">'+esc(k)+'</option>';}).join('');
+    if(prevJ) jSel.value=prevJ;
+  }
+  if(iSel){
+    var prevI=iSel.value;
+    iSel.innerHTML='<option value="">全部產業</option>'+iKeys.map(function(k){return '<option value="'+esc(k)+'">'+esc(k)+'</option>';}).join('');
+    if(prevI) iSel.value=prevI;
+  }
+}
 function renderAccounts(){
   if(typeof renderCheckList==='function') renderCheckList();
   if(typeof renderDupClean==='function') renderDupClean();
   if(typeof fillGridDumpAcc==='function') fillGridDumpAcc();
   if(typeof renderGridLib==='function') renderGridLib();
+  /* v196 P3-B1：帳號管理也對齊影片庫做職稱/產業 dropdown 動態 populate */
+  if(typeof populateAccAdvFilters==='function') populateAccAdvFilters();
   const q=($('accSearch')||{value:''}).value.trim().toLowerCase();
   const typeF=($('accFilterType')||{value:''}).value;
   const tierF=($('accFilterTier')||{value:''}).value;
+  const jobF=($('accFilterJob')||{value:''}).value;
+  const indF=($('accFilterInd')||{value:''}).value;
   const sortBy=($('accSort')||{value:'updated'}).value;
   /* v183 P6：filter 變了就回第 1 頁 */
-  var _accSig=q+'|'+typeF+'|'+tierF+'|'+sortBy;
+  var _accSig=q+'|'+typeF+'|'+tierF+'|'+jobF+'|'+indF+'|'+sortBy;
   if(typeof renderAccounts._sig==='undefined') renderAccounts._sig='';
   if(_accSig!==renderAccounts._sig){ accPage=1; renderAccounts._sig=_accSig; }
   let list=accounts.filter(a=>{
     if(typeF && !(a.types||[]).includes(typeF)) return false;
     if(tierF){ const f=latestFollowers(a); if(tierTW(f)!==tierF) return false; }
+    /* v196 P3-B1：職稱／產業精確比對 */
+    if(jobF && (a.jobTitle||'')!==jobF) return false;
+    if(indF && (a.industry||'')!==indF) return false;
     if(q){
       const hay=((a.handle||'')+' '+(a.displayName||'')+' '+(a.domain||'')+' '+(a.jobTitle||'')+' '+(a.industry||'')+' '+(a.types||[]).join(' ')+' '+(a.note||'')).toLowerCase();
       if(!hay.includes(q)) return false;
@@ -6372,7 +6452,7 @@ function bindAccountUI(){
   // v72：影片頁「職稱/產業」↔ 所選帳號 雙向綁定
   if($('f-account')) $('f-account').addEventListener('change',syncAccountJobFields);
   ['f-jobTitle','f-industry'].forEach(id=>{ const el=$(id); if(el) el.addEventListener('change',writeAccountJobFields); });
-  ['accSearch','accFilterType','accFilterTier','accSort'].forEach(id=>{ const el=$(id); if(el) el.addEventListener(el.tagName==='INPUT'?'input':'change', renderAccounts); });
+  ['accSearch','accFilterType','accFilterTier','accFilterJob','accFilterInd','accSort'].forEach(id=>{ const el=$(id); if(el) el.addEventListener(el.tagName==='INPUT'?'input':'change', renderAccounts); });
   if($('accClr')) $('accClr').onclick=()=>{ $('accSearch').value=''; renderAccounts(); };
   if($('cmpRun')) $('cmpRun').onclick=runCompare;
   if($('cmpClear')) $('cmpClear').onclick=()=>{ cmpSelected.clear(); renderComparePicker(); $('cmpResult').innerHTML=''; };
@@ -8044,6 +8124,8 @@ window.addEventListener('DOMContentLoaded', function(){
         +'</div>'
       +'</div>';
     }
+    /* v196 P1 真修：v195 改 step() 時把 var intro=... 整行 strip 掉，造成 runtime ReferenceError、catch 顯示「內容載入失敗」。補回原本的 intro。 */
+    var intro='<div style="background:'+WARM+';border:1px solid '+LINE+';border-radius:10px;padding:10px 12px;margin:8px 0 12px;font-size:12.5px;color:'+T+';line-height:1.7">適用情境：這個帳號之前<b>已經建檔過</b>（在「帳號管理」找得到），這次只是要把新影片加進去，不再做一次帳號分析。</div>';
     /* v192 B2：流程② 鳥瞰圖（5 步）*/
     function ovStep(n,title,ai,prompt,output){
       return '<div style="flex:1;min-width:120px;background:#FFFAF0;border:1px solid '+GS+';border-radius:8px;padding:8px 7px;text-align:center;box-sizing:border-box">'
@@ -8167,6 +8249,8 @@ window.addEventListener('DOMContentLoaded', function(){
   }
   /* v192 B2-2：流程 1/2/3 切換器——切換 sopBlock / sopBlock_v2 / sopBlock_v3 的顯隱 */
   window.sopFlowShow=function(n){
+    /* v196 P1：切到流程②／③ 時強制呼叫 mount()——保險，避免某些情況 mount() 沒跑到造成 sopBlock_v2/v3 內容（含複製提示詞按鈕）沒注入 */
+    try{ mount(); }catch(e){}
     ['sopBlock','sopBlock_v2','sopBlock_v3'].forEach(function(id,i){
       var el=document.getElementById(id); if(el) el.style.display=(i+1===n)?'':'none';
     });
