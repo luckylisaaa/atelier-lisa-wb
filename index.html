@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="color-scheme" content="light only">
 <meta name="supported-color-schemes" content="light">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v194 (版本號僅留註解，不顯示於畫面)
+<!-- ATELIER 影片診斷工作台 · 內部版本 v195 (版本號僅留註解，不顯示於畫面)
+v195 更新（交辦單：流程② / ③ 詳細 SOP 也要像流程① 一樣有「複製提示詞」按鈕可以直接按，接 v194）：【P3 流程② / ③ 加複製提示詞按鈕】Lisa 反饋：流程① sopBlock 每步有「複製提示詞 A/C/0/0A」按鈕（line 830/930/1002，attach() 綁定 PROMPT_A/C/0/0A 常數），但流程② / ③ 的內容（opGuideHTML_v2 / _v3）是 v189 A5 寫的「純說明書版」、**只有文字說明、沒有按鈕**。本版修法：①在 opGuideHTML 系列 IIFE 開頭加 window._atCopyPrompt(name) 全域函式（接 PROMPT_0/PROMPT_A/PROMPT_C/PROMPT_0A/GEM_PROMPT 5 個常數，clipboard.writeText + toast 顯示字數），不污染 IIFE scope（透過 typeof 防呆）；②opGuideHTML_v2 內 step() 函式加第 6 個 opts 參數（{copy, open, openLabel}），自動加複製按鈕（酒紅實心邊框）＋開工具連結（金邊鋸齒 anchor target=_blank），三步加 copy 標記：step 2={copy:'PROMPT_0'}（封存）、step 3={copy:'GEM_PROMPT',open:'https://gemini.google.com/app',openLabel:'開 Gemini'}（Gemini 影片分析）、step 5={copy:'PROMPT_C'}（最後整合·只要卡B）；step 4 加 open 到 https://luckylisaaa.github.io/atelier-subtype/（子題型工具網頁）；③opGuideHTML_v3 內 step() 函式同樣升級接 opts，step 2={copy:'PROMPT_A'}（帳號分析）。流程① sopBlock 既有 4 顆按鈕（line 830/930/1002，attach() 機制）保留不動；六常數本身一字未動，只是多了一個全域函式提供讀取入口。版本號 4 處 v194→v195；六常數依守門 md5（7c8bc3efbfc92d316b511a13b91a49bd）驗證未動；全檔 node --check 全過（15 script）、div/details/CSS 平衡。
 v194 更新（交辦單：Lisa 實測抓三個 bug 一次修：①卡C only 流程死路 ②清空按鈕沒清乾淨 ③雙選擇器第 5 次提出必須做，接 v193）：【P1 parseBtn 卡C only 走不下去】Lisa 場景：在「③ 歸類卡」貼**只有帳號分析卡（卡C）、沒有影片段**的文字 → atelierChoose「第一次偵測到新帳號 @qbeetw」彈窗 → 選「建立帳號」→ pending 帳號設好＋表單填好 → **但整頁只有「儲存這支影片」按鈕**，因為沒影片標題會跳「至少要填影片名稱」警示 → 帳號永遠卡在 pending 入不了庫。根因：parseBtn line 2683 `if(!vidM){return;}` 直接 return，pending 帳號沒被 commit。修法：return 前判斷 _mode!=='skip'＋ pending 物件存在 → 立刻 accounts.unshift+saveAccounts+清 pending option+populateAccountSelect+toast「✓ 已建立新帳號 @xxx（帳號管理 +1）」。bulkBtn 是批次處理多張卡，路徑不同，本版不動。【P2 clearBtn 沒清乾淨】Lisa 場景：按「清空表單」鈕，帳號 ⑥下拉/職稱/產業/版面解析/九宮格收集盤都沒清掉。對齊 saveBtn 成功後的完整清空邏輯，補 6 項：①f-account selectedIndex=0 + syncAccountJobFields；②清掉 pending 帳號（_pendingAcc / _pendingAccId / _pendingOpt option）；③收合並清空 filingBoardBoxInput 九宮格；④f-srctype；⑤f-account-quick；⑥pasteBox（智慧貼上 textarea）+ parseMsg；⑦syncProdStatus；⑧renderGoalKit。【A1 影片庫＋帳號管理 雙選擇器 · 第 5 次必須做了】Lisa 反覆要求：「影片庫跟帳號管理我是需要他像版面對照一樣有兩個可以選擇」。最小可行做法：①view-library 頂部（sumrow 之前）+ view-accounts 帳號清單頂部（+新增帳號 之前）各加一個 details#vlibCompareHelper / #accCompareHelper「對標助手」折疊區，預設收起、ontoggle 展開時自動 _vchPopulate；②兩個 details 內部結構一致——主角單選 `<select>` + 對標 `<select multiple size="6">`（HTML 原生多選，按住 Cmd/Ctrl 選 1-3 個）+「跳到版面對照並比較」按鈕；③新增 window._vchPopulate(prefix='vlib'|'acc')—— populate accounts 到兩個 select（handle + displayName/jobTitle 顯示），保留上次選擇；④新增 window._vchGoCompare(prefix)——驗證主角＋對標數量、自動 click 「.tab[data-view='compare']」切換版面對照分頁、setTimeout 350ms 後設 cmpHero.value + 清空 cmpSelected + add(rivalIds) + renderComparePicker + runCompare。不破壞既有 libSelIds 自由勾選工具列、不動 cmpHero/cmpPicker 的既有 csel 結構。版本號 4 處 v193→v194；六常數依守門 md5（7c8bc3efbfc92d316b511a13b91a49bd）驗證未動；全檔 node --check 全過（15 script）、div/details/CSS 平衡。
 v193 更新（交辦單：v192 流程鳥瞰圖被埋太深 Lisa 看不到、流程② / ③ 沒有對應 sopBlock 那種「大張詳細版」；加「客戶服務台」導覽連結，接 v192）：【P1 sopBlock 加流程 1/2/3 切換】根因：v192 我把鳥瞰圖+三流程詳細塞在 #opGuideInput 那個預設收起的 details 折疊區內，Lisa 切到「② 操作流程」分頁看到的是預設展開的 #sopBlock 8 步驟（流程①），自然以為「只有流程①、沒有 ②／③」。修法：①sopBlock 上方加 3 顆切換鈕（流程①／②／③，flex 均寬、選中酒紅實心 / 未選紅邊框透明），點下去用 window.sopFlowShow(n) 切換顯隱（簡單 display:none 切換不重 mount）；②sopBlock 標記 data-sopflow="1"；③sopBlock 之後新增 #sopBlock_v2（流程② SOP details · gem-box 同樣式 · open · 預設 display:none）與 #sopBlock_v3（流程③ SOP details）；④#sopBlock_v2_body / _v3_body 由 IIFE mount() 函式自動注入 opGuideHTML_v2() / opGuideHTML_v3() 內容（含 v192 已做好的鳥瞰圖＋詳細步驟）。既有 #opGuideInput 折疊區保留不動（裡面也有同樣的三流程切換 tab，是另一個入口）。【P2 客戶服務台導覽連結】.tabs 內「客戶交付」之後加一個 a.tab href="client.html"——使用 a 而非 div+data-view，避開既有 view 切換邏輯直接跳外部 URL；text-decoration:none；icon 用「圓圈內箭頭右指」暗示外連跳轉。樣式套用既有 .tab CSS（display:inline-flex 在 a 上同樣 work）。版本號 4 處 v192→v193；六常數依守門 md5（7c8bc3efbfc92d316b511a13b91a49bd）驗證未動；全檔 node --check 全過（15 script）、div/details/CSS 平衡。
 v192 更新（交辦單：把 v191 的「立刻 commit」UX 改回 v188/v190「最後確認才建檔」，但徹底修 v188 留下的真正 bug＋三條流程都加上鳥瞰圖，接 v190；v191 hotfix 對 UX 來說修過頭，本版回到正確設計）：【P1 saveBtn 整段重構 · 從 v190 出發】使用者回饋：v191 改成「按建立帳號就 +1 帳號數」感覺被搶跑——應該回到 v188/v190 的「按建立帳號只是先記下、最後按確定建檔才真的存」UX。但 v188 留了真正的 bug：影片 URL 重複選了覆蓋 → _did=true → 整段確認彈窗 + pending commit 區塊被跳過 → pending 帳號默默丟失。本版做法：①revert v191 P2 八處改動回到 v190 P1 狀態（pending 暫存機制）；②從 var _did=false; 到 if(_did){...} 那段整段重構：URL 重複「略過」return 前清 pending+移除 _pendingOpt+f-account 重置；URL 重複「覆蓋」改用 _willOverwrite 標記、延後 videos 寫入到「確定建檔」之後；標題相似「取消」return 前同樣清 pending；**拿掉 if(!_did) 守衛**——確認彈窗 + pending commit 必須在所有路徑下都跑到（覆蓋路徑與新增路徑都會走確認）；確認彈窗 desc 條件式顯示「覆蓋既有影片」或「新增 1 支影片」；取消彈窗時影片不需要 rollback（因延後寫入）；OK 時 commit pending 帳號 + 條件式 commit 影片（_did+_willOverwrite 用 indexOf 替換 / 否則 unshift）。【B2 三條流程都加鳥瞰圖】每個流程上方一行水平 chip（ovStep helper），看一眼知道「STEP N／步驟名／AI／提示詞／輸出」：流程① 5 步（建檔/Claude/第一次建檔提示詞→帳號分析/Claude/帳號分析提示詞→深挖影片/Gemini/Gemini 歸類→整合三份卡/Claude/最後整合審查→客戶交付/工作台內建/三關產生）；流程② 5 步（截圖+連結/無AI→封存選配/Claude/第一次建檔→Gemini 影片分析→子題型工具/工具網頁→最後整合只要卡B/Claude/最後整合審查）；流程③ 4 步（截四張帳號素材/無AI→帳號分析/Claude/帳號分析提示詞→拿到帳號分析卡含 Top9/輸出→貼回工作台/工作台內建/貼帳號分析卡）。詳細步驟保留不大改，只在 intro 後 steps 前加 overview。三個流程函式內 ovStep/ovArrow helper 各自定義（避免相互影響）。【A1 雙選擇器 · 第四次擱置】使用者本輪再次提出影片庫＋帳號管理要像版面對照那樣有主角+對標兩排選擇器。實話實說：本版 P1 整段重構 + B2 三流程鳥瞰圖已是大工作量，A1 牽涉影片庫＋帳號管理兩個頁面工具列改造、且上版三個 UX 決策（libSelIds 共存／帳號管理進入做什麼／主角是否跨頁記憶）使用者本輪仍未明確回答，硬上半成品比較傷。本版老實擱置並在報告主動列出三個待回答問題，下版專心做。版本號 4 處 v190→v192；六常數依守門 md5（7c8bc3efbfc92d316b511a13b91a49bd）驗證未動；全檔 node --check 全過（15 script）、div/details/CSS 平衡。
@@ -767,7 +768,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v194</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v195</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -3892,7 +3893,8 @@ function renderManual(){
   <div class="form-card" style="border-left:3px solid var(--gold)">
     <div class="stitle" style="font-size:15px;color:var(--rouge)">更新紀錄 · 還沒做的</div>
     <p style="font-size:13px;color:var(--text);line-height:1.85;margin-top:8px">
-    <b>v194（這版 · 你實測抓的 3 個 bug 一次修：①卡C only 走不下去 ②清空沒清乾淨 ③雙選擇器第 5 次必須做了）：</b>①<b>P1 「只貼帳號分析卡」流程死路修好</b>：你場景——在「③ 歸類卡」只貼了帳號分析卡（沒影片段）→ atelierChoose 跳「第一次偵測到新帳號 @qbeetw」→ 你選「建立帳號」→ 表單填好→<b>但整頁只有「儲存這支影片」按鈕</b>→ 你按下去跳「至少要填影片名稱」警示，帳號永遠存不進去。修法：parseBtn 偵測到「只有帳號段、沒有影片段」時，**只要你按了「建立帳號」（不是「只建影片」/「skip」），立刻把帳號 commit 到帳號管理**（accounts.unshift + saveAccounts），不再卡 pending；toast 會顯示「✓ 已建立新帳號 @xxx（帳號管理 +1）」。②<b>P2 「清空表單」鈕沒清乾淨</b>修好：你按清空後職稱/產業/⑥下拉/九宮格收集盤都沒清掉。對齊「儲存影片成功後」的完整清空邏輯，補了 8 個項目——f-account、pending 帳號暫存（_pendingAcc / 待確認 option）、九宮格收集盤（收合 + 內容清空 + 帳號下拉歸零）、f-srctype、f-account-quick、智慧貼上 textarea + 訊息、syncProdStatus、renderGoalKit。③<b>A1 影片庫＋帳號管理 雙選擇器來了</b>：你第 5 次提的「像版面對照一樣有兩個可以選擇」。本版做最小可行版——**影片庫頂部、帳號管理頂部各加一個「對標助手」折疊區**（預設收起，點 summary 展開），裡面結構跟版面對照頁一樣：① 主角帳號單選 ② 對標帳號多選（按住 Cmd/Ctrl 選 1-3 個）→ 按「跳到版面對照並比較」按鈕 → **自動切到版面對照分頁、自動帶入你的選擇、自動跑並排比較**，省去切分頁手動選兩遍。不影響既有的「全選 / 並排對比 / 匯出選取」工具列（兩條路徑並存）。<br>
+    <b>v195（這版 · 流程② / ③ 也加上「複製提示詞」按鈕，跟流程① 一樣可以直接按複製）：</b>你抓到的：流程① 的 sopBlock 8 步驟每步都有「複製提示詞 A／C／0／0A」按鈕可以直接按複製。但流程② / ③ 我之前做的版本只是「說明書」、只有文字、<b>沒有按鈕</b>，所以你得自己回流程① 找對應按鈕來複製，很卡。本版修好：①<b>流程② 同帳號＋多影片（5 步）</b>——step 2「（選配）封存」加「<b>複製『第一次建檔提示詞』</b>」鈕；step 3「Gemini 影片分析」加「<b>複製『Gemini 影片分析提示詞』</b>」鈕＋「<b>開 Gemini</b>」連結；step 4「子題型工具」加「<b>開子題型工具</b>」連結；step 5「最後整合·只要卡B」加「<b>複製『最後整合審查提示詞』</b>」鈕。②<b>流程③ 只重新分析帳號（4 步）</b>——step 2「帳號分析」加「<b>複製『帳號分析提示詞』</b>」鈕。按鈕都是酒紅實心邊框、跟流程① 同款；按下去會 toast「✓ 已複製『xxx 提示詞』（N 字）」確認。底層用同一份提示詞常數（PROMPT_0／PROMPT_A／PROMPT_C／GEM_PROMPT），不會跟流程① 不一致。<br>
+    <b>v194（你實測抓的 3 個 bug 一次修：①卡C only 走不下去 ②清空沒清乾淨 ③雙選擇器第 5 次必須做了）：</b>①<b>P1 「只貼帳號分析卡」流程死路修好</b>：你場景——在「③ 歸類卡」只貼了帳號分析卡（沒影片段）→ atelierChoose 跳「第一次偵測到新帳號 @qbeetw」→ 你選「建立帳號」→ 表單填好→<b>但整頁只有「儲存這支影片」按鈕</b>→ 你按下去跳「至少要填影片名稱」警示，帳號永遠存不進去。修法：parseBtn 偵測到「只有帳號段、沒有影片段」時，**只要你按了「建立帳號」（不是「只建影片」/「skip」），立刻把帳號 commit 到帳號管理**（accounts.unshift + saveAccounts），不再卡 pending；toast 會顯示「✓ 已建立新帳號 @xxx（帳號管理 +1）」。②<b>P2 「清空表單」鈕沒清乾淨</b>修好：你按清空後職稱/產業/⑥下拉/九宮格收集盤都沒清掉。對齊「儲存影片成功後」的完整清空邏輯，補了 8 個項目——f-account、pending 帳號暫存（_pendingAcc / 待確認 option）、九宮格收集盤（收合 + 內容清空 + 帳號下拉歸零）、f-srctype、f-account-quick、智慧貼上 textarea + 訊息、syncProdStatus、renderGoalKit。③<b>A1 影片庫＋帳號管理 雙選擇器來了</b>：你第 5 次提的「像版面對照一樣有兩個可以選擇」。本版做最小可行版——**影片庫頂部、帳號管理頂部各加一個「對標助手」折疊區**（預設收起，點 summary 展開），裡面結構跟版面對照頁一樣：① 主角帳號單選 ② 對標帳號多選（按住 Cmd/Ctrl 選 1-3 個）→ 按「跳到版面對照並比較」按鈕 → **自動切到版面對照分頁、自動帶入你的選擇、自動跑並排比較**，省去切分頁手動選兩遍。不影響既有的「全選 / 並排對比 / 匯出選取」工具列（兩條路徑並存）。<br>
     <b>v193（修「② 操作流程看不到流程② / ③」＋加客戶服務台導覽連結）：</b>①<b>你回報「現在展示出來的是 8 步驟，這個是流程①，那 ②／③ 在哪？」</b>——v192 我把流程鳥瞰圖+三流程詳細**塞在另一個預設收起的折疊區**「+ 操作流程 · 開始前要準備什麼」裡，你切到「② 操作流程」分頁看到的是預設展開的「8 步驟」（這的確是流程①），就以為「只有流程①、沒有 ②／③」。本版修法：<b>在 8 步驟上方加 3 顆切換鈕</b>「流程① 從沒建過 · 完整建檔（8 步驟）」、「流程② 帳號已建過 · 只加新影片（5 步驟）」、「流程③ 只重新分析帳號（4 步驟）」——點哪顆就顯示對應的詳細 SOP，三選一切換。**流程② / ③ 的詳細內容**用 v192 已經做好的 opGuideHTML_v2 / _v3（含鳥瞰圖 + 詳細步驟）自動注入到新增的 #sopBlock_v2 / #sopBlock_v3，跟流程① 的 8 步驟同樣以 gem-box 大張詳細卡呈現。預設停在流程①（保持你既有習慣不被嚇到）。②<b>導覽列加「客戶服務台」按鈕</b>連到 client.html，放在「客戶交付」右邊，icon 用「圓圈內箭頭右指」暗示外連跳轉。<br>
     <b>v192（把 v191 的「立刻 commit」改回「最後確認才建檔」UX＋徹底修 v188 真正的 bug＋三條流程都加鳥瞰圖）：</b>①<b>P1 把 UX 改回對的</b>：v191 為了修「帳號建檔丟失」改成「按建立帳號就立刻 +1 帳號數」——你回饋這太搶跑、應該是「按建立帳號只是先記下、滑下去檢查內容、最後按確定建檔才真的存」。本版回到 v188/v190 的設計，但<b>徹底修掉 v188 留下的真正 bug</b>——之前影片連結重複選了「覆蓋舊的」，整段確認彈窗 + pending commit 區塊會被跳過，帳號就默默丟失。修法：①URL 重複「略過」/ 標題相似「取消」/ 確認「再改一下」三條 return 路徑都會清掉 pending（不會殘留）；②URL 重複「覆蓋舊的」改成<b>先記下、延後寫入</b>——只有按了最後的「確定建檔」才會真的覆蓋（之前是按下覆蓋當下就寫了、取消後也救不回來）；③<b>拿掉 if(!_did) 守衛</b>——確認彈窗 + pending commit 必須在所有路徑（含覆蓋）下都跑到，這是修 v188 那個 bug 的關鍵。確認彈窗會根據情境顯示「覆蓋既有影片『xxx』」或「新增 1 支影片『xxx』」，不會搞混。<b>影響</b>：以後不管影片是新的還是覆蓋，按了確定建檔之前都會看到完整的確認摘要；任何取消或略過的路徑帳號都不會默默被建出來。②<b>B2 三條流程都加上鳥瞰圖</b>：點開「② 操作流程」，每個流程上方多了一條「<b>流程鳥瞰圖 · OVERVIEW</b>」——一行 5 個方塊（或 4 個），每個方塊顯示「STEP N／步驟名／<span style='color:var(--rouge);font-weight:700'>用什麼 AI</span>／<span style='color:var(--gold-dark)'>用哪段提示詞</span>／<span style='color:#0F6E56'>輸出什麼</span>」，看一眼就知道整條流程的走法、不用滑下去看詳細步驟。詳細步驟原樣保留沒大改。流程① 5 步：建檔/Claude/第一次建檔提示詞→帳號分析/Claude/帳號分析提示詞→深挖影片/Gemini/Gemini 歸類→整合三份卡/Claude/最後整合審查→客戶交付/工作台內建/三關產生。流程② 5 步：截圖+連結/無AI→封存選配/Claude→Gemini 影片分析→子題型工具/工具網頁→最後整合只要卡B/Claude。流程③ 4 步：截四張帳號素材/無AI→帳號分析/Claude→拿到帳號分析卡含 Top9→貼回工作台/工作台內建。＊<b>A1 雙選擇器（影片庫＋帳號管理像版面對照那樣的主角+對標）老實擱置·第四次</b>：你本輪再次提出，但本版 P1 整段重構 + B2 三流程鳥瞰圖工程量已經滿了；A1 還卡上版三個 UX 決策（libSelIds 怎麼共存／帳號管理入口做什麼／主角是否跨頁記憶）你本輪仍沒明確回答。我寧可下版專心做一次到位，不要這版硬上半成品（之前 v186/v187 兩次寫了沒做你抓得很準，這版繼續守規矩）。下面我會把 3 個 UX 問題整理成具體選項，下版你回答了就做。<br>
     <b>v190（修建檔卡A 表單空白 bug＋影片層分析工具＋icon 統一＋對帳總表）：</b>①<b>P1 貼卡A 建新帳號後表單空白 bug 修好</b>：之前貼卡A → 按建立帳號 → 滑到表單中間發現職稱/產業/版面解析全空、⑥顯示「不指定」（明明資料都有解析到），現在會立刻填出來。根因是 pending 機制沒打通到表單欄位 sync，補了 5 個地方（syncAccountJobFields / renderProfFields / writeProfFields / ingestAccountCard / saveBtn commit）。pending 期間改 profile 也存得進去（暫存在 _pendingAcc，按確定建檔才正式入庫；toast 會標「待確認」）。②<b>A1 影片層的分析工具來了</b>：影片卡底部現有「@xxx 的分析工具」（金線、帳號層級）下方新增「這支影片的分析工具」（酒紅線、影片層級、視覺區隔），含「影片特點→賣點」按鈕；分析的是「這支影片本身的招式」——拍攝素材、主題、逐字稿、爆紅歸因、Hook 規格、換鏡節奏、CTA、表現都餵進去，不依賴帳號 profile。帳號是帳號、影片是影片，現在分得開。若該影片還缺逐字稿/爆紅歸因，按鈕旁會提示「⚠ 需逐字稿/爆紅歸因資料」。③<b>A2 icon 統一</b>：把 3 處真正當 icon 用的 emoji 換成品牌 SVG——待核對清單帳號列首的紅點、圖例的紅黃圓、交付樣張關閉鈕的 ✕。不改的：toast/狀態文字（那是有色文字標籤）、option 下拉內的 emoji（HTML 不允許 SVG 在 option 內）、placeholder 範例字、SVG 內的 text、changelog 文字；copyPrompt 內部 icon 依交辦單暫不動（之後你會指定）。④<b>B2 對帳總表來了</b>：帳號管理 → 工具箱底部新增「對帳總表」折疊，點開自動載入：每帳號掛了幾支、有 Hook 比例（綠/金/紅依比例上色）、G1–G5 各階段分布、最近發布日，按影片數降冪；下方另列「沒掛影片的帳號」與「孤兒影片」（accountId 為空或指向不存在帳號），孤兒可點「編輯補上」一鍵跳影片編輯框補連結。純讀盤點，不改任何資料結構。＊B1（雙選擇器重構）第三次擱置——仍卡 3 個 UX 決策（libSelIds 怎麼共存／帳號管理入口做什麼／主角是否跨頁記憶），這次交辦單沒回答，硬做風險過高。先回答這 3 個再做才安全。<br>
@@ -7917,6 +7919,20 @@ window.addEventListener('DOMContentLoaded', function(){
 </script>
 <script>
 (function(){
+  /* v194 P3：流程② / ③ 詳細 SOP 也要能直接複製對應提示詞（流程① sopBlock 內已用 attach() 綁好，這裡給 v2/v3 step() 用的全域版） */
+  window._atCopyPrompt=function(name){
+    var map={PROMPT_0:(typeof PROMPT_0!=='undefined'?PROMPT_0:''), PROMPT_A:(typeof PROMPT_A!=='undefined'?PROMPT_A:''), PROMPT_C:(typeof PROMPT_C!=='undefined'?PROMPT_C:''), PROMPT_0A:(typeof PROMPT_0A!=='undefined'?PROMPT_0A:''), GEM_PROMPT:(typeof GEM_PROMPT!=='undefined'?GEM_PROMPT:'')};
+    var labels={PROMPT_0:'第一次建檔提示詞', PROMPT_A:'帳號分析提示詞', PROMPT_C:'最後整合審查提示詞', PROMPT_0A:'建檔＋帳號合一提示詞', GEM_PROMPT:'Gemini 影片分析提示詞'};
+    var text=map[name]||'';
+    if(!text){ if(typeof toast==='function') toast('找不到提示詞：'+name); return; }
+    var label=labels[name]||name;
+    try{
+      navigator.clipboard.writeText(text);
+      if(typeof toast==='function') toast('✓ 已複製「'+label+'」（'+text.length.toLocaleString()+' 字）');
+    }catch(e){
+      try{ var ta=document.createElement('textarea'); ta.value=text; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); if(typeof toast==='function') toast('✓ 已複製「'+label+'」'); }catch(e2){ if(typeof toast==='function') toast('複製失敗，請手動複製'); }
+    }
+  };
   window.toggleSubtypeEmbed=function(btn){
     var w=document.getElementById('subtypeEmbed'); if(!w) return;
     var open=(w.style.display==='none'||!w.style.display);
@@ -8006,18 +8022,28 @@ window.addEventListener('DOMContentLoaded', function(){
     var I3=ic('<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>');
     var I4=ic('<path d="M9 3v18M3 9h18"/>');
     var I5=ic('<path d="M5 12l5 5L20 7"/>');
-    function step(n,icon,title,provide,hint){
+    function step(n,icon,title,provide,hint,opts){
+      opts=opts||{};
       var pr=provide?('<div style="margin-top:5px;font-size:13px;color:'+T+';line-height:1.65"><b style="color:'+R+'">要提供：</b>'+provide+'</div>'):'';
       var hi=hint?('<div style="margin-top:7px;background:'+GS+';border-radius:8px;padding:7px 10px;font-size:12.5px;color:'+GD+';line-height:1.6">提示 · '+hint+'</div>'):'';
+      /* v194 P3：複製提示詞按鈕（取代「沒按鈕看文字猜」的舊版說明書） */
+      var btns='';
+      if(opts.copy){
+        var lbl={PROMPT_0:'第一次建檔提示詞',PROMPT_A:'帳號分析提示詞',PROMPT_C:'最後整合審查提示詞',GEM_PROMPT:'Gemini 影片分析提示詞'}[opts.copy]||opts.copy;
+        btns+='<button class="btn btn-ghost" type="button" onclick="_atCopyPrompt(\''+opts.copy+'\')" style="margin-top:9px;font-size:12.5px;padding:7px 14px;border:1.5px solid '+R+';color:'+R+';font-weight:700"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:4px"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/></svg>複製「'+lbl+'」</button>';
+      }
+      if(opts.open){
+        btns+='<a href="'+opts.open+'" target="_blank" rel="noopener" style="margin:9px 0 0 8px;display:inline-block;font-size:12.5px;padding:7px 14px;border:1px solid '+GS+';border-radius:8px;color:'+GD+';text-decoration:none;font-weight:600;background:#FFFAF0"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:4px"><path d="M10 13a5 5 0 0 0 7.07 0l3-3a5 5 0 1 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.07 0l-3 3a5 5 0 1 0 7.07 7.07l1.71-1.71"/></svg>'+(opts.openLabel||'開工具')+'</a>';
+      }
+      var btnRow=btns?('<div style="margin-top:2px;display:flex;flex-wrap:wrap;align-items:center;gap:4px">'+btns+'</div>'):'';
       return '<div style="display:flex;gap:12px;align-items:flex-start;padding:13px 0;border-bottom:1px solid '+LINE+'">'
         +'<div style="flex:none;width:30px;height:30px;border-radius:50%;background:'+R+';color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px">'+n+'</div>'
         +'<div style="flex:1;min-width:0">'
           +'<div style="font-size:15px;font-weight:700;color:'+INK+';display:flex;align-items:center;gap:7px">'+icon+title+'</div>'
-          +pr+hi
+          +pr+hi+btnRow
         +'</div>'
       +'</div>';
     }
-    var intro='<div style="background:'+WARM+';border:1px solid '+LINE+';border-radius:10px;padding:10px 12px;margin:8px 0 12px;font-size:12.5px;color:'+T+';line-height:1.7">適用情境：這個帳號之前<b>已經建檔過</b>（在「帳號管理」找得到），這次只是要把新影片加進去，不再做一次帳號分析。</div>';
     /* v192 B2：流程② 鳥瞰圖（5 步）*/
     function ovStep(n,title,ai,prompt,output){
       return '<div style="flex:1;min-width:120px;background:#FFFAF0;border:1px solid '+GS+';border-radius:8px;padding:8px 7px;text-align:center;box-sizing:border-box">'
@@ -8043,10 +8069,10 @@ window.addEventListener('DOMContentLoaded', function(){
       +'</div></div>';
     var steps=''
       +step('1',I1,'截這支影片三張＋拿影片連結','影片封面（含觀看數）／影片數據（讚／留言／轉發／分享）／影片文案 共 3 張＋影片連結。','左上用手機「標記」寫代號：片1封／片1數／片1文，或統一標「主」也行。')
-      +step('2',I2,'（選配·存檔用）複製「第一次建檔」提示詞','把上面 3 張截圖＋帳號連結＋影片連結貼給對話框 → 拿 <b>07_連結_創作者_主題.txt</b> 存進該影片資料夾。','只想做素材封存才需要這步；不要封存可以直接跳到第 3 步。')
-      +step('3',I3,'複製「Gemini 影片分析」提示詞','下載「主」影片做 SRT → 把影片＋SRT＋上面三張截圖丟給 Gemini → 拿到影片分析（主題判斷／逐字稿／爆紅歸因／腳本）。','同帳號每支新影片都要走這一步，因為這是針對「這支影片本身」的分析。')
-      +step('4',I4,'（需要才做）子題型工具','若 Gemini 卡上的「子題型」需要對照清單複核，把該拍攝素材的子題型定義丟給對話框複核。','一般可跳過；只有對子題型有疑慮才需要。')
-      +step('5',I5,'複製「最後整合」提示詞、<b>只請它出卡B</b>','把帳號分析（沿用既有那張）＋Gemini 結果丟給 Claude，<b>明講「帳號已建過、只要卡B」</b>（不要卡A／卡C）→ 拿卡B → 貼進「③ 歸類卡 · 智慧貼上」。','<b>重要：</b>卡B 的「@帳號」一定要填對、純 handle（例 @yunn.1491）。寫成顯示名稱、@@雙@ 或缺字都會配不到舊帳號、會多建一筆。')
+      +step('2',I2,'（選配·存檔用）複製「第一次建檔」提示詞','把上面 3 張截圖＋帳號連結＋影片連結貼給對話框 → 拿 <b>07_連結_創作者_主題.txt</b> 存進該影片資料夾。','只想做素材封存才需要這步；不要封存可以直接跳到第 3 步。',{copy:'PROMPT_0'})
+      +step('3',I3,'複製「Gemini 影片分析」提示詞','下載「主」影片做 SRT → 把影片＋SRT＋上面三張截圖丟給 Gemini → 拿到影片分析（主題判斷／逐字稿／爆紅歸因／腳本）。','同帳號每支新影片都要走這一步，因為這是針對「這支影片本身」的分析。',{copy:'GEM_PROMPT',open:'https://gemini.google.com/app',openLabel:'開 Gemini'})
+      +step('4',I4,'（需要才做）子題型工具','若 Gemini 卡上的「子題型」需要對照清單複核，把該拍攝素材的子題型定義丟給對話框複核。','一般可跳過；只有對子題型有疑慮才需要。',{open:'https://luckylisaaa.github.io/atelier-subtype/',openLabel:'開子題型工具'})
+      +step('5',I5,'複製「最後整合」提示詞、<b>只請它出卡B</b>','把帳號分析（沿用既有那張）＋Gemini 結果丟給 Claude，<b>明講「帳號已建過、只要卡B」</b>（不要卡A／卡C）→ 拿卡B → 貼進「③ 歸類卡 · 智慧貼上」。','<b>重要：</b>卡B 的「@帳號」一定要填對、純 handle（例 @yunn.1491）。寫成顯示名稱、@@雙@ 或缺字都會配不到舊帳號、會多建一筆。',{copy:'PROMPT_C'})
       ;
     return '<div>'+intro+overview+steps+'</div>';
   }
@@ -8058,14 +8084,25 @@ window.addEventListener('DOMContentLoaded', function(){
     var I2=ic('<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/>');
     var I3=ic('<polyline points="20 6 9 17 4 12"/>');
     var I4=ic('<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>');
-    function step(n,icon,title,provide,hint){
+    function step(n,icon,title,provide,hint,opts){
+      opts=opts||{};
       var pr=provide?('<div style="margin-top:5px;font-size:13px;color:'+T+';line-height:1.65"><b style="color:'+R+'">要提供：</b>'+provide+'</div>'):'';
       var hi=hint?('<div style="margin-top:7px;background:'+GS+';border-radius:8px;padding:7px 10px;font-size:12.5px;color:'+GD+';line-height:1.6">提示 · '+hint+'</div>'):'';
+      /* v194 P3：複製提示詞按鈕 */
+      var btns='';
+      if(opts.copy){
+        var lbl={PROMPT_0:'第一次建檔提示詞',PROMPT_A:'帳號分析提示詞',PROMPT_C:'最後整合審查提示詞',GEM_PROMPT:'Gemini 影片分析提示詞'}[opts.copy]||opts.copy;
+        btns+='<button class="btn btn-ghost" type="button" onclick="_atCopyPrompt(\''+opts.copy+'\')" style="margin-top:9px;font-size:12.5px;padding:7px 14px;border:1.5px solid '+R+';color:'+R+';font-weight:700"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:4px"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/></svg>複製「'+lbl+'」</button>';
+      }
+      if(opts.open){
+        btns+='<a href="'+opts.open+'" target="_blank" rel="noopener" style="margin:9px 0 0 8px;display:inline-block;font-size:12.5px;padding:7px 14px;border:1px solid '+GS+';border-radius:8px;color:'+GD+';text-decoration:none;font-weight:600;background:#FFFAF0"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:4px"><path d="M10 13a5 5 0 0 0 7.07 0l3-3a5 5 0 1 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.07 0l-3 3a5 5 0 1 0 7.07 7.07l1.71-1.71"/></svg>'+(opts.openLabel||'開工具')+'</a>';
+      }
+      var btnRow=btns?('<div style="margin-top:2px;display:flex;flex-wrap:wrap;align-items:center;gap:4px">'+btns+'</div>'):'';
       return '<div style="display:flex;gap:12px;align-items:flex-start;padding:13px 0;border-bottom:1px solid '+LINE+'">'
         +'<div style="flex:none;width:30px;height:30px;border-radius:50%;background:'+R+';color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px">'+n+'</div>'
         +'<div style="flex:1;min-width:0">'
           +'<div style="font-size:15px;font-weight:700;color:'+INK+';display:flex;align-items:center;gap:7px">'+icon+title+'</div>'
-          +pr+hi
+          +pr+hi+btnRow
         +'</div>'
       +'</div>';
     }
@@ -8093,7 +8130,7 @@ window.addEventListener('DOMContentLoaded', function(){
       +'</div></div>';
     var steps=''
       +step('1',I1,'截四張帳號素材','① 帳號頁截圖（頭像／bio／粉絲數） ② 貼文九宮格 ③ 影片九宮格（最新排序） ④ 影片九宮格（最多觀看排序）。','① 用來讀粉絲數＋bio；②③④ 用來看版面策略、發文頻率、九宮格觀看 Top9 排行。')
-      +step('2',I2,'複製「帳號分析」提示詞','把上面 4 張截圖＋帳號連結丟給對話框，跑帳號分析提示詞。','沿用既有的帳號分析提示詞即可，不需要改寫。')
+      +step('2',I2,'複製「帳號分析」提示詞','把上面 4 張截圖＋帳號連結丟給對話框，跑帳號分析提示詞。','沿用既有的帳號分析提示詞即可，不需要改寫。',{copy:'PROMPT_A'})
       +step('3',I3,'拿到帳號分析卡（含九宮格 Top9）','對話框會回一張完整的 <b>===ATELIER帳號分析卡===</b>，內含九宮格觀看雙軸排行（觸及 Top3／轉化 Top3／墊底 2，並列 Top9 完整清單）、粉絲數、發文頻率、版面策略等。','若這次只回到 Top3 舊版，請對話框就「最多觀看排序」九宮格補出 Top9 完整清單再回。')
       +step('4',I4,'貼進「貼帳號分析卡」，選累積或覆蓋','把整段卡貼進「帳號管理 → 工具箱 → 貼帳號分析卡」，系統靠 @handle 配對既有帳號；選<b>累積</b>＝留歷史快照、可前後比對成長；選<b>覆蓋</b>＝只留最新。','<b>重要：</b>粉絲數與版面會各留一筆快照，方便看一週／兩週的成長變化。定期回測建議都選「累積」。')
       ;
