@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="color-scheme" content="light only">
 <meta name="supported-color-schemes" content="light">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v197 (版本號僅留註解，不顯示於畫面)
+<!-- ATELIER 影片診斷工作台 · 內部版本 v198 (版本號僅留註解，不顯示於畫面)
+v198 更新（交辦單：Lisa 抓的 6 件事一次做完——①配色太醜（紅金堆疊太花）②主角下拉初始顯示尚無帳號 bug ③下拉太陽春缺 csel 升級 ④同職稱配不到律師（精確相等比對失敗）⑤重複的搜尋框跟客戶下拉 ⑥hub 太佔版面，接 v197）：【A1/A2 hub 配色全面重做】v197 紅 1.5px 邊框＋暖白底＋土黃金 chip＋紅實心 chip 的組合，Lisa 說一頁五種色塊看起來很重很雜。本版改：①邊框 1.5px solid var(--rouge) → 1px solid var(--gold-soft) 金色細邊；②背景 var(--warm) 暖灰 → 純白 #fff；③① 主角客戶 label 從 var(--rouge) 紅色 → var(--gold-dark) 深金；④主角下拉邊框從 var(--rouge) → var(--border) 淡邊框；⑤摘要卡背景 #fff＋gold-soft 邊框 → var(--warm) 暖灰底＋無邊框；⑥對標 chip 未選狀態從 1px rouge 邊框＋rouge 字 → 1px border 灰邊＋ink 黑字，選中狀態維持酒紅實心；⑦對標清單背景從 #fff＋虛 gold-soft → var(--warm)＋無邊框。整體：白底為主、金色細邊、黑字主導，酒紅只在「主角已選／chip 選中」這兩個關鍵狀態出現，視覺重量大幅降低。chip 列加 「(先選主角才會啟用)」副標題 + 寬度 width:100% 獨佔一行，加大 padding 7px 13px、font-size 12.5px，標籤不再被截斷。【B1 hub 下拉 csel 升級】v197 主角下拉用原生 <select>，比現有「客戶」下拉還陽春（沒有 A→Z 排序頁籤）。本版加 data-csearch="1" data-accpick="1" 兩個屬性——既有 csel 系統的 enhanceSelect()/applyAccSort 會自動偵測升級成「品牌下拉 + 搜尋框 + 5 個排序頁籤（系統建議／依成效／產業·領域／案例類型／A–Z）」，跟「客戶選擇器」完全同款。【C1 _hubPopulateSelect bug 修】根因：accounts 是雲端 async 載入，第一次進影片庫時 accounts 還沒到，原本 if(!accounts.length) 顯示「(尚無帳號，請先建檔)」誤導 Lisa。修法：accounts 還沒到時保持 placeholder「— 主角（從帳號裡選 1 個）—」，不寫死「尚無帳號」；等 renderLibrary/_accFbSubscribe 之後再呼叫一次 populate 自動補上。【C2 _hubComputeRivals 寬鬆關鍵詞匹配】根因：v197 用 x.jobTitle===heroAcc.jobTitle 精確相等，但主角是「律師事務所合夥律師（郭柏鴻＝主持律師、李牧宸＝合夥律師）」而其他律師可能填「律師」或「執業律師」，精確比對全部 false → 「找不到符合的對標帳號」。修法：抽出 _coreKeywords(text) helper——清掉括號註解、split by 標點、收集 2 字以上 token，加上常見職業後綴詞清單 SUFFIX（律師／醫師／教練／設計師／顧問／創辦人／工程師／分析師／治療師／營養師／會計師／藥師／護理師／建築師／投資人／創業家／作家／編輯／主廚／講師／老師）；_matchByKeywords(heroVal,candVal) 雙向 includes 比對，主角任一關鍵字出現在 cand value 內就算 match。產業也用同樣邏輯。【D1 影片庫快速篩選摺成 details】把 line 1546-1558 的「快速篩選」整段（含 libStageF/libGoalF/libTypeF + libJobF/libIndF 兩排 grid + libClientRow 來源 chip）包進 details 預設收起，summary 「進階篩選 · 階段 · 目標層 · 身份 · 職稱 · 產業 · 來源」。【D2 影片庫批次工具列摺成 details】libBulk 整段（全選/腳本範本/客戶選擇器/並排對比/匯出選取/複製選取/匯出CSV）包進 details 預設收起，summary 「批次操作工具 · 全選 · 腳本範本 · 並排對比 · 匯出」；順手把 tplClient 的 label 從「客戶」改名為「腳本範本對標客戶」（區分跟 hub 主角的用途）。【E1 libSearch placeholder 拿掉客戶】#libSearch placeholder 從「在影片庫裡找…（標題／主題／客戶）」→「在影片庫裡找…（標題／主題）」——客戶選擇交給 hub 處理，搜尋框專責純文字搜尋。【F1 帳號管理篩選列摺成 details】把 line 1739-1782 整段 filterrow（accFilterType/Tier/Job/Ind/Sort 五個 select）包進 details 預設收起，summary「進階篩選 · 身份 · 量級 · 職稱 · 產業 · 排序」，min-width:140px 讓五個下拉在桌機一排顯示、手機自動換行。版本號 4 處 v197→v198；六常數依守門 md5 驗證未動；可見 changelog 嚴禁反引號（v196 P0c 教訓）；全檔 node --check 16 script 全過，div/details/CSS 平衡。
 v197 更新（交辦單：四件大事一次做完——A 影片庫＋帳號管理改主角中心 hub、B 流程② / ③ 視覺對齊流程①、C 影片庫使用說明 icon 換 SVG、D 歸類卡 ①②③ chip + sticky 儲存浮窗）：【A1/A2 主角中心 hub · 取代 v194 對標助手】v194 我做的「主角+對標多選→跳版面對照」設計被 Lisa 退回三次——她真正要的是「**主從關係明確的雙欄聚焦**」：① 選 1 個主角 → 立刻看主角的影片；② 一鍵套用「同職稱／同產業／同身份」自動算對標；③ chip 切換顯示模式。本版設計 #vlibHeroHub（影片庫）/ #accHeroHub（帳號管理）——top of view，紅邊框、永遠在頁面頂部、不折疊；包含 ①主角下拉（accounts 動態 populate，按更新時間排序）②主角資訊摘要卡（選好浮現，顯示 handle/職稱/產業/粉絲/量級/影片數/30天成長/更新日期）③ 5 顆對標 chip（只看主角／同職稱／同產業／同身份／全部不限，按精確相等匹配 jobTitle/industry/types[]）④對標清單預覽（最多列 8 筆，更多顯示 +N）⑤無主角時的提示文字。state 加 libHeroId/libRivalMode/libRivalIds 與 accHeroId/accRivalMode/accRivalIds，renderLibrary 開頭把 hub 算出的「允許 accountId 集合」準備好（有主角時 v.accountId 必須在允許集內，否則照舊全列），renderAccounts 同樣邏輯但篩 a.id。sig 加入 hub state 變數確保 filter 變了 page 重置。沒選主角＝行為完全跟舊版一樣（既有篩選器全部可用、不破壞 libSelIds 勾選工具）。【B1 流程② / ③ 視覺對齊流程① sopBlock】Lisa 反映「新增的 ②③ 顏色用得很可怕、視覺不清晰」。修法：①step() 函式內按鈕 inline 樣式改成跟流程① sopBlock 內 .btn.btn-ghost 完全一致——拿掉粗邊框（1.5px→預設）、拿掉粗體（700→預設）、padding/font-size 改 6px 12px / 12px；②開工具連結改用 .btn.btn-ghost class（不再用金邊+暖白底自製樣式）；③鳥瞰圖 ovStep 內 STEP 編號的「#A98A4C 較淺金」改成 GD（var(--gold-dark)，與其他金色一致）、「→ 輸出」線的綠色 #0F6E56 改成 GD 金色（消除花俏綠色）；④流程② 跟 流程③ 一起改。【C1 影片庫使用說明 ℹ️ 換 SVG】Lisa 抓到「使用說明有別人的符號」。把 line 1564 details summary 內 ℹ️ emoji 換成品牌風格 SVG info circle（1.8 stroke）。其他 ⚠️ 殘留在 toast title / pm-miss 訊息標籤內、不是 icon 入口，本版先不動（Lisa 看到還有要換的可下版列清單）。【D1 歸類卡 ①②③ chip】把 v196 加的「歸類卡也對應流程？details」拿掉、改成 4 顆顯眼 chip：自動分流（預設）／流程① 卡A／流程② 卡B／流程③ 卡C。chip 只當視覺指引，系統仍靠 ===ATELIER... === 標記自動分流。選了非「自動分流」時下方浮出 cardFlowHint 給對應提示文字（強調 @handle 純度等）。【D2 歸類卡 sticky 儲存浮窗】Lisa 痛點「每次都要滑到最底才能按建檔」。fixed bottom-right 浮窗 #stickyCardSave（z-index 9000），偵測到 #pasteBox 有 >20 字 OR #f-title 有值 → 浮出來，提供「儲存這支影片＋」按鈕——點下去 scrollIntoView 找到原 #saveBtn 並 350ms 後觸發 click，不破壞既有 saveBtn 整套確認流程。pasteBox/f-title 加 input listener、subtab 切換時也檢查、tab click 後也檢查。版本號 4 處 v196→v197；六常數依守門 md5（7c8bc3efbfc92d316b511a13b91a49bd）驗證未動；全檔 node --check 全過（16 script，多了 1 個 sticky DOMContentLoaded listener block）、div/details/CSS 平衡。
 v196 更新（交辦單：Lisa 從 claude.ai artifact preview 看到流程② 顯示「內容載入失敗：intro is not defined」——真正抓到 v195 我留下的嚴重 bug；同場加碼 ②歸類卡也要對應流程①／②／③ ③影片庫＋帳號管理要能用「同職稱／同產業」當篩選條件，接 v195）：【P1 真 hotfix · opGuideHTML_v2 缺 var intro=... 行】真因確認（用 node eval 實際跑 opGuideHTML_v2 dump 出 ReferenceError）：v195 我做 `function step(n,icon,title,provide,hint){...}` → `function step(...,opts){...複製按鈕...}` 的 str_replace 時，old_str/new_str 範圍**沒包含到下一行 var intro=...**，但因為兩段相連，導致實際 replace 後 step() 函式結尾 } 之後直接接 ovStep——`var intro` 整段被吃掉。流程③ 因為當時新增 P3 ④ 改的是另一段（包含 intro 一起 replace 並 new_str 完整保留），沒被波及。本版補回：line 8126 step 函式 } 後新增 var intro='<div style=...">適用情境：這個帳號之前<b>已經建檔過</b>...</div>';。實測 node eval：流程② 13,162 字 HTML + 3 顆 _atCopyPrompt 按鈕（PROMPT_0/GEM_PROMPT/PROMPT_C）+ 2 個開工具連結（Gemini/子題型工具）全部正確渲染。【P1B sopFlowShow 加 force mount 保險】保留 v196 P1 原本的 sopFlowShow 進入第一行 try{ mount(); }catch(e){}——切流程時強制呼叫 mount() 重新檢查並注入 sopBlock_v2_body / _v3_body 內容（mount() 內部已有 dataset.done 防重複機制，重複呼叫無副作用），不依賴 DOMContentLoaded 跑到。【P2 歸類卡分頁加流程對應說明】Lisa 問「歸類卡也有一個流程①／②／③ 的方式嗎？」實際上系統靠卡內 ===ATELIER... === 標記自動分流，使用者不需要選。本版在 #sub-card 的 paste-card 之前加 details 折疊區（預設收起）：含三組對照——卡A（影片＋帳號）=流程①／卡B（單支影片）=流程②／卡C（只有帳號分析）=流程③，每組標明系統怎麼判別，並補充「批次匯入可一次貼多張、單張用自動填入再檢查」。【P3-A1 影片庫加職稱／產業篩選】Lisa 核心需求：「我同樣是律師找律師同行影片」「我選擇相同的職業或是相同的身分或是相同的合作目標」。現有篩選僅階段／目標層／身份（粗類別）+ 來源 chip，沒有具體職稱（jobTitle）／產業（industry）。修法：①HTML 在「快速篩選」grid（3 欄）下新增第二行 grid（2 欄）放 #libJobF / #libIndF；②state 加 libJobF/libIndF 兩個空字串；③新增 populateLibAdvFilters() 從 accounts[].jobTitle/.industry dedupe sort 後動態填 options，保留 prev value；④renderLibrary 開頭呼叫 populate，filter 加兩條 if（v.accountId 反查 accounts 比對精確相等）；⑤sig 加入 libJobF/libIndF；⑥onchange 綁定。【P3-B1 帳號管理同樣加職稱／產業】帳號管理現有篩選列已含全部身份／全部量級／排序，本版在 accFilterTier 與 accSort 之間插入 #accFilterJob / #accFilterInd 兩個 select；renderAccounts 開頭呼叫 populateAccAdvFilters()；filter 加兩條精確比對；_accSig 加入；既有 event 綁定陣列加兩個 id。【未做·留下版】v194 「對標助手」（vlibCompareHelper / accCompareHelper）目前是「主角+對標多選→跳版面對照」設計，Lisa 真正要的是「選主角→一鍵套用同職稱／同產業篩選」。本版時間不夠+風險高，下版專心改造對標助手。版本號 4 處 v195→v196；六常數依守門 md5（7c8bc3efbfc92d316b511a13b91a49bd）驗證未動；全檔 node --check 全過（15 script）、div/details/CSS 平衡。
 v195 更新（交辦單：流程② / ③ 詳細 SOP 也要像流程① 一樣有「複製提示詞」按鈕可以直接按，接 v194）：【P3 流程② / ③ 加複製提示詞按鈕】Lisa 反饋：流程① sopBlock 每步有「複製提示詞 A/C/0/0A」按鈕（line 830/930/1002，attach() 綁定 PROMPT_A/C/0/0A 常數），但流程② / ③ 的內容（opGuideHTML_v2 / _v3）是 v189 A5 寫的「純說明書版」、**只有文字說明、沒有按鈕**。本版修法：①在 opGuideHTML 系列 IIFE 開頭加 window._atCopyPrompt(name) 全域函式（接 PROMPT_0/PROMPT_A/PROMPT_C/PROMPT_0A/GEM_PROMPT 5 個常數，clipboard.writeText + toast 顯示字數），不污染 IIFE scope（透過 typeof 防呆）；②opGuideHTML_v2 內 step() 函式加第 6 個 opts 參數（{copy, open, openLabel}），自動加複製按鈕（酒紅實心邊框）＋開工具連結（金邊鋸齒 anchor target=_blank），三步加 copy 標記：step 2={copy:'PROMPT_0'}（封存）、step 3={copy:'GEM_PROMPT',open:'https://gemini.google.com/app',openLabel:'開 Gemini'}（Gemini 影片分析）、step 5={copy:'PROMPT_C'}（最後整合·只要卡B）；step 4 加 open 到 https://luckylisaaa.github.io/atelier-subtype/（子題型工具網頁）；③opGuideHTML_v3 內 step() 函式同樣升級接 opts，step 2={copy:'PROMPT_A'}（帳號分析）。流程① sopBlock 既有 4 顆按鈕（line 830/930/1002，attach() 機制）保留不動；六常數本身一字未動，只是多了一個全域函式提供讀取入口。版本號 4 處 v194→v195；六常數依守門 md5（7c8bc3efbfc92d316b511a13b91a49bd）驗證未動；全檔 node --check 全過（15 script）、div/details/CSS 平衡。
@@ -770,7 +771,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v197</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v198</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -1504,24 +1505,23 @@ if('serviceWorker' in navigator){
 
 <!-- 影片庫 -->
 <div class="view" id="view-library">
-  <!-- v197 A1：主角中心 hub——取代 v194 對標助手。① 選主角 ② 一鍵套用同類對標 ③ 顯示模式（hero-only / hero+rivals / all） -->
-  <div id="vlibHeroHub" style="margin:0 0 14px;border:1.5px solid var(--rouge);border-radius:12px;background:var(--warm);padding:13px">
-    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:9px">
-      <span style="font-size:11px;color:var(--rouge);font-weight:700;letter-spacing:1.2px;white-space:nowrap">① 主角客戶</span>
-      <select id="vlibHero" onchange="vlibHeroSet(this.value)" style="flex:1;min-width:200px;padding:9px 12px;border:1px solid var(--rouge);border-radius:8px;font-size:13px;font-family:inherit;background:#fff;color:var(--ink)"><option value="">— 還沒選主角（點開列出帳號）—</option></select>
+  <!-- v198 A1：hub 配色重做——白底＋金色細邊＋黑字主導，酒紅只在「主角已選／chip 選中」狀態出現 -->
+  <div id="vlibHeroHub" style="margin:0 0 14px;border:1px solid var(--gold-soft);border-radius:10px;background:#fff;padding:11px 13px">
+    <div style="display:flex;gap:9px;align-items:center;flex-wrap:wrap;margin-bottom:8px">
+      <span style="font-size:11px;color:var(--gold-dark);font-weight:700;letter-spacing:1.5px;white-space:nowrap">① 主角客戶</span>
+      <select id="vlibHero" data-csearch="1" data-accpick="1" onchange="vlibHeroSet(this.value)" style="flex:1;min-width:220px;padding:8px 11px;border:1px solid var(--border);border-radius:8px;font-size:13px;font-family:inherit;background:#fff;color:var(--ink)"><option value="">— 主角（從帳號裡選 1 個）—</option></select>
       <button class="btn btn-ghost" type="button" onclick="vlibHeroClear()" style="font-size:11.5px;padding:6px 11px;width:auto">清除</button>
     </div>
-    <div id="vlibHeroInfo" style="display:none;background:#fff;border:1px solid var(--gold-soft);border-radius:8px;padding:9px 12px;margin-bottom:10px;font-size:12px;line-height:1.65;color:var(--text)"></div>
-    <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-bottom:9px">
-      <span style="font-size:11px;color:var(--gold-dark);font-weight:700;letter-spacing:1.2px;white-space:nowrap">② 同類對標</span>
-      <button type="button" class="vlib-rivalchip on" data-rival="none" onclick="vlibRivalSet('none')" style="padding:6px 11px;border:1px solid var(--rouge);background:var(--rouge);color:#fff;font-weight:700;font-size:12px;border-radius:6px;cursor:pointer;font-family:inherit">只看主角</button>
-      <button type="button" class="vlib-rivalchip" data-rival="job" onclick="vlibRivalSet('job')" style="padding:6px 11px;border:1px solid var(--rouge);background:transparent;color:var(--rouge);font-weight:700;font-size:12px;border-radius:6px;cursor:pointer;font-family:inherit">＋同職稱</button>
-      <button type="button" class="vlib-rivalchip" data-rival="ind" onclick="vlibRivalSet('ind')" style="padding:6px 11px;border:1px solid var(--rouge);background:transparent;color:var(--rouge);font-weight:700;font-size:12px;border-radius:6px;cursor:pointer;font-family:inherit">＋同產業</button>
-      <button type="button" class="vlib-rivalchip" data-rival="type" onclick="vlibRivalSet('type')" style="padding:6px 11px;border:1px solid var(--rouge);background:transparent;color:var(--rouge);font-weight:700;font-size:12px;border-radius:6px;cursor:pointer;font-family:inherit">＋同身份</button>
-      <button type="button" class="vlib-rivalchip" data-rival="all" onclick="vlibRivalSet('all')" style="padding:6px 11px;border:1px solid var(--gold-soft);background:transparent;color:var(--gold-dark);font-weight:600;font-size:12px;border-radius:6px;cursor:pointer;font-family:inherit">全部不限</button>
+    <div id="vlibHeroInfo" style="display:none;background:var(--warm);border-radius:8px;padding:9px 11px;margin-bottom:9px;font-size:12px;line-height:1.65;color:var(--text)"></div>
+    <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-bottom:6px">
+      <span style="font-size:11px;color:var(--gold-dark);font-weight:700;letter-spacing:1.5px;white-space:nowrap;width:100%;display:block">② 同類對標（先選主角才會啟用）</span>
+      <button type="button" class="vlib-rivalchip on" data-rival="none" onclick="vlibRivalSet('none')" style="padding:7px 13px;border:1px solid var(--rouge);background:var(--rouge);color:#fff;font-weight:700;font-size:12.5px;border-radius:7px;cursor:pointer;font-family:inherit">只看主角</button>
+      <button type="button" class="vlib-rivalchip" data-rival="job" onclick="vlibRivalSet('job')" style="padding:7px 13px;border:1px solid var(--border);background:transparent;color:var(--ink);font-weight:600;font-size:12.5px;border-radius:7px;cursor:pointer;font-family:inherit">＋ 同職稱</button>
+      <button type="button" class="vlib-rivalchip" data-rival="ind" onclick="vlibRivalSet('ind')" style="padding:7px 13px;border:1px solid var(--border);background:transparent;color:var(--ink);font-weight:600;font-size:12.5px;border-radius:7px;cursor:pointer;font-family:inherit">＋ 同產業</button>
+      <button type="button" class="vlib-rivalchip" data-rival="type" onclick="vlibRivalSet('type')" style="padding:7px 13px;border:1px solid var(--border);background:transparent;color:var(--ink);font-weight:600;font-size:12.5px;border-radius:7px;cursor:pointer;font-family:inherit">＋ 同身份</button>
+      <button type="button" class="vlib-rivalchip" data-rival="all" onclick="vlibRivalSet('all')" style="padding:7px 13px;border:1px solid var(--border);background:transparent;color:var(--sub);font-weight:600;font-size:12.5px;border-radius:7px;cursor:pointer;font-family:inherit">全部不限</button>
     </div>
-    <div id="vlibRivalList" style="display:none;background:#fff;border:1px dashed var(--gold-soft);border-radius:8px;padding:7px 10px;font-size:11.5px;line-height:1.65;color:var(--gold-dark)"></div>
-    <div id="vlibNoHeroTip" style="font-size:11.5px;color:var(--gold-dark);line-height:1.5;margin-top:6px;padding:7px 9px;background:#FFFAF0;border-left:2px solid var(--gold-soft);border-radius:5px">沒選主角時可直接用下方「快速篩選」的<b>全部職稱／全部產業</b>下拉聚焦這類人；要更精準對焦疊加階段／目標層／身份多重條件即可。</div>
+    <div id="vlibRivalList" style="display:none;background:var(--warm);border-radius:7px;padding:7px 10px;font-size:11.5px;line-height:1.65;color:var(--text);margin-top:6px"></div>
   </div>
   <div class="sumrow">
     <div class="sumcard c-all on" data-tf="all"><div class="num" id="s-all">0</div><div class="lbl">全部</div></div>
@@ -1530,7 +1530,7 @@ if('serviceWorker' in navigator){
     <div class="sumcard c-green" data-tf="green"><div class="num" id="s-green">0</div><div class="lbl">常青<br>較早</div></div>
   </div>
   <div class="searchbar">
-    <input id="libSearch" placeholder="在影片庫裡找…（標題／主題／客戶）" autocomplete="off">
+    <input id="libSearch" placeholder="在影片庫裡找…（標題／主題）" autocomplete="off">
     <span class="ic" id="libIc">⌕</span><span class="clr" id="libClr">×</span>
   </div>
   <div class="filterrow" style="align-items:center;gap:8px">
@@ -1544,31 +1544,41 @@ if('serviceWorker' in navigator){
       <option value="engage">互動率最高 ↓</option>
     </select>
   </div>
-  <div class="filterrow" style="display:block;margin-top:8px;margin-bottom:10px">
-    <span style="font-size:11px;color:var(--gold-dark);font-weight:700;letter-spacing:1px;display:block;margin-bottom:5px">快速篩選</span>
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px">
-    <select id="libStageF" style="width:100%;min-width:0;padding:7px 6px;border:1px solid var(--border);border-radius:8px;background:#fff;color:var(--ink);font-family:inherit;font-size:12px"><option value="">全部階段</option><option value="G1">G1 打破認知型</option><option value="G2">G2 建立吸引型</option><option value="G3">G3 建立思想型</option><option value="G4">G4 建立實用型</option><option value="G5">G5 信任轉化型</option></select>
-    <select id="libGoalF" style="width:100%;min-width:0;padding:7px 6px;border:1px solid var(--border);border-radius:8px;background:#fff;color:var(--ink);font-family:inherit;font-size:12px"><option value="">全部目標層</option><option value="A">A 認知（被看見）</option><option value="B">B 品牌（被記得）</option><option value="C">C 信任（被相信）</option><option value="D">D 轉化（被購買）</option><option value="E">E 組織（被裂變）</option></select>
-    <select id="libTypeF" style="width:100%;min-width:0;padding:7px 6px;border:1px solid var(--border);border-radius:8px;background:#fff;color:var(--ink);font-family:inherit;font-size:12px"><option value="">全部身份</option><option>KOL</option><option>KOC</option><option>個人IP</option><option>Youtuber</option><option>內容創作者</option><option>素人</option><option>品牌號</option><option>企業家</option><option>名人</option><option>演員</option><option>歌手</option></select>
+  <!-- v198 D1：「快速篩選」摺成 details 預設收起，要精修才展開 -->
+  <details style="margin:8px 0 10px;border:1px solid var(--border);border-radius:8px;background:#fff">
+    <summary style="padding:9px 12px;cursor:pointer;font-size:12px;color:var(--gold-dark);font-weight:700;letter-spacing:1px;display:flex;align-items:center;gap:6px;list-style:none;user-select:none">
+      <svg viewBox="0 0 24 24" style="width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none"><path d="M3 6h18M7 12h10M11 18h2"/></svg>進階篩選 <span style="font-weight:500;color:var(--sub);font-size:11px">階段 · 目標層 · 身份 · 職稱 · 產業 · 來源</span>
+    </summary>
+    <div style="padding:0 12px 11px">
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px">
+        <select id="libStageF" style="width:100%;min-width:0;padding:7px 6px;border:1px solid var(--border);border-radius:8px;background:#fff;color:var(--ink);font-family:inherit;font-size:12px"><option value="">全部階段</option><option value="G1">G1 打破認知型</option><option value="G2">G2 建立吸引型</option><option value="G3">G3 建立思想型</option><option value="G4">G4 建立實用型</option><option value="G5">G5 信任轉化型</option></select>
+        <select id="libGoalF" style="width:100%;min-width:0;padding:7px 6px;border:1px solid var(--border);border-radius:8px;background:#fff;color:var(--ink);font-family:inherit;font-size:12px"><option value="">全部目標層</option><option value="A">A 認知（被看見）</option><option value="B">B 品牌（被記得）</option><option value="C">C 信任（被相信）</option><option value="D">D 轉化（被購買）</option><option value="E">E 組織（被裂變）</option></select>
+        <select id="libTypeF" style="width:100%;min-width:0;padding:7px 6px;border:1px solid var(--border);border-radius:8px;background:#fff;color:var(--ink);font-family:inherit;font-size:12px"><option value="">全部身份</option><option>KOL</option><option>KOC</option><option>個人IP</option><option>Youtuber</option><option>內容創作者</option><option>素人</option><option>品牌號</option><option>企業家</option><option>名人</option><option>演員</option><option>歌手</option></select>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:6px;margin-top:6px">
+        <select id="libJobF" style="width:100%;min-width:0;padding:7px 6px;border:1px solid var(--gold-soft);border-radius:8px;background:#fff;color:var(--ink);font-family:inherit;font-size:12px"><option value="">全部職稱</option></select>
+        <select id="libIndF" style="width:100%;min-width:0;padding:7px 6px;border:1px solid var(--gold-soft);border-radius:8px;background:#fff;color:var(--ink);font-family:inherit;font-size:12px"><option value="">全部產業</option></select>
+      </div>
+      <div class="filterrow" id="libClientRow" style="margin:8px 0 0;padding:0"></div>
     </div>
-    <!-- v196 P3-A1：依帳號屬性篩同類型——選「律師」就只看律師的影片，選「醫美」就只看醫美的影片（options 從現有帳號的職稱／產業自動 dedupe） -->
-    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:6px;margin-top:6px">
-      <select id="libJobF" style="width:100%;min-width:0;padding:7px 6px;border:1px solid var(--gold-soft);border-radius:8px;background:#fff;color:var(--ink);font-family:inherit;font-size:12px"><option value="">全部職稱</option></select>
-      <select id="libIndF" style="width:100%;min-width:0;padding:7px 6px;border:1px solid var(--gold-soft);border-radius:8px;background:#fff;color:var(--ink);font-family:inherit;font-size:12px"><option value="">全部產業</option></select>
+  </details>
+  <!-- v198 D2：批次工具列摺成 details 預設收起，腳本範本對標客戶 label 改名（跟 hub 主角區分） -->
+  <details style="margin:0 0 8px;border:1px solid var(--border);border-radius:8px;background:#fff">
+    <summary style="padding:9px 12px;cursor:pointer;font-size:12px;color:var(--gold-dark);font-weight:700;letter-spacing:1px;display:flex;align-items:center;gap:6px;list-style:none;user-select:none">
+      <svg viewBox="0 0 24 24" style="width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>批次操作工具 <span style="font-weight:500;color:var(--sub);font-size:11px">全選 · 腳本範本 · 並排對比 · 匯出</span>
+    </summary>
+    <div id="libBulk" style="display:flex;gap:6px;align-items:center;padding:6px 12px 11px;flex-wrap:wrap">
+      <button class="btn btn-ghost" id="libSelAllBtn" style="width:auto;font-size:12px;padding:6px 12px">全選</button>
+      <span id="libSelCount" style="font-size:12px;color:var(--gold-dark)"></span>
+      <button class="btn btn-ghost" id="bulkTemplate" style="width:auto;font-size:12px;padding:6px 12px"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:3px"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/></svg>產生腳本範本</button>
+      <label style="display:inline-flex;align-items:center;gap:5px;font-size:11.5px;color:var(--gold-dark)" title="選了客戶＝範本提示詞會自動帶入他的職業／產業／主打與逐字稿節選；留空＝輸出空白樣板（____）給你手填，跟以前一樣。">腳本範本對標客戶<select id="tplClient" data-csearch="1" data-accpick="1" style="max-width:320px;padding:9px 12px;border:1px solid var(--gold-soft);border-radius:8px;background:#fff;color:var(--ink);font-family:inherit;font-size:14px"><option value="">— 不選客戶（空白樣板）—</option></select></label>
+      <button class="btn btn-ghost" id="bulkCompare" style="width:auto;font-size:12px;padding:6px 12px;border-color:var(--rouge);color:var(--rouge)">並排對比</button>
+      <button class="btn btn-ghost" id="bulkExport" style="width:auto;font-size:12px;padding:6px 12px">匯出選取</button>
+      <button class="btn btn-ghost" id="bulkCopy" style="width:auto;font-size:12px;padding:6px 12px"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:3px"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/></svg>複製選取</button>
+      <button class="btn btn-ghost" id="exportBtn" style="width:auto;font-size:12px;padding:6px 12px;margin-left:auto">↓ 匯出全部CSV</button>
+      <label style="display:none"><input type="checkbox" id="libSelAll"></label>
     </div>
-  </div>
-  <div class="filterrow" id="libClientRow" style="margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--gold-soft)"></div>
-  <div id="libBulk" style="display:flex;gap:6px;align-items:center;margin-bottom:8px;flex-wrap:wrap">
-    <button class="btn btn-ghost" id="libSelAllBtn" style="width:auto;font-size:12px;padding:6px 12px">全選</button>
-    <span id="libSelCount" style="font-size:12px;color:var(--gold-dark)"></span>
-    <button class="btn btn-ghost" id="bulkTemplate" style="width:auto;font-size:12px;padding:6px 12px"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:3px"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/></svg>產生腳本範本</button>
-    <label style="display:inline-flex;align-items:center;gap:5px;font-size:11.5px;color:var(--gold-dark)" title="選了客戶＝範本提示詞會自動帶入他的職業／產業／主打與逐字稿節選；留空＝輸出空白樣板（____）給你手填，跟以前一樣。">客戶<select id="tplClient" data-csearch="1" data-accpick="1" style="max-width:320px;padding:9px 12px;border:1px solid var(--gold-soft);border-radius:8px;background:#fff;color:var(--ink);font-family:inherit;font-size:14px"><option value="">— 不選客戶（空白樣板）—</option></select></label>
-    <button class="btn btn-ghost" id="bulkCompare" style="width:auto;font-size:12px;padding:6px 12px;border-color:var(--rouge);color:var(--rouge)">並排對比</button>
-    <button class="btn btn-ghost" id="bulkExport" style="width:auto;font-size:12px;padding:6px 12px">匯出選取</button>
-    <button class="btn btn-ghost" id="bulkCopy" style="width:auto;font-size:12px;padding:6px 12px"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:3px"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/></svg>複製選取</button>
-    <button class="btn btn-ghost" id="exportBtn" style="width:auto;font-size:12px;padding:6px 12px;margin-left:auto">↓ 匯出全部CSV</button>
-    <label style="display:none"><input type="checkbox" id="libSelAll"></label>
-  </div>
+  </details>
   <details class="lib-howto" style="margin:0 0 4px"><summary style="cursor:pointer;font-size:11.5px;color:var(--gold-dark);font-weight:700;user-select:none;display:flex;align-items:center;gap:5px"><svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none"><circle cx="12" cy="12" r="9"/><path d="M12 16v-5M12 8h.01"/></svg>使用說明（點開看）</summary>
   <div class="tip" style="margin:-2px 0 10px;font-size:11px">每支影片左上有勾選框＝點一下就選取；「全選」選的是目前顯示出來的。選好可「產生腳本範本／並排對比／匯出選取」；刪除在清單最下面的「刪除選取」。<br><span style="color:var(--gold-dark)">工具目的＋使用邏輯：</span>「<b>產生腳本範本</b>」→ <i>目的</i>：幫客戶寫出跟成功影片同結構的新腳本。<i>做法</i>：勾幾支成功影片＋選客戶→AI 拆解共同公式→產出客戶專屬腳本。「<b>借技法寫腳本</b>」→ <i>目的</i>：把一支爆紅影片的「招式」移植到客戶身上。<i>做法</i>：挑一支當參照→AI 拆解 Hook/結構/手法→用同一套結構幫客戶改寫→FAB 翻譯→合規提醒。「<b>並排對比</b>」→ <i>目的</i>：找出多支影片/帳號在版面策略的差異與共同點。<i>做法</i>：勾 2–4 支→並排比較 Bio/置頂/Highlight/視覺風格。</div></details>
   <div style="margin:2px 0 12px;display:flex;align-items:center;gap:8px;flex-wrap:wrap"><button type="button" id="btnBackup2" style="display:inline-block;padding:8px 14px;border-radius:8px;border:1px solid #A51820;background:#A51820;color:#fff;font-family:inherit;font-size:12.5px;cursor:pointer">⤓ 下載備份檔（影片＋帳號）</button><span style="font-size:11px;color:#7A5A5E">一份檔案同時存影片和帳號</span></div>
@@ -1702,23 +1712,23 @@ if('serviceWorker' in navigator){
     <button id="accsubtab-tools" onclick="showAccSub('tools')" style="background:none;border:none;border-bottom:2px solid transparent;color:#9a8e8e;font-weight:500;font-size:14px;padding:8px 18px;cursor:pointer;font-family:inherit"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#A51820" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:3px"><rect x="3" y="8" width="18" height="12" rx="2"/><path d="M8 8V6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M3 13h18"/></svg>工具箱</button>
   </div>
   <div id="accsub-list">
-  <!-- v197 A2：帳號管理主角中心 hub（同 view-library 那個邏輯，但只篩帳號清單） -->
-  <div id="accHeroHub" style="margin:0 0 14px;border:1.5px solid var(--rouge);border-radius:12px;background:var(--warm);padding:13px">
-    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:9px">
-      <span style="font-size:11px;color:var(--rouge);font-weight:700;letter-spacing:1.2px;white-space:nowrap">① 主角客戶</span>
-      <select id="accHero" onchange="accHeroSet(this.value)" style="flex:1;min-width:200px;padding:9px 12px;border:1px solid var(--rouge);border-radius:8px;font-size:13px;font-family:inherit;background:#fff;color:var(--ink)"><option value="">— 還沒選主角（點開列出帳號）—</option></select>
+  <!-- v198 A2：帳號管理 hub 配色重做（同影片庫設計） -->
+  <div id="accHeroHub" style="margin:0 0 14px;border:1px solid var(--gold-soft);border-radius:10px;background:#fff;padding:11px 13px">
+    <div style="display:flex;gap:9px;align-items:center;flex-wrap:wrap;margin-bottom:8px">
+      <span style="font-size:11px;color:var(--gold-dark);font-weight:700;letter-spacing:1.5px;white-space:nowrap">① 主角客戶</span>
+      <select id="accHero" data-csearch="1" data-accpick="1" onchange="accHeroSet(this.value)" style="flex:1;min-width:220px;padding:8px 11px;border:1px solid var(--border);border-radius:8px;font-size:13px;font-family:inherit;background:#fff;color:var(--ink)"><option value="">— 主角（從帳號裡選 1 個）—</option></select>
       <button class="btn btn-ghost" type="button" onclick="accHeroClear()" style="font-size:11.5px;padding:6px 11px;width:auto">清除</button>
     </div>
-    <div id="accHeroInfo" style="display:none;background:#fff;border:1px solid var(--gold-soft);border-radius:8px;padding:9px 12px;margin-bottom:10px;font-size:12px;line-height:1.65;color:var(--text)"></div>
-    <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-bottom:9px">
-      <span style="font-size:11px;color:var(--gold-dark);font-weight:700;letter-spacing:1.2px;white-space:nowrap">② 同類對標</span>
-      <button type="button" class="acc-rivalchip on" data-rival="none" onclick="accRivalSet('none')" style="padding:6px 11px;border:1px solid var(--rouge);background:var(--rouge);color:#fff;font-weight:700;font-size:12px;border-radius:6px;cursor:pointer;font-family:inherit">只看主角</button>
-      <button type="button" class="acc-rivalchip" data-rival="job" onclick="accRivalSet('job')" style="padding:6px 11px;border:1px solid var(--rouge);background:transparent;color:var(--rouge);font-weight:700;font-size:12px;border-radius:6px;cursor:pointer;font-family:inherit">＋同職稱</button>
-      <button type="button" class="acc-rivalchip" data-rival="ind" onclick="accRivalSet('ind')" style="padding:6px 11px;border:1px solid var(--rouge);background:transparent;color:var(--rouge);font-weight:700;font-size:12px;border-radius:6px;cursor:pointer;font-family:inherit">＋同產業</button>
-      <button type="button" class="acc-rivalchip" data-rival="type" onclick="accRivalSet('type')" style="padding:6px 11px;border:1px solid var(--rouge);background:transparent;color:var(--rouge);font-weight:700;font-size:12px;border-radius:6px;cursor:pointer;font-family:inherit">＋同身份</button>
-      <button type="button" class="acc-rivalchip" data-rival="all" onclick="accRivalSet('all')" style="padding:6px 11px;border:1px solid var(--gold-soft);background:transparent;color:var(--gold-dark);font-weight:600;font-size:12px;border-radius:6px;cursor:pointer;font-family:inherit">全部不限</button>
+    <div id="accHeroInfo" style="display:none;background:var(--warm);border-radius:8px;padding:9px 11px;margin-bottom:9px;font-size:12px;line-height:1.65;color:var(--text)"></div>
+    <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-bottom:6px">
+      <span style="font-size:11px;color:var(--gold-dark);font-weight:700;letter-spacing:1.5px;white-space:nowrap;width:100%;display:block">② 同類對標（先選主角才會啟用）</span>
+      <button type="button" class="acc-rivalchip on" data-rival="none" onclick="accRivalSet('none')" style="padding:7px 13px;border:1px solid var(--rouge);background:var(--rouge);color:#fff;font-weight:700;font-size:12.5px;border-radius:7px;cursor:pointer;font-family:inherit">只看主角</button>
+      <button type="button" class="acc-rivalchip" data-rival="job" onclick="accRivalSet('job')" style="padding:7px 13px;border:1px solid var(--border);background:transparent;color:var(--ink);font-weight:600;font-size:12.5px;border-radius:7px;cursor:pointer;font-family:inherit">＋ 同職稱</button>
+      <button type="button" class="acc-rivalchip" data-rival="ind" onclick="accRivalSet('ind')" style="padding:7px 13px;border:1px solid var(--border);background:transparent;color:var(--ink);font-weight:600;font-size:12.5px;border-radius:7px;cursor:pointer;font-family:inherit">＋ 同產業</button>
+      <button type="button" class="acc-rivalchip" data-rival="type" onclick="accRivalSet('type')" style="padding:7px 13px;border:1px solid var(--border);background:transparent;color:var(--ink);font-weight:600;font-size:12.5px;border-radius:7px;cursor:pointer;font-family:inherit">＋ 同身份</button>
+      <button type="button" class="acc-rivalchip" data-rival="all" onclick="accRivalSet('all')" style="padding:7px 13px;border:1px solid var(--border);background:transparent;color:var(--sub);font-weight:600;font-size:12.5px;border-radius:7px;cursor:pointer;font-family:inherit">全部不限</button>
     </div>
-    <div id="accRivalList" style="display:none;background:#fff;border:1px dashed var(--gold-soft);border-radius:8px;padding:7px 10px;font-size:11.5px;line-height:1.65;color:var(--gold-dark)"></div>
+    <div id="accRivalList" style="display:none;background:var(--warm);border-radius:7px;padding:7px 10px;font-size:11.5px;line-height:1.65;color:var(--text);margin-top:6px"></div>
   </div>
   <div class="card" style="margin-bottom:14px">
     <button class="btn btn-go" id="acc-add-btn" style="width:100%"><svg viewBox="0 0 24 24" style="width:16px;height:16px;vertical-align:-3px;margin-right:6px"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg>新增帳號</button>
@@ -1727,50 +1737,54 @@ if('serviceWorker' in navigator){
     <input id="accSearch" placeholder="搜尋帳號（@帳號名 / 顯示名 / 領域 / 身份）" autocomplete="off">
     <span class="ic" id="accIc">⌕</span><span class="clr" id="accClr">×</span>
   </div>
-  <div class="filterrow" style="align-items:center;gap:8px;margin-top:8px">
-    <span style="font-size:12px;color:var(--gold-dark);font-weight:700;letter-spacing:1px">篩選</span>
-    <select id="accFilterType" style="flex:1;max-width:180px;padding:8px 10px;border:1px solid var(--border);border-radius:8px;background:#fff;color:var(--ink);font-family:inherit;font-size:13px">
-      <option value="">全部身份</option>
-      <option value="演員">演員</option>
-      <option value="歌手">歌手 / 音樂人</option>
-      <option value="主持人">主持人</option>
-      <option value="通告藝人">通告藝人</option>
-      <option value="模特兒">模特兒</option>
-      <option value="運動員">運動員</option>
-      <option value="企業家">企業家 / 創辦人</option>
-      <option value="名人">名人 / 二代</option>
-      <option value="KOL">KOL（關鍵意見領袖）</option>
-      <option value="KOC">KOC（關鍵意見消費者）</option>
-      <option value="個人IP">個人 IP</option>
-      <option value="Youtuber">Youtuber</option>
-      <option value="實況主">實況主 / 直播主</option>
-      <option value="內容創作者">內容創作者（其他）</option>
-      <option value="素人">素人</option>
-      <option value="品牌號">品牌號</option>
-      <option value="媒體節目號">媒體 / 節目號</option>
-      <option value="機構號">機構號</option>
-    </select>
-    <select id="accFilterTier" style="flex:1;max-width:160px;padding:8px 10px;border:1px solid var(--border);border-radius:8px;background:#fff;color:var(--ink);font-family:inherit;font-size:13px">
-      <option value="">全部量級</option>
-      <option value="素人">素人 (&lt;1K)</option>
-      <option value="奈米">奈米網紅 (1K–10K)</option>
-      <option value="微網紅">微網紅 (10K–50K)</option>
-      <option value="小網紅">小網紅 (50K–100K)</option>
-      <option value="中型網紅">中型網紅 (100K–500K)</option>
-      <option value="大型網紅">大型網紅 (500K–1M)</option>
-      <option value="超級網紅">超級網紅 (1M+)</option>
-    </select>
-    <!-- v196 P3-B1：帳號管理也加職稱／產業篩選（與影片庫一致；options 從 accounts[].jobTitle/.industry 動態 populate） -->
-    <select id="accFilterJob" style="flex:1;max-width:170px;padding:8px 10px;border:1px solid var(--gold-soft);border-radius:8px;background:#fff;color:var(--ink);font-family:inherit;font-size:13px"><option value="">全部職稱</option></select>
-    <select id="accFilterInd" style="flex:1;max-width:170px;padding:8px 10px;border:1px solid var(--gold-soft);border-radius:8px;background:#fff;color:var(--ink);font-family:inherit;font-size:13px"><option value="">全部產業</option></select>
-    <select id="accSort" style="flex:1;max-width:160px;padding:8px 10px;border:1px solid var(--border);border-radius:8px;background:#fff;color:var(--ink);font-family:inherit;font-size:13px">
-      <option value="updated">最近更新</option>
-      <option value="followers">粉絲數 ↓</option>
-      <option value="growth30">30天成長 ↓</option>
-      <option value="videos">拆過的影片數 ↓</option>
-      <option value="name">名稱 A→Z</option>
-    </select>
-  </div>
+  <!-- v198 F1：帳號管理篩選列摺成 details，預設收起 -->
+  <details style="margin:8px 0 10px;border:1px solid var(--border);border-radius:8px;background:#fff">
+    <summary style="padding:9px 12px;cursor:pointer;font-size:12px;color:var(--gold-dark);font-weight:700;letter-spacing:1px;display:flex;align-items:center;gap:6px;list-style:none;user-select:none">
+      <svg viewBox="0 0 24 24" style="width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none"><path d="M3 6h18M7 12h10M11 18h2"/></svg>進階篩選 <span style="font-weight:500;color:var(--sub);font-size:11px">身份 · 量級 · 職稱 · 產業 · 排序</span>
+    </summary>
+    <div class="filterrow" style="align-items:center;gap:8px;margin:0;padding:0 12px 11px;flex-wrap:wrap">
+      <select id="accFilterType" style="flex:1;min-width:140px;max-width:180px;padding:8px 10px;border:1px solid var(--border);border-radius:8px;background:#fff;color:var(--ink);font-family:inherit;font-size:13px">
+        <option value="">全部身份</option>
+        <option value="演員">演員</option>
+        <option value="歌手">歌手 / 音樂人</option>
+        <option value="主持人">主持人</option>
+        <option value="通告藝人">通告藝人</option>
+        <option value="模特兒">模特兒</option>
+        <option value="運動員">運動員</option>
+        <option value="企業家">企業家 / 創辦人</option>
+        <option value="名人">名人 / 二代</option>
+        <option value="KOL">KOL（關鍵意見領袖）</option>
+        <option value="KOC">KOC（關鍵意見消費者）</option>
+        <option value="個人IP">個人 IP</option>
+        <option value="Youtuber">Youtuber</option>
+        <option value="實況主">實況主 / 直播主</option>
+        <option value="內容創作者">內容創作者（其他）</option>
+        <option value="素人">素人</option>
+        <option value="品牌號">品牌號</option>
+        <option value="媒體節目號">媒體 / 節目號</option>
+        <option value="機構號">機構號</option>
+      </select>
+      <select id="accFilterTier" style="flex:1;min-width:140px;max-width:160px;padding:8px 10px;border:1px solid var(--border);border-radius:8px;background:#fff;color:var(--ink);font-family:inherit;font-size:13px">
+        <option value="">全部量級</option>
+        <option value="素人">素人 (&lt;1K)</option>
+        <option value="奈米">奈米網紅 (1K–10K)</option>
+        <option value="微網紅">微網紅 (10K–50K)</option>
+        <option value="小網紅">小網紅 (50K–100K)</option>
+        <option value="中型網紅">中型網紅 (100K–500K)</option>
+        <option value="大型網紅">大型網紅 (500K–1M)</option>
+        <option value="超級網紅">超級網紅 (1M+)</option>
+      </select>
+      <select id="accFilterJob" style="flex:1;min-width:140px;max-width:170px;padding:8px 10px;border:1px solid var(--gold-soft);border-radius:8px;background:#fff;color:var(--ink);font-family:inherit;font-size:13px"><option value="">全部職稱</option></select>
+      <select id="accFilterInd" style="flex:1;min-width:140px;max-width:170px;padding:8px 10px;border:1px solid var(--gold-soft);border-radius:8px;background:#fff;color:var(--ink);font-family:inherit;font-size:13px"><option value="">全部產業</option></select>
+      <select id="accSort" style="flex:1;min-width:140px;max-width:160px;padding:8px 10px;border:1px solid var(--border);border-radius:8px;background:#fff;color:var(--ink);font-family:inherit;font-size:13px">
+        <option value="updated">最近更新</option>
+        <option value="followers">粉絲數 ↓</option>
+        <option value="growth30">30天成長 ↓</option>
+        <option value="videos">拆過的影片數 ↓</option>
+        <option value="name">名稱 A→Z</option>
+      </select>
+    </div>
+  </details>
   <div id="accList" style="margin-top:14px"></div>
   </div>
   <div id="accsub-tools" style="display:none">
@@ -3995,7 +4009,8 @@ function renderManual(){
   <div class="form-card" style="border-left:3px solid var(--gold)">
     <div class="stitle" style="font-size:15px;color:var(--rouge)">更新紀錄 · 還沒做的</div>
     <p style="font-size:13px;color:var(--text);line-height:1.85;margin-top:8px">
-    <b>v197（這版 · 四件大事一次做完：A 影片庫＋帳號管理改主角中心 hub、B 流程②／③ 視覺對齊流程①、C 影片庫使用說明 icon 換 SVG、D 歸類卡 ①②③ chip + sticky 儲存浮窗）：</b>①<b>A · 影片庫＋帳號管理改主角中心 hub</b>（取代 v194 對標助手，你說搞錯方向）：頁面頂部變成紅邊框的<b>主角 hub</b>—— ① 選主角下拉 → ② 主角資訊摘要卡浮現（handle／職稱／產業／粉絲量級／影片數／30 天成長／更新日期）→ ③ 5 顆對標 chip 一鍵套用「只看主角／＋同職稱／＋同產業／＋同身份／全部不限」，下方影片庫即時跟著篩。沒選主角＝行為跟舊版一樣（既有快速篩選、同職稱／同產業下拉仍可用）。對應你的場景：「只想學單一客戶」→ 選主角 + 只看主角；「客戶還沒加進來、想快速學這類人」→ 不選主角、直接用下方下拉的「全部職稱」/「全部產業」聚焦；「要精準對焦人群」→ hub 套用同類後，再展開下方快速篩選疊加階段／目標層／身份。②<b>B · 流程②／③ 視覺對齊流程①</b>：你說「顏色可怕、視覺不清晰」——把流程②／③ 步驟內按鈕的粗邊框（1.5px）和粗體（700）都拿掉，改成跟流程① sopBlock 的 .btn.btn-ghost 完全一致；鳥瞰圖的綠色「→ 輸出」也改成金色，跟整體配色系統一致。看起來會比 v196 乾淨很多。③<b>C · 影片庫使用說明 icon 換 SVG</b>：把「使用說明（點開看）」前面的 ℹ️ 換成品牌風格的 SVG info circle，跟其他 icon 一致。其他 ⚠️ 殘留在訊息標籤裡（如「⚠️ 此帳號已存在」這種 modal title）暫不動——它們是文字標籤不是 icon，下版你看到還有要換的列清單給我。④<b>D · 歸類卡 ①②③ chip + sticky 儲存浮窗</b>：v196 的「歸類卡對應流程說明 details」改成 4 顆<b>顯眼 chip</b>（自動分流／流程① 卡A／流程② 卡B／流程③ 卡C）——chip 只當視覺指引，系統還是靠卡內標記自動分流。最重要的：<b>右下角浮現 sticky 儲存按鈕「儲存這支影片＋」</b>——只要你貼了卡或填了影片標題就會浮現，不用再滑到最底！按下去會自動滾到原 saveBtn 並觸發完整確認流程。<br>
+    <b>v198（這版 · 你抓的 6 件事一次修：配色重做＋hub 升級＋寬鬆匹配＋摺疊重複）：</b>①<b>A 配色全面重做</b>：v197 紅 1.5px 邊框＋暖白底＋土黃金 chip 太花，一頁五種色塊。本版改成<b>白底＋金色細邊＋黑字主導</b>，酒紅只在「主角已選／chip 選中」這兩個關鍵狀態出現。整體視覺重量大幅降低，跟整個工作台其他區塊配色一致。②<b>B hub 主角下拉升級為 csel</b>（跟客戶選擇器同款）：加 data-csearch="1" data-accpick="1"，自動套用既有 csel 系統的「品牌下拉＋搜尋框＋5 個排序頁籤（系統建議／依成效／產業領域／案例類型／A→Z）」，跟「客戶」下拉一模一樣的視覺與操作。③<b>C 「尚無帳號」bug 修</b>：原因找到了——accounts 是雲端 async 載入，第一次進來還沒到位時 v197 寫死「尚無帳號，請先建檔」誤導你。本版改成保持 placeholder「— 主角（從帳號裡選 1 個）—」，等帳號到了會自動補上，不再誤判。④<b>「+同職稱」找不到律師 bug 修</b>：原因——@kl.legal 的職稱是「律師事務所合夥律師（郭柏鴻＝主持律師、李牧宸＝合夥律師）」，但其他律師可能只填「律師」或「執業律師」，v197 用精確相等比對全部 false。本版改用<b>寬鬆關鍵詞匹配</b>——自動抽出職稱主幹（律師／醫師／教練／設計師／顧問／創辦人／工程師／分析師／治療師／營養師／會計師／藥師／護理師／建築師／投資人／創業家／作家／編輯／主廚／講師／老師共 20 種後綴），任一關鍵字 includes 就算同類，律師現在會自動配到。產業欄位也用同樣寬鬆邏輯。⑤<b>D 摺疊重複的搜尋區</b>：你說 hub 太佔版面、影片還沒看到就被一堆搜尋塞滿。本版把<b>影片庫的「快速篩選」（階段／目標層／身份／職稱／產業／來源）整段摺成「進階篩選」details</b>、<b>批次操作工具列（全選／腳本範本／並排對比／匯出）摺成「批次操作工具」details</b>，都預設收起。<b>帳號管理篩選列（身份／量級／職稱／產業／排序）也同樣摺起</b>。影片庫搜尋框 placeholder 拿掉「/ 客戶」（hub 處理客戶）；工具列「客戶」下拉改名為「腳本範本對標客戶」（區分跟 hub 主角的用途）。⑥畫面打開順序：<b>hub（精簡）→ 統計卡 → 搜尋框 → 影片列表</b>，影片立刻看得到；要精修才展開兩個 details。<br>
+    <b>v197（四件大事一次做完：A 影片庫＋帳號管理改主角中心 hub、B 流程②／③ 視覺對齊流程①、C 影片庫使用說明 icon 換 SVG、D 歸類卡 ①②③ chip + sticky 儲存浮窗）：</b>①<b>A · 影片庫＋帳號管理改主角中心 hub</b>（取代 v194 對標助手，你說搞錯方向）：頁面頂部變成紅邊框的<b>主角 hub</b>—— ① 選主角下拉 → ② 主角資訊摘要卡浮現（handle／職稱／產業／粉絲量級／影片數／30 天成長／更新日期）→ ③ 5 顆對標 chip 一鍵套用「只看主角／＋同職稱／＋同產業／＋同身份／全部不限」，下方影片庫即時跟著篩。沒選主角＝行為跟舊版一樣（既有快速篩選、同職稱／同產業下拉仍可用）。對應你的場景：「只想學單一客戶」→ 選主角 + 只看主角；「客戶還沒加進來、想快速學這類人」→ 不選主角、直接用下方下拉的「全部職稱」/「全部產業」聚焦；「要精準對焦人群」→ hub 套用同類後，再展開下方快速篩選疊加階段／目標層／身份。②<b>B · 流程②／③ 視覺對齊流程①</b>：你說「顏色可怕、視覺不清晰」——把流程②／③ 步驟內按鈕的粗邊框（1.5px）和粗體（700）都拿掉，改成跟流程① sopBlock 的 .btn.btn-ghost 完全一致；鳥瞰圖的綠色「→ 輸出」也改成金色，跟整體配色系統一致。看起來會比 v196 乾淨很多。③<b>C · 影片庫使用說明 icon 換 SVG</b>：把「使用說明（點開看）」前面的 ℹ️ 換成品牌風格的 SVG info circle，跟其他 icon 一致。其他 ⚠️ 殘留在訊息標籤裡（如「⚠️ 此帳號已存在」這種 modal title）暫不動——它們是文字標籤不是 icon，下版你看到還有要換的列清單給我。④<b>D · 歸類卡 ①②③ chip + sticky 儲存浮窗</b>：v196 的「歸類卡對應流程說明 details」改成 4 顆<b>顯眼 chip</b>（自動分流／流程① 卡A／流程② 卡B／流程③ 卡C）——chip 只當視覺指引，系統還是靠卡內標記自動分流。最重要的：<b>右下角浮現 sticky 儲存按鈕「儲存這支影片＋」</b>——只要你貼了卡或填了影片標題就會浮現，不用再滑到最底！按下去會自動滾到原 saveBtn 並觸發完整確認流程。<br>
     <b>v196（你抓到 v195 留下的真 bug：①「內容載入失敗」是 ReferenceError ②歸類卡對應流程說明 ③影片庫＋帳號管理加「同職稱／同產業」篩選）：</b>①<b>P1 真正抓到「內容載入失敗」的根因</b>：你說「流程二顯示內容載入失敗」——我把 v195 的 opGuideHTML_v2() 抽出來用 node 實際跑了一次，<b>抓到 ReferenceError: intro is not defined</b>！原來我 v195 改 step() 函式時 str_replace 範圍<b>沒包含到下一行 var intro=...</b>，導致 step() 結尾 } 後直接接 ovStep——var intro 整段被吃掉、函式內 return '＜div＞'+intro+overview+steps+'＜/div＞' 直接 throw、被 mount() 內 try/catch 接住顯示「內容載入失敗：intro is not defined」。流程③ 因為當時是另一段獨立 replace 沒被波及，所以你看得到 PROMPT_A 按鈕。本版補回 var intro 並用 node eval 實測：<b>流程② 13,162 字 HTML、3 顆複製按鈕 + 2 顆開工具連結全部正確渲染</b>。順便：補完 changelog 文字內誤用反引號導致 renderManual template literal 提早終止的 syntax 副作用（block#3 從 inline script 抓不到 unbalanced）。②<b>P2 歸類卡也對應流程①／②／③</b>：你問「歸類卡也有一個流程①／②／③ 的方式嗎？」<b>是的——但你不用選，系統自動分流</b>。在「③ 歸類卡」分頁最上方加一個折疊說明：卡A（含影片+帳號兩段）=流程①、卡B（只有影片段）=流程②、卡C（只有帳號分析段）=流程③，貼進去自動判別。③<b>P3 影片庫＋帳號管理加「同職稱／同產業」篩選</b>（你提的核心需求「我同樣是律師找律師同行影片」）：影片庫工具列加「<b>全部職稱</b>」「<b>全部產業</b>」兩個下拉、帳號管理篩選列也加同樣兩個。<b>options 自動從你既有帳號的職稱／產業 dedupe 列出</b>——所以你不用每次手打，建過幾個律師帳號，「全部職稱」就會出現「律師事務所合夥律師」「整形外科醫師」等選項，選下去就只看那個職稱的帳號／影片。<br>
     ※「對標助手」（v194 那個「主角+對標→跳版面對照」）你說搞錯方向，下版會改造成「選主角→一鍵套用同職稱/同產業篩選」更貼近你的需求。<br>
     <b>v195（流程② / ③ 也加上「複製提示詞」按鈕，跟流程① 一樣可以直接按複製）：</b>你抓到的：流程① 的 sopBlock 8 步驟每步都有「複製提示詞 A／C／0／0A」按鈕可以直接按複製。但流程② / ③ 我之前做的版本只是「說明書」、只有文字、<b>沒有按鈕</b>，所以你得自己回流程① 找對應按鈕來複製，很卡。本版修好：①<b>流程② 同帳號＋多影片（5 步）</b>——step 2「（選配）封存」加「<b>複製『第一次建檔提示詞』</b>」鈕；step 3「Gemini 影片分析」加「<b>複製『Gemini 影片分析提示詞』</b>」鈕＋「<b>開 Gemini</b>」連結；step 4「子題型工具」加「<b>開子題型工具</b>」連結；step 5「最後整合·只要卡B」加「<b>複製『最後整合審查提示詞』</b>」鈕。②<b>流程③ 只重新分析帳號（4 步）</b>——step 2「帳號分析」加「<b>複製『帳號分析提示詞』</b>」鈕。按鈕都是酒紅實心邊框、跟流程① 同款；按下去會 toast「✓ 已複製『xxx 提示詞』（N 字）」確認。底層用同一份提示詞常數（PROMPT_0／PROMPT_A／PROMPT_C／GEM_PROMPT），不會跟流程① 不一致。<br>
@@ -5970,11 +5985,13 @@ function _hubAccByName(a){
 }
 function _hubPopulateSelect(selId,curValue){
   var sel=document.getElementById(selId); if(!sel) return;
+  /* v198 C1：accounts 還沒從雲端載入時保持 placeholder，不要寫死「尚無帳號」誤導使用者 */
   if(typeof accounts==='undefined' || !accounts || !accounts.length){
-    sel.innerHTML='<option value="">（尚無帳號，請先建檔）</option>'; return;
+    sel.innerHTML='<option value="">— 主角（從帳號裡選 1 個）—</option>';
+    return;
   }
   var sorted=accounts.slice().sort(function(a,b){ return (b.updatedAt||0)-(a.updatedAt||0); });
-  var opts='<option value="">— 還沒選主角（點開列出帳號）—</option>';
+  var opts='<option value="">— 主角（從帳號裡選 1 個）—</option>';
   sorted.forEach(function(a){
     var label=_hubAccByName(a);
     if(a.jobTitle) label+=' · '+a.jobTitle;
@@ -6007,10 +6024,34 @@ function _hubComputeRivals(heroAcc,mode){
   if(!heroAcc) return [];
   if(mode==='none') return [];
   if(mode==='all') return accounts.filter(function(x){return x.id!==heroAcc.id;}).map(function(x){return x.id;});
+  /* v198 C2：寬鬆關鍵詞匹配——抽出主角職稱／產業的核心關鍵字，包含即算同類
+     例如：主角是「律師事務所合夥律師（郭柏鴻＝主持律師）」，會抽出「律師」/「律師事務所」/「合夥律師」當核心關鍵字；其他律師（執業律師、合夥律師、出庭律師）只要含「律師」就算同職稱 */
+  function _coreKeywords(text){
+    if(!text) return [];
+    var t=String(text).trim();
+    if(!t) return [];
+    var cleaned=t.replace(/[（(][^）)]*[）)]/g,'').replace(/[，,、・·/／／＋+&]/g,' ').trim();
+    var parts=cleaned.split(/\s+/).filter(function(p){return p && p.length>=2;});
+    /* 常見職稱主幹詞：律師／醫師／教練／設計師／顧問／創辦人／工程師 等都包含於 parts 內因為它們本身是 2-3 字；2 字以上整段做為一個 key */
+    var keys=[t];
+    parts.forEach(function(p){ if(keys.indexOf(p)<0) keys.push(p); });
+    /* 抽出常見職業後綴詞（律師/醫師/教練/設計師等以「師」結尾、或「員」結尾、或「人」結尾）*/
+    var SUFFIX=['律師','醫師','教練','設計師','顧問','創辦人','工程師','分析師','治療師','營養師','會計師','藥師','護理師','建築師','投資人','創業家','作家','編輯','主廚','講師','老師'];
+    SUFFIX.forEach(function(sfx){ if(t.indexOf(sfx)>=0 && keys.indexOf(sfx)<0) keys.push(sfx); });
+    return keys;
+  }
+  function _matchByKeywords(heroVal,candVal){
+    var hk=_coreKeywords(heroVal), ck=_coreKeywords(candVal);
+    if(!hk.length || !ck.length) return false;
+    /* 主角任一關鍵字出現在 cand value 內、或 cand 任一關鍵字出現在 hero value 內 都算 match */
+    for(var i=0;i<hk.length;i++){ if(candVal && candVal.indexOf(hk[i])>=0) return true; }
+    for(var j=0;j<ck.length;j++){ if(heroVal && heroVal.indexOf(ck[j])>=0) return true; }
+    return false;
+  }
   return accounts.filter(function(x){
     if(x.id===heroAcc.id) return false;
-    if(mode==='job') return !!(x.jobTitle && heroAcc.jobTitle && x.jobTitle===heroAcc.jobTitle);
-    if(mode==='ind') return !!(x.industry && heroAcc.industry && x.industry===heroAcc.industry);
+    if(mode==='job') return _matchByKeywords(heroAcc.jobTitle||'', x.jobTitle||'');
+    if(mode==='ind') return _matchByKeywords(heroAcc.industry||'', x.industry||'');
     if(mode==='type') return ((x.types||[]).some(function(t){ return (heroAcc.types||[]).indexOf(t)>=0; }));
     return false;
   }).map(function(x){return x.id;});
