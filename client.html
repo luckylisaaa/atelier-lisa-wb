@@ -296,6 +296,47 @@ details.cat .cat-body{padding:14px 15px}
   .s1tab{padding:12px 8px}
   .s1tab .s1tab-info{display:none}
 }
+
+/* === v2.6 質感升級 === */
+
+/* 按鈕質感升級：所有 .btn 都加大、加陰影、加字距 */
+.btn{padding:13px 26px !important;font-size:13.5px !important;letter-spacing:1.5px !important;font-weight:600 !important;border-radius:8px !important;transition:all .2s ease !important;display:inline-flex !important;align-items:center !important;justify-content:center !important;gap:8px !important;line-height:1 !important}
+.btn-go{background:var(--rouge) !important;color:#fff !important;border:1px solid rgba(255,255,255,.1) !important;box-shadow:0 2px 8px rgba(165,24,32,.18) !important}
+.btn-go:hover{background:var(--rouge-soft) !important;transform:translateY(-1px) !important;box-shadow:0 4px 12px rgba(165,24,32,.25) !important}
+.btn-go:active{transform:translateY(0) !important;box-shadow:0 1px 4px rgba(165,24,32,.2) !important}
+.btn-go svg{width:14px !important;height:14px !important}
+.btn-ghost{background:#FFFCFB !important;color:var(--rouge) !important;border:1px solid #EAD9D6 !important;-webkit-text-fill-color:var(--rouge) !important}
+.btn-ghost:hover{background:#FAE8EA !important;border-color:var(--rouge) !important}
+
+/* 交付預覽 - 客戶版 / 顧問版切換 tab */
+.ver-toggle{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:18px 0 22px}
+.ver-tab{background:#FFFCFB;border:1px solid #EAD9D6;border-radius:10px;padding:14px 20px;font-family:inherit;font-size:14px;font-weight:600;letter-spacing:1.5px;color:var(--sub);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;transition:all .2s ease}
+.ver-tab:hover{background:#FAE8EA;color:var(--rouge);border-color:#E5C5C0}
+.ver-tab.is-on{background:var(--rouge);color:#fff;border-color:var(--rouge);box-shadow:0 2px 8px rgba(165,24,32,.2)}
+.ver-tab.is-on .vt-check{background:rgba(255,255,255,.2);color:#fff}
+.vt-check{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;background:#F4D7CC;color:var(--rouge);font-size:11px;font-weight:700}
+
+/* 交付預覽 - paper 視覺（仿 A4 精品紙感）*/
+.deliver-paper{background:#FDFBF8;border:1px solid #E8E3DA;border-radius:12px;padding:36px 40px;margin-top:8px;box-shadow:0 2px 12px rgba(42,26,28,.04);min-height:280px;position:relative}
+.deliver-paper-advisor{background:#FFFCFB;border-left:3px solid var(--gold)}
+.dp-kicker{font-family:'Cormorant Garamond',serif;font-size:11px;letter-spacing:4px;color:var(--gold);text-transform:uppercase;margin-bottom:8px}
+.dp-title{font-family:'Noto Serif TC',serif;font-size:22px;font-weight:700;color:var(--ink);line-height:1.4;margin-bottom:0}
+.dp-line{width:60px;height:2px;background:var(--gold);margin:14px 0 22px}
+.dp-body{font-family:'Noto Sans TC',sans-serif;font-size:13.5px;line-height:1.95;color:#5C4248;white-space:normal}
+.dp-empty{color:#C4B5B8;font-style:italic;text-align:center;padding:30px 0}
+
+/* 空交付物提示 */
+.empty-deliver{background:#FAF6F1;border:1px dashed #E8E3DA;border-radius:12px;padding:48px 24px;text-align:center;margin-top:8px}
+.ed-icon{font-size:36px;margin-bottom:14px;opacity:.6}
+.ed-title{font-family:'Noto Serif TC',serif;font-size:18px;font-weight:600;color:var(--ink);margin-bottom:8px}
+.ed-desc{font-size:13px;color:var(--sub);line-height:1.8;max-width:380px;margin:0 auto}
+
+/* tab 系統的 ⓘ 圖示更精緻 */
+.s1tab .s1tab-info{font-family:Georgia,serif !important}
+
+/* section-card 統一質感升級 */
+.section-card h3{font-family:'Noto Serif TC',serif !important;font-size:18px !important;font-weight:700 !important;color:var(--ink) !important;letter-spacing:.5px !important;margin-bottom:10px !important}
+.sc-note{color:var(--sub);font-size:12.5px;line-height:1.85;letter-spacing:.3px}
 </style>
 </head>
 <body>
@@ -332,7 +373,7 @@ details.cat .cat-body{padding:14px 15px}
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">客戶服務台</span></span>
-    <span id="verBadge">cs-v2.5.1</span>
+    <span id="verBadge">cs-v2.6</span>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button type="button" id="popoutBtn" class="popout-btn" title="把客戶服務台開成獨立小視窗"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6"/><path d="M20 4l-9 9"/><path d="M14 12v7H5V10h7"/></svg>小視窗</button>
@@ -1001,7 +1042,7 @@ function renderStage1(){
   
   var promptHTML = '<div class="section-card"><h3>③ 提示詞產生器（產出正式分析）</h3>'
     +'<div class="sc-note">按下會把客戶基本資訊＋上面所有備註與 5 個判斷組成完整提示詞，複製到 AI 對話框去跑，得出《會前初步觀察與需求對焦》。</div>'
-    +'<button class="btn btn-go" onclick="genS1Prompt()">'+ICN.note+' 產生初診提示詞</button>'
+    +'<button class="btn btn-go" onclick="genS1Prompt()">'+ICN.prompt+' 產生初診提示詞</button>'
     +'<div class="ai-fill-hint">⚙ 已套用 ATELIER 七維診斷框架</div>'
     +'</div>';
   
@@ -2431,6 +2472,40 @@ window.addEventListener('DOMContentLoaded', function(){
 
 
 /* === Stage 1 - 4 tab switching & info panel === */
+
+/* === v2.6 實作交付預覽：客戶版 / 顧問版 雙視圖切換 === */
+window.renderS1VersionToggleHTML=function(v){
+  v=v||{client:'',advisor:'',split:false};
+  var c=(v.client||'').trim(), a=(v.advisor||'').trim();
+  var hasC=!!c, hasA=!!a;
+  if(!hasC && !hasA){
+    return '<div class="empty-deliver"><div class="ed-icon">📭</div><div class="ed-title">尚未產生交付物</div><div class="ed-desc">完成「② 產生」階段、按下「儲存初診結果」之後，會在這裡看到完整的客戶版／顧問版預覽。</div></div>';
+  }
+  var defaultTab=hasC?'client':'advisor';
+  var clientHTML='<div class="deliver-paper">'
+    +'<div class="dp-kicker">ATELIER · CLIENT VERSION</div>'
+    +'<div class="dp-title">會前初步觀察與需求對焦</div>'
+    +'<div class="dp-line"></div>'
+    +'<div class="dp-body">'+(hasC?esc(c).replace(/\n/g,'<br>'):'<div class="dp-empty">尚未填入客戶版內容</div>')+'</div>'
+    +'</div>';
+  var advisorHTML='<div class="deliver-paper deliver-paper-advisor">'
+    +'<div class="dp-kicker">ATELIER · ADVISOR VERSION · CONFIDENTIAL</div>'
+    +'<div class="dp-title">內部判斷與策略備忘</div>'
+    +'<div class="dp-line"></div>'
+    +'<div class="dp-body">'+(hasA?esc(a).replace(/\n/g,'<br>'):'<div class="dp-empty">尚未填入顧問版內容</div>')+'</div>'
+    +'</div>';
+  return '<div class="ver-toggle">'
+    +'<button class="ver-tab '+(defaultTab==='client'?'is-on':'')+'" data-vertab="client" onclick="switchDeliverView(\'client\')">客戶版 '+(hasC?'<span class="vt-check">✓</span>':'')+'</button>'
+    +'<button class="ver-tab '+(defaultTab==='advisor'?'is-on':'')+'" data-vertab="advisor" onclick="switchDeliverView(\'advisor\')">顧問版 '+(hasA?'<span class="vt-check">✓</span>':'')+'</button>'
+    +'</div>'
+    +'<div class="ver-pane" data-verpane="client" '+(defaultTab==='client'?'':'style="display:none"')+'>'+clientHTML+'</div>'
+    +'<div class="ver-pane" data-verpane="advisor" '+(defaultTab==='advisor'?'':'style="display:none"')+'>'+advisorHTML+'</div>';
+};
+window.switchDeliverView=function(name){
+  document.querySelectorAll('.ver-tab').forEach(function(t){ t.classList.toggle('is-on', t.getAttribute('data-vertab')===name); });
+  document.querySelectorAll('.ver-pane').forEach(function(p){ p.style.display = p.getAttribute('data-verpane')===name?'block':'none'; });
+};
+
 window.switchS1Tab=function(name){
   var tabs=document.querySelectorAll('.s1tab');
   var panes=document.querySelectorAll('.s1tab-pane');
