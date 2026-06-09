@@ -9,7 +9,7 @@
 <meta name="apple-mobile-web-app-title" content="ATELIER 客戶服務台">
 <meta name="theme-color" content="#A51820">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700;900&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700;900&family=Noto+Sans+TC:wght@400;500;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 /* ═══ 品牌底層（與 index.html 影片診斷工作台一致）═══ */
 :root{
@@ -202,7 +202,7 @@ details.cat .cat-body{padding:14px 15px}
 .locked-wrap h2{font-family:'Noto Serif TC',serif;font-size:20px;color:var(--text);margin-bottom:8px;letter-spacing:1px}
 .locked-wrap p{font-size:13px;line-height:1.9;max-width:440px;margin:0 auto}
 
-/* ═══ cs-v1.8 extended stages ═══ */
+/* ═══ cs-v1.9 extended stages ═══ */
 .stage-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 @media(max-width:640px){.stage-grid{grid-template-columns:1fr}}
 .matrix-card{background:var(--warm-white);border:1px solid var(--border);border-radius:10px;padding:12px;margin:8px 0}
@@ -210,7 +210,7 @@ details.cat .cat-body{padding:14px 15px}
 .mini-output{font-size:12.5px;line-height:1.75;color:var(--text);background:#fff;border:1px dashed var(--gold-soft);border-radius:9px;padding:10px;margin-top:8px;white-space:pre-wrap}
 .flow-dot.next{background:#FBF0EF;color:var(--rouge);border-color:#EAD9D6}
 
-/* cs-v1.8：初診三格式產出 */
+/* cs-v1.9：初診三格式產出 */
 .deliver-card{border-left:3px solid var(--rouge);background:linear-gradient(180deg,#FFFCFB 0%,#FFFFFF 75%)}
 .save-dot{width:9px;height:9px;border-radius:50%;background:var(--green);display:inline-block;box-shadow:0 0 0 3px rgba(110,134,120,.14)}
 .print-hint{font-size:11.5px;color:var(--sub);line-height:1.7;margin-top:6px}
@@ -225,6 +225,24 @@ details.cat .cat-body{padding:14px 15px}
 .deliver-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
 .export-spec{font-size:12.5px;line-height:1.8;color:var(--text);background:var(--warm);border:1px solid var(--border);border-radius:10px;padding:10px 12px;margin:6px 0 10px}
 @media(max-width:620px){.deliver-grid{grid-template-columns:1fr}}
+
+
+/* ═══ cs-v1.9 UX polish：降色階、群組化、預覽、健康評分 ═══ */
+:root{--green:#6E8678;}
+.page-head .ph-title{font-size:38px;font-weight:900;letter-spacing:3.5px;color:var(--ink)}
+.section-card{margin-bottom:28px;border-radius:12px;box-shadow:none}
+.section-card>h3{font-size:20px;font-weight:900;letter-spacing:.8px;margin-bottom:10px;justify-content:space-between}
+.section-card .sc-note{font-size:12px;font-style:italic;color:#8A7274;line-height:1.85;margin-bottom:16px}
+.fld label{font-size:13px;letter-spacing:1px}.fld textarea,.paste-box{font-size:14px;line-height:1.85;padding:16px;resize:vertical}.paste-box{min-height:160px}.ver-textarea,.large-ver-textarea{min-height:280px!important;max-height:600px!important;font-size:14px!important;line-height:1.85!important;padding:16px!important;resize:vertical!important}.char-stat{font-size:12px;color:#8A7274;font-family:'Cormorant Garamond','Noto Sans TC',sans-serif;font-style:italic;letter-spacing:.5px;float:right;margin-top:2px}
+.cs-banner .mini-btn{background:transparent!important;border:1px solid #E8D4D6!important;color:#7A1518!important;-webkit-text-fill-color:#7A1518!important;font-size:12px!important;padding:6px 14px!important;border-radius:999px!important}
+.cs-banner .mini-btn:hover{background:#FBF0EF!important;transform:translateY(1px)}.cs-banner .savestate{color:#6E8678}.cs-banner .savestate svg circle{fill:#6E8678!important}.tab.disabled{color:rgba(138,114,116,.72)!important}.tab.disabled .soon{background:#F4F1EC!important;color:#8A7274!important;border:1px solid #E8E3DA!important}
+.btn.btn-gold,.btn.btn-go{max-width:360px;width:auto;margin-left:auto;margin-right:auto;padding:14px 24px;font-size:14px;background:#7A1018;color:#fff;-webkit-text-fill-color:#fff;border:1.5px solid rgba(255,255,255,.78);box-shadow:none}.btn.btn-gold:hover,.btn.btn-go:hover{transform:translateY(1px)}.btn-row .btn{width:auto}.btn-row{justify-content:center}
+.cli-card{border-color:#F0E9E4;background:#fff}.cli-card.cur{border-color:#E8E3DA;border-left:4px solid #D4A574;background:#FFFDFC;position:relative}.cli-card.cur::after{content:'● 服務中';position:absolute;top:12px;right:12px;background:#D4A574;color:white;font-size:11px;font-weight:800;border-radius:999px;padding:3px 9px;letter-spacing:.5px}.cli-card.cur .cc-handle>span:first-child{display:none!important}.flow-dot.done{background:#E5EDE9;color:#6E8678;border-color:#CFE0D7}.flow-dot.prog{background:#F4F1EC;color:#8A7274;border-color:#E8E3DA}.flow-dot.next{background:#F4F1EC;color:#8A7274;border-color:#E8E3DA}
+.stage-group{background:#FAF6F1;border:1px solid #F1E9DD;border-radius:16px;padding:24px;margin-bottom:32px}.stage-group-kicker{font-family:'Cormorant Garamond',serif;font-size:12px;letter-spacing:4px;color:#D4A574;margin-bottom:12px;text-transform:uppercase}.stage-group .section-card{background:transparent;border:1px solid #E8E3DA;box-shadow:none}.stage-group .section-card.ai-fill{background:transparent}
+.ai-collapsible{overflow:hidden}.ai-collapse-head{display:flex;align-items:center;justify-content:space-between;gap:12px;cursor:pointer}.ai-collapse-body{max-height:0;overflow:hidden;transition:max-height .3s ease}.ai-collapsible.open .ai-collapse-body{max-height:900px}.ai-toggle{font-size:12px;color:#8A7274;border:1px solid #E8E3DA;border-radius:999px;padding:4px 10px;background:#FDFBF8;white-space:nowrap}.section-preview-btn{margin-left:auto;border:1px solid #E8E3DA;background:#FDFBF8;color:#8A7274;border-radius:999px;padding:4px 10px;font-size:12px;cursor:pointer;font-family:inherit}.section-preview-btn:hover{background:#FBF0EF;color:#7A1518}.preview-paper{background:#FDFBF8;color:#2A1A1C;border:1px solid #E8E3DA;border-radius:8px;padding:34px 38px;max-width:720px;margin:0 auto}.preview-kicker{font-family:'Cormorant Garamond',serif;letter-spacing:4px;color:#D4A574;font-size:12px;margin-bottom:12px}.preview-paper h2{font-family:'Noto Serif TC',serif;font-size:28px;color:#2A1A1C;margin-bottom:18px}.preview-paper pre{white-space:pre-wrap;font-family:'Noto Sans TC',sans-serif;font-size:14px;line-height:1.9;color:#5C4248;background:transparent;border:0;margin:0}
+.health-note{min-height:120px!important;font-size:14px!important;line-height:1.7!important}.health-note-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px}.health-overview{background:#FDFBF8;border:1px solid #E8E3DA;border-radius:12px;padding:18px;margin-top:16px}.health-total-big{font-family:'Cormorant Garamond',serif;font-size:38px;color:#D4A574;line-height:1;font-weight:600}.health-bar-row{display:grid;grid-template-columns:150px 1fr 34px;gap:10px;align-items:center;margin:9px 0;font-size:12px;color:#8A7274}.health-bar{height:8px;background:#F4F1EC;border-radius:999px;overflow:hidden}.health-bar i{display:block;height:100%;background:#A51820;border-radius:999px}.health-card-paste{background:#FAF6F1;border:1px dashed #E8E3DA;border-radius:12px;padding:14px;margin:12px 0 16px}.save-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#6E8678;vertical-align:middle}
+@media(max-width:760px){.health-note-grid{grid-template-columns:1fr}.stage-group{padding:16px}.page-head .ph-title{font-size:32px}.cs-banner .mini-btn{padding:6px 10px!important}.cli-card.cur::after{position:static;display:inline-block;margin-top:8px}}
+
 </style>
 </head>
 <body>
@@ -261,7 +279,7 @@ details.cat .cat-body{padding:14px 15px}
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">客戶服務台</span></span>
-    <span id="verBadge">cs-v1.8</span>
+    <span id="verBadge">cs-v1.9</span>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button type="button" id="popoutBtn" class="popout-btn" title="把客戶服務台開成獨立小視窗"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6"/><path d="M20 4l-9 9"/><path d="M14 12v7H5V10h7"/></svg>小視窗</button>
@@ -725,6 +743,7 @@ function renderBanner(flash){
     +'<span class="hs" title="內容健康分數"><span>健康</span> <b>'+(hs.has?hs.total:'—')+'</b>/50</span>'
     +'<button class="mini-btn" data-short="評分" onclick="openHealthEditor()">評分</button>'
     +'<button class="mini-btn" data-short="全貌" onclick="openOverview()" title="把這位客戶目前所有已填資料一次看完">查看全貌</button>'
+    +'<button class="mini-btn" data-short="階段" onclick="openStageOverview()" title="只查看目前這個階段的資料">查看此階段</button>'
     +'<button class="mini-btn" data-short="上一步" onclick="undoLast()"'+(canUndo?'':' disabled')+' title="把目前畫面回退到上一個自動暫存點">'+ICN.undo+' 上一步'+(canUndo?(' ('+(_undoStack.length-1)+')'):'')+'</button>'
     +'<span class="savestate'+(flash?' flash':'')+'" id="ssBadge" title="'+esc(sstxt)+'">'+(flash?ICN.check:'<span class="save-dot"></span>')+' <span class="save-text">'+esc(sstxt)+'</span></span>';
   if(flash){ setTimeout(function(){ var ss=$('ssBadge'); if(ss) ss.classList.remove('flash'); },1100); }
@@ -880,16 +899,16 @@ function renderStage1(){
     +'<button class="btn btn-gold" onclick="buildStage1Prompt()">'+ICN.prompt+'產生初診提示詞</button></div>'
     +'<div class="section-card"><h3>④ 把 AI 產出貼回（分成「客戶版」「顧問版」兩個獨立框）</h3>'
     +'<div class="sc-note">兩個框各自獨立——你想把 AI 整段放哪邊就放哪邊；不再依賴自動拆。每邊都可以「清除」單獨重貼。</div>'
-    +'<div class="fld"><label>客戶版（給客戶看的乾淨版）</label>'
-    +'<textarea class="paste-box" id="s1resultC" placeholder="把 AI 整理出的「客戶版」整段貼回這裡…">'+esc(parsedC)+'</textarea>'
+    +'<div class="fld"><label>客戶版（給客戶看的乾淨版）<span class="char-stat">客戶版 · 已輸入 '+parsedC.length+' 字</span></label>'
+    +'<textarea class="paste-box large-ver-textarea" id="s1resultC" placeholder="把 AI 整理出的「客戶版」整段貼回這裡…">'+esc(parsedC)+'</textarea>'
     +'<button class="btn btn-ghost" style="margin-top:6px;font-size:12px" onclick="clearStage1Ver(\'C\')">清除此版</button></div>'
-    +'<div class="fld"><label>顧問版（保留判斷理由與風險）</label>'
-    +'<textarea class="paste-box" id="s1resultA" placeholder="把 AI 整理出的「顧問版」整段貼回這裡…">'+esc(parsedA)+'</textarea>'
+    +'<div class="fld"><label>顧問版（保留判斷理由與風險）<span class="char-stat">顧問版 · 已輸入 '+parsedA.length+' 字</span></label>'
+    +'<textarea class="paste-box large-ver-textarea" id="s1resultA" placeholder="把 AI 整理出的「顧問版」整段貼回這裡…">'+esc(parsedA)+'</textarea>'
     +'<button class="btn btn-ghost" style="margin-top:6px;font-size:12px" onclick="clearStage1Ver(\'A\')">清除此版</button></div>'
     +'<button class="btn btn-go" style="margin-top:6px" onclick="saveStage1()">儲存初診結果</button></div>'
     +'<div class="section-card"><h3>⑤ 交付物《會前初步觀察與需求對焦》</h3>'+verBlock('s1',{client:parsedC,advisor:parsedA,split:!!(parsedC||parsedA)})+'</div>'
     +'<div class="section-card deliver-card"><h3>⑥ 產出檔案規格（PDF / HTML / PPT）</h3>'
-    +'<div class="sc-note">這裡是初診階段最後的交付出口。cs-v1.8 已重做 HTML / PDF / PPTX 三格式，統一對齊 ATELIER 真實品牌視覺：奶油白底、紅色重點、黑字主體、暖灰輔助與大量留白。</div>'
+    +'<div class="sc-note">這裡是初診階段最後的交付出口。cs-v1.9 已重做 HTML / PDF / PPTX 三格式，統一對齊 ATELIER 真實品牌視覺：奶油白底、紅色重點、黑字主體、暖灰輔助與大量留白。</div>'
     +'<div class="deliver-grid"><div class="fld"><label>交付物標題</label><input id="s1outTitle" value="ATELIER × '+esc(a.displayName||a.handle||'客戶')+'｜會前初步觀察與需求對焦"></div>'
     +'<div class="fld"><label>輸出版本</label><select id="s1outAudience"><option value="client">只輸出客戶版｜乾淨、可寄送、可簡報</option><option value="advisor">只輸出顧問版｜內部判斷、風險、策略備忘</option><option value="both">完整包｜客戶版＋顧問版</option></select></div>'
     +'<div class="fld"><label>備註／檔名補充</label><input id="s1outNote" placeholder="例如：理鴻法律事務所／會前初診／v1"></div></div>'
@@ -1299,10 +1318,10 @@ function renderStage3(){
     +'<div class="section-card"><h3>④ 把 AI 整理的《深度問診整理書》貼回（分成「客戶版」「顧問版」兩個獨立框）</h3>'
     +'<div class="sc-note">兩個框各自獨立；每邊都可以「清除」單獨重貼。</div>'
     +'<div class="fld"><label>客戶版（給客戶看的乾淨版）</label>'
-    +'<textarea class="paste-box" id="s3resultC" placeholder="把 AI 整理出的「客戶版」整段貼回這裡…">'+esc(parsedC3)+'</textarea>'
+    +'<textarea class="paste-box large-ver-textarea" id="s3resultC" placeholder="把 AI 整理出的「客戶版」整段貼回這裡…">'+esc(parsedC3)+'</textarea>'
     +'<button class="btn btn-ghost" style="margin-top:6px;font-size:12px" onclick="clearStage3Ver(\'C\')">清除此版</button></div>'
     +'<div class="fld"><label>顧問版（完整、保留判斷理由與風險）</label>'
-    +'<textarea class="paste-box" id="s3resultA" placeholder="把 AI 整理出的「顧問版」整段貼回這裡…">'+esc(parsedA3)+'</textarea>'
+    +'<textarea class="paste-box large-ver-textarea" id="s3resultA" placeholder="把 AI 整理出的「顧問版」整段貼回這裡…">'+esc(parsedA3)+'</textarea>'
     +'<button class="btn btn-ghost" style="margin-top:6px;font-size:12px" onclick="clearStage3Ver(\'A\')">清除此版</button></div>'
     +'<button class="btn btn-go" style="margin-top:6px" onclick="saveStage3()">儲存問診結果</button></div>'
     +'<div class="section-card"><h3>⑤ 交付物《深度問診整理書》</h3>'+verBlock('s3',{client:parsedC3,advisor:parsedA3,split:!!(parsedC3||parsedA3)})+'</div>';
@@ -1390,13 +1409,20 @@ function healthOf(a){
   var saved=(a.contentHealthScore&&a.contentHealthScore.items)||[];
   return HEALTH_ITEMS.map(function(it){
     var s=saved.find(function(x){ return x.id===it[0]; })||{};
-    return { id:it[0], label:it[1], score:(typeof s.score==='number'?s.score:0), note:s.note||'' };
+    var legacy=s.note||'';
+    return { id:it[0], label:it[1], score:(typeof s.score==='number'?s.score:0), note:s.note||'', noteClient:s.noteClient||legacy, noteAdvisor:s.noteAdvisor||legacy };
   });
 }
 function healthTotal(a){
   var items=healthOf(a); var total=items.reduce(function(s,x){ return s+(x.score||0); },0);
   var has=items.some(function(x){ return x.score>0; });
   return { total:total, has:has };
+}
+function healthOverviewHTML(items){
+  var total=items.reduce(function(s,x){return s+(x.score||0);},0);
+  return '<div class="health-overview"><div style="display:flex;align-items:flex-end;gap:12px;margin-bottom:12px"><div class="health-total-big">'+total+'</div><div style="font-size:12px;color:#8A7274;padding-bottom:4px">/50<br>目前狀態</div></div>'
+    +items.map(function(it){ var pct=Math.max(0,Math.min(100,(it.score||0)/5*100)); return '<div class="health-bar-row"><span>'+it.id+'. '+esc(it.label)+'</span><span class="health-bar"><i style="width:'+pct+'%"></i></span><b style="color:#2A1A1C">'+(it.score||'—')+'</b></div>'; }).join('')
+    +'<button class="btn btn-ghost" style="margin-top:14px" onclick="downloadHealthHTML()">下載評分表（HTML / PDF）</button></div>';
 }
 function openHealthEditor(){
   var a=curAcc(); if(!a){ toast(ICN.warn+' 尚未選定客戶'); return; }
@@ -1408,15 +1434,18 @@ function openHealthEditor(){
     }).join('');
     return '<div class="health-row" style="flex-direction:column;align-items:stretch">'
       +'<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><span class="hr-lab">'+it.id+'. '+esc(it.label)+'</span><span class="hr-scores">'+scs+'</span></div>'
-      +'<textarea class="health-note" id="hn-'+it.id+'" placeholder="評分依據／備註（顧問版會保留）…" style="width:100%;min-height:56px;font-size:13px;padding:8px 10px;border:1px solid var(--border);border-radius:8px;background:#fff;color:var(--ink);outline:none;font-family:inherit;line-height:1.6;resize:vertical;margin-top:6px">'+esc(it.note||'')+'</textarea></div>';
+      +'<div class="health-note-grid"><div><label style="font-size:12px;color:#8A7274;font-weight:700">客戶版備註</label><textarea class="health-note" id="hnc-'+it.id+'" placeholder="給客戶看的乾淨理由…">'+esc(it.noteClient||'')+'</textarea></div>'
+      +'<div><label style="font-size:12px;color:#8A7274;font-weight:700">顧問版備註</label><textarea class="health-note" id="hna-'+it.id+'" placeholder="內部完整判斷與下一步建議…">'+esc(it.noteAdvisor||'')+'</textarea></div></div></div>';
   }).join('');
   var hs=healthTotal(a);
   sh.innerHTML='<div style="padding:6px 4px 4px;position:relative">'
     +'<button onclick="closeModal()" style="position:absolute;top:0;right:4px;background:none;border:none;color:var(--sub);cursor:pointer;line-height:1;padding:4px" title="關閉">'+ICN.close+'</button>'
-    +'<div style="font-family:\'Noto Serif TC\',serif;font-size:18px;font-weight:900;color:var(--rouge);padding-right:30px">內容健康分數</div>'
+    +'<div style="font-family:\'Noto Serif TC\',serif;font-size:22px;font-weight:900;color:#2A1A1C;padding-right:30px">內容健康分數</div>'
     +'<div style="font-size:12px;color:var(--sub);margin:4px 0 12px">'+esc(a.handle||'')+' '+esc(a.displayName||'')+' · 10 項各 1–5 分，0＝待評分。目前 <b id="heTotal">'+hs.total+'</b>/50</div>'
     +'<button class="btn btn-gold" style="margin-bottom:12px" onclick="buildHealthPrompt()">'+ICN.prompt+'產生健康評分提示詞（帶入已收集的客戶資料）</button>'
+    +'<div class="health-card-paste"><div style="font-size:13px;font-weight:800;color:#2A1A1C;margin-bottom:6px">把 AI 整理的《健康評分卡》貼回這裡</div><textarea class="paste-box" id="healthCardPaste" placeholder="貼上 ===ATELIER 健康評分卡=== 那整段…"></textarea><button class="btn btn-go" onclick="parseHealthCard()">解析並填入下方 10 項</button></div>'
     +rows
+    +healthOverviewHTML(items)
     +'<div class="btn-row"><button class="btn btn-go" onclick="saveHealth()">儲存健康分數</button>'
     +'<button class="btn btn-ghost" onclick="closeModal()">關閉</button></div></div>';
   md.classList.add('show');
@@ -1436,32 +1465,62 @@ function saveHealth(){
   var sh=$('sheet');
   var items=HEALTH_ITEMS.map(function(it){
     var on=sh.querySelector('.sc.on[data-hid="'+it[0]+'"]');
-    var note=($('hn-'+it[0])||{value:''}).value.trim();
-    return { id:it[0], label:it[1], score:on?(parseInt(on.dataset.hsc)||0):0, note:note };
+    var noteClient=($('hnc-'+it[0])||{value:''}).value.trim();
+    var noteAdvisor=($('hna-'+it[0])||{value:''}).value.trim();
+    return { id:it[0], label:it[1], score:on?(parseInt(on.dataset.hsc)||0):0, note:noteAdvisor||noteClient, noteClient:noteClient, noteAdvisor:noteAdvisor };
   });
   a.contentHealthScore={ items:items, updatedAt:Date.now() };
   _pushSnap(_currentSnap()); _lastDraftAt=_nowHM(); saveCurrent(true);
   toast(ICN.check+' 健康分數已儲存並同步');
   closeModal(); renderBanner(); renderSelect();
 }
+function parseHealthCard(){
+  var text=($('healthCardPaste')||{value:''}).value||'';
+  if(!text.trim()){ toast('請先貼上健康評分卡'); return; }
+  var count=0;
+  HEALTH_ITEMS.forEach(function(it){
+    var re=new RegExp('(?:^|\\n)\\s*'+it[0]+'[\\.、]\\s*'+it[1]+'\\s*[：:]\\s*([0-5])\\s*(?:/|／)\\s*(?:評分依據)?\\s*[：:]?\\s*([^\\n]+)','m');
+    var m=text.match(re);
+    if(m){
+      var score=parseInt(m[1])||0, note=(m[2]||'').trim();
+      var btn=document.querySelector('.sc[data-hid="'+it[0]+'"][data-hsc="'+score+'"]');
+      if(btn){ document.querySelectorAll('.sc[data-hid="'+it[0]+'"]').forEach(function(x){x.classList.remove('on')}); btn.classList.add('on'); }
+      var c=$('hnc-'+it[0]), a=$('hna-'+it[0]); if(c&&!c.value) c.value=note; if(a) a.value=note; count++;
+    }
+  });
+  var t=0; document.querySelectorAll('.hr-scores').forEach(function(grp){ var on=grp.querySelector('.sc.on'); if(on) t+=parseInt(on.dataset.hsc)||0; }); if($('heTotal')) $('heTotal').textContent=t;
+  toast(count?ICN.check+' 已解析健康評分卡，填入 '+count+' 項':'沒有解析到分數，請確認格式');
+}
+function downloadHealthHTML(){
+  var a=curAcc(); if(!a){toast(ICN.warn+' 尚未選定客戶');return;}
+  saveHealth();
+  var items=healthOf(a), total=healthTotal(a).total, d=new Date().toISOString().slice(0,10);
+  var html='<!DOCTYPE html><html lang="zh-Hant"><head><meta charset="UTF-8"><title>ATELIER 健康評分表</title><style>body{background:#FDFBF8;color:#2A1A1C;font-family:"Noto Sans TC",sans-serif;padding:48px}h1{font-family:"Noto Serif TC",serif;font-size:34px}.k{font-family:"Cormorant Garamond",serif;color:#D4A574;letter-spacing:4px}.total{font-family:"Cormorant Garamond",serif;font-size:54px;color:#D4A574}.row{display:grid;grid-template-columns:180px 1fr 40px;gap:14px;align-items:center;margin:14px 0}.bar{height:10px;background:#F4F1EC;border-radius:99px}.bar i{display:block;height:100%;background:#A51820;border-radius:99px}.note{color:#8A7274;font-size:13px;line-height:1.7;margin:6px 0 18px 0}</style></head><body><div class="k">ATELIER · HEALTH SCORE</div><h1>'+esc(a.displayName||a.handle||'客戶')+'｜內容健康評分表</h1><div class="total">'+total+'<span style="font-size:18px;color:#8A7274"> / 50</span></div>'+items.map(function(it){return '<div class="row"><b>'+it.id+'. '+esc(it.label)+'</b><span class="bar"><i style="width:'+((it.score||0)/5*100)+'%"></i></span><b>'+(it.score||'—')+'</b></div><div class="note">客戶版：'+esc(it.noteClient||'')+'<br>顧問版：'+esc(it.noteAdvisor||'')+'</div>';}).join('')+'<div style="margin-top:40px;color:#C4B5B8">cs-v1.9 · '+d+'</div></body></html>';
+  downloadBlob(safeFileName('ATELIER_健康評分表_'+(a.displayName||a.handle||'client'))+'.html',html,'text/html;charset=utf-8');
+}
 function buildHealthPrompt(){
   var a=curAcc(); if(!a){ toast(ICN.warn+' 尚未選定客戶'); return; }
   var f=ensureFlow(a);
   var parts=[];
   parts.push('【客戶基本】\n品牌/帳號：'+(a.handle||'')+'\n顯示名稱：'+(a.displayName||'')+'\n產業：'+(a.industry||'')+'\n職稱：'+(a.jobTitle||''));
-  var s1=(f.stage1_initial&&f.stage1_initial.data&&f.stage1_initial.data.result)||'';
-  if(s1) parts.push('【初診結果】\n'+s1);
+  var s1d=f.stage1_initial&&f.stage1_initial.data;
+  if(s1d) parts.push('【初診結果】\n客戶版：\n'+(s1d.resultClient||'')+'\n顧問版：\n'+(s1d.resultAdvisor||s1d.result||''));
   var bgLines=[];
   PROFILE_CATS.forEach(function(cat){ cat[2].forEach(function(fd){ var v=profileVal(a,cat[0],fd[0],fd[2]); if(v&&String(v).trim()) bgLines.push('・'+fd[1]+'：'+v); }); });
   if(bgLines.length) parts.push('【建檔資料】\n'+bgLines.join('\n'));
-  var s3=(f.stage3_interview&&f.stage3_interview.data&&f.stage3_interview.data.result)||'';
-  if(s3) parts.push('【問診整理】\n'+s3);
+  var s3d=f.stage3_interview&&f.stage3_interview.data;
+  if(s3d) parts.push('【問診整理】\n客戶版：\n'+(s3d.resultClient||'')+'\n顧問版：\n'+(s3d.resultAdvisor||s3d.result||''));
   var p='我要幫這個客戶評「ATELIER 內容健康分數」。請根據以下已收集的所有資料，替 10 個面向各打 1–5 分（5 最好），並各寫一句評分依據。\n\n'
     +parts.join('\n\n')+'\n\n'
     +'【請評分的 10 個面向】\n'+HEALTH_ITEMS.map(function(it){ return it[0]+'. '+it[1]; }).join('\n')+'\n\n'
-    +'請輸出兩個版本：\n'
-    +'【客戶版】只給分數＋一句話說明＋「優先改善」建議（挑最該補的 2-3 項）\n'
-    +'【顧問版】保留每一項的評分依據、風險、缺口與推論';
+    +'【輸出格式 · 必須照抄】\n'
+    +'第一行：===ATELIER 健康評分卡===\n'
+    +'接著逐項輸出，格式如下：\n'
+    +'1. 定位清楚度：3 / 評分依據：這裡寫一句乾淨、具體、可理解的理由\n'
+    +'2. 服務可理解度：4 / 評分依據：xxxxxx\n'
+    +'...一直到第 10 項。\n'
+    +'最後一行：===卡片結束===\n\n'
+    +'請注意：每一項都要輸出；評分依據請讓「客戶版」也能看懂，不要使用太尖銳或羞辱性的語氣。';
   copyPrompt(p,'健康評分提示詞');
 }
 
@@ -1476,6 +1535,76 @@ function needClientHTML(title){
   return '<div class="locked-wrap"><div class="lk-ic">'+ICN.user+'</div><h2>'+esc(title)+'</h2>'
     +'<p>還沒選定服務對象。請先到「<a href="#" onclick="switchTo(\'select\');return false;">選擇客戶</a>」挑一位，再回到這個階段。</p></div>';
 }
+
+
+/* ═══════════════ cs-v1.9：區塊預覽 / 階段樣貌 / AI 摺疊 / 初診群組 ═══════════════ */
+function sectionText(card){
+  if(!card) return '';
+  var clone=card.cloneNode(true);
+  clone.querySelectorAll('button,.section-preview-btn').forEach(function(x){x.remove();});
+  return (clone.innerText||'').replace(/\n{3,}/g,'\n\n').trim();
+}
+function openSectionPreview(btn){
+  var card=btn.closest('.section-card'); if(!card) return;
+  var title=(card.querySelector('h3')||{}).innerText||'區塊預覽';
+  title=title.replace('⊞ 預覽','').trim();
+  var content=sectionText(card);
+  var sh=$('sheet'), md=$('modal'); if(!sh||!md) return;
+  sh.innerHTML='<div style="position:relative;padding:10px 4px 4px">'
+    +'<div style="position:absolute;right:8px;top:4px;display:flex;gap:8px"><button class="mini-btn" onclick="copyVal(document.getElementById(\'secPreviewText\').innerText,\'區塊預覽\')">複製內容</button><button class="mini-btn" onclick="closeModal()">關閉</button></div>'
+    +'<div class="preview-paper"><div class="preview-kicker">ATELIER · SECTION PREVIEW</div><h2>'+esc(title)+'</h2><pre id="secPreviewText">'+esc(content)+'</pre></div></div>';
+  md.classList.add('show');
+  function key(e){ if(e.key==='Escape'){ closeModal(); document.removeEventListener('keydown',key); } }
+  document.addEventListener('keydown',key);
+  md.onclick=function(e){ if(e.target===md){ closeModal(); document.removeEventListener('keydown',key); } };
+}
+function enhanceSections(root){
+  root=root||document;
+  root.querySelectorAll('.section-card').forEach(function(card){
+    var h=card.querySelector(':scope > h3'); if(!h) return;
+    if(!h.querySelector('.section-preview-btn')){
+      var b=document.createElement('button'); b.type='button'; b.className='section-preview-btn'; b.textContent='⊞ 預覽'; b.onclick=function(e){ e.stopPropagation(); openSectionPreview(b); };
+      h.appendChild(b);
+    }
+    if(card.classList.contains('ai-fill') && !card.dataset.aiCollapse){
+      card.dataset.aiCollapse='1';
+      var body=document.createElement('div'); body.className='ai-collapse-body';
+      var nodes=[]; var n=h.nextSibling; while(n){ nodes.push(n); n=n.nextSibling; }
+      nodes.forEach(function(x){ body.appendChild(x); });
+      var head=document.createElement('div'); head.className='ai-collapse-head';
+      h.parentNode.insertBefore(head,h); head.appendChild(h);
+      var toggle=document.createElement('span'); toggle.className='ai-toggle'; toggle.textContent='展開 ▾'; head.appendChild(toggle);
+      card.appendChild(body); card.classList.add('ai-collapsible');
+      head.onclick=function(e){ if(e.target.classList.contains('section-preview-btn')) return; card.classList.toggle('open'); toggle.textContent=card.classList.contains('open')?'收起 ▴':'展開 ▾'; };
+    }
+  });
+}
+function groupStage1(){
+  var box=$('view-stage1'); if(!box || box.dataset.grouped==='1') return;
+  var cards=[].slice.call(box.querySelectorAll(':scope > .section-card'));
+  if(cards.length<7) return;
+  var groups=[['STEP 1 · INTAKE',[cards[1],cards[2]]],['STEP 2 · ANALYZE',[cards[3],cards[4]]],['STEP 3 · DELIVER',[cards[5],cards[6]]]];
+  groups.forEach(function(g){
+    var wrap=document.createElement('div'); wrap.className='stage-group'; wrap.innerHTML='<div class="stage-group-kicker">'+g[0]+'</div>';
+    var first=g[1][0]; if(first&&first.parentNode) first.parentNode.insertBefore(wrap,first);
+    g[1].forEach(function(c){ if(c) wrap.appendChild(c); });
+  });
+  box.dataset.grouped='1';
+}
+function openStageOverview(){
+  var cur=document.querySelector('.view.on'); if(!cur){ toast('找不到目前階段'); return; }
+  if(curAcc()) _flushAutoSave();
+  var title=(cur.querySelector('.ph-title')||{}).innerText||'目前階段';
+  var content=(cur.innerText||'').replace(/\n{3,}/g,'\n\n').trim();
+  var sh=$('sheet'), md=$('modal'); if(!sh||!md) return;
+  sh.innerHTML='<div style="position:relative;padding:10px 4px 4px">'
+    +'<button onclick="closeModal()" style="position:absolute;right:8px;top:4px;background:none;border:0;color:#8A7274;cursor:pointer">'+ICN.close+'</button>'
+    +'<div class="preview-paper"><div class="preview-kicker">ATELIER · CURRENT STAGE</div><h2>'+esc(title)+'</h2><pre>'+esc(content)+'</pre></div></div>';
+  md.classList.add('show'); md.onclick=function(e){ if(e.target===md) closeModal(); };
+}
+function enhanceCurrentView(){ var v=document.querySelector('.view.on'); if(v){ enhanceSections(v); if(v.id==='view-stage1') groupStage1(); } }
+setInterval(enhanceCurrentView,900);
+
 
 /* ═══════════════ 分頁切換 ═══════════════ */
 function switchTo(view){
@@ -1521,7 +1650,7 @@ window.addEventListener('DOMContentLoaded', function(){
 </script>
 
 <script>
-/* ═══════════════ cs-v1.8 擴充：④診斷 ⑤盤點 ⑥企劃 ⑦交付 ═══════════════ */
+/* ═══════════════ cs-v1.9 擴充：④診斷 ⑤盤點 ⑥企劃 ⑦交付 ═══════════════ */
 (function(){
   var STAGE_EXT={
     stage4:{key:'stage4_diagnosis', no:'④', en:'STAGE ④ · CONTENT DIAGNOSIS', title:'內容診斷', purpose:'把初診、建檔、問診資料收斂成「可交付的策略判斷」：定位、受眾、內容缺口、轉換缺口與優先改善順序。',
@@ -1628,12 +1757,14 @@ window.addEventListener('DOMContentLoaded', function(){
       +stageHead(conf.purpose,conf.key)
       +'<div class="section-card ai-fill"><h3>'+ICN.spark+'AI 輔助產出</h3><div class="sc-note">先按提示詞，把已收集的①～③資料帶給 AI；AI 產出後，把重點貼回下方欄位，這一階段就會成為後續提案與交付的依據。</div>'
       +'<div class="fld"><label>額外補充給 AI 的資料</label><textarea id="x-'+stageId+'-extra" placeholder="例如：客戶臨時補充、你觀察到的重點、最新會議結論…"></textarea></div>'
-      +'<button class="btn btn-gold" onclick="buildExtStagePrompt(\''+stageId+'\')">'+ICN.prompt+'產生'+conf.title+'提示詞</button></div>'
+      +'<button class="btn btn-gold" onclick="buildExtStagePrompt(\''+stageId+'\')">'+ICN.prompt+'產生'+conf.title+'提示詞</button>'
+      +'<div class="fld" style="margin-top:12px"><label>把 AI 回傳的欄位版貼回這裡</label><textarea class="paste-box" id="x-'+stageId+'-paste" placeholder="欄位名稱：內容"></textarea></div>'
+      +'<button class="btn btn-go" onclick="parseExtStagePaste(\''+stageId+'\')">解析並填入</button></div>'
       +'<div class="section-card"><h3>'+conf.no+' '+conf.title+'工作區</h3><div class="sc-note">每一格都可以先粗填，系統會自動暫存。填越完整，後面的企劃、交付與結案就越穩。</div>'
       +'<div class="stage-grid">'+extRows(stageId,conf,rec)+'</div></div>'
-      +'<div class="section-card"><h3>兩版交付整理</h3><div class="sc-note">客戶版＝可直接給客戶看；顧問版＝保留你的真實判斷與內部策略。兩者都會存回這位客戶的資料裡。</div>'
-      +'<div class="fld"><label>客戶版</label><textarea id="x-'+stageId+'-resultClient" placeholder="貼上整理後可給客戶看的版本…">'+esc(d.resultClient||'')+'</textarea></div>'
-      +'<div class="fld"><label>顧問版</label><textarea id="x-'+stageId+'-resultAdvisor" placeholder="貼上內部完整判斷、風險與推論…">'+esc(d.resultAdvisor||'')+'</textarea></div></div>'
+      +(stageId==='stage7'
+        ? '<div class="section-card"><h3>交付摘要</h3><div class="sc-note">交付追蹤屬於內部 ops，改為單欄整理：交付狀態、款項、修改紀錄、待辦與復盤。</div><div class="fld"><label>交付摘要</label><textarea class="large-ver-textarea" id="x-'+stageId+'-deliverySummary" placeholder="整理本次交付狀態、已完成項目、待補資料、款項狀態、修改紀錄與下一步提醒…">'+esc(d.deliverySummary||d.finalSummary||d.resultAdvisor||d.resultClient||'')+'</textarea></div></div>'
+        : '<div class="section-card"><h3>兩版交付整理</h3><div class="sc-note">客戶版＝可直接給客戶看；顧問版＝保留你的真實判斷與內部策略。兩者都會存回這位客戶的資料裡。</div><div class="fld"><label>客戶版</label><textarea class="large-ver-textarea" id="x-'+stageId+'-resultClient" placeholder="貼上整理後可給客戶看的版本…">'+esc(d.resultClient||'')+'</textarea></div><div class="fld"><label>顧問版</label><textarea class="large-ver-textarea" id="x-'+stageId+'-resultAdvisor" placeholder="貼上內部完整判斷、風險與推論…">'+esc(d.resultAdvisor||'')+'</textarea></div></div>')
       +'<div class="btn-row"><button class="btn btn-go" onclick="saveExtStage(\''+stageId+'\')">儲存'+conf.title+'</button><button class="btn btn-ghost" onclick="copyExtStageSummary(\''+stageId+'\')">複製本階段摘要</button></div>';
   };
   window.saveExtStage=function(stageId){
@@ -1645,7 +1776,10 @@ window.addEventListener('DOMContentLoaded', function(){
   window.copyExtStageSummary=function(stageId){
     var conf=STAGE_EXT[stageId], a=curAcc(); if(!conf||!a){ toast(ICN.warn+' 尚未選定客戶'); return; }
     readExtStageToData(stageId); var rec=(a.clientFlow||{})[conf.key]||{data:{}}; var d=rec.data||{};
-    var out='【'+conf.no+' '+conf.title+'】\n'+conf.fields.map(function(fd){return fd[1]+'：'+(d[fd[0]]||'');}).join('\n')+'\n\n【客戶版】\n'+(d.resultClient||'')+'\n\n【顧問版】\n'+(d.resultAdvisor||'');
+    var meta=(a.handle||'')+' · '+(a.displayName||'')+' · '+new Date().toISOString().slice(0,10);
+    var out=meta+'\n【'+conf.no+' '+conf.title+'】\n'+conf.fields.map(function(fd){return fd[1]+'：'+(d[fd[0]]||'');}).join('\n');
+    if(stageId==='stage7') out+='\n\n【交付摘要】\n'+(d.deliverySummary||'');
+    else out+='\n\n【客戶版】\n'+(d.resultClient||'')+'\n\n【顧問版】\n'+(d.resultAdvisor||'');
     copyVal(out,conf.title+'摘要');
   };
   function extStatus(a,stageId){ var c=STAGE_EXT[stageId]; return flowStatus(a,c.key); }
@@ -1683,7 +1817,7 @@ window.addEventListener('DOMContentLoaded', function(){
 
 
 <script>
-/* ═══════════════ cs-v1.8 初診交付物：設計版 HTML / PDF / 直接 PPTX ═══════════════ */
+/* ═══════════════ cs-v1.9 初診交付物：設計版 HTML / PDF / 直接 PPTX ═══════════════ */
 (function(){
   function safeFileName(name){ return (name||'ATELIER_初診交付物').replace(/[\\/:*?"<>|\n\r]+/g,'_').replace(/\s+/g,'_').slice(0,80); }
   function clipText(t,n){ t=(t||'').replace(/\s+/g,' ').trim(); n=n||180; return t.length>n ? t.slice(0,n-1)+'…' : t; }
@@ -1819,7 +1953,7 @@ window.addEventListener('DOMContentLoaded', function(){
     +'<section class="cover"><div class="kicker">ATELIER × '+esc((handle||name).toUpperCase())+'</div><h1>ATELIER × '+esc(name)+'</h1><div class="subtitle">會前初步觀察與需求對焦</div><div class="suben">Pre-meeting Brief · '+esc(year)+'</div><div class="slogan">Inspire · Create · Shine.</div></section>'
     +'<section class="info-section page"><div class="info-grid"><article class="panel"><div class="panel-k">PROJECT</div><h2>交付資訊</h2><div class="meta-grid"><div class="meta-row">客戶名稱<b>'+esc(name)+'</b></div>'+(industry?'<div class="meta-row">產業<b>'+esc(industry)+'</b></div>':'')+(owner?'<div class="meta-row">對接人 / 職稱<b>'+esc(owner)+'</b></div>':'')+'<div class="meta-row">日期<b>'+esc(d)+'</b></div><div class="meta-row">輸出版本<b>'+esc(audienceLabel(b.audience))+'</b></div></div></article><article class="panel"><div class="panel-k">PURPOSE</div><h2>本次目的</h2>'+note+'</article></div></section>'
     +'<main class="page">'+clientBlock+advisorBlock+sourceBlock+fwBlock+nextBlock+'</main>'
-    +'<section class="end-page"><div class="end-inner"><div class="end-logo">ATELIER</div><div class="gold-line"></div><div class="end-slogan">Inspire · Create · Shine.</div><div class="end-zh">是承接折射的工坊</div><div class="contact-placeholder">— 預留聯絡資訊 —</div><div class="version">v14 Master Edition · cs-v1.8 · '+esc(d)+'</div></div></section></body></html>';
+    +'<section class="end-page"><div class="end-inner"><div class="end-logo">ATELIER</div><div class="gold-line"></div><div class="end-slogan">Inspire · Create · Shine.</div><div class="end-zh">是承接折射的工坊</div><div class="contact-placeholder">— 預留聯絡資訊 —</div><div class="version">v14 Master Edition · cs-v1.9 · '+esc(d)+'</div></div></section></body></html>';
   }
   function downloadBlob(content,mime,filename){ var blob=new Blob([content],{type:mime}); var url=URL.createObjectURL(blob); var a=document.createElement('a'); a.href=url; a.download=filename; document.body.appendChild(a); a.click(); setTimeout(function(){URL.revokeObjectURL(url); a.remove();},800); }
   window.exportStage1HTML=function(){ var b=getS1Bundle(); if(!b){toast(ICN.warn+' 尚未選定客戶');return;} downloadBlob(buildS1HTMLDoc(b),'text/html;charset=utf-8','client_'+safeFileName(b.title)+'_'+b.audience+'.html'); toast(ICN.check+' 已下載 ATELIER 設計版 HTML'); };
@@ -1883,7 +2017,7 @@ window.addEventListener('DOMContentLoaded', function(){
           s.addText('Inspire · Create · Shine.',{x:4.6,y:3.28,w:4.1,h:.25,fontSize:16,italic:true,color:C.primary,fontFace:'Cormorant Garamond',align:'center'});
           s.addText('是承接折射的工坊',{x:4.6,y:3.72,w:4.1,h:.22,fontSize:13,color:C.text2,fontFace:'Microsoft JhengHei',align:'center'});
           [['— Email —',1.5],['— Web —',4.0],['— IG —',6.5],['— LINE —',9.0]].forEach(function(x){ s.addShape(NS.ShapeType.rect,{x:x[1],y:5.35,w:2.0,h:.58,fill:{color:C.bg,transparency:100},line:{color:C.line,width:1,dash:'dash'}}); s.addText(x[0],{x:x[1],y:5.55,w:2.0,h:.14,fontSize:10,color:C.text4,fontFace:'Cormorant Garamond',align:'center'}); });
-          s.addText('cs-v1.8 · '+d,{x:5.2,y:7.08,w:3,h:.14,fontSize:8,color:C.text4,fontFace:'Cormorant Garamond',align:'center'});
+          s.addText('cs-v1.9 · '+d,{x:5.2,y:7.08,w:3,h:.14,fontSize:8,color:C.text4,fontFace:'Cormorant Garamond',align:'center'});
         }
       });
       var out=safeFileName(b.title)+'_'+b.audience+'.pptx';
@@ -1893,7 +2027,7 @@ window.addEventListener('DOMContentLoaded', function(){
       if(ret&&ret.then) ret.then(finish).catch(fail); else finish();
     });
   };
-  window.copyStage1OutputSpec=function(){ var b=getS1Bundle(); if(!b){toast(ICN.warn+' 尚未選定客戶');return;} var spec='【ATELIER 初診交付物三格式產出規格｜cs-v1.8】\n\n標題：'+b.title+'\n客戶：'+(b.a.handle||'')+' '+(b.a.displayName||'')+'\n輸出版本：'+audienceLabel(b.audience)+'\n備註：'+(b.note||'無')+'\n\n品牌視覺：\n- 背景固定奶油白 #FDFBF8\n- 主紅 #A51820 只用於章節、副標、數字與重點\n- 主文字 #2A1A1C，輔助文字 #8A7274 / #C4B5B8\n- 鎏金 #D4A574 只作細線或高級感點綴\n- 大量留白、左對齊、編輯感排版，不做滿版紅底\n\n三格式：\n1. HTML：可直接下載設計版網頁檔。\n2. PDF：透過瀏覽器列印視窗另存 PDF。\n3. PPTX：使用 pptxgenjs 直接產生 13.333 × 7.5 inch 寬版簡報。\n\n【客戶版重點卡】\n'+(b.clientCards.map(function(c){return c.k+'. '+c.title+'：'+c.body;}).join('\n')||'')+'\n\n【顧問版重點卡】\n'+(b.advisorCards.map(function(c){return c.k+'. '+c.title+'：'+c.body;}).join('\n')||'')+'\n\n【資料來源】\n'+(b.sources.map(function(s){return '- '+s.label+(s.note?'：'+s.note:'');}).join('\n')||'')+'\n\n【進階初診判斷】\n'+(b.frameworks.map(function(f){return '- '+f.label+'：'+f.text;}).join('\n')||''); copyPrompt(spec,'初診三格式設計版規格'); };
+  window.copyStage1OutputSpec=function(){ var b=getS1Bundle(); if(!b){toast(ICN.warn+' 尚未選定客戶');return;} var spec='【ATELIER 初診交付物三格式產出規格｜cs-v1.9】\n\n標題：'+b.title+'\n客戶：'+(b.a.handle||'')+' '+(b.a.displayName||'')+'\n輸出版本：'+audienceLabel(b.audience)+'\n備註：'+(b.note||'無')+'\n\n品牌視覺：\n- 背景固定奶油白 #FDFBF8\n- 主紅 #A51820 只用於章節、副標、數字與重點\n- 主文字 #2A1A1C，輔助文字 #8A7274 / #C4B5B8\n- 鎏金 #D4A574 只作細線或高級感點綴\n- 大量留白、左對齊、編輯感排版，不做滿版紅底\n\n三格式：\n1. HTML：可直接下載設計版網頁檔。\n2. PDF：透過瀏覽器列印視窗另存 PDF。\n3. PPTX：使用 pptxgenjs 直接產生 13.333 × 7.5 inch 寬版簡報。\n\n【客戶版重點卡】\n'+(b.clientCards.map(function(c){return c.k+'. '+c.title+'：'+c.body;}).join('\n')||'')+'\n\n【顧問版重點卡】\n'+(b.advisorCards.map(function(c){return c.k+'. '+c.title+'：'+c.body;}).join('\n')||'')+'\n\n【資料來源】\n'+(b.sources.map(function(s){return '- '+s.label+(s.note?'：'+s.note:'');}).join('\n')||'')+'\n\n【進階初診判斷】\n'+(b.frameworks.map(function(f){return '- '+f.label+'：'+f.text;}).join('\n')||''); copyPrompt(spec,'初診三格式設計版規格'); };
 
 })();
 </script>
