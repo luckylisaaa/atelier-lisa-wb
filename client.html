@@ -337,6 +337,99 @@ details.cat .cat-body{padding:14px 15px}
 /* section-card 統一質感升級 */
 .section-card h3{font-family:'Noto Serif TC',serif !important;font-size:18px !important;font-weight:700 !important;color:var(--ink) !important;letter-spacing:.5px !important;margin-bottom:10px !important}
 .sc-note{color:var(--sub);font-size:12.5px;line-height:1.85;letter-spacing:.3px}
+
+/* === v2.7 客戶影片庫 + 帳號體質快照 + isClient 識別 === */
+
+/* 帳號體質快照 */
+.acc-snapshot{background:linear-gradient(180deg,#FFFCFB,#FAF6F1);border:1px solid #E8E3DA;border-radius:12px;padding:18px 22px;margin:14px 0 18px}
+.snap-row{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-bottom:8px}
+.snap-item{}
+.snap-label{font-family:'Cormorant Garamond',serif;font-size:10.5px;color:var(--gold);letter-spacing:3px;text-transform:uppercase;margin-bottom:4px}
+.snap-val{font-family:'Noto Serif TC',serif;font-size:26px;font-weight:700;color:var(--rouge);line-height:1.1}
+.snap-val-sm{font-size:15px;color:var(--ink)}
+.snap-unit{font-size:13px;color:var(--sub);margin-left:3px;font-weight:500}
+.snap-meta{font-size:12.5px;color:var(--sub);line-height:1.7;padding-top:8px;border-top:1px dashed #E8E3DA;margin-top:8px}
+.snap-meta b{color:var(--ink);font-weight:600}
+
+/* 客戶 / 潛在客戶 徽章 */
+.badge-client{display:inline-block;background:linear-gradient(135deg,#D4A574,#B8895A);color:#fff;font-size:11px;font-weight:700;padding:3px 10px;border-radius:99px;letter-spacing:.5px}
+.badge-lead{display:inline-block;background:#F4F1EC;color:var(--sub);font-size:11px;font-weight:600;padding:3px 10px;border-radius:99px}
+
+/* 影片卡片列表 */
+.vc-list{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+@media (max-width:760px){.vc-list{grid-template-columns:1fr}.snap-row{grid-template-columns:repeat(2,1fr)}}
+.video-card{background:#FFFCFB;border:1px solid #E8E3DA;border-radius:10px;padding:16px;transition:all .2s ease}
+.video-card:hover{box-shadow:0 3px 10px rgba(42,26,28,.06);border-color:#DCC8CB}
+.vc-head{display:grid;grid-template-columns:38px 1fr auto;gap:12px;align-items:flex-start;margin-bottom:10px}
+.vc-num{font-family:'Cormorant Garamond',serif;font-size:24px;color:var(--gold);font-weight:600;line-height:1}
+.vc-title-block{}
+.vc-title{font-family:'Noto Serif TC',serif;font-size:14.5px;font-weight:700;color:var(--ink);line-height:1.4;margin-bottom:3px}
+.vc-meta{font-size:11px;color:var(--sub);letter-spacing:.3px}
+.vc-delta{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;color:var(--sub);line-height:1}
+.vc-delta.up{color:#4A6552}
+.vc-delta.down{color:var(--rouge)}
+.vc-viral{background:#FAF3F4;border-left:2px solid var(--rouge);padding:8px 12px;border-radius:0 6px 6px 0;margin:8px 0;font-size:12px;line-height:1.7;color:#5C4248}
+.vc-viral-label{display:inline-block;font-family:'Cormorant Garamond',serif;font-size:10px;letter-spacing:2px;color:var(--gold);background:#fff;padding:1px 8px;border-radius:99px;margin-right:8px;border:1px solid #E8E3DA}
+.vc-stats{display:flex;gap:14px;font-size:11.5px;color:var(--sub);margin:8px 0;padding:6px 0;border-top:1px dashed #E8E3DA}
+.vc-stats span b{color:var(--ink);font-weight:700;margin-right:3px}
+.vc-foot{display:flex;justify-content:space-between;align-items:center;font-size:11px;color:var(--sub);padding-top:8px;border-top:1px solid #F2EDE5;margin-top:8px}
+.vc-rate{background:transparent;border:1px solid #DCC8CB;color:var(--rouge);font-size:11px;padding:4px 12px;border-radius:6px;cursor:pointer;font-family:inherit;font-weight:600;transition:all .2s ease}
+.vc-rate:hover{background:#FAE8EA;border-color:var(--rouge)}
+.vc-rated{color:#4A6552;font-weight:600;font-size:11px}
+.vc-transcript{margin-top:10px;padding-top:8px;border-top:1px solid #F2EDE5}
+.vc-transcript summary{cursor:pointer;font-size:11.5px;color:var(--gold);padding:4px 0;outline:none;list-style:none;font-weight:600;letter-spacing:.5px}
+.vc-transcript summary::-webkit-details-marker{display:none}
+.vc-transcript summary:hover{color:var(--rouge)}
+.vc-transcript-body{background:#FAF6F1;padding:12px 14px;border-radius:8px;margin-top:6px;font-size:12px;line-height:1.85;color:#5C4248;white-space:pre-wrap;max-height:240px;overflow-y:auto;border:1px solid #E8E3DA}
+
+/* 客戶列表卡片上的 isClient 標識 */
+.cli-card.is-my-client::before{content:'⭐';position:absolute;top:14px;left:14px;font-size:18px;z-index:5}
+.cli-card.is-my-client{border-left:4px solid var(--gold)}
+
+/* banner 上的 isClient toggle */
+.client-mark-btn{background:transparent;border:1px solid #DCC8CB;color:var(--sub);padding:5px 12px;border-radius:6px;cursor:pointer;font-size:11.5px;font-family:inherit;letter-spacing:.5px;margin-left:8px;transition:all .2s ease}
+.client-mark-btn.is-marked{background:linear-gradient(135deg,#D4A574,#B8895A);color:#fff;border-color:#B8895A}
+.client-mark-btn:hover{border-color:var(--rouge);color:var(--rouge)}
+.client-mark-btn.is-marked:hover{opacity:.92;color:#fff;border-color:#B8895A}
+
+/* === v2.8 健康評分項目說明 ⓘ === */
+.hr-info{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;background:transparent;border:1px solid #DCC8CB;color:#8A7274;font-size:10.5px;margin-left:6px;cursor:pointer;transition:all .2s ease;font-family:Georgia,serif;line-height:1;padding:0;vertical-align:1px}
+.hr-info:hover{background:#FAF3F4;color:var(--rouge);border-color:var(--rouge)}
+
+/* === v2.8 進度提示列 === */
+.client-progress-bar{background:linear-gradient(180deg,#FFFCFB,#FAF6F1);border:1px solid #E8E3DA;border-radius:10px;padding:14px 18px;margin:12px 0 18px;display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:center}
+.cpb-kicker{font-family:'Cormorant Garamond',serif;font-size:11px;letter-spacing:3px;color:#D4A574;text-transform:uppercase}
+.cpb-progress{height:6px;background:#F2EDE5;border-radius:99px;overflow:hidden;margin-top:6px}
+.cpb-progress i{display:block;height:100%;background:linear-gradient(90deg,#D4A574,#A51820);border-radius:99px;transition:width .4s ease}
+.cpb-percent{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:700;color:#A51820;line-height:1}
+.cpb-percent small{font-size:14px;color:#8A7274;margin-left:2px;font-weight:500}
+.cpb-stage{font-size:13px;color:#5C4248}
+.cpb-missing{font-size:11.5px;color:#8A7274;margin-top:4px;line-height:1.7}
+.cpb-missing b{color:#A51820;font-weight:600;margin-right:4px}
+.cpb-status-complete{color:#4A6552;font-weight:600;font-size:12px}
+.cpb-status-complete::before{content:'✓ ';color:#4A6552}
+
+/* === v2.9 stage 標題 ⓘ 按鈕 + 客戶搜尋 + 篩選 + 雷達圖 === */
+
+.stage-info-btn{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;background:transparent;border:1px solid #DCC8CB;color:#8A7274;font-size:13px;margin-left:10px;cursor:pointer;font-family:Georgia,serif;line-height:1;padding:0;vertical-align:6px;transition:all .2s ease}
+.stage-info-btn:hover{color:var(--rouge);background:#FAF3F4;border-color:var(--rouge)}
+
+/* 客戶搜尋 + 篩選 */
+.client-toolbar{background:linear-gradient(180deg,#FFFCFB,#FAF6F1);border:1px solid #E8E3DA;border-radius:12px;padding:14px 16px;margin:0 0 16px;display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center}
+@media(max-width:560px){.client-toolbar{grid-template-columns:1fr}}
+.client-search{position:relative}
+.client-search input{width:100%;padding:10px 14px 10px 38px;border:1px solid #E8E3DA;border-radius:8px;font-size:14px;font-family:inherit;background:#fff;color:var(--ink);outline:none;transition:all .2s ease}
+.client-search input:focus{border-color:var(--rouge);box-shadow:0 0 0 3px rgba(165,24,32,.08)}
+.client-search::before{content:'🔍';position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:14px;opacity:.5}
+.client-filter-btns{display:flex;gap:6px}
+.client-filter-btn{background:#fff;border:1px solid #E8E3DA;border-radius:99px;padding:7px 14px;font-size:12px;font-family:inherit;color:var(--sub);cursor:pointer;letter-spacing:.5px;transition:all .2s ease}
+.client-filter-btn:hover{border-color:#DCC8CB;color:var(--ink)}
+.client-filter-btn.on{background:linear-gradient(135deg,#D4A574,#B8895A);color:#fff;border-color:#B8895A;font-weight:600}
+.client-count-hint{font-size:11.5px;color:var(--sub);margin:8px 4px 0;font-style:italic}
+
+/* 健康評分雷達圖 */
+.health-radar-wrap{background:#FFFCFB;border:1px solid #E8E3DA;border-radius:14px;padding:18px;margin:14px 0;display:flex;justify-content:center}
+.health-radar-svg{max-width:380px;width:100%;height:auto}
 </style>
 </head>
 <body>
@@ -373,7 +466,7 @@ details.cat .cat-body{padding:14px 15px}
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">客戶服務台</span></span>
-    <span id="verBadge">cs-v2.6</span>
+    <span id="verBadge">cs-v2.9</span>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button type="button" id="popoutBtn" class="popout-btn" title="把客戶服務台開成獨立小視窗"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6"/><path d="M20 4l-9 9"/><path d="M14 12v7H5V10h7"/></svg>小視窗</button>
@@ -408,7 +501,7 @@ details.cat .cat-body{padding:14px 15px}
     <div class="ph-sub">Pick one client. Walk the whole cycle, from intake to delivery.</div>
   </div>
   <div class="hint">這裡列出帳號管理裡的所有帳號（與診斷工作台共用同一個資料庫）。<b>點一張卡＝選定為當前服務對象</b>，接下來的 ①初診 / ②建檔 / ③問診 全部圍繞這位客戶。資料即時存回雲端，診斷工作台那邊也讀得到。</div>
-  <div class="searchbar"><input id="cliSearch" placeholder="搜尋：@帳號 / 顯示名稱 / 產業…" oninput="renderSelect()"></div>
+  <div class="client-toolbar"><div class="client-search"><input id="cliSearch" placeholder="搜尋：@帳號 / 顯示名稱 / 產業…" oninput="renderSelect()"></div><div class="client-filter-btns"><button class="client-filter-btn" data-filter="all" onclick="setClientFilter('all')">全部</button><button class="client-filter-btn" data-filter="client" onclick="setClientFilter('client')">⭐ 我的客戶</button><button class="client-filter-btn" data-filter="lead" onclick="setClientFilter('lead')">📌 潛在</button></div></div><div class="client-count-hint" id="cliCountHint"></div>
   <div id="cliList"></div>
 </div>
 
@@ -856,6 +949,7 @@ function renderBanner(flash){
   var sstxt = _lastDraftAt ? ('自動暫存於 '+_lastDraftAt) : '尚未變更';
   b.className='cs-banner';
   b.innerHTML='<span>目前服務：<span class="who">'+esc(a.handle||'@?')+' '+esc(a.displayName||'')+'</span></span>'
+    +(a.isClient?'<span class="badge-client" style="margin-left:8px">⭐ 我的客戶</span>':'<button class="client-mark-btn" onclick="toggleClientMark()" title="標記為我的合作客戶">📌 標為我的客戶</button>')
     +'<span class="hs" title="內容健康分數"><span>健康</span> <b>'+(hs.has?hs.total:'—')+'</b>/50</span>'
     +'<button class="mini-btn" data-short="評分" onclick="openHealthEditor()">評分</button>'
     +'<button class="mini-btn" data-short="歷史" onclick="openHealthHistory()" title="查看健康評分歷史">📈 歷史</button>'
@@ -875,11 +969,26 @@ function renderSelect(){
     return;
   }
   var q=(($('cliSearch')||{value:''}).value||'').trim().toLowerCase();
+  var clientFilter = window._clientFilter || 'all';
   var list=accounts.filter(function(a){
+    // isClient 篩選
+    if(clientFilter==='client' && !a.isClient) return false;
+    if(clientFilter==='lead' && a.isClient) return false;
+    // 文字搜尋
     if(!q) return true;
     var hay=((a.handle||'')+' '+(a.displayName||'')+' '+(a.industry||'')+' '+(a.jobTitle||'')+' '+(a.domain||'')).toLowerCase();
     return hay.indexOf(q)>=0;
   }).sort((a,b)=>(b.updatedAt||0)-(a.updatedAt||0));
+  // 更新按鈕 active 狀態
+  document.querySelectorAll('.client-filter-btn').forEach(function(b){ b.classList.toggle('on', b.getAttribute('data-filter')===clientFilter); });
+  // 更新數量提示
+  var hint=document.getElementById('cliCountHint');
+  if(hint){
+    var totalAll=accounts.length;
+    var totalClient=accounts.filter(function(a){return a.isClient;}).length;
+    var totalLead=totalAll-totalClient;
+    hint.textContent='全部 '+totalAll+' · ⭐ 我的客戶 '+totalClient+' · 📌 潛在 '+totalLead+' · 目前顯示 '+list.length+' 筆';
+  }
   if(!list.length){ box.innerHTML='<div class="empty-res">找不到符合「'+esc(q)+'」的客戶</div>'; return; }
   box.innerHTML=list.map(cliCard).join('');
   box.querySelectorAll('[data-pick]').forEach(function(el){ el.onclick=function(){ pickClient(el.dataset.pick); }; });
@@ -1070,7 +1179,7 @@ function renderStage1(){
     +'<div id="s1exportMsg" style="font-size:12px;color:var(--sub);line-height:1.7;margin-top:8px">PPTX 會直接產出檔案；若瀏覽器第一次擋下載，請允許此網站下載多個檔案。</div></div>';
   
   box.innerHTML=
-    '<div class="page-head"><div class="ph-en">STAGE ① · INITIAL SCAN</div><h2 class="ph-title">公開資料初診</h2></div>'
+    '<div class="page-head"><div class="ph-en">STAGE ① · INITIAL SCAN</div><h2 class="ph-title">公開資料初診 <button type="button" class="stage-info-btn" onclick="openS1TabInfo(\'gather\')" title="查看此階段的底層邏輯">ⓘ</button></h2></div>'
     +stageHead('只用公開資料，判斷這位客戶目前在市場上「被看見的樣子」——還沒跟客戶深聊就能做的分析。','stage1_initial')
     +tabHTML
     +'<div class="s1tab-pane active" data-s1pane="gather">'+aiFillHTML+sourcesHTML+fwHTML+'</div>'
@@ -1601,8 +1710,100 @@ function atelierDiagnosisFormat(a){ a=a||curAcc(); return '\n\n【ATELIER 七維
 /* ═══════════════ 內容健康分數 ═══════════════ */
 var HEALTH_ITEMS=[
   [1,'定位清楚度'],[2,'服務可理解度'],[3,'目標客群明確度'],[4,'內容一致性'],[5,'專業信任感'],
-  [6,'人格記憶點'],[7,'視覺辨識度'],[8,'CTA 與轉換路徑'],[9,'內容資產可延展性'],[10,'拍攝執行成熟度']
-];
+  [6,'人格記憶點'],[7,'視覺辨識度'],[8,'CTA 與轉換路徑'],[9,'內容資產可延展性'],[10,'拍攝執行成熟度'] ];
+window.HEALTH_ITEM_NOTES={
+  1:{title:'定位清楚度',why:'三秒測試：陌生人點進你的個人頁，3 秒內能不能說出你是做什麼的？這是所有內容工作的「地基」，定位不清，後面再怎麼努力都會被稀釋。',scores:{
+    5:'極清楚｜Bio 一句話、置頂三支說清楚、每支影片題目都呼應同一個專業領域',
+    4:'清楚｜大部分內容圍繞核心定位，偶爾有跑題但不影響主軸',
+    3:'尚可｜可以看出方向但不夠聚焦，部分內容偏離主軸',
+    2:'模糊｜內容跨多領域，陌生人需要看 5-10 支才理解',
+    1:'混亂｜定位完全不清楚，內容主題隨機'
+  }},
+  2:{title:'服務可理解度',why:'潛在客戶能不能在 1 分鐘內知道「你可以幫我解決什麼問題、收費大概多少」？服務曖昧 = 詢問率低。',scores:{
+    5:'極清楚｜服務頁 / 精選帖 / LINE 自動回覆完整呈現方案與報價',
+    4:'清楚｜有服務說明但價格不明，要私訊才知道',
+    3:'尚可｜知道在賣服務但內容不具體',
+    2:'模糊｜服務形態說不清楚，要看半天才懂',
+    1:'完全不清楚｜沒看到任何服務說明'
+  }},
+  3:{title:'目標客群明確度',why:'你說話的對象到底是誰？沒有 ICP（理想客戶輪廓）就無法做精準內容。',scores:{
+    5:'極明確｜可指出產業/職位/痛點/年齡層/性別比例',
+    4:'明確｜知道大致受眾輪廓',
+    3:'部分明確｜知道大方向但不夠細',
+    2:'模糊｜「想要更多客戶」這種泛說',
+    1:'完全沒概念｜不知道目標客戶是誰'
+  }},
+  4:{title:'內容一致性',why:'每週都發 vs 心血來潮才發，差別在客戶對你的「可靠度」評分。一致 = 專業。',scores:{
+    5:'極一致｜固定頻率、固定風格、固定題型結構',
+    4:'一致｜大致固定節奏，偶爾調整',
+    3:'不太穩｜頻率忽高忽低，風格有變動',
+    2:'斷斷續續｜很久發一次，每次風格都不同',
+    1:'幾乎沒在發｜超過 1 個月沒更新'
+  }},
+  5:{title:'專業信任感',why:'看完你的內容，潛在客戶會不會覺得「這個人我願意付錢」？這是成交前的關鍵分數。',scores:{
+    5:'極高｜有案例/數據/客戶見證/媒體背書/證照',
+    4:'高｜有部分證據與專業展現',
+    3:'尚可｜看得出專業但缺少社會證明',
+    2:'低｜內容像在自說自話',
+    1:'幾乎無｜看不出專業性'
+  }},
+  6:{title:'人格記憶點',why:'被記住 vs 被遺忘的差別，往往不是專業度，而是「有沒有 hook」。獨特性 = 不可取代。',scores:{
+    5:'極強｜有招牌口頭禪／視覺風格／鮮明人格',
+    4:'強｜有可辨識的個人特色',
+    3:'尚可｜有一點特色但不突出',
+    2:'弱｜泛泛之輩，很難記住',
+    1:'幾乎無｜完全沒有獨特性'
+  }},
+  7:{title:'視覺辨識度',why:'滑動時 0.3 秒能不能讓人停下來？視覺風格 = 演算法之外的第二個「曝光武器」。',scores:{
+    5:'極強｜配色 / 字體 / 構圖 / 縮圖完整品牌系統',
+    4:'強｜有大致一致的視覺風格',
+    3:'尚可｜有風格但不太穩定',
+    2:'弱｜每篇貼文／影片風格都不同',
+    1:'幾乎無｜純文字、無視覺設計'
+  }},
+  8:{title:'CTA 與轉換路徑',why:'看完內容後，潛在客戶知道「下一步該做什麼」嗎？沒有 CTA = 流量不會變成詢問。',scores:{
+    5:'極清楚｜每篇都有明確 CTA + 一鍵連結（LINE/官網/表單）',
+    4:'清楚｜大部分有 CTA 但不一定有連結',
+    3:'尚可｜偶爾有 CTA',
+    2:'模糊｜CTA 隱晦，要找半天',
+    1:'完全沒有｜純內容無轉換引導'
+  }},
+  9:{title:'內容資產可延展性',why:'單支爆款 vs 可延伸成 10 支的主軸，後者才是長期 IP。題庫 / 主軸 / 系列感 = 內容資產。',scores:{
+    5:'極高｜有清楚主軸 + 系列規劃 + 可延伸題庫',
+    4:'高｜有主軸但系列感不強',
+    3:'尚可｜內容有方向但散',
+    2:'低｜每支獨立、無延伸可能',
+    1:'幾乎無｜純單發、無資產累積'
+  }},
+  10:{title:'拍攝執行成熟度',why:'你能不能穩定產出？場地、設備、剪輯、團隊配合度 = 內容生產的「工業化」程度。',scores:{
+    5:'極成熟｜流程 SOP、設備齊全、後製穩定',
+    4:'成熟｜大部分流程順暢',
+    3:'尚可｜有基本流程但效率不高',
+    2:'生疏｜每支都從零開始',
+    1:'幾乎無｜還沒能力穩定產出'
+  }}
+};
+window.openHealthItemInfo=function(itemId){
+  var note=window.HEALTH_ITEM_NOTES&&window.HEALTH_ITEM_NOTES[itemId];
+  if(!note) return;
+  var sh=document.getElementById('sheet'), md=document.getElementById('modal');
+  if(!sh||!md) return;
+  var scoreRows=[5,4,3,2,1].map(function(s){
+    var c=s>=4?'#4A6552':s>=3?'#D4A574':'#A51820';
+    return '<div style="display:grid;grid-template-columns:60px 1fr;gap:14px;padding:10px 0;border-bottom:1px solid #F2EDE5;align-items:flex-start"><div style="font-family:Cormorant Garamond,serif;font-size:24px;font-weight:700;color:'+c+';line-height:1">'+s+'<span style="font-size:11px;color:#8A7274;margin-left:2px">分</span></div><div style="font-size:13px;line-height:1.7;color:#5C4248">'+note.scores[s]+'</div></div>';
+  }).join('');
+  sh.innerHTML='<div class="preview-paper" style="background:#FDFBF8;border:1px solid #E8E3DA;border-radius:14px;padding:36px;max-height:78vh;overflow:auto;position:relative">'
+    +'<button onclick="closeModal()" aria-label="關閉" style="position:absolute;top:14px;right:14px;background:transparent;border:none;font-size:24px;color:#8A7274;cursor:pointer;line-height:1;padding:4px 8px;border-radius:6px;z-index:9" onmouseover="this.style.color=\'#A51820\';this.style.background=\'#FAF3F4\'" onmouseout="this.style.color=\'#8A7274\';this.style.background=\'transparent\'">✕</button>'
+    +'<div style="font-family:Cormorant Garamond,serif;letter-spacing:4px;color:#D4A574;font-size:11px;margin-bottom:8px">HEALTH ITEM '+(itemId<10?'0':'')+itemId+'</div>'
+    +'<h2 style="font-family:Noto Serif TC,serif;font-size:26px;color:#2A1A1C;margin:0 0 6px">'+note.title+'</h2>'
+    +'<div style="width:60px;height:2px;background:#D4A574;margin:14px 0 18px"></div>'
+    +'<div style="font-size:13px;color:#5C4248;line-height:1.85;background:#FAF6F1;padding:14px 16px;border-radius:8px;border-left:3px solid #D4A574;margin-bottom:20px"><b style="color:#2A1A1C">為什麼要評這項？</b><br>'+note.why+'</div>'
+    +'<div style="font-family:Cormorant Garamond,serif;letter-spacing:3px;color:#D4A574;font-size:11px;margin-bottom:8px">SCORING GUIDE · 分數解讀</div>'
+    +scoreRows
+    +'<div style="margin-top:24px;padding-top:14px;border-top:1px solid #E8E3DA;color:#8A7274;font-size:11px;font-style:italic">給顧問自己看的判斷依據 · 此說明不會匯出到客戶版。</div>'
+    +'</div>';
+  md.classList.add('show');
+};
 function healthOf(a){
   if(!a) return [];
   var latest=latestHealthEntry(a);
@@ -1617,7 +1818,7 @@ function healthTotal(a){
 function healthOverviewHTML(items,entry){
   var total=(items||[]).reduce(function(sum,it){return sum+(it.score||0);},0);
   var per=(entry&&entry.delta&&entry.delta.perItem)||[];
-  return '<div class="health-overview"><div style="display:flex;align-items:flex-end;gap:12px;margin-bottom:12px"><div><div class="health-total-big">'+total+'<span style="font-size:16px;color:#8A7274"> / 50</span></div><span class="health-status-label">目前狀態</span></div><div style="font-size:12px;color:#8A7274;margin-bottom:8px">評分總覽 · 箭頭為歷史變化欄位</div></div>'
+  return '<div class="health-overview"><div style="display:flex;align-items:flex-end;gap:12px;margin-bottom:12px"><div><div class="health-total-big">'+total+'<span style="font-size:16px;color:#8A7274"> / 50</span></div><span class="health-status-label">目前狀態</span></div><div style="font-size:12px;color:#8A7274;margin-bottom:8px">評分總覽 · 箭頭為歷史變化欄位</div></div>'+renderHealthRadar(items)
     +(items||[]).map(function(it,i){ var d=per[i]; var arrow=(d==null?'—':(d>0?'↑ +'+d:(d<0?'↓ '+d:'→ 0'))); return '<div class="health-bar-row"><span>'+it.id+'. '+esc(it.label)+'</span><span class="health-bar"><i style="width:'+((it.score||0)/5*100)+'%"></i></span><b>'+(it.score||'—')+'</b><span class="health-delta '+(d>0?'up':d<0?'down':'')+'">'+arrow+'</span></div>';}).join('')
     +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px"><button class="btn btn-ghost" onclick="previewHealthReport()" style="font-size:13px">⊞ 預覽評分表</button><button class="btn btn-ghost" style="margin-top:14px" onclick="downloadHealthHTML()">下載評分表（HTML / PDF）</button></div></div>';
 }
@@ -1641,7 +1842,7 @@ function openHealthEditor(pref){
     +'<div class="health-video-pick '+(defaultType==='video'?'show':'')+'" id="healthVideoPick"><label style="font-size:12px;color:#8A7274;font-weight:700">選影片</label><select id="healthRelatedVideo" style="width:100%;margin-top:6px;padding:10px;border:1px solid #E8E3DA;border-radius:9px;background:#fff">'+(videoOptions||'<option value="">目前沒有相關影片</option>')+'</select></div></div>';
   var rows=items.map(function(it){
     var scs=[0,1,2,3,4,5].map(function(n){ return '<button class="sc'+(n===0?' z':'')+(it.score===n?' on':'')+'" data-hid="'+it.id+'" data-hsc="'+n+'">'+(n===0?'—':n)+'</button>'; }).join('');
-    return '<div class="health-row"><div class="health-title-row"><span class="hr-lab">'+it.id+'. '+esc(it.label)+'</span><span class="hr-scores">'+scs+'</span></div>'
+    return '<div class="health-row"><div class="health-title-row"><span class="hr-lab">'+it.id+'. '+esc(it.label)+' <button type="button" class="hr-info" onclick="openHealthItemInfo('+it.id+')" title="看這項評分的底層邏輯">ⓘ</button></span><span class="hr-scores">'+scs+'</span></div>'
       +'<div class="health-note-grid"><div class="health-note-card"><div class="hk">CLIENT VERSION</div><textarea class="health-note" id="hnc-'+it.id+'" placeholder="客戶版備註：給客戶看的乾淨理由…">'+esc(it.noteClient||'')+'</textarea></div>'
       +'<div class="health-note-card"><div class="hk">ADVISOR VERSION</div><textarea class="health-note" id="hna-'+it.id+'" placeholder="顧問版備註：內部完整判斷與下一步建議…">'+esc(it.noteAdvisor||'')+'</textarea></div></div></div>';
   }).join('');
@@ -1811,11 +2012,67 @@ function openStageOverview(){
   var sh=$('sheet'),md=$('modal'); if(!sh||!md)return; sh.innerHTML='<div class="preview-wrap"><div class="preview-actions"><button class="preview-modal-btn" id="copyStageBtn">複製此階段</button><button class="preview-modal-btn" onclick="closeModal()">關閉</button></div><div class="preview-paper"><div class="preview-kicker">ATELIER · CURRENT STAGE</div><h2>'+esc(title)+'</h2><div class="preview-gold-line"></div><div class="preview-sub">'+esc(sub)+' · 完成度 '+filled+' / '+total+'</div><div class="stage-progress"><i style="width:'+(total?Math.round(filled/total*100):0)+'%"></i></div><div id="stagePreviewText">'+sections+'</div></div></div>'; md.classList.add('show'); var cb=$('copyStageBtn'); if(cb) cb.onclick=function(){ copyVal(($('stagePreviewText')||{}).innerText||'', '目前階段'); }; function key(e){if(e.key==='Escape'){closeModal();document.removeEventListener('keydown',key);}} document.addEventListener('keydown',key); md.onclick=function(e){if(e.target===md){closeModal();document.removeEventListener('keydown',key);}};
 }
 function renderRelatedVideosHTML(a){
-  var vs=accountVideos(a); if(!vs.length) return '';
-  var rows=vs.slice(0,10).map(function(v){ var ts=videoDate(v), before=ts?healthBefore(a,ts):null, after=ts?healthAfter(a,ts):null; var bt=before?healthEntryTotal(before):null, at=after?healthEntryTotal(after):null, d=(bt!=null&&at!=null)?at-bt:null; var vid=(v.id||v.videoId||videoTitle(v)); return '<div class="video-row"><div><b>'+esc(videoTitle(v))+'</b><br><span style="color:#8A7274">'+fmtDotDate(ts)+'</span></div><span>上片前 '+(bt==null?'—':bt+'/50')+'</span><span>上片後 '+(at==null?'—':at+'/50')+'</span><span class="video-delta '+(d>0?'up':d<0?'down':'')+'">'+(d==null?'—':(d>=0?'+':'')+d)+'</span><span>'+(at==null?'<button class="mini-link-btn" onclick="quickVideoHealth(\''+esc(String(vid))+'\')">馬上評分</button>':'已評分')+'</span></div>'; }).join('');
-  return '<div class="section-card related-video-section" data-related-videos="1"><h3>⑦ 相關影片表現</h3><div class="sc-note">從影片診斷工作台資料讀取，對照影片上線前後的健康評分變化。</div>'+rows+'</div>';
+  var vs=accountVideos(a); 
+  // 帳號體質快照（永遠顯示，即使沒影片）
+  var health=(a&&a.contentHealthScore&&a.contentHealthScore.items)||[];
+  var total=health.filter(function(x){return x&&x.score>0;}).reduce(function(s,x){return s+(x.score||0);},0);
+  var snapshotHTML='<div class="acc-snapshot">'
+    +'<div class="snap-row"><div class="snap-item"><div class="snap-label">健康評分</div><div class="snap-val">'+(total||'—')+'<span class="snap-unit">/50</span></div></div>'
+    +'<div class="snap-item"><div class="snap-label">影片數</div><div class="snap-val">'+vs.length+'</div></div>'
+    +'<div class="snap-item"><div class="snap-label">主力平台</div><div class="snap-val snap-val-sm">'+esc(a.platform||a.profile&&a.profile.platform||'—')+'</div></div>'
+    +'<div class="snap-item"><div class="snap-label">客戶狀態</div><div class="snap-val snap-val-sm">'+(a.isClient?'<span class="badge-client">⭐ 我的客戶</span>':'<span class="badge-lead">潛在</span>')+'</div></div></div>'
+    +(a.profile&&a.profile.positioning?'<div class="snap-meta"><b>定位：</b>'+esc(a.profile.positioning)+'</div>':'')
+    +(a.profile&&a.profile.icpAudience?'<div class="snap-meta"><b>ICP 受眾：</b>'+esc(a.profile.icpAudience)+'</div>':'')
+    +'</div>';
+  
+  if(!vs.length){
+    return '<div class="section-card related-video-section" data-related-videos="1"><h3>📹 客戶影片庫</h3><div class="sc-note">這位客戶目前還沒在影片診斷工作台建檔影片。先去工作台建立後，這裡會自動連動。</div>'+snapshotHTML+'</div>';
+  }
+  
+  // 影片詳細卡片（不再是 row 而是 card）
+  var cards=vs.slice(0,12).map(function(v,i){
+    var ts=videoDate(v), before=ts?healthBefore(a,ts):null, after=ts?healthAfter(a,ts):null;
+    var bt=before?healthEntryTotal(before):null, at=after?healthEntryTotal(after):null;
+    var d=(bt!=null&&at!=null)?at-bt:null;
+    var vid=(v.id||v.videoId||videoTitle(v));
+    var topic = v.topic||v.theme||v.主題||'';
+    var viralReason = v.viralReason||v.attribution||v.爆紅歸因||v.reason||'';
+    var views = v.views||v.viewCount||v.觀看||0;
+    var likes = v.likes||v.likeCount||v.愛心||0;
+    var comments = v.comments||v.commentCount||v.留言||0;
+    var transcript = v.transcript||v.逐字稿||v.script||'';
+    var hasTranscript = !!transcript && String(transcript).trim().length > 10;
+    var statRow = (views||likes||comments) ? '<div class="vc-stats">'
+      +(views?'<span><b>'+formatNum(views)+'</b> 觀看</span>':'')
+      +(likes?'<span><b>'+formatNum(likes)+'</b> 愛心</span>':'')
+      +(comments?'<span><b>'+formatNum(comments)+'</b> 留言</span>':'')
+      +'</div>' : '';
+    var transcriptBlock = hasTranscript ? 
+      '<details class="vc-transcript"><summary>📝 逐字稿（'+String(transcript).length+' 字）</summary><div class="vc-transcript-body">'+esc(String(transcript).slice(0,800))+(String(transcript).length>800?'…（截斷顯示，完整見工作台）':'')+'</div></details>' : '';
+    return '<div class="video-card">'
+      +'<div class="vc-head">'
+      +  '<div class="vc-num">'+(i+1<10?'0'+(i+1):(i+1))+'</div>'
+      +  '<div class="vc-title-block">'
+      +    '<div class="vc-title">'+esc(videoTitle(v))+'</div>'
+      +    '<div class="vc-meta">'+fmtDotDate(ts)+(topic?' · '+esc(topic):'')+'</div>'
+      +  '</div>'
+      +  '<div class="vc-delta '+(d>0?'up':d<0?'down':'')+'">'+(d==null?'—':(d>=0?'+':'')+d)+'</div>'
+      +'</div>'
+      +(viralReason?'<div class="vc-viral"><span class="vc-viral-label">爆紅歸因</span>'+esc(String(viralReason).slice(0,140))+'</div>':'')
+      +statRow
+      +'<div class="vc-foot">'
+      +  '<span class="vc-score">上片前 '+(bt==null?'—':bt+'/50')+' → 上片後 '+(at==null?'—':at+'/50')+'</span>'
+      +  (at==null?'<button class="vc-rate" onclick="quickVideoHealth(\''+esc(String(vid))+'\')">馬上評分</button>':'<span class="vc-rated">✓ 已評分</span>')
+      +'</div>'
+      +transcriptBlock
+      +'</div>';
+  }).join('');
+  
+  return '<div class="section-card related-video-section" data-related-videos="1"><h3>📹 客戶影片庫（共 '+vs.length+' 支）</h3><div class="sc-note">從影片診斷工作台同步：主題／爆紅歸因／數據／逐字稿，可作為診斷、盤點、企劃的輔助資料。</div>'+snapshotHTML+'<div class="vc-list">'+cards+'</div></div>';
 }
-function injectRelatedVideosSection(view){ var a=curAcc(); if(!a||!view) return; if(['view-stage1','view-stage3','view-stage4'].indexOf(view.id)<0) return; if(view.querySelector('[data-related-videos]')) return; var html=renderRelatedVideosHTML(a); if(!html) return; view.insertAdjacentHTML('beforeend',html); enhanceSections(view); }
+
+function formatNum(n){ n=Number(n)||0; if(n>=10000) return (n/10000).toFixed(1).replace(/\.0$/,'')+'萬'; if(n>=1000) return (n/1000).toFixed(1).replace(/\.0$/,'')+'k'; return String(n); }
+function injectRelatedVideosSection(view){ var a=curAcc(); if(!a||!view) return; if(['view-stage1','view-stage3','view-stage4','view-stage5','view-stage6'].indexOf(view.id)<0) return; if(view.querySelector('[data-related-videos]')) return; var html=renderRelatedVideosHTML(a); if(!html) return; view.insertAdjacentHTML('beforeend',html); enhanceSections(view); }
 function quickVideoHealth(videoId){ window._healthPref={type:'video',relatedVideoId:videoId}; openHealthEditor(window._healthPref); }
 function openSimilarClients(){ var a=curAcc(); if(!a){toast(ICN.warn+' 尚未選定客戶');return;} var arr=findSimilarClients(a); var sh=$('sheet'),md=$('modal'); if(!sh||!md)return; var html=arr.length?arr.map(function(x){ var acc=x.account, hs=healthTotal(acc); return '<div class="similar-card"><div style="display:flex;justify-content:space-between;gap:12px"><div><b>'+esc(acc.handle||'')+' '+esc(acc.displayName||'')+'</b><div style="font-size:12px;color:#8A7274">'+esc(acc.industry||'')+' · '+esc(acc.jobTitle||'')+'</div></div><div class="similar-score">'+x.score+'</div></div><div style="font-size:12px;color:#8A7274;margin-top:8px">最新健康：'+(hs.has?hs.total+'/50':'未評分')+'｜主要服務方向：'+esc(profileText(acc,'mainService')||profileText(acc,'service')||'—')+'</div><button class="mini-link-btn" style="margin-top:10px" onclick="closeModal();pickClient(\''+acc.id+'\')">點開查看</button></div>'; }).join(''):'<div class="preview-field"><div class="pk">EMPTY</div><div class="pl">目前找不到相似案例</div></div>';
   sh.innerHTML='<div class="preview-wrap"><div class="preview-actions"><button class="preview-modal-btn" onclick="closeModal()">關閉</button></div><div class="preview-paper"><div class="preview-kicker">ATELIER · BENCHMARK</div><h2>同類對標 · '+esc(a.displayName||a.handle||'客戶')+'</h2><div class="preview-gold-line"></div><div class="preview-sub">依產業、平台與受眾關鍵字做簡單規則配對。</div>'+html+'</div></div>'; md.classList.add('show'); md.onclick=function(e){if(e.target===md)closeModal();}; }
@@ -1824,7 +2081,74 @@ function renderHealthTimeline(mode){ var a=curAcc(), sh=$('healthHistoryBody'); 
 function renderHealthChart(hist){ if(!hist.length) return '<div class="history-chart">尚無趨勢資料</div>'; var w=660,h=220,p=24,max=50; var pts=hist.map(function(e,i){ var x=hist.length===1?w/2:p+(w-2*p)*(i/(hist.length-1)); var y=h-p-(healthEntryTotal(e)/max)*(h-2*p); return {x:x,y:y,e:e}; }); var line=pts.map(function(p,i){return (i?'L':'M')+p.x.toFixed(1)+' '+p.y.toFixed(1);}).join(' '); var circles=pts.map(function(p){ var color={initial:'#A51820',cycle:'#D4A574',video:'#8A7274',final:'#2A1A1C'}[p.e.type]||'#D4A574'; return '<circle cx="'+p.x+'" cy="'+p.y+'" r="5" fill="'+color+'"><title>'+fmtDotDate(p.e.createdAt)+' '+(p.e.cycleLabel||'評分')+' '+healthEntryTotal(p.e)+'/50</title></circle>'; }).join(''); return '<div class="history-chart"><svg width="660" height="220" viewBox="0 0 660 220"><line x1="24" y1="196" x2="636" y2="196" stroke="#E8E3DA"/><line x1="24" y1="24" x2="24" y2="196" stroke="#E8E3DA"/><path d="'+line+'" fill="none" stroke="#D4A574" stroke-width="1.5"/>'+circles+'</svg></div>'; }
 function openHealthHistory(){ var a=curAcc(); if(!a){toast(ICN.warn+' 尚未選定客戶');return;} var sh=$('sheet'),md=$('modal'); if(!sh||!md)return; sh.innerHTML='<div class="preview-wrap"><div class="preview-actions"><button class="preview-modal-btn" onclick="downloadHealthHistoryHTML()">下載評分歷史報表 HTML</button><button class="preview-modal-btn" onclick="closeModal()">關閉</button></div><div class="preview-paper"><div class="preview-kicker">HEALTH HISTORY</div><h2>評分歷史 · '+esc(a.displayName||a.handle||'客戶')+'</h2><div class="preview-gold-line"></div><div class="history-toggle"><button class="mini-link-btn" onclick="renderHealthTimeline(\'list\')">⌗ 列表</button><button class="mini-link-btn" onclick="renderHealthTimeline(\'chart\')">📈 趨勢線</button></div><div id="healthHistoryBody"></div></div></div>'; md.classList.add('show'); renderHealthTimeline('list'); md.onclick=function(e){if(e.target===md)closeModal();}; }
 function downloadHealthHistoryHTML(){ var a=curAcc(); if(!a)return; var hist=healthHistoryOf(a); var html='<!DOCTYPE html><html lang="zh-Hant"><head><meta charset="UTF-8"><title>ATELIER 評分歷史</title><style>body{background:#FDFBF8;color:#2A1A1C;font-family:Noto Sans TC,sans-serif;padding:44px}h1{font-family:Noto Serif TC,serif}.k{font-family:Cormorant Garamond,serif;color:#D4A574;letter-spacing:4px}.row{border-bottom:1px solid #E8E3DA;padding:14px 0}.score{color:#A51820;font-weight:900}</style></head><body><div class="k">HEALTH HISTORY</div><h1>'+esc(a.displayName||a.handle||'客戶')+'｜評分歷史</h1>'+hist.map(function(h){return '<div class="row"><b>'+fmtDotDate(h.createdAt)+' '+esc(h.cycleLabel||'評分')+'</b> <span class="score">'+healthEntryTotal(h)+'/50</span></div>';}).join('')+'</body></html>'; downloadBlob(html,'text/html;charset=utf-8',safeFileName('ATELIER_評分歷史_'+(a.displayName||a.handle||'client'))+'.html'); }
-function enhanceCurrentView(){ var v=document.querySelector('.view.on'); if(v){ injectRelatedVideosSection(v); enhanceSections(v); if(v.id==='view-stage1') groupStage1(); } }
+
+/* === v2.8 客戶完成度進度列 === */
+window.computeClientProgress=function(a){
+  if(!a) return {percent:0,stages:[],currentMissing:[]};
+  var flow=a.clientFlow||{};
+  // 7 階段定義：哪些欄位「填了」才算「該階段有開始」/「完成」
+  var stageDefs=[
+    {key:'stage1_initial', no:'①', name:'初診', fields:['resultClient','resultAdvisor']},
+    {key:'stage2_intake', no:'②', name:'建檔', fields:['handle','displayName','industry']},
+    {key:'stage3_interview', no:'③', name:'問診', fields:['painPoints','goals']},
+    {key:'stage4_diagnosis', no:'④', name:'診斷', fields:['positioning','audienceInsight','contentGap','conversionGap','priorityAdvice']},
+    {key:'stage5_inventory', no:'⑤', name:'盤點', fields:['assets','pillars','stories','serviceProof','shootingAssets']},
+    {key:'stage6_planning', no:'⑥', name:'企劃', fields:['goal','proposalAngle','contentPillars','topicList','firstScripts','timeline','kpi']},
+    {key:'stage7_delivery', no:'⑦', name:'交付', fields:['deliveredItems','feedback','nextStep']}
+  ];
+  var stages=stageDefs.map(function(sd){
+    var d=(flow[sd.key]&&flow[sd.key].data)||{};
+    // 算這個 stage 填了幾個欄位
+    var filled=sd.fields.filter(function(f){ var v=d[f]; return v && String(v).trim().length>0; }).length;
+    var total=sd.fields.length;
+    var done = (flow[sd.key]&&flow[sd.key].status==='done') || filled===total;
+    return {no:sd.no, name:sd.name, key:sd.key, filled:filled, total:total, done:done, missing:sd.fields.filter(function(f){return !(d[f]&&String(d[f]).trim());})};
+  });
+  var doneCount=stages.filter(function(s){return s.done;}).length;
+  var percent=Math.round(doneCount/stages.length*100);
+  return {percent:percent, stages:stages, doneCount:doneCount, totalCount:stages.length};
+};
+window.renderClientProgressBar=function(){
+  var a=(typeof curAcc==='function')?curAcc():null; if(!a) return '';
+  var view=document.querySelector('.view.on');
+  var currentStageKey=view?(view.id||'').replace('view-',''):'';
+  var stageMap={stage1:'stage1_initial', stage2:'stage2_intake', stage3:'stage3_interview', stage4:'stage4_diagnosis', stage5:'stage5_inventory', stage6:'stage6_planning', stage7:'stage7_delivery'};
+  var thisStageKey=stageMap[currentStageKey];
+  var prog=window.computeClientProgress(a);
+  var thisStage=prog.stages.filter(function(s){return s.key===thisStageKey;})[0];
+  var missingHTML='';
+  if(thisStage){
+    if(thisStage.done){
+      missingHTML='<div class="cpb-status-complete">此階段已完成所有步驟</div>';
+    } else if(thisStage.filled===0){
+      missingHTML='<div class="cpb-missing"><b>此階段尚未開始</b>建議從 '+thisStage.no+' '+thisStage.name+' 第一個欄位開始填寫</div>';
+    } else {
+      missingHTML='<div class="cpb-missing"><b>此階段尚缺：</b>'+thisStage.missing.length+' 個欄位未填（已填 '+thisStage.filled+'/'+thisStage.total+'）</div>';
+    }
+  } else {
+    missingHTML='<div class="cpb-missing">已完成 '+prog.doneCount+' / '+prog.totalCount+' 個階段</div>';
+  }
+  return '<div class="client-progress-bar">'
+    +'<div><div class="cpb-kicker">OVERALL PROGRESS</div><div class="cpb-stage">'+esc(a.displayName||a.handle||'客戶')+(thisStage?' · 目前在 '+thisStage.no+thisStage.name:'')+'</div>'+missingHTML+'</div>'
+    +'<div><div class="cpb-progress"><i style="width:'+prog.percent+'%"></i></div></div>'
+    +'<div class="cpb-percent">'+prog.percent+'<small>%</small></div>'
+    +'</div>';
+};
+window.injectClientProgressBar=function(view){
+  if(!view) return;
+  var allowed=['view-stage1','view-stage2','view-stage3','view-stage4','view-stage5','view-stage6','view-stage7'];
+  if(allowed.indexOf(view.id)<0) return;
+  // 移除舊的
+  var old=view.querySelector('.client-progress-bar'); if(old) old.remove();
+  // 找 page-head 在哪
+  var head=view.querySelector('.page-head, .stage-head, h2');
+  var pb=window.renderClientProgressBar();
+  if(!pb) return;
+  if(head){ head.insertAdjacentHTML('afterend', pb); }
+  else { view.insertAdjacentHTML('afterbegin', pb); }
+};
+
+function enhanceCurrentView(){ var v=document.querySelector('.view.on'); if(v){ if(typeof injectClientProgressBar==='function') injectClientProgressBar(v); injectRelatedVideosSection(v); enhanceSections(v); if(v.id==='view-stage1') groupStage1(); } }
 setInterval(enhanceCurrentView,900);
 
 /* ═══════════════ 分頁切換 ═══════════════ */
@@ -1975,7 +2299,7 @@ window.addEventListener('DOMContentLoaded', function(){
     var conf=STAGE_EXT[stageId], box=$('view-'+stageId), a=curAcc(); if(!conf||!box) return;
     if(!a){ box.innerHTML=needClientHTML(conf.no+' '+conf.title); return; }
     var rec=flowData(a,conf), d=rec.data||{};
-    box.innerHTML='<div class="page-head"><div class="ph-en">'+conf.en+'</div><h2 class="ph-title">'+conf.title+'</h2></div>'
+    box.innerHTML='<div class="page-head"><div class="ph-en">'+conf.en+'</div><h2 class="ph-title">'+conf.title+' <button type="button" class="stage-info-btn" onclick="openStageInfo(\''+stageId+'\')" title="查看此階段的底層邏輯">ⓘ</button></h2></div>'
       +stageHead(conf.purpose,conf.key)
       +'<div class="section-card ai-fill"><h3>'+ICN.spark+'AI 輔助產出</h3><div class="sc-note">先按提示詞，把已收集的①～③資料帶給 AI；AI 產出後，把重點貼回下方欄位，這一階段就會成為後續提案與交付的依據。</div>'
       +'<div class="fld"><label>額外補充給 AI 的資料</label><textarea id="x-'+stageId+'-extra" placeholder="例如：客戶臨時補充、你觀察到的重點、最新會議結論…"></textarea></div>'
@@ -2506,6 +2830,80 @@ window.switchDeliverView=function(name){
   document.querySelectorAll('.ver-pane').forEach(function(p){ p.style.display = p.getAttribute('data-verpane')===name?'block':'none'; });
 };
 
+
+
+
+window.renderHealthRadar=function(items){
+  items=items||[];
+  if(!items.length || items.every(function(i){return !i.score;})) return '';
+  var n=items.length, cx=190, cy=190, maxR=140;
+  var labels=['定位','服務','ICP','一致','信任','記憶','視覺','CTA','資產','成熟'];
+  // 算 10 個頂點座標
+  function pt(idx, ratio){
+    var ang=(Math.PI*2*idx/n)-Math.PI/2; // 從正上方開始
+    return [cx+Math.cos(ang)*maxR*ratio, cy+Math.sin(ang)*maxR*ratio];
+  }
+  // 5 層網格
+  var gridLayers=[1,0.8,0.6,0.4,0.2].map(function(r){
+    var pts=[];
+    for(var i=0;i<n;i++){ var p=pt(i,r); pts.push(p.join(',')); }
+    return '<polygon points="'+pts.join(' ')+'" fill="none" stroke="#E8E3DA" stroke-width="'+(r===1?1.2:0.8)+'"/>';
+  }).join('');
+  // 10 條輻射線
+  var rays='';
+  for(var i=0;i<n;i++){
+    var p=pt(i,1);
+    rays += '<line x1="'+cx+'" y1="'+cy+'" x2="'+p[0]+'" y2="'+p[1]+'" stroke="#E8E3DA" stroke-width="0.8"/>';
+  }
+  // 數據多邊形（基於 score / 5）
+  var dataPts=[];
+  for(var i=0;i<n;i++){
+    var s=items[i]&&items[i].score?items[i].score:0;
+    var p=pt(i, s/5);
+    dataPts.push(p.join(','));
+  }
+  var dataPolygon='<polygon points="'+dataPts.join(' ')+'" fill="rgba(165,24,32,0.18)" stroke="#A51820" stroke-width="2" stroke-linejoin="round"/>';
+  // 數據點
+  var dataDots='';
+  for(var i=0;i<n;i++){
+    var s=items[i]&&items[i].score?items[i].score:0;
+    if(s<=0) continue;
+    var p=pt(i, s/5);
+    dataDots += '<circle cx="'+p[0]+'" cy="'+p[1]+'" r="4" fill="#A51820"/>';
+  }
+  // 標籤
+  var labelEls='';
+  for(var i=0;i<n;i++){
+    var p=pt(i,1.18); // 比最外圈再外一點
+    var s=items[i]&&items[i].score?items[i].score:0;
+    var anchor='middle';
+    if(p[0]<cx-10) anchor='end';
+    else if(p[0]>cx+10) anchor='start';
+    var label=labels[i]||items[i].label.slice(0,2);
+    labelEls += '<text x="'+p[0]+'" y="'+(p[1]+4)+'" text-anchor="'+anchor+'" font-family="Noto Serif TC, serif" font-size="13" font-weight="600" fill="#2A1A1C">'+label+'</text>';
+    labelEls += '<text x="'+p[0]+'" y="'+(p[1]+18)+'" text-anchor="'+anchor+'" font-family="Cormorant Garamond, serif" font-size="11" fill="#A51820">'+(s||'-')+'</text>';
+  }
+  return '<div class="health-radar-wrap"><svg class="health-radar-svg" viewBox="0 0 380 380" xmlns="http://www.w3.org/2000/svg">'
+    +gridLayers+rays+dataPolygon+dataDots+labelEls
+    +'</svg></div>';
+};
+window.setClientFilter=function(f){
+  window._clientFilter=f;
+  if(typeof renderSelect==='function') renderSelect();
+};
+
+window.toggleClientMark=function(){
+  var a=curAcc(); if(!a){if(typeof toast==='function')toast(ICN.warn+' 尚未選定客戶');return;}
+  a.isClient = !a.isClient;
+  a.updatedAt = Date.now();
+  try{ if(typeof _saveAccountToFB==='function') _saveAccountToFB(a); }catch(e){}
+  try{ if(typeof _localSave==='function') _localSave(); }catch(e){}
+  try{ if(typeof renderBanner==='function') renderBanner(); }catch(e){}
+  try{ if(typeof renderSelectList==='function') renderSelectList(); }catch(e){}
+  try{ if(typeof renderSelect==='function') renderSelect(); }catch(e){}
+  if(typeof toast==='function') toast((a.isClient?'⭐ 已標記為我的客戶':'已取消客戶標記'));
+};
+
 window.switchS1Tab=function(name){
   var tabs=document.querySelectorAll('.s1tab');
   var panes=document.querySelectorAll('.s1tab-pane');
@@ -2568,6 +2966,81 @@ window.openS1TabInfo=function(name){
     +'</div>';
   md.classList.add('show');
 };
+window.STAGE_NOTES={
+  stage2:{kicker:'STAGE 2 · INTAKE',title:'② 建檔 · 為什麼這步要這樣做',
+    why:'初診是「公開資料判讀」，建檔是「客戶資產盤點」。把客戶手上「會說的」基本資料、過去合作、行業背景、品牌資產整理成標準格式，後面所有分析的根都從這裡長出來。',
+    lines:[
+      ['📂','基本資料','姓名/職稱/產業/平台/網址/聯絡方式——這些是「事實層」，未來所有對外文案都引用這份資料，必須準確。'],
+      ['🎯','過去合作脈絡','客戶之前跟誰合作過、結果如何、為什麼結束。從這裡能讀出「客戶對 agency 的真實期待」。'],
+      ['🏛️','品牌資產盤點','已有的 logo / 主視覺 / 影片素材 / 案例文件——能用的盡量用，省成本也保連續性。']
+    ]
+  },
+  stage3:{kicker:'STAGE 3 · INTERVIEW',title:'③ 問診 · 為什麼這步要這樣做',
+    why:'初診+建檔是「外部+客戶提供的事實」，問診是「客戶內心真正的痛點與目標」。沒有深度訪談，做出來的內容會浮在表面，無法打中真實需求。',
+    lines:[
+      ['💔','痛點挖掘','他真正卡住的是什麼？流量不夠？流量夠但沒詢問？詢問多但成交少？每個痛點對應不同解法。'],
+      ['🎯','目標釐清','一年後他希望變成什麼樣？這個目標決定整個內容策略的方向（品牌建立 vs 引流 vs 成交）。'],
+      ['🚧','邊界與禁忌','他不能說什麼？不能露什麼？哪些客戶/案例不能公開？提早問清楚省日後爭議。']
+    ]
+  },
+  stage4:{kicker:'STAGE 4 · DIAGNOSIS',title:'④ 診斷 · 為什麼這步要這樣做',
+    why:'把初診、建檔、問診的資料收斂成「可交付的策略判斷」。診斷 ≠ 描述現況，而是「指出問題的優先順序 + 給出方向」。',
+    lines:[
+      ['🔬','定位 vs 受眾 vs 內容','三角校驗：定位清楚 → 受眾就清楚 → 內容才能精準。哪一邊斷了，內容就會散。'],
+      ['📊','內容缺口','現有內容缺什麼題材、情緒、案例、信任證據？這份缺口表就是後面企劃的題庫。'],
+      ['🚪','轉換缺口','看了內容到下單之間，斷在哪？沒 CTA / CTA 不清 / 信任不足 / 服務不明？修哪裡 ROI 最高？'],
+      ['1️⃣2️⃣3️⃣','優先順序','永遠不要一次解決所有問題。挑「影響成交 × 執行難度」最划算的 3 件事先做。']
+    ]
+  },
+  stage5:{kicker:'STAGE 5 · INVENTORY',title:'⑤ 盤點 · 為什麼這步要這樣做',
+    why:'企劃前必須先盤點手上有什麼。憑空想題目會做出「客戶喊好但拍不出來」的內容；盤點完才知道哪些題目是真實可執行的。',
+    lines:[
+      ['💎','既有內容資產','過去表現好的影片/文章/官網頁，能不能再利用、改編、延伸？已花過的錢要盡量挖回價值。'],
+      ['🏛️','可延伸內容主軸','3-5 條可長期拍攝的內容支柱（不是單支題目）。這是「IP 化」的基礎。'],
+      ['📖','故事素材','老闆故事/客戶故事/失敗經驗——這些是「情感連結」的彈藥，跟「專業內容」搭配才能打動人。'],
+      ['🎬','拍攝素材條件','人/場地/物件/流程畫面——確定能拍才能寫進企劃，不然企劃寫了拍不出來就是廢紙。']
+    ]
+  },
+  stage6:{kicker:'STAGE 6 · PLANNING',title:'⑥ 企劃 · 為什麼這步要這樣做',
+    why:'把診斷結論轉成「客戶看得懂、團隊可執行」的提案：目標 → 主軸 → 題庫 → 腳本 → 時程 → KPI。沒有完整企劃，後面執行會變散亂的拍片日。',
+    lines:[
+      ['🎯','本階段合作目標','一句話：這一輪最主要要完成什麼？（品牌/引流/成交/招募/信任）目標決定其他所有選擇。'],
+      ['💡','提案核心角度','一句話戰略主張——客戶看到這句要點頭。如果你說不出來，代表你還沒想清楚。'],
+      ['📚','首波題庫','可拍的 10-20 題，依優先順序排。這 20 題裡先拍哪 5 支？要說明原因。'],
+      ['📅','執行時程 + KPI','拍攝/審稿/剪輯/交付/上線節奏，並列出觀察指標——客戶才知道「成功是什麼樣」。']
+    ]
+  },
+  stage7:{kicker:'STAGE 7 · DELIVERY',title:'⑦ 交付 · 為什麼這步要這樣做',
+    why:'交付 ≠ 給檔案。交付是「確認客戶滿意 + 完成商業循環 + 留下復盤資產」。專案沒結尾管理，下一案會更亂。',
+    lines:[
+      ['📦','已交付項目','腳本/影片/封面/建議書——清單化才能避免漏交，也方便客戶之後找東西。'],
+      ['💬','客戶回饋','喜歡什麼/卡在哪/要改什麼——這些是下次更好的線索，要正式紀錄不是用印象。'],
+      ['🧠','內部復盤','這個案子學到什麼？哪些流程可優化？復盤越認真，下個案子越輕鬆。'],
+      ['💰','款項與結案','訂金/尾款/發票/收款日——商業面跟服務面同樣重要，閉環才有現金流。']
+    ]
+  }
+};
+window.openStageInfo=function(stageName){
+  var note=window.STAGE_NOTES&&window.STAGE_NOTES[stageName];
+  if(!note) return;
+  var sh=document.getElementById('sheet'), md=document.getElementById('modal');
+  if(!sh||!md) return;
+  var rows=note.lines.map(function(l){
+    return '<div style="display:grid;grid-template-columns:48px 1fr;gap:14px;margin:18px 0;align-items:flex-start"><div style="font-size:24px;text-align:center">'+l[0]+'</div><div><div style="font-weight:700;color:#2A1A1C;font-size:14.5px;margin-bottom:4px;font-family:Noto Serif TC,serif">'+l[1]+'</div><div style="color:#5C4248;font-size:13px;line-height:1.85">'+l[2]+'</div></div></div>';
+  }).join('');
+  sh.innerHTML='<div class="preview-paper" style="background:#FDFBF8;border:1px solid #E8E3DA;border-radius:14px;padding:36px;max-height:78vh;overflow:auto;position:relative">'
+    +'<button onclick="closeModal()" aria-label="關閉" style="position:absolute;top:14px;right:14px;background:transparent;border:none;font-size:24px;color:#8A7274;cursor:pointer;line-height:1;padding:4px 8px;border-radius:6px;z-index:9" onmouseover="this.style.color=\'#A51820\';this.style.background=\'#FAF3F4\'" onmouseout="this.style.color=\'#8A7274\';this.style.background=\'transparent\'">✕</button>'
+    +'<div style="font-family:Cormorant Garamond,serif;letter-spacing:4px;color:#D4A574;font-size:12px;margin-bottom:8px">'+note.kicker+'</div>'
+    +'<h2 style="font-family:Noto Serif TC,serif;font-size:24px;color:#2A1A1C;margin:0 0 6px">'+note.title+'</h2>'
+    +'<div style="height:2px;width:60px;background:#D4A574;margin:14px 0 18px"></div>'
+    +'<div style="font-size:13px;color:#5C4248;line-height:1.9;background:#FAF6F1;padding:14px 16px;border-radius:8px;border-left:3px solid #D4A574;margin-bottom:8px"><b style="color:#2A1A1C">為什麼這階段要做？</b><br>'+note.why+'</div>'
+    +rows
+    +'<div style="margin-top:24px;padding-top:14px;border-top:1px solid #E8E3DA;color:#8A7274;font-size:11px;font-style:italic">底層邏輯說明書 · ATELIER Methodology Note · 此說明是給顧問自己看的，不會匯出到客戶版。</div>'
+    +'</div>';
+  md.classList.add('show');
+};
+
+
 </script>
 </body>
 </html>
