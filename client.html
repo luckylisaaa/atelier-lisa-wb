@@ -383,7 +383,7 @@ details.cat .cat-body{padding:14px 15px}
 .vc-transcript-body{background:#FAF6F1;padding:12px 14px;border-radius:8px;margin-top:6px;font-size:12px;line-height:1.85;color:#5C4248;white-space:pre-wrap;max-height:240px;overflow-y:auto;border:1px solid #E8E3DA}
 
 /* 客戶列表卡片上的 isClient 標識 */
-.cli-card.is-my-client::before{content:'⭐';position:absolute;top:14px;left:14px;font-size:18px;z-index:5}
+.cli-card.is-my-client::before{content:'';position:absolute;top:14px;left:14px;width:17px;height:17px;color:#D4A574;background:url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='%23D4A574'%20stroke-width='1.7'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Cpath%20d='M12%203l2.47%205.46%205.96.62-4.43%204.02%201.24%205.86L12%2016.9%206.76%2019.96%208%2014.1%203.57%2010.08l5.96-.62z'/%3E%3C/svg%3E") no-repeat center/contain;z-index:5}
 .cli-card.is-my-client{border-left:4px solid var(--gold)}
 
 /* banner 上的 isClient toggle */
@@ -407,7 +407,7 @@ details.cat .cat-body{padding:14px 15px}
 .cpb-missing{font-size:11.5px;color:#8A7274;margin-top:4px;line-height:1.7}
 .cpb-missing b{color:#A51820;font-weight:600;margin-right:4px}
 .cpb-status-complete{color:#4A6552;font-weight:600;font-size:12px}
-.cpb-status-complete::before{content:'✓ ';color:#4A6552}
+.cpb-status-complete::before{content:'';display:inline-block;width:13px;height:13px;margin-right:4px;vertical-align:-2px;background:url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='%234A6552'%20stroke-width='2.2'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Cpath%20d='M5%2012l4%204L19%206'/%3E%3C/svg%3E") no-repeat center/contain}
 
 /* === v2.9 stage 標題 ⓘ 按鈕 + 客戶搜尋 + 篩選 + 雷達圖 === */
 
@@ -420,7 +420,7 @@ details.cat .cat-body{padding:14px 15px}
 .client-search{position:relative}
 .client-search input{width:100%;padding:10px 14px 10px 38px;border:1px solid #E8E3DA;border-radius:8px;font-size:14px;font-family:inherit;background:#fff;color:var(--ink);outline:none;transition:all .2s ease}
 .client-search input:focus{border-color:var(--rouge);box-shadow:0 0 0 3px rgba(165,24,32,.08)}
-.client-search::before{content:'🔍';position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:14px;opacity:.5}
+.client-search::before{content:'';position:absolute;left:12px;top:50%;transform:translateY(-50%);width:15px;height:15px;opacity:.5;background:url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='%238A7274'%20stroke-width='1.7'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Ccircle%20cx='11'%20cy='11'%20r='6.3'/%3E%3Cpath%20d='M20%2020l-4.5-4.5'/%3E%3C/svg%3E") no-repeat center/contain}
 .client-filter-btns{display:flex;gap:6px}
 .client-filter-btn{background:#fff;border:1px solid #E8E3DA;border-radius:99px;padding:7px 14px;font-size:12px;font-family:inherit;color:var(--sub);cursor:pointer;letter-spacing:.5px;transition:all .2s ease}
 .client-filter-btn:hover{border-color:#DCC8CB;color:var(--ink)}
@@ -430,6 +430,13 @@ details.cat .cat-body{padding:14px 15px}
 /* 健康評分雷達圖 */
 .health-radar-wrap{background:#FFFCFB;border:1px solid #E8E3DA;border-radius:14px;padding:18px;margin:14px 0;display:flex;justify-content:center}
 .health-radar-svg{max-width:380px;width:100%;height:auto}
+/* cs-v3.0 批次① · D onboarding 提示 + E 工作台跳轉鈕 */
+.ob-next{display:inline-flex;align-items:center;gap:5px;margin-left:8px;padding:4px 11px;border-radius:99px;background:#FAE8EA;color:#A51820;font-size:12px;font-weight:600;cursor:pointer;border:1px solid #F0D2D6;transition:all .15s ease}
+.ob-next:hover{background:#A51820;color:#fff;border-color:#A51820}
+.ob-next.done{background:#EEF3EF;color:#4A6552;border-color:#DBE6DD}
+.ob-next.done:hover{background:#4A6552;color:#fff;border-color:#4A6552}
+.vc-jump{display:inline-flex;align-items:center;gap:4px;margin-left:8px;padding:3px 9px;border-radius:8px;background:#F4F1EC;color:#8A7274;font-size:11.5px;font-weight:600;text-decoration:none;border:1px solid #E8E3DA;transition:all .15s ease}
+.vc-jump:hover{background:#A51820;color:#fff;border-color:#A51820}
 </style>
 </head>
 <body>
@@ -466,7 +473,7 @@ details.cat .cat-body{padding:14px 15px}
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">客戶服務台</span></span>
-    <span id="verBadge">cs-v2.9</span>
+    <span id="verBadge">cs-v3.0</span>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button type="button" id="popoutBtn" class="popout-btn" title="把客戶服務台開成獨立小視窗"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6"/><path d="M20 4l-9 9"/><path d="M14 12v7H5V10h7"/></svg>小視窗</button>
@@ -501,7 +508,7 @@ details.cat .cat-body{padding:14px 15px}
     <div class="ph-sub">Pick one client. Walk the whole cycle, from intake to delivery.</div>
   </div>
   <div class="hint">這裡列出帳號管理裡的所有帳號（與診斷工作台共用同一個資料庫）。<b>點一張卡＝選定為當前服務對象</b>，接下來的 ①初診 / ②建檔 / ③問診 全部圍繞這位客戶。資料即時存回雲端，診斷工作台那邊也讀得到。</div>
-  <div class="client-toolbar"><div class="client-search"><input id="cliSearch" placeholder="搜尋：@帳號 / 顯示名稱 / 產業…" oninput="renderSelect()"></div><div class="client-filter-btns"><button class="client-filter-btn" data-filter="all" onclick="setClientFilter('all')">全部</button><button class="client-filter-btn" data-filter="client" onclick="setClientFilter('client')">⭐ 我的客戶</button><button class="client-filter-btn" data-filter="lead" onclick="setClientFilter('lead')">📌 潛在</button></div></div><div class="client-count-hint" id="cliCountHint"></div>
+  <div class="client-toolbar"><div class="client-search"><input id="cliSearch" placeholder="搜尋：@帳號 / 顯示名稱 / 產業…" oninput="renderSelect()"></div><div class="client-filter-btns"><button class="client-filter-btn" data-filter="all" onclick="setClientFilter('all')">全部</button><button class="client-filter-btn" data-filter="client" onclick="setClientFilter('client')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M12 3l2.47 5.46 5.96.62-4.43 4.02 1.24 5.86L12 16.9 6.76 19.96 8 14.1 3.57 10.08l5.96-.62z"/></svg> 我的客戶</button><button class="client-filter-btn" data-filter="lead" onclick="setClientFilter('lead')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M12 21s6.5-5.2 6.5-10A6.5 6.5 0 1 0 5.5 11c0 4.8 6.5 10 6.5 10z"/><circle cx="12" cy="10.5" r="2.3"/></svg> 潛在</button></div></div><div class="client-count-hint" id="cliCountHint"></div>
   <div id="cliList"></div>
 </div>
 
@@ -568,6 +575,40 @@ var ICN={
   dot:    '<svg class="ic" width="8" height="8" viewBox="0 0 8 8"><circle cx="4" cy="4" r="3" fill="currentColor"/></svg>',
   save:    _svg('<path d="M5 4h11l4 4v12H5z"/><path d="M8 4v5h8V4"/><circle cx="12" cy="14" r="2.2"/>',13,13)
 };
+/* === cs-v3.0 批次①：自繪 icon 擴充（取代 emoji；width=1em 跟著字級縮放）=== */
+function _svgi(d){ return '<svg class="ic" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">'+d+'</svg>'; }
+ICN.star=_svgi('<path d="M12 3l2.47 5.46 5.96.62-4.43 4.02 1.24 5.86L12 16.9 6.76 19.96 8 14.1 3.57 10.08l5.96-.62z"/>');
+ICN.pin=_svgi('<path d="M12 21s6.5-5.2 6.5-10A6.5 6.5 0 1 0 5.5 11c0 4.8 6.5 10 6.5 10z"/><circle cx="12" cy="10.5" r="2.3"/>');
+ICN.search=_svgi('<circle cx="11" cy="11" r="6.3"/><path d="M20 20l-4.5-4.5"/>');
+ICN.trendUp=_svgi('<path d="M4 16.5l5-5 3.2 3.2L20 7.5"/><path d="M15 7.5h5v5"/>');
+ICN.barChart=_svgi('<path d="M5.5 20v-6M12 20V5M18.5 20v-9"/><path d="M3.5 20h17"/>');
+ICN.video=_svgi('<rect x="3" y="7" width="12" height="10" rx="2"/><path d="M15 10.3l5.5-2.8v9l-5.5-2.8z"/>');
+ICN.memo=_svgi('<rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8.5 8h7M8.5 12h7M8.5 16h4"/>');
+ICN.bulb=_svgi('<path d="M9 17.5h6M10 21h4"/><path d="M12 3a6 6 0 0 0-3.8 10.6c.7.6 1.1 1.2 1.2 2.4h5.2c.1-1.2.5-1.8 1.2-2.4A6 6 0 0 0 12 3z"/>');
+ICN.boxPkg=_svgi('<path d="M12 3 3.5 7.3v9.4L12 21l8.5-4.3V7.3z"/><path d="M3.5 7.3 12 11.6l8.5-4.3M12 11.6V21"/>');
+ICN.money=_svgi('<circle cx="12" cy="12" r="8.2"/><path d="M12 7v10"/><path d="M14.4 9.2C14 8.4 13.1 8 12 8c-1.4 0-2.5.7-2.5 1.8 0 2.6 5 1.4 5 4 0 1.1-1.1 1.9-2.5 1.9-1.1 0-2-.5-2.4-1.3"/>');
+ICN.building=_svgi('<path d="M3 9.5 12 4l9 5.5"/><path d="M5 9.5V19M9.7 9.5V19M14.3 9.5V19M19 9.5V19"/><path d="M3 19h18"/>');
+ICN.target=_svgi('<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="1" fill="currentColor" stroke="none"/>');
+ICN.mailbox=_svgi('<path d="M4 13 6 6.5h12L20 13"/><path d="M4 13v5.5h16V13"/><path d="M4 13h5l1 2h4l1-2h5"/>');
+ICN.clipboard=_svgi('<rect x="5" y="4.5" width="14" height="16.5" rx="2"/><rect x="9" y="2.6" width="6" height="3.4" rx="1.2"/><path d="M9 11h6M9 14.5h4"/>');
+ICN.flask=_svgi('<path d="M9.5 3h5M11 3v5.5L6 17.5a2 2 0 0 0 1.8 3h8.4a2 2 0 0 0 1.8-3L13 8.5V3"/><path d="M8 15h8"/>');
+ICN.mirror=_svgi('<ellipse cx="12" cy="9" rx="5.5" ry="6.5"/><path d="M12 15.5V21M9 21h6"/>');
+ICN.outbox=_svgi('<path d="M4 14 6 20h12l2-6"/><path d="M4 14h5l1 2h4l1-2h5"/><path d="M12 3v7.5M9 6l3-3 3 3"/>');
+ICN.palette=_svgi('<path d="M12 3.2a8.8 8.8 0 1 0 0 17.6c1.4 0 1.9-1 1.9-1.9 0-1.4 1-1.9 2.4-1.9h.9a2.8 2.8 0 0 0 2.8-2.8C20.9 7.6 16.9 3.2 12 3.2z"/><circle cx="7.6" cy="11" r=".9" fill="currentColor" stroke="none"/><circle cx="9.8" cy="7.6" r=".9" fill="currentColor" stroke="none"/><circle cx="14.2" cy="7.6" r=".9" fill="currentColor" stroke="none"/><circle cx="16.6" cy="11" r=".9" fill="currentColor" stroke="none"/>');
+ICN.ruler=_svgi('<path d="M4.5 4.5v15h15z"/><path d="M9 19v-3M12.5 19v-6M8 15h3M11 11.5h3"/>');
+ICN.folder=_svgi('<path d="M3 7.5a2 2 0 0 1 2-2h3.6l2 2H19a2 2 0 0 1 2 2v.5H3z"/><path d="M3 10h18.3l-2 9.5H5z"/>');
+ICN.heartBreak=_svgi('<path d="M12 20.5S4 14.3 4 9a4.4 4.4 0 0 1 8-2.6A4.4 4.4 0 0 1 20 9c0 5.3-8 11.5-8 11.5z"/><path d="M12 6.2 10.4 10l3 1.9-2 3"/>');
+ICN.barrier=_svgi('<path d="M4 9h16v6H4z"/><path d="M5.5 9 9 15M10 9l3.5 6M14.5 9l3.5 6"/><path d="M4.5 15v4M19.5 15v4"/>');
+ICN.micro=_svgi('<path d="M6 20.5h12"/><path d="M9.5 20.5 13 11"/><path d="m13.6 5.8 3.3 3.3-4.4 4.4-3.3-3.3z"/><path d="M16.5 19a5.5 5.5 0 0 0-3.2-9.5"/>');
+ICN.door=_svgi('<path d="M6 21V4.2A1.2 1.2 0 0 1 7.2 3h7.6A1.2 1.2 0 0 1 16 4.2V21"/><path d="M4 21h16"/><circle cx="13.4" cy="12" r=".9" fill="currentColor" stroke="none"/>');
+ICN.gem=_svgi('<path d="M5 3.5h14L22 9 12 21 2 9z"/><path d="M2 9h20M8.5 3.5 6 9l6 12 6-12-2.5-5.5M8.5 3.5 12 9l3.5-5.5"/>');
+ICN.book=_svgi('<path d="M12 6.5v14M3 6.5c3-1.4 6-1.4 9 0 3-1.4 6-1.4 9 0v12.5c-3-1.4-6-1.4-9 0-3-1.4-6-1.4-9 0z"/>');
+ICN.clapper=_svgi('<path d="M3 9h18v10.5H3z"/><path d="m3 9 1.5-3.5 4 1L7 10M8.5 6.5l4 1L11 11M14 7l4 1L16.5 11.5"/>');
+ICN.books=_svgi('<rect x="4" y="5" width="4" height="14.5" rx="1"/><rect x="9" y="8" width="4" height="11.5" rx="1"/><path d="m15 9 4.5 1-1.5 9.5-4.5-1z"/><path d="M3 19.5h18"/>');
+ICN.calendar=_svgi('<rect x="4" y="5.5" width="16" height="15.5" rx="2"/><path d="M4 10h16M8.5 3.5v4M15.5 3.5v4"/>');
+ICN.speech=_svgi('<path d="M5 5h14a2 2 0 0 1 2 2v7.5a2 2 0 0 1-2 2H9.5L5 21v-4.5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z"/>');
+ICN.brain=_svgi('<path d="M9.5 4.2a2.6 2.6 0 0 0-2.8 2.5 2.8 2.8 0 0 0-1.2 5.1 2.7 2.7 0 0 0 1.6 4.8 2.6 2.6 0 0 0 4.9-1.2V6.4a2.6 2.6 0 0 0-2.5-2.2z"/><path d="M14.5 4.2A2.6 2.6 0 0 1 17 6.7a2.8 2.8 0 0 1 1.2 5.1 2.7 2.7 0 0 1-1.6 4.8 2.6 2.6 0 0 1-4.9-1.2"/>');
+ICN.gear=_svgi('<circle cx="12" cy="12" r="3.2"/><path d="M12 3.5v3M12 17.5v3M3.5 12h3M17.5 12h3M6 6l2.1 2.1M15.9 15.9 18 18M18 6l-2.1 2.1M8.1 15.9 6 18"/>');
 let _tTimer;
 function toast(msg,ms){ const t=$('toast'); if(!t) return; t.innerHTML=msg; t.classList.add('show'); clearTimeout(_tTimer); _tTimer=setTimeout(()=>t.classList.remove('show'),ms||1900); }
 function copyVal(text,label){
@@ -949,14 +990,30 @@ function renderBanner(flash){
   var sstxt = _lastDraftAt ? ('自動暫存於 '+_lastDraftAt) : '尚未變更';
   b.className='cs-banner';
   b.innerHTML='<span>目前服務：<span class="who">'+esc(a.handle||'@?')+' '+esc(a.displayName||'')+'</span></span>'
-    +(a.isClient?'<span class="badge-client" style="margin-left:8px">⭐ 我的客戶</span>':'<button class="client-mark-btn" onclick="toggleClientMark()" title="標記為我的合作客戶">📌 標為我的客戶</button>')
+    +(a.isClient?'<span class="badge-client" style="margin-left:8px">'+ICN.star+' 我的客戶</span>':'<button class="client-mark-btn" onclick="toggleClientMark()" title="標記為我的合作客戶">'+ICN.pin+' 標為我的客戶</button>')
     +'<span class="hs" title="內容健康分數"><span>健康</span> <b>'+(hs.has?hs.total:'—')+'</b>/50</span>'
     +'<button class="mini-btn" data-short="評分" onclick="openHealthEditor()">評分</button>'
-    +'<button class="mini-btn" data-short="歷史" onclick="openHealthHistory()" title="查看健康評分歷史">📈 歷史</button>'
+    +'<button class="mini-btn" data-short="歷史" onclick="openHealthHistory()" title="查看健康評分歷史">'+ICN.trendUp+' 歷史</button>'
     +'<button class="mini-btn" data-short="全貌" onclick="openOverview()" title="把這位客戶目前所有已填資料一次看完">查看全貌</button>'
     +'<button class="mini-btn" data-short="階段" onclick="openStageOverview()" title="只查看目前這個階段的資料">查看此階段</button>'
     +'<button class="mini-btn" data-short="上一步" onclick="undoLast()"'+(canUndo?'':' disabled')+' title="把目前畫面回退到上一個自動暫存點">'+ICN.undo+' 上一步'+(canUndo?(' ('+(_undoStack.length-1)+')'):'')+'</button>'
     +'<span class="savestate'+(flash?' flash':'')+'" id="ssBadge" title="'+esc(sstxt)+'">'+(flash?ICN.check:'<span class="save-dot"></span>')+' <span class="save-text">'+esc(sstxt)+'</span></span>';
+  /* cs-v3.0 批次① · D：onboarding 下一步提示 */
+  try{
+    var _steps=[['stage1_initial','①','初診'],['stage2_filing','②','建檔'],['stage3_interview','③','問診']];
+    var _next=_steps.filter(function(st){ return flowStatus(a,st[0])!=='done'; })[0];
+    var _go={stage1_initial:'stage1',stage2_filing:'stage2',stage3_interview:'stage3'};
+    var _hint;
+    if(_next){
+      var _inprog=flowStatus(a,_next[0])==='in-progress';
+      _hint='<span class="ob-next" onclick="switchTo(\''+_go[_next[0]]+'\')" title="點我直接跳到下一步">'
+        +ICN.spark+' 下一步：'+_next[1]+' '+_next[2]+'（'+(_inprog?'繼續填':'尚未開始')+'）</span>';
+    } else {
+      _hint='<span class="ob-next done" onclick="switchTo(\'stage4\')" title="基礎三階段已完成，進入診斷">'
+        +ICN.check+' 初診/建檔/問診已完成 — 進入 ④ 診斷</span>';
+    }
+    b.insertAdjacentHTML('beforeend', _hint);
+  }catch(e){}
   if(flash){ setTimeout(function(){ var ss=$('ssBadge'); if(ss) ss.classList.remove('flash'); },1100); }
 }
 
@@ -987,7 +1044,7 @@ function renderSelect(){
     var totalAll=accounts.length;
     var totalClient=accounts.filter(function(a){return a.isClient;}).length;
     var totalLead=totalAll-totalClient;
-    hint.textContent='全部 '+totalAll+' · ⭐ 我的客戶 '+totalClient+' · 📌 潛在 '+totalLead+' · 目前顯示 '+list.length+' 筆';
+    hint.innerHTML='全部 '+totalAll+' · '+ICN.star+' 我的客戶 '+totalClient+' · '+ICN.pin+' 潛在 '+totalLead+' · 目前顯示 '+list.length+' 筆';
   }
   if(!list.length){ box.innerHTML='<div class="empty-res">找不到符合「'+esc(q)+'」的客戶</div>'; return; }
   box.innerHTML=list.map(cliCard).join('');
@@ -1152,7 +1209,7 @@ function renderStage1(){
   var promptHTML = '<div class="section-card"><h3>③ 提示詞產生器（產出正式分析）</h3>'
     +'<div class="sc-note">按下會把客戶基本資訊＋上面所有備註與 5 個判斷組成完整提示詞，複製到 AI 對話框去跑，得出《會前初步觀察與需求對焦》。</div>'
     +'<button class="btn btn-go" onclick="genS1Prompt()">'+ICN.prompt+' 產生初診提示詞</button>'
-    +'<div class="ai-fill-hint">⚙ 已套用 ATELIER 七維診斷框架</div>'
+    +'<div class="ai-fill-hint">'+ICN.gear+' 已套用 ATELIER 七維診斷框架</div>'
     +'</div>';
   
   var pasteHTML = '<div class="section-card"><h3>④ 把 AI 產出貼回（分成「客戶版」「顧問版」兩個獨立框）</h3>'
@@ -1582,11 +1639,11 @@ function renderStage3(){
     +stageHead('挖出客戶自己沒說清楚的價值，把專業語言翻成市場語言。','stage3_interview')
     +'<div class="section-card"><h3>① 產生問診提綱</h3><div class="sc-note">會帶入建檔（階段②）已填的客戶背景，請 AI 整理一份問診提綱，並可依產業特性追加客製問題。</div>'
     +'<button class="btn btn-gold" onclick="buildStage3Prompt()">'+ICN.prompt+'產生問診提綱</button>'
-    +'<div style="font-size:11px;font-style:italic;color:#D4A574;margin-top:6px;text-align:center">⚙ 已套用 ATELIER 七維診斷框架</div></div>'
+    +'<div style="font-size:11px;font-style:italic;color:#D4A574;margin-top:6px;text-align:center">'+ICN.gear+' 已套用 ATELIER 七維診斷框架</div></div>'
     +'<div class="section-card ai-fill"><h3>'+ICN.spark+'讓 AI 先擬答、回填 10 題（選用）</h3>'
     +'<div class="sc-note">想先有個底稿？按下產生提示詞，讓 AI 依客戶背景＋初診，先替 10 題各擬一份「可能的回答重點」→ 貼回下面 → 一鍵填進 10 題，之後正式問診時再跟客戶逐題核對、修正。</div>'
     +'<button class="btn btn-gold" onclick="buildStage3DraftPrompt()">'+ICN.prompt+'產生問診初稿提示詞</button>'
-    +'<div style="font-size:11px;font-style:italic;color:#D4A574;margin-top:6px;text-align:center">⚙ 已套用 ATELIER 七維診斷框架</div>'
+    +'<div style="font-size:11px;font-style:italic;color:#D4A574;margin-top:6px;text-align:center">'+ICN.gear+' 已套用 ATELIER 七維診斷框架</div>'
     +'<div class="fld" style="margin-top:12px"><label>把 AI 擬好的 10 題初稿貼回這裡</label><textarea class="paste-box" id="s3draft" placeholder="貼回「第1題：… / 第2題：…」那整段…"></textarea></div>'
     +'<button class="btn btn-go" onclick="parseStage3Draft()">解析並回填 10 題</button>'
     +'<div id="s3parseMsg" style="font-size:12px;margin-top:8px;line-height:1.7"></div></div>'
@@ -1793,7 +1850,7 @@ window.openHealthItemInfo=function(itemId){
     return '<div style="display:grid;grid-template-columns:60px 1fr;gap:14px;padding:10px 0;border-bottom:1px solid #F2EDE5;align-items:flex-start"><div style="font-family:Cormorant Garamond,serif;font-size:24px;font-weight:700;color:'+c+';line-height:1">'+s+'<span style="font-size:11px;color:#8A7274;margin-left:2px">分</span></div><div style="font-size:13px;line-height:1.7;color:#5C4248">'+note.scores[s]+'</div></div>';
   }).join('');
   sh.innerHTML='<div class="preview-paper" style="background:#FDFBF8;border:1px solid #E8E3DA;border-radius:14px;padding:36px;max-height:78vh;overflow:auto;position:relative">'
-    +'<button onclick="closeModal()" aria-label="關閉" style="position:absolute;top:14px;right:14px;background:transparent;border:none;font-size:24px;color:#8A7274;cursor:pointer;line-height:1;padding:4px 8px;border-radius:6px;z-index:9" onmouseover="this.style.color=\'#A51820\';this.style.background=\'#FAF3F4\'" onmouseout="this.style.color=\'#8A7274\';this.style.background=\'transparent\'">✕</button>'
+    +'<button onclick="closeModal()" aria-label="關閉" style="position:absolute;top:14px;right:14px;background:transparent;border:none;font-size:24px;color:#8A7274;cursor:pointer;line-height:1;padding:4px 8px;border-radius:6px;z-index:9" onmouseover="this.style.color=\'#A51820\';this.style.background=\'#FAF3F4\'" onmouseout="this.style.color=\'#8A7274\';this.style.background=\'transparent\'">'+ICN.close+'</button>'
     +'<div style="font-family:Cormorant Garamond,serif;letter-spacing:4px;color:#D4A574;font-size:11px;margin-bottom:8px">HEALTH ITEM '+(itemId<10?'0':'')+itemId+'</div>'
     +'<h2 style="font-family:Noto Serif TC,serif;font-size:26px;color:#2A1A1C;margin:0 0 6px">'+note.title+'</h2>'
     +'<div style="width:60px;height:2px;background:#D4A574;margin:14px 0 18px"></div>'
@@ -1909,7 +1966,7 @@ window.previewHealthReport=function(){
   var items=healthOf(a), total=healthTotal(a).total, d=new Date().toISOString().slice(0,10);
   var bars=items.map(function(it){return '<div style=\"display:grid;grid-template-columns:160px 1fr 32px;gap:12px;align-items:center;margin:10px 0\"><b style=\"font-size:13px;color:#2A1A1C\">'+it.id+'. '+esc(it.label)+'</b><span style=\"height:8px;background:#F4F1EC;border-radius:99px;display:block\"><i style=\"display:block;height:100%;background:#A51820;border-radius:99px;width:'+((it.score||0)/5*100)+'%\"></i></span><b style=\"color:#A51820;font-weight:700\">'+(it.score||'—')+'</b></div>'+(it.noteClient||it.noteAdvisor?'<div style=\"color:#8A7274;font-size:11.5px;line-height:1.6;margin:2px 0 14px 0\">'+(it.noteClient?'客戶版：'+esc(it.noteClient):'')+(it.noteClient&&it.noteAdvisor?'<br>':'')+(it.noteAdvisor?'顧問版：'+esc(it.noteAdvisor):'')+'</div>':'');}).join('');
   var sh=$('sheet'), md=$('modal'); if(!sh||!md) return;
-  sh.innerHTML='<div class=\"preview-paper\" style=\"background:#FDFBF8;border:1px solid #E8E3DA;border-radius:14px;padding:36px;max-height:78vh;overflow:auto;position:relative\"><button onclick=\"closeModal()\" aria-label=\"關閉\" style=\"position:absolute;top:14px;right:14px;background:transparent;border:none;font-size:24px;color:#8A7274;cursor:pointer;line-height:1;padding:4px 8px;border-radius:6px;z-index:9\" onmouseover=\"this.style.color=\x27#A5252D\x27;this.style.background=\x27#FAF3F4\x27\" onmouseout=\"this.style.color=\x27#8A7274\x27;this.style.background=\x27transparent\x27\">✕</button><div style=\"display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px\"><div><div style=\"font-family:Cormorant Garamond,serif;letter-spacing:4px;color:#D4A574;font-size:12px\">ATELIER · HEALTH SCORE PREVIEW</div><h2 style=\"font-family:Noto Serif TC,serif;font-size:26px;color:#2A1A1C;margin:8px 0 4px\">'+esc(a.displayName||a.handle||'客戶')+'｜健康評分表</h2><div style=\"font-size:12px;color:#8A7274\">'+d+' · 此版為預覽，按下方下載才會保存</div></div><div style=\"text-align:right\"><div style=\"font-family:Cormorant Garamond,serif;font-size:54px;color:#A51820;line-height:1\">'+total+'</div><div style=\"font-size:11px;color:#8A7274\">/ 50 目前狀態</div></div></div><div style=\"height:2px;width:60px;background:#D4A574;margin:14px 0 20px\"></div>'+bars+'<div style=\"margin-top:24px;padding-top:14px;border-top:1px solid #E8E3DA;display:flex;justify-content:flex-end\"><button onclick=\"downloadHealthHTML();closeModal()\" style=\"background:#C73E48;color:#fff;border:none;padding:10px 22px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600\">確認下載 HTML</button></div></div>';
+  sh.innerHTML='<div class=\"preview-paper\" style=\"background:#FDFBF8;border:1px solid #E8E3DA;border-radius:14px;padding:36px;max-height:78vh;overflow:auto;position:relative\"><button onclick=\"closeModal()\" aria-label=\"關閉\" style=\"position:absolute;top:14px;right:14px;background:transparent;border:none;font-size:24px;color:#8A7274;cursor:pointer;line-height:1;padding:4px 8px;border-radius:6px;z-index:9\" onmouseover=\"this.style.color=\x27#A5252D\x27;this.style.background=\x27#FAF3F4\x27\" onmouseout=\"this.style.color=\x27#8A7274\x27;this.style.background=\x27transparent\x27\">'+ICN.close+'</button><div style=\"display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px\"><div><div style=\"font-family:Cormorant Garamond,serif;letter-spacing:4px;color:#D4A574;font-size:12px\">ATELIER · HEALTH SCORE PREVIEW</div><h2 style=\"font-family:Noto Serif TC,serif;font-size:26px;color:#2A1A1C;margin:8px 0 4px\">'+esc(a.displayName||a.handle||'客戶')+'｜健康評分表</h2><div style=\"font-size:12px;color:#8A7274\">'+d+' · 此版為預覽，按下方下載才會保存</div></div><div style=\"text-align:right\"><div style=\"font-family:Cormorant Garamond,serif;font-size:54px;color:#A51820;line-height:1\">'+total+'</div><div style=\"font-size:11px;color:#8A7274\">/ 50 目前狀態</div></div></div><div style=\"height:2px;width:60px;background:#D4A574;margin:14px 0 20px\"></div>'+bars+'<div style=\"margin-top:24px;padding-top:14px;border-top:1px solid #E8E3DA;display:flex;justify-content:flex-end\"><button onclick=\"downloadHealthHTML();closeModal()\" style=\"background:#C73E48;color:#fff;border:none;padding:10px 22px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600\">確認下載 HTML</button></div></div>';
   md.classList.add('show');
 };
 
@@ -2020,13 +2077,13 @@ function renderRelatedVideosHTML(a){
     +'<div class="snap-row"><div class="snap-item"><div class="snap-label">健康評分</div><div class="snap-val">'+(total||'—')+'<span class="snap-unit">/50</span></div></div>'
     +'<div class="snap-item"><div class="snap-label">影片數</div><div class="snap-val">'+vs.length+'</div></div>'
     +'<div class="snap-item"><div class="snap-label">主力平台</div><div class="snap-val snap-val-sm">'+esc(a.platform||a.profile&&a.profile.platform||'—')+'</div></div>'
-    +'<div class="snap-item"><div class="snap-label">客戶狀態</div><div class="snap-val snap-val-sm">'+(a.isClient?'<span class="badge-client">⭐ 我的客戶</span>':'<span class="badge-lead">潛在</span>')+'</div></div></div>'
+    +'<div class="snap-item"><div class="snap-label">客戶狀態</div><div class="snap-val snap-val-sm">'+(a.isClient?'<span class="badge-client">'+ICN.star+' 我的客戶</span>':'<span class="badge-lead">潛在</span>')+'</div></div></div>'
     +(a.profile&&a.profile.positioning?'<div class="snap-meta"><b>定位：</b>'+esc(a.profile.positioning)+'</div>':'')
     +(a.profile&&a.profile.icpAudience?'<div class="snap-meta"><b>ICP 受眾：</b>'+esc(a.profile.icpAudience)+'</div>':'')
     +'</div>';
   
   if(!vs.length){
-    return '<div class="section-card related-video-section" data-related-videos="1"><h3>📹 客戶影片庫</h3><div class="sc-note">這位客戶目前還沒在影片診斷工作台建檔影片。先去工作台建立後，這裡會自動連動。</div>'+snapshotHTML+'</div>';
+    return '<div class="section-card related-video-section" data-related-videos="1"><h3>'+ICN.video+' 客戶影片庫</h3><div class="sc-note">這位客戶目前還沒在影片診斷工作台建檔影片。先去工作台建立後，這裡會自動連動。</div>'+snapshotHTML+'</div>';
   }
   
   // 影片詳細卡片（不再是 row 而是 card）
@@ -2048,7 +2105,7 @@ function renderRelatedVideosHTML(a){
       +(comments?'<span><b>'+formatNum(comments)+'</b> 留言</span>':'')
       +'</div>' : '';
     var transcriptBlock = hasTranscript ? 
-      '<details class="vc-transcript"><summary>📝 逐字稿（'+String(transcript).length+' 字）</summary><div class="vc-transcript-body">'+esc(String(transcript).slice(0,800))+(String(transcript).length>800?'…（截斷顯示，完整見工作台）':'')+'</div></details>' : '';
+      '<details class="vc-transcript"><summary>'+ICN.memo+' 逐字稿（'+String(transcript).length+' 字）</summary><div class="vc-transcript-body">'+esc(String(transcript).slice(0,800))+(String(transcript).length>800?'…（截斷顯示，完整見工作台）':'')+'</div></details>' : '';
     return '<div class="video-card">'
       +'<div class="vc-head">'
       +  '<div class="vc-num">'+(i+1<10?'0'+(i+1):(i+1))+'</div>'
@@ -2062,13 +2119,14 @@ function renderRelatedVideosHTML(a){
       +statRow
       +'<div class="vc-foot">'
       +  '<span class="vc-score">上片前 '+(bt==null?'—':bt+'/50')+' → 上片後 '+(at==null?'—':at+'/50')+'</span>'
-      +  (at==null?'<button class="vc-rate" onclick="quickVideoHealth(\''+esc(String(vid))+'\')">馬上評分</button>':'<span class="vc-rated">✓ 已評分</span>')
+      +  (at==null?'<button class="vc-rate" onclick="quickVideoHealth(\''+esc(String(vid))+'\')">馬上評分</button>':'<span class="vc-rated">'+ICN.check+' 已評分</span>')
+      +  ((v.id||v.videoId)?'<a class="vc-jump" href="index.html#video-'+encodeURIComponent(v.id||v.videoId)+'" target="_blank" rel="noopener" title="在影片診斷工作台開啟完整資料">'+ICN.popout+' 工作台</a>':'')
       +'</div>'
       +transcriptBlock
       +'</div>';
   }).join('');
   
-  return '<div class="section-card related-video-section" data-related-videos="1"><h3>📹 客戶影片庫（共 '+vs.length+' 支）</h3><div class="sc-note">從影片診斷工作台同步：主題／爆紅歸因／數據／逐字稿，可作為診斷、盤點、企劃的輔助資料。</div>'+snapshotHTML+'<div class="vc-list">'+cards+'</div></div>';
+  return '<div class="section-card related-video-section" data-related-videos="1"><h3>'+ICN.video+' 客戶影片庫（共 '+vs.length+' 支）</h3><div class="sc-note">從影片診斷工作台同步：主題／爆紅歸因／數據／逐字稿，可作為診斷、盤點、企劃的輔助資料。</div>'+snapshotHTML+'<div class="vc-list">'+cards+'</div></div>';
 }
 
 function formatNum(n){ n=Number(n)||0; if(n>=10000) return (n/10000).toFixed(1).replace(/\.0$/,'')+'萬'; if(n>=1000) return (n/1000).toFixed(1).replace(/\.0$/,'')+'k'; return String(n); }
@@ -2079,7 +2137,7 @@ function openSimilarClients(){ var a=curAcc(); if(!a){toast(ICN.warn+' 尚未選
 function historyDetailHTML(entry){ var items=normalizeHealthItems(entry&&entry.items); return items.map(function(it){return '<div style="margin-bottom:10px"><b>'+it.id+'. '+esc(it.label)+'</b>　'+(it.score||'—')+'/5<div style="font-size:12px;color:#8A7274;line-height:1.7">客戶版：'+esc(it.noteClient||'')+'<br>顧問版：'+esc(it.noteAdvisor||'')+'</div></div>';}).join(''); }
 function renderHealthTimeline(mode){ var a=curAcc(), sh=$('healthHistoryBody'); if(!a||!sh)return; var hist=healthHistoryOf(a).slice().sort(function(x,y){return (y.createdAt||0)-(x.createdAt||0);}); if(mode==='chart'){ sh.innerHTML=renderHealthChart(hist.slice().reverse()); return; } sh.innerHTML=hist.length?hist.map(function(h,i){ var total=healthEntryTotal(h), d=h.delta&&h.delta.total; return '<div class="history-row" onclick="var n=this.nextElementSibling;if(n)n.classList.toggle(\'open\')"><span class="history-date">'+fmtDotDate(h.createdAt)+'</span><span class="history-label">'+esc(h.cycleLabel||'評分')+'</span><span class="history-score">'+total+'/50</span><span class="history-delta '+(d>0?'up':d<0?'down':'')+'">'+(d==null?'—':(d>=0?'↑ +':'↓ ')+Math.abs(d))+'</span></div><div class="history-detail">'+historyDetailHTML(h)+'</div>'; }).join(''):'<div class="preview-field"><div class="pk">EMPTY</div><div class="pl">尚無評分歷史</div></div>'; }
 function renderHealthChart(hist){ if(!hist.length) return '<div class="history-chart">尚無趨勢資料</div>'; var w=660,h=220,p=24,max=50; var pts=hist.map(function(e,i){ var x=hist.length===1?w/2:p+(w-2*p)*(i/(hist.length-1)); var y=h-p-(healthEntryTotal(e)/max)*(h-2*p); return {x:x,y:y,e:e}; }); var line=pts.map(function(p,i){return (i?'L':'M')+p.x.toFixed(1)+' '+p.y.toFixed(1);}).join(' '); var circles=pts.map(function(p){ var color={initial:'#A51820',cycle:'#D4A574',video:'#8A7274',final:'#2A1A1C'}[p.e.type]||'#D4A574'; return '<circle cx="'+p.x+'" cy="'+p.y+'" r="5" fill="'+color+'"><title>'+fmtDotDate(p.e.createdAt)+' '+(p.e.cycleLabel||'評分')+' '+healthEntryTotal(p.e)+'/50</title></circle>'; }).join(''); return '<div class="history-chart"><svg width="660" height="220" viewBox="0 0 660 220"><line x1="24" y1="196" x2="636" y2="196" stroke="#E8E3DA"/><line x1="24" y1="24" x2="24" y2="196" stroke="#E8E3DA"/><path d="'+line+'" fill="none" stroke="#D4A574" stroke-width="1.5"/>'+circles+'</svg></div>'; }
-function openHealthHistory(){ var a=curAcc(); if(!a){toast(ICN.warn+' 尚未選定客戶');return;} var sh=$('sheet'),md=$('modal'); if(!sh||!md)return; sh.innerHTML='<div class="preview-wrap"><div class="preview-actions"><button class="preview-modal-btn" onclick="downloadHealthHistoryHTML()">下載評分歷史報表 HTML</button><button class="preview-modal-btn" onclick="closeModal()">關閉</button></div><div class="preview-paper"><div class="preview-kicker">HEALTH HISTORY</div><h2>評分歷史 · '+esc(a.displayName||a.handle||'客戶')+'</h2><div class="preview-gold-line"></div><div class="history-toggle"><button class="mini-link-btn" onclick="renderHealthTimeline(\'list\')">⌗ 列表</button><button class="mini-link-btn" onclick="renderHealthTimeline(\'chart\')">📈 趨勢線</button></div><div id="healthHistoryBody"></div></div></div>'; md.classList.add('show'); renderHealthTimeline('list'); md.onclick=function(e){if(e.target===md)closeModal();}; }
+function openHealthHistory(){ var a=curAcc(); if(!a){toast(ICN.warn+' 尚未選定客戶');return;} var sh=$('sheet'),md=$('modal'); if(!sh||!md)return; sh.innerHTML='<div class="preview-wrap"><div class="preview-actions"><button class="preview-modal-btn" onclick="downloadHealthHistoryHTML()">下載評分歷史報表 HTML</button><button class="preview-modal-btn" onclick="closeModal()">關閉</button></div><div class="preview-paper"><div class="preview-kicker">HEALTH HISTORY</div><h2>評分歷史 · '+esc(a.displayName||a.handle||'客戶')+'</h2><div class="preview-gold-line"></div><div class="history-toggle"><button class="mini-link-btn" onclick="renderHealthTimeline(\'list\')">⌗ 列表</button><button class="mini-link-btn" onclick="renderHealthTimeline(\'chart\')">'+ICN.trendUp+' 趨勢線</button></div><div id="healthHistoryBody"></div></div></div>'; md.classList.add('show'); renderHealthTimeline('list'); md.onclick=function(e){if(e.target===md)closeModal();}; }
 function downloadHealthHistoryHTML(){ var a=curAcc(); if(!a)return; var hist=healthHistoryOf(a); var html='<!DOCTYPE html><html lang="zh-Hant"><head><meta charset="UTF-8"><title>ATELIER 評分歷史</title><style>body{background:#FDFBF8;color:#2A1A1C;font-family:Noto Sans TC,sans-serif;padding:44px}h1{font-family:Noto Serif TC,serif}.k{font-family:Cormorant Garamond,serif;color:#D4A574;letter-spacing:4px}.row{border-bottom:1px solid #E8E3DA;padding:14px 0}.score{color:#A51820;font-weight:900}</style></head><body><div class="k">HEALTH HISTORY</div><h1>'+esc(a.displayName||a.handle||'客戶')+'｜評分歷史</h1>'+hist.map(function(h){return '<div class="row"><b>'+fmtDotDate(h.createdAt)+' '+esc(h.cycleLabel||'評分')+'</b> <span class="score">'+healthEntryTotal(h)+'/50</span></div>';}).join('')+'</body></html>'; downloadBlob(html,'text/html;charset=utf-8',safeFileName('ATELIER_評分歷史_'+(a.displayName||a.handle||'client'))+'.html'); }
 
 /* === v2.8 客戶完成度進度列 === */
@@ -2304,7 +2362,7 @@ window.addEventListener('DOMContentLoaded', function(){
       +'<div class="section-card ai-fill"><h3>'+ICN.spark+'AI 輔助產出</h3><div class="sc-note">先按提示詞，把已收集的①～③資料帶給 AI；AI 產出後，把重點貼回下方欄位，這一階段就會成為後續提案與交付的依據。</div>'
       +'<div class="fld"><label>額外補充給 AI 的資料</label><textarea id="x-'+stageId+'-extra" placeholder="例如：客戶臨時補充、你觀察到的重點、最新會議結論…"></textarea></div>'
       +'<button class="btn btn-gold" onclick="buildExtStagePrompt(\''+stageId+'\')">'+ICN.prompt+'產生'+conf.title+'提示詞</button>'
-      +'<div style="font-size:11px;font-style:italic;color:#D4A574;margin-top:6px;text-align:center">⚙ 已套用 ATELIER 七維診斷框架</div>'
+      +'<div style="font-size:11px;font-style:italic;color:#D4A574;margin-top:6px;text-align:center">'+ICN.gear+' 已套用 ATELIER 七維診斷框架</div>'
       +'<div class="fld" style="margin-top:12px"><label>把 AI 回傳的欄位版貼回這裡</label><textarea class="paste-box" id="x-'+stageId+'-paste" placeholder="欄位名稱：內容"></textarea></div>'
       +'<button class="btn btn-go" onclick="parseExtStagePaste(\''+stageId+'\')">解析並填入</button></div>'
       +'<div class="section-card"><h3>'+conf.no+' '+conf.title+'工作區</h3><div class="sc-note">每一格都可以先粗填，系統會自動暫存。填越完整，後面的企劃、交付與結案就越穩。</div>'
@@ -2779,7 +2837,7 @@ window.addEventListener('DOMContentLoaded', function(){
       console.log('[PPTX] step 5: writeFile starting');
       await pptx.writeFile({fileName:out});
       console.log('[PPTX] step 6: download done');
-      if(btn&&btn.tagName==='BUTTON'){ btn.disabled=false; btn.innerHTML='下載完成 ✓'; setTimeout(function(){ btn.innerHTML=oldTxt||'直接下載 PPTX'; },1200); }
+      if(btn&&btn.tagName==='BUTTON'){ btn.disabled=false; btn.innerHTML='下載完成 '+ICN.check; setTimeout(function(){ btn.innerHTML=oldTxt||'直接下載 PPTX'; },1200); }
       setMsg('已下載：'+out); toast(ICN.check+' 已下載 PPTX');
     }catch(e){
       console.error('[PPTX] export failed',e);
@@ -2803,7 +2861,7 @@ window.renderS1VersionToggleHTML=function(v){
   var c=(v.client||'').trim(), a=(v.advisor||'').trim();
   var hasC=!!c, hasA=!!a;
   if(!hasC && !hasA){
-    return '<div class="empty-deliver"><div class="ed-icon">📭</div><div class="ed-title">尚未產生交付物</div><div class="ed-desc">完成「② 產生」階段、按下「儲存初診結果」之後，會在這裡看到完整的客戶版／顧問版預覽。</div></div>';
+    return '<div class="empty-deliver"><div class="ed-icon">'+ICN.mailbox+'</div><div class="ed-title">尚未產生交付物</div><div class="ed-desc">完成「② 產生」階段、按下「儲存初診結果」之後，會在這裡看到完整的客戶版／顧問版預覽。</div></div>';
   }
   var defaultTab=hasC?'client':'advisor';
   var clientHTML='<div class="deliver-paper">'
@@ -2819,8 +2877,8 @@ window.renderS1VersionToggleHTML=function(v){
     +'<div class="dp-body">'+(hasA?esc(a).replace(/\n/g,'<br>'):'<div class="dp-empty">尚未填入顧問版內容</div>')+'</div>'
     +'</div>';
   return '<div class="ver-toggle">'
-    +'<button class="ver-tab '+(defaultTab==='client'?'is-on':'')+'" data-vertab="client" onclick="switchDeliverView(\'client\')">客戶版 '+(hasC?'<span class="vt-check">✓</span>':'')+'</button>'
-    +'<button class="ver-tab '+(defaultTab==='advisor'?'is-on':'')+'" data-vertab="advisor" onclick="switchDeliverView(\'advisor\')">顧問版 '+(hasA?'<span class="vt-check">✓</span>':'')+'</button>'
+    +'<button class="ver-tab '+(defaultTab==='client'?'is-on':'')+'" data-vertab="client" onclick="switchDeliverView(\'client\')">客戶版 '+(hasC?'<span class="vt-check">'+ICN.check+'</span>':'')+'</button>'
+    +'<button class="ver-tab '+(defaultTab==='advisor'?'is-on':'')+'" data-vertab="advisor" onclick="switchDeliverView(\'advisor\')">顧問版 '+(hasA?'<span class="vt-check">'+ICN.check+'</span>':'')+'</button>'
     +'</div>'
     +'<div class="ver-pane" data-verpane="client" '+(defaultTab==='client'?'':'style="display:none"')+'>'+clientHTML+'</div>'
     +'<div class="ver-pane" data-verpane="advisor" '+(defaultTab==='advisor'?'':'style="display:none"')+'>'+advisorHTML+'</div>';
@@ -2901,7 +2959,7 @@ window.toggleClientMark=function(){
   try{ if(typeof renderBanner==='function') renderBanner(); }catch(e){}
   try{ if(typeof renderSelectList==='function') renderSelectList(); }catch(e){}
   try{ if(typeof renderSelect==='function') renderSelect(); }catch(e){}
-  if(typeof toast==='function') toast((a.isClient?'⭐ 已標記為我的客戶':'已取消客戶標記'));
+  if(typeof toast==='function') toast((a.isClient?(ICN.star+' 已標記為我的客戶'):'已取消客戶標記'));
 };
 
 window.switchS1Tab=function(name){
@@ -2917,47 +2975,47 @@ window.openS1TabInfo=function(name){
       title:'① 蒐集 · 為什麼這步要這樣做',
       kicker:'STAGE 1 · GATHER · WHY & HOW',
       lines:[
-        ['📋','收集前的核心問題','在還沒跟客戶深聊前，能用「公開資料」回答三個問題：他被市場看到的樣子？他的可見度有沒有斷層？他有沒有過去的內容資產？'],
-        ['🔍','為什麼是 16 個來源','16 個來源不是隨便定的數字，而是涵蓋「主動曝光（官網、IG、YT、FB）」+「被動曝光（Google、Maps、新聞）」+「轉換入口（LINE、表單）」+「同行對標」這四大類。少了任何一類，後續策略都會有盲點。'],
-        ['🎯','為什麼還要 5 個進階框架','這 5 個框架（搜尋入口地圖／信任路徑／爆款題型／缺口清單／會前問題）是把資料蒐集從「列舉」升級到「判斷」。沒有判斷只是堆資料，有判斷才能寫提案。'],
-        ['💡','AI 輔助的角色','AI 不是替你想，而是替你「快速收齊」。你的價值在於補上 AI 看不到的脈絡（內幕、人情、市場時機）。']
+        [ICN.clipboard,'收集前的核心問題','在還沒跟客戶深聊前，能用「公開資料」回答三個問題：他被市場看到的樣子？他的可見度有沒有斷層？他有沒有過去的內容資產？'],
+        [ICN.search,'為什麼是 16 個來源','16 個來源不是隨便定的數字，而是涵蓋「主動曝光（官網、IG、YT、FB）」+「被動曝光（Google、Maps、新聞）」+「轉換入口（LINE、表單）」+「同行對標」這四大類。少了任何一類，後續策略都會有盲點。'],
+        [ICN.target,'為什麼還要 5 個進階框架','這 5 個框架（搜尋入口地圖／信任路徑／爆款題型／缺口清單／會前問題）是把資料蒐集從「列舉」升級到「判斷」。沒有判斷只是堆資料，有判斷才能寫提案。'],
+        [ICN.bulb,'AI 輔助的角色','AI 不是替你想，而是替你「快速收齊」。你的價值在於補上 AI 看不到的脈絡（內幕、人情、市場時機）。']
       ]
     },
     produce:{
       title:'② 產生 · 為什麼這步要這樣做',
       kicker:'STAGE 1 · PRODUCE · WHY & HOW',
       lines:[
-        ['🧪','為什麼要產提示詞','要 AI 寫出可用的分析，必須給三樣東西：客戶背景＋蒐集結果＋我們的判斷框架。三者缺一，AI 會寫出泛泛之論。'],
-        ['🪞','為什麼分客戶版 / 顧問版','客戶版是「對外溝通版」，去掉內部判斷理由、只留可對外說明的觀察；顧問版保留全部判斷、風險、邊界——這份不會被傳出去。同一個內容兩種包裝，是顧問業的標準做法。'],
-        ['⚙','已套用 ATELIER 七維診斷框架','觀察維度／判斷層面／分析角度／歷史脈絡／同類對標／影片連動／行動建議 —— 七個維度確保產出不會只停在「我看到了什麼」，而會推到「所以該怎麼辦」。']
+        [ICN.flask,'為什麼要產提示詞','要 AI 寫出可用的分析，必須給三樣東西：客戶背景＋蒐集結果＋我們的判斷框架。三者缺一，AI 會寫出泛泛之論。'],
+        [ICN.mirror,'為什麼分客戶版 / 顧問版','客戶版是「對外溝通版」，去掉內部判斷理由、只留可對外說明的觀察；顧問版保留全部判斷、風險、邊界——這份不會被傳出去。同一個內容兩種包裝，是顧問業的標準做法。'],
+        [ICN.gear,'已套用 ATELIER 七維診斷框架','觀察維度／判斷層面／分析角度／歷史脈絡／同類對標／影片連動／行動建議 —— 七個維度確保產出不會只停在「我看到了什麼」，而會推到「所以該怎麼辦」。']
       ]
     },
     deliver:{
       title:'③ 交付 · 為什麼這步要這樣做',
       kicker:'STAGE 1 · DELIVER · WHY & HOW',
       lines:[
-        ['📤','交付前最後一次自審','把 AI 產出整理到「客戶版」「顧問版」兩個獨立框 —— 不是直接生 PPT，是先看完字、確認沒有寫錯人名公司、沒有偏離事實。'],
-        ['🎨','為什麼用 ATELIER 設計版','設計版＝品牌視覺一致＋字體一致＋留白一致。客戶第一眼看到不是「資料報告」是「精品提案」。這個視覺差異，會決定客戶後續報價接受度。'],
-        ['📝','備註欄的用法','備註可寫「會前要對焦」「不能寫進對外版的事項」「下次補資料的提醒」——這是給未來的自己看的留言。']
+        [ICN.outbox,'交付前最後一次自審','把 AI 產出整理到「客戶版」「顧問版」兩個獨立框 —— 不是直接生 PPT，是先看完字、確認沒有寫錯人名公司、沒有偏離事實。'],
+        [ICN.palette,'為什麼用 ATELIER 設計版','設計版＝品牌視覺一致＋字體一致＋留白一致。客戶第一眼看到不是「資料報告」是「精品提案」。這個視覺差異，會決定客戶後續報價接受度。'],
+        [ICN.memo,'備註欄的用法','備註可寫「會前要對焦」「不能寫進對外版的事項」「下次補資料的提醒」——這是給未來的自己看的留言。']
       ]
     },
     export:{
       title:'④ 總和 · 為什麼這步要這樣做',
       kicker:'STAGE 1 · EXPORT · WHY & HOW',
       lines:[
-        ['📦','三格式並存的理由','HTML＝可寄信、可線上開、有互動 hover；PDF＝可印、不可改；PPTX＝可口頭簡報、客戶現場驗收。三種場合都用得到。'],
-        ['📐','PPT 套用 SCR 國際敘事','Situation（你的現況）→ Complication（你的痛點）→ Resolution（我的解法）—— 這是 McKinsey 等顧問公司用 50 年的提案結構，比「資料 dump」更能讓客戶動心。'],
-        ['💰','PRICING 頁的角色','把合作方案放在 PPT 最後，不是急著賣，是讓客戶看完痛點與解法後「自然有想合作的衝動」。順序錯了，再好的方案也賣不出去。']
+        [ICN.boxPkg,'三格式並存的理由','HTML＝可寄信、可線上開、有互動 hover；PDF＝可印、不可改；PPTX＝可口頭簡報、客戶現場驗收。三種場合都用得到。'],
+        [ICN.ruler,'PPT 套用 SCR 國際敘事','Situation（你的現況）→ Complication（你的痛點）→ Resolution（我的解法）—— 這是 McKinsey 等顧問公司用 50 年的提案結構，比「資料 dump」更能讓客戶動心。'],
+        [ICN.money,'PRICING 頁的角色','把合作方案放在 PPT 最後，不是急著賣，是讓客戶看完痛點與解法後「自然有想合作的衝動」。順序錯了，再好的方案也賣不出去。']
       ]
     }
   };
   var data=content[name]; if(!data) return;
   var sh=$('sheet'), md=$('modal'); if(!sh||!md) return;
   var rows=data.lines.map(function(l){
-    return '<div style="display:grid;grid-template-columns:48px 1fr;gap:14px;margin:18px 0;align-items:flex-start"><div style="font-size:24px;text-align:center">'+l[0]+'</div><div><div style="font-weight:700;color:#2A1A1C;font-size:14.5px;margin-bottom:4px;font-family:Noto Serif TC,serif">'+l[1]+'</div><div style="color:#5C4248;font-size:13px;line-height:1.85">'+l[2]+'</div></div></div>';
+    return '<div style="display:grid;grid-template-columns:48px 1fr;gap:14px;margin:18px 0;align-items:flex-start"><div style="font-size:20px;text-align:center;color:#A51820">'+l[0]+'</div><div><div style="font-weight:700;color:#2A1A1C;font-size:14.5px;margin-bottom:4px;font-family:Noto Serif TC,serif">'+l[1]+'</div><div style="color:#5C4248;font-size:13px;line-height:1.85">'+l[2]+'</div></div></div>';
   }).join('');
   sh.innerHTML='<div class="preview-paper" style="background:#FDFBF8;border:1px solid #E8E3DA;border-radius:14px;padding:36px;max-height:78vh;overflow:auto;position:relative">'
-    +'<button onclick="closeModal()" aria-label="關閉" style="position:absolute;top:14px;right:14px;background:transparent;border:none;font-size:24px;color:#8A7274;cursor:pointer;line-height:1;padding:4px 8px;border-radius:6px;z-index:9" onmouseover="this.style.color=\'#A51820\';this.style.background=\'#FAF3F4\'" onmouseout="this.style.color=\'#8A7274\';this.style.background=\'transparent\'">✕</button>'
+    +'<button onclick="closeModal()" aria-label="關閉" style="position:absolute;top:14px;right:14px;background:transparent;border:none;font-size:24px;color:#8A7274;cursor:pointer;line-height:1;padding:4px 8px;border-radius:6px;z-index:9" onmouseover="this.style.color=\'#A51820\';this.style.background=\'#FAF3F4\'" onmouseout="this.style.color=\'#8A7274\';this.style.background=\'transparent\'">'+ICN.close+'</button>'
     +'<div style="font-family:Cormorant Garamond,serif;letter-spacing:4px;color:#D4A574;font-size:12px;margin-bottom:8px">'+data.kicker+'</div>'
     +'<h2 style="font-family:Noto Serif TC,serif;font-size:24px;color:#2A1A1C;margin:0 0 6px">'+data.title+'</h2>'
     +'<div style="height:2px;width:60px;background:#D4A574;margin:14px 0 4px"></div>'
@@ -2970,53 +3028,53 @@ window.STAGE_NOTES={
   stage2:{kicker:'STAGE 2 · INTAKE',title:'② 建檔 · 為什麼這步要這樣做',
     why:'初診是「公開資料判讀」，建檔是「客戶資產盤點」。把客戶手上「會說的」基本資料、過去合作、行業背景、品牌資產整理成標準格式，後面所有分析的根都從這裡長出來。',
     lines:[
-      ['📂','基本資料','姓名/職稱/產業/平台/網址/聯絡方式——這些是「事實層」，未來所有對外文案都引用這份資料，必須準確。'],
-      ['🎯','過去合作脈絡','客戶之前跟誰合作過、結果如何、為什麼結束。從這裡能讀出「客戶對 agency 的真實期待」。'],
-      ['🏛️','品牌資產盤點','已有的 logo / 主視覺 / 影片素材 / 案例文件——能用的盡量用，省成本也保連續性。']
+      [ICN.folder,'基本資料','姓名/職稱/產業/平台/網址/聯絡方式——這些是「事實層」，未來所有對外文案都引用這份資料，必須準確。'],
+      [ICN.target,'過去合作脈絡','客戶之前跟誰合作過、結果如何、為什麼結束。從這裡能讀出「客戶對 agency 的真實期待」。'],
+      [ICN.building,'品牌資產盤點','已有的 logo / 主視覺 / 影片素材 / 案例文件——能用的盡量用，省成本也保連續性。']
     ]
   },
   stage3:{kicker:'STAGE 3 · INTERVIEW',title:'③ 問診 · 為什麼這步要這樣做',
     why:'初診+建檔是「外部+客戶提供的事實」，問診是「客戶內心真正的痛點與目標」。沒有深度訪談，做出來的內容會浮在表面，無法打中真實需求。',
     lines:[
-      ['💔','痛點挖掘','他真正卡住的是什麼？流量不夠？流量夠但沒詢問？詢問多但成交少？每個痛點對應不同解法。'],
-      ['🎯','目標釐清','一年後他希望變成什麼樣？這個目標決定整個內容策略的方向（品牌建立 vs 引流 vs 成交）。'],
-      ['🚧','邊界與禁忌','他不能說什麼？不能露什麼？哪些客戶/案例不能公開？提早問清楚省日後爭議。']
+      [ICN.heartBreak,'痛點挖掘','他真正卡住的是什麼？流量不夠？流量夠但沒詢問？詢問多但成交少？每個痛點對應不同解法。'],
+      [ICN.target,'目標釐清','一年後他希望變成什麼樣？這個目標決定整個內容策略的方向（品牌建立 vs 引流 vs 成交）。'],
+      [ICN.barrier,'邊界與禁忌','他不能說什麼？不能露什麼？哪些客戶/案例不能公開？提早問清楚省日後爭議。']
     ]
   },
   stage4:{kicker:'STAGE 4 · DIAGNOSIS',title:'④ 診斷 · 為什麼這步要這樣做',
     why:'把初診、建檔、問診的資料收斂成「可交付的策略判斷」。診斷 ≠ 描述現況，而是「指出問題的優先順序 + 給出方向」。',
     lines:[
-      ['🔬','定位 vs 受眾 vs 內容','三角校驗：定位清楚 → 受眾就清楚 → 內容才能精準。哪一邊斷了，內容就會散。'],
-      ['📊','內容缺口','現有內容缺什麼題材、情緒、案例、信任證據？這份缺口表就是後面企劃的題庫。'],
-      ['🚪','轉換缺口','看了內容到下單之間，斷在哪？沒 CTA / CTA 不清 / 信任不足 / 服務不明？修哪裡 ROI 最高？'],
+      [ICN.micro,'定位 vs 受眾 vs 內容','三角校驗：定位清楚 → 受眾就清楚 → 內容才能精準。哪一邊斷了，內容就會散。'],
+      [ICN.barChart,'內容缺口','現有內容缺什麼題材、情緒、案例、信任證據？這份缺口表就是後面企劃的題庫。'],
+      [ICN.door,'轉換缺口','看了內容到下單之間，斷在哪？沒 CTA / CTA 不清 / 信任不足 / 服務不明？修哪裡 ROI 最高？'],
       ['1️⃣2️⃣3️⃣','優先順序','永遠不要一次解決所有問題。挑「影響成交 × 執行難度」最划算的 3 件事先做。']
     ]
   },
   stage5:{kicker:'STAGE 5 · INVENTORY',title:'⑤ 盤點 · 為什麼這步要這樣做',
     why:'企劃前必須先盤點手上有什麼。憑空想題目會做出「客戶喊好但拍不出來」的內容；盤點完才知道哪些題目是真實可執行的。',
     lines:[
-      ['💎','既有內容資產','過去表現好的影片/文章/官網頁，能不能再利用、改編、延伸？已花過的錢要盡量挖回價值。'],
-      ['🏛️','可延伸內容主軸','3-5 條可長期拍攝的內容支柱（不是單支題目）。這是「IP 化」的基礎。'],
-      ['📖','故事素材','老闆故事/客戶故事/失敗經驗——這些是「情感連結」的彈藥，跟「專業內容」搭配才能打動人。'],
-      ['🎬','拍攝素材條件','人/場地/物件/流程畫面——確定能拍才能寫進企劃，不然企劃寫了拍不出來就是廢紙。']
+      [ICN.gem,'既有內容資產','過去表現好的影片/文章/官網頁，能不能再利用、改編、延伸？已花過的錢要盡量挖回價值。'],
+      [ICN.building,'可延伸內容主軸','3-5 條可長期拍攝的內容支柱（不是單支題目）。這是「IP 化」的基礎。'],
+      [ICN.book,'故事素材','老闆故事/客戶故事/失敗經驗——這些是「情感連結」的彈藥，跟「專業內容」搭配才能打動人。'],
+      [ICN.clapper,'拍攝素材條件','人/場地/物件/流程畫面——確定能拍才能寫進企劃，不然企劃寫了拍不出來就是廢紙。']
     ]
   },
   stage6:{kicker:'STAGE 6 · PLANNING',title:'⑥ 企劃 · 為什麼這步要這樣做',
     why:'把診斷結論轉成「客戶看得懂、團隊可執行」的提案：目標 → 主軸 → 題庫 → 腳本 → 時程 → KPI。沒有完整企劃，後面執行會變散亂的拍片日。',
     lines:[
-      ['🎯','本階段合作目標','一句話：這一輪最主要要完成什麼？（品牌/引流/成交/招募/信任）目標決定其他所有選擇。'],
-      ['💡','提案核心角度','一句話戰略主張——客戶看到這句要點頭。如果你說不出來，代表你還沒想清楚。'],
-      ['📚','首波題庫','可拍的 10-20 題，依優先順序排。這 20 題裡先拍哪 5 支？要說明原因。'],
-      ['📅','執行時程 + KPI','拍攝/審稿/剪輯/交付/上線節奏，並列出觀察指標——客戶才知道「成功是什麼樣」。']
+      [ICN.target,'本階段合作目標','一句話：這一輪最主要要完成什麼？（品牌/引流/成交/招募/信任）目標決定其他所有選擇。'],
+      [ICN.bulb,'提案核心角度','一句話戰略主張——客戶看到這句要點頭。如果你說不出來，代表你還沒想清楚。'],
+      [ICN.books,'首波題庫','可拍的 10-20 題，依優先順序排。這 20 題裡先拍哪 5 支？要說明原因。'],
+      [ICN.calendar,'執行時程 + KPI','拍攝/審稿/剪輯/交付/上線節奏，並列出觀察指標——客戶才知道「成功是什麼樣」。']
     ]
   },
   stage7:{kicker:'STAGE 7 · DELIVERY',title:'⑦ 交付 · 為什麼這步要這樣做',
     why:'交付 ≠ 給檔案。交付是「確認客戶滿意 + 完成商業循環 + 留下復盤資產」。專案沒結尾管理，下一案會更亂。',
     lines:[
-      ['📦','已交付項目','腳本/影片/封面/建議書——清單化才能避免漏交，也方便客戶之後找東西。'],
-      ['💬','客戶回饋','喜歡什麼/卡在哪/要改什麼——這些是下次更好的線索，要正式紀錄不是用印象。'],
-      ['🧠','內部復盤','這個案子學到什麼？哪些流程可優化？復盤越認真，下個案子越輕鬆。'],
-      ['💰','款項與結案','訂金/尾款/發票/收款日——商業面跟服務面同樣重要，閉環才有現金流。']
+      [ICN.boxPkg,'已交付項目','腳本/影片/封面/建議書——清單化才能避免漏交，也方便客戶之後找東西。'],
+      [ICN.speech,'客戶回饋','喜歡什麼/卡在哪/要改什麼——這些是下次更好的線索，要正式紀錄不是用印象。'],
+      [ICN.brain,'內部復盤','這個案子學到什麼？哪些流程可優化？復盤越認真，下個案子越輕鬆。'],
+      [ICN.money,'款項與結案','訂金/尾款/發票/收款日——商業面跟服務面同樣重要，閉環才有現金流。']
     ]
   }
 };
@@ -3026,10 +3084,10 @@ window.openStageInfo=function(stageName){
   var sh=document.getElementById('sheet'), md=document.getElementById('modal');
   if(!sh||!md) return;
   var rows=note.lines.map(function(l){
-    return '<div style="display:grid;grid-template-columns:48px 1fr;gap:14px;margin:18px 0;align-items:flex-start"><div style="font-size:24px;text-align:center">'+l[0]+'</div><div><div style="font-weight:700;color:#2A1A1C;font-size:14.5px;margin-bottom:4px;font-family:Noto Serif TC,serif">'+l[1]+'</div><div style="color:#5C4248;font-size:13px;line-height:1.85">'+l[2]+'</div></div></div>';
+    return '<div style="display:grid;grid-template-columns:48px 1fr;gap:14px;margin:18px 0;align-items:flex-start"><div style="font-size:20px;text-align:center;color:#A51820">'+l[0]+'</div><div><div style="font-weight:700;color:#2A1A1C;font-size:14.5px;margin-bottom:4px;font-family:Noto Serif TC,serif">'+l[1]+'</div><div style="color:#5C4248;font-size:13px;line-height:1.85">'+l[2]+'</div></div></div>';
   }).join('');
   sh.innerHTML='<div class="preview-paper" style="background:#FDFBF8;border:1px solid #E8E3DA;border-radius:14px;padding:36px;max-height:78vh;overflow:auto;position:relative">'
-    +'<button onclick="closeModal()" aria-label="關閉" style="position:absolute;top:14px;right:14px;background:transparent;border:none;font-size:24px;color:#8A7274;cursor:pointer;line-height:1;padding:4px 8px;border-radius:6px;z-index:9" onmouseover="this.style.color=\'#A51820\';this.style.background=\'#FAF3F4\'" onmouseout="this.style.color=\'#8A7274\';this.style.background=\'transparent\'">✕</button>'
+    +'<button onclick="closeModal()" aria-label="關閉" style="position:absolute;top:14px;right:14px;background:transparent;border:none;font-size:24px;color:#8A7274;cursor:pointer;line-height:1;padding:4px 8px;border-radius:6px;z-index:9" onmouseover="this.style.color=\'#A51820\';this.style.background=\'#FAF3F4\'" onmouseout="this.style.color=\'#8A7274\';this.style.background=\'transparent\'">'+ICN.close+'</button>'
     +'<div style="font-family:Cormorant Garamond,serif;letter-spacing:4px;color:#D4A574;font-size:12px;margin-bottom:8px">'+note.kicker+'</div>'
     +'<h2 style="font-family:Noto Serif TC,serif;font-size:24px;color:#2A1A1C;margin:0 0 6px">'+note.title+'</h2>'
     +'<div style="height:2px;width:60px;background:#D4A574;margin:14px 0 18px"></div>'
