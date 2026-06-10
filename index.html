@@ -5,7 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="color-scheme" content="light only">
 <meta name="supported-color-schemes" content="light">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v216 (版本號僅留註解，不顯示於畫面)
+<!-- ATELIER 影片診斷工作台 · 內部版本 v218 (版本號僅留註解，不顯示於畫面)
+v218 更新（交辦單：服務台那條線交接過來的「資料安全修補」，疊在本線 v217 之上、跳號到 218 避免與另一支撞號）：【跨工具資料不互洗】工作台與服務台(client.html)共用同一 Firebase；兩邊都用 .set({accounts:整包陣列},{merge:true}) 寫回，但 document 層 merge 不深層合併陣列＝整包取代，工作台不認識服務台寫的 healthHistory／contentHealthScore／clientFlow，一存帳號就把服務台評分洗掉。修法：_accFbPush() 改為「先 _ref.get() 抓雲端最新 → 以 id 對齊合併（Object.assign({},雲端,本機)：本機覆蓋共用欄位但不刪雲端欄位；_KEEP=[healthHistory,contentHealthScore,clientFlow] 一律以雲端為準、工作台不蓋）→ 雲端有本機沒有的帳號也保留 → 才寫回」；抓不到雲端就不寫(本機已存、不誤刪)。只動 _accFbPush 一個函式，未動資料結構/既有欄位/其他寫雲端路徑(videos)。未動六守門常數(md5 5d2b1a50909c91b89ca7454e64f81911 不變)；版本號 4 處 v217→v218；check.js 16/16；div/details 平衡。上線順序：先上工作台 v218 → 再上服務台 cs-v3.4。
+v217 更新（交辦單：backlog 唯一「純本線、不需外部依賴」的項目做掉＝帳號成長回測曲線，接 v216）：【帳號成長曲線】帳號卡「更多分析工具」在「＋粉絲快照」後新增 data-acc-growth「成長曲線」入口＋bindAccountUI 綁 openGrowthChart；window.openGrowthChart(accId)：讀 a.fanSnapshots（同日去重留最後、依日期升冪），<2 筆不同日期顯示引導（怎麼補快照），≥2 筆用純 SVG 畫折線圖（viewBox 自適應、區域填色、峰值點標金、y 軸三格線 min/mid/max、n≤7 標每點否則首尾）＋摘要（區間/總成長/近30天 growth30Days）＋逐筆快照 details 表（每筆變化±）。用 #modal/#sheet，純讀不改資料結構。【未做·有原因】別條線（子題型 repo 的「客戶問題轉譯型」、client.html 返回鍵/記進度）不在本檔不能動，另以規格交接；客戶交付 PDF 需先定範圍；市場搜尋真實 API／真實 API 串接需外部端點＋金鑰，單一 HTML 檔接不了（手填版 v165 已在）。未動六守門常數(md5 5d2b1a50909c91b89ca7454e64f81911 不變)；版本號 4 處 v216→v217；check.js 16/16；div/details 平衡。
 v216 更新（交辦單：把工作台這條線剩下的兩個功能一次做完，讓 Lisa 能完整跑一遍——①比多同行的產業定位排行表②客戶服務台子母小窗，接 v215）：【A 產業定位排行表】hub 對標清單下方加「產業定位排行表」鈕→ openPositioningTable(libHeroId)：取與主角 _smScore>0.08 的同行池（含主角），每個算平均觀看(_accPerf)、平均分享率(分享/觀看均值)、粉絲量級(latestFollowers+tierTW)、相似度(_smScore)、影片數；依平均觀看排名出表（主角列高亮★），上方摘要主角的觀看排名/分享率排名(對中位數標強項或可加強處)/量級。用 #modal/#sheet 呈現，純讀不改資料。【B 客戶服務台子母小窗】左下固定鈕「⊞ 服務台小窗」→ _csDockOpen()：頁內浮動面板(#csDock，resize:both 可拉動縮放)內嵌 iframe(client.html)，標題列可拖曳移動、含縮小(_csDockMin)/改開大視窗(window.open named target)/關閉(_csDockClose)；首次開啟才載入 iframe、首次開啟綁拖曳。與既有導覽「客戶服務台」獨立視窗並存(一個頁內小窗、一個大視窗)。client.html 屬另一條線、僅以 iframe 載入未修改。【非本線】「客戶問題轉譯型」變正式子題型(子題型 repo)、client.html 返回鍵/記住進度(客戶端_01)，不在本檔。未動六守門常數(md5 5d2b1a50909c91b89ca7454e64f81911 不變)；版本號 4 處 v215→v216；check.js 16/16；div/details 平衡。
 v215 更新（交辦單：Lisa 要的「待補清單＋逐欄補完提示詞」——快速貼檔不逐欄看時，系統主動提醒哪些沒填到、並給逐欄補完提示詞，接 v214）：【待補清單】輸入表單儲存區上方加 #inputTodo 容器＋renderInputTodo()：掃 9 個關鍵欄位(f-title/f-account/f-theme/f-stage/f-mat/f-sub/f-trig/f-form/f-goal)，列出空的；全空的新表單(且 pasteBox 也空)不顯示，全填好顯示綠色「都填好了」，有缺則列「還有 N 欄沒填到」＋每欄一列。manual 欄(影片名稱/連結帳號)只顯示手動提示；分類下拉欄附「複製補完提示詞」鈕。【逐欄補完提示詞】window._todoCopy(selId)：讀該 select 的 option 文字當合法選項清單、加影片標題＋主題＋階段＋逐字稿(取前 1500 字)組成「只判這一欄」的提示詞，要 AI 從選項挑 1 個＋說為什麼，判不出回「無法判斷」不硬猜；走既有 copyPrompt 可編輯預覽彈窗(退回 copyVal)。【掛鉤】parse 收尾、showInputSub、9 欄位 change/input、clearBtn 後都呼叫 renderInputTodo 即時刷新。純新增、未動 parse/儲存/資料結構與既有欄位 id。未動六守門常數(md5 5d2b1a50909c91b89ca7454e64f81911 不變)；版本號 4 處 v214→v215；check.js 16/16；div/details 平衡。
 v214 更新（交辦單：v213 的搜尋 keyup 修法有後遺症——注音組字中拿注音符號去比對，把主角下拉清單濾成空白；Lisa 打「理」變整列空白，接 v213）：【搜尋注音感知過濾】根因：注音組字期間 si.value 是注音符號(ㄌㄧˇ)非中文字，v213 的 input/keyup 即時濾→拿 ㄌㄧˇ 比對全部不符→清單空白(Latin 字無此問題故「k」正常)。修法：csel 單選搜尋的 input/keyup 改走 _cselMaybe——維護 _cselComp(compositionstart/end 旗標)，若「組字中且 si.value 尚未出現中文字(\u3400-\u9fff/\uf900-\ufaff)」就先不濾(維持現狀不清空)；一旦行內候選出現中文字、或選字送出 compositionend，才呼叫 _cselFilter。非組字(英數/貼上/退格)維持即時濾。只動這段事件綁定，data-s 與 _cselFilter 本體不變。未動六守門常數(md5 5d2b1a50909c91b89ca7454e64f81911 不變)；版本號 4 處 v213→v214；check.js 16/16；div/details 平衡。
@@ -789,7 +791,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v216</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v218</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -4061,7 +4063,9 @@ function renderManual(){
   <div class="form-card" style="border-left:3px solid var(--gold)">
     <div class="stitle" style="font-size:15px;color:var(--rouge)">更新紀錄 · 還沒做的</div>
     <p style="font-size:13px;color:var(--text);line-height:1.85;margin-top:8px">
-    <b>v216（這版 · 把剩下兩個功能做完，你可以完整跑一遍）：</b>①<b>產業定位排行表</b>：影片庫選好主角後，對標區下方有「產業定位排行表」鈕——點開把你的當事人放進同行裡，<b>依平均觀看排名列成一張表</b>（主角那列會高亮★），上方一句話告訴你「主角在 N 個同行裡，觀看排第幾、分享率排第幾、是強項還是可加強」，欄位有相似度／影片數／平均觀看／平均分享率／粉絲量級，看你的當事人站哪、強在哪、弱在哪。②<b>客戶服務台子母小窗</b>：左下角有顆「⊞ 服務台小窗」，點了會在<b>工作台頁面內</b>開一個浮動小窗（內嵌客戶服務台），<b>拖標題列可移動、拉右下角可縮放</b>，還能縮小或一鍵改開大視窗——這樣你不離開工作台也能一邊查客戶資料。<b>沒動任何提示詞（六守門常數 md5 不變）。</b>（「客戶問題轉譯型」變正式子題型、服務台那頁自己的返回鍵，是另外兩條線的事，這裡不動。）<br>
+    <b>v218（這版 · 資料安全修補，跟服務台搭配）：</b>這版是<b>後台修補</b>、畫面不變。工作台和客戶服務台共用同一個雲端資料庫，之前工作台一存帳號，會不小心把<b>服務台那邊打的評分</b>（健檢紀錄、內容健康分數、客戶流程）整包蓋掉。現在改成：工作台存帳號前<b>先去雲端抓最新、把服務台的欄位原封不動保留</b>，再寫回——兩邊各存各的、不再互相洗掉資料。抓不到雲端就乾脆不寫（你本機已經存著），絕不拿舊資料去覆蓋。<b>沒動任何提示詞（六守門常數 md5 不變）、沒動任何功能畫面。</b>（上線順序：<b>先上這支工作台 v218，再上服務台 cs-v3.4</b>，兩邊是搭配的。）<br>
+    <b>v217（帳號成長曲線）：</b>每張帳號卡的「更多分析工具」裡多一顆「<b>成長曲線</b>」。點開會把這個帳號存過的<b>粉絲快照畫成一張折線圖</b>——看得到從第一筆到最新一筆的走勢，上面標出<b>區間、總共漲跌幾粉、近 30 天變化</b>，峰值點用金色標起來，下面還能展開「逐筆快照」看每一次的增減。至少要有 <b>2 筆不同日期</b>的快照才畫得出來（建檔／更新時會自動記，或自己按「＋ 粉絲快照」補）。<b>沒動任何提示詞（六守門常數 md5 不變）。</b>（其他還沒做的：子題型那項在另一個 repo、服務台返回鍵在 client.html，都不是這個檔能動的，我另外給你規格；客戶交付 PDF 要先定範圍；市場「真實搜尋量」需要接外部 API，單一檔接不了，目前是手填版。）<br>
+    <b>v216（把剩下兩個功能做完，你可以完整跑一遍）：</b>①<b>產業定位排行表</b>：影片庫選好主角後，對標區下方有「產業定位排行表」鈕——點開把你的當事人放進同行裡，<b>依平均觀看排名列成一張表</b>（主角那列會高亮★），上方一句話告訴你「主角在 N 個同行裡，觀看排第幾、分享率排第幾、是強項還是可加強」，欄位有相似度／影片數／平均觀看／平均分享率／粉絲量級，看你的當事人站哪、強在哪、弱在哪。②<b>客戶服務台子母小窗</b>：左下角有顆「⊞ 服務台小窗」，點了會在<b>工作台頁面內</b>開一個浮動小窗（內嵌客戶服務台），<b>拖標題列可移動、拉右下角可縮放</b>，還能縮小或一鍵改開大視窗——這樣你不離開工作台也能一邊查客戶資料。<b>沒動任何提示詞（六守門常數 md5 不變）。</b>（「客戶問題轉譯型」變正式子題型、服務台那頁自己的返回鍵，是另外兩條線的事，這裡不動。）<br>
     <b>v215（待補清單＋逐欄補完提示詞）：</b>你說快速貼檔、來不及逐欄看——現在貼完卡、自動填完後，<b>儲存按鈕上方會浮出一張「待補清單」</b>，列出這張卡<b>還有哪幾欄沒填到</b>（例如「子題型（第5層）」「流量觸發」）。每一條分類欄旁邊一顆<b>「複製補完提示詞」</b>，點了就複製一段<b>只針對那一欄</b>的提示詞（裡面已經幫你帶好影片標題、主題、逐字稿、還有那欄的合法選項），你貼去問 AI、它從選項挑最準的給你；它判不出來會回「無法判斷」、不會亂猜。全部填好會顯示綠色「都填好了」；不想填的可以忽略，<b>這只是提醒、不擋你存檔</b>。<b>沒動任何提示詞（六守門常數 md5 不變）。</b><br>
     <b>v214（把搜尋『理』徹底修好）：</b>上一版（v213）打「理」會把整個清單濾成空白——因為注音<b>組字中</b>那一刻，搜尋框裡其實是注音符號（ㄌㄧˇ）不是「理」，系統拿注音去比對就全部不符、變空白（打英數的「k」沒這問題就是因為不用組字）。這版改成：<b>組字中、還沒出現中文字之前先不要濾</b>（清單維持原樣不清空），等中文字出現或你選字送出，才開始濾。這樣打「理」就會正確留下理鴻、不會空白了。<b>沒動任何提示詞（六守門常數 md5 不變）。</b><br>
     <b>v213（客戶服務台獨立視窗＋同類對標系統建議＋搜尋強化）：</b>①<b>客戶服務台改開獨立視窗</b>：以前按「客戶服務台」是整頁跳走，跳回來工作台就回到最初畫面、做到一半的進度沒了。現在它<b>開在自己的視窗</b>——工作台一個、服務台一個，你可以縮放並排，<b>互相切換都不會重載、不會掉進度</b>，一邊查資料一邊灌東西。（服務台那頁自己的返回鍵和「記住上次客戶」是另一條線維護的，我這邊先把工作台這側做好。）②<b>同類對標加「★ 系統建議」</b>：你說同職稱/同產業點起來都一樣——現在主角選好後，對標列多一顆<b>「★ 系統建議」</b>，系統用綜合相似度（產業＋身份＋內容階段分布＋粉絲量級）自動挑出最像的前幾名、<b>由近到遠排好</b>，而且<b>每個旁邊會寫「為什麼像」</b>（例如「同產業 · 法律」「同為律師」「量級相近」），你就能很明確地挑。勾選、只看勾選、帶去版面對照都跟之前一樣。③<b>中文單字搜尋再修穩</b>：上一版（v212）對你的注音輸入法還是沒抓到——組字中框裡是注音符號、選字送出那下系統沒接到，所以打「理」還是不動。這版多接了一個鍵盤事件（放開選字鍵時值已經是「理」），單字搜尋這次一定出得來。<b>沒動任何提示詞（六守門常數 md5 不變）。</b>下一版（v214）再做「比很多同行做產業定位的排行表」。<br>
@@ -5263,6 +5267,7 @@ function renderAccounts(){
   box.querySelectorAll('[data-acc-borrow]').forEach(b=>b.onclick=()=>openBorrowTechnique(b.dataset.accBorrow));
   box.querySelectorAll('[data-acc-intake]').forEach(b=>b.onclick=()=>openClientIntake(b.dataset.accIntake));
   box.querySelectorAll('[data-acc-snap]').forEach(b=>b.onclick=()=>addFanSnapshot(b.dataset.accSnap));
+  box.querySelectorAll('[data-acc-growth]').forEach(b=>b.onclick=()=>openGrowthChart(b.dataset.accGrowth));
   box.querySelectorAll('[data-acc-prof]').forEach(b=>b.onclick=()=>addProfileSnapshot(b.dataset.accProf));
   box.querySelectorAll('[data-acc-hcheck]').forEach(b=>b.onclick=()=>openAccountHealthCheck(b.dataset.accHcheck));
   box.querySelectorAll('[data-acc-market]').forEach(b=>b.onclick=()=>openMarketData(b.dataset.accMarket));
@@ -5405,6 +5410,7 @@ function accCard(a){
       <span class="vlink" style="cursor:pointer;color:var(--gold-dark);font-weight:800" data-acc-success="${a.id}"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:2px"><path d="M4 16l5-5 4 4 7-7"/><path d="M16 8h5v5"/></svg>成功庫對標</span>
       <span class="vlink" style="cursor:pointer;color:var(--gold-dark);font-weight:800" data-acc-borrow="${a.id}"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#A51820" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:3px"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 9h16M9 4v16"/></svg>借技法寫腳本</span>
       <span class="vlink" style="cursor:pointer" data-acc-snap="${a.id}">+ 粉絲快照</span>
+      <span class="vlink" style="cursor:pointer;color:var(--gold-dark);font-weight:800" data-acc-growth="${a.id}"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#A51820" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:3px"><path d="M3 3v18h18"/><path d="M7 14l4-4 3 3 5-6"/></svg>成長曲線</span>
       <span class="vlink" style="cursor:pointer" data-acc-prof="${a.id}">+ 版面快照</span>
       <span class="vlink" style="cursor:pointer;color:var(--gold-dark);font-weight:800" data-acc-hcheck="${a.id}"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#A51820" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:3px"><path d="M3 12h4l2 7 4-14 2 7h5"/></svg>帳號健檢</span>
       <span class="vlink" style="cursor:pointer;color:var(--gold-dark);font-weight:800" data-acc-market="${a.id}"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#A51820" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:3px"><path d="M4 16l5-5 4 4 7-7"/><path d="M16 8h5v5"/></svg>市場熱度</span>
@@ -6029,6 +6035,75 @@ function renderMarketCard(){
 }
 
 function closeModal(){ $('modal').classList.remove('show'); $('sheet').innerHTML=''; }
+/* ═══════════ v217：帳號成長回測曲線（用粉絲快照畫折線圖） ═══════════ */
+window.openGrowthChart=function(accId){
+  var a=(typeof accounts!=='undefined'?accounts:[]).filter(function(x){return x.id===accId;})[0];
+  if(!a){ if(typeof toast==='function') toast('找不到帳號'); return; }
+  var name=(typeof _hubAccByName==='function')?_hubAccByName(a):(a.handle||'@?');
+  var snaps=(a.fanSnapshots||[]).map(function(o){return {date:(o.date||'').slice(0,10),count:parseInt(o.count)||0,note:o.note||''};}).filter(function(o){return o.date && o.count>=0;});
+  // 同日去重（留最後一筆）＋依日期升冪
+  var ded={}; snaps.sort(function(x,y){return x.date.localeCompare(y.date);}); snaps.forEach(function(o){ded[o.date]=o;});
+  snaps=Object.keys(ded).sort().map(function(d){return ded[d];});
+  var head='<div style="font-family:\'Noto Serif TC\',serif;font-size:18px;font-weight:900;margin-bottom:2px">帳號成長曲線 · '+esc(name)+'</div>'
+    +'<div style="font-size:12px;color:var(--gold-dark);margin-bottom:12px">用這個帳號的粉絲快照畫出成長走勢——每次建檔／更新或按「＋粉絲快照」就會多一個點</div>';
+  if(snaps.length<2){
+    var html='<div style="padding:18px 16px;max-height:84vh;overflow-y:auto">'+head
+      +'<div style="background:var(--warm);border-radius:9px;padding:14px;font-size:13px;line-height:1.8;color:var(--ink)">目前只有 <b>'+snaps.length+'</b> 筆粉絲快照，至少要 <b>2 筆不同日期</b>才畫得出曲線。<br>補快照的方法：在這張帳號卡的「更多分析工具」按「<b>＋ 粉絲快照</b>」手動記一筆，或之後貼新的歸類卡時系統會自動記當天的粉絲數。</div>'
+      +'<button class="btn btn-ghost" id="gc-close" style="width:100%;margin-top:12px">關閉</button></div>';
+    $('sheet').innerHTML=html; $('modal').classList.add('show');
+    if($('gc-close')) $('gc-close').onclick=closeModal; return;
+  }
+  var n=snaps.length, counts=snaps.map(function(o){return o.count;});
+  var mn=Math.min.apply(null,counts), mx=Math.max.apply(null,counts);
+  if(mn===mx){ mn=Math.max(0,mn-1); mx=mx+1; }
+  var W=560,H=300,pl=62,pr=20,pt=20,pb=48, xs=W-pl-pr, ys=H-pt-pb;
+  var X=function(i){ return pl + (n===1?xs/2:xs*i/(n-1)); };
+  var Y=function(v){ return pt + ys*(1-(v-mn)/(mx-mn)); };
+  var line=snaps.map(function(o,i){return X(i).toFixed(1)+','+Y(o.count).toFixed(1);}).join(' ');
+  var area='M'+X(0).toFixed(1)+','+(pt+ys).toFixed(1)+snaps.map(function(o,i){return 'L'+X(i).toFixed(1)+','+Y(o.count).toFixed(1);}).join('')+'L'+X(n-1).toFixed(1)+','+(pt+ys).toFixed(1)+'Z';
+  // y 軸三條格線：mn / mid / mx
+  var yvals=[mn,Math.round((mn+mx)/2),mx], grid='';
+  yvals.forEach(function(v){ var y=Y(v).toFixed(1); grid+='<line x1="'+pl+'" y1="'+y+'" x2="'+(W-pr)+'" y2="'+y+'" stroke="var(--gold-soft)" stroke-width="1"/>'; grid+='<text x="'+(pl-6)+'" y="'+(parseFloat(y)+4)+'" text-anchor="end" font-size="10" fill="var(--sub)">'+v.toLocaleString()+'</text>'; });
+  // 點＋（n<=7 才標每點日期與數值，否則只標首尾）
+  var labelAll=n<=7, dots='';
+  snaps.forEach(function(o,i){
+    var x=X(i).toFixed(1), y=Y(o.count).toFixed(1), peak=(o.count===mx);
+    dots+='<circle cx="'+x+'" cy="'+y+'" r="'+(peak?4.5:3.2)+'" fill="'+(peak?'var(--gold-dark)':'var(--rouge)')+'"/>';
+    if(labelAll||i===0||i===n-1){
+      dots+='<text x="'+x+'" y="'+(parseFloat(y)-8)+'" text-anchor="middle" font-size="9.5" fill="var(--ink)">'+o.count.toLocaleString()+'</text>';
+      dots+='<text x="'+x+'" y="'+(pt+ys+16)+'" text-anchor="middle" font-size="9" fill="var(--sub)">'+esc(o.date.slice(5))+'</text>';
+    }
+  });
+  var svg='<svg viewBox="0 0 '+W+' '+H+'" style="width:100%;height:auto;display:block">'
+    +'<line x1="'+pl+'" y1="'+pt+'" x2="'+pl+'" y2="'+(pt+ys)+'" stroke="var(--border)" stroke-width="1"/>'
+    +'<line x1="'+pl+'" y1="'+(pt+ys)+'" x2="'+(W-pr)+'" y2="'+(pt+ys)+'" stroke="var(--border)" stroke-width="1"/>'
+    +grid
+    +'<path d="'+area+'" fill="rgba(165,24,32,.07)" stroke="none"/>'
+    +'<polyline points="'+line+'" fill="none" stroke="var(--rouge)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>'
+    +dots+'</svg>';
+  var first=snaps[0], last=snaps[n-1];
+  var total=last.count-first.count;
+  var dir=total>0?'成長':(total<0?'下滑':'持平');
+  var g30=(typeof growth30Days==='function')?growth30Days(a):null;
+  var summ='<div style="background:var(--warm);border-radius:8px;padding:10px 12px;margin:10px 0 4px;font-size:12.5px;line-height:1.75">'
+    +'區間：<b>'+esc(first.date)+'</b> → <b>'+esc(last.date)+'</b>（'+n+' 筆快照）<br>'
+    +'總'+dir+'：<b style="color:'+(total>=0?'var(--rouge)':'var(--gold-dark)')+'">'+(total>=0?'+':'')+total.toLocaleString()+'</b> 粉（'+first.count.toLocaleString()+' → '+last.count.toLocaleString()+'）'
+    +(g30?('<br>近 30 天：<b>'+(g30.delta>=0?'+':'')+g30.delta.toLocaleString()+'</b> 粉（'+esc(g30.fromDate)+' → '+esc(g30.toDate)+'）'):'')
+    +'</div>';
+  var td='padding:5px 8px;font-size:12px;border-bottom:1px solid var(--gold-soft)';
+  var rows=snaps.map(function(o,i){
+    var d=i===0?'—':(o.count-snaps[i-1].count);
+    var dtxt=i===0?'<span style="color:var(--sub)">起點</span>':('<span style="color:'+(d>=0?'var(--rouge)':'var(--gold-dark)')+'">'+(d>=0?'+':'')+d.toLocaleString()+'</span>');
+    return '<tr><td style="'+td+'">'+esc(o.date)+'</td><td style="'+td+';text-align:right">'+o.count.toLocaleString()+'</td><td style="'+td+';text-align:right">'+dtxt+'</td><td style="'+td+';color:var(--sub)">'+esc(o.note||'')+'</td></tr>';
+  }).join('');
+  var html='<div style="padding:18px 16px;max-height:84vh;overflow-y:auto">'+head+svg+summ
+    +'<details style="margin-top:8px"><summary style="cursor:pointer;font-size:12px;color:var(--gold-dark);font-weight:700">逐筆快照（'+n+' 筆）</summary>'
+    +'<table style="border-collapse:collapse;width:100%;margin-top:6px"><thead><tr><th style="'+td+';text-align:left;color:var(--gold-dark)">日期</th><th style="'+td+';text-align:right;color:var(--gold-dark)">粉絲數</th><th style="'+td+';text-align:right;color:var(--gold-dark)">變化</th><th style="'+td+';text-align:left;color:var(--gold-dark)">備註</th></tr></thead><tbody>'+rows+'</tbody></table></details>'
+    +'<div style="font-size:10.5px;color:var(--sub);margin-top:8px">＊圖用你存的粉絲快照畫；快照越多、曲線越準。峰值點標金色。</div>'
+    +'<button class="btn btn-ghost" id="gc-close" style="width:100%;margin-top:12px">關閉</button></div>';
+  $('sheet').innerHTML=html; $('modal').classList.add('show');
+  if($('gc-close')) $('gc-close').onclick=closeModal;
+};
 
 /* ===== v159：帳號健檢（帳號層；與單片層「卡片補完健檢」完全不同，icon 用 區隔） ===== */
 var HEALTH_DIMS=[
@@ -7861,9 +7936,22 @@ function _accFbSubscribe(){
 function _accFbPush(){
   if(!_fbReady || !_fbDB) return;
   if(!accounts || accounts.length===0){ return; }
-  _fbDB.collection(ACC_COLLECTION).doc(ATELIER_DOC_ID)
-    .set({ accounts: accounts, updatedAt: Date.now(), count: accounts.length }, {merge:true})
-    .catch(function(err){ console.error('[ATELIER FB acc push]', err); });
+  // v218：寫回前先抓雲端最新，保留服務台專屬欄位，避免整包覆蓋洗掉對方資料
+  var _ref=_fbDB.collection(ACC_COLLECTION).doc(ATELIER_DOC_ID);
+  var _KEEP=['healthHistory','contentHealthScore','clientFlow'];
+  _ref.get().then(function(_doc){
+    var _cloud=(_doc&&_doc.exists&&_doc.data()&&Array.isArray(_doc.data().accounts))?_doc.data().accounts:[];
+    var _byId={}; _cloud.forEach(function(c){ if(c&&c.id) _byId[c.id]=c; });
+    var _merged=accounts.map(function(a){
+      var c=_byId[a.id]; if(!c) return a;
+      var out=Object.assign({},c,a);                 // {...雲端,...本機}：本機覆蓋共用欄位，但從不刪雲端欄位
+      _KEEP.forEach(function(k){ if(c[k]!==undefined) out[k]=c[k]; }); // 服務台欄位一律以雲端最新為準，工作台不蓋
+      return out;
+    });
+    var _have={}; accounts.forEach(function(a){ if(a&&a.id) _have[a.id]=1; });
+    _cloud.forEach(function(c){ if(c&&c.id&&!_have[c.id]) _merged.push(c); });  // 雲端有、本機沒有的帳號也保留
+    return _ref.set({ accounts:_merged, updatedAt:Date.now(), count:_merged.length }, {merge:true});
+  }).catch(function(err){ console.error('[ATELIER FB acc push]', err); }); // 抓不到雲端就不寫（本機已存，不誤刪）
 }
 
 /* ---- 5) 把目前 videos 寫上雲端 ---- */
