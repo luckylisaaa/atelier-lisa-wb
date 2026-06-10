@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="color-scheme" content="light only">
 <meta name="supported-color-schemes" content="light">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v215 (版本號僅留註解，不顯示於畫面)
+<!-- ATELIER 影片診斷工作台 · 內部版本 v216 (版本號僅留註解，不顯示於畫面)
+v216 更新（交辦單：把工作台這條線剩下的兩個功能一次做完，讓 Lisa 能完整跑一遍——①比多同行的產業定位排行表②客戶服務台子母小窗，接 v215）：【A 產業定位排行表】hub 對標清單下方加「產業定位排行表」鈕→ openPositioningTable(libHeroId)：取與主角 _smScore>0.08 的同行池（含主角），每個算平均觀看(_accPerf)、平均分享率(分享/觀看均值)、粉絲量級(latestFollowers+tierTW)、相似度(_smScore)、影片數；依平均觀看排名出表（主角列高亮★），上方摘要主角的觀看排名/分享率排名(對中位數標強項或可加強處)/量級。用 #modal/#sheet 呈現，純讀不改資料。【B 客戶服務台子母小窗】左下固定鈕「⊞ 服務台小窗」→ _csDockOpen()：頁內浮動面板(#csDock，resize:both 可拉動縮放)內嵌 iframe(client.html)，標題列可拖曳移動、含縮小(_csDockMin)/改開大視窗(window.open named target)/關閉(_csDockClose)；首次開啟才載入 iframe、首次開啟綁拖曳。與既有導覽「客戶服務台」獨立視窗並存(一個頁內小窗、一個大視窗)。client.html 屬另一條線、僅以 iframe 載入未修改。【非本線】「客戶問題轉譯型」變正式子題型(子題型 repo)、client.html 返回鍵/記住進度(客戶端_01)，不在本檔。未動六守門常數(md5 5d2b1a50909c91b89ca7454e64f81911 不變)；版本號 4 處 v215→v216；check.js 16/16；div/details 平衡。
 v215 更新（交辦單：Lisa 要的「待補清單＋逐欄補完提示詞」——快速貼檔不逐欄看時，系統主動提醒哪些沒填到、並給逐欄補完提示詞，接 v214）：【待補清單】輸入表單儲存區上方加 #inputTodo 容器＋renderInputTodo()：掃 9 個關鍵欄位(f-title/f-account/f-theme/f-stage/f-mat/f-sub/f-trig/f-form/f-goal)，列出空的；全空的新表單(且 pasteBox 也空)不顯示，全填好顯示綠色「都填好了」，有缺則列「還有 N 欄沒填到」＋每欄一列。manual 欄(影片名稱/連結帳號)只顯示手動提示；分類下拉欄附「複製補完提示詞」鈕。【逐欄補完提示詞】window._todoCopy(selId)：讀該 select 的 option 文字當合法選項清單、加影片標題＋主題＋階段＋逐字稿(取前 1500 字)組成「只判這一欄」的提示詞，要 AI 從選項挑 1 個＋說為什麼，判不出回「無法判斷」不硬猜；走既有 copyPrompt 可編輯預覽彈窗(退回 copyVal)。【掛鉤】parse 收尾、showInputSub、9 欄位 change/input、clearBtn 後都呼叫 renderInputTodo 即時刷新。純新增、未動 parse/儲存/資料結構與既有欄位 id。未動六守門常數(md5 5d2b1a50909c91b89ca7454e64f81911 不變)；版本號 4 處 v214→v215；check.js 16/16；div/details 平衡。
 v214 更新（交辦單：v213 的搜尋 keyup 修法有後遺症——注音組字中拿注音符號去比對，把主角下拉清單濾成空白；Lisa 打「理」變整列空白，接 v213）：【搜尋注音感知過濾】根因：注音組字期間 si.value 是注音符號(ㄌㄧˇ)非中文字，v213 的 input/keyup 即時濾→拿 ㄌㄧˇ 比對全部不符→清單空白(Latin 字無此問題故「k」正常)。修法：csel 單選搜尋的 input/keyup 改走 _cselMaybe——維護 _cselComp(compositionstart/end 旗標)，若「組字中且 si.value 尚未出現中文字(\u3400-\u9fff/\uf900-\ufaff)」就先不濾(維持現狀不清空)；一旦行內候選出現中文字、或選字送出 compositionend，才呼叫 _cselFilter。非組字(英數/貼上/退格)維持即時濾。只動這段事件綁定，data-s 與 _cselFilter 本體不變。未動六守門常數(md5 5d2b1a50909c91b89ca7454e64f81911 不變)；版本號 4 處 v213→v214；check.js 16/16；div/details 平衡。
 v213 更新（交辦單：Lisa 開始服務客戶後的兩個實務痛點——①工作台↔客戶服務台跳轉掉狀態②同職稱/同產業對標點起來都一樣、要系統幫挑＋說原因）：【A 客戶服務台開獨立視窗】導覽列「客戶服務台」原為 a href=client.html 無 target（整頁同分頁跳轉→兩邊互相重載、掉進度）；加 target="atelierClient" 具名視窗（重複點重用同一視窗、不開新分頁）＋title 說明。工作台與服務台變兩個各自保留狀態的視窗、切換不重載。client.html 那側的返回連結與「記住上次客戶/步驟」屬另一條線(客戶端_01)，本版不碰。【B 同類對標加系統建議＋為什麼像】hub chip 列在「只看主角」後新增「★ 系統建議」(data-rival=smart，金色邊框凸顯)；_hubComputeRivals 加 smart 分支——用既有 _smScore 綜合相似度(產業0.4＋身份0.2＋內容階段分布0.25＋粉絲量級0.15)排序、取 score>0 前 8 名；_hubRenderRivalChecklist 在 smart 模式時用 _smReasonShort 在每個對標旁顯示「為什麼像」(同產業/同為某職稱/量級相近…)＋表頭改「系統建議 N 個（已按整體相似度排序，旁邊是為什麼像）」。勾選/只看勾選/帶去版面對照沿用 v211 不變；帳號管理 hub 與 accRivalList 不動。【C 中文單字搜尋再修穩】v212 改用 input＋compositionend 仍沒抓到 Lisa 的注音情境（組字中值是注音符號、送出那下 input/compositionend 在其瀏覽器不可靠）→ 單字「理」過濾沒跑。本版 csel 單選搜尋再加 keyup 監聽（放開選字鍵時值已是中文）＋compositionend 後 setTimeout 再跑一次，三管齊下。【未做·v214】比多同行(10/20/30+)的產業定位排行/象限表——較大的新畫面，另版做好再上。未動六守門常數(md5 5d2b1a50909c91b89ca7454e64f81911 不變)；版本號 4 處 v212→v213；check.js 16/16；div/details 平衡。
@@ -788,7 +789,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v215</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v216</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -1552,6 +1553,7 @@ if('serviceWorker' in navigator){
       <button type="button" class="vlib-rivalchip" data-rival="all" onclick="vlibRivalSet('all')" style="padding:7px 13px;border:1px solid var(--border);background:transparent;color:var(--sub);font-weight:600;font-size:12.5px;border-radius:7px;cursor:pointer;font-family:inherit">全部不限</button>
     </div>
     <div id="vlibRivalList" style="display:none;background:var(--warm);border-radius:7px;padding:7px 10px;font-size:11.5px;line-height:1.65;color:var(--text);margin-top:6px"></div>
+    <div style="margin-top:8px"><button type="button" id="posTableBtn" onclick="openPositioningTable(libHeroId)" title="把主角放進同行裡，依平均觀看排名，看你的當事人站在哪、強在哪、弱在哪" style="font-size:12px;font-weight:700;padding:7px 13px;border:1px solid var(--gold-dark);background:#fff;color:var(--gold-dark);border-radius:7px;cursor:pointer;font-family:inherit">產業定位排行表（看主角在同行裡排哪）</button></div>
   </div>
   <div class="sumrow">
     <div class="sumcard c-all on" data-tf="all"><div class="num" id="s-all">0</div><div class="lbl">全部</div></div>
@@ -4059,7 +4061,8 @@ function renderManual(){
   <div class="form-card" style="border-left:3px solid var(--gold)">
     <div class="stitle" style="font-size:15px;color:var(--rouge)">更新紀錄 · 還沒做的</div>
     <p style="font-size:13px;color:var(--text);line-height:1.85;margin-top:8px">
-    <b>v215（這版 · 待補清單＋逐欄補完提示詞）：</b>你說快速貼檔、來不及逐欄看——現在貼完卡、自動填完後，<b>儲存按鈕上方會浮出一張「待補清單」</b>，列出這張卡<b>還有哪幾欄沒填到</b>（例如「子題型（第5層）」「流量觸發」）。每一條分類欄旁邊一顆<b>「複製補完提示詞」</b>，點了就複製一段<b>只針對那一欄</b>的提示詞（裡面已經幫你帶好影片標題、主題、逐字稿、還有那欄的合法選項），你貼去問 AI、它從選項挑最準的給你；它判不出來會回「無法判斷」、不會亂猜。全部填好會顯示綠色「都填好了」；不想填的可以忽略，<b>這只是提醒、不擋你存檔</b>。<b>沒動任何提示詞（六守門常數 md5 不變）。</b><br>
+    <b>v216（這版 · 把剩下兩個功能做完，你可以完整跑一遍）：</b>①<b>產業定位排行表</b>：影片庫選好主角後，對標區下方有「產業定位排行表」鈕——點開把你的當事人放進同行裡，<b>依平均觀看排名列成一張表</b>（主角那列會高亮★），上方一句話告訴你「主角在 N 個同行裡，觀看排第幾、分享率排第幾、是強項還是可加強」，欄位有相似度／影片數／平均觀看／平均分享率／粉絲量級，看你的當事人站哪、強在哪、弱在哪。②<b>客戶服務台子母小窗</b>：左下角有顆「⊞ 服務台小窗」，點了會在<b>工作台頁面內</b>開一個浮動小窗（內嵌客戶服務台），<b>拖標題列可移動、拉右下角可縮放</b>，還能縮小或一鍵改開大視窗——這樣你不離開工作台也能一邊查客戶資料。<b>沒動任何提示詞（六守門常數 md5 不變）。</b>（「客戶問題轉譯型」變正式子題型、服務台那頁自己的返回鍵，是另外兩條線的事，這裡不動。）<br>
+    <b>v215（待補清單＋逐欄補完提示詞）：</b>你說快速貼檔、來不及逐欄看——現在貼完卡、自動填完後，<b>儲存按鈕上方會浮出一張「待補清單」</b>，列出這張卡<b>還有哪幾欄沒填到</b>（例如「子題型（第5層）」「流量觸發」）。每一條分類欄旁邊一顆<b>「複製補完提示詞」</b>，點了就複製一段<b>只針對那一欄</b>的提示詞（裡面已經幫你帶好影片標題、主題、逐字稿、還有那欄的合法選項），你貼去問 AI、它從選項挑最準的給你；它判不出來會回「無法判斷」、不會亂猜。全部填好會顯示綠色「都填好了」；不想填的可以忽略，<b>這只是提醒、不擋你存檔</b>。<b>沒動任何提示詞（六守門常數 md5 不變）。</b><br>
     <b>v214（把搜尋『理』徹底修好）：</b>上一版（v213）打「理」會把整個清單濾成空白——因為注音<b>組字中</b>那一刻，搜尋框裡其實是注音符號（ㄌㄧˇ）不是「理」，系統拿注音去比對就全部不符、變空白（打英數的「k」沒這問題就是因為不用組字）。這版改成：<b>組字中、還沒出現中文字之前先不要濾</b>（清單維持原樣不清空），等中文字出現或你選字送出，才開始濾。這樣打「理」就會正確留下理鴻、不會空白了。<b>沒動任何提示詞（六守門常數 md5 不變）。</b><br>
     <b>v213（客戶服務台獨立視窗＋同類對標系統建議＋搜尋強化）：</b>①<b>客戶服務台改開獨立視窗</b>：以前按「客戶服務台」是整頁跳走，跳回來工作台就回到最初畫面、做到一半的進度沒了。現在它<b>開在自己的視窗</b>——工作台一個、服務台一個，你可以縮放並排，<b>互相切換都不會重載、不會掉進度</b>，一邊查資料一邊灌東西。（服務台那頁自己的返回鍵和「記住上次客戶」是另一條線維護的，我這邊先把工作台這側做好。）②<b>同類對標加「★ 系統建議」</b>：你說同職稱/同產業點起來都一樣——現在主角選好後，對標列多一顆<b>「★ 系統建議」</b>，系統用綜合相似度（產業＋身份＋內容階段分布＋粉絲量級）自動挑出最像的前幾名、<b>由近到遠排好</b>，而且<b>每個旁邊會寫「為什麼像」</b>（例如「同產業 · 法律」「同為律師」「量級相近」），你就能很明確地挑。勾選、只看勾選、帶去版面對照都跟之前一樣。③<b>中文單字搜尋再修穩</b>：上一版（v212）對你的注音輸入法還是沒抓到——組字中框裡是注音符號、選字送出那下系統沒接到，所以打「理」還是不動。這版多接了一個鍵盤事件（放開選字鍵時值已經是「理」），單字搜尋這次一定出得來。<b>沒動任何提示詞（六守門常數 md5 不變）。</b>下一版（v214）再做「比很多同行做產業定位的排行表」。<br>
     <b>v212（修流程②兩個 bug）：</b>①<b>貼卡B 影片現在會掛上帳號了</b>：之前貼完卡B，⑥連結到帳號只剩「不指定」、職稱/產業空白、存檔說「未連結帳號」——因為雲端帳號載入後，那個下拉沒有被重新灌入帳號清單，所以系統想幫你選 @kl.legal 卻找不到選項、就退回空的。現在帳號一載好就會補灌，貼卡B 也會在連結前先確保選項在，<b>影片會正確掛到 @kl.legal、職稱/產業一起帶出來</b>。②<b>搜尋單字「理」修好</b>：上一版我加的中文輸入法處理反而讓單字要打到「理鴻」才出現，這版改回「邊打邊篩」，打「理」就找得到。<b>沒動任何提示詞（六守門常數 md5 不變）。</b>你回報的另外兩件（同類對標想要更多維度＋系統建議原因、版面對照想比更多同行）是新功能，下面我再跟你談怎麼做。<br>
@@ -4359,6 +4362,86 @@ function renderInputTodo(){
     +rows+'</div>';
 }
 window.renderInputTodo=renderInputTodo;
+/* ═══════════ v216 A：產業定位排行表（看主角在同行裡排哪） ═══════════ */
+window.openPositioningTable=function(heroId){
+  if(!heroId){ if(typeof toast==='function') toast('先在上面選一個主角客戶'); return; }
+  var hero=accounts.find(function(a){return a.id===heroId;}); if(!hero){ if(typeof toast==='function') toast('找不到主角'); return; }
+  var pool=accounts.filter(function(a){ if(a.id===hero.id) return true; if(typeof _smScore!=='function') return true; try{ return _smScore(hero,a).score>0.08; }catch(e){ return false; } });
+  if(pool.length<2){ if(typeof toast==='function') toast('同行樣本太少（先多建幾個同產業帳號，這裡才比得出來）'); return; }
+  var rows=pool.map(function(a){
+    var perf=(typeof _accPerf==='function')?_accPerf(a.id):{views:0,eng:0};
+    var vs=(typeof videosOfAccount==='function')?videosOfAccount(a.id).filter(function(v){return _clNum(v.views)>0;}):[];
+    var shr=vs.length?(vs.reduce(function(t,v){return t+_clNum(v.shares)/(_clNum(v.views)||1);},0)/vs.length):0;
+    var fans=(typeof latestFollowers==='function')?(latestFollowers(a)||0):0;
+    var tier=(typeof tierTW==='function'&&fans)?tierTW(fans):'';
+    var sim=(a.id===hero.id)?1:((typeof _smScore==='function')?(_smScore(hero,a).score||0):0);
+    return { name:_hubAccByName(a), isHero:a.id===hero.id, views:Math.round(perf.views||0), shr:shr, tier:tier, vcount:(typeof videosOfAccount==='function')?videosOfAccount(a.id).length:0, sim:sim };
+  });
+  var byViews=rows.slice().sort(function(x,y){return y.views-x.views;}); byViews.forEach(function(r,i){r.rankView=i+1;});
+  var byShr=rows.slice().sort(function(x,y){return y.shr-x.shr;}); byShr.forEach(function(r,i){r.rankShr=i+1;});
+  var hr=rows.filter(function(r){return r.isHero;})[0]; var N=rows.length;
+  var medViews=(typeof _med==='function')?_med(rows.map(function(r){return r.views;})):0;
+  var medShr=(typeof _med==='function')?(_med(rows.map(function(r){return Math.round(r.shr*1000);}))/1000):0;
+  var summ='';
+  if(hr){
+    summ='<div style="background:var(--warm);border-radius:8px;padding:10px 12px;margin-bottom:12px;font-size:12.5px;line-height:1.7">'
+      +'<b style="color:var(--rouge)">'+esc(hr.name)+'</b> 在 '+N+' 個同行裡：<br>'
+      +'· 平均觀看 排第 <b>'+hr.rankView+'／'+N+'</b>'+(hr.views>=medViews?'（高於同行中位，曝光是強項）':'（低於同行中位，是可加強處）')+'<br>'
+      +'· 平均分享率 排第 <b>'+hr.rankShr+'／'+N+'</b>'+(hr.shr>=medShr?'（高於同行中位，擴散力是差異化強項）':'（低於同行中位，分享誘因可加強）')+'<br>'
+      +'· 粉絲量級：<b>'+esc(hr.tier||'—')+'</b>'
+      +'</div>';
+  }
+  var th='padding:6px 8px;text-align:left;font-size:11px;color:var(--gold-dark);border-bottom:1.5px solid var(--gold-soft);white-space:nowrap';
+  var td='padding:6px 8px;font-size:12px;border-bottom:1px solid var(--gold-soft);white-space:nowrap';
+  var body=byViews.map(function(r){
+    var hl=r.isHero?'background:rgba(165,24,32,.08)':'';
+    return '<tr style="'+hl+'">'
+      +'<td style="'+td+';font-weight:700">'+r.rankView+'</td>'
+      +'<td style="'+td+'">'+esc(r.name)+(r.isHero?' <span style="color:var(--rouge);font-weight:700">★主角</span>':'')+'</td>'
+      +'<td style="'+td+'">'+(r.isHero?'—':Math.round(r.sim*100)+'%')+'</td>'
+      +'<td style="'+td+'">'+r.vcount+'</td>'
+      +'<td style="'+td+';font-weight:'+(r.isHero?'700':'400')+'">'+(r.views?r.views.toLocaleString():'—')+'</td>'
+      +'<td style="'+td+'">'+(r.shr?((Math.round(r.shr*1000)/10)+'%'):'—')+'</td>'
+      +'<td style="'+td+'">'+esc(r.tier||'—')+'</td>'
+      +'</tr>';
+  }).join('');
+  var html='<div style="padding:18px 16px;max-height:84vh;overflow-y:auto">'
+    +'<div style="font-family:\'Noto Serif TC\',serif;font-size:18px;font-weight:900;margin-bottom:2px">產業定位排行表</div>'
+    +'<div style="font-size:12px;color:var(--gold-dark);margin-bottom:12px">把主角放進同行裡比——依平均觀看排名，看你的當事人站在哪、強在哪、弱在哪（相似度＝跟主角的整體像不像）</div>'
+    +summ
+    +'<div style="overflow-x:auto"><table style="border-collapse:collapse;width:100%;min-width:520px">'
+    +'<thead><tr><th style="'+th+'">排名</th><th style="'+th+'">帳號</th><th style="'+th+'">相似度</th><th style="'+th+'">影片</th><th style="'+th+'">平均觀看</th><th style="'+th+'">平均分享率</th><th style="'+th+'">粉絲量級</th></tr></thead>'
+    +'<tbody>'+body+'</tbody></table></div>'
+    +'<div style="font-size:10.5px;color:var(--sub);margin-top:8px">＊只納入跟主角夠相似的同行（綜合相似度），有填觀看數的影片才算得出平均。分享率＝分享÷觀看的平均。</div>'
+    +'<button class="btn btn-ghost" id="pos-close" style="width:100%;margin-top:12px">關閉</button>'
+    +'</div>';
+  $('sheet').innerHTML=html; $('modal').classList.add('show');
+  if($('pos-close')) $('pos-close').onclick=(typeof closeModal==='function')?closeModal:function(){ $('modal').classList.remove('show'); };
+};
+/* ═══════════ v216 B：客戶服務台 子母小窗（頁內浮動可縮放 iframe） ═══════════ */
+var _csDockWired=false;
+window._csDockOpen=function(){
+  var d=document.getElementById('csDock'); if(!d) return;
+  var f=document.getElementById('csDockFrame');
+  if(f && (!f.getAttribute('src') || f.getAttribute('src')==='about:blank')) f.setAttribute('src','client.html');
+  if(f) f.style.display='block';
+  d.style.display='flex'; d.removeAttribute('data-min');
+  if(!_csDockWired){
+    _csDockWired=true;
+    var bar=document.getElementById('csDockBar');
+    if(bar){ var sx,sy,ox,oy,drag=false;
+      bar.addEventListener('mousedown',function(e){ if(e.target.tagName==='BUTTON') return; drag=true; var r=d.getBoundingClientRect(); sx=e.clientX; sy=e.clientY; ox=r.left; oy=r.top; d.style.right='auto'; d.style.bottom='auto'; d.style.left=ox+'px'; d.style.top=oy+'px'; e.preventDefault(); });
+      document.addEventListener('mousemove',function(e){ if(!drag) return; d.style.left=Math.max(0,(ox+e.clientX-sx))+'px'; d.style.top=Math.max(0,(oy+e.clientY-sy))+'px'; });
+      document.addEventListener('mouseup',function(){ drag=false; });
+    }
+  }
+};
+window._csDockClose=function(){ var d=document.getElementById('csDock'); if(d) d.style.display='none'; };
+window._csDockMin=function(){
+  var d=document.getElementById('csDock'), f=document.getElementById('csDockFrame'); if(!d) return;
+  if(d.getAttribute('data-min')==='1'){ if(f) f.style.display='block'; d.style.height=d.getAttribute('data-h')||'560px'; d.removeAttribute('data-min'); }
+  else { d.setAttribute('data-h', d.style.height||(d.offsetHeight+'px')); if(f) f.style.display='none'; d.style.height='auto'; d.setAttribute('data-min','1'); }
+};
 window._todoCopy=function(selId){
   var f=_INPUT_TODO_FIELDS.find(function(x){return x.id===selId;}); if(!f) return;
   var sel=document.getElementById(selId);
@@ -9288,5 +9371,17 @@ document.addEventListener('DOMContentLoaded',function(){
 });
 </script>
 
+<button id="csDockBtn" type="button" onclick="_csDockOpen()" title="在頁內開一個可縮放的客戶服務台小窗（不離開工作台）" style="position:fixed;left:14px;bottom:14px;z-index:9400;background:var(--rouge);color:#fff;border:none;border-radius:20px;padding:8px 14px;font-size:12.5px;font-weight:700;cursor:pointer;font-family:inherit;box-shadow:0 4px 14px rgba(0,0,0,.2)">⊞ 服務台小窗</button>
+<div id="csDock" style="display:none;flex-direction:column;position:fixed;right:16px;bottom:16px;width:400px;height:560px;min-width:300px;min-height:240px;z-index:9500;background:#fff;border:1px solid var(--gold-dark);border-radius:12px;box-shadow:0 12px 44px rgba(0,0,0,.3);overflow:hidden;resize:both">
+  <div id="csDockBar" style="cursor:move;background:var(--rouge);color:#fff;padding:8px 12px;display:flex;align-items:center;justify-content:space-between;flex:0 0 auto;font-size:13px;font-weight:700;user-select:none">
+    <span>客戶服務台 · 小窗（拖曳這條移動，右下角拉動縮放）</span>
+    <span style="display:flex;gap:4px">
+      <button type="button" onclick="_csDockMin()" title="縮小／展開" style="background:rgba(255,255,255,.22);border:none;color:#fff;width:24px;height:24px;border-radius:5px;cursor:pointer;font-size:14px;font-family:inherit">—</button>
+      <button type="button" onclick="window.open('client.html','atelierClient')" title="改用大視窗開啟" style="background:rgba(255,255,255,.22);border:none;color:#fff;width:24px;height:24px;border-radius:5px;cursor:pointer;font-size:13px;font-family:inherit">⤢</button>
+      <button type="button" onclick="_csDockClose()" title="關閉小窗" style="background:rgba(255,255,255,.22);border:none;color:#fff;width:24px;height:24px;border-radius:5px;cursor:pointer;font-size:13px;font-family:inherit">✕</button>
+    </span>
+  </div>
+  <iframe id="csDockFrame" src="about:blank" title="客戶服務台" style="flex:1 1 auto;border:0;width:100%;background:#fff"></iframe>
+</div>
 </body>
 </html>
