@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="color-scheme" content="light only">
 <meta name="supported-color-schemes" content="light">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v212 (版本號僅留註解，不顯示於畫面)
+<!-- ATELIER 影片診斷工作台 · 內部版本 v213 (版本號僅留註解，不顯示於畫面)
+v213 更新（交辦單：Lisa 開始服務客戶後的兩個實務痛點——①工作台↔客戶服務台跳轉掉狀態②同職稱/同產業對標點起來都一樣、要系統幫挑＋說原因）：【A 客戶服務台開獨立視窗】導覽列「客戶服務台」原為 a href=client.html 無 target（整頁同分頁跳轉→兩邊互相重載、掉進度）；加 target="atelierClient" 具名視窗（重複點重用同一視窗、不開新分頁）＋title 說明。工作台與服務台變兩個各自保留狀態的視窗、切換不重載。client.html 那側的返回連結與「記住上次客戶/步驟」屬另一條線(客戶端_01)，本版不碰。【B 同類對標加系統建議＋為什麼像】hub chip 列在「只看主角」後新增「★ 系統建議」(data-rival=smart，金色邊框凸顯)；_hubComputeRivals 加 smart 分支——用既有 _smScore 綜合相似度(產業0.4＋身份0.2＋內容階段分布0.25＋粉絲量級0.15)排序、取 score>0 前 8 名；_hubRenderRivalChecklist 在 smart 模式時用 _smReasonShort 在每個對標旁顯示「為什麼像」(同產業/同為某職稱/量級相近…)＋表頭改「系統建議 N 個（已按整體相似度排序，旁邊是為什麼像）」。勾選/只看勾選/帶去版面對照沿用 v211 不變；帳號管理 hub 與 accRivalList 不動。【未做·v214】比多同行(10/20/30+)的產業定位排行/象限表——較大的新畫面，另版做好再上。未動六守門常數(md5 5d2b1a50909c91b89ca7454e64f81911 不變)；版本號 4 處 v212→v213；check.js 16/16；div/details 平衡。
 v212 更新（交辦單：Lisa 實跑流程② 抓到的兩個 bug——①貼卡B 影片掛不上帳號②搜尋單字「理」還是要打「理鴻」）：【A 影片掛不上帳號 · 主修】根因：populateAccountSelect 只在 bindAccountUI 初始化跑一次，雲端 accounts async 載入後沒重灌 f-account（v189 當時刻意沒加）；於是貼卡B 時⑥連結到帳號只剩 placeholder，parseBtn 的 $('f-account').value=acc.id 設一個不存在的 option→瀏覽器退回空值→存檔 accountId 空＝「未連結帳號」、職稱/產業也沒帶。修三處：①帳號 onSnapshot 到齊後補呼叫 populateAccountSelect；②renderAll 也補一道；③parseBtn 連既有帳號前先 populateAccountSelect 確保選項存在、再設值＋dispatch change(帶出職稱/產業)；④populateAccountSelect 改為保留 _pendingAcc 暫時 option(避免 renderAll/雲端重灌沖掉待確認新帳號)。【B 搜尋單字配不到 · 修 v210 回歸】v210 給單選 csel 搜尋加的中文輸入法 compositionend 守衛，反讓「組字未送出前 input 不過濾」→單字「理」不動、要打到「理鴻」送出才過濾。單選下拉過濾只是切 display(很便宜)，移除 _comp 守衛，改成 input＋compositionend 都即時過濾。多選 picker 的守衛(效能考量)保留不動。未動六守門常數(md5 5d2b1a50909c91b89ca7454e64f81911 不變)；版本號 4 處 v211→v212；check.js 16/16；div/details 平衡。【未做·待 spec】同類對標加更多維度＋系統建議＋原因(用既有 _smScore)、版面對照容納更多同行(目前上限 4)做產業定位/差異化——皆為新功能，下版動工前先對齊規格。
 v211 更新（交辦單：v210 留下的對標新功能——同產業/同職稱找到的對標可勾選；Lisa 選「兩個都要：勾完再選比較或篩選」）：【A 對標可勾選清單】_hubRenderRivalList 對 vlibRivalList 改走新 _hubRenderRivalChecklist——每個對標一個 checkbox(預設全勾)＋全選/全不選＋兩顆動作鈕「只看勾選的影片(renderLibrary)」「帶去版面對照比較(vlibRivalsCompare)」＋計數 span；帳號管理 accRivalList 維持純文字不動。【B 勾選驅動篩選】新增 state libRivalChecked(預設＝libRivalIds.slice())；renderLibrary 的 _hubAllow 改用 libRivalChecked(全不勾＝只看主角)；vlibHeroSet/vlibRivalSet 算完對標同步 libRivalChecked、vlibHeroClear/libResetFilters 一併清空；sig 加入 libRivalChecked。_vlibRivalToggle(更新勾選＋計數)、window._vlibRivalAll(全選/全不選重繪)。【C 帶去版面對照】新增 window.vlibRivalsCompare()——主角＋勾選對標(上限 3，主角共 4)→ click compare 分頁 →350ms 後 populateCmpHero＋設 cmpHero.value＋cmpSelected.clear/add＋renderComparePicker＋runCompare(復刻 v194 已刪的 _vchGoCompare 行為)。【D 順修 v210 殘坑】hub 篩選 membership 由 v.accountId 直比改用 accountForVideo(v).id(handle 掛載的主角影片不再被「只看主角」漏掉)；vlibHeroSet 主角影片數改用 videosOfAccount(含 handle 對到的)。未動六守門常數(md5 5d2b1a50909c91b89ca7454e64f81911 不變)；版本號 4 處 v210→v211；check.js 16/16；div/details 平衡。
 v210 更新（交辦單：Lisa 截圖實測 6 件——①主角下拉搜尋單字配不到②搜尋只比畫面文字、配不到產業/領域③來源兩顆「客戶」打架④影片有 handle 但 accountId 空→誤判「尚未建檔」、帳號分析工具不出現、帳號影片數少算⑤要獨立重設鈕⑥三區工具用途說明；對標可勾選留 v211）：【A 影片↔帳號解析器】新增 accountForVideo(v)——accountId 精確認不到改用 normAccHandle 比對既有帳號 handle；vcard 改用 _vacc（「尚未建檔」判斷＋「@xxx 的分析工具」整塊改吃 _vacc.id/_vacc.handle，舊影片帳號工具自動冒出）；renderLibrary 篩選(身份/職稱/產業)＋來源 __client__ 改用 accountForVideo。【B videosOfAccount 改 handle-aware】accountId 對到算、或(無 id 或失效 id 但 handle 對得上)也算且不重複；帳號管理「拆解過 N 支」正確計數。【C 來源「客戶」改認帳號層】renderClientFilter 濾掉字面「客戶/客户」來源值(與帳號層同名打架的殘留)、__client__ 鈕改 a.isClient 判定、標籤改「★ 我的客戶」紅字。【D csel 單選搜尋修兩處】每個選項加 data-s(handle/顯示名/name/職稱/產業/領域/types 全欄)、搜尋改吃 data-s(修「搜法律配不到律師」)；加 compositionstart/end 中文輸入法處理(修單字「理」配不到、要打「理鴻」才出來)。【E 重設鈕】hub 加「↻ 重設篩選」＋新增 window.libResetFilters()——清主角/對標/階段/目標層/身份/職稱/產業/來源/搜尋框回預設(有別於右上角重抓雲端)。未動六守門常數(md5 5d2b1a50909c91b89ca7454e64f81911 不變)；版本號 4 處 v209→v210；check.js 16/16；div/details 平衡。對標 5 個變可勾選(帶去比較/只看這幾個)留 v211。
@@ -785,7 +786,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v212</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v213</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -799,7 +800,7 @@ if('serviceWorker' in navigator){
   <div class="tab" data-view="accounts"><svg class="tic" viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-3.9 3.1-7 7-7s7 3.1 7 7" stroke-linecap="round"/></svg>帳號管理<span class="badge" id="accBadge">0</span></div>
   <div class="tab" data-view="compare"><svg class="tic" viewBox="0 0 24 24"><rect x="4" y="4" width="7" height="16" rx="1.5"/><rect x="13" y="4" width="7" height="16" rx="1.5"/><path d="M11 10h2M11 14h2" stroke-linecap="round"/></svg>版面對照</div>
   <div class="tab" data-view="deliver"><svg class="tic" viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6z" stroke-linejoin="round"/><path d="M9 12.5l2 2 4-4" stroke-linecap="round" stroke-linejoin="round"/></svg>客戶交付</div>
-  <a class="tab" href="client.html" style="text-decoration:none"><svg class="tic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 12h7M12 9l3 3-3 3" stroke-linecap="round" stroke-linejoin="round"/></svg>客戶服務台</a>
+  <a class="tab" href="client.html" target="atelierClient" title="在獨立視窗開啟客戶服務台——工作台與服務台各自保留進度、互相切換不會重載掉狀態" style="text-decoration:none"><svg class="tic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 12h7M12 9l3 3-3 3" stroke-linecap="round" stroke-linejoin="round"/></svg>客戶服務台</a>
   <div class="tab" data-view="search"><svg class="tic" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4-4" stroke-linecap="round"/></svg>搜尋</div>
   <div class="tab" data-view="gaps"><svg class="tic" viewBox="0 0 24 24"><path d="M12 4l8 14H4z" stroke-linejoin="round"/><path d="M12 10v3M12 16v.5" stroke-linecap="round"/></svg>缺口<span class="badge" id="gapBadge" style="background:var(--gold-dark)">0</span></div>
   <div class="tab" data-view="tree"><svg class="tic" viewBox="0 0 24 24"><circle cx="12" cy="6" r="2.4"/><circle cx="6" cy="18" r="2.4"/><circle cx="18" cy="18" r="2.4"/><path d="M12 8.4v3.6M12 12l-5 3.8M12 12l5 3.8" stroke-linecap="round"/></svg>主題導覽</div>
@@ -1541,6 +1542,7 @@ if('serviceWorker' in navigator){
     <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-bottom:6px">
       <span style="font-size:11px;color:var(--gold-dark);font-weight:700;letter-spacing:1.5px;white-space:nowrap;width:100%;display:block">② 同類對標（先選主角才會啟用）</span>
       <button type="button" class="vlib-rivalchip on" data-rival="none" onclick="vlibRivalSet('none')" style="padding:7px 13px;border:1px solid var(--rouge);background:var(--rouge);color:#fff;font-weight:700;font-size:12.5px;border-radius:7px;cursor:pointer;font-family:inherit">只看主角</button>
+      <button type="button" class="vlib-rivalchip" data-rival="smart" onclick="vlibRivalSet('smart')" title="用綜合相似度（產業＋身份＋內容階段分布＋粉絲量級）自動挑出最像的，並在每個旁邊寫為什麼像" style="padding:7px 13px;border:1px solid var(--gold-dark);background:transparent;color:var(--gold-dark);font-weight:700;font-size:12.5px;border-radius:7px;cursor:pointer;font-family:inherit">★ 系統建議</button>
       <button type="button" class="vlib-rivalchip" data-rival="job" onclick="vlibRivalSet('job')" style="padding:7px 13px;border:1px solid var(--border);background:transparent;color:var(--ink);font-weight:600;font-size:12.5px;border-radius:7px;cursor:pointer;font-family:inherit">＋ 同職稱</button>
       <button type="button" class="vlib-rivalchip" data-rival="ind" onclick="vlibRivalSet('ind')" style="padding:7px 13px;border:1px solid var(--border);background:transparent;color:var(--ink);font-weight:600;font-size:12.5px;border-radius:7px;cursor:pointer;font-family:inherit">＋ 同產業</button>
       <button type="button" class="vlib-rivalchip" data-rival="type" onclick="vlibRivalSet('type')" style="padding:7px 13px;border:1px solid var(--border);background:transparent;color:var(--ink);font-weight:600;font-size:12.5px;border-radius:7px;cursor:pointer;font-family:inherit">＋ 同身份</button>
@@ -4051,7 +4053,8 @@ function renderManual(){
   <div class="form-card" style="border-left:3px solid var(--gold)">
     <div class="stitle" style="font-size:15px;color:var(--rouge)">更新紀錄 · 還沒做的</div>
     <p style="font-size:13px;color:var(--text);line-height:1.85;margin-top:8px">
-    <b>v212（這版 · 修你跑流程② 抓到的兩個 bug）：</b>①<b>貼卡B 影片現在會掛上帳號了</b>：之前貼完卡B，⑥連結到帳號只剩「不指定」、職稱/產業空白、存檔說「未連結帳號」——因為雲端帳號載入後，那個下拉沒有被重新灌入帳號清單，所以系統想幫你選 @kl.legal 卻找不到選項、就退回空的。現在帳號一載好就會補灌，貼卡B 也會在連結前先確保選項在，<b>影片會正確掛到 @kl.legal、職稱/產業一起帶出來</b>。②<b>搜尋單字「理」修好</b>：上一版我加的中文輸入法處理反而讓單字要打到「理鴻」才出現，這版改回「邊打邊篩」，打「理」就找得到。<b>沒動任何提示詞（六守門常數 md5 不變）。</b>你回報的另外兩件（同類對標想要更多維度＋系統建議原因、版面對照想比更多同行）是新功能，下面我再跟你談怎麼做。<br>
+    <b>v213（這版 · 解你開始服務客戶後的兩個痛點）：</b>①<b>客戶服務台改開獨立視窗</b>：以前按「客戶服務台」是整頁跳走，跳回來工作台就回到最初畫面、做到一半的進度沒了。現在它<b>開在自己的視窗</b>——工作台一個、服務台一個，你可以縮放並排，<b>互相切換都不會重載、不會掉進度</b>，一邊查資料一邊灌東西。（服務台那頁自己的返回鍵和「記住上次客戶」是另一條線維護的，我這邊先把工作台這側做好。）②<b>同類對標加「★ 系統建議」</b>：你說同職稱/同產業點起來都一樣——現在主角選好後，對標列多一顆<b>「★ 系統建議」</b>，系統用綜合相似度（產業＋身份＋內容階段分布＋粉絲量級）自動挑出最像的前幾名、<b>由近到遠排好</b>，而且<b>每個旁邊會寫「為什麼像」</b>（例如「同產業 · 法律」「同為律師」「量級相近」），你就能很明確地挑。勾選、只看勾選、帶去版面對照都跟之前一樣。<b>沒動任何提示詞（六守門常數 md5 不變）。</b>下一版（v214）再做「比很多同行做產業定位的排行表」。<br>
+    <b>v212（修流程②兩個 bug）：</b>①<b>貼卡B 影片現在會掛上帳號了</b>：之前貼完卡B，⑥連結到帳號只剩「不指定」、職稱/產業空白、存檔說「未連結帳號」——因為雲端帳號載入後，那個下拉沒有被重新灌入帳號清單，所以系統想幫你選 @kl.legal 卻找不到選項、就退回空的。現在帳號一載好就會補灌，貼卡B 也會在連結前先確保選項在，<b>影片會正確掛到 @kl.legal、職稱/產業一起帶出來</b>。②<b>搜尋單字「理」修好</b>：上一版我加的中文輸入法處理反而讓單字要打到「理鴻」才出現，這版改回「邊打邊篩」，打「理」就找得到。<b>沒動任何提示詞（六守門常數 md5 不變）。</b>你回報的另外兩件（同類對標想要更多維度＋系統建議原因、版面對照想比更多同行）是新功能，下面我再跟你談怎麼做。<br>
     <b>v211（同產業/同職稱找到的對標變成可勾選）：</b>你之前要的：在影片庫上方選好主角、按「＋同職稱／＋同產業／＋同身份」找到的那幾個對標，現在<b>每一個前面都有勾選框（預設全勾）</b>，可以「全選／全不選」。勾好之後有兩顆鈕，兩個都給你：①<b>「只看勾選的影片」</b>＝這個影片庫就只留你勾的那幾個人的影片；②<b>「帶去版面對照比較」</b>＝直接跳到版面對照、把主角＋你勾的（最多 3 個，連主角共 4 個）並排比 Bio／置頂／視覺風格，不用再自己重打一次。順手修了一個小地方：用 @handle 掛上的影片，現在「只看主角」也算得到、不會被漏掉。<b>沒動任何提示詞（六守門常數 md5 不變）。</b><br>
     <b>v210（修截圖回報的搜尋／影片認帳號／來源客戶＋加重設鈕）：</b>①<b>影片會自己認出帳號了</b>：以前影片明明有 @kl.legal、帳號也建過，卻顯示「此帳號尚未建檔」、也不給帳號分析工具——因為它只認內部 id、沒去比對 @帳號。現在 id 認不到就用 @handle 比對既有帳號，<b>舊影片不用手動回補就會自動連動</b>，帳號分析工具（特點→賣點／帳號體檢／客戶診斷／成功庫對標）會自己冒出來。②<b>帳號影片數算對了</b>：帳號管理「拆解過 N 支」會把用 @handle 對得上的影片一起算進去（@kl.legal 之前顯示 1 支、其實 2 支）。③<b>搜尋修好</b>：主角下拉打單一個中文字（例「理」）現在就找得到、不用打到「理鴻」才出現（中文輸入法問題）；搜「法律」也會比對到產業／領域／職稱，不再跳出不相關的人（以前只比對畫面看得到的字）。④<b>來源那兩顆「客戶」不再打架</b>：一顆是系統的、一顆是某支影片來源欄被填成「客戶」。現在系統那顆改叫「★ 我的客戶」、且只認你在帳號卡標過星的客戶；字面「客戶」殘留值不再單獨冒一顆。⑤<b>新增「↻ 重設篩選」鈕</b>（影片庫上方主角區）：一鍵把主角／對標／進階篩選／搜尋框清回預設，跟右上角「重新整理」（重抓雲端）分開。<b>沒動任何提示詞（六守門常數 md5 不變）。</b>下一版 v211 做你要的：同產業找到的 5 個對標變可勾選，勾完可帶去版面對照比較、或只看勾選那幾個。<br>
     <b>v209（補齊「先讀 txt 連結」全流程一致＋流程指引＋身份摘要鈕）：</b>①<b>PROMPT_A（授權改守門常數）</b>加「若附 07_連結.txt／含『帳號連結：』就先讀、別再要我重貼」——流程③ 帳號分析也不再叫你重貼連結。②<b>POST_PROMPT</b>（流程④貼文）兩個連結欄位同步加先讀 txt 規則。至此 PROMPT_C／GEM_PROMPT（v205）＋PROMPT_A／POST_PROMPT（本版）四支都一致。③<b>流程切換鈕上方加一句指引</b>：帳號沒建過→①／加影片→②／回測帳號→③／單篇貼文→④（帳號＋影片都要：先③再②）。④<b>帳號卡加「複製身份摘要」鈕</b>：一鍵複製「@handle｜名字｜身份｜職稱｜產業｜粉絲數」，流程② STEP5 丟給 Claude 前按一下貼上即可，不用手打。<b>本版經授權改 PROMPT_A，其餘五支守門常數未動；新六常數 md5＝5d2b1a50909c91b89ca7454e64f81911（守門值已更新）。</b><br>
@@ -6183,6 +6186,13 @@ function _hubComputeRivals(heroAcc,mode){
   if(!heroAcc) return [];
   if(mode==='none') return [];
   if(mode==='all') return accounts.filter(function(x){return x.id!==heroAcc.id;}).map(function(x){return x.id;});
+  /* v213：系統建議——用 _smScore 綜合相似度（產業0.4＋身份0.2＋內容階段分布0.25＋量級0.15）排序，取最像的前 8 */
+  if(mode==='smart'){
+    if(typeof _smScore!=='function') return [];
+    var _scored=accounts.filter(function(x){return x.id!==heroAcc.id;}).map(function(x){ var sc=null; try{ sc=_smScore(heroAcc,x); }catch(_e){} return {id:x.id, s:(sc&&sc.score)||0}; });
+    _scored.sort(function(p,q){ return q.s-p.s; });
+    return _scored.filter(function(o){ return o.s>0; }).slice(0,8).map(function(o){ return o.id; });
+  }
   /* v198 C2：寬鬆關鍵詞匹配——抽出主角職稱／產業的核心關鍵字，包含即算同類
      例如：主角是「律師事務所合夥律師（郭柏鴻＝主持律師）」，會抽出「律師」/「律師事務所」/「合夥律師」當核心關鍵字；其他律師（執業律師、合夥律師、出庭律師）只要含「律師」就算同職稱 */
   function _coreKeywords(text){
@@ -6228,16 +6238,21 @@ function _hubRenderRivalList(boxId,rivalIds,hideEmpty){
 /* v211：影片庫對標 → 可勾選清單 */
 function _hubRenderRivalChecklist(box,rivalIds){
   var n=(libRivalChecked||[]).length;
+  /* v213：系統建議模式時算主角 vs 每個對標的「為什麼像」 */
+  var _smart=(libRivalMode==='smart');
+  var _heroA=_smart?accounts.find(function(x){return x.id===libHeroId;}):null;
   var rows=rivalIds.map(function(id){
     var a=accounts.find(function(x){return x.id===id;}); if(!a) return '';
     var on=(libRivalChecked||[]).indexOf(id)>=0;
+    var why='';
+    if(_smart && _heroA && typeof _smScore==='function' && typeof _smReasonShort==='function'){ try{ why=_smReasonShort(a,_smScore(_heroA,a)); }catch(_e){} }
     return '<label style="display:flex;align-items:center;gap:7px;padding:5px 4px;cursor:pointer;border-top:1px solid var(--gold-soft);font-size:12px;line-height:1.4">'
       +'<input type="checkbox" data-rivalid="'+esc(id)+'" '+(on?'checked':'')+' onchange="_vlibRivalToggle(this.getAttribute(\'data-rivalid\'),this.checked)" style="flex:none;width:15px;height:15px;accent-color:var(--rouge)">'
-      +'<span>'+esc(_hubAccByName(a))+'</span></label>';
+      +'<span>'+esc(_hubAccByName(a))+(why?(' <span style="color:var(--gold-dark);font-size:11px">· '+esc(why)+'</span>'):'')+'</span></label>';
   }).join('');
   box.innerHTML=
     '<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:2px">'
-      +'<span>對標 <b style="color:var(--rouge)">'+rivalIds.length+'</b> 個 · 勾選你要的（預設全勾）</span>'
+      +'<span>'+(_smart?'系統建議 ':'對標 ')+'<b style="color:var(--rouge)">'+rivalIds.length+'</b> 個'+(_smart?'（已按整體相似度排序，旁邊是為什麼像）':' · 勾選你要的（預設全勾）')+'</span>'
       +'<button type="button" onclick="_vlibRivalAll(true)" style="font-size:11px;padding:2px 8px;border:1px solid var(--gold-soft);background:#fff;color:var(--gold-dark);border-radius:6px;cursor:pointer;font-family:inherit">全選</button>'
       +'<button type="button" onclick="_vlibRivalAll(false)" style="font-size:11px;padding:2px 8px;border:1px solid var(--gold-soft);background:#fff;color:var(--gold-dark);border-radius:6px;cursor:pointer;font-family:inherit">全不選</button>'
     +'</div>'
