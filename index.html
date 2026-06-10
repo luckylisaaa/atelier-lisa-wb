@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="color-scheme" content="light only">
 <meta name="supported-color-schemes" content="light">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v210 (版本號僅留註解，不顯示於畫面)
+<!-- ATELIER 影片診斷工作台 · 內部版本 v211 (版本號僅留註解，不顯示於畫面)
+v211 更新（交辦單：v210 留下的對標新功能——同產業/同職稱找到的對標可勾選；Lisa 選「兩個都要：勾完再選比較或篩選」）：【A 對標可勾選清單】_hubRenderRivalList 對 vlibRivalList 改走新 _hubRenderRivalChecklist——每個對標一個 checkbox(預設全勾)＋全選/全不選＋兩顆動作鈕「只看勾選的影片(renderLibrary)」「帶去版面對照比較(vlibRivalsCompare)」＋計數 span；帳號管理 accRivalList 維持純文字不動。【B 勾選驅動篩選】新增 state libRivalChecked(預設＝libRivalIds.slice())；renderLibrary 的 _hubAllow 改用 libRivalChecked(全不勾＝只看主角)；vlibHeroSet/vlibRivalSet 算完對標同步 libRivalChecked、vlibHeroClear/libResetFilters 一併清空；sig 加入 libRivalChecked。_vlibRivalToggle(更新勾選＋計數)、window._vlibRivalAll(全選/全不選重繪)。【C 帶去版面對照】新增 window.vlibRivalsCompare()——主角＋勾選對標(上限 3，主角共 4)→ click compare 分頁 →350ms 後 populateCmpHero＋設 cmpHero.value＋cmpSelected.clear/add＋renderComparePicker＋runCompare(復刻 v194 已刪的 _vchGoCompare 行為)。【D 順修 v210 殘坑】hub 篩選 membership 由 v.accountId 直比改用 accountForVideo(v).id(handle 掛載的主角影片不再被「只看主角」漏掉)；vlibHeroSet 主角影片數改用 videosOfAccount(含 handle 對到的)。未動六守門常數(md5 5d2b1a50909c91b89ca7454e64f81911 不變)；版本號 4 處 v210→v211；check.js 16/16；div/details 平衡。
 v210 更新（交辦單：Lisa 截圖實測 6 件——①主角下拉搜尋單字配不到②搜尋只比畫面文字、配不到產業/領域③來源兩顆「客戶」打架④影片有 handle 但 accountId 空→誤判「尚未建檔」、帳號分析工具不出現、帳號影片數少算⑤要獨立重設鈕⑥三區工具用途說明；對標可勾選留 v211）：【A 影片↔帳號解析器】新增 accountForVideo(v)——accountId 精確認不到改用 normAccHandle 比對既有帳號 handle；vcard 改用 _vacc（「尚未建檔」判斷＋「@xxx 的分析工具」整塊改吃 _vacc.id/_vacc.handle，舊影片帳號工具自動冒出）；renderLibrary 篩選(身份/職稱/產業)＋來源 __client__ 改用 accountForVideo。【B videosOfAccount 改 handle-aware】accountId 對到算、或(無 id 或失效 id 但 handle 對得上)也算且不重複；帳號管理「拆解過 N 支」正確計數。【C 來源「客戶」改認帳號層】renderClientFilter 濾掉字面「客戶/客户」來源值(與帳號層同名打架的殘留)、__client__ 鈕改 a.isClient 判定、標籤改「★ 我的客戶」紅字。【D csel 單選搜尋修兩處】每個選項加 data-s(handle/顯示名/name/職稱/產業/領域/types 全欄)、搜尋改吃 data-s(修「搜法律配不到律師」)；加 compositionstart/end 中文輸入法處理(修單字「理」配不到、要打「理鴻」才出來)。【E 重設鈕】hub 加「↻ 重設篩選」＋新增 window.libResetFilters()——清主角/對標/階段/目標層/身份/職稱/產業/來源/搜尋框回預設(有別於右上角重抓雲端)。未動六守門常數(md5 5d2b1a50909c91b89ca7454e64f81911 不變)；版本號 4 處 v209→v210；check.js 16/16；div/details 平衡。對標 5 個變可勾選(帶去比較/只看這幾個)留 v211。
 v209 更新（補齊先讀txt連結＋流程指引＋身份摘要鈕；經授權改 PROMPT_A）：①PROMPT_A（授權·守門）在 (1) 後加 (1b)：附 07_連結.txt／含「帳號連結：」先讀填欄、別再要重貼、完全沒附才填未提供、讀連結≠讀內容（內容仍以截圖為準）。②POST_PROMPT（非守門）IG帳號／影片連結兩欄加先讀 txt。③sopFlowSwitch 上方加「我該按哪條」一句話指引 div。④新增 copyAccountIdentity(accId)＝複製「帳號身份：@handle｜名字｜身份｜職稱｜產業｜粉絲」；accCard 動作列加 data-acc-ident 鈕、bindAccountUI 綁定。其餘五守門常數（GEM_PROMPT／PROMPT_C／PROMPT_0／PROMPT_0A／TONE_RULES）逐支比對未變。【守門值更新】舊 93b202e4669ed0fddd1db2923c809e7b → 新 5d2b1a50909c91b89ca7454e64f81911。版本號 4 處 v208→v209；check.js 16/16；div/details 平衡。
 v208 更新（三個新功能，無提示詞改動）：①新增全域 backfillVideoAccounts()——掃 accountId 空的影片，線索來源 v.accountHandle→v.url(instagram.com/handle)→caption/note/hashtag 的 @handle，normAccHandle 比對 accounts，confirm 預覽後補 accountId/accountHandle、saveVideos+renderAll；對不到的列入 skipped 不動。帳號管理 acc-add-btn 下方加 onclick 觸發鈕。②新增 setAccClient(id) 切換 a.isClient；accCard 標題加「★ 我的客戶」徽章、動作列加 data-acc-client 切換鈕，綁定於 bindAccountUI。③新增 exportClientBundle(accId)——彙整帳號 profile(ACC_PROFILE_FIELDS)＋videosOfAccount 全部影片欄位成文字，copyPrompt 預覽複製；accCard 動作列加 data-acc-export 鈕。三函式插在 accCard 定義前。未動六守門常數（md5 93b202e4669ed0fddd1db2923c809e7b 不變）。版本號 4 處 v207→v208；check.js 16/16；div/details 平衡。
@@ -783,7 +784,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v210</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v211</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -2567,7 +2568,7 @@ const numUnit=raw=>{
 let videos=[]; // 影片資料
 let libFilter='all', libClient='', searchScope='all', libStageF='', libGoalF='', libTypeF='', libJobF='', libIndF='', libShowN=20, _libSig='', libPage=1;
 /* v197 A1/A2：主角中心 hub 的 state */
-let libHeroId='', libRivalMode='none', libRivalIds=[];
+let libHeroId='', libRivalMode='none', libRivalIds=[], libRivalChecked=[];
 let accHeroId='', accRivalMode='none', accRivalIds=[];
 var accPage=1;
 
@@ -3418,11 +3419,12 @@ function renderLibrary(){
   if(libHeroId){
     _hubAllow={};
     _hubAllow[libHeroId]=1;
-    (libRivalIds||[]).forEach(function(id){ _hubAllow[id]=1; });
+    /* v211：用「已勾選的對標」當允許集合（預設全勾＝全部對標；全不勾＝只看主角）*/
+    (libRivalChecked||[]).forEach(function(id){ _hubAllow[id]=1; });
   }
   let list=videos.filter(v=>{
     /* v197 A1：hub 主角＋對標篩選——若有主角，只保留 accountId 在允許集合內的影片 */
-    if(_hubAllow){ if(!v.accountId || !_hubAllow[v.accountId]) return false; }
+    if(_hubAllow){ var _hv=(typeof accountForVideo==='function')?accountForVideo(v):(accounts.find(x=>x.id===v.accountId)||null); if(!_hv || !_hubAllow[_hv.id]) return false; }
     if(libFilter!=='all'){ if(timeClass(v.date).k!==libFilter) return false; }
     if(libClient==='__client__'){ var _cva=(typeof accountForVideo==='function')?accountForVideo(v):null; if(!_cva||!_cva.isClient) return false; }
     else if(libClient && v.client!==libClient) return false;
@@ -3452,7 +3454,7 @@ function renderLibrary(){
   const box=$('libList');
   if(!list.length){ box.innerHTML='<div class="empty-res">沒有符合的影片。</div>'; return; }
   // v161 B1：每頁 10 支、頁碼列上下各一排（品牌酒紅/金）
-  const sig=[$('libSearch')?$('libSearch').value.trim():'',libFilter,libClient,libStageF,libGoalF,libTypeF,libJobF,libIndF,libHeroId,libRivalMode,(libRivalIds||[]).join(','),sortBy].join('|');
+  const sig=[$('libSearch')?$('libSearch').value.trim():'',libFilter,libClient,libStageF,libGoalF,libTypeF,libJobF,libIndF,libHeroId,libRivalMode,(libRivalIds||[]).join(','),(libRivalChecked||[]).join(','),sortBy].join('|');
   if(sig!==_libSig){ libPage=1; _libSig=sig; }
   const PER=10; const total=list.length; const pages=Math.max(1,Math.ceil(total/PER));
   if(libPage>pages) libPage=pages; if(libPage<1) libPage=1;
@@ -4041,7 +4043,8 @@ function renderManual(){
   <div class="form-card" style="border-left:3px solid var(--gold)">
     <div class="stitle" style="font-size:15px;color:var(--rouge)">更新紀錄 · 還沒做的</div>
     <p style="font-size:13px;color:var(--text);line-height:1.85;margin-top:8px">
-    <b>v210（這版 · 修截圖回報的搜尋／影片認帳號／來源客戶＋加重設鈕）：</b>①<b>影片會自己認出帳號了</b>：以前影片明明有 @kl.legal、帳號也建過，卻顯示「此帳號尚未建檔」、也不給帳號分析工具——因為它只認內部 id、沒去比對 @帳號。現在 id 認不到就用 @handle 比對既有帳號，<b>舊影片不用手動回補就會自動連動</b>，帳號分析工具（特點→賣點／帳號體檢／客戶診斷／成功庫對標）會自己冒出來。②<b>帳號影片數算對了</b>：帳號管理「拆解過 N 支」會把用 @handle 對得上的影片一起算進去（@kl.legal 之前顯示 1 支、其實 2 支）。③<b>搜尋修好</b>：主角下拉打單一個中文字（例「理」）現在就找得到、不用打到「理鴻」才出現（中文輸入法問題）；搜「法律」也會比對到產業／領域／職稱，不再跳出不相關的人（以前只比對畫面看得到的字）。④<b>來源那兩顆「客戶」不再打架</b>：一顆是系統的、一顆是某支影片來源欄被填成「客戶」。現在系統那顆改叫「★ 我的客戶」、且只認你在帳號卡標過星的客戶；字面「客戶」殘留值不再單獨冒一顆。⑤<b>新增「↻ 重設篩選」鈕</b>（影片庫上方主角區）：一鍵把主角／對標／進階篩選／搜尋框清回預設，跟右上角「重新整理」（重抓雲端）分開。<b>沒動任何提示詞（六守門常數 md5 不變）。</b>下一版 v211 做你要的：同產業找到的 5 個對標變可勾選，勾完可帶去版面對照比較、或只看勾選那幾個。<br>
+    <b>v211（這版 · 同產業/同職稱找到的對標變成可勾選）：</b>你之前要的：在影片庫上方選好主角、按「＋同職稱／＋同產業／＋同身份」找到的那幾個對標，現在<b>每一個前面都有勾選框（預設全勾）</b>，可以「全選／全不選」。勾好之後有兩顆鈕，兩個都給你：①<b>「只看勾選的影片」</b>＝這個影片庫就只留你勾的那幾個人的影片；②<b>「帶去版面對照比較」</b>＝直接跳到版面對照、把主角＋你勾的（最多 3 個，連主角共 4 個）並排比 Bio／置頂／視覺風格，不用再自己重打一次。順手修了一個小地方：用 @handle 掛上的影片，現在「只看主角」也算得到、不會被漏掉。<b>沒動任何提示詞（六守門常數 md5 不變）。</b><br>
+    <b>v210（修截圖回報的搜尋／影片認帳號／來源客戶＋加重設鈕）：</b>①<b>影片會自己認出帳號了</b>：以前影片明明有 @kl.legal、帳號也建過，卻顯示「此帳號尚未建檔」、也不給帳號分析工具——因為它只認內部 id、沒去比對 @帳號。現在 id 認不到就用 @handle 比對既有帳號，<b>舊影片不用手動回補就會自動連動</b>，帳號分析工具（特點→賣點／帳號體檢／客戶診斷／成功庫對標）會自己冒出來。②<b>帳號影片數算對了</b>：帳號管理「拆解過 N 支」會把用 @handle 對得上的影片一起算進去（@kl.legal 之前顯示 1 支、其實 2 支）。③<b>搜尋修好</b>：主角下拉打單一個中文字（例「理」）現在就找得到、不用打到「理鴻」才出現（中文輸入法問題）；搜「法律」也會比對到產業／領域／職稱，不再跳出不相關的人（以前只比對畫面看得到的字）。④<b>來源那兩顆「客戶」不再打架</b>：一顆是系統的、一顆是某支影片來源欄被填成「客戶」。現在系統那顆改叫「★ 我的客戶」、且只認你在帳號卡標過星的客戶；字面「客戶」殘留值不再單獨冒一顆。⑤<b>新增「↻ 重設篩選」鈕</b>（影片庫上方主角區）：一鍵把主角／對標／進階篩選／搜尋框清回預設，跟右上角「重新整理」（重抓雲端）分開。<b>沒動任何提示詞（六守門常數 md5 不變）。</b>下一版 v211 做你要的：同產業找到的 5 個對標變可勾選，勾完可帶去版面對照比較、或只看勾選那幾個。<br>
     <b>v209（補齊「先讀 txt 連結」全流程一致＋流程指引＋身份摘要鈕）：</b>①<b>PROMPT_A（授權改守門常數）</b>加「若附 07_連結.txt／含『帳號連結：』就先讀、別再要我重貼」——流程③ 帳號分析也不再叫你重貼連結。②<b>POST_PROMPT</b>（流程④貼文）兩個連結欄位同步加先讀 txt 規則。至此 PROMPT_C／GEM_PROMPT（v205）＋PROMPT_A／POST_PROMPT（本版）四支都一致。③<b>流程切換鈕上方加一句指引</b>：帳號沒建過→①／加影片→②／回測帳號→③／單篇貼文→④（帳號＋影片都要：先③再②）。④<b>帳號卡加「複製身份摘要」鈕</b>：一鍵複製「@handle｜名字｜身份｜職稱｜產業｜粉絲數」，流程② STEP5 丟給 Claude 前按一下貼上即可，不用手打。<b>本版經授權改 PROMPT_A，其餘五支守門常數未動；新六常數 md5＝5d2b1a50909c91b89ca7454e64f81911（守門值已更新）。</b><br>
     <b>v208（舊影片一鍵回補帳號＋帳號層客戶標記＋客戶體質一鍵匯出）：</b>①<b>一鍵回補</b>：帳號管理「新增帳號」下方多一顆「一鍵回補」——掃所有沒掛帳號的舊影片，從影片連結／文案／備註裡的 @handle 用 normAccHandle 比對既有帳號，能對到的補掛上（按之前先預覽清單、可取消；對不到的跳過不動）。解決過去太快建檔、影片沒掛帳號、帳號卡影片數不準的歷史資料。②<b>帳號層「我的客戶」標記</b>：帳號卡可一鍵標「★ 我的客戶 / ☆ 設為我的客戶」（與影片層的客戶來源並行），標題顯示徽章。③<b>客戶體質一鍵匯出</b>：帳號卡「匯出這客戶全部」把該帳號＋它底下所有影片的體質（主題／素材／數據／Hook／爆紅歸因／客戶落地／目標人群／逐字稿／連結）彙整成一份可複製文字，直接拿去用（服務台 client.html 為外部檔，此為檔內彙整版）。純新增功能，未動六守門常數（md5 不變）、未改任何提示詞。<br>
     <b>v207（修影片↔帳號連動＋客戶標記＋浮窗被遮）：</b>①<b>影片掛不上帳號（主修）</b>：智慧貼上卡B 時，「IG帳號」改用 normAccHandle 比對（不再因 @／大小寫／尾斜線配不到既有帳號），影片會自動掛回既有帳號；批次匯入路徑（cardToVideo）也補上帳號掛載。修好後重貼卡B 就會正確連到 @kl.legal。②<b>帳號卡影片數</b>：掛帳號修好後，帳號管理每張卡的「拆解過 N 支影片」會正確計數；0 支顯示「尚未收錄影片」。③<b>影片卡雙向提示</b>：影片有帳號就顯示帳號行＋名稱/身份/職稱/產業/粉絲；有 handle 但帳號未建檔則顯示「此帳號尚未建檔（單片分析）」。④<b>設為我的客戶</b>：影片「編輯數據」新增「客戶 / 來源」欄位，留空＝網路自蒐、填客戶名＝我的客戶，事後可改。⑤<b>QUICK SAVE 浮窗</b>：移到右下角同步列/登出鈕上方並提高層級，不再被遮。未動任何提示詞常數（md5 不變）。<br>
@@ -6205,10 +6208,67 @@ function _hubRenderRivalList(boxId,rivalIds,hideEmpty){
   var box=document.getElementById(boxId); if(!box) return;
   if(!rivalIds || !rivalIds.length){ box.style.display=hideEmpty?'none':'block'; if(!hideEmpty) box.innerHTML='<i>找不到符合的對標帳號</i>'; return; }
   box.style.display='block';
+  /* v211：影片庫的對標改成可勾選清單（勾完→只看勾選的影片／帶去版面對照比較）；帳號管理維持純文字 */
+  if(boxId==='vlibRivalList'){ _hubRenderRivalChecklist(box,rivalIds); return; }
   var names=rivalIds.slice(0,8).map(function(id){ var a=accounts.find(function(x){return x.id===id;}); return a?esc(_hubAccByName(a)):'?'; });
   var more=rivalIds.length>8?('… 還有 '+(rivalIds.length-8)+' 個'):'';
   box.innerHTML='對標 <b style="color:var(--rouge)">'+rivalIds.length+'</b> 個：'+names.join('、')+(more?(' '+more):'');
 }
+/* v211：影片庫對標 → 可勾選清單 */
+function _hubRenderRivalChecklist(box,rivalIds){
+  var n=(libRivalChecked||[]).length;
+  var rows=rivalIds.map(function(id){
+    var a=accounts.find(function(x){return x.id===id;}); if(!a) return '';
+    var on=(libRivalChecked||[]).indexOf(id)>=0;
+    return '<label style="display:flex;align-items:center;gap:7px;padding:5px 4px;cursor:pointer;border-top:1px solid var(--gold-soft);font-size:12px;line-height:1.4">'
+      +'<input type="checkbox" data-rivalid="'+esc(id)+'" '+(on?'checked':'')+' onchange="_vlibRivalToggle(this.getAttribute(\'data-rivalid\'),this.checked)" style="flex:none;width:15px;height:15px;accent-color:var(--rouge)">'
+      +'<span>'+esc(_hubAccByName(a))+'</span></label>';
+  }).join('');
+  box.innerHTML=
+    '<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:2px">'
+      +'<span>對標 <b style="color:var(--rouge)">'+rivalIds.length+'</b> 個 · 勾選你要的（預設全勾）</span>'
+      +'<button type="button" onclick="_vlibRivalAll(true)" style="font-size:11px;padding:2px 8px;border:1px solid var(--gold-soft);background:#fff;color:var(--gold-dark);border-radius:6px;cursor:pointer;font-family:inherit">全選</button>'
+      +'<button type="button" onclick="_vlibRivalAll(false)" style="font-size:11px;padding:2px 8px;border:1px solid var(--gold-soft);background:#fff;color:var(--gold-dark);border-radius:6px;cursor:pointer;font-family:inherit">全不選</button>'
+    +'</div>'
+    +'<div style="max-height:220px;overflow-y:auto;margin:4px 0 8px">'+rows+'</div>'
+    +'<div style="display:flex;gap:7px;flex-wrap:wrap">'
+      +'<button type="button" onclick="renderLibrary()" style="font-size:12px;font-weight:700;padding:7px 12px;border:1px solid var(--rouge);background:var(--rouge);color:#fff;border-radius:7px;cursor:pointer;font-family:inherit">只看勾選的影片（<span id="vlibRivalCntA">'+n+'</span>）</button>'
+      +'<button type="button" onclick="vlibRivalsCompare()" style="font-size:12px;font-weight:700;padding:7px 12px;border:1px solid var(--rouge);background:#fff;color:var(--rouge);border-radius:7px;cursor:pointer;font-family:inherit">↪ 帶去版面對照比較（<span id="vlibRivalCntB">'+n+'</span>）</button>'
+    +'</div>'
+    +'<div style="font-size:10.5px;color:var(--sub);margin-top:5px">勾選＝設定要對標的人；左鈕只在這個影片庫篩、右鈕跳到版面對照並排比（主角＋最多 3 個）。</div>';
+}
+function _vlibRivalToggle(id,on){
+  if(!id) return;
+  var i=(libRivalChecked||[]).indexOf(id);
+  if(on && i<0) libRivalChecked.push(id);
+  else if(!on && i>=0) libRivalChecked.splice(i,1);
+  var n=libRivalChecked.length;
+  var a=document.getElementById('vlibRivalCntA'); if(a) a.textContent=n;
+  var b=document.getElementById('vlibRivalCntB'); if(b) b.textContent=n;
+}
+window._vlibRivalToggle=_vlibRivalToggle;
+window._vlibRivalAll=function(on){
+  libRivalChecked=on?((libRivalIds||[]).slice()):[];
+  _hubRenderRivalList('vlibRivalList',libRivalIds,libRivalMode==='none');
+};
+window.vlibRivalsCompare=function(){
+  if(!libHeroId){ if(typeof toast==='function') toast('先選一個主角客戶'); return; }
+  var ids=(libRivalChecked||[]).slice();
+  if(!ids.length){ if(typeof toast==='function') toast('先勾選至少一個對標帳號'); return; }
+  if(ids.length>3){ ids=ids.slice(0,3); if(typeof toast==='function') toast('版面對照最多主角＋3 個，先帶前 3 個對標'); }
+  var tab=document.querySelector('.tab[data-view="compare"]');
+  if(tab) tab.click(); else if(typeof switchTo==='function') switchTo('compare');
+  setTimeout(function(){
+    try{
+      if(typeof populateCmpHero==='function') populateCmpHero();
+      var ch=document.getElementById('cmpHero'); if(ch){ ch.value=libHeroId; ch.dispatchEvent(new Event('change',{bubbles:true})); }
+      if(typeof cmpSelected!=='undefined' && cmpSelected){ cmpSelected.clear(); ids.forEach(function(id){ cmpSelected.add(id); }); }
+      if(typeof renderComparePicker==='function') renderComparePicker();
+      if(typeof runCompare==='function') runCompare();
+      try{ window.scrollTo(0,0); }catch(_e){}
+    }catch(e){}
+  },350);
+};
 function _hubSetChipState(scope,mode){
   var sel=(scope==='vlib')?'.vlib-rivalchip':'.acc-rivalchip';
   document.querySelectorAll(sel).forEach(function(b){
@@ -6226,16 +6286,17 @@ window.vlibHeroSet=function(id){
   var a=accounts.find(function(x){return x.id===libHeroId;}); if(!a){ vlibHeroClear(); return; }
   var info=document.getElementById('vlibHeroInfo');
   if(info){
-    var vcount=(typeof videos!=='undefined'&&videos)?videos.filter(function(v){return v.accountId===libHeroId;}).length:0;
+    var vcount=(typeof videosOfAccount==='function')?videosOfAccount(libHeroId).length:((typeof videos!=='undefined'&&videos)?videos.filter(function(v){return v.accountId===libHeroId;}).length:0);
     info.innerHTML=_hubInfoHTML(a,vcount); info.style.display='block';
   }
   var tip=document.getElementById('vlibNoHeroTip'); if(tip) tip.style.display='none';
   libRivalIds=_hubComputeRivals(a,libRivalMode);
+  libRivalChecked=libRivalIds.slice();
   _hubRenderRivalList('vlibRivalList',libRivalIds,libRivalMode==='none');
   if(typeof renderLibrary==='function') renderLibrary();
 };
 window.vlibHeroClear=function(){
-  libHeroId=''; libRivalMode='none'; libRivalIds=[];
+  libHeroId=''; libRivalMode='none'; libRivalIds=[]; libRivalChecked=[];
   var sel=document.getElementById('vlibHero'); if(sel) sel.value='';
   var info=document.getElementById('vlibHeroInfo'); if(info){ info.style.display='none'; info.innerHTML=''; }
   var rl=document.getElementById('vlibRivalList'); if(rl){ rl.style.display='none'; rl.innerHTML=''; }
@@ -6246,7 +6307,7 @@ window.vlibHeroClear=function(){
 /* v210：影片庫一鍵重設——主角＋對標＋進階篩選（階段/目標層/身份/職稱/產業/來源）＋搜尋框全部回預設。
    有別於右上角「重新整理」(那是重抓雲端資料)，這顆只清這個影片庫的篩選條件。 */
 window.libResetFilters=function(){
-  libHeroId=''; libRivalMode='none'; libRivalIds=[];
+  libHeroId=''; libRivalMode='none'; libRivalIds=[]; libRivalChecked=[];
   var sel=document.getElementById('vlibHero'); if(sel) sel.value='';
   var info=document.getElementById('vlibHeroInfo'); if(info){ info.style.display='none'; info.innerHTML=''; }
   var rl=document.getElementById('vlibRivalList'); if(rl){ rl.style.display='none'; rl.innerHTML=''; }
@@ -6265,9 +6326,10 @@ window.vlibRivalSet=function(mode){
   if(libHeroId){
     var a=accounts.find(function(x){return x.id===libHeroId;});
     libRivalIds=_hubComputeRivals(a,libRivalMode);
+    libRivalChecked=libRivalIds.slice();
     _hubRenderRivalList('vlibRivalList',libRivalIds,libRivalMode==='none');
   }else{
-    libRivalIds=[];
+    libRivalIds=[]; libRivalChecked=[];
     var rl=document.getElementById('vlibRivalList'); if(rl){ rl.style.display='none'; rl.innerHTML=''; }
   }
   if(typeof renderLibrary==='function') renderLibrary();
