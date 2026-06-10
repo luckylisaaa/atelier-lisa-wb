@@ -5,7 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="color-scheme" content="light only">
 <meta name="supported-color-schemes" content="light">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v213 (版本號僅留註解，不顯示於畫面)
+<!-- ATELIER 影片診斷工作台 · 內部版本 v215 (版本號僅留註解，不顯示於畫面)
+v215 更新（交辦單：Lisa 要的「待補清單＋逐欄補完提示詞」——快速貼檔不逐欄看時，系統主動提醒哪些沒填到、並給逐欄補完提示詞，接 v214）：【待補清單】輸入表單儲存區上方加 #inputTodo 容器＋renderInputTodo()：掃 9 個關鍵欄位(f-title/f-account/f-theme/f-stage/f-mat/f-sub/f-trig/f-form/f-goal)，列出空的；全空的新表單(且 pasteBox 也空)不顯示，全填好顯示綠色「都填好了」，有缺則列「還有 N 欄沒填到」＋每欄一列。manual 欄(影片名稱/連結帳號)只顯示手動提示；分類下拉欄附「複製補完提示詞」鈕。【逐欄補完提示詞】window._todoCopy(selId)：讀該 select 的 option 文字當合法選項清單、加影片標題＋主題＋階段＋逐字稿(取前 1500 字)組成「只判這一欄」的提示詞，要 AI 從選項挑 1 個＋說為什麼，判不出回「無法判斷」不硬猜；走既有 copyPrompt 可編輯預覽彈窗(退回 copyVal)。【掛鉤】parse 收尾、showInputSub、9 欄位 change/input、clearBtn 後都呼叫 renderInputTodo 即時刷新。純新增、未動 parse/儲存/資料結構與既有欄位 id。未動六守門常數(md5 5d2b1a50909c91b89ca7454e64f81911 不變)；版本號 4 處 v214→v215；check.js 16/16；div/details 平衡。
+v214 更新（交辦單：v213 的搜尋 keyup 修法有後遺症——注音組字中拿注音符號去比對，把主角下拉清單濾成空白；Lisa 打「理」變整列空白，接 v213）：【搜尋注音感知過濾】根因：注音組字期間 si.value 是注音符號(ㄌㄧˇ)非中文字，v213 的 input/keyup 即時濾→拿 ㄌㄧˇ 比對全部不符→清單空白(Latin 字無此問題故「k」正常)。修法：csel 單選搜尋的 input/keyup 改走 _cselMaybe——維護 _cselComp(compositionstart/end 旗標)，若「組字中且 si.value 尚未出現中文字(\u3400-\u9fff/\uf900-\ufaff)」就先不濾(維持現狀不清空)；一旦行內候選出現中文字、或選字送出 compositionend，才呼叫 _cselFilter。非組字(英數/貼上/退格)維持即時濾。只動這段事件綁定，data-s 與 _cselFilter 本體不變。未動六守門常數(md5 5d2b1a50909c91b89ca7454e64f81911 不變)；版本號 4 處 v213→v214；check.js 16/16；div/details 平衡。
 v213 更新（交辦單：Lisa 開始服務客戶後的兩個實務痛點——①工作台↔客戶服務台跳轉掉狀態②同職稱/同產業對標點起來都一樣、要系統幫挑＋說原因）：【A 客戶服務台開獨立視窗】導覽列「客戶服務台」原為 a href=client.html 無 target（整頁同分頁跳轉→兩邊互相重載、掉進度）；加 target="atelierClient" 具名視窗（重複點重用同一視窗、不開新分頁）＋title 說明。工作台與服務台變兩個各自保留狀態的視窗、切換不重載。client.html 那側的返回連結與「記住上次客戶/步驟」屬另一條線(客戶端_01)，本版不碰。【B 同類對標加系統建議＋為什麼像】hub chip 列在「只看主角」後新增「★ 系統建議」(data-rival=smart，金色邊框凸顯)；_hubComputeRivals 加 smart 分支——用既有 _smScore 綜合相似度(產業0.4＋身份0.2＋內容階段分布0.25＋粉絲量級0.15)排序、取 score>0 前 8 名；_hubRenderRivalChecklist 在 smart 模式時用 _smReasonShort 在每個對標旁顯示「為什麼像」(同產業/同為某職稱/量級相近…)＋表頭改「系統建議 N 個（已按整體相似度排序，旁邊是為什麼像）」。勾選/只看勾選/帶去版面對照沿用 v211 不變；帳號管理 hub 與 accRivalList 不動。【C 中文單字搜尋再修穩】v212 改用 input＋compositionend 仍沒抓到 Lisa 的注音情境（組字中值是注音符號、送出那下 input/compositionend 在其瀏覽器不可靠）→ 單字「理」過濾沒跑。本版 csel 單選搜尋再加 keyup 監聽（放開選字鍵時值已是中文）＋compositionend 後 setTimeout 再跑一次，三管齊下。【未做·v214】比多同行(10/20/30+)的產業定位排行/象限表——較大的新畫面，另版做好再上。未動六守門常數(md5 5d2b1a50909c91b89ca7454e64f81911 不變)；版本號 4 處 v212→v213；check.js 16/16；div/details 平衡。
 v212 更新（交辦單：Lisa 實跑流程② 抓到的兩個 bug——①貼卡B 影片掛不上帳號②搜尋單字「理」還是要打「理鴻」）：【A 影片掛不上帳號 · 主修】根因：populateAccountSelect 只在 bindAccountUI 初始化跑一次，雲端 accounts async 載入後沒重灌 f-account（v189 當時刻意沒加）；於是貼卡B 時⑥連結到帳號只剩 placeholder，parseBtn 的 $('f-account').value=acc.id 設一個不存在的 option→瀏覽器退回空值→存檔 accountId 空＝「未連結帳號」、職稱/產業也沒帶。修三處：①帳號 onSnapshot 到齊後補呼叫 populateAccountSelect；②renderAll 也補一道；③parseBtn 連既有帳號前先 populateAccountSelect 確保選項存在、再設值＋dispatch change(帶出職稱/產業)；④populateAccountSelect 改為保留 _pendingAcc 暫時 option(避免 renderAll/雲端重灌沖掉待確認新帳號)。【B 搜尋單字配不到 · 修 v210 回歸】v210 給單選 csel 搜尋加的中文輸入法 compositionend 守衛，反讓「組字未送出前 input 不過濾」→單字「理」不動、要打到「理鴻」送出才過濾。單選下拉過濾只是切 display(很便宜)，移除 _comp 守衛，改成 input＋compositionend 都即時過濾。多選 picker 的守衛(效能考量)保留不動。未動六守門常數(md5 5d2b1a50909c91b89ca7454e64f81911 不變)；版本號 4 處 v211→v212；check.js 16/16；div/details 平衡。【未做·待 spec】同類對標加更多維度＋系統建議＋原因(用既有 _smScore)、版面對照容納更多同行(目前上限 4)做產業定位/差異化——皆為新功能，下版動工前先對齊規格。
 v211 更新（交辦單：v210 留下的對標新功能——同產業/同職稱找到的對標可勾選；Lisa 選「兩個都要：勾完再選比較或篩選」）：【A 對標可勾選清單】_hubRenderRivalList 對 vlibRivalList 改走新 _hubRenderRivalChecklist——每個對標一個 checkbox(預設全勾)＋全選/全不選＋兩顆動作鈕「只看勾選的影片(renderLibrary)」「帶去版面對照比較(vlibRivalsCompare)」＋計數 span；帳號管理 accRivalList 維持純文字不動。【B 勾選驅動篩選】新增 state libRivalChecked(預設＝libRivalIds.slice())；renderLibrary 的 _hubAllow 改用 libRivalChecked(全不勾＝只看主角)；vlibHeroSet/vlibRivalSet 算完對標同步 libRivalChecked、vlibHeroClear/libResetFilters 一併清空；sig 加入 libRivalChecked。_vlibRivalToggle(更新勾選＋計數)、window._vlibRivalAll(全選/全不選重繪)。【C 帶去版面對照】新增 window.vlibRivalsCompare()——主角＋勾選對標(上限 3，主角共 4)→ click compare 分頁 →350ms 後 populateCmpHero＋設 cmpHero.value＋cmpSelected.clear/add＋renderComparePicker＋runCompare(復刻 v194 已刪的 _vchGoCompare 行為)。【D 順修 v210 殘坑】hub 篩選 membership 由 v.accountId 直比改用 accountForVideo(v).id(handle 掛載的主角影片不再被「只看主角」漏掉)；vlibHeroSet 主角影片數改用 videosOfAccount(含 handle 對到的)。未動六守門常數(md5 5d2b1a50909c91b89ca7454e64f81911 不變)；版本號 4 處 v210→v211；check.js 16/16；div/details 平衡。
@@ -786,7 +788,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v213</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v215</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -1513,6 +1515,7 @@ if('serviceWorker' in navigator){
       <textarea id="f-note" placeholder="例：這支是『寵物擬人化吐槽』，現有素材沒有，建議在 G3-3 下新增…"></textarea>
     </div>
 
+    <div id="inputTodo" style="display:none"></div>
     <button class="btn btn-ghost" id="genCardBtn" style="margin-bottom:8px"><svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.8;vertical-align:-2px;margin-right:5px"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h3" stroke-linecap="round"/></svg>產生 ATELIER 歸類卡</button>
     <div id="cardOutWrap" style="display:none;margin-bottom:14px">
       <pre class="gem-pre" id="cardOut" style="white-space:pre-wrap"></pre>
@@ -3084,6 +3087,7 @@ $('parseBtn').onclick=async function(){
     }catch(e){}
   })();
   $('parseMsg').innerHTML=msg;
+  if(typeof renderInputTodo==='function') renderInputTodo(); /* v215：貼完卡刷新待補清單 */
   renderInsight(); renderGoalKit(); syncProdStatus();
   toast('已自動填入，請檢查下方欄位');
   document.querySelector('.form-card').scrollIntoView({behavior:'smooth',block:'start'});
@@ -3376,6 +3380,7 @@ $('clearBtn').onclick=()=>{
   $('contentPlatform').selectedIndex=0; $('productionStatus').selectedIndex=0; if(typeof syncProdStatus==='function'){ try{ syncProdStatus(); }catch(e){} }
   ['f-stage','f-theme','f-mat','f-sub','f-trig','f-form','f-goal'].forEach(i=>$(i).selectedIndex=0);
   $('f-stage').onchange(); $('f-gap').checked=false;
+  if(typeof renderInputTodo==='function') setTimeout(renderInputTodo,0); /* v215：清空後刷新待補清單 */
   ['f-views','f-likes','f-comments','f-reposts','f-shares','f-saves','f-reach','f-engrate','f-complete'].forEach(i=>$(i).value='');
   /* v194 P2：補齊清空項目（對齊 saveBtn 成功儲存後的清空邏輯）*/
   if($('f-account-quick'))$('f-account-quick').value='';
@@ -4016,6 +4021,7 @@ function showInputSub(w){
   if(w==='card'){c.style.display='block'; if(bc)bc.style.cssText=ON;}
   else if(w==='flow'){f.style.display='block'; if(bf)bf.style.cssText=ON;}
   else{ if(p)p.style.display='block'; if(bp)bp.style.cssText=ON; }
+  if(typeof renderInputTodo==='function') renderInputTodo(); /* v215：進輸入頁刷新待補清單 */
 }
 /* v197 D1：歸類卡 ①②③ chip 切換（只是視覺指引，系統仍靠標記自動分流） */
 window.cardFlowSet=function(n){
@@ -4053,7 +4059,9 @@ function renderManual(){
   <div class="form-card" style="border-left:3px solid var(--gold)">
     <div class="stitle" style="font-size:15px;color:var(--rouge)">更新紀錄 · 還沒做的</div>
     <p style="font-size:13px;color:var(--text);line-height:1.85;margin-top:8px">
-    <b>v213（這版 · 解你開始服務客戶後的兩個痛點）：</b>①<b>客戶服務台改開獨立視窗</b>：以前按「客戶服務台」是整頁跳走，跳回來工作台就回到最初畫面、做到一半的進度沒了。現在它<b>開在自己的視窗</b>——工作台一個、服務台一個，你可以縮放並排，<b>互相切換都不會重載、不會掉進度</b>，一邊查資料一邊灌東西。（服務台那頁自己的返回鍵和「記住上次客戶」是另一條線維護的，我這邊先把工作台這側做好。）②<b>同類對標加「★ 系統建議」</b>：你說同職稱/同產業點起來都一樣——現在主角選好後，對標列多一顆<b>「★ 系統建議」</b>，系統用綜合相似度（產業＋身份＋內容階段分布＋粉絲量級）自動挑出最像的前幾名、<b>由近到遠排好</b>，而且<b>每個旁邊會寫「為什麼像」</b>（例如「同產業 · 法律」「同為律師」「量級相近」），你就能很明確地挑。勾選、只看勾選、帶去版面對照都跟之前一樣。③<b>中文單字搜尋再修穩</b>：上一版（v212）對你的注音輸入法還是沒抓到——組字中框裡是注音符號、選字送出那下系統沒接到，所以打「理」還是不動。這版多接了一個鍵盤事件（放開選字鍵時值已經是「理」），單字搜尋這次一定出得來。<b>沒動任何提示詞（六守門常數 md5 不變）。</b>下一版（v214）再做「比很多同行做產業定位的排行表」。<br>
+    <b>v215（這版 · 待補清單＋逐欄補完提示詞）：</b>你說快速貼檔、來不及逐欄看——現在貼完卡、自動填完後，<b>儲存按鈕上方會浮出一張「待補清單」</b>，列出這張卡<b>還有哪幾欄沒填到</b>（例如「子題型（第5層）」「流量觸發」）。每一條分類欄旁邊一顆<b>「複製補完提示詞」</b>，點了就複製一段<b>只針對那一欄</b>的提示詞（裡面已經幫你帶好影片標題、主題、逐字稿、還有那欄的合法選項），你貼去問 AI、它從選項挑最準的給你；它判不出來會回「無法判斷」、不會亂猜。全部填好會顯示綠色「都填好了」；不想填的可以忽略，<b>這只是提醒、不擋你存檔</b>。<b>沒動任何提示詞（六守門常數 md5 不變）。</b><br>
+    <b>v214（把搜尋『理』徹底修好）：</b>上一版（v213）打「理」會把整個清單濾成空白——因為注音<b>組字中</b>那一刻，搜尋框裡其實是注音符號（ㄌㄧˇ）不是「理」，系統拿注音去比對就全部不符、變空白（打英數的「k」沒這問題就是因為不用組字）。這版改成：<b>組字中、還沒出現中文字之前先不要濾</b>（清單維持原樣不清空），等中文字出現或你選字送出，才開始濾。這樣打「理」就會正確留下理鴻、不會空白了。<b>沒動任何提示詞（六守門常數 md5 不變）。</b><br>
+    <b>v213（客戶服務台獨立視窗＋同類對標系統建議＋搜尋強化）：</b>①<b>客戶服務台改開獨立視窗</b>：以前按「客戶服務台」是整頁跳走，跳回來工作台就回到最初畫面、做到一半的進度沒了。現在它<b>開在自己的視窗</b>——工作台一個、服務台一個，你可以縮放並排，<b>互相切換都不會重載、不會掉進度</b>，一邊查資料一邊灌東西。（服務台那頁自己的返回鍵和「記住上次客戶」是另一條線維護的，我這邊先把工作台這側做好。）②<b>同類對標加「★ 系統建議」</b>：你說同職稱/同產業點起來都一樣——現在主角選好後，對標列多一顆<b>「★ 系統建議」</b>，系統用綜合相似度（產業＋身份＋內容階段分布＋粉絲量級）自動挑出最像的前幾名、<b>由近到遠排好</b>，而且<b>每個旁邊會寫「為什麼像」</b>（例如「同產業 · 法律」「同為律師」「量級相近」），你就能很明確地挑。勾選、只看勾選、帶去版面對照都跟之前一樣。③<b>中文單字搜尋再修穩</b>：上一版（v212）對你的注音輸入法還是沒抓到——組字中框裡是注音符號、選字送出那下系統沒接到，所以打「理」還是不動。這版多接了一個鍵盤事件（放開選字鍵時值已經是「理」），單字搜尋這次一定出得來。<b>沒動任何提示詞（六守門常數 md5 不變）。</b>下一版（v214）再做「比很多同行做產業定位的排行表」。<br>
     <b>v212（修流程②兩個 bug）：</b>①<b>貼卡B 影片現在會掛上帳號了</b>：之前貼完卡B，⑥連結到帳號只剩「不指定」、職稱/產業空白、存檔說「未連結帳號」——因為雲端帳號載入後，那個下拉沒有被重新灌入帳號清單，所以系統想幫你選 @kl.legal 卻找不到選項、就退回空的。現在帳號一載好就會補灌，貼卡B 也會在連結前先確保選項在，<b>影片會正確掛到 @kl.legal、職稱/產業一起帶出來</b>。②<b>搜尋單字「理」修好</b>：上一版我加的中文輸入法處理反而讓單字要打到「理鴻」才出現，這版改回「邊打邊篩」，打「理」就找得到。<b>沒動任何提示詞（六守門常數 md5 不變）。</b>你回報的另外兩件（同類對標想要更多維度＋系統建議原因、版面對照想比更多同行）是新功能，下面我再跟你談怎麼做。<br>
     <b>v211（同產業/同職稱找到的對標變成可勾選）：</b>你之前要的：在影片庫上方選好主角、按「＋同職稱／＋同產業／＋同身份」找到的那幾個對標，現在<b>每一個前面都有勾選框（預設全勾）</b>，可以「全選／全不選」。勾好之後有兩顆鈕，兩個都給你：①<b>「只看勾選的影片」</b>＝這個影片庫就只留你勾的那幾個人的影片；②<b>「帶去版面對照比較」</b>＝直接跳到版面對照、把主角＋你勾的（最多 3 個，連主角共 4 個）並排比 Bio／置頂／視覺風格，不用再自己重打一次。順手修了一個小地方：用 @handle 掛上的影片，現在「只看主角」也算得到、不會被漏掉。<b>沒動任何提示詞（六守門常數 md5 不變）。</b><br>
     <b>v210（修截圖回報的搜尋／影片認帳號／來源客戶＋加重設鈕）：</b>①<b>影片會自己認出帳號了</b>：以前影片明明有 @kl.legal、帳號也建過，卻顯示「此帳號尚未建檔」、也不給帳號分析工具——因為它只認內部 id、沒去比對 @帳號。現在 id 認不到就用 @handle 比對既有帳號，<b>舊影片不用手動回補就會自動連動</b>，帳號分析工具（特點→賣點／帳號體檢／客戶診斷／成功庫對標）會自己冒出來。②<b>帳號影片數算對了</b>：帳號管理「拆解過 N 支」會把用 @handle 對得上的影片一起算進去（@kl.legal 之前顯示 1 支、其實 2 支）。③<b>搜尋修好</b>：主角下拉打單一個中文字（例「理」）現在就找得到、不用打到「理鴻」才出現（中文輸入法問題）；搜「法律」也會比對到產業／領域／職稱，不再跳出不相關的人（以前只比對畫面看得到的字）。④<b>來源那兩顆「客戶」不再打架</b>：一顆是系統的、一顆是某支影片來源欄被填成「客戶」。現在系統那顆改叫「★ 我的客戶」、且只認你在帳號卡標過星的客戶；字面「客戶」殘留值不再單獨冒一顆。⑤<b>新增「↻ 重設篩選」鈕</b>（影片庫上方主角區）：一鍵把主角／對標／進階篩選／搜尋框清回預設，跟右上角「重新整理」（重抓雲端）分開。<b>沒動任何提示詞（六守門常數 md5 不變）。</b>下一版 v211 做你要的：同產業找到的 5 個對標變可勾選，勾完可帶去版面對照比較、或只看勾選那幾個。<br>
@@ -4315,6 +4323,60 @@ function renderAll(){
   /* v212：順手補刷輸入頁⑥連結到帳號下拉（f-account），避免雲端 async 載入後它只剩 placeholder */
   if(typeof populateAccountSelect==='function') populateAccountSelect();
 }
+/* ═══════════ v215：輸入表單「待補清單＋逐欄補完提示詞」 ═══════════ */
+var _INPUT_TODO_FIELDS=[
+  {id:'f-title',label:'影片名稱（必填）',manual:true,hint:'必填，請自己填'},
+  {id:'f-account',label:'連結到帳號',manual:true,hint:'可在⑥下拉手動選'},
+  {id:'f-theme',label:'主題'},
+  {id:'f-stage',label:'階段'},
+  {id:'f-mat',label:'拍攝素材（第5層）'},
+  {id:'f-sub',label:'子題型（第5層）'},
+  {id:'f-trig',label:'流量觸發'},
+  {id:'f-form',label:'內容形式'},
+  {id:'f-goal',label:'合作目標層'}
+];
+function renderInputTodo(){
+  var box=document.getElementById('inputTodo'); if(!box) return;
+  var anyFilled=_INPUT_TODO_FIELDS.some(function(f){ var el=document.getElementById(f.id); return el && el.value && el.value!==''; });
+  var pasted=(document.getElementById('pasteBox')||{}).value||'';
+  if(!anyFilled && !pasted.trim()){ box.style.display='none'; box.innerHTML=''; return; } /* 全空的新表單先不顯示 */
+  var gaps=_INPUT_TODO_FIELDS.filter(function(f){ var el=document.getElementById(f.id); return el && (!el.value || el.value===''); });
+  if(!gaps.length){
+    box.style.display='block';
+    box.innerHTML='<div style="border:1px solid var(--gold-soft);background:#F0F5EC;border-radius:9px;padding:9px 12px;margin-bottom:10px;font-size:12.5px;color:#2F6B4F;font-weight:600">✓ 這張卡的關鍵欄位都填好了</div>';
+    return;
+  }
+  var rows=gaps.map(function(f){
+    var right=f.manual
+      ? '<span style="font-size:11px;color:var(--sub);flex:none">'+esc(f.hint||'手動填')+'</span>'
+      : '<button type="button" onclick="_todoCopy(\''+f.id+'\')" style="flex:none;font-size:11.5px;font-weight:700;padding:4px 10px;border:1px solid var(--gold-dark);background:#fff;color:var(--gold-dark);border-radius:6px;cursor:pointer;font-family:inherit">複製補完提示詞</button>';
+    return '<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:6px 0;border-top:1px solid var(--gold-soft);font-size:12.5px"><span>'+esc(f.label)+'</span>'+right+'</div>';
+  }).join('');
+  box.style.display='block';
+  box.innerHTML='<div style="border:1px solid var(--gold-dark);background:var(--warm);border-radius:9px;padding:10px 12px;margin-bottom:10px">'
+    +'<div style="font-weight:700;color:var(--gold-dark);font-size:13px">待補清單 · 這張卡還有 '+gaps.length+' 欄沒填到</div>'
+    +'<div style="font-size:10.5px;color:var(--sub);margin:2px 0 4px">不想填的可忽略，這只是提醒、不擋你存檔；需要的話按右邊複製提示詞、貼去問 AI（它判不出會回「無法判斷」）。</div>'
+    +rows+'</div>';
+}
+window.renderInputTodo=renderInputTodo;
+window._todoCopy=function(selId){
+  var f=_INPUT_TODO_FIELDS.find(function(x){return x.id===selId;}); if(!f) return;
+  var sel=document.getElementById(selId);
+  var opts=sel?[].slice.call(sel.options).map(function(o){return (o.textContent||'').trim();}).filter(function(t){return t && t.indexOf('\u2014')<0;}):[];
+  var title=(document.getElementById('f-title')||{}).value||'';
+  var th=document.getElementById('f-theme'); var themeT=(th&&th.selectedIndex>=0)?(th.options[th.selectedIndex].textContent||'').trim():'';
+  var st=document.getElementById('f-stage'); var stageT=(st&&st.selectedIndex>=0)?(st.options[st.selectedIndex].textContent||'').trim():'';
+  var tr=(document.getElementById('contentTranscript')||{}).value||'';
+  var lbl=f.label.replace('（必填）','').replace('（第5層）','');
+  var p='請依 ATELIER 短影音內容診斷架構，判斷這支影片的「'+lbl+'」要填哪一個。\n\n';
+  p+='影片標題：'+(title||'（未填）')+'\n';
+  p+='主題：'+(themeT||'（未選）')+'　階段：'+(stageT||'（未選）')+'\n';
+  p+='逐字稿／重點：'+(tr?tr.slice(0,1500):'（未提供，請依標題與主題推斷；不足以判斷就回「無法判斷」）')+'\n\n';
+  if(opts.length){ p+='只能從下列選項挑「最貼合這支影片實際做法」的 1 個（不可自編、不要選相鄰的）：\n'+opts.map(function(o){return '• '+o;}).join('\n')+'\n\n'; }
+  p+='請輸出：①你選的那一個（照原文）②一句話說為什麼是它、為什麼不是相鄰那個。若資訊不足以判斷，直接回「無法判斷」、不要硬猜。只回答這一個欄位。';
+  if(typeof copyPrompt==='function') copyPrompt(p,'補完「'+lbl+'」提示詞');
+  else if(typeof copyVal==='function'){ copyVal(p); if(typeof toast==='function') toast('已複製補完提示詞'); }
+};
 
 /* ═══════════ v45 帳號管理模組（CREATOR ACCOUNT MATRIX）═══════════
    資料模型 account = {
@@ -6917,6 +6979,8 @@ function bindAccountUI(){
   };
   // v72：影片頁「職稱/產業」↔ 所選帳號 雙向綁定
   if($('f-account')) $('f-account').addEventListener('change',syncAccountJobFields);
+  /* v215：關鍵分類欄位變動即時刷新待補清單 */
+  ['f-title','f-account','f-theme','f-stage','f-mat','f-sub','f-trig','f-form','f-goal'].forEach(function(id){ var el=document.getElementById(id); if(el){ el.addEventListener('change',function(){ if(typeof renderInputTodo==='function') renderInputTodo(); }); if(el.tagName==='INPUT') el.addEventListener('input',function(){ if(typeof renderInputTodo==='function') renderInputTodo(); }); } });
   ['f-jobTitle','f-industry'].forEach(id=>{ const el=$(id); if(el) el.addEventListener('change',writeAccountJobFields); });
   ['accSearch','accFilterType','accFilterTier','accFilterJob','accFilterInd','accSort'].forEach(id=>{ const el=$(id); if(el) el.addEventListener(el.tagName==='INPUT'?'input':'change', renderAccounts); });
   if($('accClr')) $('accClr').onclick=()=>{ $('accSearch').value=''; renderAccounts(); };
@@ -9150,7 +9214,15 @@ document.addEventListener('DOMContentLoaded',function(){
         }
         h+='</div>';
         panel.innerHTML=h;
-        if(withSearch){ var si=panel.querySelector('.csel-search'); if(si){ si.addEventListener('mousedown',function(e){e.stopPropagation();}); si.addEventListener('click',function(e){e.stopPropagation();}); si.addEventListener('touchstart',function(e){e.stopPropagation();}); var _cselFilter=function(){ var qq=si.value.trim().toLowerCase(); var opts=panel.querySelectorAll('.csel-opt'); for(var j=0;j<opts.length;j++){ var hay=(opts[j].getAttribute('data-s')||opts[j].textContent||'').toLowerCase(); opts[j].style.display=(!qq||hay.indexOf(qq)>=0)?'':'none'; } }; /* v212→v213：單選下拉過濾只是切 display(很便宜)，不需中文輸入法守衛；除 input／compositionend 外再加 keyup（注音選字送出那下值已是中文、input 在某些瀏覽器不可靠）＋compositionend 後延遲再跑一次，徹底修「打單字『理』不出現、要打完整詞」 */ si.addEventListener('input',_cselFilter); si.addEventListener('keyup',_cselFilter); si.addEventListener('compositionend',function(){ _cselFilter(); setTimeout(_cselFilter,0); }); } }
+        if(withSearch){ var si=panel.querySelector('.csel-search'); if(si){ si.addEventListener('mousedown',function(e){e.stopPropagation();}); si.addEventListener('click',function(e){e.stopPropagation();}); si.addEventListener('touchstart',function(e){e.stopPropagation();}); var _cselFilter=function(){ var qq=si.value.trim().toLowerCase(); var opts=panel.querySelectorAll('.csel-opt'); for(var j=0;j<opts.length;j++){ var hay=(opts[j].getAttribute('data-s')||opts[j].textContent||'').toLowerCase(); opts[j].style.display=(!qq||hay.indexOf(qq)>=0)?'':'none'; } }; /* v214：注音組字中 si.value 是注音符號(ㄌㄧˇ)，拿去比對會把清單濾成空白(v213 keyup 的後遺症)。改：組字中且尚未出現中文字→先不濾(維持現狀)；一旦出現中文字(行內候選)或選字送出 compositionend→才濾。非組字(Latin/貼上/退格)即時濾。徹底修「打『理』濾成空白／要打完整詞」 */
+        var _cselComp=false;
+        var _cselHasHan=function(t){ return /[\u3400-\u9fff\uf900-\ufaff]/.test(t||''); };
+        var _cselMaybe=function(){ if(_cselComp && !_cselHasHan(si.value)) return; _cselFilter(); };
+        si.addEventListener('compositionstart',function(){ _cselComp=true; });
+        si.addEventListener('compositionend',function(){ _cselComp=false; _cselFilter(); });
+        si.addEventListener('input',_cselMaybe);
+        si.addEventListener('keyup',_cselMaybe);
+        } }
         if(accpick){ applyAccSort(); panel.querySelectorAll('.mp-sort-b').forEach(function(b){ b.addEventListener('mousedown',function(e){e.stopPropagation();}); b.addEventListener('touchstart',function(e){e.stopPropagation();}); b.addEventListener('click',function(e){ e.preventDefault(); e.stopPropagation(); _accSort=b.getAttribute('data-sort'); panel.querySelectorAll('.mp-sort-b').forEach(function(x){ x.classList.toggle('on', x.getAttribute('data-sort')===_accSort); }); applyAccSort(); }); }); }
       }
       function outside(e){ if(!wrap.contains(e.target)) close(); }
