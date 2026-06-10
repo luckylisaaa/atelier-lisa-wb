@@ -430,14 +430,14 @@ details.cat .cat-body{padding:14px 15px}
 /* 健康評分雷達圖 */
 .health-radar-wrap{background:#FFFCFB;border:1px solid #E8E3DA;border-radius:14px;padding:18px;margin:14px 0;display:flex;justify-content:center}
 .health-radar-svg{max-width:380px;width:100%;height:auto}
-/* cs-v3.1 批次① · D onboarding 提示 + E 工作台跳轉鈕 */
+/* cs-v3.2 批次① · D onboarding 提示 + E 工作台跳轉鈕 */
 .ob-next{display:inline-flex;align-items:center;gap:5px;margin-left:8px;padding:4px 11px;border-radius:99px;background:#FAE8EA;color:#A51820;font-size:12px;font-weight:600;cursor:pointer;border:1px solid #F0D2D6;transition:all .15s ease}
 .ob-next:hover{background:#A51820;color:#fff;border-color:#A51820}
 .ob-next.done{background:#EEF3EF;color:#4A6552;border-color:#DBE6DD}
 .ob-next.done:hover{background:#4A6552;color:#fff;border-color:#4A6552}
 .vc-jump{display:inline-flex;align-items:center;gap:4px;margin-left:8px;padding:3px 9px;border-radius:8px;background:#F4F1EC;color:#8A7274;font-size:11.5px;font-weight:600;text-decoration:none;border:1px solid #E8E3DA;transition:all .15s ease}
 .vc-jump:hover{background:#A51820;color:#fff;border-color:#A51820}
-/* cs-v3.1 批次② · 經營儀表板 + 選客戶頁總覽縮圖 */
+/* cs-v3.2 批次② · 經營儀表板 + 選客戶頁總覽縮圖 */
 .cli-summary{display:flex;align-items:center;gap:20px;flex-wrap:wrap;background:#fff;border:1px solid #E8E3DA;border-radius:14px;padding:16px 22px;margin-bottom:18px;box-shadow:0 2px 10px rgba(42,26,28,.04)}
 .clis-item{text-align:center;min-width:64px}
 .clis-num{font-family:"Cormorant Garamond","Noto Serif TC",serif;font-size:30px;font-weight:700;color:#A51820;line-height:1}
@@ -499,11 +499,24 @@ details.cat .cat-body{padding:14px 15px}
 .dc-trend{font-size:11px;font-weight:700;white-space:nowrap}
 .dc-trend.up{color:#4A6552}.dc-trend.down{color:#A51820}
 @media(max-width:820px){.dash-kpis{grid-template-columns:repeat(2,1fr)}.dash-grid{grid-template-columns:1fr}}
-/* cs-v3.1 批次③ · ①②③④ 引導句 + 單項研究鈕 */
+/* cs-v3.2 批次③ · ①②③④ 引導句 + 單項研究鈕 */
 .s1guide{margin:-10px 0 20px;padding:11px 16px;background:#FAF3F4;border-left:3px solid #A51820;border-radius:0 9px 9px 0;font-size:13px;color:#5C4248;line-height:1.65;font-family:'Noto Sans TC',sans-serif}
 .hr-study{display:inline-flex;align-items:center;gap:3px;margin-left:6px;padding:2px 9px;border-radius:99px;background:#FAF3F4;border:1px solid #E8D7D9;color:#A51820;font-size:11px;cursor:pointer;font-family:inherit;vertical-align:middle}
 .hr-study:hover{background:#A51820;color:#fff;border-color:#A51820}
 .hr-study .ic{width:11px;height:11px}
+/* cs-v3.2 · A 影片表現對標 */
+.vbm-card .vbm-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:14px 0 4px}
+.vbm-kpi{background:#FAF6F0;border:1px solid #EEE7DC;border-radius:10px;padding:12px 8px;text-align:center}
+.vbm-kpi b{display:block;font-family:'Cormorant Garamond',serif;font-size:23px;color:#A51820;line-height:1.1;font-weight:600}
+.vbm-kpi span{font-size:11px;color:#8A7274}
+.vbm-rank{background:#FAF3F4;border-left:3px solid #A51820;border-radius:0 8px 8px 0;padding:11px 14px;font-size:13px;color:#5C4248;line-height:1.75;margin:10px 0}
+.vbm-rank b{color:#A51820}
+.vbm-ref{margin-top:12px}
+.vbm-ref-h{font-size:12.5px;font-weight:700;color:#2A1A1C;margin-bottom:4px;display:flex;align-items:center;gap:5px}
+.vbm-ref-item{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px solid #F2EDE5;font-size:12.5px;line-height:1.5}
+.vbm-ref-item .t{color:#2A1A1C}
+.vbm-ref-item .m{color:#A51820;font-weight:600;text-align:right;white-space:nowrap}
+@media(max-width:560px){.vbm-card .vbm-kpis{grid-template-columns:repeat(2,1fr)}}
 </style>
 </head>
 <body>
@@ -540,7 +553,7 @@ details.cat .cat-body{padding:14px 15px}
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">客戶服務台</span></span>
-    <span id="verBadge">cs-v3.1</span>
+    <span id="verBadge">cs-v3.2</span>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button type="button" id="popoutBtn" class="popout-btn" title="把客戶服務台開成獨立小視窗"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6"/><path d="M20 4l-9 9"/><path d="M14 12v7H5V10h7"/></svg>小視窗</button>
@@ -646,7 +659,7 @@ var ICN={
   dot:    '<svg class="ic" width="8" height="8" viewBox="0 0 8 8"><circle cx="4" cy="4" r="3" fill="currentColor"/></svg>',
   save:    _svg('<path d="M5 4h11l4 4v12H5z"/><path d="M8 4v5h8V4"/><circle cx="12" cy="14" r="2.2"/>',13,13)
 };
-/* === cs-v3.1 批次①：自繪 icon 擴充（取代 emoji；width=1em 跟著字級縮放）=== */
+/* === cs-v3.2 批次①：自繪 icon 擴充（取代 emoji；width=1em 跟著字級縮放）=== */
 function _svgi(d){ return '<svg class="ic" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">'+d+'</svg>'; }
 ICN.star=_svgi('<path d="M12 3l2.47 5.46 5.96.62-4.43 4.02 1.24 5.86L12 16.9 6.76 19.96 8 14.1 3.57 10.08l5.96-.62z"/>');
 ICN.pin=_svgi('<path d="M12 21s6.5-5.2 6.5-10A6.5 6.5 0 1 0 5.5 11c0 4.8 6.5 10 6.5 10z"/><circle cx="12" cy="10.5" r="2.3"/>');
@@ -1069,7 +1082,7 @@ function renderBanner(flash){
     +'<button class="mini-btn" data-short="階段" onclick="openStageOverview()" title="只查看目前這個階段的資料">查看此階段</button>'
     +'<button class="mini-btn" data-short="上一步" onclick="undoLast()"'+(canUndo?'':' disabled')+' title="把目前畫面回退到上一個自動暫存點">'+ICN.undo+' 上一步'+(canUndo?(' ('+(_undoStack.length-1)+')'):'')+'</button>'
     +'<span class="savestate'+(flash?' flash':'')+'" id="ssBadge" title="'+esc(sstxt)+'">'+(flash?ICN.check:'<span class="save-dot"></span>')+' <span class="save-text">'+esc(sstxt)+'</span></span>';
-  /* cs-v3.1 批次① · D：onboarding 下一步提示 */
+  /* cs-v3.2 批次① · D：onboarding 下一步提示 */
   try{
     var _steps=[['stage1_initial','①','初診'],['stage2_filing','②','建檔'],['stage3_interview','③','問診']];
     var _next=_steps.filter(function(st){ return flowStatus(a,st[0])!=='done'; })[0];
@@ -1163,7 +1176,7 @@ function pickClient(id){
 }
 
 
-/* ═══════════ cs-v3.1 批次②：B 經營儀表板 + G 跨客戶洞察 ═══════════ */
+/* ═══════════ cs-v3.2 批次②：B 經營儀表板 + G 跨客戶洞察 ═══════════ */
 var DASH_FLOW=[['stage1_initial','初診'],['stage2_filing','建檔'],['stage3_interview','問診'],['stage4_diagnosis','診斷'],['stage5_inventory','盤點'],['stage6_planning','企劃'],['stage7_delivery','交付']];
 function _clientProgress(a){
   var done=0,curIdx=-1;
@@ -2101,7 +2114,7 @@ function saveHealth(){
   closeModal(); renderBanner(); renderSelect();
 }
 
-/* ═══════════ cs-v3.1 批次③：健康評分 解決建議 / 單項研究 / 存檔選單 / 匯出 ═══════════ */
+/* ═══════════ cs-v3.2 批次③：健康評分 解決建議 / 單項研究 / 存檔選單 / 匯出 ═══════════ */
 function _readHealthItemsDOM(){
   var sh=$('sheet'); if(!sh) return [];
   return HEALTH_ITEMS.map(function(it){
@@ -2160,7 +2173,7 @@ function saveHealthOverwrite(){
 }
 function _buildHealthDoc(a,items){
   var total=items.reduce(function(s,x){return s+(x.score||0);},0); var d=new Date().toISOString().slice(0,10);
-  return '<!DOCTYPE html><html lang="zh-Hant"><head><meta charset="UTF-8"><title>ATELIER 健康評分表</title><style>body{background:#FDFBF8;color:#2A1A1C;font-family:"Noto Sans TC",sans-serif;padding:48px}h1{font-family:"Noto Serif TC",serif;font-size:34px}.k{font-family:"Cormorant Garamond",serif;color:#D4A574;letter-spacing:4px}.total{font-family:"Cormorant Garamond",serif;font-size:54px;color:#A51820}.row{display:grid;grid-template-columns:200px 1fr 40px;gap:14px;align-items:center;margin:14px 0}.bar{height:10px;background:#F4F1EC;border-radius:99px}.bar i{display:block;height:100%;background:#A51820;border-radius:99px}.note{color:#8A7274;font-size:13px;line-height:1.7;margin:6px 0 18px 0}</style></head><body><div class="k">ATELIER · CONTENT HEALTH</div><h1>'+esc(a.displayName||a.handle||'客戶')+'｜內容健康評分表</h1><div class="total">'+total+'<span style="font-size:18px;color:#8A7274"> / 50</span></div>'+items.map(function(it){return '<div class="row"><b>'+it.id+'. '+esc(it.label)+'</b><span class="bar"><i style="width:'+((it.score||0)/5*100)+'%"></i></span><b>'+(it.score||'—')+'</b></div>'+((it.noteClient||it.noteAdvisor)?'<div class="note">'+(it.noteClient?'客戶版：'+esc(it.noteClient):'')+(it.noteClient&&it.noteAdvisor?'<br>':'')+(it.noteAdvisor?'顧問版：'+esc(it.noteAdvisor):'')+'</div>':'');}).join('')+'<div style="margin-top:40px;color:#C4B5B8">cs-v3.1 · '+d+'</div></body></html>';
+  return '<!DOCTYPE html><html lang="zh-Hant"><head><meta charset="UTF-8"><title>ATELIER 健康評分表</title><style>body{background:#FDFBF8;color:#2A1A1C;font-family:"Noto Sans TC",sans-serif;padding:48px}h1{font-family:"Noto Serif TC",serif;font-size:34px}.k{font-family:"Cormorant Garamond",serif;color:#D4A574;letter-spacing:4px}.total{font-family:"Cormorant Garamond",serif;font-size:54px;color:#A51820}.row{display:grid;grid-template-columns:200px 1fr 40px;gap:14px;align-items:center;margin:14px 0}.bar{height:10px;background:#F4F1EC;border-radius:99px}.bar i{display:block;height:100%;background:#A51820;border-radius:99px}.note{color:#8A7274;font-size:13px;line-height:1.7;margin:6px 0 18px 0}</style></head><body><div class="k">ATELIER · CONTENT HEALTH</div><h1>'+esc(a.displayName||a.handle||'客戶')+'｜內容健康評分表</h1><div class="total">'+total+'<span style="font-size:18px;color:#8A7274"> / 50</span></div>'+items.map(function(it){return '<div class="row"><b>'+it.id+'. '+esc(it.label)+'</b><span class="bar"><i style="width:'+((it.score||0)/5*100)+'%"></i></span><b>'+(it.score||'—')+'</b></div>'+((it.noteClient||it.noteAdvisor)?'<div class="note">'+(it.noteClient?'客戶版：'+esc(it.noteClient):'')+(it.noteClient&&it.noteAdvisor?'<br>':'')+(it.noteAdvisor?'顧問版：'+esc(it.noteAdvisor):'')+'</div>':'');}).join('')+'<div style="margin-top:40px;color:#C4B5B8">cs-v3.2 · '+d+'</div></body></html>';
 }
 function exportHealthPDF(){
   var a=curAcc(); if(!a){ toast(ICN.warn+' 尚未選定客戶'); return; }
@@ -2358,6 +2371,90 @@ function renderRelatedVideosHTML(a){
 
 function formatNum(n){ n=Number(n)||0; if(n>=10000) return (n/10000).toFixed(1).replace(/\.0$/,'')+'萬'; if(n>=1000) return (n/1000).toFixed(1).replace(/\.0$/,'')+'k'; return String(n); }
 function injectRelatedVideosSection(view){ var a=curAcc(); if(!a||!view) return; if(['view-stage1','view-stage3','view-stage4','view-stage5','view-stage6'].indexOf(view.id)<0) return; if(view.querySelector('[data-related-videos]')) return; var html=renderRelatedVideosHTML(a); if(!html) return; view.insertAdjacentHTML('beforeend',html); enhanceSections(view); }
+
+/* ═══════════ cs-v3.2 · 方向 A：影片表現對標分析 ═══════════ */
+function _videoViews(v){ return Math.max(0, Number((v&&(v.views||v.viewCount||v.view||v.plays||v.play))||0)||0); }
+function _videoEng(v){ var vw=_videoViews(v); if(vw<=0) return 0; var e=(Number((v&&v.likes)||0)||0)+(Number((v&&v.comments)||0)||0)+(Number((v&&v.shares)||0)||0); return e/vw; }
+function _videoOwnerAcc(v){
+  if(!v||!Array.isArray(accounts)) return null;
+  for(var i=0;i<accounts.length;i++){ var x=accounts[i]; var ids=[x.id,x.handle,x.displayName].filter(Boolean);
+    if(ids.indexOf(v.accountId)>=0||ids.indexOf(v.owner)>=0||ids.indexOf(v.clientId)>=0||ids.indexOf(v.accountHandle)>=0||ids.indexOf(v.handle)>=0) return x; }
+  return null;
+}
+function buildVideoBenchmarkHTML(a){
+  if(!a) return '';
+  var mine=accountVideos(a).filter(function(v){ return _videoViews(v)>0; });
+  // 每個帳號的平均觀看
+  var byAcc={};
+  (Array.isArray(videos)?videos:[]).forEach(function(v){
+    var vw=_videoViews(v); if(vw<=0) return;
+    var acc=_videoOwnerAcc(v); var key=acc?acc.id:('x_'+(v.accountId||v.owner||v.accountHandle||v.handle||'?'));
+    if(!byAcc[key]) byAcc[key]={sum:0,n:0,name:acc?(acc.displayName||acc.handle):(v.accountHandle||v.handle||'?'),industry:acc?(acc.industry||''):''};
+    byAcc[key].sum+=vw; byAcc[key].n++;
+  });
+  var rows=Object.keys(byAcc).map(function(k){ var o=byAcc[k]; return {id:k,name:o.name,industry:o.industry,avg:o.sum/o.n,n:o.n}; });
+  if(!mine.length || rows.length<2){
+    var msg = !mine.length
+      ? '這位客戶還沒有影片數據——先到影片診斷工作台幫他建檔影片，這裡會自動把他跟你整個客戶池對標、算出排名。'
+      : '目前客戶池裡有影片數據的帳號還太少（至少要 2 個），多累積幾個再看排名比較準。';
+    return '<div class="section-card vbm-card" data-video-benchmark="1"><h3>'+ICN.barChart+' 影片表現對標</h3><div class="sc-note">'+msg+'</div></div>';
+  }
+  var myAvg=mine.reduce(function(t,v){return t+_videoViews(v);},0)/mine.length;
+  var myBest=mine.reduce(function(m,v){return Math.max(m,_videoViews(v));},0);
+  var myEng=mine.reduce(function(t,v){return t+_videoEng(v);},0)/mine.length;
+  var myId=a.id;
+  var sorted=rows.slice().sort(function(x,y){return y.avg-x.avg;});
+  var rank=-1; for(var i=0;i<sorted.length;i++){ if(sorted[i].id===myId){rank=i;break;} }
+  if(rank<0){ sorted.push({id:myId,name:(a.displayName||a.handle),industry:(a.industry||''),avg:myAvg,n:mine.length}); sorted.sort(function(x,y){return y.avg-x.avg;}); for(var j=0;j<sorted.length;j++){ if(sorted[j].id===myId){rank=j;break;} } }
+  var rankNum=rank+1, total=sorted.length;
+  var pct=Math.max(1,Math.round(rankNum/total*100));
+  var poolAvg=rows.reduce(function(t,r){return t+r.avg;},0)/rows.length;
+  var diff=poolAvg>0?Math.round((myAvg-poolAvg)/poolAvg*100):0;
+  var diffTxt=diff>=0?('高於池平均 '+diff+'%'):('低於池平均 '+Math.abs(diff)+'%');
+  // 同產業
+  var ind=(a.industry||'').trim();
+  var indRows=ind?sorted.filter(function(r){return (r.industry||'').trim()===ind;}):[];
+  var indHTML='';
+  if(ind && indRows.length>=2){
+    var indAvg=indRows.reduce(function(t,r){return t+r.avg;},0)/indRows.length;
+    var indRank=-1; for(var m=0;m<indRows.length;m++){ if(indRows[m].id===myId){indRank=m;break;} }
+    var indDiff=indAvg>0?Math.round((myAvg-indAvg)/indAvg*100):0;
+    indHTML='<div class="vbm-rank">同產業（'+esc(ind)+'）有影片的客戶共 <b>'+indRows.length+'</b> 位，平均觀看 <b>'+formatNum(Math.round(indAvg))+'</b>。這位客戶在同業排第 <b>'+(indRank+1)+'</b>，'+(indDiff>=0?'高於':'低於')+'同業平均 <b>'+Math.abs(indDiff)+'%</b>。</div>';
+  } else if(ind){
+    indHTML='<div class="sc-note" style="margin-top:6px">同產業（'+esc(ind)+'）目前還沒有第二位有影片的客戶可比，先看全池排名。</div>';
+  }
+  // 參考影片：同產業優先（排除自己），不足補全池
+  var refPool=(Array.isArray(videos)?videos:[]).filter(function(v){return _videoViews(v)>0;}).map(function(v){ var acc=_videoOwnerAcc(v); return {v:v,acc:acc,ind:acc?(acc.industry||''):'',vw:_videoViews(v)}; });
+  var notMine=function(r){ return !r.acc || r.acc.id!==myId; };
+  var refSame=ind?refPool.filter(function(r){return (r.ind||'').trim()===ind && notMine(r);}):[];
+  var refUse=(refSame.length>=3?refSame:refPool.filter(notMine)).slice().sort(function(x,y){return y.vw-x.vw;}).slice(0,3);
+  var refHTML='';
+  if(refUse.length){
+    refHTML='<div class="vbm-ref"><div class="vbm-ref-h">'+ICN.star+' 可參考的高表現影片（'+(refSame.length>=3?'同產業':'全客戶池')+'）</div>'
+      +refUse.map(function(r){ var own=r.acc?(r.acc.handle||r.acc.displayName):((r.v.accountHandle||r.v.handle)||''); var eng=_videoEng(r.v);
+        return '<div class="vbm-ref-item"><span class="t">'+esc(videoTitle(r.v))+'<br><span style="color:#8A7274;font-size:11px">'+esc(own||'—')+(r.v.viralReason?' · '+esc(String(r.v.viralReason).slice(0,18)):'')+'</span></span><span class="m">'+formatNum(r.vw)+' 次'+(eng>0?'<br>互動 '+(eng*100).toFixed(1)+'%':'')+'</span></div>'; }).join('')
+      +'</div>';
+  }
+  return '<div class="section-card vbm-card" data-video-benchmark="1">'
+    +'<h3>'+ICN.barChart+' 影片表現對標</h3>'
+    +'<div class="sc-note">把這位客戶的影片，跟你整個客戶池（'+rows.length+' 個有影片的帳號）一起比，看他現在站在哪。</div>'
+    +'<div class="vbm-kpis">'
+    +'<div class="vbm-kpi"><b>'+mine.length+'</b><span>影片數</span></div>'
+    +'<div class="vbm-kpi"><b>'+formatNum(Math.round(myAvg))+'</b><span>平均觀看</span></div>'
+    +'<div class="vbm-kpi"><b>'+formatNum(myBest)+'</b><span>最高觀看</span></div>'
+    +'<div class="vbm-kpi"><b>'+(myEng*100).toFixed(1)+'%</b><span>平均互動率</span></div>'
+    +'</div>'
+    +'<div class="vbm-rank">在你 <b>'+total+'</b> 個有影片的客戶裡，平均觀看排第 <b>'+rankNum+'</b>（前 <b>'+pct+'%</b>），'+diffTxt+'。</div>'
+    +indHTML+refHTML+'</div>';
+}
+function injectVideoBenchmarkSection(view){
+  var a=(typeof curAcc==='function')?curAcc():null; if(!a||!view) return;
+  if(view.id!=='view-stage4') return;
+  if(view.querySelector('[data-video-benchmark]')) return;
+  var html=buildVideoBenchmarkHTML(a); if(!html) return;
+  view.insertAdjacentHTML('beforeend',html);
+}
+
 function quickVideoHealth(videoId){ window._healthPref={type:'video',relatedVideoId:videoId}; openHealthEditor(window._healthPref); }
 function openSimilarClients(){ var a=curAcc(); if(!a){toast(ICN.warn+' 尚未選定客戶');return;} var arr=findSimilarClients(a); var sh=$('sheet'),md=$('modal'); if(!sh||!md)return; var html=arr.length?arr.map(function(x){ var acc=x.account, hs=healthTotal(acc); return '<div class="similar-card"><div style="display:flex;justify-content:space-between;gap:12px"><div><b>'+esc(acc.handle||'')+' '+esc(acc.displayName||'')+'</b><div style="font-size:12px;color:#8A7274">'+esc(acc.industry||'')+' · '+esc(acc.jobTitle||'')+'</div></div><div class="similar-score">'+x.score+'</div></div><div style="font-size:12px;color:#8A7274;margin-top:8px">最新健康：'+(hs.has?hs.total+'/50':'未評分')+'｜主要服務方向：'+esc(profileText(acc,'mainService')||profileText(acc,'service')||'—')+'</div><button class="mini-link-btn" style="margin-top:10px" onclick="closeModal();pickClient(\''+acc.id+'\')">點開查看</button></div>'; }).join(''):'<div class="preview-field"><div class="pk">EMPTY</div><div class="pl">目前找不到相似案例</div></div>';
   sh.innerHTML='<div class="preview-wrap"><div class="preview-actions"><button class="preview-modal-btn" onclick="closeModal()">關閉</button></div><div class="preview-paper"><div class="preview-kicker">ATELIER · BENCHMARK</div><h2>同類對標 · '+esc(a.displayName||a.handle||'客戶')+'</h2><div class="preview-gold-line"></div><div class="preview-sub">依產業、平台與受眾關鍵字做簡單規則配對。</div>'+html+'</div></div>'; md.classList.add('show'); md.onclick=function(e){if(e.target===md)closeModal();}; }
@@ -2433,7 +2530,7 @@ window.injectClientProgressBar=function(view){
   else { view.insertAdjacentHTML('afterbegin', pb); }
 };
 
-function enhanceCurrentView(){ var v=document.querySelector('.view.on'); if(v){ if(typeof injectClientProgressBar==='function') injectClientProgressBar(v); injectRelatedVideosSection(v); enhanceSections(v); if(v.id==='view-stage1') groupStage1(); } }
+function enhanceCurrentView(){ var v=document.querySelector('.view.on'); if(v){ if(typeof injectClientProgressBar==='function') injectClientProgressBar(v); injectVideoBenchmarkSection(v); injectRelatedVideosSection(v); enhanceSections(v); if(v.id==='view-stage1') groupStage1(); } }
 setInterval(enhanceCurrentView,900);
 
 /* ═══════════════ 分頁切換 ═══════════════ */
