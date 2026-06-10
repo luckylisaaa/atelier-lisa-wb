@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="color-scheme" content="light only">
 <meta name="supported-color-schemes" content="light">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v207 (版本號僅留註解，不顯示於畫面)
+<!-- ATELIER 影片診斷工作台 · 內部版本 v208 (版本號僅留註解，不顯示於畫面)
+v208 更新（三個新功能，無提示詞改動）：①新增全域 backfillVideoAccounts()——掃 accountId 空的影片，線索來源 v.accountHandle→v.url(instagram.com/handle)→caption/note/hashtag 的 @handle，normAccHandle 比對 accounts，confirm 預覽後補 accountId/accountHandle、saveVideos+renderAll；對不到的列入 skipped 不動。帳號管理 acc-add-btn 下方加 onclick 觸發鈕。②新增 setAccClient(id) 切換 a.isClient；accCard 標題加「★ 我的客戶」徽章、動作列加 data-acc-client 切換鈕，綁定於 bindAccountUI。③新增 exportClientBundle(accId)——彙整帳號 profile(ACC_PROFILE_FIELDS)＋videosOfAccount 全部影片欄位成文字，copyPrompt 預覽複製；accCard 動作列加 data-acc-export 鈕。三函式插在 accCard 定義前。未動六守門常數（md5 93b202e4669ed0fddd1db2923c809e7b 不變）。版本號 4 處 v207→v208；check.js 16/16；div/details 平衡。
 v207 更新（修影片↔帳號連動＋客戶標記＋浮窗，無提示詞改動）：①parseBtn 卡B「IG帳號」分支的帳號比對由弱比對(a.handle===h)改 normAccHandle（v160 升級時漏掉這條，導致 @／大小寫／尾斜線差異配不到既有帳號→影片沒掛上）。②cardToVideo（bulkBtn 批次路徑）原本完全沒掛帳號，補上：讀 F[IG帳號]→normAccHandle 比對 accounts→寫入 accountId/accountHandle。③accCard 拆解過 0 支顯示「尚未收錄影片」。④vcard 有 accountHandle 但無對應帳號→顯示「此帳號尚未建檔（單片分析）」。⑤editVideoModal 新增 ev-client 欄位（v.client，留空＝網路自蒐／填＝我的客戶）＋存檔寫回。⑥#stickyCardSave 由 bottom:24/right:24/z9000 改 bottom:84/right:14/z10000，避開同步列(z9998)＋登出(z9999)。未動六守門常數（md5 93b202e4669ed0fddd1db2923c809e7b 不變）。版本號 4 處 v206→v207；check.js 16/16；div/details 平衡。
 v206 更新（流程② STEP5 加只出卡B 快速鈕，不動守門常數）：①新增 const ONLY_B=<前置規則字串>+PROMPT_C（串接、非重抄；前置規則寫死「流程②只加影片→整合審查全做但最後只輸出卡B、不出卡A/C、帳號層沿用既有卡C」）。②_atCopyPrompt map/labels 加 ONLY_B＝只出卡B（快速整合）。③opGuideHTML 與 opGuideHTML_v2 兩處同構 step() 的 lbl/lbl2 map（共4處）加 ONLY_B。④流程② STEP5 opts 加 copy2:ONLY_B、hint 補新鈕說明。PROMPT_C 本身未改、六守門常數 md5 仍 93b202e4669ed0fddd1db2923c809e7b（v205 值）未變。版本號 4 處 v205→v206；check.js 16/16；div/details 平衡。
 v205 更新（特別授權改 2 支守門常數，省重貼連結）：經使用者口頭特別授權，修改 PROMPT_C 與 GEM_PROMPT——PROMPT_C 在「帳號連結和影片連結一定要分別填進對應欄位」後加一條「先讀 07_連結.txt／任何含連結字樣的文字、直接填、別再要我重貼，完全沒附才寫未提供，不可沒讀就說沒收到」；GEM_PROMPT 把「影片連結：（若有提供則填，否則填 未提供）」改成「先讀 txt 連結、沒有才填未提供」。其餘四守門常數（PROMPT_A／PROMPT_0／PROMPT_0A／TONE_RULES）逐支比對未變。用 json 解碼→只加該段→重新編碼，避免手動跳脫。【守門值更新】舊 md5 7c8bc3efbfc92d316b511a13b91a49bd → 新 md5 93b202e4669ed0fddd1db2923c809e7b（下一手請改用新值）。版本號 4 處 v204→v205；check.js 16/16；div／details 平衡。
@@ -780,7 +781,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v207</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v208</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -1750,6 +1751,7 @@ if('serviceWorker' in navigator){
   </div>
   <div class="card" style="margin-bottom:14px">
     <button class="btn btn-go" id="acc-add-btn" style="width:100%"><svg viewBox="0 0 24 24" style="width:16px;height:16px;vertical-align:-3px;margin-right:6px"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg>新增帳號</button>
+    <button class="btn btn-ghost" id="acc-backfill-btn" style="width:100%;margin-top:8px;font-size:12.5px" onclick="if(typeof backfillVideoAccounts==='function')backfillVideoAccounts()"><svg viewBox="0 0 24 24" style="width:15px;height:15px;vertical-align:-3px;margin-right:6px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M3 12a9 9 0 1 0 9-9 9 9 0 0 0-6.36 2.64L3 8"/><path d="M3 3v5h5"/></svg>一鍵回補：把沒掛帳號的舊影片接回既有帳號</button>
   </div>
   <div class="searchbar">
     <input id="accSearch" placeholder="搜尋帳號（@帳號名 / 顯示名 / 領域 / 身份）" autocomplete="off">
@@ -4033,7 +4035,8 @@ function renderManual(){
   <div class="form-card" style="border-left:3px solid var(--gold)">
     <div class="stitle" style="font-size:15px;color:var(--rouge)">更新紀錄 · 還沒做的</div>
     <p style="font-size:13px;color:var(--text);line-height:1.85;margin-top:8px">
-    <b>v207（這版 · 修影片↔帳號連動＋客戶標記＋浮窗被遮）：</b>①<b>影片掛不上帳號（主修）</b>：智慧貼上卡B 時，「IG帳號」改用 normAccHandle 比對（不再因 @／大小寫／尾斜線配不到既有帳號），影片會自動掛回既有帳號；批次匯入路徑（cardToVideo）也補上帳號掛載。修好後重貼卡B 就會正確連到 @kl.legal。②<b>帳號卡影片數</b>：掛帳號修好後，帳號管理每張卡的「拆解過 N 支影片」會正確計數；0 支顯示「尚未收錄影片」。③<b>影片卡雙向提示</b>：影片有帳號就顯示帳號行＋名稱/身份/職稱/產業/粉絲；有 handle 但帳號未建檔則顯示「此帳號尚未建檔（單片分析）」。④<b>設為我的客戶</b>：影片「編輯數據」新增「客戶 / 來源」欄位，留空＝網路自蒐、填客戶名＝我的客戶，事後可改。⑤<b>QUICK SAVE 浮窗</b>：移到右下角同步列/登出鈕上方並提高層級，不再被遮。未動任何提示詞常數（md5 不變）。<br>
+    <b>v208（這版 · 舊影片一鍵回補帳號＋帳號層客戶標記＋客戶體質一鍵匯出）：</b>①<b>一鍵回補</b>：帳號管理「新增帳號」下方多一顆「一鍵回補」——掃所有沒掛帳號的舊影片，從影片連結／文案／備註裡的 @handle 用 normAccHandle 比對既有帳號，能對到的補掛上（按之前先預覽清單、可取消；對不到的跳過不動）。解決過去太快建檔、影片沒掛帳號、帳號卡影片數不準的歷史資料。②<b>帳號層「我的客戶」標記</b>：帳號卡可一鍵標「★ 我的客戶 / ☆ 設為我的客戶」（與影片層的客戶來源並行），標題顯示徽章。③<b>客戶體質一鍵匯出</b>：帳號卡「匯出這客戶全部」把該帳號＋它底下所有影片的體質（主題／素材／數據／Hook／爆紅歸因／客戶落地／目標人群／逐字稿／連結）彙整成一份可複製文字，直接拿去用（服務台 client.html 為外部檔，此為檔內彙整版）。純新增功能，未動六守門常數（md5 不變）、未改任何提示詞。<br>
+    <b>v207（修影片↔帳號連動＋客戶標記＋浮窗被遮）：</b>①<b>影片掛不上帳號（主修）</b>：智慧貼上卡B 時，「IG帳號」改用 normAccHandle 比對（不再因 @／大小寫／尾斜線配不到既有帳號），影片會自動掛回既有帳號；批次匯入路徑（cardToVideo）也補上帳號掛載。修好後重貼卡B 就會正確連到 @kl.legal。②<b>帳號卡影片數</b>：掛帳號修好後，帳號管理每張卡的「拆解過 N 支影片」會正確計數；0 支顯示「尚未收錄影片」。③<b>影片卡雙向提示</b>：影片有帳號就顯示帳號行＋名稱/身份/職稱/產業/粉絲；有 handle 但帳號未建檔則顯示「此帳號尚未建檔（單片分析）」。④<b>設為我的客戶</b>：影片「編輯數據」新增「客戶 / 來源」欄位，留空＝網路自蒐、填客戶名＝我的客戶，事後可改。⑤<b>QUICK SAVE 浮窗</b>：移到右下角同步列/登出鈕上方並提高層級，不再被遮。未動任何提示詞常數（md5 不變）。<br>
     <b>v206（流程② STEP 5 加一顆「只出卡B（快速整合）」鈕）：</b>①<b>新增 ONLY_B（第 9 支提示詞）</b>：＝一段「流程②只出卡B」前置規則 ＋ 串接 PROMPT_C 完整內容。整合與審查（讀數字／交叉複核 Gemini／污染自檢／回填鐵則／先讀 txt 連結）全部照做、品質不打折，差別只在<b>最後只輸出卡B</b>、不出卡A／卡C。因為是串接 PROMPT_C 不是另抄一份，所以 PROMPT_C 哪天改了它自動同步。②流程② STEP 5 旁多一顆「複製『只出卡B（快速整合）』」鈕（原本「最後整合審查」那顆保留），按它就直接拿乾淨卡B，不用每次自己交代「不要卡A／卡C」。③<b>未動六守門常數</b>（PROMPT_C 本身一字未改，ONLY_B 是新增第 9 支、靠串接引用）；md5 仍為 v205 的 93b202e4669ed0fddd1db2923c809e7b。<br>
     <b>v205（特別授權改 PROMPT_C／GEM_PROMPT：附 txt 就不用重貼連結）：</b>①<b>PROMPT_C（最後整合）</b>加一條：我若有附 07_連結.txt 或任何含「帳號連結：／影片連結：」的文字，它要先從裡面讀出兩個連結直接填、不要再叫我重貼；完全沒附才在備註寫「未提供連結」，不可以沒讀就說沒收到。②<b>GEM_PROMPT（Gemini）</b>的「影片連結」欄說明同步改成「先讀 txt 連結、沒有才填未提供」。③連結只拿來填欄位、AI 不必點開（IG 要登入打不開）；身份仍以帳號分析卡為準。<b>本版經你口頭特別授權改這兩支守門常數</b>，其餘四支（PROMPT_A／PROMPT_0／PROMPT_0A／TONE_RULES）未動；新六常數 md5＝93b202e4669ed0fddd1db2923c809e7b（守門值已更新）。<br>
     <b>v204（量產提速：新增「快速建檔提示詞」＋流程④貼文支援一次多篇）：</b>①<b>新增 FAST_FILING（第 8 支提示詞）</b>：流程② STEP 2 旁多一顆「複製『快速建檔』」鈕——拿掉分批協議、不先回報、不等你說開始，貼齊就直接生資料夾名稱＋07_連結.txt；支援一次丟多支（每支標 片1／片2…各出一組），帳號連結可省（建檔只是存電腦、進庫靠後面卡B 的 @handle）。原本「第一次建檔（分批版）」那顆保留，要分批傳還能用。②<b>流程④ 貼文支援一次多篇</b>：POST_PROMPT 加「一次多篇」規則（每篇標 貼1／貼2…、一篇一張卡、不跨篇配對、各自一個檔），STEP 說明同步更新。③貼文一律不需要 Gemini／SRT（截圖讀得到全部），分類用跟影片同一套 ATELIER 架構。未動六守門常數（md5 未變）。<br>
@@ -5076,12 +5079,79 @@ function renderAccounts(){
   box.querySelectorAll('[data-acc-hcheck]').forEach(b=>b.onclick=()=>openAccountHealthCheck(b.dataset.accHcheck));
   box.querySelectorAll('[data-acc-market]').forEach(b=>b.onclick=()=>openMarketData(b.dataset.accMarket));
   box.querySelectorAll('[data-acc-case]').forEach(function(s){ s.onchange=function(){ setAccCase(s.dataset.accCase,s.value); }; });
+  box.querySelectorAll('[data-acc-client]').forEach(b=>b.onclick=()=>setAccClient(b.dataset.accClient));
+  box.querySelectorAll('[data-acc-export]').forEach(b=>b.onclick=()=>exportClientBundle(b.dataset.accExport));
   box.querySelectorAll('[data-acc-del]').forEach(b=>b.onclick=()=>delAccount(b.dataset.accDel));
   /* v183 P6：帳號分頁按鈕綁定 */
   box.querySelectorAll('.acc-pg').forEach(function(b){ b.onclick=function(){ var p=parseInt(b.getAttribute('data-pg'),10); if(!isNaN(p)&&p>=1){ accPage=p; renderAccounts(); } }; });
 }
 function _accURL(a){ if(!a) return ''; var h=(a.handle||'').replace(/^@/,'').trim(); if(!h) return ''; if((a.handle||'').startsWith('http')) return a.handle; var p=a.platform; return p==='TikTok'?'https://www.tiktok.com/@'+h:(p==='YouTube'?'https://www.youtube.com/@'+h:(p==='Threads'?'https://www.threads.net/@'+h:(p==='X'?'https://x.com/'+h:(p==='FB'?'https://www.facebook.com/'+h:'https://www.instagram.com/'+h+'/')))); }
 function setAccCase(id,val){ var a=accounts.find(function(x){return x.id===id;}); if(!a) return; a.caseType=val||''; a.updatedAt=Date.now(); if(typeof saveAccounts==='function') saveAccounts(); if(typeof toast==='function') toast(val==='low'?'已標記：失敗／低效案例':(val==='success'?'已標記：成功標竿':'已清除案例類型標記')); }
+function setAccClient(id){ var a=accounts.find(function(x){return x.id===id;}); if(!a) return; a.isClient=!a.isClient; a.updatedAt=Date.now(); if(typeof saveAccounts==='function') saveAccounts(); if(typeof toast==='function') toast(a.isClient?'已標記為「我的客戶」':'已取消客戶標記'); if(typeof renderAccounts==='function') renderAccounts(); }
+function backfillVideoAccounts(){
+  if(typeof normAccHandle!=='function'){ if(typeof toast==='function') toast('缺 normAccHandle'); return; }
+  var plan=[], skipped=[];
+  videos.forEach(function(v){
+    if(v.accountId && accounts.find(function(a){return a.id===v.accountId;})) return;
+    var cand='';
+    if(v.accountHandle) cand=v.accountHandle;
+    if(!cand && v.url){ var m=(v.url||'').match(/instagram\.com\/([A-Za-z0-9._]+)/i); if(m && !/^(reel|reels|p|tv|stories|explore)$/i.test(m[1])) cand='@'+m[1]; }
+    if(!cand){ var blob=((v.caption||'')+' '+(v.note||'')+' '+(v.hashtag||'')); var m2=blob.match(/@([A-Za-z0-9._]{2,})/); if(m2) cand='@'+m2[1]; }
+    if(!cand){ skipped.push(v.title||'(未命名)'); return; }
+    var hN=normAccHandle(cand);
+    var acc=hN?accounts.find(function(a){return normAccHandle(a.handle)===hN;}):null;
+    if(acc) plan.push({v:v,acc:acc}); else skipped.push((v.title||'(未命名)')+'（線索 '+cand+' 但帳號未建檔）');
+  });
+  if(!plan.length){ if(typeof toast==='function') toast('沒有可回補的影片（找不到能對到既有帳號的線索）'); return; }
+  var lines=plan.slice(0,40).map(function(p){return '· '+(p.v.title||'(未命名)')+' → '+(p.acc.handle||'@?')+(p.acc.displayName?('（'+p.acc.displayName+'）'):'');}).join('\n');
+  var ok=confirm('要把以下 '+plan.length+' 支影片補掛回既有帳號嗎？\n\n'+lines+(plan.length>40?('\n…還有 '+(plan.length-40)+' 支'):'')+(skipped.length?('\n\n（另有 '+skipped.length+' 支找不到可對應帳號，會跳過不動）'):''));
+  if(!ok) return;
+  var n=0; plan.forEach(function(p){ p.v.accountId=p.acc.id; p.v.accountHandle=p.acc.handle||p.v.accountHandle||''; n++; });
+  if(typeof saveVideos==='function') saveVideos();
+  if(typeof renderAll==='function') renderAll();
+  if(typeof toast==='function') toast('\u2713 \u5df2\u56de\u88dc '+n+' \u652f\u5f71\u7247\u7684\u5e33\u865f\u9023\u7d50'+(skipped.length?('\uff1b'+skipped.length+' \u652f\u8df3\u904e'):''));
+}
+function exportClientBundle(accId){
+  var a=accounts.find(function(x){return x.id===accId;}); if(!a){ if(typeof toast==='function') toast('找不到帳號'); return; }
+  var vids=(typeof videosOfAccount==='function')?videosOfAccount(accId):videos.filter(function(v){return v.accountId===accId;});
+  var f=(typeof latestFollowers==='function')?latestFollowers(a):null;
+  var L=[];
+  L.push('===== 客戶體質彙整｜'+(a.handle||'@?')+(a.displayName?('（'+a.displayName+'）'):'')+' =====');
+  L.push('匯出日期：'+new Date().toISOString().slice(0,10));
+  L.push(''); L.push('【帳號層】');
+  if(a.displayName) L.push('顯示名稱：'+a.displayName);
+  if((a.types||[]).length) L.push('身份：'+a.types.join('、'));
+  if(a.jobTitle) L.push('職稱：'+a.jobTitle);
+  if(a.industry) L.push('產業：'+a.industry);
+  if(a.domain) L.push('領域：'+a.domain);
+  if(f) L.push('粉絲數：'+f.toLocaleString());
+  L.push('我的客戶：'+(a.isClient?'是':'否（網路自蒐）'));
+  var pf=a.profile||{};
+  (typeof ACC_PROFILE_FIELDS!=='undefined'?ACC_PROFILE_FIELDS:[]).forEach(function(fld){ var val=pf[fld[0]]; if(val) L.push(fld[1]+'：'+val); });
+  L.push(''); L.push('【影片清單｜共 '+vids.length+' 支】');
+  if(!vids.length) L.push('（這個帳號目前還沒有收錄影片）');
+  vids.forEach(function(v,i){
+    L.push(''); L.push('— 影片 '+(i+1)+'：'+(v.title||'(未命名)')+' —');
+    var meta=[];
+    if(v.themeId||v.themeName) meta.push('主題 '+((v.themeId||'')+' '+(v.themeName||'')).trim());
+    if(v.matName) meta.push('素材 '+v.matName);
+    if(v.form) meta.push('形式 '+v.form);
+    if(v.trig) meta.push('命根 '+v.trig);
+    if(meta.length) L.push(meta.join('｜'));
+    var num=[];
+    [['views','觀看'],['likes','讚'],['comments','留言'],['reposts','轉發'],['shares','分享'],['saves','收藏']].forEach(function(kv){ var x=v[kv[0]]; if(x!==''&&x!=null&&(''+x)!=='') num.push(kv[1]+' '+x); });
+    if(num.length) L.push('數據：'+num.join('、'));
+    if(v.hook) L.push('Hook：'+v.hook);
+    if(v.why) L.push('爆紅歸因：'+v.why);
+    if(v.apply) L.push('客戶落地：'+v.apply);
+    if(v.icp) L.push('目標人群：'+v.icp);
+    if(v.transcript) L.push('逐字稿：\n'+v.transcript);
+    if(v.url) L.push('連結：'+v.url);
+  });
+  L.push(''); L.push('===== 彙整結束 =====');
+  var text=L.join('\n');
+  if(typeof copyPrompt==='function') copyPrompt(text,'客戶體質彙整'); else if(typeof copyVal==='function') copyVal(text,'客戶體質彙整');
+}
 function accCard(a){
   const f=latestFollowers(a);
   const g=growth30Days(a);
@@ -5095,7 +5165,7 @@ function accCard(a){
   const gText=g?`<span style="color:${g.delta>=0?'#6E8678':'#A51820'};font-weight:700">${g.delta>=0?'+':''}${g.delta.toLocaleString()} (${g.fromDate}→${g.toDate})</span>`:'<span style="color:var(--text)">尚無比較區間（需 2 筆以上快照）</span>';
   return `<div class="vcard">
     <div class="vtop">
-      <div class="vtitle">${a.caseType==='low'?'<span style="background:#A51820;color:#fff;border-radius:6px;padding:1px 7px;font-size:11px;font-weight:700;margin-right:5px;display:inline-flex;align-items:center;gap:3px"><svg viewBox=\"0 0 24 24\" width=\"11\" height=\"11\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z\"/><line x1=\"12\" y1=\"9\" x2=\"12\" y2=\"13\"/><line x1=\"12\" y1=\"17\" x2=\"12.01\" y2=\"17\"/></svg>低效案例</span>':a.caseType==='success'?'<span style="background:var(--gold-dark);color:#fff;border-radius:6px;padding:1px 7px;font-size:11px;font-weight:700;margin-right:5px"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#A51820" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:3px"><circle cx="12" cy="9" r="5"/><path d="M9 13l-1.5 7 4.5-2.5 4.5 2.5L15 13"/></svg>標竿</span>':''}${typesBadges} ${esc(a.handle||'@?')} <span style="color:var(--text);font-weight:400">${esc(a.displayName||'')}</span></div>
+      <div class="vtitle">${a.caseType==='low'?'<span style="background:#A51820;color:#fff;border-radius:6px;padding:1px 7px;font-size:11px;font-weight:700;margin-right:5px;display:inline-flex;align-items:center;gap:3px"><svg viewBox=\"0 0 24 24\" width=\"11\" height=\"11\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z\"/><line x1=\"12\" y1=\"9\" x2=\"12\" y2=\"13\"/><line x1=\"12\" y1=\"17\" x2=\"12.01\" y2=\"17\"/></svg>低效案例</span>':a.caseType==='success'?'<span style="background:var(--gold-dark);color:#fff;border-radius:6px;padding:1px 7px;font-size:11px;font-weight:700;margin-right:5px"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#A51820" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:3px"><circle cx="12" cy="9" r="5"/><path d="M9 13l-1.5 7 4.5-2.5 4.5 2.5L15 13"/></svg>標竿</span>':''}${a.isClient?'<span style="background:var(--rouge);color:#fff;border-radius:6px;padding:1px 7px;font-size:11px;font-weight:700;margin-right:5px">★ 我的客戶</span>':''}${typesBadges} ${esc(a.handle||'@?')} <span style="color:var(--text);font-weight:400">${esc(a.displayName||'')}</span></div>
       <div class="vtime green">${esc(a.platform||'IG')}</div>
     </div>
     <div class="vmeta">
@@ -5121,6 +5191,8 @@ function accCard(a){
       <span class="vlink" style="cursor:pointer" data-acc-edit="${a.id}">編輯</span>
       <span class="vlink" style="cursor:pointer;color:var(--primary-deep);font-weight:800" data-acc-intake="${a.id}"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#A51820" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:3px"><rect x="6" y="4" width="12" height="16" rx="2"/><path d="M9 4h6v2H9z"/><path d="M9 13l2 2 4-4"/></svg>客戶前置問診</span>
       <select class="acc-case-sel" data-acc-case="${a.id}" style="font-size:11.5px;padding:4px 24px 4px 9px;border:1px solid var(--gold-soft);border-radius:6px;background:var(--warm-white,#FDFBF8) url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2210%22 height=%2210%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%239C7D4A%22 stroke-width=%223%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22><polyline points=%226 9 12 15 18 9%22/></svg>') no-repeat right 7px center;-webkit-appearance:none;-moz-appearance:none;appearance:none;color:var(--gold-dark);font-weight:600;font-family:inherit;cursor:pointer;line-height:1.4;align-self:center"><option value="">案例類型：未標</option><option value="success"${a.caseType==='success'?' selected':''}>成功標竿</option><option value="low"${a.caseType==='low'?' selected':''}>⚠️ 失敗／低效</option></select>
+      <span class="vlink" style="cursor:pointer;color:${a.isClient?'var(--rouge)':'var(--sub)'};font-weight:${a.isClient?'800':'600'}" data-acc-client="${a.id}">${a.isClient?'★ 我的客戶（點取消）':'☆ 設為我的客戶'}</span>
+      <span class="vlink" style="cursor:pointer;color:var(--gold-dark);font-weight:800" data-acc-export="${a.id}"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#9C7D4A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:3px"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>匯出這客戶全部</span>
       <span class="vdel" data-acc-del="${a.id}">刪除</span>
     </div>
     <details class="vstrat" style="margin-top:6px"><summary>更多分析工具（特點→賣點／帳號體檢／帳號健檢／客戶診斷／成功庫對標／借技法／快照）</summary>
