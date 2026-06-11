@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="color-scheme" content="light only">
 <meta name="supported-color-schemes" content="light">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v224 (版本號僅留註解，不顯示於畫面)
+<!-- ATELIER 影片診斷工作台 · 內部版本 v225 (版本號僅留註解，不顯示於畫面)
+v225 更新（交辦單：修影片庫主角客戶下拉首開像當機——重新整理後第一次進影片庫，點主角搜尋時清單空白、搜尋也不出帳號，必須先亂點其他按鈕才刷新）：【主角下拉首開補灌】csel 開啟前若是帳號型下拉，會先依 select id 重新灌入最新帳號選項（vlibHero→_vlibHeroPopulate、accHero→_accHeroPopulate、cmpHero→populateCmpHero），避免原生 select 還停在 placeholder 時就被 csel build 成空清單。【雲端帳號到齊補刷新】_accFbSubscribe 帳號 onSnapshot 到齊後額外刷新影片庫主角下拉與帳號管理主角下拉，不只刷新版面對照與輸入頁下拉。【開啟中選項變動同步】csel 的 MutationObserver 不再只改按鈕文字；若面板正開著且 select options 被補灌，會即時重建清單，避免使用者已打開下拉時仍看到空白。只動帳號型下拉補灌/重建時機，不動帳號/影片資料結構、不動六守門常數(md5 5d2b1a50909c91b89ca7454e64f81911 不變)；版本號 4 處 v224→v225；check.js 無新增失敗；div/details 平衡。
 v224 更新（交辦單：Lisa 回饋——流程②（同帳號加新影片）裡 ChatGPT 做逐字稿很強（轉逐字＋標說話者＋抓畫面大字＋反覆自檢），希望把逐字稿從原 STEP3「逐字稿＋影片分析」綁一起拆出來、獨立成一步且標可略過，接 v223）：【流程② 5 步→6 步】opGuideHTML_v2 內：①新增 I6 圖示（影片）給影片分析步；②鳥瞰圖由 5 格改 6 格——STEP3「（選配）逐字稿／ChatGPT·剪映／逐句時間碼 TXT·SRT」、STEP4「影片分析／Gemini·ChatGPT／影片分析卡」分開，子題型→5、最後整合→6；③詳細步驟同步：原 step('3') 拆成 step('3') 逐字稿(選配·可略過，{copy:CHATGPT_TRANSCRIPT_PROMPT}，文案強調可做可不做、趕時間或下一步 AI 能直接讀影片就略過) 與 step('4') 影片分析({copy:VIDEO_AI_ANALYSIS_PROMPT,open:Gemini}，強調跳過逐字稿也能做、不能讀影片才補逐字稿)；原 step('4')子題型→step('5')、step('5')最後整合→step('6')(③SRT 標『選配·有做才有』)。④流程② 步數字樣「5 步驟」→「6 步驟」共 3 處(sopBlock 切換鈕＋opGuideInput 分頁鈕＋SOP 摘要)。opGuideHTML_v2 同時餵 #opGuideInput 與 #sopBlock_v2_body，改一處兩邊同步。只動流程② 說明文字/鳥瞰圖/步驟編號與按鈕，未動任何提示詞常數內容、未動 _atCopyPrompt/label map、未動資料結構與六守門常數(md5 5d2b1a50909c91b89ca7454e64f81911 不變)；版本號 4 處 v223→v224；check.js 無新增失敗；div/details 平衡。
 v223 更新（交辦單：Lisa 實際使用回饋兩件——①待補清單的補完提示詞要分三種用途②建檔確認框與存檔 toast 的「第幾支」會被誤會成帳號的支數，接 v222）：【A 待補清單三顆鈕】renderInputTodo 每個缺漏分類欄位的單一「複製補完提示詞」鈕改為三顆＝只補這欄／補＋我先看／補＋重出卡B；_todoCopy(selId, mode) 加 mode：共用同一段單欄判斷提示詞，收尾依 mode 不同——only=只回答這一欄不出卡；review=先講判斷與理由、明講「先別出卡、等我說 OK 再出」；card=判完直接要求重新輸出修正後的整張卡B(===ATELIER歸類卡===…===結束===、其餘欄位沿用不動)，解決使用者貼去問完還要手動再打一句「重出卡B」的多餘步驟。copyPrompt 標題依 mode 區分。【B1 確認框換行】atelierChoose 的 desc 經 esc() 後 \n 不換行(顯示成一坨)；desc 容器加 white-space:pre-line，讓 \n 真的分行(全站確認框同享，皆為短句、低風險)。【B2 確認框三行】建檔確認 desc 由「帳號/影片」兩行改為「影片：新增/覆蓋『標題』」「帳號：既有@xxx 這是它的第 N 支(帳號資料不覆蓋)／新帳號第一次建檔第 1 支」「系統總計：存完後共 M 支」三行，帳號層 vs 系統層分清楚。【B3 存檔 toast 區分】toast 由「這是第 {videos.length} 支」(系統總數，易誤會成帳號支數)改為「…@handle · 這個帳號第 N 支 · 系統第 M 支」(N=該帳號影片數、M=系統總數)。只動待補清單按鈕/提示詞收尾與確認框/toast 文案，未動 parse/儲存邏輯/資料結構/六守門常數(md5 5d2b1a50909c91b89ca7454e64f81911 不變)；版本號 4 處 v222→v223；check.js 無新增失敗；div/details 平衡。
 v222 更新（交辦單：修「搜尋這個人／主角下拉」單字搜尋不穩，接 v221）：【主角/帳號搜尋索引補強】csel 帳號下拉搜尋不再只吃顯示列文字與少數欄位；改為建立帳號完整搜尋索引（handle、displayName、name、職稱、產業、領域、身分 types，以及帳號物件內可用的字串/數字欄位，避免理鴻/kl.legal 藏在其他欄位時搜不到）。【單字與 handle 片段搜尋】新增搜尋正規化：大小寫不敏感、全形半形正規化、移除 @/空白/標點；打「k」可對到 @kl.legal，打「理」可對到含理字的帳號資料。【中文輸入法更穩】compositionend 後立即濾一次並 setTimeout 補濾一次，避免注音選字完成那一下瀏覽器事件順序不同造成清單不刷新；組字中仍不拿 ㄌㄧˇ 去清空清單。只動 csel 搜尋索引與過濾邏輯，不動帳號/影片資料結構、不動六守門提示詞。
@@ -797,7 +798,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v224</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v225</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -4076,7 +4077,8 @@ function renderManual(){
   <div class="form-card" style="border-left:3px solid var(--gold)">
     <div class="stitle" style="font-size:15px;color:var(--rouge)">更新紀錄 · 還沒做的</div>
     <p style="font-size:13px;color:var(--text);line-height:1.85;margin-top:8px">
-    <b>v224（這版 · 流程②把「逐字稿」獨立成一步、可略過）：</b>你說 ChatGPT 做逐字稿其實很強（會逐字轉、標誰在說話、抓畫面大字、還會自己反覆檢查），所以這版把<b>流程②（同帳號加新影片）的逐字稿從原本和影片分析綁在一起的那一步拉出來、變成獨立的一步</b>，而且<b>標明「選配·可略過」</b>。現在流程②是 6 步：① 截圖＋連結 → ②（選配）封存 → <b>③（選配·可略過）做逐句時間碼逐字稿</b> → <b>④ 影片分析</b> → ⑤（需要才做）子題型 → ⑥ 最後整合只要卡B。鳥瞰圖、詳細步驟、複製鈕都跟著分開——想要精準時間碼或要核對台詞就做第③步；趕時間、或你用的 AI 本來就能直接讀影片，<b>第③步可以直接跳過</b>，到第④步讓它一起處理。<b>沒動任何提示詞（六守門常數 md5 不變）、沒動儲存邏輯與資料。</b><br>
+    <b>v225（這版 · 修主角客戶下拉首開空白）：</b>修你截圖裡的狀況：重新整理後第一次進「影片庫」，點「主角客戶」下拉時看起來像當機，搜尋框可以打字但下面沒有帳號；要先亂點別的按鈕，再回來點主角客戶，帳號清單才會突然出現。這版把<b>主角客戶下拉改成「每次打開前先補灌最新帳號」</b>，雲端帳號載入完成後也會主動刷新影片庫／帳號管理的主角下拉；如果下拉已經開著、帳號選項才補進來，清單也會即時重建。之後第一次點開就應該直接看到帳號，打「理」、handle、職稱、產業都能直接搜，不用再先按其他地方喚醒。<b>只動下拉補灌與重建時機，沒動影片/帳號資料結構、沒動六守門提示詞。</b><br>
+    <b>v224（流程②把「逐字稿」獨立成一步、可略過）：</b>你說 ChatGPT 做逐字稿其實很強（會逐字轉、標誰在說話、抓畫面大字、還會自己反覆檢查），所以這版把<b>流程②（同帳號加新影片）的逐字稿從原本和影片分析綁在一起的那一步拉出來、變成獨立的一步</b>，而且<b>標明「選配·可略過」</b>。現在流程②是 6 步：① 截圖＋連結 → ②（選配）封存 → <b>③（選配·可略過）做逐句時間碼逐字稿</b> → <b>④ 影片分析</b> → ⑤（需要才做）子題型 → ⑥ 最後整合只要卡B。鳥瞰圖、詳細步驟、複製鈕都跟著分開——想要精準時間碼或要核對台詞就做第③步；趕時間、或你用的 AI 本來就能直接讀影片，<b>第③步可以直接跳過</b>，到第④步讓它一起處理。<b>沒動任何提示詞（六守門常數 md5 不變）、沒動儲存邏輯與資料。</b><br>
     <b>v223（補完提示詞分三種＋建檔「第幾支」講清楚）：</b>兩個你實際用出來的小改良。①<b>待補清單的補完鈕變三顆</b>：以前只有一顆「複製補完提示詞」，你貼去問完還得自己再打一句「重出卡B」。現在每個缺的欄位有三顆——<b>只補這欄</b>（只判斷、給你答案，不出卡）、<b>補＋我先看</b>（判完先講理由給你看、先不出卡，等你說 OK 再出）、<b>補＋重出卡B</b>（判完直接把修正後的整張卡B重新輸出，你直接貼回工作台，不用再多打一句）。②<b>建檔確認框＆存檔提示的「第幾支」分清楚</b>：以前存完跳「這是第 55 支」會讓人以為這個帳號有 55 支，其實 55 是整個系統的總數。現在<b>建檔確認框分三行</b>看：影片（新增哪一支）／帳號（@kl.legal 這是它的第 4 支、帳號資料不覆蓋）／系統總計（存完共 55 支）；<b>存檔成功的提示</b>也改成「@kl.legal · 這個帳號第 4 支 · 系統第 55 支」，一眼分得出帳號層和系統層。<b>沒動任何提示詞（六守門常數 md5 不變）、沒動儲存邏輯與資料。</b><br>
     <b>v222（修主角/帳號搜尋單字搜不到）：</b>修「搜尋這個人」下拉：打單一中文字如「理」、單一英文如「k」、或 handle 片段如「kl」「legal」都會進搜尋。搜尋索引改吃帳號完整資料（handle、顯示名、職稱、產業、領域、身分與其他帳號欄位），並加入全形半形/大小寫/@符號正規化；中文輸入法選字完成後會再補濾一次，避免注音組字時清單空白。<b>只動 csel 搜尋，不動帳號/影片資料結構與守門提示詞。</b><br>    <b>v221（這版 · 影片分析提示詞改成 Gemini／ChatGPT 都能用）：</b>流程② STEP3 不再限定 Gemini。現在同一步會先給「<b>ChatGPT 逐字稿提示詞</b>」做逐句時間碼 TXT，再給「<b>Gemini／ChatGPT 影片分析提示詞</b>」做影片本體分析；如果 ChatGPT 能讀影片，就可以一條龍：先產逐字稿、再直接分析，不必硬切 Gemini。剪映 SRT 與 Gemini 仍保留為可用路徑。新增的是非守門包裝常數 VIDEO_AI_ANALYSIS_PROMPT，底層沿用原 Gemini 架構，只加「可貼 Gemini AI 或 ChatGPT」「不能讀影片就要求素材、不要假裝看過」的前置規則；<b>未動六支守門提示詞與資料結構。</b><br>    <b>v219（這版 · 新增 ChatGPT 逐字稿自檢提示詞）：</b>流程② STEP3 改成「先取得逐字稿 TXT／SRT，再做 Gemini 影片分析」。新增一顆「<b>複製『ChatGPT 逐字稿提示詞』</b>」鈕，內容會要求逐句時間碼、主講人／藏鏡人／畫外音、畫面大字、配樂音效，以及交付前自檢（編號連續、時間碼遞增、說話者一致、不確定標疑似）。原本「Gemini 影片分析提示詞」保留，變成同一步的第二顆鈕。最後整合 STEP5 也同步改成可吃「SRT 或逐句時間碼 TXT」，不再只寫 SRT。<b>未動六支守門提示詞與資料結構。</b><br>
     <b>v218（資料安全修補，跟服務台搭配）：</b>這版是<b>後台修補</b>、畫面不變。工作台和客戶服務台共用同一個雲端資料庫，之前工作台一存帳號，會不小心把<b>服務台那邊打的評分</b>（健檢紀錄、內容健康分數、客戶流程）整包蓋掉。現在改成：工作台存帳號前<b>先去雲端抓最新、把服務台的欄位原封不動保留</b>，再寫回——兩邊各存各的、不再互相洗掉資料。抓不到雲端就乾脆不寫（你本機已經存著），絕不拿舊資料去覆蓋。<b>沒動任何提示詞（六守門常數 md5 不變）、沒動任何功能畫面。</b>（上線順序：<b>先上這支工作台 v218，再上服務台 cs-v3.4</b>，兩邊是搭配的。）<br>
@@ -7956,6 +7958,8 @@ function _accFbSubscribe(){
             if(typeof populateCmpHero==='function') populateCmpHero();
             if(typeof populateTplClient==='function') populateTplClient(); /* v189 A1：帳號到齊後補刷影片庫「產生腳本範本」客戶下拉 #tplClient，修「尚無帳號」殘留（renderComparePicker 沒涵蓋它） */
             if(typeof populateAccountSelect==='function') populateAccountSelect(); /* v212：帳號到齊後補刷輸入頁⑥連結到帳號下拉，修「貼卡B 找不到帳號選項→影片沒掛上帳號」 */
+            if(typeof _vlibHeroPopulate==='function') _vlibHeroPopulate(); /* v225：帳號到齊後也補刷影片庫主角下拉，避免首開 csel 還是空清單 */
+            if(typeof _accHeroPopulate==='function') _accHeroPopulate(); /* v225：帳號管理主角下拉同樣補刷 */
             if($('accBadge')) $('accBadge').textContent=accounts.length;
             _renderTopAcc();
             _fbStatus('connected',_fbConnText());  /* v181 P1：帳號到齊後刷新右下狀態字，帳號數不再卡 0 */
@@ -9472,7 +9476,16 @@ document.addEventListener('DOMContentLoaded',function(){
       function outside(e){ if(!wrap.contains(e.target)) close(); }
       var _cselMobile=window.matchMedia&&window.matchMedia('(max-width:640px)').matches;
       var _cselInModal=!!btn.closest('.modal,.sheet,[id="modal"],[id="sheet"]');
-      function open(){ build(); wrap.classList.add('open'); document.addEventListener('mousedown',outside,true); document.addEventListener('touchstart',outside,true);
+      function open(){
+        /* v225：帳號型 csel 在開啟前先補灌最新 options。修重新整理後第一次進影片庫，主角客戶下拉先被建成空清單，要亂點其他按鈕才刷新的問題。 */
+        if(sel.getAttribute('data-accpick')==='1'){
+          try{
+            if(sel.id==='vlibHero' && typeof _vlibHeroPopulate==='function') _vlibHeroPopulate();
+            else if(sel.id==='accHero' && typeof _accHeroPopulate==='function') _accHeroPopulate();
+            else if(sel.id==='cmpHero' && typeof populateCmpHero==='function') populateCmpHero();
+          }catch(_e){}
+        }
+        build(); wrap.classList.add('open'); document.addEventListener('mousedown',outside,true); document.addEventListener('touchstart',outside,true);
         if(_cselMobile || _cselInModal){
           /* v183 P2：手機版改為畫面置中浮層 */
           panel.style.cssText='position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:90vw;max-height:80vh;overflow-y:auto;z-index:10001;border-radius:12px;border:1px solid var(--gold-soft);box-shadow:0 8px 30px rgba(0,0,0,.25)';
@@ -9496,7 +9509,7 @@ document.addEventListener('DOMContentLoaded',function(){
         label(); close();
       });
       sel.addEventListener('change',label);
-      try{ var mo=new MutationObserver(function(){ label(); }); mo.observe(sel,{childList:true}); }catch(e){}
+      try{ var mo=new MutationObserver(function(){ label(); if(wrap.classList.contains('open')) build(); }); mo.observe(sel,{childList:true}); }catch(e){}
       label();
     }catch(e){}
   }
