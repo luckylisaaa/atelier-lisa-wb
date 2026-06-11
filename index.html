@@ -8,7 +8,8 @@
 <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v247 (版本號僅留註解，不顯示於畫面)
+<!-- ATELIER 影片診斷工作台 · 內部版本 v248 (版本號僅留註解，不顯示於畫面)
+v248 更新（交辦單：Lisa 已確認理鴻 32 支影片完成建檔，下一階段要把影片庫、客戶服務台、商業閉環知識地圖串成「內容優化診斷」工作流）：【A 新增內容優化診斷分頁】新增「策略診斷」頁籤與 view-strategy，先不寫入資料，只讀目前帳號與影片庫，針對選定客戶彙整 32 支影片的數據快照、Top/Bottom、G 階段分布、合作目標 A–E 分布、內容缺口與下一步。【B 串接服務台與商業閉環】策略診斷頁提供「開客戶服務台」與「開商業閉環」入口，並產生可貼到客戶服務台 Stage 4 內容診斷的提示詞，把影片庫數據、商業閉環 A–E 與下一批影片方向帶進交付流程。【C 安全原則】本版從 v247 穩定 hotfix 接續，只新增讀取型策略頁與提示詞，不碰 client.html、不改自媒體商業閉環知識地圖、不改 Firebase 資料結構、不改六支守門提示詞，不再碰 v246 造成卡死的 CSV 彈窗。
 v247 更新（交辦單：v246 上線後主程式再次卡在首頁、影片/帳號顯示 0；Lisa 同時上傳客戶服務台 cs-v3.12 與商業閉環知識地圖，準備進入 32 支影片的內容優化診斷）：【A 災難版回復】本版不沿用 v246 的 CSV 彈窗寫法，改以 v245 安全版為底，保留排序、跨頁選取、目前清單複製與服務台連動，先確保工作台可正常讀取雲端資料、影片庫與帳號管理不卡死。【B 策略排序保留】影片庫保留最新/最舊建檔、最新/最舊發布、觀看/讚/留言/分享/儲存/分享率/互動率、合作目標層 A→E / E→A、階段 G1→G5 / G5→G1、主題編號排序，支援後續理鴻 32 支進入內容優化診斷。【C 系統邊界】本版只做 hotfix 與版本校正，不改 client.html、不改自媒體商業閉環知識地圖、不改 Firebase 資料結構與六守門提示詞；CSV 匯出下載先不再追加複雜彈窗，避免再次打斷主程式。
 
 v244 更新（交辦單：Lisa 實測 v243 後發現批次工具仍容易誤解——上方已選 @kl.legal 但「全選」只選本頁 10 支，複製/匯出會被勾選狀態干擾，且沒有真正清楚歸零）：【A 目前清單優先】影片庫新增「目前清單」概念明文化；複製目前清單／匯出目前清單 CSV 一律吃目前篩選後完整清單，不被本頁勾選干擾，@kl.legal 32 支會一次輸出 32 支。【B 全選改跨頁】批次「全選」改成全選目前篩選清單（跨全部頁），不是只選第 1 頁 10 支；按鈕會顯示「全選目前清單 / 取消目前清單選取」，選取數跨頁保留。【C 清除更明確】新增/強化清除選取行為，切換篩選會自動清除不在目前清單內的選取；畫面文案顯示目前清單共 N 支、已選 N 支。只動影片庫批次選取、複製與 CSV 匯出，不動資料結構、client.html 與六守門提示詞。
@@ -853,7 +854,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v247</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v248</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -868,6 +869,7 @@ if('serviceWorker' in navigator){
   <div class="tab" data-view="compare"><svg class="tic" viewBox="0 0 24 24"><rect x="4" y="4" width="7" height="16" rx="1.5"/><rect x="13" y="4" width="7" height="16" rx="1.5"/><path d="M11 10h2M11 14h2" stroke-linecap="round"/></svg>版面對照</div>
   <div class="tab" data-view="deliver"><svg class="tic" viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6z" stroke-linejoin="round"/><path d="M9 12.5l2 2 4-4" stroke-linecap="round" stroke-linejoin="round"/></svg>客戶交付</div>
   <a class="tab" href="client.html" target="atelierClient" onclick="if(typeof _openClientWindow==='function'){_openClientWindow();return false;}" title="在獨立視窗開啟客戶服務台——工作台與服務台各自保留進度、互相切換不會重載掉狀態" style="text-decoration:none"><svg class="tic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 12h7M12 9l3 3-3 3" stroke-linecap="round" stroke-linejoin="round"/></svg>客戶服務台</a>
+  <div class="tab" data-view="strategy"><svg class="tic" viewBox="0 0 24 24"><path d="M4 18V6" stroke-linecap="round"/><path d="M4 18h16" stroke-linecap="round"/><path d="M7 15l3-4 3 2 5-7" stroke-linecap="round" stroke-linejoin="round"/></svg>策略診斷</div>
   <div class="tab" data-view="search"><svg class="tic" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4-4" stroke-linecap="round"/></svg>搜尋</div>
   <div class="tab" data-view="gaps"><svg class="tic" viewBox="0 0 24 24"><path d="M12 4l8 14H4z" stroke-linejoin="round"/><path d="M12 10v3M12 16v.5" stroke-linecap="round"/></svg>缺口<span class="badge" id="gapBadge" style="background:var(--gold-dark)">0</span></div>
   <div class="tab" data-view="tree"><svg class="tic" viewBox="0 0 24 24"><circle cx="12" cy="6" r="2.4"/><circle cx="6" cy="18" r="2.4"/><circle cx="18" cy="18" r="2.4"/><path d="M12 8.4v3.6M12 12l-5 3.8M12 12l5 3.8" stroke-linecap="round"/></svg>主題導覽</div>
@@ -2433,6 +2435,30 @@ if('serviceWorker' in navigator){
     <div id="pqConcl" style="margin-top:10px"></div>
     <label style="display:flex;gap:8px;align-items:center;font-size:12.5px;color:var(--ink);margin-top:10px;cursor:pointer"><input type="checkbox" id="pqEmbed" style="accent-color:var(--rouge)">也把這張象限圖放進「一頁診斷書」一起列印（之後產生診斷書時帶入，客戶版／顧問版都適用）</label>
   </div>
+</div>
+
+
+<!-- 內容優化診斷（v248 · 只讀影片庫，串接服務台與商業閉環） -->
+<div class="view" id="view-strategy">
+  <div class="page-head">
+    <div class="ph-en">STRATEGY DIAGNOSIS · 內容優化</div>
+    <div class="ph-title">32 支影片內容優化診斷</div>
+    <div class="ph-sub">把影片庫資料變成客戶服務台可用的內容診斷：數據快照、Top/Bottom、G 階段分布、A–E 商業閉環與下一步提問。</div>
+  </div>
+  <div style="border:1px solid var(--gold-soft);border-radius:12px;background:#fff;padding:14px 16px;margin-bottom:14px">
+    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+      <span style="font-size:11px;color:var(--gold-dark);font-weight:800;letter-spacing:1.5px">① 選擇客戶</span>
+      <select id="stratAcc" data-csearch="1" data-accpick="1" onchange="renderStrategyDiagnosis()" style="flex:1;min-width:240px;padding:9px 12px;border:1px solid var(--border);border-radius:9px;background:#fff;color:var(--ink);font-family:inherit;font-size:13px"><option value="">— 選一個帳號開始診斷 —</option></select>
+      <button class="btn btn-go" type="button" onclick="renderStrategyDiagnosis()" style="width:auto;font-size:13px;padding:9px 14px">產生策略快照</button>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px">
+      <button class="btn btn-ghost" type="button" onclick="_strategyOpenClient()" style="width:auto;font-size:12px;padding:8px 12px">開客戶服務台</button>
+      <button class="btn btn-ghost" type="button" onclick="switchTo('bizloop');window.scrollTo(0,0);" style="width:auto;font-size:12px;padding:8px 12px">開商業閉環地圖</button>
+      <button class="btn btn-ghost" type="button" onclick="copyStrategyPrompt()" style="width:auto;font-size:12px;padding:8px 12px">複製 Stage 4 內容診斷提示詞</button>
+    </div>
+  </div>
+  <div id="strategyBox"></div>
+  <div class="hint"><b>使用方式：</b>先選客戶，例如 @kl.legal。這頁只讀影片庫，不會改資料。它會先把 32 支影片整理成策略快照，再複製給客戶服務台「內容診斷」階段使用，最後可輸出 PDF / HTML / PPT 交付物。</div>
 </div>
 
 <!-- 商業閉環知識地圖（v107·iframe 嵌入 atelier-map） -->
@@ -4446,6 +4472,7 @@ function renderManual(){
   <div class="form-card" style="border-left:3px solid var(--gold)">
     <div class="stitle" style="font-size:15px;color:var(--rouge)">更新紀錄 · 還沒做的</div>
     <p style="font-size:13px;color:var(--text);line-height:1.85;margin-top:8px">
+    <b>v248（32 支影片內容優化診斷入口）：</b>①<b>新增策略診斷分頁</b>：讀取選定客戶的影片庫資料，快速彙整影片數、平均觀看、互動率、分享率、Top 表現、低表現、G 階段分布與合作目標 A–E 分布。②<b>串接客戶服務台</b>：可直接開同一客戶的服務台，並複製「Stage 4 內容診斷」提示詞，把影片庫數據轉成客戶服務台可用的診斷輸入。③<b>串接商業閉環</b>：把 A 認知、B 品牌、C 信任、D 轉化、E 組織成長與 G1–G5 內容策略接起來，讓理鴻 32 支影片從建檔進入優化診斷。<b>本版只讀資料、不寫入資料，不動 client.html、商業閉環地圖、Firebase 結構與六守門提示詞。</b><br>
     <b>v247（v246 災難回復＋保留影片庫策略排序）：</b>①<b>回到安全底</b>：v246 上線後再次造成主程式卡在首頁、影片/帳號顯示 0，本版不沿用 v246 的 CSV 彈窗寫法，改以 v245 安全版為底重新升版。②<b>保留策略排序</b>：影片庫仍保留最新/最舊發布、觀看/讚/留言/分享/儲存、分享率/互動率、合作目標層 A→E / E→A、階段 G1→G5 / G5→G1、主題編號排序，供理鴻 32 支影片進入內容優化診斷。③<b>保留跨頁批次</b>：全選目前清單仍可跨頁選取目前篩選全部影片；複製目前清單與匯出目前清單 CSV 回到 v245/v244 的安全寫法，避免彈窗字串再次打斷主程式。<b>只動版本校正與回復基底，不動資料結構、client.html、自媒體商業閉環知識地圖與六守門提示詞。</b><br>
     <b>v244（批次選取與目前清單修正）：</b>①<b>複製目前清單 / 匯出目前清單 CSV</b> 一律使用上方篩選後的完整清單，不被本頁勾選狀態干擾；例如主角客戶已選 @kl.legal，就會一次輸出 32 支，不再只出第 1 頁 10 支。②<b>全選改跨頁</b>：批次工具的全選會選取目前篩選清單全部頁面，不只是本頁。③<b>清除選取更明確</b>：按鈕會顯示「全選目前清單 / 取消目前清單選取」，並顯示目前清單共幾支、已選幾支。<b>只動影片庫批次選取、複製與 CSV 匯出，不動資料結構、client.html 與六守門提示詞。</b><br>
     <b>v243（匯出目前清單修穩）：</b>①<b>複製目前清單</b>：影片庫批次工具新增一顆清楚的複製按鈕，直接把目前篩選結果整理成純文字核對清單，方便 Lisa 丟回 ChatGPT 對本機資料夾。②<b>CSV 匯出不再黑盒</b>：下載改用更穩的 DOM click，按鈕文案改「匯出目前清單CSV」；未勾選時匯出目前篩選全部，已勾選時只匯出勾選項。③<b>核對流程更直覺</b>：不用再先全選每頁 10 支，也不用懷疑按鈕有沒有反應。<b>只動影片庫匯出/複製行為，不動資料結構、client.html 與六守門提示詞。</b><br>
@@ -4736,6 +4763,8 @@ function renderAll(){
   if(typeof populateCmpHero==='function') populateCmpHero();
   /* v212：順手補刷輸入頁⑥連結到帳號下拉（f-account），避免雲端 async 載入後它只剩 placeholder */
   if(typeof populateAccountSelect==='function') populateAccountSelect();
+  if(typeof populateStrategyAcc==='function') populateStrategyAcc();
+  if(document.getElementById('view-strategy')&&document.getElementById('view-strategy').classList.contains('on')&&typeof renderStrategyDiagnosis==='function') renderStrategyDiagnosis();
 }
 /* ═══════════ v215：輸入表單「待補清單＋逐欄補完提示詞」 ═══════════ */
 var _INPUT_TODO_FIELDS=[
@@ -10276,7 +10305,84 @@ document.addEventListener('DOMContentLoaded',function(){
 })();
 </script>
 
-<!-- v247：從 v245 安全底回復，避開 v246 CSV 彈窗卡死；保留影片庫進階排序、目前清單跨頁批次選取、v242 完整盤點、v241 重複核對、v240 內容錯配與 v239 防快取 -->
+
+<script>
+/* ═══════════ v248：內容優化診斷入口（只讀影片庫 → 客戶服務台 Stage 4 → 商業閉環） ═══════════ */
+(function(){
+  function H(id){return document.getElementById(id)}
+  function E(x){return (typeof esc==='function')?esc(x):String(x||'').replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]||c;});}
+  function N(x){
+    var s=String(x||'').replace(/,/g,'').trim();
+    var m=s.match(/(\d+(?:\.\d+)?)\s*(億|万|萬|w|W|k|K|千|M|m)?/);
+    if(!m) return 0;
+    var v=parseFloat(m[1]||'0')||0, u=m[2]||'';
+    if(u==='億') v*=100000000; else if(u==='萬'||u==='万'||u==='w'||u==='W') v*=10000; else if(u==='k'||u==='K'||u==='千') v*=1000; else if(u==='M'||u==='m') v*=1000000;
+    return Math.round(v);
+  }
+  function P(n,d){ n=N(n); d=N(d); return d?((n/d*100).toFixed(2)+'%'):'0.00%'; }
+  function goalLetter(v){ var m=String((v&&v.goal)||'').toUpperCase().match(/[A-E]/); return m?m[0]:'未填'; }
+  function stageLetter(v){ var m=String((v&&v.stage)||'').toUpperCase().match(/G[1-5]/); return m?m[0]:'未填'; }
+  function score(v){ var views=N(v.views), likes=N(v.likes), comments=N(v.comments), shares=N(v.shares), saves=N(v.saves), reps=N(v.reposts||v.repost); return {views:views,likes:likes,comments:comments,shares:shares,saves:saves,reposts:reps,eng:likes+comments+shares+saves+reps,engRate:views?((likes+comments+shares+saves+reps)/views):0,shareRate:views?(shares/views):0}; }
+  function accountName(a){ return (a?(a.handle||''):'')+' '+(a?(a.displayName||a.name||''):''); }
+  function populateStrategyAcc(){
+    var sel=H('stratAcc'); if(!sel || !window.accounts) return;
+    var old=sel.value;
+    sel.innerHTML='<option value="">— 選一個帳號開始診斷 —</option>'+(accounts||[]).map(function(a){return '<option value="'+E(a.id)+'">'+E((a.handle||'')+' · '+(a.displayName||a.name||'')+' · '+(a.jobTitle||''))+'</option>';}).join('');
+    if(old) sel.value=old;
+    if(!sel.value){
+      var guess=(H('vlibHero')||H('accHero')||H('f-account')||{}).value||''; if(guess) sel.value=guess;
+    }
+  }
+  function dist(vs,fn,keys){ var o={}; keys.forEach(function(k){o[k]=0}); vs.forEach(function(v){ var k=fn(v)||'未填'; if(o[k]===undefined)o[k]=0; o[k]++; }); return o; }
+  function distHTML(title,obj,total){
+    var rows=Object.keys(obj).map(function(k){return '<div style="display:flex;align-items:center;gap:8px;padding:5px 0;border-top:1px solid var(--line)"><b style="width:60px;color:var(--rouge)">'+E(k)+'</b><div style="flex:1;height:7px;background:var(--line);border-radius:999px;overflow:hidden"><i style="display:block;height:100%;width:'+(total?Math.round(obj[k]/total*100):0)+'%;background:var(--gold)"></i></div><span style="width:70px;text-align:right;color:var(--sub);font-size:12px">'+obj[k]+' 支</span></div>';}).join('');
+    return '<div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:12px"><div style="font-family:\'Noto Serif TC\',serif;font-weight:900;color:var(--ink);margin-bottom:6px">'+E(title)+'</div>'+rows+'</div>';
+  }
+  function vidLine(v,i){ var s=score(v); return '<div style="padding:8px 0;border-top:1px solid var(--line);font-size:12.5px;line-height:1.7"><b style="color:var(--ink)">'+(i+1)+'. '+E(v.title||'(未命名)')+'</b><br><span style="color:var(--sub)">觀看 '+s.views.toLocaleString()+'｜互動率 '+(s.engRate*100).toFixed(2)+'%｜分享率 '+(s.shareRate*100).toFixed(2)+'%｜'+E(stageLetter(v))+'｜'+E(goalLetter(v))+'</span></div>'; }
+  function currentPack(){
+    populateStrategyAcc(); var id=(H('stratAcc')||{}).value||''; var a=(accounts||[]).find(function(x){return x.id===id;}); var vs=a&&typeof videosOfAccount==='function'?videosOfAccount(id):[];
+    return {id:id,a:a,vs:vs};
+  }
+  window.renderStrategyDiagnosis=function(){
+    populateStrategyAcc(); var box=H('strategyBox'); if(!box) return; var p=currentPack(), a=p.a, vs=p.vs;
+    if(!a){ box.innerHTML='<div class="empty" style="text-align:center;color:var(--sub);padding:28px 12px;border:1px dashed var(--gold-soft);border-radius:12px;background:#fff">先選一個客戶帳號，系統會讀取這個帳號底下的影片做策略診斷。</div>'; return; }
+    var scored=vs.map(function(v){return {v:v,s:score(v)}}); var withViews=scored.filter(function(x){return x.s.views>0});
+    var totalViews=scored.reduce(function(a,x){return a+x.s.views},0), totalEng=scored.reduce(function(a,x){return a+x.s.eng},0), totalShares=scored.reduce(function(a,x){return a+x.s.shares},0);
+    var avgViews=withViews.length?Math.round(totalViews/withViews.length):0;
+    var topViews=scored.slice().sort(function(a,b){return b.s.views-a.s.views}).slice(0,5).map(function(x){return x.v});
+    var topShare=scored.slice().sort(function(a,b){return b.s.shareRate-a.s.shareRate}).filter(function(x){return x.s.views>0}).slice(0,5).map(function(x){return x.v});
+    var bottom=scored.slice().filter(function(x){return x.s.views>0}).sort(function(a,b){return a.s.views-b.s.views}).slice(0,5).map(function(x){return x.v});
+    var stages=dist(vs,stageLetter,['G1','G2','G3','G4','G5','未填']); var goals=dist(vs,goalLetter,['A','B','C','D','E','未填']);
+    var topStage=Object.keys(stages).sort(function(a,b){return stages[b]-stages[a];})[0]||'未填'; var topGoal=Object.keys(goals).sort(function(a,b){return goals[b]-goals[a];})[0]||'未填';
+    var missingGoals=['A','B','C','D','E'].filter(function(k){return !goals[k];}); var missingStages=['G1','G2','G3','G4','G5'].filter(function(k){return !stages[k];});
+    var html='';
+    html+='<div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:12px">'
+      +'<div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:14px;text-align:center"><div style="font-size:24px;font-weight:900;color:var(--rouge)">'+vs.length+'</div><div style="font-size:12px;color:var(--sub)">影片數</div></div>'
+      +'<div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:14px;text-align:center"><div style="font-size:24px;font-weight:900;color:var(--rouge)">'+avgViews.toLocaleString()+'</div><div style="font-size:12px;color:var(--sub)">平均觀看</div></div>'
+      +'<div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:14px;text-align:center"><div style="font-size:24px;font-weight:900;color:var(--rouge)">'+(totalViews?(totalEng/totalViews*100).toFixed(2):'0.00')+'%</div><div style="font-size:12px;color:var(--sub)">整體互動率</div></div>'
+      +'<div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:14px;text-align:center"><div style="font-size:24px;font-weight:900;color:var(--rouge)">'+(totalViews?(totalShares/totalViews*100).toFixed(2):'0.00')+'%</div><div style="font-size:12px;color:var(--sub)">整體分享率</div></div></div>';
+    html+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">'+distHTML('G 階段分布',stages,vs.length)+distHTML('合作目標 A–E 分布',goals,vs.length)+'</div>';
+    html+='<div style="background:var(--warm);border:1px solid var(--border);border-radius:12px;padding:13px 15px;margin-bottom:12px;font-size:13px;line-height:1.8"><b style="color:var(--rouge)">系統初判：</b>目前最集中在 '+E(topStage)+' / '+E(topGoal)+' 層。'+(missingGoals.length?' 尚缺 '+E(missingGoals.join('、'))+' 層的內容，商業閉環可能還不完整。':' A–E 都已有覆蓋，可進一步看比例是否合理。')+(missingStages.length?' G 階段缺 '+E(missingStages.join('、'))+'。':'')+'</div>';
+    html+='<div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px"><div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:12px"><div style="font-family:\'Noto Serif TC\',serif;font-weight:900;color:var(--ink)">Top 觀看</div>'+topViews.map(vidLine).join('')+'</div><div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:12px"><div style="font-family:\'Noto Serif TC\',serif;font-weight:900;color:var(--ink)">Top 分享率</div>'+topShare.map(vidLine).join('')+'</div><div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:12px"><div style="font-family:\'Noto Serif TC\',serif;font-weight:900;color:var(--ink)">低觀看待複核</div>'+bottom.map(vidLine).join('')+'</div></div>';
+    html+='<div class="hint" style="margin-top:12px"><b>下一步：</b>把這份策略快照複製到客戶服務台 Stage 4「內容診斷」，再補客戶無法從影片看出的資料，例如真正想推的案型、諮詢流程、合規限制、成交阻力、可公開案例。</div>';
+    box.innerHTML=html;
+  };
+  window.copyStrategyPrompt=function(){
+    var p=currentPack(), a=p.a, vs=p.vs; if(!a){ if(typeof toast==='function')toast('先選客戶'); return; }
+    var lines=[]; vs.forEach(function(v){ var s=score(v); lines.push('- '+(v.title||'(未命名)')+'｜'+stageLetter(v)+'｜'+goalLetter(v)+'｜觀看 '+s.views+'｜讚 '+s.likes+'｜留言 '+s.comments+'｜分享 '+s.shares+'｜互動率 '+(s.engRate*100).toFixed(2)+'%｜Hook：'+(v.hook||'無')); });
+    var prompt='我是 ATELIER 短影音內容營運顧問。以下是客戶 '+accountName(a)+' 的影片庫資料，請幫我產出「Stage 4 內容診斷」：把 32 支影片整理成內容定位、Top/Bottom、G 階段分布、A–E 商業閉環缺口、需要問客戶補充的資料，以及下一批 10 支影片建議。\n\n'
+      +'【客戶資料】\n@'+(a.handle||'')+'｜'+(a.displayName||a.name||'')+'｜'+(a.jobTitle||'')+'｜'+(a.industry||'')+'\n\n'
+      +'【影片清單】\n'+(lines.join('\n')||'目前沒有影片')+'\n\n'
+      +'【請輸出】\n1. 目前內容定位\n2. 表現最好的 5 支與原因\n3. 低表現 5 支可能問題\n4. G1-G5 內容結構缺口\n5. A-E 商業閉環缺口\n6. 需要向客戶補問的 8 個問題\n7. 下一批 10 支影片題目與各自目標層。';
+    if(typeof copyPrompt==='function') copyPrompt(prompt,'Stage 4 內容診斷提示詞'); else if(typeof copyVal==='function') copyVal(prompt,'Stage 4 內容診斷提示詞');
+  };
+  window._strategyOpenClient=function(){ var p=currentPack(); if(typeof _openClientWindow==='function') _openClientWindow(p.id||''); else window.open('client.html','atelierClient'); };
+  window.populateStrategyAcc=populateStrategyAcc;
+  document.addEventListener('DOMContentLoaded',function(){ var t=document.querySelector('.tab[data-view="strategy"]'); if(t) t.addEventListener('click',function(){ setTimeout(function(){populateStrategyAcc();renderStrategyDiagnosis();},80); }); });
+})();
+</script>
+
+<!-- v248：從 v245 安全底回復，避開 v246 CSV 彈窗卡死；保留影片庫進階排序、目前清單跨頁批次選取、v242 完整盤點、v241 重複核對、v240 內容錯配與 v239 防快取 -->
 <div id="stickyCardSave" style="display:none;position:fixed;bottom:84px;right:14px;z-index:10000;flex-direction:column;gap:6px;background:#fff;border:1.5px solid var(--rouge);border-radius:12px;padding:10px 14px;box-shadow:0 6px 24px rgba(0,0,0,.15);max-width:280px">
   <div style="font-size:11px;color:var(--gold-dark);font-weight:700;letter-spacing:.4px;text-transform:uppercase">Quick Save · 快速儲存</div>
   <button id="stickyCardBtn" class="btn btn-go" type="button" onclick="_cardQuickAction()" style="width:100%;font-size:13px;padding:9px 14px"><svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;vertical-align:-2px;margin-right:4px"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8M7 3v5h8"/></svg>儲存這支影片＋</button>
@@ -10355,7 +10461,7 @@ document.addEventListener('DOMContentLoaded',function(){
 <script>
 /* v239：自動防舊版快取。讓桌布捷徑／瀏覽器如果抓到舊 HTML，能自己比對線上最新版並導向。 */
 (function(){
-  var ATELIER_CURRENT_VERSION='v247';
+  var ATELIER_CURRENT_VERSION='v248';
   window.ATELIER_CURRENT_VERSION=ATELIER_CURRENT_VERSION;
   function _avNum(v){v=String(v||'');var m=v.match(/v\s*(\d+)/i);return m?parseInt(m[1],10):0;}
   function _avDetect(html){html=String(html||'');var m=html.match(/id=["']verBadge["'][^>]*>\s*(v\d+)/i)||html.match(/內部版本\s+(v\d+)/i);return m?m[1]:'';}
