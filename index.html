@@ -8,7 +8,7 @@
 <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v267 (版本號僅留註解，不顯示於畫面)
+<!-- ATELIER 影片診斷工作台 · 內部版本 v268 (版本號僅留註解，不顯示於畫面)
 v267 更新（策略診斷硬修版：重做 Top/Bottom 固定列高、重綁單支核對窗與 AI 工具按鈕、補互動式 1–8 操作步驟與策略對標雷達；本版用最後一段 v267 override 強制接管策略診斷頁，避免舊版 v263/v265 殘留函式覆蓋。只動 index.html，不動 client.html、Firebase、CSV 與六守門提示詞。）
 v266 更新（hotfix：修正 v265 最後一段策略診斷事件代理少 catch，導致 v265 override script 無法執行、畫面徽章被前一段 v263 override 改回 v263，且策略診斷部分按鈕失效；本版補回 catch 並將顯示版本固定為 v266。只動 index.html，不動 client.html、Firebase、CSV 與六守門提示詞。）
 v265 更新（策略診斷按鈕修復、整齊 Top/Bottom、互動流程與策略對標雷達）：修正策略診斷 Top/Bottom 每支影片的按鈕高度與位置不一致；改用固定列高與事件代理，讓「快看／核對」「留在本頁定位」「改寫提示」以及單支核對窗內 AI 工具、去影片庫定位、獨立視窗核對、收起都可穩定點擊；將 1–8 操作流程改成可點擊小教學；新增策略對標雷達，從同產業、同職稱、同身份、A–E、G 階段、流量觸發、素材與高互動／高分享等面向找全庫可借鏡樣本。只動 index.html，不動 client.html、Firebase、CSV 與六守門提示詞。
@@ -1221,7 +1221,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v267</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v268</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -11832,6 +11832,256 @@ document.addEventListener('DOMContentLoaded',function(){
   [0,650,1400,3200,6000].forEach(function(ms){setTimeout(ensureVersion,ms)});
 })();
 </script>
+
+<!-- ===== ATELIER v268 PATCH ▽ BEGIN ===== -->
+<!-- 策略診斷優化：退紅校準 + 全局診斷書（純增量，勿刪原碼） -->
+<!-- Strategy polish: calmer UI + one-click business-loop brief (additive only) -->
+<style id="v268Patch"> 到最後一個 </script>）
+           貼到 v267 檔案的 </body> 之前。不要改你原本任何程式碼。
+     原則：純增量。只「新增」樣式與函式，不刪、不改你的
+           _strategyHydrate / _strategyCaseValue / Firebase / CSV / 六守門提示詞。
+     ============================================================ -->
+
+<style id="v268Patch">
+/* ① 退紅留白：把策略診斷區裡的粉紅色（--warm）整批換成安靜的米色，
+      酒紅只留給「標題」與「按鈕」當重點，畫面就不會滿江紅。 */
+#strategyBox{ --warm:#FBF7F2 !important; }
+#strategyFloatPanel{ --warm:#FBF7F2 !important; }
+#strategyBox .strat-client-card-v259{ background:#FFFDFC !important; border-color:#ECE6DC !important; }
+#strategyBox .strat-list-card-v264{ box-shadow:0 6px 18px rgba(80,40,12,.05) !important; }
+
+/* ② 標籤退場：成功樣本／高觀看低轉化…改成灰底圓角小字，明確「不可點的註解」 */
+#strategyBox .strat-label-v264,
+#strategyBox .strat-case-tag-v263,
+#strategyBox .v262-tag,
+#strategyFloatPanel .strat-label-v264,
+#strategyFloatPanel .strat-case-tag-v263,
+#strategyFloatPanel .v262-tag{
+  border:0 !important;
+  background:#F1ECE4 !important;
+  color:#8A7274 !important;
+  font-weight:500 !important;
+  font-size:11px !important;
+  border-radius:6px !important;
+  padding:2px 8px !important;
+  cursor:default !important;
+  letter-spacing:.2px;
+  box-shadow:none !important;
+}
+
+/* ③ 按鈕進場：快看／本頁定位／改寫提示…酒紅外框、可點、滑過變實心 */
+#strategyBox .strat-action-btn-v264,
+#strategyFloatPanel .sf-tools button,
+#strategyFloatPanel .sf-tools .demo-btn{
+  cursor:pointer !important;
+  background:#fff !important;
+  color:#A51820 !important;
+  border:1.5px solid #A51820 !important;
+  border-radius:8px !important;
+  font-weight:700 !important;
+  padding:7px 13px !important;
+  transition:background .15s, color .15s !important;
+}
+#strategyBox .strat-action-btn-v264:hover,
+#strategyFloatPanel .sf-tools button:hover{ background:#A51820 !important; color:#fff !important; }
+#strategyBox .strat-action-btn-v264.primary{ background:#A51820 !important; color:#fff !important; }
+#strategyBox .strat-action-btn-v264.primary:hover{ background:#8E141B !important; }
+
+/* ④ 修被卡住：標籤列強制換行、數據列不溢出、核對窗浮在最上層不再壓到欄位 */
+#strategyBox .strat-label-row-v264{ flex-wrap:wrap !important; gap:5px !important; }
+#strategyBox .strat-meta-row-v264{ word-break:break-word !important; }
+#strategyFloatPanel{
+  box-shadow:0 24px 60px rgba(60,20,20,.28) !important;
+  border:1px solid #E8C9C6 !important;
+  border-radius:16px !important;
+  max-width:560px !important;
+  z-index:99990 !important;
+  background:#FFFDFC !important;
+}
+
+/* ⑤ 全局診斷書按鈕 + 彈窗（精品酒紅金黃） */
+#v268DiagBtn{
+  display:inline-flex; align-items:center; gap:6px;
+  border:1.5px solid #A51820; background:#fff; color:#A51820;
+  border-radius:10px; padding:9px 14px; font-size:13px; font-weight:800;
+  cursor:pointer; margin:0 0 14px; transition:background .15s,color .15s;
+}
+#v268DiagBtn:hover{ background:#A51820; color:#D4A574; }
+#v268DiagBackdrop{ position:fixed; inset:0; background:rgba(42,16,18,.45); z-index:99995; display:none; align-items:center; justify-content:center; padding:20px; }
+#v268DiagModal{
+  width:720px; max-width:100%; max-height:88vh; overflow:auto;
+  background:#FDFBF8; border:1px solid #D4A574; border-radius:18px;
+  box-shadow:0 30px 70px rgba(60,20,20,.35); padding:22px 24px;
+}
+#v268DiagModal h3{ margin:0 0 2px; font-family:"Noto Serif TC",serif; color:#A51820; font-size:21px; }
+#v268DiagModal .sub{ color:#8A7274; font-size:12.5px; margin-bottom:14px; }
+#v268DiagModal .cards{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; margin-bottom:14px; }
+#v268DiagModal .cards .c{ border:1px solid #ECE6DC; background:#fff; border-radius:12px; padding:11px 12px; font-size:12.5px; line-height:1.7; color:#5C4248; }
+#v268DiagModal .cards .c b{ display:block; color:#A51820; font-size:12.5px; margin-bottom:4px; font-family:"Noto Serif TC",serif; }
+#v268DiagModal textarea{
+  width:100%; min-height:240px; resize:vertical;
+  border:1px solid #E8E3DA; border-radius:12px; background:#fff;
+  padding:14px; font-size:12.8px; line-height:1.75; color:#2A1A1C;
+  font-family:"Noto Sans TC",system-ui,sans-serif;
+}
+#v268DiagModal .foot{ display:flex; flex-wrap:wrap; gap:9px; margin-top:14px; align-items:center; }
+#v268DiagModal .foot .hint{ color:#8A7274; font-size:11.5px; }
+.v268btn{ cursor:pointer; border-radius:10px; padding:10px 16px; font-size:13px; font-weight:800; border:1.5px solid #A51820; }
+.v268btn.gold{ background:#D4A574; color:#3A1E0A; border-color:#C79553; }
+.v268btn.gold:hover{ background:#C79553; }
+.v268btn.line{ background:#fff; color:#A51820; }
+.v268btn.line:hover{ background:#A51820; color:#fff; }
+.v268btn.ghost{ background:transparent; color:#8A7274; border-color:#E8E3DA; }
+</style>
+
+<script id="v268PatchJS">
+(function(){
+  function H(id){ return document.getElementById(id); }
+  function has(n){ return typeof window[n]==='function'; }
+  function call(n,a){ try{ return window[n](a); }catch(e){ return null; } }
+  function toastMsg(m){ if(has('toast')) window.toast(m); else console.log('[v268]',m); }
+  function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c];}); }
+
+  /* ---- 全局數據打包：撈該帳號所有影片，排 Top/Bottom，算分布與缺口 ---- */
+  window._strategyExportGlobalDiagnosis = function(id){
+    var a=null;
+    if(id!=null && has('accById')) a=window.accById(id);
+    if(!a && has('getStratAcc')) a=window.getStratAcc();
+    if(!a){ toastMsg('請先在策略診斷選一位客戶'); return; }
+
+    var vids = has('videosOf') ? (window.videosOf(a)||[]) : [];
+    if(!vids.length){ toastMsg('這位客戶還沒有建檔影片'); return; }
+
+    function scoreOf(v){ try{ return has('sc')? window.sc(v) : {views:+v.views||0,shareRate:0,engRate:0}; }catch(e){ return {views:+v.views||0,shareRate:0,engRate:0}; } }
+    function caseOf(v,s){ try{ return has('_strategyCaseValue')? window._strategyCaseValue(v,s) : {score:0,tags:[]}; }catch(e){ return {score:0,tags:[]}; } }
+    function num(n){ return Number(n||0)||0; }
+    function theme(v){ return v.themeName||v.theme||v.topic||'（未填主題）'; }
+
+    var rows = vids.map(function(v){
+      var s=scoreOf(v), cv=caseOf(v,s), views=num(v.views);
+      var share = s.shareRate || (views? num(v.shares)/views*100 : 0);
+      return { v:v, cv:cv, views:views, share:share, score:num(cv.score) };
+    });
+
+    var top = rows.slice().sort(function(x,y){ return (y.score-x.score)||(y.share-x.share)||(y.views-x.views); }).slice(0,3);
+    var bottom = rows.slice().sort(function(x,y){ return (x.views-y.views)||(x.score-y.score); }).slice(0,3);
+
+    function tally(key){ var m={}; rows.forEach(function(r){ var k=String(r.v[key]||'—').trim()||'—'; m[k]=(m[k]||0)+1; }); return m; }
+    function distStr(m){ return Object.keys(m).sort().map(function(k){return k+'×'+m[k];}).join('、')||'—'; }
+    function miss(all,m){ return all.filter(function(k){ return !Object.keys(m).some(function(kk){return kk.indexOf(k)===0;}); }); }
+
+    var gDist=tally('stage'), aDist=tally('goal');
+    var gMiss=miss(['G1','G2','G3','G4','G5'],gDist), aMiss=miss(['A','B','C','D','E'],aDist);
+    var todo = rows.filter(function(r){ var v=r.v; return !(v.themeName||v.theme||v.themeId) || !v.goal || !v.stage || !v.hook; }).length;
+
+    var name=a.displayName||a.name||a.handle||'（未命名客戶）';
+    var handle=a.handle||'', industry=a.industry||a.domain||'—', job=a.jobTitle||'—';
+
+    /* 局面卡（白話判斷，heuristic） */
+    var situation;
+    if((gDist['G4']||0) >= rows.length*0.5) situation='內容大量集中在知識教育（G4），信任證據、服務流程與委任前疑慮拆解偏少。下一步不該只追更多觀看，而是補信任與轉化承接內容。';
+    else if(aMiss.indexOf('C')>=0||aMiss.indexOf('D')>=0) situation='目前缺少「信任層（C）／諮詢轉化層（D）」內容，觀眾看得到專業、卻不容易走到諮詢。建議補上信任證據與服務流程透明化。';
+    else situation='內容已有基礎、層級分布尚均衡。優先把高表現樣本的結構複製到尚弱的主題，並補齊待補欄位讓判斷更準。';
+
+    function fmtTop(r){ return '・'+esc(theme(r.v))+'（'+r.views.toLocaleString()+' 觀看｜分享'+r.share.toFixed(2)+'%｜'+(r.cv.tags||[]).slice(0,2).join('／')+'）\n   Hook：'+esc((r.v.hook||'—')).slice(0,60); }
+    function fmtBottom(r){ return '・'+esc(theme(r.v))+'（'+r.views.toLocaleString()+' 觀看｜卡在 '+(r.v.stage||'?')+' / 目標 '+(r.v.goal||'?')+'）'; }
+
+    /* 封包成「商業閉環診斷提示詞」 */
+    var prompt =
+'【ATELIER 商業閉環診斷書 · 待生成】\n'+
+'你是 ATELIER 短影音內容營運顧問。請根據以下「策略診斷工作台」自動撈取的數據，產出兩個版本：\n'+
+'（1）客戶版內容診斷——白話、有溫度、可對客戶說、能建立信任。\n'+
+'（2）顧問版判斷——內部用，含明確缺口、優先順序與下一步動作。\n'+
+'判準請依 ATELIER 自媒體商業閉環知識地圖：A–E 為合作目標層、G1–G5 為內容工具箱。\n\n'+
+'──── 客戶基本資料 ────\n'+
+'名稱：'+name+'\n帳號：'+handle+'\n產業：'+industry+'\n職稱：'+job+'\n影片總數：'+rows.length+' 支　待補欄位：'+todo+' 支\n\n'+
+'──── Top 3 表現（可複製樣本）────\n'+top.map(fmtTop).join('\n')+'\n\n'+
+'──── Bottom 3 待複核（可能卡點）────\n'+bottom.map(fmtBottom).join('\n')+'\n\n'+
+'──── 層級分布 ────\nG 階段：'+distStr(gDist)+'\nA–E 目標：'+distStr(aDist)+'\n\n'+
+'──── 系統判斷的缺口 ────\n'+
+'內容缺口（沒有或極少的 G 階段）：'+(gMiss.join('、')||'無明顯缺口')+'\n'+
+'商業閉環缺口（沒有或極少的 A–E 目標）：'+(aMiss.join('、')||'無明顯缺口')+'\n'+
+'局面判斷：'+situation+'\n\n'+
+'──── 請你接著產出 ────\n'+
+'1. 客戶版內容診斷：目前定位判斷、受眾心理洞察、內容缺口、轉換缺口、優先改善順序。\n'+
+'2. 顧問版判斷：同上但更直接，標出最該先補的 1–2 個缺口。\n'+
+'3. 補問客戶清單：列出影片看不出來、下次會議必問的 5 個問題（真正想推的服務、最想吸引的客群、成交卡在哪、可公開案例、合規限制）。\n'+
+'4. 下一批 10 支影片方向：每支含〔題目〕〔對應 A–E〕〔對應 G1–G5〕〔為什麼拍〕〔優先順序〕。\n';
+
+    /* ---- 彈窗 ---- */
+    var bd=H('v268DiagBackdrop');
+    if(!bd){
+      bd=document.createElement('div'); bd.id='v268DiagBackdrop';
+      bd.innerHTML='<div id="v268DiagModal"></div>';
+      document.body.appendChild(bd);
+      bd.addEventListener('click',function(e){ if(e.target===bd) bd.style.display='none'; });
+    }
+    var m=H('v268DiagModal');
+    m.innerHTML=
+      '<h3>✨ 商業閉環診斷書 · '+esc(name)+'</h3>'+
+      '<div class="sub">系統已自動撈取 '+rows.length+' 支影片打包。下面提示詞可直接編輯，再一鍵複製貼給 AI，或送客戶服務台 Stage 4。</div>'+
+      '<div class="cards">'+
+        '<div class="c"><b>目前局面</b>'+esc(situation)+'</div>'+
+        '<div class="c"><b>系統判斷</b>Top 主題：'+esc(theme(top[0].v))+'<br>缺口：'+(gMiss.concat(aMiss).join('、')||'無')+'<br>待補：'+todo+' 支</div>'+
+        '<div class="c"><b>下一步任務</b>① 複製診斷書 → 貼 Stage 4<br>② 產補問清單給下次會議<br>③ 生下一批 10 支方向 → Stage 6</div>'+
+      '</div>'+
+      '<textarea id="v268DiagText">'+esc(prompt)+'</textarea>'+
+      '<div class="foot">'+
+        '<button class="v268btn gold" id="v268Copy">一鍵複製完整診斷提示詞</button>'+
+        '<button class="v268btn line" id="v268Send">送客戶服務台 Stage 4</button>'+
+        '<button class="v268btn ghost" id="v268Close">關閉</button>'+
+        '<span class="hint">可先編輯再複製；複製後到客戶服務台 Stage 4 貼上即可產出客戶版／顧問版。</span>'+
+      '</div>';
+    bd.style.display='flex';
+
+    H('v268Copy').onclick=function(){
+      var t=H('v268DiagText').value;
+      function done(){ toastMsg('已複製完整診斷提示詞'); }
+      if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(t).then(done,function(){ if(has('_copyFallback')){window._copyFallback(t);done();} }); }
+      else if(has('_copyFallback')){ window._copyFallback(t); done(); }
+      else { H('v268DiagText').select(); document.execCommand('copy'); done(); }
+    };
+    H('v268Send').onclick=function(){
+      var t=H('v268DiagText').value;
+      if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(t); }
+      if(has('_strategySendToClientDesk')){ window._strategySendToClientDesk(); toastMsg('已複製並開啟客戶服務台 Stage 4'); }
+      else if(has('_strategyOpenClient')){ window._strategyOpenClient(); }
+      else { toastMsg('已複製，請切到客戶服務台 Stage 4 貼上'); }
+    };
+    H('v268Close').onclick=function(){ bd.style.display='none'; };
+  };
+
+  /* ---- 把「✨ 一鍵打包全局數據」按鈕插到策略診斷頁頂端（idempotent）---- */
+  function injectBtn(){
+    var box=H('strategyBox');
+    if(!box || box.offsetParent===null) return;
+    if(H('v268DiagBtn')) return;
+    var btn=document.createElement('button');
+    btn.id='v268DiagBtn';
+    btn.innerHTML='✨ 一鍵打包全局數據：產出商業閉環診斷書';
+    btn.onclick=function(){
+      var a=has('getStratAcc')?window.getStratAcc():null;
+      window._strategyExportGlobalDiagnosis(a?a.id:null);
+    };
+    box.insertBefore(btn, box.firstChild);
+  }
+  var tries=0;
+  var iv=setInterval(function(){ injectBtn(); if(H('v268DiagBtn')||++tries>40) clearInterval(iv); }, 700);
+  document.addEventListener('click',function(e){
+    var t=e.target.closest&&e.target.closest('[data-tab="strategy"]');
+    if(t) setTimeout(injectBtn,300);
+  });
+})();
+</script>
+<!-- ----- v268 變更摘要 / Change summary -----
+     1. 視覺退紅：策略診斷區 --warm 改米色；標籤=灰底註解、按鈕=酒紅可點。
+        Calmer UI: tags become muted chips, buttons become clear rouge actions.
+     2. 新增 _strategyExportGlobalDiagnosis(id)：自動打包該帳號 Top/Bottom、G 與 A–E 分布、缺口、待補，
+        產出可編輯『商業閉環診斷書』提示詞，可一鍵複製或送客戶服務台 Stage 4。
+        Adds a one-click global packer -> editable business-loop brief -> copy or send to client desk Stage 4.
+     3. 純增量注入；未改 _strategyHydrate / _strategyCaseValue / Firebase / CSV / 六守門提示詞。
+        Pure additive injection; existing core logic untouched. -->
+<!-- ===== ATELIER v268 PATCH △ END ===== -->
 
 </body>
 </html>
