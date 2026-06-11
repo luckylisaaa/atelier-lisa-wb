@@ -217,7 +217,7 @@ details.cat .cat-body{padding:14px 15px}
 @media(max-width:520px){
   .cs-banner{gap:6px;padding:7px 10px;font-size:11.5px;align-items:center}
   .cs-banner .hs{font-size:10.5px;border:1px solid var(--border);border-radius:999px;padding:3px 8px;background:#fff}
-  .cs-banner .mini-btn{font-size:0;padding:5px 8px;gap:0}
+  .cs-banner .mini-btn[data-short]{font-size:0!important;padding:5px 8px;gap:0}
   .cs-banner .mini-btn::after{font-size:11px;content:attr(data-short)}
   .cs-banner .savestate{font-size:0;margin-left:auto}
   .cs-banner .savestate .save-dot{font-size:0}
@@ -430,14 +430,14 @@ details.cat .cat-body{padding:14px 15px}
 /* 健康評分雷達圖 */
 .health-radar-wrap{background:#FFFCFB;border:1px solid #E8E3DA;border-radius:14px;padding:18px;margin:14px 0;display:flex;justify-content:center}
 .health-radar-svg{max-width:380px;width:100%;height:auto}
-/* cs-v3.4 批次① · D onboarding 提示 + E 工作台跳轉鈕 */
+/* cs-v3.7 批次① · D onboarding 提示 + E 工作台跳轉鈕 */
 .ob-next{display:inline-flex;align-items:center;gap:5px;margin-left:8px;padding:4px 11px;border-radius:99px;background:#FAE8EA;color:#A51820;font-size:12px;font-weight:600;cursor:pointer;border:1px solid #F0D2D6;transition:all .15s ease}
 .ob-next:hover{background:#A51820;color:#fff;border-color:#A51820}
 .ob-next.done{background:#EEF3EF;color:#4A6552;border-color:#DBE6DD}
 .ob-next.done:hover{background:#4A6552;color:#fff;border-color:#4A6552}
 .vc-jump{display:inline-flex;align-items:center;gap:4px;margin-left:8px;padding:3px 9px;border-radius:8px;background:#F4F1EC;color:#8A7274;font-size:11.5px;font-weight:600;text-decoration:none;border:1px solid #E8E3DA;transition:all .15s ease}
 .vc-jump:hover{background:#A51820;color:#fff;border-color:#A51820}
-/* cs-v3.4 批次② · 經營儀表板 + 選客戶頁總覽縮圖 */
+/* cs-v3.7 批次② · 經營儀表板 + 選客戶頁總覽縮圖 */
 .cli-summary{display:flex;align-items:center;gap:20px;flex-wrap:wrap;background:#fff;border:1px solid #E8E3DA;border-radius:14px;padding:16px 22px;margin-bottom:18px;box-shadow:0 2px 10px rgba(42,26,28,.04)}
 .clis-item{text-align:center;min-width:64px}
 .clis-num{font-family:"Cormorant Garamond","Noto Serif TC",serif;font-size:30px;font-weight:700;color:#A51820;line-height:1}
@@ -499,12 +499,12 @@ details.cat .cat-body{padding:14px 15px}
 .dc-trend{font-size:11px;font-weight:700;white-space:nowrap}
 .dc-trend.up{color:#4A6552}.dc-trend.down{color:#A51820}
 @media(max-width:820px){.dash-kpis{grid-template-columns:repeat(2,1fr)}.dash-grid{grid-template-columns:1fr}}
-/* cs-v3.4 批次③ · ①②③④ 引導句 + 單項研究鈕 */
+/* cs-v3.7 批次③ · ①②③④ 引導句 + 單項研究鈕 */
 .s1guide{margin:-10px 0 20px;padding:11px 16px;background:#FAF3F4;border-left:3px solid #A51820;border-radius:0 9px 9px 0;font-size:13px;color:#5C4248;line-height:1.65;font-family:'Noto Sans TC',sans-serif}
 .hr-study{display:inline-flex;align-items:center;gap:3px;margin-left:6px;padding:2px 9px;border-radius:99px;background:#FAF3F4;border:1px solid #E8D7D9;color:#A51820;font-size:11px;cursor:pointer;font-family:inherit;vertical-align:middle}
 .hr-study:hover{background:#A51820;color:#fff;border-color:#A51820}
 .hr-study .ic{width:11px;height:11px}
-/* cs-v3.4 · A 影片表現對標 */
+/* cs-v3.7 · A 影片表現對標 */
 .vbm-card .vbm-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:14px 0 4px}
 .vbm-kpi{background:#FAF6F0;border:1px solid #EEE7DC;border-radius:10px;padding:12px 8px;text-align:center}
 .vbm-kpi b{display:block;font-family:'Cormorant Garamond',serif;font-size:23px;color:#A51820;line-height:1.1;font-weight:600}
@@ -519,6 +519,30 @@ details.cat .cat-body{padding:14px 15px}
 @media(max-width:560px){.vbm-card .vbm-kpis{grid-template-columns:repeat(2,1fr)}}
 .btn .btn-2l{display:inline-flex;flex-direction:column;align-items:center;line-height:1.3}
 .btn .btn-sub{font-size:11px;font-weight:400;opacity:.85;margin-top:1px}
+/* cs-v3.7 · 評分客戶/顧問雙 tab + 對比彈窗 */
+.hnote-tabs{display:flex;gap:8px;align-items:center;margin:16px 0 4px;flex-wrap:wrap}
+.hnote-tab{font-size:12px;font-weight:700;border:1px solid #DCC8CB;background:transparent;color:#7A1518;-webkit-text-fill-color:#7A1518;border-radius:999px;padding:6px 16px;cursor:pointer;font-family:inherit}
+.hnote-tab.on{background:#A51820;color:#fff;-webkit-text-fill-color:#fff;border-color:#A51820}
+.hnote-tab.compare{margin-left:auto;border-style:dashed}
+.health-rows.mode-client .nc-advisor{display:none}
+.health-rows.mode-advisor .nc-client{display:none}
+.health-rows.mode-client .health-note-grid,.health-rows.mode-advisor .health-note-grid{grid-template-columns:1fr}
+.hcmp-overlay{position:fixed;inset:0;background:rgba(42,26,28,.46);z-index:99999;display:flex;align-items:flex-start;justify-content:center;padding:30px 14px;overflow:auto}
+.hcmp-paper{background:#FDFBF8;border:1px solid #E8E3DA;border-radius:14px;max-width:860px;width:100%;padding:24px 26px;box-shadow:0 18px 50px rgba(42,26,28,.22)}
+.hcmp-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.hcmp-title{font-family:'Noto Serif TC',serif;font-size:20px;font-weight:900;color:#2A1A1C}
+.hcmp-item{border-top:1px solid #F0E6DE;padding:14px 0}
+.hcmp-il{font-weight:900;color:#2A1A1C;font-size:14px;margin-bottom:8px}
+.hcmp-il .sc-badge{font-family:'Cormorant Garamond',serif;color:#A51820;margin-left:8px;font-size:15px}
+.hcmp-cols{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.hcmp-col .hk{font-family:'Cormorant Garamond',serif;font-size:10px;letter-spacing:2px;color:#D4A574;margin-bottom:4px}
+.hcmp-col .tx{font-size:13px;line-height:1.7;color:#5C4248;white-space:pre-wrap}
+@media(max-width:560px){.hcmp-cols{grid-template-columns:1fr}}
+/* cs-v3.7 · 客戶快速直達連結 */
+.clinks-card .clinks-row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.clink{display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:700;text-decoration:none;border:1px solid #DCC8CB;color:#7A1518;-webkit-text-fill-color:#7A1518;background:transparent;border-radius:999px;padding:7px 15px;cursor:pointer;font-family:inherit}
+.clink:hover{background:#FAF3F4}
+.clink.edit{border-style:dashed;color:#8A7274;-webkit-text-fill-color:#8A7274;margin-left:auto}
 </style>
 </head>
 <body>
@@ -555,7 +579,7 @@ details.cat .cat-body{padding:14px 15px}
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">客戶服務台</span></span>
-    <span id="verBadge">cs-v3.4</span>
+    <span id="verBadge">cs-v3.7</span>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button type="button" id="popoutBtn" class="popout-btn" title="把客戶服務台開成獨立小視窗"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6"/><path d="M20 4l-9 9"/><path d="M14 12v7H5V10h7"/></svg>小視窗</button>
@@ -661,7 +685,7 @@ var ICN={
   dot:    '<svg class="ic" width="8" height="8" viewBox="0 0 8 8"><circle cx="4" cy="4" r="3" fill="currentColor"/></svg>',
   save:    _svg('<path d="M5 4h11l4 4v12H5z"/><path d="M8 4v5h8V4"/><circle cx="12" cy="14" r="2.2"/>',13,13)
 };
-/* === cs-v3.4 批次①：自繪 icon 擴充（取代 emoji；width=1em 跟著字級縮放）=== */
+/* === cs-v3.7 批次①：自繪 icon 擴充（取代 emoji；width=1em 跟著字級縮放）=== */
 function _svgi(d){ return '<svg class="ic" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">'+d+'</svg>'; }
 ICN.star=_svgi('<path d="M12 3l2.47 5.46 5.96.62-4.43 4.02 1.24 5.86L12 16.9 6.76 19.96 8 14.1 3.57 10.08l5.96-.62z"/>');
 ICN.pin=_svgi('<path d="M12 21s6.5-5.2 6.5-10A6.5 6.5 0 1 0 5.5 11c0 4.8 6.5 10 6.5 10z"/><circle cx="12" cy="10.5" r="2.3"/>');
@@ -898,7 +922,7 @@ function _accPush(){
   if(!accounts||!accounts.length) return;
   try{ localStorage.setItem(ACC_LS_KEY, JSON.stringify(accounts)); }catch(e){}
   _fbStatus('syncing','儲存中…');
-  /* cs-v3.4 資料安全：寫回前先抓雲端最新，用 {...雲端,...本機} 合併→永不刪掉工作台欄位；雲端有本機沒有的帳號也保留。 */
+  /* cs-v3.7 資料安全：寫回前先抓雲端最新，用 {...雲端,...本機} 合併→永不刪掉工作台欄位；雲端有本機沒有的帳號也保留。 */
   var _ref=_fbDB.collection(ACC_COLLECTION).doc(ATELIER_DOC_ID);
   _ref.get().then(function(_doc){
     var _cloud=(_doc&&_doc.exists&&_doc.data()&&Array.isArray(_doc.data().accounts))?_doc.data().accounts:[];
@@ -1091,7 +1115,7 @@ function renderBanner(flash){
     +'<button class="mini-btn" data-short="階段" onclick="openStageOverview()" title="只查看目前這個階段的資料">查看此階段</button>'
     +'<button class="mini-btn" data-short="上一步" onclick="undoLast()"'+(canUndo?'':' disabled')+' title="把目前畫面回退到上一個自動暫存點">'+ICN.undo+' 上一步'+(canUndo?(' ('+(_undoStack.length-1)+')'):'')+'</button>'
     +'<span class="savestate'+(flash?' flash':'')+'" id="ssBadge" title="'+esc(sstxt)+'">'+(flash?ICN.check:'<span class="save-dot"></span>')+' <span class="save-text">'+esc(sstxt)+'</span></span>';
-  /* cs-v3.4 批次① · D：onboarding 下一步提示 */
+  /* cs-v3.7 批次① · D：onboarding 下一步提示 */
   try{
     var _steps=[['stage1_initial','①','初診'],['stage2_filing','②','建檔'],['stage3_interview','③','問診']];
     var _next=_steps.filter(function(st){ return flowStatus(a,st[0])!=='done'; })[0];
@@ -1185,7 +1209,7 @@ function pickClient(id){
 }
 
 
-/* ═══════════ cs-v3.4 批次②：B 經營儀表板 + G 跨客戶洞察 ═══════════ */
+/* ═══════════ cs-v3.7 批次②：B 經營儀表板 + G 跨客戶洞察 ═══════════ */
 var DASH_FLOW=[['stage1_initial','初診'],['stage2_filing','建檔'],['stage3_interview','問診'],['stage4_diagnosis','診斷'],['stage5_inventory','盤點'],['stage6_planning','企劃'],['stage7_delivery','交付']];
 function _clientProgress(a){
   var done=0,curIdx=-1;
@@ -1673,9 +1697,9 @@ function renderStage2(){
     '<div class="page-head"><div class="ph-en">STAGE ② · CLIENT FILING</div><h2 class="ph-title">客戶資料建檔</h2></div>'
     +stageHead('把客戶變成工作台裡可被分析、可被比對的完整資料物件。帳號管理裡若已有 ICP／版面解析，會自動帶入、不必重填。','stage2_filing')
     +'<div class="section-card ai-fill"><h3>'+ICN.spark+'用 AI 一次填好（建議先做這步）</h3>'
-    +'<div class="sc-note">不用一格一格打字。按下產生提示詞 → 丟到 ChatGPT／Claude／Gemini，它會幫你查公開資料、把 8 大類欄位填成一張「建檔卡」→ 你把卡貼回下面 → 一鍵填入整張表單，再逐格檢查、修正，最後按「儲存客戶資料」。</div>'
+    +'<div class="sc-note">不用一格一格打字。按下產生提示詞 → 丟到 ChatGPT／Claude／Gemini，它會幫你查公開資料、把 8 大類欄位填成一張「建檔卡」→ 你把卡貼回下面 → 一鍵填入整張表單，再逐格檢查、修正，最後按「儲存客戶資料」。<br><br>查不到、或想更準時，改用「產生訪談提示詞」：AI 會先給你一份問當事人的訪談題，你訪談完把回答貼回 AI，它再整理成同一張「建檔卡」貼回下面。</div>'
     +'<div class="fld"><label>（選填）任何你已經知道、想讓 AI 一起參考的資料</label><textarea id="s2extra" placeholder="例如：客戶官網連結、主力服務、之前聊到的重點…（沒有也可以留空）"></textarea></div>'
-    +'<button class="btn btn-gold" onclick="buildStage2FillPrompt()">'+ICN.prompt+'產生建檔提示詞</button>'
+    +'<button class="btn btn-gold" onclick="buildStage2FillPrompt()">'+ICN.prompt+'<span class="btn-2l"><span>產生建檔提示詞</span><span class="btn-sub">AI 查公開資料一次填好</span></span></button>'+'<button class="btn btn-go" style="margin-top:8px" onclick="buildStage2InterviewPrompt()">'+ICN.prompt+'<span class="btn-2l"><span>產生訪談提示詞</span><span class="btn-sub">問當事人 → AI 整理成建檔卡</span></span></button>'
     +'<div class="fld" style="margin-top:12px"><label>把 AI 填好的「建檔卡」貼回這裡</label><textarea class="paste-box" id="s2card" placeholder="貼回 ===ATELIER 客戶建檔卡=== 那整段…"></textarea></div>'
     +'<button class="btn btn-go" onclick="parseStage2Card()">解析並填入下面表單</button>'
     +'<div id="s2parseMsg" style="font-size:12px;margin-top:8px;line-height:1.7"></div></div>'
@@ -1726,6 +1750,38 @@ function buildStage2FillPrompt(){
     +'4. 第一行寫 ===ATELIER 客戶建檔卡=== ，最後一行寫 ===卡片結束=== 。\n\n'
     +'請開始。';
   copyPrompt(p,'建檔提示詞（AI 一次填好）');
+}
+function buildStage2InterviewPrompt(){
+  var a=curAcc(); if(!a){ toast(ICN.warn+' 尚未選定客戶'); return; }
+  var f=ensureFlow(a);
+  var extra=($('s2extra')||{value:''}).value.trim();
+  var known=[];
+  if(a.handle) known.push('品牌/帳號：'+a.handle);
+  if(a.displayName) known.push('顯示名稱：'+a.displayName);
+  if(a.industry) known.push('產業：'+a.industry);
+  if(a.jobTitle) known.push('職稱：'+a.jobTitle);
+  var s1=(f.stage1_initial&&f.stage1_initial.data&&f.stage1_initial.data.result)||'';
+  var catList=PROFILE_CATS.map(function(cat){
+    return cat[1]+'\n'+cat[2].map(function(fd){ return '  - '+fd[1]; }).join('\n');
+  }).join('\n');
+  var p='我是內容顧問，要訪談我的客戶（當事人本人，通常不懂行銷）來幫他建檔。請分兩部分幫我：\n\n'
+   +'【第一部分：訪談題】\n'
+   +'請依下面「8 大類欄位」設計一份訪談題綱，讓我可以直接拿去問當事人。要求：\n'
+   +'- 用白話、口語的問法，避免行銷術語，當事人聽得懂就好。\n'
+   +'- 每一大類下出 2–4 個問題，問題要能引導出該類欄位需要的內容。\n'
+   +'- 適度追問「為什麼」「能不能舉個例子」，挖出他自己沒說清楚的價值。\n\n'
+   +'【第二部分：整理成建檔卡】\n'
+   +'等我把當事人的回答貼回來給你之後，請把回答整理、潤飾成下面格式的《ATELIER 客戶建檔卡》：\n'
+   +'- 用「欄位名稱：值」格式，一行一個欄位，欄位名稱一字不差照抄下面的字。\n'
+   +'- 把當事人口語的回答，翻成清楚、專業但好懂的市場語言（這就是你幫我整理的診斷文字）。\n'
+   +'- 當事人沒提到、答案不足的欄位填「待詢」，但每個欄位都要出現一行。\n'
+   +'- 第一行寫 ===ATELIER 客戶建檔卡=== ，最後一行寫 ===卡片結束=== 。\n\n'
+   +'【已知資訊】\n'+(known.length?known.join('\n'):'（很少，待訪談補齊）')+'\n\n'
+   +(s1?('【會前初診觀察（可參考）】\n'+s1+'\n\n'):'')
+   +(extra?('【我額外提供的資料】\n'+extra+'\n\n'):'')
+   +'【8 大類欄位】\n'+catList+'\n\n'
+   +'請先只給我【第一部分：訪談題】。等我貼回當事人的回答，你再給【第二部分：建檔卡】。';
+  copyPrompt(p,'建檔訪談提示詞（問當事人 → 整理成建檔卡）');
 }
 function parseStage2Card(){
   var a=curAcc(); if(!a){ toast(ICN.warn+' 尚未選定客戶'); return; }
@@ -2080,9 +2136,10 @@ function openHealthEditor(pref){
   var rows=items.map(function(it){
     var scs=[0,1,2,3,4,5].map(function(n){ return '<button class="sc'+(n===0?' z':'')+(it.score===n?' on':'')+'" data-hid="'+it.id+'" data-hsc="'+n+'">'+(n===0?'—':n)+'</button>'; }).join('');
     return '<div class="health-row"><div class="health-title-row"><span class="hr-lab">'+it.id+'. '+esc(it.label)+' <button type="button" class="hr-info" onclick="openHealthItemInfo('+it.id+')" title="看這項評分的底層邏輯">ⓘ</button><button type="button" class="hr-study" onclick="genHealthItemPrompt('+it.id+')" title="只研究這一項，產生單項深入提示詞（可預覽/編輯/複製）">'+ICN.search+'研究</button></span><span class="hr-scores">'+scs+'</span></div>'
-      +'<div class="health-note-grid"><div class="health-note-card"><div class="hk">CLIENT VERSION</div><textarea class="health-note" id="hnc-'+it.id+'" placeholder="客戶版備註：給客戶看的乾淨理由…">'+esc(it.noteClient||'')+'</textarea></div>'
-      +'<div class="health-note-card"><div class="hk">ADVISOR VERSION</div><textarea class="health-note" id="hna-'+it.id+'" placeholder="顧問版備註：內部完整判斷與下一步建議…">'+esc(it.noteAdvisor||'')+'</textarea></div></div></div>';
+      +'<div class="health-note-grid"><div class="health-note-card nc-client"><div class="hk">CLIENT VERSION</div><textarea class="health-note" id="hnc-'+it.id+'" placeholder="客戶版備註：給客戶看的乾淨理由…">'+esc(it.noteClient||'')+'</textarea></div>'
+      +'<div class="health-note-card nc-advisor"><div class="hk">ADVISOR VERSION</div><textarea class="health-note" id="hna-'+it.id+'" placeholder="顧問版備註：內部完整判斷與下一步建議…">'+esc(it.noteAdvisor||'')+'</textarea></div></div></div>';
   }).join('');
+  var noteTabsHTML='<div class="hnote-tabs"><button class="hnote-tab on" data-mode="client" onclick="healthNoteMode(this)">客戶版</button><button class="hnote-tab" data-mode="advisor" onclick="healthNoteMode(this)">顧問版</button><button class="hnote-tab compare" onclick="openHealthCompare()">'+ICN.search+' 對比</button></div>';
   var hs=healthTotal(a);
   sh.innerHTML='<div style="padding:6px 4px 4px;position:relative"><button onclick="closeModal()" style="position:absolute;top:0;right:4px;background:none;border:none;color:var(--sub);cursor:pointer;line-height:1;padding:4px" title="關閉">'+ICN.close+'</button>'
     +'<div style="font-family:Noto Serif TC,serif;font-size:22px;font-weight:900;color:#2A1A1C;padding-right:30px">內容健康分數</div>'
@@ -2090,11 +2147,37 @@ function openHealthEditor(pref){
     +timeBox
     +'<button class="btn btn-gold" style="margin-bottom:12px" onclick="buildHealthPrompt()">'+ICN.prompt+'<span class="btn-2l"><span>產生健康評分提示詞</span><span class="btn-sub">帶入已收集的客戶資料</span></span></button>'
     +'<div class="health-card-paste"><div style="font-size:13px;font-weight:800;color:#2A1A1C;margin-bottom:6px">把 AI 整理的《健康評分卡》貼回這裡</div><textarea class="paste-box" id="healthCardPaste" placeholder="貼上 ===ATELIER 健康評分卡=== 那整段…"></textarea><button class="btn btn-go" onclick="parseHealthCard()">解析並填入下方 10 項</button></div>'
-    +rows+healthOverviewHTML(items,latestHealthEntry(a))
+    +noteTabsHTML+'<div class="health-rows mode-client" id="healthRows">'+rows+'</div>'+healthOverviewHTML(items,latestHealthEntry(a))
     +'<div class="btn-row"><button class="btn btn-go" onclick="saveHealthChoose()">儲存此次評分</button><button class="btn btn-ghost" onclick="closeModal()">關閉</button></div></div>';
   md.classList.add('show'); md.onclick=function(e){ if(e.target===md) closeModal(); };
   sh.querySelectorAll('input[name="healthType"]').forEach(function(r){ r.onchange=function(){ sh.querySelectorAll('.health-time-card').forEach(function(c){c.classList.remove('on')}); r.closest('.health-time-card').classList.add('on'); var pick=$('healthVideoPick'); if(pick) pick.classList.toggle('show',r.value==='video'); }; });
   sh.querySelectorAll('.sc').forEach(function(b){ b.onclick=function(){ var hid=b.dataset.hid; sh.querySelectorAll('.sc[data-hid="'+hid+'"]').forEach(function(x){x.classList.remove('on')}); b.classList.add('on'); var t=0; sh.querySelectorAll('.hr-scores').forEach(function(grp){ var on=grp.querySelector('.sc.on'); if(on) t+=parseInt(on.dataset.hsc)||0; }); if($('heTotal')) $('heTotal').textContent=t; }; });
+}
+function healthNoteMode(el){
+  var mode=(typeof el==='string')?el:((el&&el.getAttribute&&el.getAttribute('data-mode'))||'client');
+  var box=document.getElementById('healthRows'); if(box){ box.classList.remove('mode-client','mode-advisor'); box.classList.add('mode-'+mode); }
+  var sh=document.getElementById('sheet'); if(sh){ sh.querySelectorAll('.hnote-tab').forEach(function(t){ var m=t.getAttribute('data-mode'); if(m) t.classList.toggle('on', m===mode); }); }
+}
+function closeHealthCompare(el){ var o=(el&&el.closest)?el.closest('.hcmp-overlay'):null; if(o) o.remove(); }
+function openHealthCompare(){
+  var items=(typeof HEALTH_ITEMS!=='undefined')?HEALTH_ITEMS:[];
+  var sh=document.getElementById('sheet'); if(!sh){ return; }
+  var rows=items.map(function(it){
+    var id=it[0], label=it[1];
+    var on=sh.querySelector('.sc.on[data-hid="'+id+'"]');
+    var sc=on?(parseInt(on.dataset.hsc)||0):0;
+    var nc=(((document.getElementById('hnc-'+id)||{}).value)||'').trim();
+    var na=(((document.getElementById('hna-'+id)||{}).value)||'').trim();
+    var cC=nc?esc(nc):'<span style="color:#C4B5B8">（空）</span>';
+    var cA=na?esc(na):'<span style="color:#C4B5B8">（空）</span>';
+    return '<div class="hcmp-item"><div class="hcmp-il">'+id+'. '+esc(label)+'<span class="sc-badge">'+(sc||'—')+'/5</span></div>'
+      +'<div class="hcmp-cols"><div class="hcmp-col"><div class="hk">客戶版 · CLIENT</div><div class="tx">'+cC+'</div></div>'
+      +'<div class="hcmp-col"><div class="hk">顧問版 · ADVISOR</div><div class="tx">'+cA+'</div></div></div></div>';
+  }).join('');
+  var ov=document.createElement('div'); ov.className='hcmp-overlay';
+  ov.innerHTML='<div class="hcmp-paper"><div class="hcmp-head"><div class="hcmp-title">客戶版 ⇄ 顧問版 對比</div><button class="hnote-tab" onclick="closeHealthCompare(this)">關閉</button></div><div class="sc-note" style="margin-bottom:6px">顧問檢視用：兩版並排對照，給客戶講解時可同時看。內容即時取自目前畫面（含尚未儲存的修改）。</div>'+rows+'</div>';
+  ov.onclick=function(e){ if(e.target===ov) ov.remove(); };
+  document.body.appendChild(ov);
 }
 function saveHealth(){
   var a=curAcc(); if(!a){ toast(ICN.warn+' 尚未選定客戶'); return; }
@@ -2123,7 +2206,7 @@ function saveHealth(){
   closeModal(); renderBanner(); renderSelect();
 }
 
-/* ═══════════ cs-v3.4 批次③：健康評分 解決建議 / 單項研究 / 存檔選單 / 匯出 ═══════════ */
+/* ═══════════ cs-v3.7 批次③：健康評分 解決建議 / 單項研究 / 存檔選單 / 匯出 ═══════════ */
 function _readHealthItemsDOM(){
   var sh=$('sheet'); if(!sh) return [];
   return HEALTH_ITEMS.map(function(it){
@@ -2186,7 +2269,7 @@ function saveHealthOverwrite(){
 }
 function _buildHealthDoc(a,items){
   var total=items.reduce(function(s,x){return s+(x.score||0);},0); var d=new Date().toISOString().slice(0,10);
-  return '<!DOCTYPE html><html lang="zh-Hant"><head><meta charset="UTF-8"><title>ATELIER 健康評分表</title><style>body{background:#FDFBF8;color:#2A1A1C;font-family:"Noto Sans TC",sans-serif;padding:48px}h1{font-family:"Noto Serif TC",serif;font-size:34px}.k{font-family:"Cormorant Garamond",serif;color:#D4A574;letter-spacing:4px}.total{font-family:"Cormorant Garamond",serif;font-size:54px;color:#A51820}.row{display:grid;grid-template-columns:200px 1fr 40px;gap:14px;align-items:center;margin:14px 0}.bar{height:10px;background:#F4F1EC;border-radius:99px}.bar i{display:block;height:100%;background:#A51820;border-radius:99px}.note{color:#8A7274;font-size:13px;line-height:1.7;margin:6px 0 18px 0}</style></head><body><div class="k">ATELIER · CONTENT HEALTH</div><h1>'+esc(a.displayName||a.handle||'客戶')+'｜內容健康評分表</h1><div class="total">'+total+'<span style="font-size:18px;color:#8A7274"> / 50</span></div>'+items.map(function(it){return '<div class="row"><b>'+it.id+'. '+esc(it.label)+'</b><span class="bar"><i style="width:'+((it.score||0)/5*100)+'%"></i></span><b>'+(it.score||'—')+'</b></div>'+((it.noteClient||it.noteAdvisor)?'<div class="note">'+(it.noteClient?'客戶版：'+esc(it.noteClient):'')+(it.noteClient&&it.noteAdvisor?'<br>':'')+(it.noteAdvisor?'顧問版：'+esc(it.noteAdvisor):'')+'</div>':'');}).join('')+'<div style="margin-top:40px;color:#C4B5B8">cs-v3.4 · '+d+'</div></body></html>';
+  return '<!DOCTYPE html><html lang="zh-Hant"><head><meta charset="UTF-8"><title>ATELIER 健康評分表</title><style>body{background:#FDFBF8;color:#2A1A1C;font-family:"Noto Sans TC",sans-serif;padding:48px}h1{font-family:"Noto Serif TC",serif;font-size:34px}.k{font-family:"Cormorant Garamond",serif;color:#D4A574;letter-spacing:4px}.total{font-family:"Cormorant Garamond",serif;font-size:54px;color:#A51820}.row{display:grid;grid-template-columns:200px 1fr 40px;gap:14px;align-items:center;margin:14px 0}.bar{height:10px;background:#F4F1EC;border-radius:99px}.bar i{display:block;height:100%;background:#A51820;border-radius:99px}.note{color:#8A7274;font-size:13px;line-height:1.7;margin:6px 0 18px 0}</style></head><body><div class="k">ATELIER · CONTENT HEALTH</div><h1>'+esc(a.displayName||a.handle||'客戶')+'｜內容健康評分表</h1><div class="total">'+total+'<span style="font-size:18px;color:#8A7274"> / 50</span></div>'+items.map(function(it){return '<div class="row"><b>'+it.id+'. '+esc(it.label)+'</b><span class="bar"><i style="width:'+((it.score||0)/5*100)+'%"></i></span><b>'+(it.score||'—')+'</b></div>'+((it.noteClient||it.noteAdvisor)?'<div class="note">'+(it.noteClient?'客戶版：'+esc(it.noteClient):'')+(it.noteClient&&it.noteAdvisor?'<br>':'')+(it.noteAdvisor?'顧問版：'+esc(it.noteAdvisor):'')+'</div>':'');}).join('')+'<div style="margin-top:40px;color:#C4B5B8">cs-v3.7 · '+d+'</div></body></html>';
 }
 function exportHealthPDF(){
   var a=curAcc(); if(!a){ toast(ICN.warn+' 尚未選定客戶'); return; }
@@ -2385,7 +2468,7 @@ function renderRelatedVideosHTML(a){
 function formatNum(n){ n=Number(n)||0; if(n>=10000) return (n/10000).toFixed(1).replace(/\.0$/,'')+'萬'; if(n>=1000) return (n/1000).toFixed(1).replace(/\.0$/,'')+'k'; return String(n); }
 function injectRelatedVideosSection(view){ var a=curAcc(); if(!a||!view) return; if(['view-stage1','view-stage3','view-stage4','view-stage5','view-stage6'].indexOf(view.id)<0) return; if(view.querySelector('[data-related-videos]')) return; var html=renderRelatedVideosHTML(a); if(!html) return; view.insertAdjacentHTML('beforeend',html); enhanceSections(view); }
 
-/* ═══════════ cs-v3.4 · 方向 A：影片表現對標分析 ═══════════ */
+/* ═══════════ cs-v3.7 · 方向 A：影片表現對標分析 ═══════════ */
 function _videoViews(v){ return Math.max(0, Number((v&&(v.views||v.viewCount||v.view||v.plays||v.play))||0)||0); }
 function _videoEng(v){ var vw=_videoViews(v); if(vw<=0) return 0; var e=(Number((v&&v.likes)||0)||0)+(Number((v&&v.comments)||0)||0)+(Number((v&&v.shares)||0)||0); return e/vw; }
 function _videoOwnerAcc(v){
@@ -2543,7 +2626,66 @@ window.injectClientProgressBar=function(view){
   else { view.insertAdjacentHTML('afterbegin', pb); }
 };
 
-function enhanceCurrentView(){ var v=document.querySelector('.view.on'); if(v){ if(typeof injectClientProgressBar==='function') injectClientProgressBar(v); injectVideoBenchmarkSection(v); injectRelatedVideosSection(v); enhanceSections(v); if(v.id==='view-stage1') groupStage1(); } }
+/* ═══════════ cs-v3.7 · 客戶快速直達連結 ═══════════ */
+function _normUrl(u){ u=(u||'').trim(); if(!u) return ''; if(!/^https?:\/\//i.test(u)) u='https://'+u.replace(/^\/+/,''); return u; }
+function _platformHome(a){
+  var p=(a.platform||'').toLowerCase(), h=(a.handle||'').trim().replace(/^@+/,'');
+  if(!h) return '';
+  if(p.indexOf('instagram')>=0||p==='ig') return 'https://instagram.com/'+h;
+  if(p.indexOf('threads')>=0) return 'https://threads.net/@'+h;
+  if(p.indexOf('tiktok')>=0) return 'https://tiktok.com/@'+h;
+  if(p.indexOf('youtube')>=0) return 'https://youtube.com/@'+h;
+  if(p.indexOf('facebook')>=0||p==='fb') return 'https://facebook.com/'+h;
+  return '';
+}
+function _clientLinks(a){
+  if(!a) return [];
+  var out=[];
+  var ph=_platformHome(a); if(ph) out.push({label:(a.platform||'平台')+' 主頁', url:ph});
+  var web=_normUrl(a.website||a.domain||''); if(web) out.push({label:'官網', url:web});
+  if(a.igUrl) out.push({label:'Instagram', url:_normUrl(a.igUrl)});
+  if(a.lineUrl) out.push({label:'LINE 官方', url:_normUrl(a.lineUrl)});
+  if(a.fbUrl) out.push({label:'Facebook', url:_normUrl(a.fbUrl)});
+  if(a.otherUrl) out.push({label:'其他連結', url:_normUrl(a.otherUrl)});
+  return out;
+}
+function buildClientLinksHTML(a){
+  var links=_clientLinks(a);
+  var btns=links.map(function(l){ return '<a class="clink" href="'+esc(l.url)+'" target="_blank" rel="noopener">'+esc(l.label)+'</a>'; }).join('');
+  return '<div class="section-card clinks-card" data-client-links="1"><h3>'+ICN.pin+' 快速直達</h3>'
+    +'<div class="sc-note">一鍵打開這位客戶的對外連結。平台主頁／官網會自動帶入；LINE／FB／IG 等沒帶入的，按「編輯連結」貼一次就會記住（存在這位客戶身上）。</div>'
+    +'<div class="clinks-row">'+(btns||'<span style="color:#C4B5B8;font-size:13px">還沒有可直達的連結</span>')+'<button class="clink edit" onclick="openClientLinksEditor()">'+ICN.memo+' 編輯連結</button></div></div>';
+}
+function injectClientLinksSection(view){
+  var a=(typeof curAcc==='function')?curAcc():null; if(!a||!view) return;
+  if(view.id!=='view-stage1') return;
+  if(view.querySelector('[data-client-links]')) return;
+  var html=buildClientLinksHTML(a);
+  var anchor=view.querySelector('.section-card');
+  if(anchor) anchor.insertAdjacentHTML('beforebegin',html); else view.insertAdjacentHTML('beforeend',html);
+}
+function openClientLinksEditor(){
+  var a=(typeof curAcc==='function')?curAcc():null; if(!a){ toast(ICN.warn+' 尚未選定客戶'); return; }
+  var rows=[['website','官網（也可只填網域，如 kl-law.com）',a.website||a.domain||''],
+            ['igUrl','Instagram 連結',a.igUrl||''],
+            ['lineUrl','LINE 官方帳號連結',a.lineUrl||''],
+            ['fbUrl','Facebook 連結',a.fbUrl||''],
+            ['otherUrl','其他連結',a.otherUrl||'']];
+  var body=rows.map(function(r){ return '<div class="fld" style="margin-bottom:10px"><label style="font-size:12px;color:#8A7274;font-weight:700">'+esc(r[1])+'</label><input type="text" id="cl-'+r[0]+'" value="'+esc(r[2])+'" placeholder="貼上連結…" style="width:100%;margin-top:5px;padding:10px;border:1px solid #E8E3DA;border-radius:9px;font-family:inherit"></div>'; }).join('');
+  var ov=document.createElement('div'); ov.className='hcmp-overlay';
+  ov.innerHTML='<div class="hcmp-paper" style="max-width:560px"><div class="hcmp-head"><div class="hcmp-title">編輯客戶連結</div><button class="hnote-tab" onclick="closeHealthCompare(this)">取消</button></div><div class="sc-note" style="margin-bottom:10px">貼上的連結會存在這位客戶身上，下次自動出現在「快速直達」。</div>'+body+'<button class="btn btn-go" style="margin-top:4px" onclick="saveClientLinks(this)">儲存連結</button></div>';
+  ov.onclick=function(e){ if(e.target===ov) ov.remove(); };
+  document.body.appendChild(ov);
+}
+function saveClientLinks(el){
+  var a=(typeof curAcc==='function')?curAcc():null; if(!a) return;
+  ['website','igUrl','lineUrl','fbUrl','otherUrl'].forEach(function(k){ var inp=document.getElementById('cl-'+k); if(inp){ var v=inp.value.trim(); if(v) a[k]=v; else { try{ delete a[k]; }catch(e){} } }});
+  try{ if(typeof saveCurrent==='function') saveCurrent(true); }catch(e){}
+  toast(ICN.check+' 連結已儲存');
+  var o=(el&&el.closest)?el.closest('.hcmp-overlay'):null; if(o) o.remove();
+  var v=document.querySelector('.view.on'); var old=v&&v.querySelector('[data-client-links]'); if(old) old.remove();
+}
+function enhanceCurrentView(){ var v=document.querySelector('.view.on'); if(v){ if(typeof injectClientProgressBar==='function') injectClientProgressBar(v); injectClientLinksSection(v); injectVideoBenchmarkSection(v); injectRelatedVideosSection(v); enhanceSections(v); if(v.id==='view-stage1') groupStage1(); } }
 setInterval(enhanceCurrentView,900);
 
 /* ═══════════════ 分頁切換 ═══════════════ */
