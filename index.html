@@ -8,8 +8,8 @@
 <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v253 (版本號僅留註解，不顯示於畫面)
-v253 更新（交辦單：Lisa 實測 v252 後，策略診斷的客戶下拉搜尋又只剩搜尋框與排序籤，帳號列完全出不來）：【A 策略診斷選客戶改成獨立搜尋器】不再讓 stratAcc 依賴全站 csel 帳號下拉，改用策略診斷頁專用的「輸入搜尋＋結果列」元件，直接讀 accounts 資料、直接渲染帳號卡列，避免 csel options 非同步補灌與 MutationObserver 反覆失效。【B 保留真值 select】底層仍保留 hidden select id=stratAcc 作為 renderStrategyDiagnosis 的真值來源；選到帳號後會同步搜尋框文字、寫入 select value、立刻產生策略快照。只修策略診斷選客戶入口，不動影片庫 csel、不碰 CSV 彈窗、不寫入資料、不動 client.html、Firebase、商業閉環地圖與六支守門提示詞。
+<!-- ATELIER 影片診斷工作台 · 內部版本 v254 (版本號僅留註解，不顯示於畫面)
+v254 更新（交辦單：Lisa 實測 v254 後，策略診斷頁像當機，搜尋框可輸入但結果不出、按鈕也像失效）：【A 策略診斷選客戶改成獨立搜尋器】不再讓 stratAcc 依賴全站 csel 帳號下拉，改用策略診斷頁專用的「輸入搜尋＋結果列」元件，直接讀 accounts 資料、直接渲染帳號卡列，避免 csel options 非同步補灌與 MutationObserver 反覆失效。【B 保留真值 select】底層仍保留 hidden select id=stratAcc 作為 renderStrategyDiagnosis 的真值來源；選到帳號後會同步搜尋框文字、寫入 select value、立刻產生策略快照。只修策略診斷選客戶入口，不動影片庫 csel、不碰 CSV 彈窗、不寫入資料、不動 client.html、Firebase、商業閉環地圖與六支守門提示詞。
 v252 更新（交辦單：Lisa 希望策略診斷不要一直跳回影片庫，而是在同頁用小視窗核對單支影片；必要時才獨立開新視窗；同時把策略診斷整理成可持續操作的下一步中控台）：【A 策略診斷行動中控台】新增「下一步行動區」，把單一客戶診斷、Top 5 可複製公式、同主題案例對照、同素材腳本對照、A–E 商業閉環缺口、送客戶服務台交付六步驟放在同一頁，避免 Lisa 看到數據後不知道下一步。【B 單支影片小視窗核對】Top 觀看／Top 分享率／低觀看待複核每支影片新增「快看」按鈕，在策略診斷頁內以 modal 顯示該影片重點、數據、Hook 與顧問判斷，不再強制跳回影片庫。【C 需要時才獨立視窗】單支影片小視窗內新增「在影片庫定位」與「獨立視窗核對」兩個選項：前者才會跳回影片庫並高亮，後者會用新視窗打開該影片的 deep-link，方便 Lisa 左右並排核對。只讀資料，不寫入影片，不動 client.html、Firebase、商業閉環地圖與六支守門提示詞。
 v251 更新（交辦單：Lisa 實測 v250 後，策略診斷頁第一次進入仍像未載入，要隨便點按鈕才出現資料；同時釐清策略診斷、客戶服務台、商業閉環之間的工作用途）：【A 策略診斷自動初始化】新增 _strategyHydrate，切到策略診斷分頁時會多段延遲補灌帳號、同步 csel、若已有影片庫/帳號管理主角則自動帶入，並自動產生策略快照，不再要求 Lisa 亂點按鈕才刷新。【B 清楚化策略頁定位】策略診斷頁新增流程說明：它不是最終交付，而是 32 支影片的策略雷達；客戶服務台負責問診補資料與 PDF/HTML/PPT 交付；商業閉環地圖負責判斷 A-E 與 G1-G5 缺口。
 v250 更新（交辦單：Lisa 實測 v249 後，策略診斷客戶下拉搜尋「理鴻」仍只顯示排序頁籤、沒有帳號結果）：【A 修正 stratAcc 補灌根因】v249 的 populateStrategyAcc 使用 window.accounts 判斷，但主程式的 accounts 並不一定掛在 window 上，導致函式直接 return，select options 沒被灌入；本版改用 typeof accounts !== 'undefined' 的安全讀取，必要時才 fallback 到 window.accounts。【B 保留策略頁只讀原則】只修策略診斷選客戶下拉，不碰 CSV 彈窗、不寫入資料、不動 client.html、Firebase、商業閉環地圖與六支守門提示詞。
@@ -859,7 +859,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v253</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v254</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -4486,7 +4486,7 @@ function renderManual(){
   <div class="form-card" style="border-left:3px solid var(--gold)">
     <div class="stitle" style="font-size:15px;color:var(--rouge)">更新紀錄 · 還沒做的</div>
     <p style="font-size:13px;color:var(--text);line-height:1.85;margin-top:8px">
-    <b>v253（策略診斷選客戶獨立搜尋器）：</b>修正策略診斷頁選客戶下拉再次出現空白／搜尋不到帳號的問題。這版不再讓 stratAcc 依賴全站 csel 帳號下拉，改成策略診斷專用搜尋器：直接讀 accounts，直接顯示帳號結果列，選到後同步 hidden select 並立即產生策略快照，避免 csel 非同步補灌失效。<b>只修策略診斷選客戶入口，不動影片庫 csel、不碰 CSV 彈窗、不寫入資料、不動 client.html、Firebase、商業閉環地圖與六守門提示詞。</b><br>
+    <b>v254（修復策略診斷主程式語法中斷）：</b>修正策略診斷頁選客戶下拉再次出現空白／搜尋不到帳號的問題。這版不再讓 stratAcc 依賴全站 csel 帳號下拉，改成策略診斷專用搜尋器：直接讀 accounts，直接顯示帳號結果列，選到後同步 hidden select 並立即產生策略快照，避免 csel 非同步補灌失效。<b>只修策略診斷選客戶入口，不動影片庫 csel、不碰 CSV 彈窗、不寫入資料、不動 client.html、Firebase、商業閉環地圖與六守門提示詞。</b><br>
     <b>v252（策略診斷行動中控台＋單支影片小視窗）：</b>策略診斷頁新增「下一步行動區」，把單一客戶診斷、Top 5 可複製公式、同主題案例對照、同素材腳本對照、A–E 商業閉環缺口、送客戶服務台交付六步驟整理成可持續操作的顧問流程。Top 觀看／Top 分享率／低觀看待複核的每支影片新增「快看」，可在同頁小視窗核對單支影片，不強制跳回影片庫；需要深入核對時再按「在影片庫定位」或「獨立視窗核對」。<b>只讀資料、不寫入資料、不碰 CSV 彈窗、不動 client.html、Firebase、商業閉環地圖與六守門提示詞。</b><br>
     <b>v251（策略診斷自動初始化＋定位說明）：</b>修正第一次切到策略診斷頁時需要亂點按鈕才產生資料的問題；新增 _strategyHydrate，多段延遲補灌帳號、同步下拉、沿用影片庫/帳號管理目前主角並自動產生策略快照。策略診斷頁也補上「工作流定位」，說明它是 32 支影片的策略雷達，不是最終交付；後續要接客戶服務台做問診補資料與 PDF/HTML/PPT 交付，再用商業閉環地圖校準 A-E 與 G1-G5 缺口。<b>只修策略頁初始化與說明，不碰 CSV 彈窗、不寫入資料、不動 client.html、Firebase、商業閉環地圖與六守門提示詞。</b><br>
     <b>v250（修策略診斷客戶搜尋仍空白）：</b>修正 v249 沒有真正灌入帳號的根因：策略診斷頁的 populateStrategyAcc 原本判斷 window.accounts，但主程式 accounts 不一定掛在 window 上，所以會直接 return，導致下拉面板只有排序頁籤、沒有帳號列。這版改用主程式 accounts 安全讀取，搜尋「理」「理鴻」「kl」應可正常出現理鴻帳號。<b>只修策略診斷客戶下拉，不碰 CSV 彈窗、不寫入資料、不動 client.html、Firebase、商業閉環地圖與六守門提示詞。</b><br>
@@ -10354,7 +10354,7 @@ document.addEventListener('DOMContentLoaded',function(){
     if(!sel.value){
       var guess=(H('vlibHero')||H('accHero')||H('f-account')||{}).value||''; if(guess) sel.value=guess;
     }
-    /* v253：策略診斷改用專用搜尋器；保留 hidden select 作真值，並同步搜尋框文字。 */
+    /* v254：策略診斷改用專用搜尋器；保留 hidden select 作真值，並同步搜尋框文字。 */
     try{ var inp=H('stratAccQ'); if(inp && sel.value){ var a=accList.find(function(x){return String(x.id)===String(sel.value);}); if(a && (!inp.value || /選一個帳號/.test(inp.value))) inp.value=(a.handle||'')+' · '+(a.displayName||a.name||''); } }catch(_e){}
   }
   function dist(vs,fn,keys){ var o={}; keys.forEach(function(k){o[k]=0}); vs.forEach(function(v){ var k=fn(v)||'未填'; if(o[k]===undefined)o[k]=0; o[k]++; }); return o; }
@@ -10377,7 +10377,7 @@ document.addEventListener('DOMContentLoaded',function(){
     +'<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px"><button class="btn btn-go" type="button" onclick="closeModal();_strategyLocateVideo(\''+E(String(v.id||''))+'\')" style="width:auto;font-size:13px;padding:9px 14px">在影片庫定位</button><button class="btn btn-ghost" type="button" onclick="_strategyOpenVideoWindow(\''+E(String(v.id||''))+'\')" style="width:auto;font-size:13px;padding:9px 14px">獨立視窗核對</button><button class="btn btn-ghost" type="button" onclick="closeModal()" style="width:auto;font-size:13px;padding:9px 14px">回策略診斷</button></div>';
     if(typeof openModal==='function') openModal(html); else alert((v.title||'')+'\n觀看 '+s.views); };
   function _strategyVideoAdvice(v,s){ var hook=String(v.hook||''); var bits=[]; if(s.views>=20000) bits.push('題材具市場注意力，可拆成可複製公式。'); if(s.shareRate>=0.002) bits.push('分享率偏高，代表有轉傳或收藏型價值。'); if(s.views<7000) bits.push('觀看偏低，建議檢查前 3 秒是否太法律化、痛點是否不夠生活化。'); if(/不一定|其實|差異|VS|差別|風險|怎麼辦|可以/.test(hook+String(v.title||''))) bits.push('具備反直覺／避坑／可操作語氣，可作為下一批腳本參考。'); if(!bits.length) bits.push('可回到影片卡查看完整逐字稿，再判斷 Hook、ICP 與商業閉環位置。'); return E(bits.join(' ')); }
-  /* v253：策略診斷專用帳號搜尋器，不再依賴全站 csel。 */
+  /* v254：策略診斷專用帳號搜尋器，不再依賴全站 csel。 */
   function _strategyAccList(){ try{ return (typeof accounts!=='undefined' && accounts) ? (accounts||[]) : (window.accounts||[]); }catch(_e){ return []; } }
   function _strategyAccNorm(s){ try{ s=String(s||'').normalize('NFKC').toLowerCase(); }catch(_e){ s=String(s||'').toLowerCase(); } return s.replace(/[\s@＠._\-–—/\\|,，、。:：;；()（）\[\]【】{}「」『』"'`~!！?？#＃$%％&＋+*=<>《》]/g,''); }
   function _strategyAccText(a){ return [(a&&a.handle)||'',(a&&a.displayName)||'',(a&&a.name)||'',(a&&a.jobTitle)||'',(a&&a.industry)||'',(a&&a.domain)||'',((a&&a.types)||[]).join(' ')].join(' '); }
@@ -10419,7 +10419,7 @@ document.addEventListener('DOMContentLoaded',function(){
   }
   function renderStrategyActionBox(scored,topViews,topShare,bottom,missingStages,missingGoals){
     var box=H('strategyActionBox'); if(!box) return;
-    var formulas=topViews.slice(0,5).map(function(v,i){return '<div style="padding:9px 0;border-top:1px solid var(--line);font-size:12.5px;line-height:1.75"><b>'+(i+1)+'. '+E(v.title||'')+'</b><br><span style="color:var(--sub)">'+E(_strategyFormula(v))+'</span><br><button class="btn btn-ghost" type="button" style="width:auto;font-size:11px;padding:5px 9px;margin-top:5px" onclick="_strategyOpenVideoMini(''+E(String(v.id||''))+'')">快看這支</button></div>';}).join('');
+    var formulas=topViews.slice(0,5).map(function(v,i){ var id=E(String(v.id||'')); return '<div style="padding:9px 0;border-top:1px solid var(--line);font-size:12.5px;line-height:1.75"><b>'+(i+1)+'. '+E(v.title||'')+'</b><br><span style="color:var(--sub)">'+E(_strategyFormula(v))+'</span><br><button class="btn btn-ghost" type="button" style="width:auto;font-size:11px;padding:5px 9px;margin-top:5px" onclick="_strategyOpenVideoMini(\''+id+'\')">快看這支</button></div>';}).join('');
     box.innerHTML='<div style="margin-top:14px;background:#fff;border:1px solid var(--border);border-radius:14px;padding:14px 16px">'
       +'<div style="font-family:Noto Serif TC,serif;font-size:17px;font-weight:900;color:var(--rouge);margin-bottom:4px">下一步行動區</div>'
       +'<div style="font-size:12.5px;color:var(--sub);line-height:1.8;margin-bottom:12px">這裡把剛剛的策略快照變成可操作流程：先看可複製公式，再找同主題／同素材案例，最後送到客戶服務台做交付。</div>'
@@ -10576,7 +10576,7 @@ document.addEventListener('DOMContentLoaded',function(){
 <script>
 /* v239：自動防舊版快取。讓桌布捷徑／瀏覽器如果抓到舊 HTML，能自己比對線上最新版並導向。 */
 (function(){
-  var ATELIER_CURRENT_VERSION='v253';
+  var ATELIER_CURRENT_VERSION='v254';
   window.ATELIER_CURRENT_VERSION=ATELIER_CURRENT_VERSION;
   function _avNum(v){v=String(v||'');var m=v.match(/v\s*(\d+)/i);return m?parseInt(m[1],10):0;}
   function _avDetect(html){html=String(html||'');var m=html.match(/id=["']verBadge["'][^>]*>\s*(v\d+)/i)||html.match(/內部版本\s+(v\d+)/i);return m?m[1]:'';}
