@@ -8,7 +8,8 @@
 <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v259 (版本號僅留註解，不顯示於畫面)
+<!-- ATELIER 影片診斷工作台 · 內部版本 v260 (版本號僅留註解，不顯示於畫面)
+v260 更新（hotfix：修正策略診斷帳號搜尋結果可看但無法點選）：移除 v259 檔內殘留的舊版策略診斷函式重複覆蓋，改用穩定的資料屬性點選事件處理，避免 inline onclick / 舊函式覆寫造成帳號列無法選取；保留策略診斷、案例雷達、案例價值與浮動核對窗，不動 client.html。
 v259 更新（hotfix：修正 v258 在投影片下載函式內誤插入策略診斷 script，造成主程式 node --check 失敗與頁面可能中斷；保留 v258 的策略診斷、案例雷達與服務台開啟設計，不再改 client.html，客戶服務台維持 cs-v3.12 穩定版。）
  v258 更新（交辦單：Lisa 實測 v255 後，策略診斷雖可搜尋但版面重疊、選到客戶後框線超出、快看資訊太少且定位會跳離策略頁；同時要求把「案例價值標籤／案例分數」納入每支影片的顧問資料庫）：【A 策略診斷選客戶改成卡片式】移除可見的下拉 select，保留 hidden select 作真值；搜尋結果改為卡片列，選到帳號後在下方顯示「目前診斷客戶」卡，避免搜尋框與下拉重疊。【B 單支影片改成浮動核對窗】Top/Bottom 的「快看／定位」不再直接跳離策略診斷，改為同頁浮動小窗，內含完整數據、Hook、G/A-E、案例價值分數、案例標籤與可複製公式；需要時才按「去影片庫定位」或「獨立視窗核對」。【C 新增案例價值引擎】以觀看、互動率、分享率、G階段、A-E目標層與 Hook/標題語氣自動給「成功樣本／可複製 Hook／可複製題材／可複製結構／高觀看低轉化／低觀看高商業價值／不建議直接複製」等只讀標籤，並產生 0–100 案例價值分數，作為未來案例雷達資料基礎。只讀資料，不寫入 Firebase。
 v255 更新（交辦單：Lisa 實測 v254 後，策略診斷搜尋仍像當機；同時要求把核心一條龍流程視覺化放進頁面）：【A 修復策略診斷主程式中斷】修正 renderStrategyActionBox 內 toast onclick 引號未跳脫造成整段 JavaScript 中斷的問題，讓策略診斷搜尋、按鈕、快看與結果列恢復。【B 新增策略診斷一條龍流程說明】在策略診斷頁新增「一條龍導航／學習小抄」視覺區，清楚標示建檔 32 支 → 策略快照 → Top/Bottom → 單支快看 → 可複製公式 → 補問客戶 → 客戶服務台交付 → 商業閉環校準。【C 自檢原則】本版不碰 CSV、不改 Firebase、不動 client.html、不動六支守門提示詞。
@@ -291,6 +292,36 @@ v182 更新（交辦單：讓工具變準變專業，接 v181、會動邏輯與�
     }).sort(function(a,b){return b.cv.score-a.cv.score || b.s.views-a.s.views;}).slice(0,9);
     out.innerHTML=res.length?res.map(function(x){ var id=String(x.v.id||''); return '<div class="case-card-v259"><b>'+esc(x.v.title||'未命名')+'</b><br><span style="color:var(--sub)">'+esc(stage(x.v))+'｜'+esc(goal(x.v))+'｜觀看 '+fmt(x.s.views)+'｜案例分 '+x.cv.score+'</span><br>'+(x.cv.tags||[]).slice(0,4).map(function(t){return '<span class="tag">'+esc(t)+'</span>';}).join('')+'<div style="margin-top:7px"><button class="btn btn-ghost" type="button" style="width:auto;font-size:11px;padding:5px 9px" onclick="_strategyOpenVideoMini('+JSON.stringify(id)+')">快看</button></div></div>'; }).join(''):'<div style="grid-column:1/-1;color:var(--sub);font-size:12.5px;padding:12px">目前沒有符合案例。可以放寬 G 階段、A–E 或關鍵字。</div>';
   };
+
+
+  /* v260 hotfix：帳號搜尋結果改用 data-id + delegated click，避免舊 inline onclick 或重複函式覆寫導致「看得到但點不進去」。 */
+  (function(){
+    function _accList260(){ try{ return (typeof accounts!=='undefined' && accounts) ? (accounts||[]) : (window.accounts||[]); }catch(e){ return []; } }
+    function _norm260(s){ try{s=String(s||'').normalize('NFKC').toLowerCase();}catch(e){s=String(s||'').toLowerCase();} return s.replace(/[\s@＠._\-–—/\\|,，、。:：;；()（）\[\]【】{}「」『』"'`~!！?？#＃$%％&＋+*=<>《》]/g,''); }
+    function _text260(a){ return [(a&&a.handle)||'',(a&&a.displayName)||'',(a&&a.name)||'',(a&&a.jobTitle)||'',(a&&a.industry)||'',(a&&a.domain)||'',((a&&a.types)||[]).join(' ')].join(' '); }
+    function _rank260(a,q){ var nq=_norm260(q), raw=String(q||'').toLowerCase(); if(!q) return 50; var h=String((a&&a.handle)||'').toLowerCase(), nh=_norm260(h); var nm=[(a&&a.displayName)||'',(a&&a.name)||''].join(' '), nn=_norm260(nm); if(raw&&(h.indexOf(raw)===0||h.replace(/^@/,'').indexOf(raw)===0)) return 0; if(nq&&(nh.indexOf(nq)===0||nh.replace(/^@/,'').indexOf(nq)===0)) return 1; if(nq&&nn.indexOf(nq)===0) return 2; if(nq&&nn.indexOf(nq)>=0) return 3; return _norm260(_text260(a)).indexOf(nq)>=0?20:99; }
+    window._strategyAccSearch=function(){
+      var input=H('stratAccQ'), box=H('stratAccResults'); if(!input||!box) return;
+      var q=(input.value||'').trim(), nq=_norm260(q);
+      var list=_accList260().slice().filter(function(a){ return !nq || _norm260(_text260(a)).indexOf(nq)>=0; });
+      list.sort(function(a,b){ var ra=_rank260(a,q), rb=_rank260(b,q); if(ra!==rb) return ra-rb; var va=0,vb=0; try{va=videosOfAccount(a.id).length; vb=videosOfAccount(b.id).length;}catch(e){} return vb-va || String(a.handle||'').localeCompare(String(b.handle||'')); });
+      list=list.slice(0,8);
+      if(!list.length){ box.innerHTML='<div style="padding:13px 12px;color:var(--sub);font-size:12.5px">目前沒有符合的帳號。可以改搜 handle、顯示名、職稱或產業。</div>'; box.style.display='block'; return; }
+      box.innerHTML=list.map(function(a){ var n=0; try{ n=videosOfAccount(a.id).length; }catch(e){} var title=E((a.handle||'')+' · '+(a.displayName||a.name||'')); var meta=E([(a.jobTitle||''),(a.industry||a.domain||'')].filter(Boolean).join(' · ')); var badge=n?'<span style="display:inline-block;background:var(--rouge);color:#fff;border-radius:999px;padding:2px 7px;font-size:10px;margin-right:5px">影片 '+n+'</span>':''; return '<button type="button" class="strat-acc-result" data-strategy-acc-id="'+E(String(a.id||''))+'" style="display:block;width:100%;text-align:left;border:0;border-top:1px solid var(--line);background:#fff;padding:10px 9px;border-radius:8px;cursor:pointer;font-family:inherit;color:var(--ink)">'+badge+'<b>'+title+'</b><br><span style="font-size:12px;color:var(--sub)">'+meta+(n?' · 影片 '+n+' 支':'')+'</span></button>'; }).join('');
+      box.style.display='block';
+    };
+    window._strategyPickAcc=function(id){
+      var list=_accList260(), a=list.find(function(x){return String(x.id)===String(id);});
+      if(!a){ if(typeof toast==='function') toast('找不到這個帳號，請重新整理後再試'); return; }
+      var sel=H('stratAcc'); if(sel){ if(!Array.from(sel.options).some(function(o){return String(o.value)===String(id);})){ var op=document.createElement('option'); op.value=id; op.textContent=(a.handle||'')+' · '+(a.displayName||a.name||''); sel.appendChild(op); } sel.value=id; }
+      var input=H('stratAccQ'); if(input) input.value=(a.handle||'')+' · '+(a.displayName||a.name||'');
+      var box=H('stratAccResults'); if(box){ box.innerHTML=''; box.style.display='none'; }
+      try{ if(typeof _strategyRenderCurrentAcc==='function') _strategyRenderCurrentAcc(a); }catch(e){}
+      try{ if(typeof renderStrategyDiagnosis==='function') renderStrategyDiagnosis(); }catch(e){ console.warn('[v260 strategy pick]',e); }
+      try{ if(typeof toast==='function') toast('已選擇 '+(a.handle||a.displayName||'客戶')); }catch(e){}
+    };
+    document.addEventListener('click',function(e){ var btn=e.target && e.target.closest ? e.target.closest('[data-strategy-acc-id]') : null; if(!btn) return; e.preventDefault(); e.stopPropagation(); window._strategyPickAcc(btn.getAttribute('data-strategy-acc-id')); },false);
+  })();
 
   var oldRender=window.renderStrategyDiagnosis;
   if(typeof oldRender==='function'){
@@ -1069,7 +1100,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v259</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v260</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -4707,6 +4738,7 @@ function renderManual(){
   <div class="form-card" style="border-left:3px solid var(--gold)">
     <div class="stitle" style="font-size:15px;color:var(--rouge)">更新紀錄 · 還沒做的</div>
     <p style="font-size:13px;color:var(--text);line-height:1.85;margin-top:8px">
+    <b>v260（修正策略診斷帳號列無法點選）：</b>移除 v259 內殘留的舊版策略診斷函式覆蓋，改用穩定的 data-id 帳號卡點選事件，修正搜尋結果看得到但點不進去、無法產生策略快照的問題。<b>不動 client.html、Firebase、CSV 與六守門提示詞。</b><br>
     <b>v259（策略診斷卡片式選客戶＋案例價值引擎）：</b>修正策略診斷搜尋框／下拉重疊、選到客戶後框線超出與定位跳離頁面的問題；新增「目前診斷客戶」卡片、單支影片浮動核對窗、案例價值分數與案例標籤（成功樣本、可複製 Hook、可複製題材、可複製結構、高觀看低轉化、低觀看高商業價值、不建議直接複製），先作為只讀顧問判斷，不寫入資料庫。<b>不碰 CSV、不寫入 Firebase、不動 client.html 與六守門提示詞。</b><br>
     <b>v255（策略診斷穩定化＋一條龍導航）：</b>修正策略診斷下一步行動區 toast 按鈕引號未跳脫造成主程式中斷的問題；新增一條龍導航／學習小抄，把建檔 32 支、策略快照、Top/Bottom、單支快看、可複製公式、補問客戶、客戶服務台交付與商業閉環校準整理成視覺流程。<b>不碰 CSV、不寫入資料、不動 client.html、Firebase 與六守門提示詞。</b><br>
     <b>v254（修復策略診斷主程式語法中斷）：</b>修正策略診斷頁選客戶下拉再次出現空白／搜尋不到帳號的問題。這版不再讓 stratAcc 依賴全站 csel 帳號下拉，改成策略診斷專用搜尋器：直接讀 accounts，直接顯示帳號結果列，選到後同步 hidden select 並立即產生策略快照，避免 csel 非同步補灌失效。<b>只修策略診斷選客戶入口，不動影片庫 csel、不碰 CSV 彈窗、不寫入資料、不動 client.html、Firebase、商業閉環地圖與六守門提示詞。</b><br>
@@ -10885,7 +10917,7 @@ document.addEventListener('DOMContentLoaded',function(){
 <script>
 /* v239：自動防舊版快取。讓桌布捷徑／瀏覽器如果抓到舊 HTML，能自己比對線上最新版並導向。 */
 (function(){
-  var ATELIER_CURRENT_VERSION='v259';
+  var ATELIER_CURRENT_VERSION='v260';
   window.ATELIER_CURRENT_VERSION=ATELIER_CURRENT_VERSION;
   function _avNum(v){v=String(v||'');var m=v.match(/v\s*(\d+)/i);return m?parseInt(m[1],10):0;}
   function _avDetect(html){html=String(html||'');var m=html.match(/id=["']verBadge["'][^>]*>\s*(v\d+)/i)||html.match(/內部版本\s+(v\d+)/i);return m?m[1]:'';}
@@ -10933,168 +10965,7 @@ document.addEventListener('DOMContentLoaded',function(){
   function getAccs(){ try{ if(typeof accounts!=='undefined'&&Array.isArray(accounts)) return accounts; }catch(e){} return Array.isArray(window.accounts)?window.accounts:[]; }
   function getVids(){ try{ if(typeof videos!=='undefined'&&Array.isArray(videos)) return videos; }catch(e){} return Array.isArray(window.videos)?window.videos:[]; }
   function accById(id){ return getAccs().filter(function(a){return a&&String(a.id)===String(id);})[0]||null; }
-  function getStratAcc(){ var sel=H('stratAcc'); var id=sel&&sel.value; return id?accById(id):null; }
-  function fmt(n){ try{return (typeof formatNum==='function')?formatNum(Number(n)||0):String(Number(n)||0);}catch(e){return String(Number(n)||0);} }
-  function stage(v){ try{return (typeof stageLetter==='function')?stageLetter(v):(v.stage||v.gStage||'未填');}catch(e){return '未填';} }
-  function goal(v){ try{return (typeof goalLetter==='function')?goalLetter(v):(v.goal||v.goalLayer||'未填');}catch(e){return '未填';} }
-  function sc(v){ try{return (typeof score==='function')?score(v):{views:Number(v.views||0)||0,engRate:0,shareRate:0};}catch(e){return {views:Number(v.views||0)||0,engRate:0,shareRate:0};} }
-  function videosOf(a){ try{ if(typeof videosOfAccount==='function') return videosOfAccount(a.id)||[]; }catch(e){} var ids=[a.id,a.handle,a.displayName].filter(Boolean).map(String); return getVids().filter(function(v){ return ids.indexOf(String(v.accountId||v.clientId||v.owner||v.handle||v.accountHandle||''))>=0; }); }
-  function copyText(t){ try{ navigator.clipboard.writeText(String(t||'')); if(typeof toast==='function') toast('已複製'); }catch(e){ var ta=document.createElement('textarea'); ta.value=String(t||''); document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove(); if(typeof toast==='function') toast('已複製'); } }
-  if(!H('v259StrategyStyle')){
-    var st=document.createElement('style'); st.id='v259StrategyStyle'; st.textContent=[
-      '.strat-flow-v259{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px;margin:12px 0 14px}',
-      '.strat-flow-v259 .sf{border:1px solid var(--border);background:#fff;border-radius:12px;padding:10px 9px;font-size:11.5px;line-height:1.55;color:var(--text)}',
-      '.strat-flow-v259 .sf b{display:block;color:var(--rouge);font-family:Noto Serif TC,serif;font-size:13px;margin-bottom:2px}',
-      '.strat-client-card-v259{border:1px solid var(--gold-soft);background:linear-gradient(180deg,#FFFDFC,#FDF6F5);border-radius:14px;padding:14px 16px;font-size:12.5px;line-height:1.8;margin-top:10px}',
-      '.strat-client-card-v259 .head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}',
-      '.strat-client-card-v259 .name{font-family:Noto Serif TC,serif;font-size:16px;font-weight:900;color:var(--ink)}',
-      '.strat-client-card-v259 .meta{color:var(--text);margin-top:7px}',
-      '.strat-client-card-v259 .pill{display:inline-flex;border:1px solid var(--border);background:#fff;border-radius:999px;padding:3px 9px;margin:4px 5px 0 0;color:var(--sub);font-size:11.5px}',
-      '.case-radar-v259{border:1px solid var(--border);background:#fff;border-radius:14px;padding:14px 16px;margin-top:14px}',
-      '.case-radar-v259 .grid{display:grid;grid-template-columns:1.2fr .7fr .7fr .9fr auto;gap:8px;align-items:end}',
-      '.case-radar-v259 input,.case-radar-v259 select{width:100%;padding:9px 10px;border:1px solid var(--border);border-radius:9px;background:#fff;color:var(--ink);font-family:inherit;font-size:12.5px}',
-      '.case-radar-results-v259{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:12px}',
-      '.case-card-v259{border:1px solid var(--line);background:#FFFDFC;border-radius:12px;padding:10px 11px;font-size:12px;line-height:1.7;color:var(--text)}',
-      '.case-card-v259 b{color:var(--ink);font-size:12.5px}',
-      '.case-card-v259 .tag{display:inline-flex;border:1px solid #EAD9D6;color:var(--rouge);border-radius:999px;padding:1px 7px;margin:3px 4px 0 0;font-size:10.5px;background:#fff}',
-      '#strategyFloatPanel .sf-head{cursor:move;background:var(--warm);border-bottom:1px solid var(--border);padding:12px 15px;display:flex;justify-content:space-between;gap:10px;align-items:center}',
-      '#strategyFloatPanel .sf-body{padding:14px 16px}',
-      '#strategyFloatPanel .sf-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:10px 0}',
-      '#strategyFloatPanel .sf-kpis div{border:1px solid var(--border);border-radius:10px;text-align:center;padding:9px 6px;background:#fff}',
-      '#strategyFloatPanel .sf-kpis b{display:block;color:var(--rouge);font-size:20px}',
-      '#strategyFloatPanel .sf-tools{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}',
-      '@media(max-width:780px){.strat-flow-v259{grid-template-columns:repeat(2,1fr)}.case-radar-v259 .grid{grid-template-columns:1fr}.case-radar-results-v259{grid-template-columns:1fr}}'
-    ].join('\n'); document.head.appendChild(st);
-  }
-
-  // Safer current client card
-  window._strategyRenderCurrentAcc=function(a){
-    var card=H('stratAccCurrent'); if(!card) return;
-    if(!a){ card.style.display='none'; card.innerHTML=''; return; }
-    var vs=videosOf(a), fan=(a.followers||a.fans||a.followerText||a.follower||''), tags=[];
-    if(a.jobTitle) tags.push('職稱 '+a.jobTitle);
-    if(a.industry||a.domain) tags.push('產業 '+(a.industry||a.domain));
-    if(fan) tags.push('粉絲 '+fan);
-    tags.push('影片 '+vs.length+' 支');
-    var bio=a.bio||a.description||a.notes||a.remark||a.serviceNote||'';
-    card.style.display='block';
-    card.innerHTML='<div class="strat-client-card-v259">'
-      +'<div class="head"><div><div style="font-size:11px;color:var(--gold-dark);font-weight:900;letter-spacing:1px">目前診斷客戶</div>'
-      +'<div class="name">'+esc(a.handle||'')+' · '+esc(a.displayName||a.name||'')+'</div></div>'
-      +'<button type="button" class="btn btn-ghost" style="width:auto;font-size:12px;padding:7px 10px" onclick="_strategyClearAcc()">清除／換客戶</button></div>'
-      +'<div class="meta">'+tags.map(function(t){return '<span class="pill">'+esc(t)+'</span>';}).join('')+'</div>'
-      +(bio?'<div style="margin-top:8px;color:var(--text)">帳號摘要：'+esc(String(bio).slice(0,220))+'</div>':'')
-      +'<div style="margin-top:8px;color:var(--sub)">用途：這張卡是策略診斷的「對象確認」。確認人設、職稱、產業與影片數後，再看下方 Top / Bottom 與案例價值。</div>'
-      +'</div>';
-  };
-
-  function ensureFlowBox(){
-    var host=H('strategyBox'); if(!host) return;
-    if(H('strategyFlowV258')) return;
-    var html='<div id="strategyFlowV258" class="strat-flow-v259">'
-      +'<div class="sf"><b>① 建檔</b>影片庫把素材、數據、分類收乾淨。</div>'
-      +'<div class="sf"><b>② 快照</b>策略診斷看 G 階段、A–E 與 Top / Bottom。</div>'
-      +'<div class="sf"><b>③ 案例值</b>每支影片判斷成功樣本、普通樣本或風險樣本。</div>'
-      +'<div class="sf"><b>④ 案例雷達</b>用全庫找同主題／同素材成功與失敗案例。</div>'
-      +'<div class="sf"><b>⑤ 服務台</b>把策略快照送到 Stage 4 補問與交付。</div>'
-      +'<div class="sf"><b>⑥ 交付</b>輸出 PDF / HTML / PPT 與下一批企劃。</div>'
-      +'</div>';
-    host.insertAdjacentHTML('afterbegin',html);
-  }
-
-  function buildHandoffPayload(){
-    var a=getStratAcc(); if(!a) return null;
-    var vs=videosOf(a), scored=vs.map(function(v){ var s=sc(v); var cv=(typeof _strategyCaseValue==='function')?_strategyCaseValue(v,s):{score:0,tags:[]}; return {v:v,s:s,cv:cv}; });
-    scored.sort(function(x,y){return (y.s.views||0)-(x.s.views||0);});
-    var top=scored.slice(0,5);
-    var bottom=scored.slice().sort(function(x,y){return (x.s.views||0)-(y.s.views||0);}).slice(0,5);
-    function line(x,i){ return (i+1)+'. '+(x.v.title||'未命名')+'｜觀看 '+(x.s.views||0)+'｜互動率 '+((x.s.engRate||0)*100).toFixed(2)+'%｜分享率 '+((x.s.shareRate||0)*100).toFixed(2)+'%｜'+(x.cv.tags||[]).join('、'); }
-    var g={}, goals={}; vs.forEach(function(v){ var st=stage(v)||'未填', gl=goal(v)||'未填'; g[st]=(g[st]||0)+1; goals[gl]=(goals[gl]||0)+1; });
-    var prompt='我是 ATELIER 短影音內容營運顧問。以下是 '+(a.handle||'')+' '+(a.displayName||'')+' 的策略診斷快照，請幫我整理 Stage 4 內容診斷，包含內容定位、Top/Bottom、G 階段缺口、A–E 商業閉環缺口、需補問客戶資料、下一批 10 支影片方向。\n\n'
-      +'【客戶】\n'+(a.handle||'')+'｜'+(a.displayName||'')+'｜'+(a.jobTitle||'')+'｜'+(a.industry||a.domain||'')+'\n\n'
-      +'【影片數】'+vs.length+'\n【G 階段分布】'+JSON.stringify(g)+'\n【A–E 分布】'+JSON.stringify(goals)+'\n\n'
-      +'【Top 觀看】\n'+top.map(line).join('\n')+'\n\n【低觀看待複核】\n'+bottom.map(line).join('\n');
-    return {version:'v259',createdAt:Date.now(),accountId:a.id,handle:a.handle,displayName:a.displayName,jobTitle:a.jobTitle,industry:a.industry||a.domain,videoCount:vs.length,gStage:g,goalLayer:goals,topViews:top.map(function(x,i){return line(x,i);}),bottom:bottom.map(function(x,i){return line(x,i);}),prompt:prompt};
-  }
-
-  window._strategySendToClientDesk=function(){
-    var p=buildHandoffPayload(); if(!p){ if(typeof toast==='function') toast('請先選客戶'); return; }
-    try{ localStorage.setItem('atelier_strategy_handoff_v1', JSON.stringify(p)); }catch(e){}
-    var url='client.html?client='+encodeURIComponent(p.accountId||p.handle||'')+'&handoff=strategy&view=stage4';
-    try{ window.open(url,'atelier-client-desk','width=520,height=860,scrollbars=yes'); }catch(e){ location.href=url; }
-    if(typeof toast==='function') toast('已送到客戶服務台 Stage 4');
-  };
-  window._strategyOpenClient=window._strategySendToClientDesk;
-
-  window.copyStrategyPrompt=function(){
-    var p=buildHandoffPayload(); if(!p){ if(typeof toast==='function') toast('請先選客戶'); return; }
-    copyText(p.prompt);
-  };
-
-  window._strategyAccSearch=function(){
-    var q=(H('stratAccQ')&&H('stratAccQ').value||'').trim().toLowerCase();
-    var box=H('stratAccResults'); if(!box) return;
-    var list=getAccs().filter(Boolean);
-    function hay(a){ return [a.handle,a.displayName,a.name,a.jobTitle,a.industry,a.domain,a.identity,a.bio,a.description].filter(Boolean).join(' ').toLowerCase(); }
-    if(q) list=list.filter(function(a){return hay(a).indexOf(q)>=0 || String(a.handle||'').replace(/^@/,'').toLowerCase().indexOf(q.replace(/^@/,''))>=0;});
-    list=list.sort(function(a,b){ return videosOf(b).length-videosOf(a).length || String(a.handle||'').localeCompare(String(b.handle||'')); }).slice(0,12);
-    if(!list.length){ box.style.display='block'; box.innerHTML='<div style="padding:14px;color:var(--sub);font-size:12.5px">目前沒有符合的帳號。可改搜 handle、顯示名、職稱或產業。</div>'; return; }
-    box.innerHTML=list.map(function(a){
-      var n=videosOf(a).length;
-      return '<button type="button" onclick="_strategyPickAcc('+JSON.stringify(String(a.id||''))+')" style="display:block;width:100%;text-align:left;border:0;border-top:1px solid var(--line);background:#fff;padding:10px 9px;border-radius:8px;cursor:pointer;font-family:inherit;color:var(--ink)">'
-        +(n?'<span style="font-size:10px;color:#fff;background:var(--rouge);border-radius:999px;padding:2px 7px;margin-right:6px">影片 '+n+'</span>':'')
-        +'<b>'+esc(a.handle||'')+' · '+esc(a.displayName||a.name||'')+'</b><br><span style="font-size:12px;color:var(--sub)">'+esc([a.jobTitle,a.industry||a.domain].filter(Boolean).join(' · '))+'</span></button>';
-    }).join('');
-    box.style.display='block';
-  };
-  window._strategyPickAcc=function(id){
-    var a=accById(id); if(!a) return;
-    var sel=H('stratAcc'); if(sel){ if(!Array.from(sel.options).some(function(o){return String(o.value)===String(id);})){ var op=document.createElement('option'); op.value=id; op.textContent=(a.handle||'')+' · '+(a.displayName||''); sel.appendChild(op); } sel.value=id; }
-    if(H('stratAccQ')) H('stratAccQ').value=(a.handle||'')+' · '+(a.displayName||'');
-    if(H('stratAccResults')) H('stratAccResults').style.display='none';
-    _strategyRenderCurrentAcc(a);
-    if(typeof renderStrategyDiagnosis==='function') renderStrategyDiagnosis();
-  };
-  window._strategyClearAcc=function(){
-    var sel=H('stratAcc'); if(sel) sel.value='';
-    if(H('stratAccQ')) H('stratAccQ').value='';
-    if(H('stratAccResults')){ H('stratAccResults').innerHTML=''; H('stratAccResults').style.display='none'; }
-    _strategyRenderCurrentAcc(null);
-    var box=H('strategyBox'); if(box) box.innerHTML='<div style="border:1px dashed var(--gold-soft);border-radius:12px;padding:28px;text-align:center;color:var(--sub)">先選一個客戶帳號，系統會讀取這個帳號底下的影片做策略診斷。</div>';
-    var ab=H('strategyActionBox'); if(ab) ab.innerHTML='';
-  };
-
-  window._strategyOpenVideoMini=function(id){
-    var v=(typeof _strategyFindVideo==='function')?_strategyFindVideo(id):getVids().filter(function(x){return String(x.id)===String(id);})[0];
-    if(!v) return;
-    var s=sc(v), cv=(typeof _strategyCaseValue==='function')?_strategyCaseValue(v,s):{score:0,tags:['待人工判斷']};
-    var formula=(typeof _strategyFormula==='function')?_strategyFormula(v):'先拆 Hook → 痛點 → 轉折 → 可執行步驟 → 導到服務情境。';
-    var panel=H('strategyFloatPanel'); if(!panel) return;
-    panel.style.display='block'; panel.style.right='22px'; panel.style.top='120px';
-    var hook=v.hook||v.opening||v.caption||'未填';
-    var prompt='請拆解這支影片的成功/失敗原因，並整理成可套用到我客戶下一支短影音的腳本公式：\n\n標題：'+(v.title||'')+'\nG階段：'+stage(v)+'｜A-E：'+goal(v)+'\n觀看：'+s.views+'｜互動率：'+((s.engRate||0)*100).toFixed(2)+'%｜分享率：'+((s.shareRate||0)*100).toFixed(2)+'%\nHook：'+hook+'\n案例標籤：'+(cv.tags||[]).join('、')+'\n公式：'+formula;
-    panel.innerHTML='<div class="sf-head" onmousedown="_strategyStartDrag(event)"><div><b style="font-family:Noto Serif TC,serif;color:var(--rouge)">單支影片核對窗</b><div style="font-size:11px;color:var(--sub)">可拖曳 · 留在策略診斷頁核對</div></div><button type="button" style="border:0;background:transparent;color:var(--rouge);font-size:22px;cursor:pointer" onclick="_strategyCloseFloat()">×</button></div>'
-      +'<div class="sf-body"><div style="font-family:Noto Serif TC,serif;font-weight:900;color:var(--ink);font-size:16px;line-height:1.55">'+esc(v.title||'未命名')+'</div>'
-      +'<div style="color:var(--sub);font-size:12px;margin-top:3px">'+esc(stage(v))+'｜'+esc(goal(v))+'｜'+esc(v.topic||v.theme||'')+'</div>'
-      +'<div class="sf-kpis"><div><b>'+fmt(s.views)+'</b><span>觀看</span></div><div><b>'+((s.engRate||0)*100).toFixed(2)+'%</b><span>互動率</span></div><div><b>'+((s.shareRate||0)*100).toFixed(2)+'%</b><span>分享率</span></div><div><b>'+cv.score+'</b><span>案例分</span></div></div>'
-      +'<div style="background:var(--warm);border-radius:12px;padding:10px 12px;color:var(--rouge);font-size:12px;font-weight:700">案例價值：'+(cv.tags||[]).map(esc).join(' · ')+'</div>'
-      +'<div style="margin-top:10px;border:1px solid var(--border);border-radius:10px;padding:10px 12px;font-size:12.5px;line-height:1.8"><b style="color:var(--rouge)">Hook：</b>'+esc(hook)+'</div>'
-      +'<div style="margin-top:10px;font-size:12.5px;line-height:1.8;color:var(--text)"><b style="color:var(--rouge)">顧問判斷：</b>'+esc((cv.tags||[]).indexOf('高觀看低轉化')>=0?'題材有市場注意力，但需要補服務導向與 CTA。':'可作為案例拆解，建議檢查 Hook、ICP、承諾與服務導向。')+'<br><b style="color:var(--rouge)">可複製公式：</b>'+esc(formula)+'</div>'
-      +'<div class="sf-tools"><button class="btn btn-go" type="button" style="width:auto;font-size:12px;padding:8px 12px" onclick="_strategyGoVideoLibrary('+JSON.stringify(String(id))+')">去影片庫定位</button>'
-      +'<button class="btn btn-ghost" type="button" style="width:auto;font-size:12px;padding:8px 12px" onclick="_strategyOpenVideoWindow('+JSON.stringify(String(id))+')">獨立視窗核對</button>'
-      +'<button class="btn btn-ghost" type="button" style="width:auto;font-size:12px;padding:8px 12px" onclick="_strategyCopy('+JSON.stringify(prompt)+')">複製拆解提示</button>'
-      +'<button class="btn btn-ghost" type="button" style="width:auto;font-size:12px;padding:8px 12px" onclick="_strategyCopyVideoPrompt('+JSON.stringify(String(id))+',\'rewrite\')">改寫下一支</button></div></div>';
-  };
-
-  window._strategyStartDrag=function(ev){
-    ev=ev||window.event; var panel=H('strategyFloatPanel'); if(!panel) return;
-    var rect=panel.getBoundingClientRect(), sx=ev.clientX, sy=ev.clientY, ox=rect.left, oy=rect.top;
-    function mm(e){ var nx=ox+(e.clientX-sx), ny=oy+(e.clientY-sy); nx=Math.max(8,Math.min(window.innerWidth-80,nx)); ny=Math.max(72,Math.min(window.innerHeight-80,ny)); panel.style.left=nx+'px'; panel.style.top=ny+'px'; panel.style.right='auto'; }
-    function up(){ document.removeEventListener('mousemove',mm); document.removeEventListener('mouseup',up); }
-    document.addEventListener('mousemove',mm); document.addEventListener('mouseup',up); ev.preventDefault();
-  };
-
-  function renderCaseRadar(){
+    function renderCaseRadar(){
     var box=H('strategyActionBox'); if(!box || H('caseRadarV258')) return;
     var html='<div id="caseRadarV258" class="case-radar-v259"><div style="display:flex;justify-content:space-between;gap:10px;align-items:flex-start"><div><div style="font-family:Noto Serif TC,serif;color:var(--rouge);font-size:17px;font-weight:900">案例雷達｜全庫借鏡搜尋</div><div style="font-size:12.5px;color:var(--sub);line-height:1.7">不是只看目前客戶；從全庫找同主題、同階段、同商業目標的成功／失敗／可複製案例。</div></div></div>'
       +'<div class="grid" style="margin-top:12px"><label style="font-size:11px;color:var(--gold-dark);font-weight:800">關鍵字<input id="caseRadarQ" placeholder="讀書、學習、律師、服務、G5…"></label><label style="font-size:11px;color:var(--gold-dark);font-weight:800">G 階段<select id="caseRadarStage"><option value="">不限</option><option>G1</option><option>G2</option><option>G3</option><option>G4</option><option>G5</option></select></label><label style="font-size:11px;color:var(--gold-dark);font-weight:800">A–E<select id="caseRadarGoal"><option value="">不限</option><option>A</option><option>B</option><option>C</option><option>D</option><option>E</option></select></label><label style="font-size:11px;color:var(--gold-dark);font-weight:800">案例類型<select id="caseRadarType"><option value="">不限</option><option value="success">成功 / 高分</option><option value="risk">失敗 / 風險</option><option value="copy">可複製</option><option value="commerce">商業價值</option></select></label><button class="btn btn-go" type="button" style="width:auto;font-size:12px;padding:9px 13px" onclick="_strategyRunCaseRadar()">搜尋案例</button></div><div id="caseRadarResults" class="case-radar-results-v259"></div></div>';
