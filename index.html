@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="color-scheme" content="light only">
 <meta name="supported-color-schemes" content="light">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v237 (版本號僅留註解，不顯示於畫面)
+<!-- ATELIER 影片診斷工作台 · 內部版本 v238 (版本號僅留註解，不顯示於畫面)
+v238 更新（hotfix：Lisa 實測 v237 後發現資料卡在第一頁、影片／帳號顯示 0）：【A 修正 v236 核對彈窗字串語法】openAccountVideoAudit 內「影片數核對」標題的 font-family 單引號破壞 JS 字串，導致主 script 無法執行，畫面停在初始輸入頁且資料計數顯示 0；本版改用安全的 HTML entity 寫法，避免字串中斷。【B 修正一鍵回補按鈕 onclick 字串】relinkVideosForAccount 的 onclick 參數改用 &quot; 包裹帳號 id，避免單引號組字造成 script check 失敗。只做語法 hotfix，不改資料結構、不動 client.html、不動六守門常數。
 v237 更新（交辦單：Lisa 實測 v236 後回報 QUICK SAVE 點「查看待補清單」仍會快閃、停不住在待補提示區）：【A QUICK SAVE 強制停靠待補清單】_scrollToInputTodo 改成先 blur 目前焦點欄位，避免 select/textarea 保持 focus 把畫面拉回原欄位；捲動改用固定座標 scrollTo，並在 0ms/120ms/360ms/760ms 多次校準，抵消 renderInputTodo、sticky 更新與瀏覽器 scroll anchoring 造成的回彈。【B 不再自動定位缺欄】QUICK SAVE 與右下缺欄提示只負責帶到 #inputTodo 待補清單；只有使用者明確點待補列的「定位欄位」時，才跳到拍攝素材／子題型等欄位。【C 提示文案同步】toast 與右下提示改成「已停在待補清單」，避免誤會會自動跳去欄位。未動資料結構、未動 client.html、未動六守門常數。
 v236 更新（交辦單：Lisa 實測帳號管理發現 @kl.legal 明確有 32 支影片，但帳號卡只顯示 28/30，擔心影片數與頁數不可信）：【A 帳號影片數核對改成可解釋】新增 _videoAccountMatchMethod / _videoTextBlob / _videoMentionHit，videosOfAccount 不再只看 accountId 與 accountHandle，會把 caption / hashtag / note / raw 等文字中的精準 @handle 也納入「可安全歸屬」；同時新增 openAccountVideoAudit，帳號卡可一鍵打開「影片數核對」，列出每支影片是用 id、handle、文字 @handle 哪一種方式被算進來，並提示仍沒被算到的影片通常代表卡B 缺 IG帳號欄，不能硬猜。【B 一鍵回補已能安全辨識的影片連動】新增 relinkVideosForAccount(accId)，只針對已經能用精準 id/handle/@handle 對上的影片補回 accountId/accountHandle，避免之後帳號影片數因 id 空值而忽高忽低。【C 分頁固定整數 10】影片庫與帳號管理分頁文案明確標示每頁 10 支影片／10 個帳號，帳號頁維持 ACC_PER=10，影片庫維持 PER=10，避免出現 11 筆造成核對困難。未動資料結構、未動 client.html、未動六守門常數。
 v235 更新（交辦單：Lisa 實測 v234 後回報 QUICK SAVE 點擊會先跳到待補清單，但 0.05 秒後又被拉回目前欄位畫面）：【A QUICK SAVE 停在待補清單】根因是 v234 的 _scrollToInputTodo(targetId) 捲到 #inputTodo 後又 setTimeout 呼叫 _focusTodoField(targetId)，造成畫面立刻被拉回缺欄表單欄位；本版把 QUICK SAVE／右下缺欄提示改成只捲到待補清單，不再自動 focus 欄位。【B 需要修哪格才手動定位】保留待補清單每列的「定位欄位」按鈕，使用者看完缺口與提示詞後，再自行點該列定位到拍攝素材／子題型等欄位。【C 文案同步修正】右下提示改為「點這裡會停在待補清單」，避免誤以為會自動跳回欄位。未動資料結構、未動 client.html、未動六守門常數。
@@ -841,7 +842,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v237</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v238</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -4272,7 +4273,8 @@ function renderManual(){
   <div class="form-card" style="border-left:3px solid var(--gold)">
     <div class="stitle" style="font-size:15px;color:var(--rouge)">更新紀錄 · 還沒做的</div>
     <p style="font-size:13px;color:var(--text);line-height:1.85;margin-top:8px">
-    <b>v237（這版 · 修 QUICK SAVE 待補清單快閃回彈）：</b>①<b>QUICK SAVE 真正停在待補清單</b>：點右下「查看待補清單」時，系統會先取消目前欄位焦點，再用固定座標多次校準捲動位置，避免畫面剛跳到待補提示又被拉回原欄位。②<b>不再自動跳欄位</b>：QUICK SAVE 與右下缺欄提示只帶你到待補清單；看完要修哪一格，再手動點該列「定位欄位」。③<b>文案同步修正</b>：toast 與右下提示改成「已停在待補清單」，讓操作預期更清楚。<b>只動 QUICK SAVE 捲動節奏與提示文案；沒動資料結構、沒動 client.html、沒動六守門提示詞。</b><br>
+    <b>v238（hotfix · 修 v237 主 script 中斷）：</b>①<b>修正資料卡在第一頁／影片與帳號顯示 0 的問題</b>：v237 檔內 openAccountVideoAudit 有一段「影片數核對」彈窗字串，font-family 的單引號打斷 JS 字串，導致主 script 直接停止執行，所以資料雖然右下同步列顯示有同步，但主畫面的 videos/accounts 沒有正常渲染。②<b>修正一鍵回補按鈕字串</b>：relinkVideosForAccount 的 onclick 參數改成安全寫法，避免再次因引號造成 script check 失敗。<b>這版只做 hotfix，沒動資料結構、沒動 client.html、沒動六守門提示詞。</b><br>
+    <b>v237（修 QUICK SAVE 待補清單快閃回彈）：</b>①<b>QUICK SAVE 真正停在待補清單</b>：點右下「查看待補清單」時，系統會先取消目前欄位焦點，再用固定座標多次校準捲動位置，避免畫面剛跳到待補提示又被拉回原欄位。②<b>不再自動跳欄位</b>：QUICK SAVE 與右下缺欄提示只帶你到待補清單；看完要修哪一格，再手動點該列「定位欄位」。③<b>文案同步修正</b>：toast 與右下提示改成「已停在待補清單」，讓操作預期更清楚。<b>只動 QUICK SAVE 捲動節奏與提示文案；沒動資料結構、沒動 client.html、沒動六守門提示詞。</b><br>
     <b>v236（修 修帳號影片數核對與分頁固定 10 筆）：</b>①<b>帳號影片數可以核對來源</b>：帳號卡「拆解過 N 支影片」旁新增「核對」，點開會列出每支影片是靠 accountId、影片 @handle，或卡片文字裡的 @handle 被算進來，不再只給一個黑盒數字。②<b>影片數少算的原因會明講</b>：如果妳手上確認有更多影片但沒出現在核對清單，通常代表那幾張卡B沒有 IG帳號／沒有任何 @handle，系統不能安全硬猜，所以不會亂算進去。③<b>一鍵回補安全連動</b>：已經能用精準 @handle 對上的影片，可一鍵補回 accountId/accountHandle，之後帳號卡數字會更穩。④<b>分頁固定 10 筆</b>：影片庫明確每頁 10 支影片，帳號管理明確每頁 10 個帳號，頁尾也會顯示，方便妳人工核對。<b>只動影片↔帳號計數、核對彈窗與分頁文案；沒動資料結構、沒動 client.html、沒動六守門提示詞。</b><br>
     <b>v235（修 QUICK SAVE 跳到待補清單後又彈回欄位）：</b>①<b>修掉回彈感</b>：v234 點 QUICK SAVE 會先跳到待補清單，但因為系統又自動 focus 第一個缺欄，所以畫面會像閃一下後被拉回目前欄位。本版改成點 QUICK SAVE 只停在待補清單，不再自動跳回欄位。②<b>保留手動定位</b>：待補清單每列的「定位欄位」仍保留，讓你先看清楚缺什麼、複製補完提示詞，需要時再自己點定位到那一格。③<b>右下提示文案同步</b>：改成「點這裡會停在待補清單，再用定位欄位去修」，避免誤會。<b>只動 QUICK SAVE 的跳轉節奏與提示文案；沒動資料結構、沒動 client.html、沒動六守門提示詞。</b><br>
     <b>v234（QUICK SAVE 點擊可跳到待補修復位置）：</b>①<b>QUICK SAVE 變成智慧導引</b>：右下快速儲存卡如果顯示還有缺欄，主按鈕會改成「查看待補清單↓」，點一下就會跳到下方待補清單，並用品牌酒紅高亮，不用自己滑到最下方找提示。②<b>會定位到第一個需要修復的欄位</b>：跳到待補清單後，系統會再帶到第一個缺欄的表單位置，讓你知道要從哪裡補。③<b>每一列待補都多一顆「定位欄位」</b>：如果你要修特定欄位，例如拍攝素材或子題型，可以直接從待補清單點「定位欄位」回到那一格。④<b>沒有缺欄才直接儲存</b>：欄位都齊時 QUICK SAVE 才維持原本快速儲存行為。<b>只動 QUICK SAVE、待補清單與欄位定位；沒動資料結構、沒動 client.html、沒動六守門提示詞。</b><br>
@@ -4913,10 +4915,10 @@ function openAccountVideoAudit(accId){
   rows.sort(function(a,b){ return ((b.v.date||b.v.logdate||'')+'').localeCompare((a.v.date||a.v.logdate||'')+''); });
   var needs=rows.filter(function(x){ return x.v.accountId!==acc.id; });
   var html='<div style="padding:18px 16px;max-height:80vh;overflow:auto">'
-    +'<div style="font-family:'Noto Serif TC',serif;font-size:18px;font-weight:900;margin-bottom:4px">影片數核對</div>'
+    +'<div style="font-family:&quot;Noto Serif TC&quot;,serif;font-size:18px;font-weight:900;margin-bottom:4px">影片數核對</div>'
     +'<div style="font-size:12px;color:var(--gold-dark);margin-bottom:10px">'+esc(acc.handle||'@?')+'｜目前安全歸屬 '+rows.length+' 支影片</div>'
     +'<div style="font-size:12px;color:var(--sub);line-height:1.8;margin-bottom:10px">這裡只用 accountId、影片 @handle、卡片文字中的精準 @handle 來算，不用標題或顯示名稱硬猜。若妳手上確認有更多影片但這裡沒出現，通常代表那幾張卡B缺「IG帳號」或沒有任何 @handle，需要回到影片編輯補上，系統才會安全計入。</div>'
-    +(needs.length?'<button class="btn" onclick="relinkVideosForAccount(''+esc(acc.id)+'')" style="width:100%;margin-bottom:10px">一鍵回補這 '+needs.length+' 支的帳號連動</button>':'')
+    +(needs.length?'<button class="btn" onclick="relinkVideosForAccount(&quot;'+esc(acc.id)+'&quot;)" style="width:100%;margin-bottom:10px">一鍵回補這 '+needs.length+' 支的帳號連動</button>':'')
     +(rows.length?rows.map(function(x,i){ var v=x.v; return '<div style="border-top:1px solid var(--line);padding:8px 0;font-size:12px"><b>'+(i+1)+'. '+esc(v.title||'(未命名)')+'</b><div style="color:var(--sub);margin-top:2px">'+esc(_videoMatchLabel(x.method))+'｜'+esc(v.accountHandle||'無 @handle')+(v.accountId===acc.id?'｜id 已正確':'｜id 未回補')+'</div></div>'; }).join(''):'<div class="empty-res">目前沒有任何影片能安全歸屬到這個帳號。</div>')
     +'</div>';
   $('sheet').innerHTML=html; $('modal').style.display='flex';
@@ -10025,7 +10027,7 @@ document.addEventListener('DOMContentLoaded',function(){
 })();
 </script>
 
-<!-- v237：QUICK SAVE 強制停靠待補清單；保留 v236 帳號影片數核對＋分頁固定 10 -->
+<!-- v238：hotfix 修正影片數核對彈窗字串語法；保留 v237 QUICK SAVE 與 v236 核對功能 -->
 <div id="stickyCardSave" style="display:none;position:fixed;bottom:84px;right:14px;z-index:10000;flex-direction:column;gap:6px;background:#fff;border:1.5px solid var(--rouge);border-radius:12px;padding:10px 14px;box-shadow:0 6px 24px rgba(0,0,0,.15);max-width:280px">
   <div style="font-size:11px;color:var(--gold-dark);font-weight:700;letter-spacing:.4px;text-transform:uppercase">Quick Save · 快速儲存</div>
   <button id="stickyCardBtn" class="btn btn-go" type="button" onclick="_cardQuickAction()" style="width:100%;font-size:13px;padding:9px 14px"><svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;vertical-align:-2px;margin-right:4px"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8M7 3v5h8"/></svg>儲存這支影片＋</button>
