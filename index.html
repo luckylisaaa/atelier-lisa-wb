@@ -8,7 +8,8 @@
 <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v251 (版本號僅留註解，不顯示於畫面)
+<!-- ATELIER 影片診斷工作台 · 內部版本 v252 (版本號僅留註解，不顯示於畫面)
+v252 更新（交辦單：Lisa 希望策略診斷不要一直跳回影片庫，而是在同頁用小視窗核對單支影片；必要時才獨立開新視窗；同時把策略診斷整理成可持續操作的下一步中控台）：【A 策略診斷行動中控台】新增「下一步行動區」，把單一客戶診斷、Top 5 可複製公式、同主題案例對照、同素材腳本對照、A–E 商業閉環缺口、送客戶服務台交付六步驟放在同一頁，避免 Lisa 看到數據後不知道下一步。【B 單支影片小視窗核對】Top 觀看／Top 分享率／低觀看待複核每支影片新增「快看」按鈕，在策略診斷頁內以 modal 顯示該影片重點、數據、Hook 與顧問判斷，不再強制跳回影片庫。【C 需要時才獨立視窗】單支影片小視窗內新增「在影片庫定位」與「獨立視窗核對」兩個選項：前者才會跳回影片庫並高亮，後者會用新視窗打開該影片的 deep-link，方便 Lisa 左右並排核對。只讀資料，不寫入影片，不動 client.html、Firebase、商業閉環地圖與六支守門提示詞。
 v251 更新（交辦單：Lisa 實測 v250 後，策略診斷頁第一次進入仍像未載入，要隨便點按鈕才出現資料；同時釐清策略診斷、客戶服務台、商業閉環之間的工作用途）：【A 策略診斷自動初始化】新增 _strategyHydrate，切到策略診斷分頁時會多段延遲補灌帳號、同步 csel、若已有影片庫/帳號管理主角則自動帶入，並自動產生策略快照，不再要求 Lisa 亂點按鈕才刷新。【B 清楚化策略頁定位】策略診斷頁新增流程說明：它不是最終交付，而是 32 支影片的策略雷達；客戶服務台負責問診補資料與 PDF/HTML/PPT 交付；商業閉環地圖負責判斷 A-E 與 G1-G5 缺口。
 v250 更新（交辦單：Lisa 實測 v249 後，策略診斷客戶下拉搜尋「理鴻」仍只顯示排序頁籤、沒有帳號結果）：【A 修正 stratAcc 補灌根因】v249 的 populateStrategyAcc 使用 window.accounts 判斷，但主程式的 accounts 並不一定掛在 window 上，導致函式直接 return，select options 沒被灌入；本版改用 typeof accounts !== 'undefined' 的安全讀取，必要時才 fallback 到 window.accounts。【B 保留策略頁只讀原則】只修策略診斷選客戶下拉，不碰 CSV 彈窗、不寫入資料、不動 client.html、Firebase、商業閉環地圖與六支守門提示詞。
 v249 更新（交辦單：Lisa 實測 v248 策略診斷頁，選客戶下拉搜尋「理」時面板只剩排序頁籤、帳號列表空白，像當機）：【A 策略診斷客戶下拉補灌】csel 帳號型下拉開啟前新增 stratAcc 專用補灌 populateStrategyAcc，避免策略診斷頁新增的 select 在 csel 初始化時只有 placeholder，帳號 async 到齊後未被重建，導致搜尋單字沒有任何帳號列。【B 保留既有搜尋排序】沿用既有 csel 搜尋與中文單字排序邏輯，不改 v245 影片庫排序、不碰 v246 CSV 彈窗、不寫入資料，只修策略診斷頁的選帳號入口。未動 client.html、Firebase 資料結構、自媒體商業閉環知識地圖與六支守門提示詞。
@@ -857,7 +858,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v251</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v252</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -2461,6 +2462,7 @@ if('serviceWorker' in navigator){
     </div>
   </div>
   <div id="strategyBox"></div>
+  <div id="strategyActionBox"></div>
   <div class="hint" style="margin-top:14px;background:#FFFDFC">
     <b>策略頁定位：</b>這裡不是最終交付檔，而是「32 支影片策略雷達」。先用影片庫資料看 Top / Bottom、G 階段、A–E 商業閉環缺口；再把提示詞帶到客戶服務台 Stage 4 補問客戶資料，最後才輸出 PDF / HTML / PPT。<br>
     <b>使用順序：</b>① 選客戶 → ② 看策略快照 → ③ 找出缺口 → ④ 開客戶服務台補問 → ⑤ 用商業閉環地圖校準下一批影片。
@@ -4479,6 +4481,7 @@ function renderManual(){
   <div class="form-card" style="border-left:3px solid var(--gold)">
     <div class="stitle" style="font-size:15px;color:var(--rouge)">更新紀錄 · 還沒做的</div>
     <p style="font-size:13px;color:var(--text);line-height:1.85;margin-top:8px">
+    <b>v252（策略診斷行動中控台＋單支影片小視窗）：</b>策略診斷頁新增「下一步行動區」，把單一客戶診斷、Top 5 可複製公式、同主題案例對照、同素材腳本對照、A–E 商業閉環缺口、送客戶服務台交付六步驟整理成可持續操作的顧問流程。Top 觀看／Top 分享率／低觀看待複核的每支影片新增「快看」，可在同頁小視窗核對單支影片，不強制跳回影片庫；需要深入核對時再按「在影片庫定位」或「獨立視窗核對」。<b>只讀資料、不寫入資料、不碰 CSV 彈窗、不動 client.html、Firebase、商業閉環地圖與六守門提示詞。</b><br>
     <b>v251（策略診斷自動初始化＋定位說明）：</b>修正第一次切到策略診斷頁時需要亂點按鈕才產生資料的問題；新增 _strategyHydrate，多段延遲補灌帳號、同步下拉、沿用影片庫/帳號管理目前主角並自動產生策略快照。策略診斷頁也補上「工作流定位」，說明它是 32 支影片的策略雷達，不是最終交付；後續要接客戶服務台做問診補資料與 PDF/HTML/PPT 交付，再用商業閉環地圖校準 A-E 與 G1-G5 缺口。<b>只修策略頁初始化與說明，不碰 CSV 彈窗、不寫入資料、不動 client.html、Firebase、商業閉環地圖與六守門提示詞。</b><br>
     <b>v250（修策略診斷客戶搜尋仍空白）：</b>修正 v249 沒有真正灌入帳號的根因：策略診斷頁的 populateStrategyAcc 原本判斷 window.accounts，但主程式 accounts 不一定掛在 window 上，所以會直接 return，導致下拉面板只有排序頁籤、沒有帳號列。這版改用主程式 accounts 安全讀取，搜尋「理」「理鴻」「kl」應可正常出現理鴻帳號。<b>只修策略診斷客戶下拉，不碰 CSV 彈窗、不寫入資料、不動 client.html、Firebase、商業閉環地圖與六守門提示詞。</b><br>
     <b>v248（32 支影片內容優化診斷入口）：</b>①<b>新增策略診斷分頁</b>：讀取選定客戶的影片庫資料，快速彙整影片數、平均觀看、互動率、分享率、Top 表現、低表現、G 階段分布與合作目標 A–E 分布。②<b>串接客戶服務台</b>：可直接開同一客戶的服務台，並複製「Stage 4 內容診斷」提示詞，把影片庫數據轉成客戶服務台可用的診斷輸入。③<b>串接商業閉環</b>：把 A 認知、B 品牌、C 信任、D 轉化、E 組織成長與 G1–G5 內容策略接起來，讓理鴻 32 支影片從建檔進入優化診斷。<b>本版只讀資料、不寫入資料，不動 client.html、商業閉環地圖、Firebase 結構與六守門提示詞。</b><br>
@@ -10353,10 +10356,46 @@ document.addEventListener('DOMContentLoaded',function(){
     var rows=Object.keys(obj).map(function(k){return '<div style="display:flex;align-items:center;gap:8px;padding:5px 0;border-top:1px solid var(--line)"><b style="width:60px;color:var(--rouge)">'+E(k)+'</b><div style="flex:1;height:7px;background:var(--line);border-radius:999px;overflow:hidden"><i style="display:block;height:100%;width:'+(total?Math.round(obj[k]/total*100):0)+'%;background:var(--gold)"></i></div><span style="width:70px;text-align:right;color:var(--sub);font-size:12px">'+obj[k]+' 支</span></div>';}).join('');
     return '<div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:12px"><div style="font-family:\'Noto Serif TC\',serif;font-weight:900;color:var(--ink);margin-bottom:6px">'+E(title)+'</div>'+rows+'</div>';
   }
-  function vidLine(v,i){ var s=score(v); return '<div style="padding:8px 0;border-top:1px solid var(--line);font-size:12.5px;line-height:1.7"><b style="color:var(--ink)">'+(i+1)+'. '+E(v.title||'(未命名)')+'</b><br><span style="color:var(--sub)">觀看 '+s.views.toLocaleString()+'｜互動率 '+(s.engRate*100).toFixed(2)+'%｜分享率 '+(s.shareRate*100).toFixed(2)+'%｜'+E(stageLetter(v))+'｜'+E(goalLetter(v))+'</span></div>'; }
+  function _strategyVidId(v){ return E(String((v&&v.id)||'')); }
+  function vidLine(v,i){ var s=score(v), id=_strategyVidId(v); return '<div style="padding:8px 0;border-top:1px solid var(--line);font-size:12.5px;line-height:1.7"><b style="color:var(--ink)">'+(i+1)+'. '+E(v.title||'(未命名)')+'</b><br><span style="color:var(--sub)">觀看 '+s.views.toLocaleString()+'｜互動率 '+(s.engRate*100).toFixed(2)+'%｜分享率 '+(s.shareRate*100).toFixed(2)+'%｜'+E(stageLetter(v))+'｜'+E(goalLetter(v))+'</span><br><button type="button" class="btn btn-ghost" style="width:auto;font-size:11px;padding:5px 9px;margin-top:5px" onclick="_strategyOpenVideoMini(\''+id+'\')">快看</button><button type="button" class="btn btn-ghost" style="width:auto;font-size:11px;padding:5px 9px;margin-top:5px;margin-left:5px" onclick="_strategyLocateVideo(\''+id+'\')">定位</button></div>'; }
+  function _strategyFindVideo(id){ return (videos||[]).find(function(x){return String(x.id)===String(id);}); }
+  window._strategyLocateVideo=function(id){ var v=_strategyFindVideo(id); if(!v) return; if(typeof _locateExistingVideo==='function') _locateExistingVideo(v); else { switchTo('library'); setTimeout(function(){ if(H('libSearch')) H('libSearch').value=v.title||''; if(typeof renderLibrary==='function') renderLibrary(); location.hash='video-'+encodeURIComponent(v.id||''); if(typeof _focusVideoFromHash==='function') _focusVideoFromHash(); },200); } };
+  window._strategyOpenVideoWindow=function(id){ var url=location.href.split('#')[0]+'#video-'+encodeURIComponent(id); window.open(url,'atelierVideo_'+String(id).replace(/\W/g,''),'width=1180,height=820'); };
+  window._strategyOpenVideoMini=function(id){ var v=_strategyFindVideo(id); if(!v){ toast('找不到這支影片'); return; } var s=score(v); var title=E(v.title||'(未命名影片)'); var html='<h2 style="font-family:Noto Serif TC,serif;color:var(--rouge);font-size:20px;margin-bottom:6px">單支影片快看</h2>'
+    +'<div style="font-size:12px;color:var(--sub);margin-bottom:10px">不離開策略診斷頁，先核對這支影片的題材、數據與可複製點。需要左右對照時，再獨立開新視窗。</div>'
+    +'<div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:14px;line-height:1.8;font-size:13px">'
+    +'<b style="color:var(--ink);font-size:15px">'+title+'</b><br>'
+    +'<span style="color:var(--sub)">'+E(stageLetter(v))+'｜'+E(goalLetter(v))+'｜觀看 '+s.views.toLocaleString()+'｜讚 '+s.likes.toLocaleString()+'｜留言 '+s.comments.toLocaleString()+'｜分享 '+s.shares.toLocaleString()+'｜互動率 '+(s.engRate*100).toFixed(2)+'%｜分享率 '+(s.shareRate*100).toFixed(2)+'%</span>'
+    +'<div style="margin-top:10px;padding:10px;background:var(--warm);border-radius:10px"><b style="color:var(--rouge)">Hook：</b>'+E(v.hook||'未填')+'</div>'
+    +'<div style="margin-top:10px"><b style="color:var(--rouge)">顧問判斷：</b>'+_strategyVideoAdvice(v,s)+'</div></div>'
+    +'<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px"><button class="btn btn-go" type="button" onclick="closeModal();_strategyLocateVideo(\''+E(String(v.id||''))+'\')" style="width:auto;font-size:13px;padding:9px 14px">在影片庫定位</button><button class="btn btn-ghost" type="button" onclick="_strategyOpenVideoWindow(\''+E(String(v.id||''))+'\')" style="width:auto;font-size:13px;padding:9px 14px">獨立視窗核對</button><button class="btn btn-ghost" type="button" onclick="closeModal()" style="width:auto;font-size:13px;padding:9px 14px">回策略診斷</button></div>';
+    if(typeof openModal==='function') openModal(html); else alert((v.title||'')+'\n觀看 '+s.views); };
+  function _strategyVideoAdvice(v,s){ var hook=String(v.hook||''); var bits=[]; if(s.views>=20000) bits.push('題材具市場注意力，可拆成可複製公式。'); if(s.shareRate>=0.002) bits.push('分享率偏高，代表有轉傳或收藏型價值。'); if(s.views<7000) bits.push('觀看偏低，建議檢查前 3 秒是否太法律化、痛點是否不夠生活化。'); if(/不一定|其實|差異|VS|差別|風險|怎麼辦|可以/.test(hook+String(v.title||''))) bits.push('具備反直覺／避坑／可操作語氣，可作為下一批腳本參考。'); if(!bits.length) bits.push('可回到影片卡查看完整逐字稿，再判斷 Hook、ICP 與商業閉環位置。'); return E(bits.join(' ')); }
   function currentPack(){
     populateStrategyAcc(); var id=(H('stratAcc')||{}).value||''; var a=(accounts||[]).find(function(x){return x.id===id;}); var vs=a&&typeof videosOfAccount==='function'?videosOfAccount(id):[];
     return {id:id,a:a,vs:vs};
+  }
+
+  function _strategyFormula(v){ var t=String((v&&v.title)||'')+' '+String((v&&v.hook)||'');
+    if(/定金|訂金|差異|差別|VS|雇傭|承攬|誹謗|侮辱/.test(t)) return '公式：A 跟 B 看起來很像，但法律效果完全不同 → 用一個生活損失場景開場 → 律師 60 秒判斷。';
+    if(/怎麼辦|可以要求|求償|退貨|討債|請假|扣薪|特休/.test(t)) return '公式：高頻痛點怎麼辦 → 先給結論 → 拆 3–5 個可執行步驟 → 導到諮詢情境。';
+    if(/詐騙|國會|新聞|改革|不起訴|貪污/.test(t)) return '公式：時事／社會事件切入 → 拆背後機制 → 讓觀眾知道專業判斷差在哪。';
+    return '公式：用生活情境破題 → 降低法律門檻 → 補一個可保存的判斷句。';
+  }
+  function renderStrategyActionBox(scored,topViews,topShare,bottom,missingStages,missingGoals){
+    var box=H('strategyActionBox'); if(!box) return;
+    var formulas=topViews.slice(0,5).map(function(v,i){return '<div style="padding:9px 0;border-top:1px solid var(--line);font-size:12.5px;line-height:1.75"><b>'+(i+1)+'. '+E(v.title||'')+'</b><br><span style="color:var(--sub)">'+E(_strategyFormula(v))+'</span><br><button class="btn btn-ghost" type="button" style="width:auto;font-size:11px;padding:5px 9px;margin-top:5px" onclick="_strategyOpenVideoMini(''+E(String(v.id||''))+'')">快看這支</button></div>';}).join('');
+    box.innerHTML='<div style="margin-top:14px;background:#fff;border:1px solid var(--border);border-radius:14px;padding:14px 16px">'
+      +'<div style="font-family:Noto Serif TC,serif;font-size:17px;font-weight:900;color:var(--rouge);margin-bottom:4px">下一步行動區</div>'
+      +'<div style="font-size:12.5px;color:var(--sub);line-height:1.8;margin-bottom:12px">這裡把剛剛的策略快照變成可操作流程：先看可複製公式，再找同主題／同素材案例，最後送到客戶服務台做交付。</div>'
+      +'<div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:12px">'
+      +'<div style="border:1px solid var(--gold-soft);border-radius:12px;padding:12px;background:var(--warm)"><b style="color:var(--rouge)">1. 單一客戶診斷</b><br><span style="font-size:12px;color:var(--text)">看這個帳號的 Top/Bottom、G 階段與 A–E 缺口。</span></div>'
+      +'<div style="border:1px solid var(--gold-soft);border-radius:12px;padding:12px;background:var(--warm)"><b style="color:var(--rouge)">2. 案例對照</b><br><span style="font-size:12px;color:var(--text)">同主題、同素材、成功／失敗樣本放在一起比較。</span></div>'
+      +'<div style="border:1px solid var(--gold-soft);border-radius:12px;padding:12px;background:var(--warm)"><b style="color:var(--rouge)">3. 交付輸出</b><br><span style="font-size:12px;color:var(--text)">送到客戶服務台補問，再產出 PDF / HTML / PPT。</span></div></div>'
+      +'<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px"><button class="btn btn-go" type="button" onclick="copyStrategyPrompt()" style="width:auto;font-size:12px;padding:8px 12px">送到 Stage 4 診斷</button><button class="btn btn-ghost" type="button" onclick="toast('下一版會做：同主題案例對照搜尋')" style="width:auto;font-size:12px;padding:8px 12px">找同主題案例</button><button class="btn btn-ghost" type="button" onclick="toast('下一版會做：同素材腳本對照')" style="width:auto;font-size:12px;padding:8px 12px">找同素材腳本</button><button class="btn btn-ghost" type="button" onclick="_strategyOpenClient()" style="width:auto;font-size:12px;padding:8px 12px">開客戶服務台交付</button></div>'
+      +'<div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:12px"><div style="font-family:Noto Serif TC,serif;font-weight:900;color:var(--ink);margin-bottom:4px">Top 5 可複製公式</div>'+formulas+'</div>'
+      +(missingStages.length||missingGoals.length?'<div class="hint" style="margin-top:12px"><b>優先補洞：</b>目前缺 '+E([missingStages.length?('G 階段 '+missingStages.join('、')):'',missingGoals.length?('A–E '+missingGoals.join('、')):''].filter(Boolean).join('；'))+'。下一批內容不要只延續知識型，要補觀點、服務信任與成交轉化。</div>':'')
+      +'</div>';
   }
   window.renderStrategyDiagnosis=function(){
     populateStrategyAcc(); var box=H('strategyBox'); if(!box) return; var p=currentPack(), a=p.a, vs=p.vs;
@@ -10381,6 +10420,7 @@ document.addEventListener('DOMContentLoaded',function(){
     html+='<div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px"><div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:12px"><div style="font-family:\'Noto Serif TC\',serif;font-weight:900;color:var(--ink)">Top 觀看</div>'+topViews.map(vidLine).join('')+'</div><div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:12px"><div style="font-family:\'Noto Serif TC\',serif;font-weight:900;color:var(--ink)">Top 分享率</div>'+topShare.map(vidLine).join('')+'</div><div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:12px"><div style="font-family:\'Noto Serif TC\',serif;font-weight:900;color:var(--ink)">低觀看待複核</div>'+bottom.map(vidLine).join('')+'</div></div>';
     html+='<div class="hint" style="margin-top:12px"><b>下一步：</b>把這份策略快照複製到客戶服務台 Stage 4「內容診斷」，再補客戶無法從影片看出的資料，例如真正想推的案型、諮詢流程、合規限制、成交阻力、可公開案例。</div>';
     box.innerHTML=html;
+    try{ renderStrategyActionBox(scored,topViews,topShare,bottom,missingStages,missingGoals); }catch(_e){}
   };
   window.copyStrategyPrompt=function(){
     var p=currentPack(), a=p.a, vs=p.vs; if(!a){ if(typeof toast==='function')toast('先選客戶'); return; }
@@ -10500,7 +10540,7 @@ document.addEventListener('DOMContentLoaded',function(){
 <script>
 /* v239：自動防舊版快取。讓桌布捷徑／瀏覽器如果抓到舊 HTML，能自己比對線上最新版並導向。 */
 (function(){
-  var ATELIER_CURRENT_VERSION='v251';
+  var ATELIER_CURRENT_VERSION='v252';
   window.ATELIER_CURRENT_VERSION=ATELIER_CURRENT_VERSION;
   function _avNum(v){v=String(v||'');var m=v.match(/v\s*(\d+)/i);return m?parseInt(m[1],10):0;}
   function _avDetect(html){html=String(html||'');var m=html.match(/id=["']verBadge["'][^>]*>\s*(v\d+)/i)||html.match(/內部版本\s+(v\d+)/i);return m?m[1]:'';}
