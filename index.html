@@ -5,7 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="color-scheme" content="light only">
 <meta name="supported-color-schemes" content="light">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v238 (版本號僅留註解，不顯示於畫面)
+<meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<!-- ATELIER 影片診斷工作台 · 內部版本 v239 (版本號僅留註解，不顯示於畫面)
+v239 更新（交辦單：Lisa 不想每次升版後都手動刪桌布捷徑、加 ?v=版本號或重建入口）：【A 自動防舊版快取】新增 ATELIER_CURRENT_VERSION 與 _atelierAutoVersionCheck；頁面載入後會用 no-store 方式抓取線上 index.html 最新內容，比對 verBadge 版本，若偵測到使用者開到舊快取版本，會自動導向 ?v=最新版&fresh=時間戳，不再要求 Lisa 每次手動改網址。【B HTML 快取宣告】head 補 Cache-Control / Pragma / Expires meta，降低桌布捷徑與瀏覽器抓舊 HTML 的機率。【C 日常入口維持原樣】Lisa 仍可照原本從桌布／GitHub Pages 開工作台，不需要每次重建檔案或人工加版本參數。未動資料結構、未動 client.html、未動六守門常數。
 v238 更新（hotfix：Lisa 實測 v237 後發現資料卡在第一頁、影片／帳號顯示 0）：【A 修正 v236 核對彈窗字串語法】openAccountVideoAudit 內「影片數核對」標題的 font-family 單引號破壞 JS 字串，導致主 script 無法執行，畫面停在初始輸入頁且資料計數顯示 0；本版改用安全的 HTML entity 寫法，避免字串中斷。【B 修正一鍵回補按鈕 onclick 字串】relinkVideosForAccount 的 onclick 參數改用 &quot; 包裹帳號 id，避免單引號組字造成 script check 失敗。只做語法 hotfix，不改資料結構、不動 client.html、不動六守門常數。
 v237 更新（交辦單：Lisa 實測 v236 後回報 QUICK SAVE 點「查看待補清單」仍會快閃、停不住在待補提示區）：【A QUICK SAVE 強制停靠待補清單】_scrollToInputTodo 改成先 blur 目前焦點欄位，避免 select/textarea 保持 focus 把畫面拉回原欄位；捲動改用固定座標 scrollTo，並在 0ms/120ms/360ms/760ms 多次校準，抵消 renderInputTodo、sticky 更新與瀏覽器 scroll anchoring 造成的回彈。【B 不再自動定位缺欄】QUICK SAVE 與右下缺欄提示只負責帶到 #inputTodo 待補清單；只有使用者明確點待補列的「定位欄位」時，才跳到拍攝素材／子題型等欄位。【C 提示文案同步】toast 與右下提示改成「已停在待補清單」，避免誤會會自動跳去欄位。未動資料結構、未動 client.html、未動六守門常數。
 v236 更新（交辦單：Lisa 實測帳號管理發現 @kl.legal 明確有 32 支影片，但帳號卡只顯示 28/30，擔心影片數與頁數不可信）：【A 帳號影片數核對改成可解釋】新增 _videoAccountMatchMethod / _videoTextBlob / _videoMentionHit，videosOfAccount 不再只看 accountId 與 accountHandle，會把 caption / hashtag / note / raw 等文字中的精準 @handle 也納入「可安全歸屬」；同時新增 openAccountVideoAudit，帳號卡可一鍵打開「影片數核對」，列出每支影片是用 id、handle、文字 @handle 哪一種方式被算進來，並提示仍沒被算到的影片通常代表卡B 缺 IG帳號欄，不能硬猜。【B 一鍵回補已能安全辨識的影片連動】新增 relinkVideosForAccount(accId)，只針對已經能用精準 id/handle/@handle 對上的影片補回 accountId/accountHandle，避免之後帳號影片數因 id 空值而忽高忽低。【C 分頁固定整數 10】影片庫與帳號管理分頁文案明確標示每頁 10 支影片／10 個帳號，帳號頁維持 ACC_PER=10，影片庫維持 PER=10，避免出現 11 筆造成核對困難。未動資料結構、未動 client.html、未動六守門常數。
@@ -842,7 +846,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v238</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v239</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -4273,6 +4277,7 @@ function renderManual(){
   <div class="form-card" style="border-left:3px solid var(--gold)">
     <div class="stitle" style="font-size:15px;color:var(--rouge)">更新紀錄 · 還沒做的</div>
     <p style="font-size:13px;color:var(--text);line-height:1.85;margin-top:8px">
+    <b>v239（自動防舊版快取 · 不再要求 Lisa 每次重建桌布）：</b>①<b>新增自動版本檢查</b>：頁面載入後會用 no-store 方式抓線上最新版 index.html，比對畫面徽章版本；若你從桌布捷徑或瀏覽器快取開到舊版，系統會自動導向最新版網址。②<b>降低桌布捷徑抓舊檔機率</b>：head 補 Cache-Control / Pragma / Expires meta，並在更新時自動加 fresh 時間戳，讓瀏覽器更明確抓新檔。③<b>日常使用方式不變</b>：Lisa 仍可照原本從桌布開工作台，不需要每次手動加 ?v=版本號、不需要一直刪捷徑重建。<b>這版只處理快取與入口穩定，不動資料結構、client.html 與六守門提示詞。</b><br>
     <b>v238（hotfix · 修 v237 主 script 中斷）：</b>①<b>修正資料卡在第一頁／影片與帳號顯示 0 的問題</b>：v237 檔內 openAccountVideoAudit 有一段「影片數核對」彈窗字串，font-family 的單引號打斷 JS 字串，導致主 script 直接停止執行，所以資料雖然右下同步列顯示有同步，但主畫面的 videos/accounts 沒有正常渲染。②<b>修正一鍵回補按鈕字串</b>：relinkVideosForAccount 的 onclick 參數改成安全寫法，避免再次因引號造成 script check 失敗。<b>這版只做 hotfix，沒動資料結構、沒動 client.html、沒動六守門提示詞。</b><br>
     <b>v237（修 QUICK SAVE 待補清單快閃回彈）：</b>①<b>QUICK SAVE 真正停在待補清單</b>：點右下「查看待補清單」時，系統會先取消目前欄位焦點，再用固定座標多次校準捲動位置，避免畫面剛跳到待補提示又被拉回原欄位。②<b>不再自動跳欄位</b>：QUICK SAVE 與右下缺欄提示只帶你到待補清單；看完要修哪一格，再手動點該列「定位欄位」。③<b>文案同步修正</b>：toast 與右下提示改成「已停在待補清單」，讓操作預期更清楚。<b>只動 QUICK SAVE 捲動節奏與提示文案；沒動資料結構、沒動 client.html、沒動六守門提示詞。</b><br>
     <b>v236（修 修帳號影片數核對與分頁固定 10 筆）：</b>①<b>帳號影片數可以核對來源</b>：帳號卡「拆解過 N 支影片」旁新增「核對」，點開會列出每支影片是靠 accountId、影片 @handle，或卡片文字裡的 @handle 被算進來，不再只給一個黑盒數字。②<b>影片數少算的原因會明講</b>：如果妳手上確認有更多影片但沒出現在核對清單，通常代表那幾張卡B沒有 IG帳號／沒有任何 @handle，系統不能安全硬猜，所以不會亂算進去。③<b>一鍵回補安全連動</b>：已經能用精準 @handle 對上的影片，可一鍵補回 accountId/accountHandle，之後帳號卡數字會更穩。④<b>分頁固定 10 筆</b>：影片庫明確每頁 10 支影片，帳號管理明確每頁 10 個帳號，頁尾也會顯示，方便妳人工核對。<b>只動影片↔帳號計數、核對彈窗與分頁文案；沒動資料結構、沒動 client.html、沒動六守門提示詞。</b><br>
@@ -10027,7 +10032,7 @@ document.addEventListener('DOMContentLoaded',function(){
 })();
 </script>
 
-<!-- v238：hotfix 修正影片數核對彈窗字串語法；保留 v237 QUICK SAVE 與 v236 核對功能 -->
+<!-- v239：新增自動防舊版快取；保留 v238 hotfix、v237 QUICK SAVE 與 v236 核對功能 -->
 <div id="stickyCardSave" style="display:none;position:fixed;bottom:84px;right:14px;z-index:10000;flex-direction:column;gap:6px;background:#fff;border:1.5px solid var(--rouge);border-radius:12px;padding:10px 14px;box-shadow:0 6px 24px rgba(0,0,0,.15);max-width:280px">
   <div style="font-size:11px;color:var(--gold-dark);font-weight:700;letter-spacing:.4px;text-transform:uppercase">Quick Save · 快速儲存</div>
   <button id="stickyCardBtn" class="btn btn-go" type="button" onclick="_cardQuickAction()" style="width:100%;font-size:13px;padding:9px 14px"><svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;vertical-align:-2px;margin-right:4px"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8M7 3v5h8"/></svg>儲存這支影片＋</button>
@@ -10100,6 +10105,35 @@ document.addEventListener('DOMContentLoaded',function(){
       else {switchTo(view); if(view==='search'&&q){setTimeout(function(){var gs=H('globalSearch'); if(gs){gs.value=q; if(H('gClr'))H('gClr').style.display='block'; if(H('gIc'))H('gIc').style.display='none'; if(typeof runGlobalSearch==='function')runGlobalSearch();}},80);} }
       window.scrollTo(0,0); }catch(e){} };
   document.addEventListener('DOMContentLoaded',function(){var i=H('sysHelpInput'); if(i){i.addEventListener('keydown',function(e){if(e.key==='Enter') _sysHelpAsk();});} setTimeout(function(){var out=H('sysHelpOut'); if(out&&!out.innerHTML) out.innerHTML=hDefault();},600);});
+})();
+</script>
+
+<script>
+/* v239：自動防舊版快取。讓桌布捷徑／瀏覽器如果抓到舊 HTML，能自己比對線上最新版並導向。 */
+(function(){
+  var ATELIER_CURRENT_VERSION='v239';
+  window.ATELIER_CURRENT_VERSION=ATELIER_CURRENT_VERSION;
+  function _avNum(v){v=String(v||'');var m=v.match(/v\s*(\d+)/i);return m?parseInt(m[1],10):0;}
+  function _avDetect(html){html=String(html||'');var m=html.match(/id=["']verBadge["'][^>]*>\s*(v\d+)/i)||html.match(/內部版本\s+(v\d+)/i);return m?m[1]:'';}
+  function _avCurrent(){try{var b=document.getElementById('verBadge');var t=b?b.textContent:ATELIER_CURRENT_VERSION;var m=String(t||'').match(/v\s*\d+/i);return m?m[0].replace(/\s+/g,''):ATELIER_CURRENT_VERSION;}catch(e){return ATELIER_CURRENT_VERSION;}}
+  function _avCheck(){
+    try{
+      if(!/^https?:/.test(location.protocol)) return;
+      if(sessionStorage.getItem('atelierSkipAutoUpdate')==='1') return;
+      var current=_avCurrent();
+      var base=location.origin+location.pathname;
+      var url=base+'?atelier_fresh_check='+Date.now();
+      fetch(url,{cache:'no-store',headers:{'Cache-Control':'no-cache','Pragma':'no-cache'}}).then(function(r){return r.text();}).then(function(txt){
+        var latest=_avDetect(txt);
+        if(latest && _avNum(latest)>_avNum(current)){
+          var target=base+'?v='+_avNum(latest)+'&fresh='+Date.now()+(location.hash||'');
+          location.replace(target);
+        }
+      }).catch(function(){});
+    }catch(e){}
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',function(){setTimeout(_avCheck,900);});
+  else setTimeout(_avCheck,900);
 })();
 </script>
 
