@@ -8,7 +8,8 @@
 <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v241 (版本號僅留註解，不顯示於畫面)
+<!-- ATELIER 影片診斷工作台 · 內部版本 v242 (版本號僅留註解，不顯示於畫面)
+v242 更新（交辦單：Lisa 批量核對理鴻影片時已手動核對五趟，仍剩兩支不確定是否完整歸檔，需要系統一次盤點而不是一支一支找）：【A 帳號完整盤點】帳號卡新增「完整盤點」入口，會一次掃該帳號已安全歸屬影片、需要回補 accountId 的影片、同網址重複、標題近似、缺連結/日期/觀看/分類欄位的影片，並列出全庫孤兒影片（沒有帳號歸屬）供人工檢查。【B 一鍵定位問題影片】完整盤點結果每一列都可「定位」，會切到影片庫、清掉篩選、搜尋並高亮該影片；若是安全可回補的影片，也可沿用既有一鍵回補。這版只新增核對與定位，不改資料結構、不動 client.html、不動六守門提示詞。
 v241 更新（交辦單：Lisa 實測發現重複／疑似重複彈窗只說「已建檔過」仍不夠安心，因為影片庫可能找不到、也看不出既有資料與這次卡B到底是否一致）：【A 建檔前重複核對卡】相同連結與標題相似兩種情境都改成「先核對再決定」，彈窗會列出庫裡既有資料與這次卡B的標題、帳號、發布日、封面／標題字、觀看數、連結，讓 Lisa 在未建檔前先判斷是不是同一支。【B 去影片庫查看這支】重複彈窗新增「去影片庫看這支」選項；系統會取消本次存檔、切到影片庫、清掉篩選、用既有影片標題搜尋並定位高亮，避免只說有資料卻找不到。【C 判斷文案更清楚】一般相同連結、內容錯配與標題相似三種彈窗分別說明「同一連結」、「同一連結但內容對不上」、「標題很像但網址不同」，降低誤覆蓋與誤新增。未動資料結構、未動 client.html、未動六守門常數。
 v240 更新（交辦單：Lisa 實測發現「相同影片連結」不一定代表同一支內容——本次卡B標題是報稅／撫養父母節稅，但系統用同一連結對到庫裡既有的情侶分手借貸影片）：【A 重複連結加內容交叉檢查】saveBtn 的相同連結偵測不再只說「這支影片已建檔過」；若新卡B標題／封面／發布日期與既有影片明顯不一致，會改跳「同一連結，但卡片內容對不上」的風險彈窗，明確列出既有影片與這次要存的影片，提醒可能是卡B連結拿錯、舊資料連結貼錯或曾經建檔中斷造成錯配。【B 危險情境預設不覆蓋】內容不一致時預設主按鈕改為「先不要建檔，回去檢查連結」，避免一按就把舊資料覆蓋；仍保留「確定這次卡B才對→覆蓋舊資料」與「仍新增一支」給 Lisa 手動判斷。【C 確認建檔文案更清楚】覆蓋路徑會明講「覆蓋既有影片、不新增」，系統總數維持不變，減少「還沒按確認但影片庫數字好像已經變了」的誤解。未動資料結構、未動 client.html、未動六守門常數。
 v239 更新（交辦單：Lisa 不想每次升版後都手動刪桌布捷徑、加 ?v=版本號或重建入口）：【A 自動防舊版快取】新增 ATELIER_CURRENT_VERSION 與 _atelierAutoVersionCheck；頁面載入後會用 no-store 方式抓取線上 index.html 最新內容，比對 verBadge 版本，若偵測到使用者開到舊快取版本，會自動導向 ?v=最新版&fresh=時間戳，不再要求 Lisa 每次手動改網址。【B HTML 快取宣告】head 補 Cache-Control / Pragma / Expires meta，降低桌布捷徑與瀏覽器抓舊 HTML 的機率。【C 日常入口維持原樣】Lisa 仍可照原本從桌布／GitHub Pages 開工作台，不需要每次重建檔案或人工加版本參數。未動資料結構、未動 client.html、未動六守門常數。
@@ -848,7 +849,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v241</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v242</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -1830,6 +1831,7 @@ if('serviceWorker' in navigator){
   <div class="card" style="margin-bottom:14px">
     <button class="btn btn-go" id="acc-add-btn" style="width:100%"><svg viewBox="0 0 24 24" style="width:16px;height:16px;vertical-align:-3px;margin-right:6px"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg>新增帳號</button>
     <button class="btn btn-ghost" id="acc-backfill-btn" style="width:100%;margin-top:8px;font-size:12.5px" onclick="if(typeof backfillVideoAccounts==='function')backfillVideoAccounts()"><svg viewBox="0 0 24 24" style="width:15px;height:15px;vertical-align:-3px;margin-right:6px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M3 12a9 9 0 1 0 9-9 9 9 0 0 0-6.36 2.64L3 8"/><path d="M3 3v5h5"/></svg>一鍵回補：把沒掛帳號的舊影片接回既有帳號</button>
+    <button class="btn btn-ghost" id="acc-full-audit-btn" style="width:100%;margin-top:8px;font-size:12.5px" onclick="if(typeof openVideoArchiveAudit==='function')openVideoArchiveAudit(accHeroId||'')"><svg viewBox="0 0 24 24" style="width:15px;height:15px;vertical-align:-3px;margin-right:6px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M4 4h16v16H4z"/><path d="M8 9h8M8 13h5M8 17h7"/></svg>全庫快速核對：找漏掛／重複／缺欄影片</button>
   </div>
   <div class="searchbar">
     <input id="accSearch" placeholder="搜尋帳號（@帳號名 / 顯示名 / 領域 / 身份）" autocomplete="off">
@@ -4373,6 +4375,7 @@ function renderManual(){
   <div class="form-card" style="border-left:3px solid var(--gold)">
     <div class="stitle" style="font-size:15px;color:var(--rouge)">更新紀錄 · 還沒做的</div>
     <p style="font-size:13px;color:var(--text);line-height:1.85;margin-top:8px">
+    <b>v242（帳號影片一次完整盤點）：</b>①<b>完整盤點</b>：帳號卡新增「完整盤點」，一次看該帳號安全歸屬幾支、哪些只是用 @handle 對上但 id 還沒回補、哪些同網址重複、哪些標題近似、哪些缺連結／日期／觀看／分類欄位。②<b>孤兒影片一起列</b>：全庫沒有帳號歸屬的影片也會列出來，讓 Lisa 快速看是不是那兩支漏掛帳號的影片。③<b>一鍵定位</b>：盤點列可直接跳影片庫定位並高亮問題影片，不用一頁一頁翻。<b>這版只做核對與定位，不動資料結構、client.html 與六守門提示詞。</b><br>
     <b>v241（重複／疑似重複建檔前先看清楚）：</b>①<b>重複核對卡</b>：相同連結、標題很像、內容疑似錯配時，不再只跳一句「已建檔過」，而會把「庫裡既有」和「這次卡B」的標題、帳號、日期、封面／標題字、觀看數與連結列出來，讓 Lisa 在建檔前先看是不是同一支。②<b>去影片庫看這支</b>：彈窗新增「去影片庫看這支」選項，點下去會取消本次存檔、切到影片庫、清掉篩選、定位並高亮那支既有影片，避免系統說有但 Lisa 找不到。③<b>三種風險分開說</b>：同一連結、同一連結但內容對不上、標題很像但網址不同，文案分流說清楚，不再讓覆蓋／新增判斷混在一起。<b>這版只修建檔前核對與定位，不動資料結構、client.html 與六守門提示詞。</b><br>
     <b>v240（相同連結不再盲目判定同一支 · 加內容交叉檢查）：</b>①<b>相同連結＋內容不一致會警告</b>：如果卡B的影片連結已存在，但新卡B標題／封面／日期跟庫裡那支明顯不像同一支，系統不會再只說「這支影片已建檔過」，而是改成「同一連結，但卡片內容對不上」，把既有影片與這次卡B並排列給 Lisa 看。②<b>危險情境預設不覆蓋</b>：內容不一致時主按鈕改成「先不要建檔，回去檢查連結」，避免錯把情侶分手借貸影片覆蓋成報稅影片；如果 Lisa 確定這次卡B才是正確資料，仍可手動選覆蓋。③<b>確認建檔文案更清楚</b>：覆蓋路徑會寫明「覆蓋既有影片、不新增」，所以系統總數維持不變是正常的，不代表還沒按確認就偷偷新增。<b>這版只修重複連結判斷與文案，不動資料結構、client.html 與六守門提示詞。</b><br>
     <b>v239（自動防舊版快取 · 不再要求 Lisa 每次重建桌布）：</b>①<b>新增自動版本檢查</b>：頁面載入後會用 no-store 方式抓線上最新版 index.html，比對畫面徽章版本；若你從桌布捷徑或瀏覽器快取開到舊版，系統會自動導向最新版網址。②<b>降低桌布捷徑抓舊檔機率</b>：head 補 Cache-Control / Pragma / Expires meta，並在更新時自動加 fresh 時間戳，讓瀏覽器更明確抓新檔。③<b>日常使用方式不變</b>：Lisa 仍可照原本從桌布開工作台，不需要每次手動加 ?v=版本號、不需要一直刪捷徑重建。<b>這版只處理快取與入口穩定，不動資料結構、client.html 與六守門提示詞。</b><br>
@@ -5033,7 +5036,76 @@ function relinkVideosForAccount(accId){
   if(!confirm('確認把 '+rows.length+' 支已能精準對上 '+(acc.handle||'此帳號')+' 的影片，回補 accountId / accountHandle？')) return;
   rows.forEach(function(v){ v.accountId=acc.id; v.accountHandle=acc.handle||v.accountHandle||''; });
   saveVideos(); renderAll(); toast('已回補 '+rows.length+' 支影片連動');
+
   setTimeout(function(){ try{ openAccountVideoAudit(accId); }catch(e){} },120);
+}
+
+/* v242：帳號／全庫影片完整盤點——一次找漏掛、重複、缺欄，不再讓 Lisa 一支一支翻。 */
+function _auditFirst(v,keys){
+  for(var i=0;i<keys.length;i++){ var x=v&&v[keys[i]]; if(x!==0 && x!=null && String(x).trim()!=='') return String(x).trim(); }
+  return '';
+}
+function _auditMissing(v){
+  var miss=[];
+  if(!_auditFirst(v,['title','videoTitle'])) miss.push('影片名稱');
+  if(!normVideoUrl(v&&v.url)) miss.push('連結');
+  if(!_auditFirst(v,['date','dateRaw','publishDate'])) miss.push('發布日期');
+  if(!_auditFirst(v,['views'])) miss.push('觀看');
+  if(!_auditFirst(v,['stage'])) miss.push('階段');
+  if(!_auditFirst(v,['themeId','theme'])) miss.push('主題');
+  if(!_auditFirst(v,['material','mat','shootingMaterial'])) miss.push('拍攝素材');
+  if(!_auditFirst(v,['subtype','sub'])) miss.push('子題型');
+  if(!_auditFirst(v,['trig','trigger'])) miss.push('流量觸發');
+  if(!_auditFirst(v,['form','format'])) miss.push('內容形式');
+  return miss;
+}
+function _auditLocateVideo(id){
+  try{ if(typeof closeModal==='function') closeModal(); }catch(e){}
+  var v=(videos||[]).find(function(x){return x.id===id;});
+  if(typeof _locateExistingVideo==='function' && v){ _locateExistingVideo(v); return; }
+  if(v){
+    document.querySelector('.tab[data-view="library"]')&&document.querySelector('.tab[data-view="library"]').click();
+    setTimeout(function(){
+      try{ if(typeof libResetFilters==='function') libResetFilters(); }catch(e){}
+      if($('libSearch')) $('libSearch').value=v.title||v.url||'';
+      if(typeof renderLibrary==='function') renderLibrary();
+      location.hash='video-'+encodeURIComponent(v.id||'');
+      if(typeof _focusVideoFromHash==='function') _focusVideoFromHash();
+    },250);
+  }
+}
+function _auditRow(v,label,extra){
+  var mid=v&&v.id?String(v.id):'';
+  var title=esc(_auditFirst(v,['title','videoTitle'])||'(未命名)');
+  var meta=[_auditFirst(v,['date','dateRaw','publishDate'])||'無日期', v&&v.accountHandle?('@'+normAccHandle(v.accountHandle)):'無 @handle', v&&v.url?('有連結'):'無連結'].join('｜');
+  return '<div style="border-top:1px solid var(--line);padding:8px 0;font-size:12px;line-height:1.65"><b>'+title+'</b><div style="color:var(--sub);margin-top:2px">'+esc(label)+'｜'+esc(meta)+(extra?('｜'+esc(extra)):'')+'</div><button class="btn btn-ghost" style="margin-top:6px;font-size:11px;padding:5px 9px;width:auto" onclick="_auditLocateVideo(\''+esc(mid)+'\')">定位這支</button></div>';
+}
+function openVideoArchiveAudit(accId){
+  var acc=accId?(accounts||[]).find(function(a){return a.id===accId;}):null;
+  var scoped=acc?videosOfAccount(acc.id).slice():(videos||[]).slice();
+  scoped.sort(function(a,b){ return ((b.date||b.dateRaw||b.ts||'')+'').localeCompare((a.date||a.dateRaw||a.ts||'')+''); });
+  var needsRelink=acc?scoped.filter(function(v){return v.accountId!==acc.id && _videoAccountMatchMethod(v,acc);}):[];
+  var conflict=acc?scoped.filter(function(v){var m=_videoAccountMatchMethod(v,acc); return /otherId/.test(m||'');}):[];
+  var orphan=(videos||[]).filter(function(v){return !accountForVideo(v);});
+  var missing=scoped.map(function(v){return {v:v,miss:_auditMissing(v)};}).filter(function(x){return x.miss.length;});
+  var urlMap={}; (videos||[]).forEach(function(v){var k=normVideoUrl(v.url); if(k)(urlMap[k]=urlMap[k]||[]).push(v);});
+  var dupUrls=Object.keys(urlMap).filter(function(k){return urlMap[k].length>1 && (!acc || urlMap[k].some(function(v){return scoped.indexOf(v)>=0;}));}).map(function(k){return urlMap[k];});
+  var titleMap={}; scoped.forEach(function(v){var k=_normTitle(v.title||''); if(k)(titleMap[k]=titleMap[k]||[]).push(v);});
+  var dupTitles=Object.keys(titleMap).filter(function(k){return titleMap[k].length>1;}).map(function(k){return titleMap[k];});
+  var ok=scoped.length-missing.length;
+  function sec(title,items,render,empty){ return '<details open style="border:1px solid var(--border);border-radius:10px;background:#fff;margin-top:10px"><summary style="padding:9px 11px;cursor:pointer;font-size:13px;font-weight:900;color:var(--rouge)">'+esc(title)+'（'+items.length+'）</summary><div style="padding:0 11px 10px">'+(items.length?items.map(render).join(''):'<div class="empty-res" style="padding:14px 0">'+esc(empty||'目前沒有問題')+'</div>')+'</div></details>'; }
+  var html='<div style="padding:18px 16px;max-height:82vh;overflow:auto">'
+    +'<div style="font-family:&quot;Noto Serif TC&quot;,serif;font-size:18px;font-weight:900;margin-bottom:4px">影片完整盤點</div>'
+    +'<div style="font-size:12px;color:var(--gold-dark);line-height:1.7;margin-bottom:10px">'+(acc?esc((acc.handle||'')+' '+(acc.displayName||'')):'全庫')+'｜安全歸屬 '+scoped.length+' 支｜欄位完整 '+ok+' 支｜需檢查 '+(missing.length+needsRelink.length+dupUrls.length+orphan.length)+' 項</div>'
+    +'<div style="font-size:12px;color:var(--sub);line-height:1.75;background:var(--warm);border-radius:9px;padding:9px 10px">這裡只做盤點，不會自動改資料。先看「需要處理」的區塊；若看到疑似漏掉的兩支，點「定位這支」直接回影片庫。</div>'
+    +(needsRelink.length?'<button class="btn" onclick="relinkVideosForAccount(&quot;'+esc(acc.id)+'&quot;)" style="width:100%;margin-top:10px">一鍵回補 '+needsRelink.length+' 支安全對上的帳號連動</button>':'')
+    +sec('需要回補帳號連動',needsRelink,function(v){return _auditRow(v,_videoMatchLabel(_videoAccountMatchMethod(v,acc)),'可安全回補');},'沒有需要回補的影片')
+    +sec('欄位不完整',missing,function(x){return _auditRow(x.v,'缺 '+x.miss.join('、'),'補完後才算完整歸檔');},'這個範圍內欄位都完整')
+    +sec('同網址重複',dupUrls,function(g){return '<div style="border-top:1px solid var(--line);padding:8px 0;font-size:12px"><b>'+esc(normVideoUrl(g[0].url))+'</b>'+g.map(function(v){return _auditRow(v,'同一連結群組','共 '+g.length+' 筆');}).join('')+'</div>';},'沒有同網址重複')
+    +sec('同標題重複',dupTitles,function(g){return '<div style="border-top:1px solid var(--line);padding:8px 0;font-size:12px"><b>'+esc(g[0].title||'(未命名)')+'</b>'+g.map(function(v){return _auditRow(v,'同標題群組','共 '+g.length+' 筆');}).join('')+'</div>';},'沒有同標題重複')
+    +sec('全庫孤兒影片（沒有帳號歸屬）',orphan,function(v){return _auditRow(v,'沒有 accountId／@handle 可安全歸屬','若是此客戶影片，請編輯補 IG帳號');},'沒有孤兒影片')
+    +'</div>';
+  $('sheet').innerHTML=html; $('modal').style.display='flex';
 }
 
 /* ─── 列表渲染 ─── */
@@ -5917,7 +5989,7 @@ function accCard(a){
       ${a.industry?`<span class="lab">產業</span> ${esc(a.industry)}　·　`:''}
       <span class="lab">粉絲</span> ${f?f.toLocaleString():'—'}　·　
       <span class="lab">量級</span> ${esc(tw)} / ${esc(intl)}　·　
-      <span class="lab">拆解過</span> ${vidCount>0?('<span class="vlink" style="cursor:pointer;color:var(--rouge);font-weight:800" data-acc-videos="'+a.id+'">'+vidCount+' 支影片</span> <span class="vlink" style="cursor:pointer;color:var(--gold-dark);font-weight:700;font-size:11px" data-acc-audit="'+a.id+'">核對</span>'):'<span style="color:var(--sub)">尚未收錄影片</span> <span class="vlink" style="cursor:pointer;color:var(--gold-dark);font-weight:700;font-size:11px" data-acc-audit="'+a.id+'">核對</span>'}
+      <span class="lab">拆解過</span> ${vidCount>0?('<span class="vlink" style="cursor:pointer;color:var(--rouge);font-weight:800" data-acc-videos="'+a.id+'">'+vidCount+' 支影片</span> <span class="vlink" style="cursor:pointer;color:var(--gold-dark);font-weight:700;font-size:11px" data-acc-audit="'+a.id+'">核對</span> <span class="vlink" style="cursor:pointer;color:var(--gold-dark);font-weight:700;font-size:11px" onclick="openVideoArchiveAudit(&quot;'+a.id+'&quot;)">完整盤點</span>'):'<span style="color:var(--sub)">尚未收錄影片</span> <span class="vlink" style="cursor:pointer;color:var(--gold-dark);font-weight:700;font-size:11px" data-acc-audit="'+a.id+'">核對</span> <span class="vlink" style="cursor:pointer;color:var(--gold-dark);font-weight:700;font-size:11px" onclick="openVideoArchiveAudit(&quot;'+a.id+'&quot;)">完整盤點</span>'}
     </div>
     <div class="vmeta" style="margin-top:5px"><span class="lab">30天成長</span> ${gText}</div>
     ${relList?`<div class="vmeta" style="margin-top:5px"><span class="lab">關聯</span> ${relList}</div>`:''}
@@ -10130,7 +10202,7 @@ document.addEventListener('DOMContentLoaded',function(){
 })();
 </script>
 
-<!-- v241：建檔前重複核對卡＋去影片庫查看這支；保留 v240 內容錯配檢查與 v239 自動防舊版快取 -->
+<!-- v242：帳號影片完整盤點；保留 v241 建檔前重複核對、v240 內容錯配檢查與 v239 自動防舊版快取 -->
 <div id="stickyCardSave" style="display:none;position:fixed;bottom:84px;right:14px;z-index:10000;flex-direction:column;gap:6px;background:#fff;border:1.5px solid var(--rouge);border-radius:12px;padding:10px 14px;box-shadow:0 6px 24px rgba(0,0,0,.15);max-width:280px">
   <div style="font-size:11px;color:var(--gold-dark);font-weight:700;letter-spacing:.4px;text-transform:uppercase">Quick Save · 快速儲存</div>
   <button id="stickyCardBtn" class="btn btn-go" type="button" onclick="_cardQuickAction()" style="width:100%;font-size:13px;padding:9px 14px"><svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;vertical-align:-2px;margin-right:4px"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8M7 3v5h8"/></svg>儲存這支影片＋</button>
@@ -10209,7 +10281,7 @@ document.addEventListener('DOMContentLoaded',function(){
 <script>
 /* v239：自動防舊版快取。讓桌布捷徑／瀏覽器如果抓到舊 HTML，能自己比對線上最新版並導向。 */
 (function(){
-  var ATELIER_CURRENT_VERSION='v241';
+  var ATELIER_CURRENT_VERSION='v242';
   window.ATELIER_CURRENT_VERSION=ATELIER_CURRENT_VERSION;
   function _avNum(v){v=String(v||'');var m=v.match(/v\s*(\d+)/i);return m?parseInt(m[1],10):0;}
   function _avDetect(html){html=String(html||'');var m=html.match(/id=["']verBadge["'][^>]*>\s*(v\d+)/i)||html.match(/內部版本\s+(v\d+)/i);return m?m[1]:'';}
