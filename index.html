@@ -9,6 +9,7 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <!-- ATELIER 影片診斷工作台 · 內部版本 v248 (版本號僅留註解，不顯示於畫面)
+v249 更新（交辦單：Lisa 實測 v248 策略診斷頁，選客戶下拉搜尋「理」時面板只剩排序頁籤、帳號列表空白，像當機）：【A 策略診斷客戶下拉補灌】csel 帳號型下拉開啟前新增 stratAcc 專用補灌 populateStrategyAcc，避免策略診斷頁新增的 select 在 csel 初始化時只有 placeholder，帳號 async 到齊後未被重建，導致搜尋單字沒有任何帳號列。【B 保留既有搜尋排序】沿用既有 csel 搜尋與中文單字排序邏輯，不改 v245 影片庫排序、不碰 v246 CSV 彈窗、不寫入資料，只修策略診斷頁的選帳號入口。未動 client.html、Firebase 資料結構、自媒體商業閉環知識地圖與六支守門提示詞。
 v248 更新（交辦單：Lisa 已確認理鴻 32 支影片完成建檔，下一階段要把影片庫、客戶服務台、商業閉環知識地圖串成「內容優化診斷」工作流）：【A 新增內容優化診斷分頁】新增「策略診斷」頁籤與 view-strategy，先不寫入資料，只讀目前帳號與影片庫，針對選定客戶彙整 32 支影片的數據快照、Top/Bottom、G 階段分布、合作目標 A–E 分布、內容缺口與下一步。【B 串接服務台與商業閉環】策略診斷頁提供「開客戶服務台」與「開商業閉環」入口，並產生可貼到客戶服務台 Stage 4 內容診斷的提示詞，把影片庫數據、商業閉環 A–E 與下一批影片方向帶進交付流程。【C 安全原則】本版從 v247 穩定 hotfix 接續，只新增讀取型策略頁與提示詞，不碰 client.html、不改自媒體商業閉環知識地圖、不改 Firebase 資料結構、不改六支守門提示詞，不再碰 v246 造成卡死的 CSV 彈窗。
 v247 更新（交辦單：v246 上線後主程式再次卡在首頁、影片/帳號顯示 0；Lisa 同時上傳客戶服務台 cs-v3.12 與商業閉環知識地圖，準備進入 32 支影片的內容優化診斷）：【A 災難版回復】本版不沿用 v246 的 CSV 彈窗寫法，改以 v245 安全版為底，保留排序、跨頁選取、目前清單複製與服務台連動，先確保工作台可正常讀取雲端資料、影片庫與帳號管理不卡死。【B 策略排序保留】影片庫保留最新/最舊建檔、最新/最舊發布、觀看/讚/留言/分享/儲存/分享率/互動率、合作目標層 A→E / E→A、階段 G1→G5 / G5→G1、主題編號排序，支援後續理鴻 32 支進入內容優化診斷。【C 系統邊界】本版只做 hotfix 與版本校正，不改 client.html、不改自媒體商業閉環知識地圖、不改 Firebase 資料結構與六守門提示詞；CSV 匯出下載先不再追加複雜彈窗，避免再次打斷主程式。
 
@@ -854,7 +855,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v248</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v249</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -10258,6 +10259,7 @@ document.addEventListener('DOMContentLoaded',function(){
             if(sel.id==='vlibHero' && typeof _vlibHeroPopulate==='function') _vlibHeroPopulate();
             else if(sel.id==='accHero' && typeof _accHeroPopulate==='function') _accHeroPopulate();
             else if(sel.id==='cmpHero' && typeof populateCmpHero==='function') populateCmpHero();
+            else if(sel.id==='stratAcc' && typeof populateStrategyAcc==='function') populateStrategyAcc(); /* v249：策略診斷新增帳號下拉，開啟前補灌最新 accounts，避免搜尋面板空白像當機 */
           }catch(_e){}
         }
         build(); wrap.classList.add('open'); document.addEventListener('mousedown',outside,true); document.addEventListener('touchstart',outside,true);
@@ -10332,6 +10334,8 @@ document.addEventListener('DOMContentLoaded',function(){
     if(!sel.value){
       var guess=(H('vlibHero')||H('accHero')||H('f-account')||{}).value||''; if(guess) sel.value=guess;
     }
+    /* v249：若 stratAcc 已被 csel 包裝，補灌後同步觸發鈕文字；面板開啟時由 csel open/build 重新抓最新 options。 */
+    try{ var w=sel.closest('.csel'); if(w){ var l=w.querySelector('.csel-label'); if(l){ l.textContent=(sel.options[sel.selectedIndex]?sel.options[sel.selectedIndex].textContent:''); } } }catch(_e){}
   }
   function dist(vs,fn,keys){ var o={}; keys.forEach(function(k){o[k]=0}); vs.forEach(function(v){ var k=fn(v)||'未填'; if(o[k]===undefined)o[k]=0; o[k]++; }); return o; }
   function distHTML(title,obj,total){
@@ -10461,7 +10465,7 @@ document.addEventListener('DOMContentLoaded',function(){
 <script>
 /* v239：自動防舊版快取。讓桌布捷徑／瀏覽器如果抓到舊 HTML，能自己比對線上最新版並導向。 */
 (function(){
-  var ATELIER_CURRENT_VERSION='v248';
+  var ATELIER_CURRENT_VERSION='v249';
   window.ATELIER_CURRENT_VERSION=ATELIER_CURRENT_VERSION;
   function _avNum(v){v=String(v||'');var m=v.match(/v\s*(\d+)/i);return m?parseInt(m[1],10):0;}
   function _avDetect(html){html=String(html||'');var m=html.match(/id=["']verBadge["'][^>]*>\s*(v\d+)/i)||html.match(/內部版本\s+(v\d+)/i);return m?m[1]:'';}
