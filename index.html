@@ -8,7 +8,8 @@
 <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v240 (版本號僅留註解，不顯示於畫面)
+<!-- ATELIER 影片診斷工作台 · 內部版本 v241 (版本號僅留註解，不顯示於畫面)
+v241 更新（交辦單：Lisa 實測發現重複／疑似重複彈窗只說「已建檔過」仍不夠安心，因為影片庫可能找不到、也看不出既有資料與這次卡B到底是否一致）：【A 建檔前重複核對卡】相同連結與標題相似兩種情境都改成「先核對再決定」，彈窗會列出庫裡既有資料與這次卡B的標題、帳號、發布日、封面／標題字、觀看數、連結，讓 Lisa 在未建檔前先判斷是不是同一支。【B 去影片庫查看這支】重複彈窗新增「去影片庫看這支」選項；系統會取消本次存檔、切到影片庫、清掉篩選、用既有影片標題搜尋並定位高亮，避免只說有資料卻找不到。【C 判斷文案更清楚】一般相同連結、內容錯配與標題相似三種彈窗分別說明「同一連結」、「同一連結但內容對不上」、「標題很像但網址不同」，降低誤覆蓋與誤新增。未動資料結構、未動 client.html、未動六守門常數。
 v240 更新（交辦單：Lisa 實測發現「相同影片連結」不一定代表同一支內容——本次卡B標題是報稅／撫養父母節稅，但系統用同一連結對到庫裡既有的情侶分手借貸影片）：【A 重複連結加內容交叉檢查】saveBtn 的相同連結偵測不再只說「這支影片已建檔過」；若新卡B標題／封面／發布日期與既有影片明顯不一致，會改跳「同一連結，但卡片內容對不上」的風險彈窗，明確列出既有影片與這次要存的影片，提醒可能是卡B連結拿錯、舊資料連結貼錯或曾經建檔中斷造成錯配。【B 危險情境預設不覆蓋】內容不一致時預設主按鈕改為「先不要建檔，回去檢查連結」，避免一按就把舊資料覆蓋；仍保留「確定這次卡B才對→覆蓋舊資料」與「仍新增一支」給 Lisa 手動判斷。【C 確認建檔文案更清楚】覆蓋路徑會明講「覆蓋既有影片、不新增」，系統總數維持不變，減少「還沒按確認但影片庫數字好像已經變了」的誤解。未動資料結構、未動 client.html、未動六守門常數。
 v239 更新（交辦單：Lisa 不想每次升版後都手動刪桌布捷徑、加 ?v=版本號或重建入口）：【A 自動防舊版快取】新增 ATELIER_CURRENT_VERSION 與 _atelierAutoVersionCheck；頁面載入後會用 no-store 方式抓取線上 index.html 最新內容，比對 verBadge 版本，若偵測到使用者開到舊快取版本，會自動導向 ?v=最新版&fresh=時間戳，不再要求 Lisa 每次手動改網址。【B HTML 快取宣告】head 補 Cache-Control / Pragma / Expires meta，降低桌布捷徑與瀏覽器抓舊 HTML 的機率。【C 日常入口維持原樣】Lisa 仍可照原本從桌布／GitHub Pages 開工作台，不需要每次重建檔案或人工加版本參數。未動資料結構、未動 client.html、未動六守門常數。
 v238 更新（hotfix：Lisa 實測 v237 後發現資料卡在第一頁、影片／帳號顯示 0）：【A 修正 v236 核對彈窗字串語法】openAccountVideoAudit 內「影片數核對」標題的 font-family 單引號破壞 JS 字串，導致主 script 無法執行，畫面停在初始輸入頁且資料計數顯示 0；本版改用安全的 HTML entity 寫法，避免字串中斷。【B 修正一鍵回補按鈕 onclick 字串】relinkVideosForAccount 的 onclick 參數改用 &quot; 包裹帳號 id，避免單引號組字造成 script check 失敗。只做語法 hotfix，不改資料結構、不動 client.html、不動六守門常數。
@@ -847,7 +848,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v240</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v241</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -3345,16 +3346,62 @@ function _dupContentAudit(oldV,newV){
   var conflict=reasons.length>0;
   return {conflict:conflict,reasons:reasons,oldTitle:oldTitle||'未命名',newTitle:newTitle||'未命名',oldDate:oldDate,newDate:newDate};
 }
+function _vidBrief(v,label){
+  v=v||{};
+  var a=(typeof accountForVideo==='function')?accountForVideo(v):((typeof accounts!=='undefined'&&accounts)||[]).find(function(x){return x.id===v.accountId;});
+  var h=(v.accountHandle||(a&&a.handle)||'').trim();
+  var lines=[];
+  lines.push(label+'：'+(v.title||v.cover||v.headline||'未命名'));
+  if(h) lines.push('帳號：'+h);
+  if(v.date) lines.push('發布日：'+v.date);
+  var ch=[v.cover,v.headline].filter(Boolean).join('／'); if(ch) lines.push('封面／標題字：'+ch);
+  var nums=[]; if(v.views) nums.push('觀看 '+v.views); if(v.likes) nums.push('讚 '+v.likes); if(v.comments) nums.push('留言 '+v.comments); if(v.shares) nums.push('分享 '+v.shares); if(nums.length) lines.push('數據：'+nums.join(' · '));
+  if(v.url) lines.push('連結：'+String(v.url).split('?')[0]);
+  return lines.join('\n');
+}
 function _dupAuditDesc(audit,oldV,newV){
   var lines=[];
   lines.push('系統找到相同影片連結，但兩份資料內容不像同一支。');
   lines.push('');
-  lines.push('庫裡既有：'+(audit.oldTitle||'未命名')+(audit.oldDate?('（'+audit.oldDate+'）'):''));
-  lines.push('這次卡B：'+(audit.newTitle||'未命名')+(audit.newDate?('（'+audit.newDate+'）'):''));
-  if(audit.reasons&&audit.reasons.length) lines.push('疑點：'+audit.reasons.join('、'));
+  lines.push(_vidBrief(oldV,'庫裡既有'));
+  lines.push('');
+  lines.push(_vidBrief(newV,'這次卡B'));
+  if(audit.reasons&&audit.reasons.length){ lines.push(''); lines.push('疑點：'+audit.reasons.join('、')); }
   lines.push('');
   lines.push('建議先檢查：這張卡B的「影片連結」是不是貼到別支影片，或舊資料當初是否連結貼錯。');
   return lines.join('\n');
+}
+function _dupNormalDesc(oldV,newV){
+  return ['系統找到相同影片連結，請先核對是不是同一支。','',_vidBrief(oldV,'庫裡既有'),'',_vidBrief(newV,'這次卡B'),'','若兩邊是同一支，建議覆蓋舊資料；若不是同一支，請先檢查連結。'].join('\n');
+}
+function _dupSimilarDesc(oldV,newV){
+  return ['系統找到標題很像的既有影片，但兩邊網址不一樣，所以不會自動當成重複。','',_vidBrief(oldV,'庫裡疑似相似'),'',_vidBrief(newV,'這次卡B'),'','請先核對是不是同一支：如果是同一支，建議先去影片庫看舊資料；如果不是，才新增。'].join('\n');
+}
+function _locateExistingVideo(v){
+  if(!v){ toast('找不到既有影片'); return; }
+  try{ var tab=document.querySelector('.tab[data-view="library"]'); if(tab) tab.click(); else if(typeof switchTo==='function') switchTo('library'); }catch(e){}
+  setTimeout(function(){
+    try{
+      if(typeof libHeroId!=='undefined') libHeroId='';
+      if(typeof libRivalMode!=='undefined') libRivalMode='main';
+      if(typeof libRivalIds!=='undefined') libRivalIds=[];
+      if(typeof libRivalChecked!=='undefined') libRivalChecked=[];
+      ['libSearch','libStageF','libGoalF','libTypeF','libJobF','libIndF'].forEach(function(id){ var el=document.getElementById(id); if(el) el.value=''; });
+      if(typeof libClient!=='undefined') libClient='';
+      if(typeof libPage!=='undefined') libPage=1;
+      if(typeof renderLibrary==='function') renderLibrary();
+      var q=(v.title||v.cover||v.headline||'').slice(0,28);
+      var sb=document.getElementById('libSearch'); if(sb&&q){ sb.value=q; sb.dispatchEvent(new Event('input',{bubbles:true})); }
+      if(typeof renderLibrary==='function') renderLibrary();
+      var vid=v.id||v.videoId||'';
+      setTimeout(function(){
+        var el=(vid&&document.getElementById('video-'+vid))||(vid&&document.querySelector('[data-vid="'+vid+'"]'));
+        if(!el && q){ el=[].slice.call(document.querySelectorAll('.video-card')).find(function(x){return (x.textContent||'').indexOf(q.slice(0,8))>=0;}); }
+        if(el){ el.scrollIntoView({behavior:'smooth',block:'center'}); el.classList.add('vid-flash'); setTimeout(function(){el.classList.remove('vid-flash');},2600); }
+        else { toast('已切到影片庫，請用標題搜尋確認'); }
+      },180);
+    }catch(e){ toast('已切到影片庫，請手動搜尋確認'); }
+  },160);
 }
 
 $('saveBtn').onclick=async function(){
@@ -3402,18 +3449,24 @@ $('saveBtn').onclick=async function(){
         title:_dupAudit.conflict?'⚠️ 同一連結，但卡片內容對不上':'⚠️ 這支影片已建檔過',
         desc:_dupAudit.conflict
           ? _dupAuditDesc(_dupAudit,_dupV,v)
-          : ('影片庫裡已經有相同連結的影片：「'+(_dupV.title||'未命名')+'」'+(_dupV.date?('（'+_dupV.date+'）'):'')+(_dupV.ts?('，建檔 '+new Date(_dupV.ts).toISOString().slice(0,10)):'')+'。若選覆蓋，系統會更新舊資料、不新增影片，總數會維持 '+videos.length+' 支。'),
+          : _dupNormalDesc(_dupV,v),
         buttons:_dupAudit.conflict?[
           {label:'先不要建檔，回去檢查連結', sub:'建議：這次不存，先確認卡B影片連結或舊資料是否貼錯', value:'skip', primary:true},
+          {label:'去影片庫看這支', sub:'取消本次存檔，先定位庫裡既有影片給我核對', value:'locate'},
           {label:'覆蓋舊的（我確定這次卡B才對）', sub:'會更新既有影片、不新增；適合舊資料連結貼錯或舊卡內容錯誤', value:'overwrite'},
           {label:'仍新增一支（確定兩筆都要留）', sub:'兩支都留，但之後可能需要到重複影片清理再核對', value:'add'}
         ]:[
           {label:'覆蓋舊的（用這次的內容更新那一支）', sub:'按下＝更新既有影片、不新增重複，總數維持不變', value:'overwrite', primary:true},
+          {label:'去影片庫看這支', sub:'取消本次存檔，先定位庫裡既有影片給我核對', value:'locate'},
           {label:'略過、不建檔', sub:'保留舊的，這次不存（pending 帳號也一併取消）', value:'skip'},
           {label:'還是新增一支（確定不是重複）', sub:'兩支都留', value:'add'}
         ],
         cancelValue:'skip'
       });
+      if(_act==='locate'){
+        _locateExistingVideo(_dupV);
+        return;
+      }
       if(_act==='skip'){
         /* v192 P1：略過時清 pending（避免使用者按過「建立帳號」但這次決定不存→帳號殘留記憶體，下次再貼會誤判） */
         if(window._pendingAcc){
@@ -3438,13 +3491,15 @@ $('saveBtn').onclick=async function(){
       if(_simV){
         var _act2=await atelierChoose({
           title:'🔎 標題很像，是同一支嗎？',
-          desc:'庫裡已有標題很像的「'+(_simV.title||'未命名')+'」'+(_simV.accountHandle?('（'+_simV.accountHandle+'）'):'')+'。網址不一樣，所以系統沒有自動當成重複——請你確認一下再決定。',
+          desc:_dupSimilarDesc(_simV,v),
           buttons:[
-            {label:'仍要新增（確定不是同一支）', sub:'兩支都留', value:'add', primary:true},
-            {label:'我先去看看（取消這次存檔）', sub:'這次先不存，回去比對（pending 帳號也一併取消）', value:'cancel'}
+            {label:'去影片庫看這支', sub:'取消本次存檔，先定位疑似相似的舊影片', value:'locate', primary:true},
+            {label:'仍要新增（確定不是同一支）', sub:'兩支都留', value:'add'},
+            {label:'取消這次存檔', sub:'這次先不存，回去比對（pending 帳號也一併取消）', value:'cancel'}
           ],
           cancelValue:'cancel'
         });
+        if(_act2==='locate'){ _locateExistingVideo(_simV); return; }
         if(_act2==='cancel'){
           /* v192 P1：標題相似取消時也清 pending */
           if(window._pendingAcc){
@@ -4318,6 +4373,7 @@ function renderManual(){
   <div class="form-card" style="border-left:3px solid var(--gold)">
     <div class="stitle" style="font-size:15px;color:var(--rouge)">更新紀錄 · 還沒做的</div>
     <p style="font-size:13px;color:var(--text);line-height:1.85;margin-top:8px">
+    <b>v241（重複／疑似重複建檔前先看清楚）：</b>①<b>重複核對卡</b>：相同連結、標題很像、內容疑似錯配時，不再只跳一句「已建檔過」，而會把「庫裡既有」和「這次卡B」的標題、帳號、日期、封面／標題字、觀看數與連結列出來，讓 Lisa 在建檔前先看是不是同一支。②<b>去影片庫看這支</b>：彈窗新增「去影片庫看這支」選項，點下去會取消本次存檔、切到影片庫、清掉篩選、定位並高亮那支既有影片，避免系統說有但 Lisa 找不到。③<b>三種風險分開說</b>：同一連結、同一連結但內容對不上、標題很像但網址不同，文案分流說清楚，不再讓覆蓋／新增判斷混在一起。<b>這版只修建檔前核對與定位，不動資料結構、client.html 與六守門提示詞。</b><br>
     <b>v240（相同連結不再盲目判定同一支 · 加內容交叉檢查）：</b>①<b>相同連結＋內容不一致會警告</b>：如果卡B的影片連結已存在，但新卡B標題／封面／日期跟庫裡那支明顯不像同一支，系統不會再只說「這支影片已建檔過」，而是改成「同一連結，但卡片內容對不上」，把既有影片與這次卡B並排列給 Lisa 看。②<b>危險情境預設不覆蓋</b>：內容不一致時主按鈕改成「先不要建檔，回去檢查連結」，避免錯把情侶分手借貸影片覆蓋成報稅影片；如果 Lisa 確定這次卡B才是正確資料，仍可手動選覆蓋。③<b>確認建檔文案更清楚</b>：覆蓋路徑會寫明「覆蓋既有影片、不新增」，所以系統總數維持不變是正常的，不代表還沒按確認就偷偷新增。<b>這版只修重複連結判斷與文案，不動資料結構、client.html 與六守門提示詞。</b><br>
     <b>v239（自動防舊版快取 · 不再要求 Lisa 每次重建桌布）：</b>①<b>新增自動版本檢查</b>：頁面載入後會用 no-store 方式抓線上最新版 index.html，比對畫面徽章版本；若你從桌布捷徑或瀏覽器快取開到舊版，系統會自動導向最新版網址。②<b>降低桌布捷徑抓舊檔機率</b>：head 補 Cache-Control / Pragma / Expires meta，並在更新時自動加 fresh 時間戳，讓瀏覽器更明確抓新檔。③<b>日常使用方式不變</b>：Lisa 仍可照原本從桌布開工作台，不需要每次手動加 ?v=版本號、不需要一直刪捷徑重建。<b>這版只處理快取與入口穩定，不動資料結構、client.html 與六守門提示詞。</b><br>
     <b>v238（hotfix · 修 v237 主 script 中斷）：</b>①<b>修正資料卡在第一頁／影片與帳號顯示 0 的問題</b>：v237 檔內 openAccountVideoAudit 有一段「影片數核對」彈窗字串，font-family 的單引號打斷 JS 字串，導致主 script 直接停止執行，所以資料雖然右下同步列顯示有同步，但主畫面的 videos/accounts 沒有正常渲染。②<b>修正一鍵回補按鈕字串</b>：relinkVideosForAccount 的 onclick 參數改成安全寫法，避免再次因引號造成 script check 失敗。<b>這版只做 hotfix，沒動資料結構、沒動 client.html、沒動六守門提示詞。</b><br>
@@ -10074,7 +10130,7 @@ document.addEventListener('DOMContentLoaded',function(){
 })();
 </script>
 
-<!-- v240：相同連結加入內容交叉檢查；保留 v239 自動防舊版快取、v238 hotfix、v237 QUICK SAVE 與 v236 核對功能 -->
+<!-- v241：建檔前重複核對卡＋去影片庫查看這支；保留 v240 內容錯配檢查與 v239 自動防舊版快取 -->
 <div id="stickyCardSave" style="display:none;position:fixed;bottom:84px;right:14px;z-index:10000;flex-direction:column;gap:6px;background:#fff;border:1.5px solid var(--rouge);border-radius:12px;padding:10px 14px;box-shadow:0 6px 24px rgba(0,0,0,.15);max-width:280px">
   <div style="font-size:11px;color:var(--gold-dark);font-weight:700;letter-spacing:.4px;text-transform:uppercase">Quick Save · 快速儲存</div>
   <button id="stickyCardBtn" class="btn btn-go" type="button" onclick="_cardQuickAction()" style="width:100%;font-size:13px;padding:9px 14px"><svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;vertical-align:-2px;margin-right:4px"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8M7 3v5h8"/></svg>儲存這支影片＋</button>
@@ -10153,7 +10209,7 @@ document.addEventListener('DOMContentLoaded',function(){
 <script>
 /* v239：自動防舊版快取。讓桌布捷徑／瀏覽器如果抓到舊 HTML，能自己比對線上最新版並導向。 */
 (function(){
-  var ATELIER_CURRENT_VERSION='v240';
+  var ATELIER_CURRENT_VERSION='v241';
   window.ATELIER_CURRENT_VERSION=ATELIER_CURRENT_VERSION;
   function _avNum(v){v=String(v||'');var m=v.match(/v\s*(\d+)/i);return m?parseInt(m[1],10):0;}
   function _avDetect(html){html=String(html||'');var m=html.match(/id=["']verBadge["'][^>]*>\s*(v\d+)/i)||html.match(/內部版本\s+(v\d+)/i);return m?m[1]:'';}
