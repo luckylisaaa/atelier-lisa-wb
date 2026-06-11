@@ -5,7 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="color-scheme" content="light only">
 <meta name="supported-color-schemes" content="light">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v222 (版本號僅留註解，不顯示於畫面)
+<!-- ATELIER 影片診斷工作台 · 內部版本 v224 (版本號僅留註解，不顯示於畫面)
+v224 更新（交辦單：Lisa 回饋——流程②（同帳號加新影片）裡 ChatGPT 做逐字稿很強（轉逐字＋標說話者＋抓畫面大字＋反覆自檢），希望把逐字稿從原 STEP3「逐字稿＋影片分析」綁一起拆出來、獨立成一步且標可略過，接 v223）：【流程② 5 步→6 步】opGuideHTML_v2 內：①新增 I6 圖示（影片）給影片分析步；②鳥瞰圖由 5 格改 6 格——STEP3「（選配）逐字稿／ChatGPT·剪映／逐句時間碼 TXT·SRT」、STEP4「影片分析／Gemini·ChatGPT／影片分析卡」分開，子題型→5、最後整合→6；③詳細步驟同步：原 step('3') 拆成 step('3') 逐字稿(選配·可略過，{copy:CHATGPT_TRANSCRIPT_PROMPT}，文案強調可做可不做、趕時間或下一步 AI 能直接讀影片就略過) 與 step('4') 影片分析({copy:VIDEO_AI_ANALYSIS_PROMPT,open:Gemini}，強調跳過逐字稿也能做、不能讀影片才補逐字稿)；原 step('4')子題型→step('5')、step('5')最後整合→step('6')(③SRT 標『選配·有做才有』)。④流程② 步數字樣「5 步驟」→「6 步驟」共 3 處(sopBlock 切換鈕＋opGuideInput 分頁鈕＋SOP 摘要)。opGuideHTML_v2 同時餵 #opGuideInput 與 #sopBlock_v2_body，改一處兩邊同步。只動流程② 說明文字/鳥瞰圖/步驟編號與按鈕，未動任何提示詞常數內容、未動 _atCopyPrompt/label map、未動資料結構與六守門常數(md5 5d2b1a50909c91b89ca7454e64f81911 不變)；版本號 4 處 v223→v224；check.js 無新增失敗；div/details 平衡。
+v223 更新（交辦單：Lisa 實際使用回饋兩件——①待補清單的補完提示詞要分三種用途②建檔確認框與存檔 toast 的「第幾支」會被誤會成帳號的支數，接 v222）：【A 待補清單三顆鈕】renderInputTodo 每個缺漏分類欄位的單一「複製補完提示詞」鈕改為三顆＝只補這欄／補＋我先看／補＋重出卡B；_todoCopy(selId, mode) 加 mode：共用同一段單欄判斷提示詞，收尾依 mode 不同——only=只回答這一欄不出卡；review=先講判斷與理由、明講「先別出卡、等我說 OK 再出」；card=判完直接要求重新輸出修正後的整張卡B(===ATELIER歸類卡===…===結束===、其餘欄位沿用不動)，解決使用者貼去問完還要手動再打一句「重出卡B」的多餘步驟。copyPrompt 標題依 mode 區分。【B1 確認框換行】atelierChoose 的 desc 經 esc() 後 \n 不換行(顯示成一坨)；desc 容器加 white-space:pre-line，讓 \n 真的分行(全站確認框同享，皆為短句、低風險)。【B2 確認框三行】建檔確認 desc 由「帳號/影片」兩行改為「影片：新增/覆蓋『標題』」「帳號：既有@xxx 這是它的第 N 支(帳號資料不覆蓋)／新帳號第一次建檔第 1 支」「系統總計：存完後共 M 支」三行，帳號層 vs 系統層分清楚。【B3 存檔 toast 區分】toast 由「這是第 {videos.length} 支」(系統總數，易誤會成帳號支數)改為「…@handle · 這個帳號第 N 支 · 系統第 M 支」(N=該帳號影片數、M=系統總數)。只動待補清單按鈕/提示詞收尾與確認框/toast 文案，未動 parse/儲存邏輯/資料結構/六守門常數(md5 5d2b1a50909c91b89ca7454e64f81911 不變)；版本號 4 處 v222→v223；check.js 無新增失敗；div/details 平衡。
 v222 更新（交辦單：修「搜尋這個人／主角下拉」單字搜尋不穩，接 v221）：【主角/帳號搜尋索引補強】csel 帳號下拉搜尋不再只吃顯示列文字與少數欄位；改為建立帳號完整搜尋索引（handle、displayName、name、職稱、產業、領域、身分 types，以及帳號物件內可用的字串/數字欄位，避免理鴻/kl.legal 藏在其他欄位時搜不到）。【單字與 handle 片段搜尋】新增搜尋正規化：大小寫不敏感、全形半形正規化、移除 @/空白/標點；打「k」可對到 @kl.legal，打「理」可對到含理字的帳號資料。【中文輸入法更穩】compositionend 後立即濾一次並 setTimeout 補濾一次，避免注音選字完成那一下瀏覽器事件順序不同造成清單不刷新；組字中仍不拿 ㄌㄧˇ 去清空清單。只動 csel 搜尋索引與過濾邏輯，不動帳號/影片資料結構、不動六守門提示詞。
 v221 更新（交辦單：流程② STEP5 不再限定 Claude；新增「Claude／ChatGPT 最後整合提示詞」與「Claude／ChatGPT 只出卡B（快速整合）」兩個非守門包裝常數 FINAL_AI_INTEGRATION_PROMPT / FINAL_AI_ONLY_B_PROMPT，底層仍串接 PROMPT_C / ONLY_B，不改守門常數。流程② STEP5 文案改成可給 Claude 或 ChatGPT；若 ChatGPT 前面已完成逐字稿與影片分析，可直接同一對話框繼續整合；若分工使用 Gemini／剪映，最後仍可交給 Claude 或 ChatGPT 拍板。_atCopyPrompt 與 step label map 加兩支新提示詞；未動資料結構。
 v221 更新（交辦單：流程② STEP3 不再限定 Gemini；新增「Gemini／ChatGPT 影片分析提示詞」作為非守門包裝常數 VIDEO_AI_ANALYSIS_PROMPT，底層沿用 GEM_PROMPT 內容但加上「Gemini AI 或 ChatGPT 皆可使用」與「無法讀影片就明確要求素材、不要假裝看過」的前置規則。STEP3 文案改成一條龍：ChatGPT 可先做逐句時間碼 TXT，也可接著直接做影片分析；剪映 SRT／Gemini 仍可用。_atCopyPrompt 與兩組 step label map 加 VIDEO_AI_ANALYSIS_PROMPT；未動既有六守門常數與資料結構。check.js 19/19；div/details 平衡。
@@ -795,7 +797,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v222</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v224</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -838,7 +840,7 @@ if('serviceWorker' in navigator){
   <div style="margin:10px 0 4px;padding:10px 12px;background:var(--warm,#FBF3E0);border-left:3px solid var(--rouge);border-radius:8px;font-size:12.5px;line-height:1.8;color:var(--ink)"><b>我現在該按哪條？</b>　帳號從沒建過 → <b>流程①</b>　·　帳號建過、只加新影片 → <b>流程②</b>　·　只想重新分析帳號（回測成長）→ <b>流程③</b>　·　單篇貼文（圖文／輪播）→ <b>流程④</b>　<span style="color:var(--gold-dark)">（帳號＋影片都要更新：先跑③再跑②）</span></div>
   <div id="sopFlowSwitch" style="display:flex;gap:6px;margin:6px 0 12px;flex-wrap:wrap">
     <button type="button" class="sop-flow-btn" data-sopflow="1" onclick="sopFlowShow(1)" style="flex:1;min-width:140px;padding:10px 10px;border:1.5px solid var(--rouge);background:var(--rouge);color:#fff;font-weight:700;font-size:12.5px;border-radius:7px;cursor:pointer;font-family:inherit;line-height:1.4;letter-spacing:.3px">流程① 從沒建過<br><span style="font-size:11px;font-weight:500;opacity:.92">完整建檔（8 步驟）</span></button>
-    <button type="button" class="sop-flow-btn" data-sopflow="2" onclick="sopFlowShow(2)" style="flex:1;min-width:140px;padding:10px 10px;border:1.5px solid var(--rouge);background:transparent;color:var(--rouge);font-weight:700;font-size:12.5px;border-radius:7px;cursor:pointer;font-family:inherit;line-height:1.4;letter-spacing:.3px">流程② 帳號已建過<br><span style="font-size:11px;font-weight:500;opacity:.92">只加新影片（5 步驟）</span></button>
+    <button type="button" class="sop-flow-btn" data-sopflow="2" onclick="sopFlowShow(2)" style="flex:1;min-width:140px;padding:10px 10px;border:1.5px solid var(--rouge);background:transparent;color:var(--rouge);font-weight:700;font-size:12.5px;border-radius:7px;cursor:pointer;font-family:inherit;line-height:1.4;letter-spacing:.3px">流程② 帳號已建過<br><span style="font-size:11px;font-weight:500;opacity:.92">只加新影片（6 步驟）</span></button>
     <button type="button" class="sop-flow-btn" data-sopflow="3" onclick="sopFlowShow(3)" style="flex:1;min-width:140px;padding:10px 10px;border:1.5px solid var(--rouge);background:transparent;color:var(--rouge);font-weight:700;font-size:12.5px;border-radius:7px;cursor:pointer;font-family:inherit;line-height:1.4;letter-spacing:.3px">流程③ 只重新分析帳號<br><span style="font-size:11px;font-weight:500;opacity:.92">不分析影片（4 步驟）</span></button>
     <button type="button" class="sop-flow-btn" data-sopflow="4" onclick="sopFlowShow(4)" style="flex:1;min-width:140px;padding:10px 10px;border:1.5px solid var(--rouge);background:transparent;color:var(--rouge);font-weight:700;font-size:12.5px;border-radius:7px;cursor:pointer;font-family:inherit;line-height:1.4;letter-spacing:.3px">流程④ 建貼文<br><span style="font-size:11px;font-weight:500;opacity:.92">單篇貼文（3 步驟）</span></button>
   </div>
@@ -1051,7 +1053,7 @@ if('serviceWorker' in navigator){
   </details>
   <!-- v192 B2-2：流程② 詳細 SOP（同帳號＋多影片）-->
   <details class="gem-box" open id="sopBlock_v2" data-sopflow="2" style="display:none">
-    <summary><span class="gem-en">PRODUCTION LINE SOP · FLOW 2</span><svg class="aico" viewBox="0 0 24 24"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M8 12h8M8 16h5"/></svg> 流程② 同帳號＋多影片 · 5 步驟（點開可摺疊）</summary>
+    <summary><span class="gem-en">PRODUCTION LINE SOP · FLOW 2</span><svg class="aico" viewBox="0 0 24 24"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M8 12h8M8 16h5"/></svg> 流程② 同帳號＋多影片 · 6 步驟（點開可摺疊）</summary>
     <div class="gem-body">
       <div class="gem-note" style="background:var(--warm);border-left:3px solid var(--rouge);padding:9px 12px;margin-bottom:14px">這個帳號之前已經建檔過（在「帳號管理」找得到），這次只是要把<b>新影片</b>加進去——不再做一次帳號分析。</div>
       <div id="sopBlock_v2_body" style="min-height:60px;color:var(--sub);font-size:13px">載入中…</div>
@@ -2757,7 +2759,7 @@ function atelierChoose(o){
       var st=b.primary?'background:#A51820;color:#FDFBF8;border:1px solid #A51820':'background:#fff;color:#5C0F14;border:1px solid var(--gold-soft)';
       return '<button data-ac="'+i+'" style="display:block;width:100%;text-align:left;padding:12px 14px;margin-top:8px;border-radius:12px;cursor:pointer;font-family:inherit;'+st+'"><span style="font-weight:700;font-size:14px">'+esc(b.label)+'</span>'+(b.sub?'<span style="display:block;font-size:12px;margin-top:3px;opacity:.85">'+esc(b.sub)+'</span>':'')+'</button>';
     }).join('');
-    sheet.innerHTML='<div style="padding:6px 4px 4px"><div style="font-family:\'Noto Serif TC\',serif;font-size:17px;font-weight:900;color:#5C0F14;margin-bottom:4px">'+esc(o.title||'')+'</div>'+(o.desc?'<div style="font-size:12.5px;color:#7A5A5E;line-height:1.6;margin-bottom:6px">'+esc(o.desc)+'</div>':'')+btns+'</div>';
+    sheet.innerHTML='<div style="padding:6px 4px 4px"><div style="font-family:\'Noto Serif TC\',serif;font-size:17px;font-weight:900;color:#5C0F14;margin-bottom:4px">'+esc(o.title||'')+'</div>'+(o.desc?'<div style="font-size:12.5px;color:#7A5A5E;line-height:1.7;margin-bottom:6px;white-space:pre-line">'+esc(o.desc)+'</div>':'')+btns+'</div>';
     modal.style.alignItems='center'; sheet.style.borderRadius='16px'; sheet.style.maxWidth='440px'; sheet.style.width='calc(100% - 32px)'; sheet.style.animation='none';
     modal.classList.add('show');
     function done(v){ modal.classList.remove('show'); sheet.innerHTML=''; modal.style.alignItems=''; sheet.style.borderRadius=''; sheet.style.maxWidth=''; sheet.style.width=''; sheet.style.animation=''; document.removeEventListener('keydown',onkey); modal.onclick=_prevOv; resolve(v); }
@@ -3316,16 +3318,16 @@ $('saveBtn').onclick=async function(){
     var _hdl=(_accObj?((_accObj.handle||'').replace(/^@/,'')):(v.accountHandle||'').replace(/^@/,''))||'';
     var _summAcc='', _summVid=_did?('覆蓋既有影片「'+title+'」'):('新增 1 支影片「'+title+'」');
     if(_isPending){
-      _summAcc='新增 @'+_hdl+'（第一次建檔）';
+      _summAcc='新增 @'+_hdl+'（第一次建檔，這是它的第 1 支影片）';
     } else if(_accObj){
       var _vc=videos.filter(function(x){return String(x.accountId)===String(_accObj.id);}).length;
-      _summAcc='既有 @'+_hdl+'（這會是第 '+(_vc+1)+' 支影片，帳號資料不覆蓋）';
+      _summAcc='既有 @'+_hdl+'（這是它的第 '+(_vc+1)+' 支影片，帳號資料不覆蓋）';
     } else {
       _summAcc=_hdl?('新增 @'+_hdl+' 到帳號管理'):'未連結帳號';
     }
     var _conf=await atelierChoose({
       title:'確認建檔',
-      desc:'帳號：'+_summAcc+'\n影片：'+_summVid,
+      desc:'影片：'+_summVid+'\n帳號：'+_summAcc+'\n系統總計：存完後共 '+(_did?videos.length:(videos.length+1))+' 支',
       buttons:[
         {label:'確定建檔',value:'ok',primary:true},
         {label:'再改一下',value:'back'}
@@ -3382,8 +3384,10 @@ $('saveBtn').onclick=async function(){
   $('pasteBox').value=''; $('parseMsg').innerHTML='';
   $('f-title').focus();
   var _vh=v.accountHandle?(' · '+v.accountHandle):'';
+  var _accN=(v.accountId? videos.filter(function(x){return String(x.accountId)===String(v.accountId);}).length : 0);
+  var _accPart=_accN?(' · 這個帳號第 '+_accN+' 支'):'';
   if(_did) toast('✓ 已更新「'+title+'」'+_vh, null, 2800);
-  else toast('✓ 已存入「'+title+'」'+_vh+' · 這是第 '+videos.length+' 支', null, 2800);
+  else toast('✓ 已存入「'+title+'」'+_vh+_accPart+' · 系統第 '+videos.length+' 支', null, 2800);
 };
 $('clearBtn').onclick=()=>{
   ['f-title','f-url','f-date','f-client','f-note'].forEach(i=>$(i).value=''); try{ $('f-date').dataset.raw=''; $('f-date').dataset.numcheck=''; }catch(e){}
@@ -4072,7 +4076,9 @@ function renderManual(){
   <div class="form-card" style="border-left:3px solid var(--gold)">
     <div class="stitle" style="font-size:15px;color:var(--rouge)">更新紀錄 · 還沒做的</div>
     <p style="font-size:13px;color:var(--text);line-height:1.85;margin-top:8px">
-    <b>v222（這版 · 修主角/帳號搜尋單字搜不到）：</b>修「搜尋這個人」下拉：打單一中文字如「理」、單一英文如「k」、或 handle 片段如「kl」「legal」都會進搜尋。搜尋索引改吃帳號完整資料（handle、顯示名、職稱、產業、領域、身分與其他帳號欄位），並加入全形半形/大小寫/@符號正規化；中文輸入法選字完成後會再補濾一次，避免注音組字時清單空白。<b>只動 csel 搜尋，不動帳號/影片資料結構與守門提示詞。</b><br>    <b>v221（這版 · 影片分析提示詞改成 Gemini／ChatGPT 都能用）：</b>流程② STEP3 不再限定 Gemini。現在同一步會先給「<b>ChatGPT 逐字稿提示詞</b>」做逐句時間碼 TXT，再給「<b>Gemini／ChatGPT 影片分析提示詞</b>」做影片本體分析；如果 ChatGPT 能讀影片，就可以一條龍：先產逐字稿、再直接分析，不必硬切 Gemini。剪映 SRT 與 Gemini 仍保留為可用路徑。新增的是非守門包裝常數 VIDEO_AI_ANALYSIS_PROMPT，底層沿用原 Gemini 架構，只加「可貼 Gemini AI 或 ChatGPT」「不能讀影片就要求素材、不要假裝看過」的前置規則；<b>未動六支守門提示詞與資料結構。</b><br>    <b>v219（這版 · 新增 ChatGPT 逐字稿自檢提示詞）：</b>流程② STEP3 改成「先取得逐字稿 TXT／SRT，再做 Gemini 影片分析」。新增一顆「<b>複製『ChatGPT 逐字稿提示詞』</b>」鈕，內容會要求逐句時間碼、主講人／藏鏡人／畫外音、畫面大字、配樂音效，以及交付前自檢（編號連續、時間碼遞增、說話者一致、不確定標疑似）。原本「Gemini 影片分析提示詞」保留，變成同一步的第二顆鈕。最後整合 STEP5 也同步改成可吃「SRT 或逐句時間碼 TXT」，不再只寫 SRT。<b>未動六支守門提示詞與資料結構。</b><br>
+    <b>v224（這版 · 流程②把「逐字稿」獨立成一步、可略過）：</b>你說 ChatGPT 做逐字稿其實很強（會逐字轉、標誰在說話、抓畫面大字、還會自己反覆檢查），所以這版把<b>流程②（同帳號加新影片）的逐字稿從原本和影片分析綁在一起的那一步拉出來、變成獨立的一步</b>，而且<b>標明「選配·可略過」</b>。現在流程②是 6 步：① 截圖＋連結 → ②（選配）封存 → <b>③（選配·可略過）做逐句時間碼逐字稿</b> → <b>④ 影片分析</b> → ⑤（需要才做）子題型 → ⑥ 最後整合只要卡B。鳥瞰圖、詳細步驟、複製鈕都跟著分開——想要精準時間碼或要核對台詞就做第③步；趕時間、或你用的 AI 本來就能直接讀影片，<b>第③步可以直接跳過</b>，到第④步讓它一起處理。<b>沒動任何提示詞（六守門常數 md5 不變）、沒動儲存邏輯與資料。</b><br>
+    <b>v223（補完提示詞分三種＋建檔「第幾支」講清楚）：</b>兩個你實際用出來的小改良。①<b>待補清單的補完鈕變三顆</b>：以前只有一顆「複製補完提示詞」，你貼去問完還得自己再打一句「重出卡B」。現在每個缺的欄位有三顆——<b>只補這欄</b>（只判斷、給你答案，不出卡）、<b>補＋我先看</b>（判完先講理由給你看、先不出卡，等你說 OK 再出）、<b>補＋重出卡B</b>（判完直接把修正後的整張卡B重新輸出，你直接貼回工作台，不用再多打一句）。②<b>建檔確認框＆存檔提示的「第幾支」分清楚</b>：以前存完跳「這是第 55 支」會讓人以為這個帳號有 55 支，其實 55 是整個系統的總數。現在<b>建檔確認框分三行</b>看：影片（新增哪一支）／帳號（@kl.legal 這是它的第 4 支、帳號資料不覆蓋）／系統總計（存完共 55 支）；<b>存檔成功的提示</b>也改成「@kl.legal · 這個帳號第 4 支 · 系統第 55 支」，一眼分得出帳號層和系統層。<b>沒動任何提示詞（六守門常數 md5 不變）、沒動儲存邏輯與資料。</b><br>
+    <b>v222（修主角/帳號搜尋單字搜不到）：</b>修「搜尋這個人」下拉：打單一中文字如「理」、單一英文如「k」、或 handle 片段如「kl」「legal」都會進搜尋。搜尋索引改吃帳號完整資料（handle、顯示名、職稱、產業、領域、身分與其他帳號欄位），並加入全形半形/大小寫/@符號正規化；中文輸入法選字完成後會再補濾一次，避免注音組字時清單空白。<b>只動 csel 搜尋，不動帳號/影片資料結構與守門提示詞。</b><br>    <b>v221（這版 · 影片分析提示詞改成 Gemini／ChatGPT 都能用）：</b>流程② STEP3 不再限定 Gemini。現在同一步會先給「<b>ChatGPT 逐字稿提示詞</b>」做逐句時間碼 TXT，再給「<b>Gemini／ChatGPT 影片分析提示詞</b>」做影片本體分析；如果 ChatGPT 能讀影片，就可以一條龍：先產逐字稿、再直接分析，不必硬切 Gemini。剪映 SRT 與 Gemini 仍保留為可用路徑。新增的是非守門包裝常數 VIDEO_AI_ANALYSIS_PROMPT，底層沿用原 Gemini 架構，只加「可貼 Gemini AI 或 ChatGPT」「不能讀影片就要求素材、不要假裝看過」的前置規則；<b>未動六支守門提示詞與資料結構。</b><br>    <b>v219（這版 · 新增 ChatGPT 逐字稿自檢提示詞）：</b>流程② STEP3 改成「先取得逐字稿 TXT／SRT，再做 Gemini 影片分析」。新增一顆「<b>複製『ChatGPT 逐字稿提示詞』</b>」鈕，內容會要求逐句時間碼、主講人／藏鏡人／畫外音、畫面大字、配樂音效，以及交付前自檢（編號連續、時間碼遞增、說話者一致、不確定標疑似）。原本「Gemini 影片分析提示詞」保留，變成同一步的第二顆鈕。最後整合 STEP5 也同步改成可吃「SRT 或逐句時間碼 TXT」，不再只寫 SRT。<b>未動六支守門提示詞與資料結構。</b><br>
     <b>v218（資料安全修補，跟服務台搭配）：</b>這版是<b>後台修補</b>、畫面不變。工作台和客戶服務台共用同一個雲端資料庫，之前工作台一存帳號，會不小心把<b>服務台那邊打的評分</b>（健檢紀錄、內容健康分數、客戶流程）整包蓋掉。現在改成：工作台存帳號前<b>先去雲端抓最新、把服務台的欄位原封不動保留</b>，再寫回——兩邊各存各的、不再互相洗掉資料。抓不到雲端就乾脆不寫（你本機已經存著），絕不拿舊資料去覆蓋。<b>沒動任何提示詞（六守門常數 md5 不變）、沒動任何功能畫面。</b>（上線順序：<b>先上這支工作台 v218，再上服務台 cs-v3.4</b>，兩邊是搭配的。）<br>
     <b>v217（帳號成長曲線）：</b>每張帳號卡的「更多分析工具」裡多一顆「<b>成長曲線</b>」。點開會把這個帳號存過的<b>粉絲快照畫成一張折線圖</b>——看得到從第一筆到最新一筆的走勢，上面標出<b>區間、總共漲跌幾粉、近 30 天變化</b>，峰值點用金色標起來，下面還能展開「逐筆快照」看每一次的增減。至少要有 <b>2 筆不同日期</b>的快照才畫得出來（建檔／更新時會自動記，或自己按「＋ 粉絲快照」補）。<b>沒動任何提示詞（六守門常數 md5 不變）。</b>（其他還沒做的：子題型那項在另一個 repo、服務台返回鍵在 client.html，都不是這個檔能動的，我另外給你規格；客戶交付 PDF 要先定範圍；市場「真實搜尋量」需要接外部 API，單一檔接不了，目前是手填版。）<br>
     <b>v216（把剩下兩個功能做完，你可以完整跑一遍）：</b>①<b>產業定位排行表</b>：影片庫選好主角後，對標區下方有「產業定位排行表」鈕——點開把你的當事人放進同行裡，<b>依平均觀看排名列成一張表</b>（主角那列會高亮★），上方一句話告訴你「主角在 N 個同行裡，觀看排第幾、分享率排第幾、是強項還是可加強」，欄位有相似度／影片數／平均觀看／平均分享率／粉絲量級，看你的當事人站哪、強在哪、弱在哪。②<b>客戶服務台子母小窗</b>：左下角有顆「⊞ 服務台小窗」，點了會在<b>工作台頁面內</b>開一個浮動小窗（內嵌客戶服務台），<b>拖標題列可移動、拉右下角可縮放</b>，還能縮小或一鍵改開大視窗——這樣你不離開工作台也能一邊查客戶資料。<b>沒動任何提示詞（六守門常數 md5 不變）。</b>（「客戶問題轉譯型」變正式子題型、服務台那頁自己的返回鍵，是另外兩條線的事，這裡不動。）<br>
@@ -4098,7 +4104,7 @@ function renderManual(){
     ※「對標助手」（v194 那個「主角+對標→跳版面對照」）你說搞錯方向，下版會改造成「選主角→一鍵套用同職稱/同產業篩選」更貼近你的需求。<br>
     <b>v195（流程② / ③ 也加上「複製提示詞」按鈕，跟流程① 一樣可以直接按複製）：</b>你抓到的：流程① 的 sopBlock 8 步驟每步都有「複製提示詞 A／C／0／0A」按鈕可以直接按複製。但流程② / ③ 我之前做的版本只是「說明書」、只有文字、<b>沒有按鈕</b>，所以你得自己回流程① 找對應按鈕來複製，很卡。本版修好：①<b>流程② 同帳號＋多影片（5 步）</b>——step 2「（選配）封存」加「<b>複製『第一次建檔提示詞』</b>」鈕；step 3「Gemini 影片分析」加「<b>複製『Gemini 影片分析提示詞』</b>」鈕＋「<b>開 Gemini</b>」連結；step 4「子題型工具」加「<b>開子題型工具</b>」連結；step 5「最後整合·只要卡B」加「<b>複製『最後整合審查提示詞』</b>」鈕。②<b>流程③ 只重新分析帳號（4 步）</b>——step 2「帳號分析」加「<b>複製『帳號分析提示詞』</b>」鈕。按鈕都是酒紅實心邊框、跟流程① 同款；按下去會 toast「✓ 已複製『xxx 提示詞』（N 字）」確認。底層用同一份提示詞常數（PROMPT_0／PROMPT_A／PROMPT_C／GEM_PROMPT），不會跟流程① 不一致。<br>
     <b>v194（你實測抓的 3 個 bug 一次修：①卡C only 走不下去 ②清空沒清乾淨 ③雙選擇器第 5 次必須做了）：</b>①<b>P1 「只貼帳號分析卡」流程死路修好</b>：你場景——在「③ 歸類卡」只貼了帳號分析卡（沒影片段）→ atelierChoose 跳「第一次偵測到新帳號 @qbeetw」→ 你選「建立帳號」→ 表單填好→<b>但整頁只有「儲存這支影片」按鈕</b>→ 你按下去跳「至少要填影片名稱」警示，帳號永遠存不進去。修法：parseBtn 偵測到「只有帳號段、沒有影片段」時，**只要你按了「建立帳號」（不是「只建影片」/「skip」），立刻把帳號 commit 到帳號管理**（accounts.unshift + saveAccounts），不再卡 pending；toast 會顯示「✓ 已建立新帳號 @xxx（帳號管理 +1）」。②<b>P2 「清空表單」鈕沒清乾淨</b>修好：你按清空後職稱/產業/⑥下拉/九宮格收集盤都沒清掉。對齊「儲存影片成功後」的完整清空邏輯，補了 8 個項目——f-account、pending 帳號暫存（_pendingAcc / 待確認 option）、九宮格收集盤（收合 + 內容清空 + 帳號下拉歸零）、f-srctype、f-account-quick、智慧貼上 textarea + 訊息、syncProdStatus、renderGoalKit。③<b>A1 影片庫＋帳號管理 雙選擇器來了</b>：你第 5 次提的「像版面對照一樣有兩個可以選擇」。本版做最小可行版——**影片庫頂部、帳號管理頂部各加一個「對標助手」折疊區**（預設收起，點 summary 展開），裡面結構跟版面對照頁一樣：① 主角帳號單選 ② 對標帳號多選（按住 Cmd/Ctrl 選 1-3 個）→ 按「跳到版面對照並比較」按鈕 → **自動切到版面對照分頁、自動帶入你的選擇、自動跑並排比較**，省去切分頁手動選兩遍。不影響既有的「全選 / 並排對比 / 匯出選取」工具列（兩條路徑並存）。<br>
-    <b>v193（修「② 操作流程看不到流程② / ③」＋加客戶服務台導覽連結）：</b>①<b>你回報「現在展示出來的是 8 步驟，這個是流程①，那 ②／③ 在哪？」</b>——v192 我把流程鳥瞰圖+三流程詳細**塞在另一個預設收起的折疊區**「+ 操作流程 · 開始前要準備什麼」裡，你切到「② 操作流程」分頁看到的是預設展開的「8 步驟」（這的確是流程①），就以為「只有流程①、沒有 ②／③」。本版修法：<b>在 8 步驟上方加 3 顆切換鈕</b>「流程① 從沒建過 · 完整建檔（8 步驟）」、「流程② 帳號已建過 · 只加新影片（5 步驟）」、「流程③ 只重新分析帳號（4 步驟）」——點哪顆就顯示對應的詳細 SOP，三選一切換。**流程② / ③ 的詳細內容**用 v192 已經做好的 opGuideHTML_v2 / _v3（含鳥瞰圖 + 詳細步驟）自動注入到新增的 #sopBlock_v2 / #sopBlock_v3，跟流程① 的 8 步驟同樣以 gem-box 大張詳細卡呈現。預設停在流程①（保持你既有習慣不被嚇到）。②<b>導覽列加「客戶服務台」按鈕</b>連到 client.html，放在「客戶交付」右邊，icon 用「圓圈內箭頭右指」暗示外連跳轉。<br>
+    <b>v193（修「② 操作流程看不到流程② / ③」＋加客戶服務台導覽連結）：</b>①<b>你回報「現在展示出來的是 8 步驟，這個是流程①，那 ②／③ 在哪？」</b>——v192 我把流程鳥瞰圖+三流程詳細**塞在另一個預設收起的折疊區**「+ 操作流程 · 開始前要準備什麼」裡，你切到「② 操作流程」分頁看到的是預設展開的「8 步驟」（這的確是流程①），就以為「只有流程①、沒有 ②／③」。本版修法：<b>在 8 步驟上方加 3 顆切換鈕</b>「流程① 從沒建過 · 完整建檔（8 步驟）」、「流程② 帳號已建過 · 只加新影片（6 步驟）」、「流程③ 只重新分析帳號（4 步驟）」——點哪顆就顯示對應的詳細 SOP，三選一切換。**流程② / ③ 的詳細內容**用 v192 已經做好的 opGuideHTML_v2 / _v3（含鳥瞰圖 + 詳細步驟）自動注入到新增的 #sopBlock_v2 / #sopBlock_v3，跟流程① 的 8 步驟同樣以 gem-box 大張詳細卡呈現。預設停在流程①（保持你既有習慣不被嚇到）。②<b>導覽列加「客戶服務台」按鈕</b>連到 client.html，放在「客戶交付」右邊，icon 用「圓圈內箭頭右指」暗示外連跳轉。<br>
     <b>v192（把 v191 的「立刻 commit」改回「最後確認才建檔」UX＋徹底修 v188 真正的 bug＋三條流程都加鳥瞰圖）：</b>①<b>P1 把 UX 改回對的</b>：v191 為了修「帳號建檔丟失」改成「按建立帳號就立刻 +1 帳號數」——你回饋這太搶跑、應該是「按建立帳號只是先記下、滑下去檢查內容、最後按確定建檔才真的存」。本版回到 v188/v190 的設計，但<b>徹底修掉 v188 留下的真正 bug</b>——之前影片連結重複選了「覆蓋舊的」，整段確認彈窗 + pending commit 區塊會被跳過，帳號就默默丟失。修法：①URL 重複「略過」/ 標題相似「取消」/ 確認「再改一下」三條 return 路徑都會清掉 pending（不會殘留）；②URL 重複「覆蓋舊的」改成<b>先記下、延後寫入</b>——只有按了最後的「確定建檔」才會真的覆蓋（之前是按下覆蓋當下就寫了、取消後也救不回來）；③<b>拿掉 if(!_did) 守衛</b>——確認彈窗 + pending commit 必須在所有路徑（含覆蓋）下都跑到，這是修 v188 那個 bug 的關鍵。確認彈窗會根據情境顯示「覆蓋既有影片『xxx』」或「新增 1 支影片『xxx』」，不會搞混。<b>影響</b>：以後不管影片是新的還是覆蓋，按了確定建檔之前都會看到完整的確認摘要；任何取消或略過的路徑帳號都不會默默被建出來。②<b>B2 三條流程都加上鳥瞰圖</b>：點開「② 操作流程」，每個流程上方多了一條「<b>流程鳥瞰圖 · OVERVIEW</b>」——一行 5 個方塊（或 4 個），每個方塊顯示「STEP N／步驟名／<span style='color:var(--rouge);font-weight:700'>用什麼 AI</span>／<span style='color:var(--gold-dark)'>用哪段提示詞</span>／<span style='color:#0F6E56'>輸出什麼</span>」，看一眼就知道整條流程的走法、不用滑下去看詳細步驟。詳細步驟原樣保留沒大改。流程① 5 步：建檔/Claude/第一次建檔提示詞→帳號分析/Claude/帳號分析提示詞→深挖影片/Gemini/Gemini 歸類→整合三份卡/Claude/最後整合審查→客戶交付/工作台內建/三關產生。流程② 5 步：截圖+連結/無AI→封存選配/Claude→Gemini 影片分析→子題型工具/工具網頁→最後整合只要卡B/Claude。流程③ 4 步：截四張帳號素材/無AI→帳號分析/Claude→拿到帳號分析卡含 Top9→貼回工作台/工作台內建。＊<b>A1 雙選擇器（影片庫＋帳號管理像版面對照那樣的主角+對標）老實擱置·第四次</b>：你本輪再次提出，但本版 P1 整段重構 + B2 三流程鳥瞰圖工程量已經滿了；A1 還卡上版三個 UX 決策（libSelIds 怎麼共存／帳號管理入口做什麼／主角是否跨頁記憶）你本輪仍沒明確回答。我寧可下版專心做一次到位，不要這版硬上半成品（之前 v186/v187 兩次寫了沒做你抓得很準，這版繼續守規矩）。下面我會把 3 個 UX 問題整理成具體選項，下版你回答了就做。<br>
     <b>v190（修建檔卡A 表單空白 bug＋影片層分析工具＋icon 統一＋對帳總表）：</b>①<b>P1 貼卡A 建新帳號後表單空白 bug 修好</b>：之前貼卡A → 按建立帳號 → 滑到表單中間發現職稱/產業/版面解析全空、⑥顯示「不指定」（明明資料都有解析到），現在會立刻填出來。根因是 pending 機制沒打通到表單欄位 sync，補了 5 個地方（syncAccountJobFields / renderProfFields / writeProfFields / ingestAccountCard / saveBtn commit）。pending 期間改 profile 也存得進去（暫存在 _pendingAcc，按確定建檔才正式入庫；toast 會標「待確認」）。②<b>A1 影片層的分析工具來了</b>：影片卡底部現有「@xxx 的分析工具」（金線、帳號層級）下方新增「這支影片的分析工具」（酒紅線、影片層級、視覺區隔），含「影片特點→賣點」按鈕；分析的是「這支影片本身的招式」——拍攝素材、主題、逐字稿、爆紅歸因、Hook 規格、換鏡節奏、CTA、表現都餵進去，不依賴帳號 profile。帳號是帳號、影片是影片，現在分得開。若該影片還缺逐字稿/爆紅歸因，按鈕旁會提示「⚠ 需逐字稿/爆紅歸因資料」。③<b>A2 icon 統一</b>：把 3 處真正當 icon 用的 emoji 換成品牌 SVG——待核對清單帳號列首的紅點、圖例的紅黃圓、交付樣張關閉鈕的 ✕。不改的：toast/狀態文字（那是有色文字標籤）、option 下拉內的 emoji（HTML 不允許 SVG 在 option 內）、placeholder 範例字、SVG 內的 text、changelog 文字；copyPrompt 內部 icon 依交辦單暫不動（之後你會指定）。④<b>B2 對帳總表來了</b>：帳號管理 → 工具箱底部新增「對帳總表」折疊，點開自動載入：每帳號掛了幾支、有 Hook 比例（綠/金/紅依比例上色）、G1–G5 各階段分布、最近發布日，按影片數降冪；下方另列「沒掛影片的帳號」與「孤兒影片」（accountId 為空或指向不存在帳號），孤兒可點「編輯補上」一鍵跳影片編輯框補連結。純讀盤點，不改任何資料結構。＊B1（雙選擇器重構）第三次擱置——仍卡 3 個 UX 決策（libSelIds 怎麼共存／帳號管理入口做什麼／主角是否跨頁記憶），這次交辦單沒回答，硬做風險過高。先回答這 3 個再做才安全。<br>
     <b>v189（提示詞兩常數更新＋實測 bug＋影片庫流程加變體＋全站彈窗中央化）：</b>①<b>P 區（特別授權）</b>：依交辦單把工具裡 ChatGPT/Claude 用的兩段提示詞——「最後整合審查」「第一次建檔」——換成你提供的更新版（5425＋1679 字逐字相同，反跳脫驗證 byte-identical）；另外四個常數＋口吻鐵律經守門 md5 驗證一字未動。②<b>A1 影片庫客戶下拉「尚無帳號」bug 修</b>：根因找到了——雲端帳號到齊後，主角下拉有刷、產生腳本範本旁的下拉沒刷。已補上，冷啟動進影片庫兩個下拉都有帳號、不必離開再進來。③<b>A2 影片庫使用說明改可收合</b>：那段長長的「工具目的＋使用邏輯」包進「ℹ️ 使用說明（點開看）」、預設收起，影片庫一進來乾淨多了；文字一字沒改。④<b>A3 全站彈窗統一螢幕中央</b>：根改 .modal 從底部彈出改置中（接 v188 A4 沒做完），所有點開後跳出來的彈窗（智慧貼上確認、新增帳號、客戶診斷、成功庫對標、避坑對標、借技法、編輯影片、市場熱度、交付樣張、提示詞預覽等）全部在畫面中央、不卡底部。⑤<b>A4 客戶版 PDF 06-10 空白不印</b>（接 v188 A5 沒做完）：列印客戶版時，標題還是預設「主題（點這裡打字或貼上）」或為空的建議方向會自動跳過；首選＋有填內容照印；顧問版照舊全印。⑥<b>A5 「② 操作流程」加兩種變體</b>：頁面最上方多了三顆 tab——<b>流程① 新帳號＋新影片</b>（原本那條，照舊）／<b>流程② 同帳號＋多影片</b>（帳號已建過、只加新影片，5 步：截 3 張→選配存檔→Gemini→子題型→只請卡B；強調 @handle 一定要純）／<b>流程③ 只分析帳號</b>（不分析影片，每週／兩週回測，4 步：四張帳號素材→帳號分析提示詞→拿到含 Top9 的分析卡→貼回「累積」或「覆蓋」；不用 Gemini、不用最後整合）。＊B1（影片庫＋帳號管理雙選擇器重構）擱置——範圍擴大且需先對齊 UX 決策，本版老實留下，下個版本獨立做。<br>
@@ -4364,15 +4370,19 @@ function renderInputTodo(){
     return;
   }
   var rows=gaps.map(function(f){
-    var right=f.manual
-      ? '<span style="font-size:11px;color:var(--sub);flex:none">'+esc(f.hint||'手動填')+'</span>'
-      : '<button type="button" onclick="_todoCopy(\''+f.id+'\')" style="flex:none;font-size:11.5px;font-weight:700;padding:4px 10px;border:1px solid var(--gold-dark);background:#fff;color:var(--gold-dark);border-radius:6px;cursor:pointer;font-family:inherit">複製補完提示詞</button>';
+    var right;
+    if(f.manual){
+      right='<span style="font-size:11px;color:var(--sub);flex:none">'+esc(f.hint||'手動填')+'</span>';
+    } else {
+      var _tb=function(mode,label,solid){ return '<button type="button" onclick="_todoCopy(\''+f.id+'\',\''+mode+'\')" style="flex:none;font-size:11px;font-weight:700;padding:4px 9px;border:1px solid var(--gold-dark);background:'+(solid?'var(--gold-dark)':'#fff')+';color:'+(solid?'#fff':'var(--gold-dark)')+';border-radius:6px;cursor:pointer;font-family:inherit">'+label+'</button>'; };
+      right='<div style="display:flex;gap:5px;flex:none;flex-wrap:wrap;justify-content:flex-end">'+_tb('only','只補這欄',false)+_tb('review','補＋我先看',false)+_tb('card','補＋重出卡B',true)+'</div>';
+    }
     return '<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:6px 0;border-top:1px solid var(--gold-soft);font-size:12.5px"><span>'+esc(f.label)+'</span>'+right+'</div>';
   }).join('');
   box.style.display='block';
   box.innerHTML='<div style="border:1px solid var(--gold-dark);background:var(--warm);border-radius:9px;padding:10px 12px;margin-bottom:10px">'
     +'<div style="font-weight:700;color:var(--gold-dark);font-size:13px">待補清單 · 這張卡還有 '+gaps.length+' 欄沒填到</div>'
-    +'<div style="font-size:10.5px;color:var(--sub);margin:2px 0 4px">不想填的可忽略，這只是提醒、不擋你存檔；需要的話按右邊複製提示詞、貼去問 AI（它判不出會回「無法判斷」）。</div>'
+    +'<div style="font-size:10.5px;color:var(--sub);margin:2px 0 4px">不想填的可忽略，這只是提醒、不擋你存檔。每欄三顆鈕：<b>只補這欄</b>＝只判斷、不出卡；<b>補＋我先看</b>＝判完先給你看、先不出卡；<b>補＋重出卡B</b>＝判完直接重出整張卡B。複製後貼回原本那個 AI 對話框問即可。</div>'
     +rows+'</div>';
 }
 window.renderInputTodo=renderInputTodo;
@@ -4456,7 +4466,8 @@ window._csDockMin=function(){
   if(d.getAttribute('data-min')==='1'){ if(f) f.style.display='block'; d.style.height=d.getAttribute('data-h')||'560px'; d.removeAttribute('data-min'); }
   else { d.setAttribute('data-h', d.style.height||(d.offsetHeight+'px')); if(f) f.style.display='none'; d.style.height='auto'; d.setAttribute('data-min','1'); }
 };
-window._todoCopy=function(selId){
+window._todoCopy=function(selId, mode){
+  mode=mode||'only';
   var f=_INPUT_TODO_FIELDS.find(function(x){return x.id===selId;}); if(!f) return;
   var sel=document.getElementById(selId);
   var opts=sel?[].slice.call(sel.options).map(function(o){return (o.textContent||'').trim();}).filter(function(t){return t && t.indexOf('\u2014')<0;}):[];
@@ -4470,9 +4481,21 @@ window._todoCopy=function(selId){
   p+='主題：'+(themeT||'（未選）')+'　階段：'+(stageT||'（未選）')+'\n';
   p+='逐字稿／重點：'+(tr?tr.slice(0,1500):'（未提供，請依標題與主題推斷；不足以判斷就回「無法判斷」）')+'\n\n';
   if(opts.length){ p+='只能從下列選項挑「最貼合這支影片實際做法」的 1 個（不可自編、不要選相鄰的）：\n'+opts.map(function(o){return '• '+o;}).join('\n')+'\n\n'; }
-  p+='請輸出：①你選的那一個（照原文）②一句話說為什麼是它、為什麼不是相鄰那個。若資訊不足以判斷，直接回「無法判斷」、不要硬猜。只回答這一個欄位。';
-  if(typeof copyPrompt==='function') copyPrompt(p,'補完「'+lbl+'」提示詞');
-  else if(typeof copyVal==='function'){ copyVal(p); if(typeof toast==='function') toast('已複製補完提示詞'); }
+  p+='請先輸出：①你選的那一個（照原文）②一句話說為什麼是它、為什麼不是相鄰那個。若資訊不足以判斷，直接回「無法判斷」、不要硬猜。';
+  var tail, tag;
+  if(mode==='card'){
+    tail='\n\n接著，請把這支影片【修正後的整張卡B】重新完整輸出一次：第一行是 ===ATELIER歸類卡===、最後一行是 ===結束===、前面不要黏任何字，方便我直接貼回工作台。除了「'+lbl+'」這一欄之外，其餘欄位一律沿用我們先前那張卡的內容、不要更動。';
+    tag='補完「'+lbl+'」＋重出卡B';
+  } else if(mode==='review'){
+    tail='\n\n【先不要輸出卡B】。先把你的判斷和理由講清楚讓我確認；等我回你「OK 出卡」之後，你再把整張卡B重新輸出。';
+    tag='補完「'+lbl+'」（先給我看）';
+  } else {
+    tail='\n\n只回答這一個欄位、不用輸出整張卡。';
+    tag='補完「'+lbl+'」（只這欄）';
+  }
+  p+=tail;
+  if(typeof copyPrompt==='function') copyPrompt(p,tag);
+  else if(typeof copyVal==='function'){ copyVal(p); if(typeof toast==='function') toast('已複製：'+tag); }
 };
 
 /* ═══════════ v45 帳號管理模組（CREATOR ACCOUNT MATRIX）═══════════
@@ -8814,6 +8837,7 @@ window.addEventListener('DOMContentLoaded', function(){
     var I3=ic('<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>');
     var I4=ic('<path d="M9 3v18M3 9h18"/>');
     var I5=ic('<path d="M5 12l5 5L20 7"/>');
+    var I6=ic('<polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/>');
     function step(n,icon,title,provide,hint,opts){
       opts=opts||{};
       var pr=provide?('<div style="margin-top:5px;font-size:13px;color:'+T+';line-height:1.65"><b style="color:'+R+'">要提供：</b>'+provide+'</div>'):'';
@@ -8842,7 +8866,7 @@ var lbl2={PROMPT_0:'第一次建檔提示詞',PROMPT_A:'帳號分析提示詞',P
     }
     /* v196 P1 真修：v195 改 step() 時把 var intro=... 整行 strip 掉，造成 runtime ReferenceError、catch 顯示「內容載入失敗」。補回原本的 intro。 */
     var intro='<div style="background:#fff;border-left:3px solid '+R+';border-radius:6px;padding:10px 12px;margin:8px 0 12px;font-size:12.5px;color:'+T+';line-height:1.7">適用情境：這個帳號之前<b>已經建檔過</b>（在「帳號管理」找得到），這次只是要把新影片加進去，不再做一次帳號分析。</div>';
-    /* v192 B2：流程② 鳥瞰圖（5 步）*/
+    /* v192 B2：流程② 鳥瞰圖（v224 起 6 步）*/
     function ovStep(n,title,ai,prompt,output){
       return '<div style="flex:1;min-width:120px;background:#fff;border:1px solid '+LINE+';border-radius:8px;padding:8px 7px;text-align:center;box-sizing:border-box">'
         +'<div style="font-size:10px;letter-spacing:.5px;color:'+GD+';font-weight:700">STEP '+n+'</div>'
@@ -8859,18 +8883,21 @@ var lbl2={PROMPT_0:'第一次建檔提示詞',PROMPT_A:'帳號分析提示詞',P
       +ovArrow()
       +ovStep('2','（選配）封存·不進庫','Claude','第一次建檔提示詞','存電腦資料夾')
       +ovArrow()
-      +ovStep('3','逐字稿＋影片分析','ChatGPT／剪映／Gemini','逐字稿提示詞＋影片分析提示詞','逐字稿 TXT／SRT＋影片分析卡')
+      +ovStep('3','（選配）逐字稿','ChatGPT／剪映','逐字稿提示詞','逐句時間碼 TXT／SRT')
       +ovArrow()
-      +ovStep('4','（需要才做）子題型','工具網頁','子題型定義','對照複核')
+      +ovStep('4','影片分析','Gemini／ChatGPT','影片分析提示詞','影片分析卡')
       +ovArrow()
-      +ovStep('5','最後整合 · 只要卡B','Claude／ChatGPT','最後整合提示詞（指定只出卡B）','卡B → 進影片庫')
+      +ovStep('5','（需要才做）子題型','工具網頁','子題型定義','對照複核')
+      +ovArrow()
+      +ovStep('6','最後整合 · 只要卡B','Claude／ChatGPT','最後整合提示詞（指定只出卡B）','卡B → 進影片庫')
       +'</div></div>';
     var steps=''
       +step('1',I1,'截這支影片三張＋拿影片連結','影片封面（含觀看數）／影片數據（讚／留言／轉發／分享）／影片文案 共 3 張＋影片連結。','左上用手機「標記」寫代號：片1封／片1數／片1文，或統一標「主」也行。截「文案那張」時把最上面的 @帳號一起截進去，後面建檔名才認得出是誰。')
       +step('2',I2,'（選配·存電腦）複製「第一次建檔」提示詞','把上面 3 張截圖＋帳號連結＋影片連結貼給對話框 → 拿 <b>07_連結_創作者_主題.txt</b> 存進該影片資料夾。','資料夾名稱＝日期_創作者_主題：日期它自己有、主題從文案截圖讀、<b>創作者靠截圖上的 @帳號</b>（所以截文案那張要連 @帳號一起截）；沒拍到它會留「創作者」給你補、不亂猜。這步<b>靠截圖就能做、不用卡C、不靠連結認人</b>，產出的 .txt 只存電腦、<b>不進影片庫</b>；趕時間可直接跳到第 3 步。<b>量產很多支</b>：按下面「快速建檔」那顆——它不先回報、不等你說開始、一次能丟多支（每支標 片1／片2…），貼齊就直接生檔。',{copy:'PROMPT_0',copy2:'FAST_FILING'})
-      +step('3',I3,'取得逐字稿 TXT／SRT，再做「影片分析」','方法 A：上傳「主」影片給 ChatGPT，先按「ChatGPT 逐字稿提示詞」→ 拿到逐句時間碼 TXT（含主講人／藏鏡人／畫面大字／配樂音效／自檢），接著可直接按「Gemini／ChatGPT 影片分析提示詞」在 ChatGPT 續做影片分析。方法 B：用剪映匯出 SRT，再把影片＋SRT／逐字稿＋三張截圖丟給 Gemini 或 ChatGPT → 拿到影片分析（主題判斷／爆紅歸因／腳本）。','順序建議：<b>先產逐字稿</b>，再做影片分析，最後整合時把「逐字稿 TXT／SRT」一起丟給 Claude。若 ChatGPT 已經能直接讀影片，就可以一條龍完成逐字稿＋影片分析；若用剪映，SRT 當時間碼基準；若用 Gemini，仍只看影片本體，<b>帳號是誰它會填「待補」、不用給它卡C</b>。',{copy:'CHATGPT_TRANSCRIPT_PROMPT',copy2:'VIDEO_AI_ANALYSIS_PROMPT',open:'https://gemini.google.com/app',openLabel:'開 Gemini（或直接用 ChatGPT）'})
-      +step('4',I4,'（需要才做）子題型工具','若 Gemini 卡上的「子題型」需要對照清單複核，把該拍攝素材的子題型定義丟給對話框複核。','一般可跳過；只有對子題型有疑慮才需要。',{open:'https://luckylisaaa.github.io/atelier-subtype/',openLabel:'開子題型工具'})
-      +step('5',I5,'複製「最後整合」提示詞、<b>只請它出卡B</b>','丟給 Claude 或 ChatGPT 五樣：①三張截圖（讀六個數字）②帳號＋影片兩個連結 ③SRT 或逐句時間碼 TXT ④影片分析結果（Gemini 或 ChatGPT 都可）⑤<b>這個帳號既有的卡C</b>——去「帳號管理」找到這個人、複製他的帳號分析卡貼上來。<b>明講「帳號已建過、只要卡B，不要再輸出卡A／卡C」</b> → 拿卡B → 貼進「③ 歸類卡 · 智慧貼上」。','<b>重要：</b>卡B 的「@帳號」要填純 handle（例 @kl.legal）；寫成顯示名稱、@@雙@ 或缺字都會配不到舊帳號、多建一筆。若 ChatGPT 已經在同一對話框完成逐字稿＋影片分析，就可以直接續跑最後整合；若前面用 Gemini／剪映，也可把結果交給 Claude 或 ChatGPT 拍板。<b>最省：</b>直接按下面「Claude／ChatGPT 只出卡B」那顆——整合審查全做、最後只給你卡B。',{copy:'FINAL_AI_INTEGRATION_PROMPT',copy2:'FINAL_AI_ONLY_B_PROMPT'})
+      +step('3',I3,'（選配·可略過）做逐句時間碼逐字稿','上傳「主」影片給 ChatGPT，按「ChatGPT 逐字稿提示詞」→ 拿到逐句時間碼 TXT（含主講人／藏鏡人／畫面大字／配樂音效，AI 還會自己反覆自檢）；也可改用剪映匯出 SRT 當時間碼基準。','<b>這步可做可不做。</b>ChatGPT 做的逐字稿很完整（轉逐字＋標說話者＋抓畫面大字＋自檢），想要精準時間碼、或之後要核對台詞，就做這步；趕時間、或下一步的 AI 本來就能直接讀影片，<b>可以直接略過</b>，到「影片分析」那步讓它一起處理。逐字稿 TXT／SRT 只存著，最後整合時再一起丟給 Claude／ChatGPT。',{copy:'CHATGPT_TRANSCRIPT_PROMPT'})
+      +step('4',I6,'影片分析','把「主」影片（或上一步的逐字稿／SRT）＋三張截圖丟給 AI，按「Gemini／ChatGPT 影片分析提示詞」→ 拿到影片分析（主題判斷／爆紅歸因／腳本）。','<b>就算跳過上一步的逐字稿也能做：</b>若這個 AI 能直接讀影片，它會自己看；若不能讀，就把上一步的逐字稿／SRT 一起給它、別讓它硬猜。用 Gemini 時它只看影片本體，<b>帳號是誰它會填「待補」、不用給它卡C</b>；用 ChatGPT 可在同一對話框接著做。',{copy:'VIDEO_AI_ANALYSIS_PROMPT',open:'https://gemini.google.com/app',openLabel:'開 Gemini（或直接用 ChatGPT）'})
+      +step('5',I4,'（需要才做）子題型工具','若 Gemini 卡上的「子題型」需要對照清單複核，把該拍攝素材的子題型定義丟給對話框複核。','一般可跳過；只有對子題型有疑慮才需要。',{open:'https://luckylisaaa.github.io/atelier-subtype/',openLabel:'開子題型工具'})
+      +step('6',I5,'複製「最後整合」提示詞、<b>只請它出卡B</b>','丟給 Claude 或 ChatGPT 五樣：①三張截圖（讀六個數字）②帳號＋影片兩個連結 ③SRT 或逐句時間碼 TXT（選配，有做才有）④影片分析結果（Gemini 或 ChatGPT 都可）⑤<b>這個帳號既有的卡C</b>——去「帳號管理」找到這個人、複製他的帳號分析卡貼上來。<b>明講「帳號已建過、只要卡B，不要再輸出卡A／卡C」</b> → 拿卡B → 貼進「③ 歸類卡 · 智慧貼上」。','<b>重要：</b>卡B 的「@帳號」要填純 handle（例 @kl.legal）；寫成顯示名稱、@@雙@ 或缺字都會配不到舊帳號、多建一筆。若 ChatGPT 已經在同一對話框完成逐字稿＋影片分析，就可以直接續跑最後整合；若前面用 Gemini／剪映，也可把結果交給 Claude 或 ChatGPT 拍板。<b>最省：</b>直接按下面「Claude／ChatGPT 只出卡B」那顆——整合審查全做、最後只給你卡B。',{copy:'FINAL_AI_INTEGRATION_PROMPT',copy2:'FINAL_AI_ONLY_B_PROMPT'})
       ;
     return '<div>'+intro+overview+steps+'</div>';
   }
