@@ -8,7 +8,8 @@
 <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v255 (版本號僅留註解，不顯示於畫面)
+<!-- ATELIER 影片診斷工作台 · 內部版本 v256 (版本號僅留註解，不顯示於畫面)
+v256 更新（交辦單：Lisa 實測 v255 後，策略診斷雖可搜尋但版面重疊、選到客戶後框線超出、快看資訊太少且定位會跳離策略頁；同時要求把「案例價值標籤／案例分數」納入每支影片的顧問資料庫）：【A 策略診斷選客戶改成卡片式】移除可見的下拉 select，保留 hidden select 作真值；搜尋結果改為卡片列，選到帳號後在下方顯示「目前診斷客戶」卡，避免搜尋框與下拉重疊。【B 單支影片改成浮動核對窗】Top/Bottom 的「快看／定位」不再直接跳離策略診斷，改為同頁浮動小窗，內含完整數據、Hook、G/A-E、案例價值分數、案例標籤與可複製公式；需要時才按「去影片庫定位」或「獨立視窗核對」。【C 新增案例價值引擎】以觀看、互動率、分享率、G階段、A-E目標層與 Hook/標題語氣自動給「成功樣本／可複製 Hook／可複製題材／可複製結構／高觀看低轉化／低觀看高商業價值／不建議直接複製」等只讀標籤，並產生 0–100 案例價值分數，作為未來案例雷達資料基礎。只讀資料，不寫入 Firebase。
 v255 更新（交辦單：Lisa 實測 v254 後，策略診斷搜尋仍像當機；同時要求把核心一條龍流程視覺化放進頁面）：【A 修復策略診斷主程式中斷】修正 renderStrategyActionBox 內 toast onclick 引號未跳脫造成整段 JavaScript 中斷的問題，讓策略診斷搜尋、按鈕、快看與結果列恢復。【B 新增策略診斷一條龍流程說明】在策略診斷頁新增「一條龍導航／學習小抄」視覺區，清楚標示建檔 32 支 → 策略快照 → Top/Bottom → 單支快看 → 可複製公式 → 補問客戶 → 客戶服務台交付 → 商業閉環校準。【C 自檢原則】本版不碰 CSV、不改 Firebase、不動 client.html、不動六支守門提示詞。
 v254 更新（交辦單：Lisa 實測 v254 後，策略診斷頁像當機，搜尋框可輸入但結果不出、按鈕也像失效）：【A 策略診斷選客戶改成獨立搜尋器】不再讓 stratAcc 依賴全站 csel 帳號下拉，改用策略診斷頁專用的「輸入搜尋＋結果列」元件，直接讀 accounts 資料、直接渲染帳號卡列，避免 csel options 非同步補灌與 MutationObserver 反覆失效。【B 保留真值 select】底層仍保留 hidden select id=stratAcc 作為 renderStrategyDiagnosis 的真值來源；選到帳號後會同步搜尋框文字、寫入 select value、立刻產生策略快照。只修策略診斷選客戶入口，不動影片庫 csel、不碰 CSV 彈窗、不寫入資料、不動 client.html、Firebase、商業閉環地圖與六支守門提示詞。
 v252 更新（交辦單：Lisa 希望策略診斷不要一直跳回影片庫，而是在同頁用小視窗核對單支影片；必要時才獨立開新視窗；同時把策略診斷整理成可持續操作的下一步中控台）：【A 策略診斷行動中控台】新增「下一步行動區」，把單一客戶診斷、Top 5 可複製公式、同主題案例對照、同素材腳本對照、A–E 商業閉環缺口、送客戶服務台交付六步驟放在同一頁，避免 Lisa 看到數據後不知道下一步。【B 單支影片小視窗核對】Top 觀看／Top 分享率／低觀看待複核每支影片新增「快看」按鈕，在策略診斷頁內以 modal 顯示該影片重點、數據、Hook 與顧問判斷，不再強制跳回影片庫。【C 需要時才獨立視窗】單支影片小視窗內新增「在影片庫定位」與「獨立視窗核對」兩個選項：前者才會跳回影片庫並高亮，後者會用新視窗打開該影片的 deep-link，方便 Lisa 左右並排核對。只讀資料，不寫入影片，不動 client.html、Firebase、商業閉環地圖與六支守門提示詞。
@@ -860,7 +861,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v255</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v256</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -2452,14 +2453,17 @@ if('serviceWorker' in navigator){
     <div class="ph-sub">把影片庫資料變成客戶服務台可用的內容診斷：數據快照、Top/Bottom、G 階段分布、A–E 商業閉環與下一步提問。</div>
   </div>
   <div style="border:1px solid var(--gold-soft);border-radius:12px;background:#fff;padding:14px 16px;margin-bottom:14px">
-    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
-      <span style="font-size:11px;color:var(--gold-dark);font-weight:800;letter-spacing:1.5px">① 選擇客戶</span>
-      <div id="stratAccPicker" style="flex:1;min-width:260px;position:relative">
-        <input id="stratAccQ" type="text" placeholder="搜尋帳號 / handle / 職稱 / 產業…" autocomplete="off" oninput="_strategyAccSearch()" onfocus="_strategyAccSearch()" style="width:100%;padding:9px 12px;border:1px solid var(--border);border-radius:9px;background:#fff;color:var(--ink);font-family:inherit;font-size:13px">
-        <select id="stratAcc" onchange="renderStrategyDiagnosis()" style="display:none"><option value="">— 選一個帳號開始診斷 —</option></select>
-        <div id="stratAccResults" style="display:none;position:absolute;left:0;right:0;top:calc(100% + 4px);z-index:90;background:#fff;border:1px solid var(--gold-soft);border-radius:12px;box-shadow:0 12px 28px rgba(80,40,12,.16);padding:6px;max-height:310px;overflow-y:auto"></div>
+    <div style="display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:start">
+      <div>
+        <div style="font-size:11px;color:var(--gold-dark);font-weight:800;letter-spacing:1.5px;margin-bottom:8px">① 選擇客戶｜卡片式搜尋，不再用會重疊的下拉</div>
+        <div id="stratAccPicker" style="position:relative">
+          <input id="stratAccQ" type="text" placeholder="搜尋帳號 / handle / 職稱 / 產業… 例如：理、理鴻、kl、律師" autocomplete="off" oninput="_strategyAccSearch()" onfocus="_strategyAccSearch()" style="width:100%;padding:11px 13px;border:1px solid var(--border);border-radius:10px;background:#fff;color:var(--ink);font-family:inherit;font-size:13px">
+          <select id="stratAcc" onchange="renderStrategyDiagnosis()" style="display:none"><option value="">— 選一個帳號開始診斷 —</option></select>
+          <div id="stratAccResults" style="display:none;margin-top:8px;background:#fff;border:1px solid var(--gold-soft);border-radius:12px;box-shadow:0 10px 24px rgba(80,40,12,.10);padding:6px;max-height:260px;overflow-y:auto"></div>
+        </div>
+        <div id="stratAccCurrent" style="display:none;margin-top:10px"></div>
       </div>
-      <button class="btn btn-go" type="button" onclick="renderStrategyDiagnosis()" style="width:auto;font-size:13px;padding:9px 14px">產生策略快照</button>
+      <button class="btn btn-go" type="button" onclick="renderStrategyDiagnosis()" style="width:auto;font-size:13px;padding:10px 16px;white-space:nowrap">產生策略快照</button>
     </div>
     <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px">
       <button class="btn btn-ghost" type="button" onclick="_strategyOpenClient()" style="width:auto;font-size:12px;padding:8px 12px">開客戶服務台</button>
@@ -2467,6 +2471,7 @@ if('serviceWorker' in navigator){
       <button class="btn btn-ghost" type="button" onclick="copyStrategyPrompt()" style="width:auto;font-size:12px;padding:8px 12px">複製 Stage 4 內容診斷提示詞</button>
     </div>
   </div>
+  <div id="strategyFloatPanel" style="display:none;position:fixed;right:22px;top:120px;width:min(520px,calc(100vw - 36px));max-height:calc(100vh - 160px);overflow:auto;background:#fff;border:1px solid var(--gold-soft);border-radius:16px;box-shadow:0 20px 50px rgba(62,26,22,.20);z-index:320;padding:0"></div>
   <div id="strategyBox"></div>
   <div id="strategyActionBox"></div>
   <div class="hint" style="margin-top:14px;background:#FFFDFC">
@@ -4487,6 +4492,7 @@ function renderManual(){
   <div class="form-card" style="border-left:3px solid var(--gold)">
     <div class="stitle" style="font-size:15px;color:var(--rouge)">更新紀錄 · 還沒做的</div>
     <p style="font-size:13px;color:var(--text);line-height:1.85;margin-top:8px">
+    <b>v256（策略診斷卡片式選客戶＋案例價值引擎）：</b>修正策略診斷搜尋框／下拉重疊、選到客戶後框線超出與定位跳離頁面的問題；新增「目前診斷客戶」卡片、單支影片浮動核對窗、案例價值分數與案例標籤（成功樣本、可複製 Hook、可複製題材、可複製結構、高觀看低轉化、低觀看高商業價值、不建議直接複製），先作為只讀顧問判斷，不寫入資料庫。<b>不碰 CSV、不寫入 Firebase、不動 client.html 與六守門提示詞。</b><br>
     <b>v255（策略診斷穩定化＋一條龍導航）：</b>修正策略診斷下一步行動區 toast 按鈕引號未跳脫造成主程式中斷的問題；新增一條龍導航／學習小抄，把建檔 32 支、策略快照、Top/Bottom、單支快看、可複製公式、補問客戶、客戶服務台交付與商業閉環校準整理成視覺流程。<b>不碰 CSV、不寫入資料、不動 client.html、Firebase 與六守門提示詞。</b><br>
     <b>v254（修復策略診斷主程式語法中斷）：</b>修正策略診斷頁選客戶下拉再次出現空白／搜尋不到帳號的問題。這版不再讓 stratAcc 依賴全站 csel 帳號下拉，改成策略診斷專用搜尋器：直接讀 accounts，直接顯示帳號結果列，選到後同步 hidden select 並立即產生策略快照，避免 csel 非同步補灌失效。<b>只修策略診斷選客戶入口，不動影片庫 csel、不碰 CSV 彈窗、不寫入資料、不動 client.html、Firebase、商業閉環地圖與六守門提示詞。</b><br>
     <b>v252（策略診斷行動中控台＋單支影片小視窗）：</b>策略診斷頁新增「下一步行動區」，把單一客戶診斷、Top 5 可複製公式、同主題案例對照、同素材腳本對照、A–E 商業閉環缺口、送客戶服務台交付六步驟整理成可持續操作的顧問流程。Top 觀看／Top 分享率／低觀看待複核的每支影片新增「快看」，可在同頁小視窗核對單支影片，不強制跳回影片庫；需要深入核對時再按「在影片庫定位」或「獨立視窗核對」。<b>只讀資料、不寫入資料、不碰 CSV 彈窗、不動 client.html、Firebase、商業閉環地圖與六守門提示詞。</b><br>
@@ -10365,46 +10371,99 @@ document.addEventListener('DOMContentLoaded',function(){
     return '<div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:12px"><div style="font-family:\'Noto Serif TC\',serif;font-weight:900;color:var(--ink);margin-bottom:6px">'+E(title)+'</div>'+rows+'</div>';
   }
   function _strategyVidId(v){ return E(String((v&&v.id)||'')); }
-  function vidLine(v,i){ var s=score(v), id=_strategyVidId(v); return '<div style="padding:8px 0;border-top:1px solid var(--line);font-size:12.5px;line-height:1.7"><b style="color:var(--ink)">'+(i+1)+'. '+E(v.title||'(未命名)')+'</b><br><span style="color:var(--sub)">觀看 '+s.views.toLocaleString()+'｜互動率 '+(s.engRate*100).toFixed(2)+'%｜分享率 '+(s.shareRate*100).toFixed(2)+'%｜'+E(stageLetter(v))+'｜'+E(goalLetter(v))+'</span><br><button type="button" class="btn btn-ghost" style="width:auto;font-size:11px;padding:5px 9px;margin-top:5px" onclick="_strategyOpenVideoMini(\''+id+'\')">快看</button><button type="button" class="btn btn-ghost" style="width:auto;font-size:11px;padding:5px 9px;margin-top:5px;margin-left:5px" onclick="_strategyLocateVideo(\''+id+'\')">定位</button></div>'; }
+  function _strategyCaseValue(v,s){
+    s=s||score(v); var text=String((v&&v.title)||'')+' '+String((v&&v.hook)||'')+' '+String((v&&v.notes)||'');
+    var pts=35, tags=[];
+    if(s.views>=50000){pts+=22;tags.push('成功樣本');}
+    else if(s.views>=20000){pts+=16;tags.push('可複製題材');}
+    else if(s.views>=10000){pts+=8;tags.push('普通樣本');}
+    else if(s.views<7000){pts-=4;}
+    if(s.shareRate>=0.005){pts+=14;tags.push('高分享樣本');}
+    else if(s.shareRate>=0.002){pts+=9;tags.push('可複製 Hook');}
+    if(s.engRate>=0.02){pts+=10;tags.push('高互動樣本');}
+    else if(s.engRate>=0.012){pts+=5;}
+    if(/不一定|其實|差異|差別|VS|vs|迷思|破解|風險|避坑|怎麼辦|可以|不能|五大|三步驟|一分鐘/.test(text)){pts+=10;tags.push('可複製結構');}
+    if(stageLetter(v)==='G1') {pts+=7; tags.push('反直覺破題');}
+    if(stageLetter(v)==='G5' || goalLetter(v)==='D' || goalLetter(v)==='E') {pts+=8; tags.push('商業轉化參考');}
+    if(s.views>=25000 && s.shareRate<0.001 && goalLetter(v)!=='D' && goalLetter(v)!=='E'){tags.push('高觀看低轉化');}
+    if(s.views<9000 && (goalLetter(v)==='D'||goalLetter(v)==='E'||/諮詢|律師費|車禍|求償|勞資|合約|遺產|詐騙|債|告|訴訟/.test(text))){pts+=8;tags.push('低觀看高商業價值');}
+    if(s.views<5000 && s.engRate<0.012 && s.shareRate<0.001){pts-=8;tags.push('不建議直接複製');}
+    pts=Math.max(0,Math.min(100,Math.round(pts)));
+    var seen={}; tags=tags.filter(function(t){ if(seen[t]) return false; seen[t]=1; return true; });
+    if(!tags.length) tags.push('待人工判斷');
+    return {score:pts,tags:tags};
+  }
+  function _strategyTagPills(tags){ return (tags||[]).map(function(t){ return '<span style="display:inline-block;margin:3px 5px 0 0;padding:3px 8px;border:1px solid var(--gold-soft);border-radius:999px;background:var(--warm);font-size:11px;color:var(--rouge)">'+E(t)+'</span>'; }).join(''); }
+  function vidLine(v,i){ var s=score(v), cv=_strategyCaseValue(v,s), id=_strategyVidId(v); return '<div style="padding:9px 0;border-top:1px solid var(--line);font-size:12.5px;line-height:1.7"><b style="color:var(--ink)">'+(i+1)+'. '+E(v.title||'(未命名)')+'</b><br><span style="color:var(--sub)">觀看 '+s.views.toLocaleString()+'｜互動率 '+(s.engRate*100).toFixed(2)+'%｜分享率 '+(s.shareRate*100).toFixed(2)+'%｜'+E(stageLetter(v))+'｜'+E(goalLetter(v))+'｜案例分 '+cv.score+'</span><br>'+_strategyTagPills(cv.tags.slice(0,3))+'<br><button type="button" class="btn btn-ghost" style="width:auto;font-size:11px;padding:5px 9px;margin-top:5px" onclick="_strategyOpenVideoMini(\''+id+'\')">快看／核對</button><button type="button" class="btn btn-ghost" style="width:auto;font-size:11px;padding:5px 9px;margin-top:5px;margin-left:5px" onclick="_strategyOpenVideoMini(\''+id+'\')">留在本頁定位</button></div>'; }
   function _strategyFindVideo(id){ return (videos||[]).find(function(x){return String(x.id)===String(id);}); }
-  window._strategyLocateVideo=function(id){ var v=_strategyFindVideo(id); if(!v) return; if(typeof _locateExistingVideo==='function') _locateExistingVideo(v); else { switchTo('library'); setTimeout(function(){ if(H('libSearch')) H('libSearch').value=v.title||''; if(typeof renderLibrary==='function') renderLibrary(); location.hash='video-'+encodeURIComponent(v.id||''); if(typeof _focusVideoFromHash==='function') _focusVideoFromHash(); },200); } };
+  window._strategyLocateVideo=function(id){ return _strategyOpenVideoMini(id); };
+  window._strategyGoVideoLibrary=function(id){ var v=_strategyFindVideo(id); if(!v) return; if(typeof _locateExistingVideo==='function') _locateExistingVideo(v); else { switchTo('library'); setTimeout(function(){ if(H('libSearch')) H('libSearch').value=v.title||''; if(typeof renderLibrary==='function') renderLibrary(); location.hash='video-'+encodeURIComponent(v.id||''); if(typeof _focusVideoFromHash==='function') _focusVideoFromHash(); },200); } };
   window._strategyOpenVideoWindow=function(id){ var url=location.href.split('#')[0]+'#video-'+encodeURIComponent(id); window.open(url,'atelierVideo_'+String(id).replace(/\W/g,''),'width=1180,height=820'); };
-  window._strategyOpenVideoMini=function(id){ var v=_strategyFindVideo(id); if(!v){ toast('找不到這支影片'); return; } var s=score(v); var title=E(v.title||'(未命名影片)'); var html='<h2 style="font-family:Noto Serif TC,serif;color:var(--rouge);font-size:20px;margin-bottom:6px">單支影片快看</h2>'
-    +'<div style="font-size:12px;color:var(--sub);margin-bottom:10px">不離開策略診斷頁，先核對這支影片的題材、數據與可複製點。需要左右對照時，再獨立開新視窗。</div>'
-    +'<div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:14px;line-height:1.8;font-size:13px">'
-    +'<b style="color:var(--ink);font-size:15px">'+title+'</b><br>'
-    +'<span style="color:var(--sub)">'+E(stageLetter(v))+'｜'+E(goalLetter(v))+'｜觀看 '+s.views.toLocaleString()+'｜讚 '+s.likes.toLocaleString()+'｜留言 '+s.comments.toLocaleString()+'｜分享 '+s.shares.toLocaleString()+'｜互動率 '+(s.engRate*100).toFixed(2)+'%｜分享率 '+(s.shareRate*100).toFixed(2)+'%</span>'
-    +'<div style="margin-top:10px;padding:10px;background:var(--warm);border-radius:10px"><b style="color:var(--rouge)">Hook：</b>'+E(v.hook||'未填')+'</div>'
-    +'<div style="margin-top:10px"><b style="color:var(--rouge)">顧問判斷：</b>'+_strategyVideoAdvice(v,s)+'</div></div>'
-    +'<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px"><button class="btn btn-go" type="button" onclick="closeModal();_strategyLocateVideo(\''+E(String(v.id||''))+'\')" style="width:auto;font-size:13px;padding:9px 14px">在影片庫定位</button><button class="btn btn-ghost" type="button" onclick="_strategyOpenVideoWindow(\''+E(String(v.id||''))+'\')" style="width:auto;font-size:13px;padding:9px 14px">獨立視窗核對</button><button class="btn btn-ghost" type="button" onclick="closeModal()" style="width:auto;font-size:13px;padding:9px 14px">回策略診斷</button></div>';
-    if(typeof openModal==='function') openModal(html); else alert((v.title||'')+'\n觀看 '+s.views); };
+  function _strategyStartDrag(e){
+    try{ var panel=H('strategyFloatPanel'); if(!panel) return; var sx=e.clientX, sy=e.clientY, r=panel.getBoundingClientRect(), ox=sx-r.left, oy=sy-r.top; e.preventDefault();
+      function mv(ev){ panel.style.left=(ev.clientX-ox)+'px'; panel.style.top=Math.max(70,ev.clientY-oy)+'px'; panel.style.right='auto'; }
+      function up(){ document.removeEventListener('mousemove',mv); document.removeEventListener('mouseup',up); }
+      document.addEventListener('mousemove',mv); document.addEventListener('mouseup',up);
+    }catch(_e){}
+  }
+  window._strategyCloseFloat=function(){ var p=H('strategyFloatPanel'); if(p) p.style.display='none'; };
+  window._strategyOpenVideoMini=function(id){
+    var v=_strategyFindVideo(id); if(!v){ toast('找不到這支影片'); return; }
+    var s=score(v), cv=_strategyCaseValue(v,s), title=E(v.title||'(未命名影片)'), p=H('strategyFloatPanel');
+    var meta=[stageLetter(v),goalLetter(v),v.topic||v.theme||'',v.material||'',v.subtype||v.format||''].filter(Boolean).map(E).join('｜');
+    var html='<div onmousedown="_strategyStartDrag(event)" style="cursor:move;padding:12px 14px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px;background:var(--warm);border-radius:16px 16px 0 0"><b style="font-family:Noto Serif TC,serif;color:var(--rouge);font-size:16px;flex:1">單支影片核對窗</b><button type="button" onclick="_strategyCloseFloat()" style="border:0;background:transparent;color:var(--rouge);font-size:20px;cursor:pointer">×</button></div>'
+      +'<div style="padding:14px;line-height:1.8;font-size:13px">'
+      +'<b style="color:var(--ink);font-size:15px">'+title+'</b><br><span style="color:var(--sub)">'+meta+'</span>'
+      +'<div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:12px 0">'
+      +'<div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:9px;text-align:center"><b style="color:var(--rouge);font-size:18px">'+s.views.toLocaleString()+'</b><br><span style="font-size:11px;color:var(--sub)">觀看</span></div>'
+      +'<div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:9px;text-align:center"><b style="color:var(--rouge);font-size:18px">'+(s.engRate*100).toFixed(2)+'%</b><br><span style="font-size:11px;color:var(--sub)">互動率</span></div>'
+      +'<div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:9px;text-align:center"><b style="color:var(--rouge);font-size:18px">'+(s.shareRate*100).toFixed(2)+'%</b><br><span style="font-size:11px;color:var(--sub)">分享率</span></div>'
+      +'<div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:9px;text-align:center"><b style="color:var(--rouge);font-size:18px">'+cv.score+'</b><br><span style="font-size:11px;color:var(--sub)">案例分</span></div></div>'
+      +'<div style="padding:10px;background:var(--warm);border-radius:10px"><b style="color:var(--rouge)">案例價值：</b>'+_strategyTagPills(cv.tags)+'</div>'
+      +'<div style="margin-top:10px;padding:10px;background:#fff;border:1px solid var(--border);border-radius:10px"><b style="color:var(--rouge)">Hook：</b>'+E(v.hook||'未填')+'</div>'
+      +'<div style="margin-top:10px"><b style="color:var(--rouge)">顧問判斷：</b>'+_strategyVideoAdvice(v,s)+'<br><b style="color:var(--rouge)">可複製公式：</b>'+E(_strategyFormula(v))+'</div>'
+      +'<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px"><button class="btn btn-go" type="button" onclick="_strategyGoVideoLibrary(\''+E(String(v.id||''))+'\')" style="width:auto;font-size:13px;padding:9px 14px">去影片庫定位</button><button class="btn btn-ghost" type="button" onclick="_strategyOpenVideoWindow(\''+E(String(v.id||''))+'\')" style="width:auto;font-size:13px;padding:9px 14px">獨立視窗核對</button><button class="btn btn-ghost" type="button" onclick="_strategyCloseFloat()" style="width:auto;font-size:13px;padding:9px 14px">收起</button></div></div>';
+    if(p){ p.innerHTML=html; p.style.display='block'; p.style.right='22px'; p.style.left='auto'; p.style.top='120px'; } else if(typeof openModal==='function') openModal(html); else alert((v.title||'')+'\n觀看 '+s.views);
+  };
   function _strategyVideoAdvice(v,s){ var hook=String(v.hook||''); var bits=[]; if(s.views>=20000) bits.push('題材具市場注意力，可拆成可複製公式。'); if(s.shareRate>=0.002) bits.push('分享率偏高，代表有轉傳或收藏型價值。'); if(s.views<7000) bits.push('觀看偏低，建議檢查前 3 秒是否太法律化、痛點是否不夠生活化。'); if(/不一定|其實|差異|VS|差別|風險|怎麼辦|可以/.test(hook+String(v.title||''))) bits.push('具備反直覺／避坑／可操作語氣，可作為下一批腳本參考。'); if(!bits.length) bits.push('可回到影片卡查看完整逐字稿，再判斷 Hook、ICP 與商業閉環位置。'); return E(bits.join(' ')); }
-  /* v254：策略診斷專用帳號搜尋器，不再依賴全站 csel。 */
+  /* v256：策略診斷專用帳號搜尋器改成卡片式，不再顯示會重疊的 select。 */
   function _strategyAccList(){ try{ return (typeof accounts!=='undefined' && accounts) ? (accounts||[]) : (window.accounts||[]); }catch(_e){ return []; } }
   function _strategyAccNorm(s){ try{ s=String(s||'').normalize('NFKC').toLowerCase(); }catch(_e){ s=String(s||'').toLowerCase(); } return s.replace(/[\s@＠._\-–—/\\|,，、。:：;；()（）\[\]【】{}「」『』"'`~!！?？#＃$%％&＋+*=<>《》]/g,''); }
   function _strategyAccText(a){ return [(a&&a.handle)||'',(a&&a.displayName)||'',(a&&a.name)||'',(a&&a.jobTitle)||'',(a&&a.industry)||'',(a&&a.domain)||'',((a&&a.types)||[]).join(' ')].join(' '); }
   function _strategyAccRank(a,q){ var nq=_strategyAccNorm(q), raw=String(q||'').toLowerCase(); if(!q) return 50; var h=String((a&&a.handle)||'').toLowerCase(), nh=_strategyAccNorm(h); var name=[(a&&a.displayName)||'',(a&&a.name)||''].join(' '), nn=_strategyAccNorm(name); if(raw&&(h.indexOf(raw)===0||h.replace(/^@/,'').indexOf(raw)===0)) return 0; if(nq&&(nh.indexOf(nq)===0||nh.replace(/^@/,'').indexOf(nq)===0)) return 1; if(nq&&nn.indexOf(nq)===0) return 2; if(nq&&nn.indexOf(nq)>=0) return 3; var full=_strategyAccNorm(_strategyAccText(a)); return full.indexOf(nq)>=0?20:99; }
   function _strategyAccRender(q){
     var box=H('stratAccResults'), input=H('stratAccQ'); if(!box||!input) return;
-    populateStrategyAcc();
-    q=(q===undefined?input.value:q)||'';
+    populateStrategyAcc(); q=(q===undefined?input.value:q)||'';
     var nq=_strategyAccNorm(q), list=_strategyAccList().slice();
     if(nq) list=list.filter(function(a){ return _strategyAccNorm(_strategyAccText(a)).indexOf(nq)>=0; });
     list.sort(function(a,b){ var ra=_strategyAccRank(a,q), rb=_strategyAccRank(b,q); if(ra!==rb) return ra-rb; return String(a.handle||'').localeCompare(String(b.handle||'')); });
-    list=list.slice(0,24);
+    list=list.slice(0,8);
     if(!list.length){ box.innerHTML='<div style="padding:12px 10px;color:var(--sub);font-size:12.5px;line-height:1.7">目前沒有符合的帳號。可以改搜 handle、顯示名、職稱或產業。</div>'; box.style.display='block'; return; }
     box.innerHTML=list.map(function(a){
       var title=E((a.handle||'')+' · '+(a.displayName||a.name||''));
       var meta=E([(a.jobTitle||''),(a.industry||a.domain||'')].filter(Boolean).join(' · '));
+      var n=0; try{ n=(typeof videosOfAccount==='function'?videosOfAccount(a.id):[]).length; }catch(_e){}
       var badge=(/kl\.legal/i.test(String(a.handle||''))||/理鴻/.test(String(a.displayName||a.name||'')))?'<span style="font-size:10px;color:#fff;background:var(--rouge);border-radius:999px;padding:2px 7px;margin-right:6px">系統建議</span>':'';
-      return '<button type="button" onclick="_strategyPickAcc(\''+E(String(a.id||''))+'\')" style="display:block;width:100%;text-align:left;border:0;border-top:1px solid var(--line);background:#fff;padding:10px 9px;border-radius:8px;cursor:pointer;font-family:inherit;color:var(--ink)">'+badge+'<b>'+title+'</b><br><span style="font-size:12px;color:var(--sub)">'+meta+'</span></button>';
+      return '<button type="button" onclick="_strategyPickAcc(\''+E(String(a.id||''))+'\')" style="display:block;width:100%;text-align:left;border:0;border-top:1px solid var(--line);background:#fff;padding:10px 9px;border-radius:8px;cursor:pointer;font-family:inherit;color:var(--ink)">'+badge+'<b>'+title+'</b><br><span style="font-size:12px;color:var(--sub)">'+meta+(n?' · 影片 '+n+' 支':'')+'</span></button>';
     }).join('');
     box.style.display='block';
+  }
+  function _strategyRenderCurrentAcc(a){
+    var card=H('stratAccCurrent'); if(!card) return;
+    if(!a){ card.style.display='none'; card.innerHTML=''; return; }
+    var n=0; try{ n=(typeof videosOfAccount==='function'?videosOfAccount(a.id):[]).length; }catch(_e){}
+    card.innerHTML='<div style="border:1px solid var(--gold-soft);background:var(--warm);border-radius:12px;padding:10px 12px;font-size:12.5px;line-height:1.75">'
+      +'<b style="color:var(--rouge);font-family:Noto Serif TC,serif">目前診斷客戶</b><br>'
+      +'<b>'+E((a.handle||'')+' · '+(a.displayName||a.name||''))+'</b><br>'
+      +'<span style="color:var(--sub)">'+E([(a.jobTitle||''),(a.industry||a.domain||''),(n?('影片 '+n+' 支'):'')].filter(Boolean).join(' · '))+'</span></div>';
+    card.style.display='block';
   }
   window._strategyAccSearch=function(){ _strategyAccRender(); };
   window._strategyPickAcc=function(id){
     var sel=H('stratAcc'), input=H('stratAccQ'), box=H('stratAccResults'); populateStrategyAcc(); if(sel) sel.value=id;
-    var a=_strategyAccList().find(function(x){return String(x.id)===String(id);}); if(input&&a) input.value=(a.handle||'')+' · '+(a.displayName||a.name||'');
+    var a=_strategyAccList().find(function(x){return String(x.id)===String(id);});
+    if(input&&a) input.value=(a.handle||'')+' · '+(a.displayName||a.name||'');
+    _strategyRenderCurrentAcc(a);
     if(box) box.style.display='none'; if(typeof renderStrategyDiagnosis==='function') renderStrategyDiagnosis();
   };
 
@@ -10470,7 +10529,7 @@ document.addEventListener('DOMContentLoaded',function(){
   };
   window._strategyOpenClient=function(){ var p=currentPack(); if(typeof _openClientWindow==='function') _openClientWindow(p.id||''); else window.open('client.html','atelierClient'); };
   function syncStrategySelectLabel(){
-    try{ var sel=H('stratAcc'); if(!sel) return; var inp=H('stratAccQ'); var a=_strategyAccList().find(function(x){return String(x.id)===String(sel.value);}); if(inp && a) inp.value=(a.handle||'')+' · '+(a.displayName||a.name||''); }catch(_e){}
+    try{ var sel=H('stratAcc'); if(!sel) return; var inp=H('stratAccQ'); var a=_strategyAccList().find(function(x){return String(x.id)===String(sel.value);}); if(inp && a) inp.value=(a.handle||'')+' · '+(a.displayName||a.name||''); _strategyRenderCurrentAcc(a||null); }catch(_e){}
   }
   window._strategyHydrate=function(){
     try{
@@ -10578,7 +10637,7 @@ document.addEventListener('DOMContentLoaded',function(){
 <script>
 /* v239：自動防舊版快取。讓桌布捷徑／瀏覽器如果抓到舊 HTML，能自己比對線上最新版並導向。 */
 (function(){
-  var ATELIER_CURRENT_VERSION='v255';
+  var ATELIER_CURRENT_VERSION='v256';
   window.ATELIER_CURRENT_VERSION=ATELIER_CURRENT_VERSION;
   function _avNum(v){v=String(v||'');var m=v.match(/v\s*(\d+)/i);return m?parseInt(m[1],10):0;}
   function _avDetect(html){html=String(html||'');var m=html.match(/id=["']verBadge["'][^>]*>\s*(v\d+)/i)||html.match(/內部版本\s+(v\d+)/i);return m?m[1]:'';}
