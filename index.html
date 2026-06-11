@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="color-scheme" content="light only">
 <meta name="supported-color-schemes" content="light">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v225 (版本號僅留註解，不顯示於畫面)
+<!-- ATELIER 影片診斷工作台 · 內部版本 v226 (版本號僅留註解，不顯示於畫面)
+v226 更新（交辦單：修 v225 後 Lisa 實測兩個殘留問題——①主角客戶下拉單一字搜尋排序不準，打 k / 理 仍可能先出現不相關帳號或沒有即時對準；②卡B 已有 @handle 但重新整理後帳號 profile 有時顯示、有時被判成尚未建檔）：【A 單字搜尋即時命中＋排序】csel 帳號型搜尋新增 query relevance 排序：搜尋中不再只照「系統建議/A-Z」排序，而是先把 handle/displayName/name/職稱/產業/領域等主身份欄位命中的帳號排到最前；handle 開頭命中優先（打 k 會優先 @kl.legal），中文單字命中主身份欄位也優先（打 理 會優先理鴻）。同時 input/keyup/compositionend 都補 setTimeout 再濾一次，降低注音/瀏覽器事件順序造成的單字不刷新。【B 帳號 profile race condition】_accFbSubscribe 帳號雲端到齊後補 renderLibrary()，避免影片先渲染、accounts 後到時，vcard 的 accountForVideo 還沒找到帳號，畫面停在「此帳號尚未建檔」；現在帳號到齊會重畫影片庫，@handle 對得上的卡B 會穩定帶出帳號名稱/身份/職稱/產業/粉絲與分析工具。只動 csel 搜尋排序/濾動時機與帳號到齊後的影片庫重畫，不動帳號/影片資料結構、不動六守門常數(md5 5d2b1a50909c91b89ca7454e64f81911 不變)。
 v225 更新（交辦單：修影片庫主角客戶下拉首開像當機——重新整理後第一次進影片庫，點主角搜尋時清單空白、搜尋也不出帳號，必須先亂點其他按鈕才刷新）：【主角下拉首開補灌】csel 開啟前若是帳號型下拉，會先依 select id 重新灌入最新帳號選項（vlibHero→_vlibHeroPopulate、accHero→_accHeroPopulate、cmpHero→populateCmpHero），避免原生 select 還停在 placeholder 時就被 csel build 成空清單。【雲端帳號到齊補刷新】_accFbSubscribe 帳號 onSnapshot 到齊後額外刷新影片庫主角下拉與帳號管理主角下拉，不只刷新版面對照與輸入頁下拉。【開啟中選項變動同步】csel 的 MutationObserver 不再只改按鈕文字；若面板正開著且 select options 被補灌，會即時重建清單，避免使用者已打開下拉時仍看到空白。只動帳號型下拉補灌/重建時機，不動帳號/影片資料結構、不動六守門常數(md5 5d2b1a50909c91b89ca7454e64f81911 不變)；版本號 4 處 v224→v225；check.js 無新增失敗；div/details 平衡。
 v224 更新（交辦單：Lisa 回饋——流程②（同帳號加新影片）裡 ChatGPT 做逐字稿很強（轉逐字＋標說話者＋抓畫面大字＋反覆自檢），希望把逐字稿從原 STEP3「逐字稿＋影片分析」綁一起拆出來、獨立成一步且標可略過，接 v223）：【流程② 5 步→6 步】opGuideHTML_v2 內：①新增 I6 圖示（影片）給影片分析步；②鳥瞰圖由 5 格改 6 格——STEP3「（選配）逐字稿／ChatGPT·剪映／逐句時間碼 TXT·SRT」、STEP4「影片分析／Gemini·ChatGPT／影片分析卡」分開，子題型→5、最後整合→6；③詳細步驟同步：原 step('3') 拆成 step('3') 逐字稿(選配·可略過，{copy:CHATGPT_TRANSCRIPT_PROMPT}，文案強調可做可不做、趕時間或下一步 AI 能直接讀影片就略過) 與 step('4') 影片分析({copy:VIDEO_AI_ANALYSIS_PROMPT,open:Gemini}，強調跳過逐字稿也能做、不能讀影片才補逐字稿)；原 step('4')子題型→step('5')、step('5')最後整合→step('6')(③SRT 標『選配·有做才有』)。④流程② 步數字樣「5 步驟」→「6 步驟」共 3 處(sopBlock 切換鈕＋opGuideInput 分頁鈕＋SOP 摘要)。opGuideHTML_v2 同時餵 #opGuideInput 與 #sopBlock_v2_body，改一處兩邊同步。只動流程② 說明文字/鳥瞰圖/步驟編號與按鈕，未動任何提示詞常數內容、未動 _atCopyPrompt/label map、未動資料結構與六守門常數(md5 5d2b1a50909c91b89ca7454e64f81911 不變)；版本號 4 處 v223→v224；check.js 無新增失敗；div/details 平衡。
 v223 更新（交辦單：Lisa 實際使用回饋兩件——①待補清單的補完提示詞要分三種用途②建檔確認框與存檔 toast 的「第幾支」會被誤會成帳號的支數，接 v222）：【A 待補清單三顆鈕】renderInputTodo 每個缺漏分類欄位的單一「複製補完提示詞」鈕改為三顆＝只補這欄／補＋我先看／補＋重出卡B；_todoCopy(selId, mode) 加 mode：共用同一段單欄判斷提示詞，收尾依 mode 不同——only=只回答這一欄不出卡；review=先講判斷與理由、明講「先別出卡、等我說 OK 再出」；card=判完直接要求重新輸出修正後的整張卡B(===ATELIER歸類卡===…===結束===、其餘欄位沿用不動)，解決使用者貼去問完還要手動再打一句「重出卡B」的多餘步驟。copyPrompt 標題依 mode 區分。【B1 確認框換行】atelierChoose 的 desc 經 esc() 後 \n 不換行(顯示成一坨)；desc 容器加 white-space:pre-line，讓 \n 真的分行(全站確認框同享，皆為短句、低風險)。【B2 確認框三行】建檔確認 desc 由「帳號/影片」兩行改為「影片：新增/覆蓋『標題』」「帳號：既有@xxx 這是它的第 N 支(帳號資料不覆蓋)／新帳號第一次建檔第 1 支」「系統總計：存完後共 M 支」三行，帳號層 vs 系統層分清楚。【B3 存檔 toast 區分】toast 由「這是第 {videos.length} 支」(系統總數，易誤會成帳號支數)改為「…@handle · 這個帳號第 N 支 · 系統第 M 支」(N=該帳號影片數、M=系統總數)。只動待補清單按鈕/提示詞收尾與確認框/toast 文案，未動 parse/儲存邏輯/資料結構/六守門常數(md5 5d2b1a50909c91b89ca7454e64f81911 不變)；版本號 4 處 v222→v223；check.js 無新增失敗；div/details 平衡。
@@ -798,7 +799,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v225</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v226</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -4077,7 +4078,8 @@ function renderManual(){
   <div class="form-card" style="border-left:3px solid var(--gold)">
     <div class="stitle" style="font-size:15px;color:var(--rouge)">更新紀錄 · 還沒做的</div>
     <p style="font-size:13px;color:var(--text);line-height:1.85;margin-top:8px">
-    <b>v225（這版 · 修主角客戶下拉首開空白）：</b>修你截圖裡的狀況：重新整理後第一次進「影片庫」，點「主角客戶」下拉時看起來像當機，搜尋框可以打字但下面沒有帳號；要先亂點別的按鈕，再回來點主角客戶，帳號清單才會突然出現。這版把<b>主角客戶下拉改成「每次打開前先補灌最新帳號」</b>，雲端帳號載入完成後也會主動刷新影片庫／帳號管理的主角下拉；如果下拉已經開著、帳號選項才補進來，清單也會即時重建。之後第一次點開就應該直接看到帳號，打「理」、handle、職稱、產業都能直接搜，不用再先按其他地方喚醒。<b>只動下拉補灌與重建時機，沒動影片/帳號資料結構、沒動六守門提示詞。</b><br>
+    <b>v226（這版 · 修單字搜尋排序＋卡B帳號連動忽有忽無）：</b>修你這次截圖裡兩個狀況：第一，主角客戶下拉打單一字時，搜尋結果不能只是「有包含 k / 理 就算命中」，而是要先對準最像的帳號，所以現在搜尋中會先看 handle、顯示名稱、職稱、產業等主身份欄位，打「k」會優先把 @kl.legal 排到前面，打「理」會優先對到理鴻，不會再先跳 Amanda 這類只是內文含 KOL 的帳號。第二，卡B 明明有 @kl.legal、帳號管理也已建檔，但重新整理後影片卡有時帶出完整 profile、有時又顯示「此帳號尚未建檔」；這是影片先畫出來、帳號雲端資料後到的先後順序問題。現在帳號資料到齊後會主動重畫影片庫，讓 @handle 對得上的卡B 穩定連回帳號名稱、身份、職稱、產業、粉絲與分析工具。<b>只動搜尋排序/刷新時機與影片庫重畫，沒動資料結構、沒動六守門提示詞。</b><br>
+    <b>v225（修主角客戶下拉首開空白）：</b>修你截圖裡的狀況：重新整理後第一次進「影片庫」，點「主角客戶」下拉時看起來像當機，搜尋框可以打字但下面沒有帳號；要先亂點別的按鈕，再回來點主角客戶，帳號清單才會突然出現。這版把<b>主角客戶下拉改成「每次打開前先補灌最新帳號」</b>，雲端帳號載入完成後也會主動刷新影片庫／帳號管理的主角下拉；如果下拉已經開著、帳號選項才補進來，清單也會即時重建。之後第一次點開就應該直接看到帳號，打「理」、handle、職稱、產業都能直接搜，不用再先按其他地方喚醒。<b>只動下拉補灌與重建時機，沒動影片/帳號資料結構、沒動六守門提示詞。</b><br>
     <b>v224（流程②把「逐字稿」獨立成一步、可略過）：</b>你說 ChatGPT 做逐字稿其實很強（會逐字轉、標誰在說話、抓畫面大字、還會自己反覆檢查），所以這版把<b>流程②（同帳號加新影片）的逐字稿從原本和影片分析綁在一起的那一步拉出來、變成獨立的一步</b>，而且<b>標明「選配·可略過」</b>。現在流程②是 6 步：① 截圖＋連結 → ②（選配）封存 → <b>③（選配·可略過）做逐句時間碼逐字稿</b> → <b>④ 影片分析</b> → ⑤（需要才做）子題型 → ⑥ 最後整合只要卡B。鳥瞰圖、詳細步驟、複製鈕都跟著分開——想要精準時間碼或要核對台詞就做第③步；趕時間、或你用的 AI 本來就能直接讀影片，<b>第③步可以直接跳過</b>，到第④步讓它一起處理。<b>沒動任何提示詞（六守門常數 md5 不變）、沒動儲存邏輯與資料。</b><br>
     <b>v223（補完提示詞分三種＋建檔「第幾支」講清楚）：</b>兩個你實際用出來的小改良。①<b>待補清單的補完鈕變三顆</b>：以前只有一顆「複製補完提示詞」，你貼去問完還得自己再打一句「重出卡B」。現在每個缺的欄位有三顆——<b>只補這欄</b>（只判斷、給你答案，不出卡）、<b>補＋我先看</b>（判完先講理由給你看、先不出卡，等你說 OK 再出）、<b>補＋重出卡B</b>（判完直接把修正後的整張卡B重新輸出，你直接貼回工作台，不用再多打一句）。②<b>建檔確認框＆存檔提示的「第幾支」分清楚</b>：以前存完跳「這是第 55 支」會讓人以為這個帳號有 55 支，其實 55 是整個系統的總數。現在<b>建檔確認框分三行</b>看：影片（新增哪一支）／帳號（@kl.legal 這是它的第 4 支、帳號資料不覆蓋）／系統總計（存完共 55 支）；<b>存檔成功的提示</b>也改成「@kl.legal · 這個帳號第 4 支 · 系統第 55 支」，一眼分得出帳號層和系統層。<b>沒動任何提示詞（六守門常數 md5 不變）、沒動儲存邏輯與資料。</b><br>
     <b>v222（修主角/帳號搜尋單字搜不到）：</b>修「搜尋這個人」下拉：打單一中文字如「理」、單一英文如「k」、或 handle 片段如「kl」「legal」都會進搜尋。搜尋索引改吃帳號完整資料（handle、顯示名、職稱、產業、領域、身分與其他帳號欄位），並加入全形半形/大小寫/@符號正規化；中文輸入法選字完成後會再補濾一次，避免注音組字時清單空白。<b>只動 csel 搜尋，不動帳號/影片資料結構與守門提示詞。</b><br>    <b>v221（這版 · 影片分析提示詞改成 Gemini／ChatGPT 都能用）：</b>流程② STEP3 不再限定 Gemini。現在同一步會先給「<b>ChatGPT 逐字稿提示詞</b>」做逐句時間碼 TXT，再給「<b>Gemini／ChatGPT 影片分析提示詞</b>」做影片本體分析；如果 ChatGPT 能讀影片，就可以一條龍：先產逐字稿、再直接分析，不必硬切 Gemini。剪映 SRT 與 Gemini 仍保留為可用路徑。新增的是非守門包裝常數 VIDEO_AI_ANALYSIS_PROMPT，底層沿用原 Gemini 架構，只加「可貼 Gemini AI 或 ChatGPT」「不能讀影片就要求素材、不要假裝看過」的前置規則；<b>未動六支守門提示詞與資料結構。</b><br>    <b>v219（這版 · 新增 ChatGPT 逐字稿自檢提示詞）：</b>流程② STEP3 改成「先取得逐字稿 TXT／SRT，再做 Gemini 影片分析」。新增一顆「<b>複製『ChatGPT 逐字稿提示詞』</b>」鈕，內容會要求逐句時間碼、主講人／藏鏡人／畫外音、畫面大字、配樂音效，以及交付前自檢（編號連續、時間碼遞增、說話者一致、不確定標疑似）。原本「Gemini 影片分析提示詞」保留，變成同一步的第二顆鈕。最後整合 STEP5 也同步改成可吃「SRT 或逐句時間碼 TXT」，不再只寫 SRT。<b>未動六支守門提示詞與資料結構。</b><br>
@@ -7954,6 +7956,7 @@ function _accFbSubscribe(){
             accounts=d.accounts;
             try{ localStorage.setItem(ACC_LS_KEY, JSON.stringify(accounts)); }catch(e){}
             renderAccounts(); renderComparePicker();
+            if(typeof renderLibrary==='function') renderLibrary(); /* v226：accounts 雲端到齊後重畫影片庫，修卡B @handle 已存在但 profile 因載入先後忽有忽無 */
             /* v186 A1：帳號到齊後明確刷新影片庫客戶下拉（renderComparePicker 已呼叫 populateCmpHero，這裡額外保險一次） */
             if(typeof populateCmpHero==='function') populateCmpHero();
             if(typeof populateTplClient==='function') populateTplClient(); /* v189 A1：帳號到齊後補刷影片庫「產生腳本範本」客戶下拉 #tplClient，修「尚無帳號」殘留（renderComparePicker 沒涵蓋它） */
@@ -9384,6 +9387,25 @@ document.addEventListener('DOMContentLoaded',function(){
     if(nQ && nHay.indexOf(nQ)>=0) return true;
     return false;
   }
+  function _cselMatchRank(node,q){
+    q=String(q||'').trim();
+    if(!q || !node) return 999;
+    var rawQ=q.toLowerCase(), nQ=_cselNorm(q);
+    var primary=String(node.getAttribute('data-rank')||node.textContent||'');
+    var hay=String(node.getAttribute('data-s')||node.textContent||'');
+    var p=primary.toLowerCase(), hp=hay.toLowerCase(), np=_cselNorm(primary), nh=_cselNorm(hay);
+    var handle=String(node.getAttribute('data-handle')||'').toLowerCase();
+    var nHandle=_cselNorm(handle);
+    if(rawQ && (handle.indexOf(rawQ)===0 || handle.replace(/^@/,'').indexOf(rawQ)===0)) return 0;
+    if(nQ && (nHandle.indexOf(nQ)===0 || nHandle.replace(/^@/,'').indexOf(nQ)===0)) return 1;
+    if(rawQ && p.indexOf(rawQ)===0) return 2;
+    if(nQ && np.indexOf(nQ)===0) return 3;
+    if(rawQ && p.indexOf(rawQ)>=0) return 4;
+    if(nQ && np.indexOf(nQ)>=0) return 5;
+    if(rawQ && hp.indexOf(rawQ)>=0) return 6;
+    if(nQ && nh.indexOf(nQ)>=0) return 7;
+    return 99;
+  }
   function enhanceSelect(sel){
     try{
       if(!sel || sel.multiple || sel.getAttribute('data-cseled')==='1') return;
@@ -9446,7 +9468,7 @@ document.addEventListener('DOMContentLoaded',function(){
         for(var i=0;i<sel.options.length;i++){ var o=sel.options[i];
           var t=(typeof esc==='function')?esc(o.textContent||''):(o.textContent||'');
           var inner=t;
-          var _srch=(o.textContent||'');
+          var _srch=(o.textContent||''), _rank=(o.textContent||''), _handle='';
           if(accpick && o.value && typeof accounts!=='undefined' && accounts){
             var _a=accounts.find(function(x){return x.id===o.value;});
             if(_a){
@@ -9456,20 +9478,42 @@ document.addEventListener('DOMContentLoaded',function(){
               inner='<span class="mp-row-main"><span class="mp-h">'+esc(_a.handle||'?')+'</span>'+(idy?'<span class="mp-id">'+esc(idy)+'</span>':'')+(clb?'<span class="mp-case mp-case-'+_a.caseType+'">'+esc(clb)+'</span>':'')+(hp?'':'<span class="mp-noprof">·無版面</span>')+'</span>';
               /* v222：帳號完整搜尋索引（含 handle/name/職稱/產業/領域/types + 帳號物件內其他字串欄位），修「理」「k」這種單字/片段搜不到 */
               _srch=_cselAccSearchText(_a,o.textContent||'');
+              /* v226：搜尋排序用主身份欄位，不讓 KOL 等備註字把 @kl.legal 擠到後面 */
+              _rank=[_a.handle||'',_a.displayName||'',_a.name||'',_a.jobTitle||'',_a.industry||'',_a.domain||'',(_a.types||[]).join(' ')].join(' ');
+              _handle=_a.handle||'';
             }
           }
-          h+='<div class="csel-opt'+(i===sel.selectedIndex?' sel':'')+(accpick&&o.value?' csel-opt-acc':'')+'"'+(o.disabled?' data-disabled="1"':'')+' data-s="'+esc(_srch)+'" data-i="'+i+'">'+inner+'</div>';
+          h+='<div class="csel-opt'+(i===sel.selectedIndex?' sel':'')+(accpick&&o.value?' csel-opt-acc':'')+'"'+(o.disabled?' data-disabled="1"':'')+' data-s="'+esc(_srch)+'" data-rank="'+esc(_rank)+'" data-handle="'+esc(_handle)+'" data-i="'+i+'">'+inner+'</div>';
         }
         h+='</div>';
         panel.innerHTML=h;
-        if(withSearch){ var si=panel.querySelector('.csel-search'); if(si){ si.placeholder=accpick?'搜尋帳號／handle／職稱／產業…':'搜尋…'; si.addEventListener('mousedown',function(e){e.stopPropagation();}); si.addEventListener('click',function(e){e.stopPropagation();}); si.addEventListener('touchstart',function(e){e.stopPropagation();}); var _cselFilter=function(){ var qq=si.value; var opts=panel.querySelectorAll('.csel-opt'); for(var j=0;j<opts.length;j++){ var hay=(opts[j].getAttribute('data-s')||opts[j].textContent||''); opts[j].style.display=_cselTextMatch(hay,qq)?'':'none'; } }; /* v222：單字/片段搜尋用正規化比對；組字中不拿注音符號清空清單；compositionend 後再補濾一次，避免選字完成事件順序造成「理」不刷新 */
+        if(withSearch){ var si=panel.querySelector('.csel-search'); if(si){ si.placeholder=accpick?'搜尋帳號／handle／職稱／產業…':'搜尋…'; si.addEventListener('mousedown',function(e){e.stopPropagation();}); si.addEventListener('click',function(e){e.stopPropagation();}); si.addEventListener('touchstart',function(e){e.stopPropagation();}); var _cselFilter=function(){ var qq=si.value; var opts=panel.querySelectorAll('.csel-opt'); for(var j=0;j<opts.length;j++){ var hay=(opts[j].getAttribute('data-s')||opts[j].textContent||''); opts[j].style.display=_cselTextMatch(hay,qq)?'':'none'; }
+          /* v226：有輸入搜尋字時，帳號型下拉依命中度重新排序，handle/主身份欄位命中優先 */
+          if(accpick){
+            var list=panel.querySelector('.csel-list');
+            if(list && String(qq||'').trim()){
+              var nodes=[].slice.call(list.querySelectorAll('.csel-opt'));
+              nodes.sort(function(a,b){
+                var da=(a.style.display==='none'), db=(b.style.display==='none');
+                if(da!==db) return da?1:-1;
+                var ra=_cselMatchRank(a,qq), rb=_cselMatchRank(b,qq);
+                if(ra!==rb) return ra-rb;
+                return (a.textContent||'').localeCompare(b.textContent||'');
+              });
+              nodes.forEach(function(n){ list.appendChild(n); });
+            } else if(list && !String(qq||'').trim()){
+              applyAccSort();
+            }
+          }
+        }; /* v222/v226：單字/片段搜尋用正規化比對；組字中不拿注音符號清空清單；每次輸入後補濾一次，避免選字完成事件順序造成「理」不刷新 */
         var _cselComp=false;
         var _cselHasHan=function(t){ return /[㐀-鿿豈-﫿]/.test(t||''); };
-        var _cselMaybe=function(){ if(_cselComp && !_cselHasHan(si.value)) return; _cselFilter(); };
+        var _cselMaybe=function(){ if(_cselComp && !_cselHasHan(si.value)) return; _cselFilter(); setTimeout(_cselFilter,0); };
         si.addEventListener('compositionstart',function(){ _cselComp=true; });
-        si.addEventListener('compositionend',function(){ _cselComp=false; _cselFilter(); setTimeout(_cselFilter,0); });
+        si.addEventListener('compositionend',function(){ _cselComp=false; _cselFilter(); setTimeout(_cselFilter,0); setTimeout(_cselFilter,60); });
         si.addEventListener('input',_cselMaybe);
         si.addEventListener('keyup',_cselMaybe);
+        si.addEventListener('change',_cselMaybe);
         } }
         if(accpick){ applyAccSort(); panel.querySelectorAll('.mp-sort-b').forEach(function(b){ b.addEventListener('mousedown',function(e){e.stopPropagation();}); b.addEventListener('touchstart',function(e){e.stopPropagation();}); b.addEventListener('click',function(e){ e.preventDefault(); e.stopPropagation(); _accSort=b.getAttribute('data-sort'); panel.querySelectorAll('.mp-sort-b').forEach(function(x){ x.classList.toggle('on', x.getAttribute('data-sort')===_accSort); }); applyAccSort(); }); }); }
       }
