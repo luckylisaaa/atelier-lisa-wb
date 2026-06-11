@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="color-scheme" content="light only">
 <meta name="supported-color-schemes" content="light">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v234 (版本號僅留註解，不顯示於畫面)
+<!-- ATELIER 影片診斷工作台 · 內部版本 v235 (版本號僅留註解，不顯示於畫面)
+v235 更新（交辦單：Lisa 實測 v234 後回報 QUICK SAVE 點擊會先跳到待補清單，但 0.05 秒後又被拉回目前欄位畫面）：【A QUICK SAVE 停在待補清單】根因是 v234 的 _scrollToInputTodo(targetId) 捲到 #inputTodo 後又 setTimeout 呼叫 _focusTodoField(targetId)，造成畫面立刻被拉回缺欄表單欄位；本版把 QUICK SAVE／右下缺欄提示改成只捲到待補清單，不再自動 focus 欄位。【B 需要修哪格才手動定位】保留待補清單每列的「定位欄位」按鈕，使用者看完缺口與提示詞後，再自行點該列定位到拍攝素材／子題型等欄位。【C 文案同步修正】右下提示改為「點這裡會停在待補清單」，避免誤以為會自動跳回欄位。未動資料結構、未動 client.html、未動六守門常數。
 v234 更新（交辦單：Lisa 回饋右下 QUICK SAVE 已會顯示缺欄，但點擊後仍只會去儲存，不能直接帶到待補清單／修復提示位置）：【A QUICK SAVE 改成智慧導引】新增 _cardQuickAction / _scrollToInputTodo / _focusTodoField；當目前仍有待補欄位時，右下主按鈕改為「查看待補清單↓」，點擊會先捲到待補清單、酒紅高亮提示區，並定位到第一個缺欄，不再直接送出儲存。【B 待補清單可定位欄位】每個缺欄列新增「定位欄位」小按鈕，會捲到對應表單欄位並高亮，適合 Lisa 從提示詞/待補區直接找到該修哪一格。【C 無缺欄才快速儲存】若關鍵欄位已填齊，QUICK SAVE 才維持原本快速捲到儲存鈕並觸發儲存。未動資料結構、未動 client.html、未動六守門常數。
 v233 更新（接續 v232 → v233 連動交接）：【A 服務台反向跳轉帶客戶】新增 _clientTargetUrl / _currentClientId / _openClientWindow，iframe 小窗、獨立視窗與帳號／影片卡的服務台入口會帶上 client.html?client={帳號id}，讓 cs-v3.12 可自動選到同一個客戶；總表入口無指定帳號時仍可開純服務台。【B 影片 deep-link 落點】影片卡新增 video-card class、id="video-{影片id}" 與 data-vid，補 _focusVideoFromHash 監聽 #video-{id}，可由服務台點回工作台並捲到該影片，以品牌酒紅高亮提示。【C 留存／略過率同步】新增 f-skip / ev-skipRate，影片儲存時把完播率同步寫入 retention、略過率寫入 skipRate；_fbPush 改為先讀雲端 videos 後依 id 合併，保留雲端已有欄位再寫回，避免洗掉服務台欄位。未動資料結構、未動 client.html、未動六守門常數。
 v232 更新（接續 v231 交接書，小步修搜尋與量產提醒）：【A 中文單字搜尋再收緊】csel 帳號下拉在搜尋 1–2 個中文字時，若已找到「handle／顯示名稱／帳號名稱開頭命中」的最高層結果，就只保留同層級結果，讓「理」優先對準理鴻，不再讓名稱含心理、主理人或職稱含管理的帳號混在第一批結果裡。【B 卡B txt 匯入防呆】_cardFileRead 先檢查副檔名／MIME，不是 .txt 或純文字就清楚提示不讀入；讀入後若內容不像 ATELIER 卡片，只放進貼卡框並提醒先檢查，不自動亂填。【C QUICK SAVE 分級提醒＋小幫手讀待補】待補欄位新增 severity 分級，QUICK SAVE 會區分嚴重欄位與可選／可稍後欄位；系統小幫手可讀目前待補清單，回答「現在缺什麼」並建議按一次補全部。未動資料結構、未動 client.html、未動六守門常數。
@@ -838,7 +839,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v234</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v235</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -4170,7 +4171,7 @@ window.cardFlowSet=function(n){
   if(n==='auto'){ hint.style.display='none'; hint.innerHTML=''; }
   else{ hint.style.display='block'; hint.innerHTML=msgs[n]||''; }
 };
-/* v234：QUICK SAVE 有缺欄時改為先帶到待補清單／修復位置，沒有缺欄才直接儲存 */
+/* v235：QUICK SAVE 有缺欄時只停在待補清單；不要再自動 focus 欄位造成回彈 */
 window._focusTodoField=function(id){
   var el=document.getElementById(id);
   if(!el) return false;
@@ -4179,7 +4180,7 @@ window._focusTodoField=function(id){
   try{ el.focus({preventScroll:true}); }catch(e){ try{ el.focus(); }catch(_e){} }
   return true;
 };
-window._scrollToInputTodo=function(targetId){
+window._scrollToInputTodo=function(targetId, focusField){
   try{ if(typeof showInputSub==='function') showInputSub('card'); }catch(e){}
   try{ if(typeof renderInputTodo==='function') renderInputTodo(); }catch(e){}
   var box=document.getElementById('inputTodo');
@@ -4188,13 +4189,14 @@ window._scrollToInputTodo=function(targetId){
     try{ el.scrollIntoView({behavior:'smooth',block:'center'}); }catch(e){ el.scrollIntoView(); }
     try{ el.classList.add('todo-flash'); setTimeout(function(){el.classList.remove('todo-flash');},2300); }catch(e){}
   }
-  if(targetId){ setTimeout(function(){ window._focusTodoField(targetId); },520); }
+  /* v235：QUICK SAVE 要停在待補清單；只有明確要求 focusField 時，才再跳到欄位 */
+  if(targetId && focusField){ setTimeout(function(){ window._focusTodoField(targetId); },520); }
 };
 window._cardQuickAction=function(){
   var gaps=(typeof _inputTodoGaps==='function')?_inputTodoGaps():[];
   if(gaps.length){
-    window._scrollToInputTodo(gaps[0]&&gaps[0].id);
-    if(typeof toast==='function') toast('已帶你到待補清單，先看哪幾欄需要修復');
+    window._scrollToInputTodo(gaps[0]&&gaps[0].id, false);
+    if(typeof toast==='function') toast('已帶你到待補清單；看完提示後，再點該列的「定位欄位」去修');
     return;
   }
   var b=document.getElementById('saveBtn');
@@ -4220,14 +4222,14 @@ window._cardStickyUpdate=function(){
     if(gaps.length){
       if(btn){ btn.innerHTML='<svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;vertical-align:-2px;margin-right:4px"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>查看待補清單↓'; }
       todo.style.cursor='pointer';
-      todo.title='點一下，帶你到待補清單與第一個缺欄位置';
-      todo.onclick=function(){ window._scrollToInputTodo(gaps[0]&&gaps[0].id); };
+      todo.title='點一下，帶你到待補清單；不會再自動跳回欄位';
+      todo.onclick=function(){ window._scrollToInputTodo(gaps[0]&&gaps[0].id, false); };
       var major=summary?summary.major:gaps;
       var soft=summary?summary.soft:[];
       if(major.length){
         todo.style.color='var(--rouge)';
         todo.style.background='rgba(165,24,32,.055)';
-        todo.innerHTML='<b>建議先補：</b>'+major.map(function(f){return esc(f.label.replace('（必填）','').replace('（第5層）',''));}).join('、')+(soft.length?'<br><span style="color:var(--sub)">可稍後：'+soft.map(function(f){return esc(f.label.replace('（必填）','').replace('（第5層）',''));}).join('、')+'</span>':'')+'<br><span style="color:var(--sub)">點這裡可跳到待補清單與修復位置</span>';
+        todo.innerHTML='<b>建議先補：</b>'+major.map(function(f){return esc(f.label.replace('（必填）','').replace('（第5層）',''));}).join('、')+(soft.length?'<br><span style="color:var(--sub)">可稍後：'+soft.map(function(f){return esc(f.label.replace('（必填）','').replace('（第5層）',''));}).join('、')+'</span>':'')+'<br><span style="color:var(--sub)">點這裡會停在待補清單，再用「定位欄位」去修</span>';
       }else{
         todo.style.color='var(--gold-dark)';
         todo.style.background='var(--warm)';
@@ -4252,7 +4254,8 @@ function renderManual(){
   <div class="form-card" style="border-left:3px solid var(--gold)">
     <div class="stitle" style="font-size:15px;color:var(--rouge)">更新紀錄 · 還沒做的</div>
     <p style="font-size:13px;color:var(--text);line-height:1.85;margin-top:8px">
-    <b>v234（這版 · QUICK SAVE 點擊可跳到待補修復位置）：</b>①<b>QUICK SAVE 變成智慧導引</b>：右下快速儲存卡如果顯示還有缺欄，主按鈕會改成「查看待補清單↓」，點一下就會跳到下方待補清單，並用品牌酒紅高亮，不用自己滑到最下方找提示。②<b>會定位到第一個需要修復的欄位</b>：跳到待補清單後，系統會再帶到第一個缺欄的表單位置，讓你知道要從哪裡補。③<b>每一列待補都多一顆「定位欄位」</b>：如果你要修特定欄位，例如拍攝素材或子題型，可以直接從待補清單點「定位欄位」回到那一格。④<b>沒有缺欄才直接儲存</b>：欄位都齊時 QUICK SAVE 才維持原本快速儲存行為。<b>只動 QUICK SAVE、待補清單與欄位定位；沒動資料結構、沒動 client.html、沒動六守門提示詞。</b><br>
+    <b>v235（這版 · 修 QUICK SAVE 跳到待補清單後又彈回欄位）：</b>①<b>修掉回彈感</b>：v234 點 QUICK SAVE 會先跳到待補清單，但因為系統又自動 focus 第一個缺欄，所以畫面會像閃一下後被拉回目前欄位。本版改成點 QUICK SAVE 只停在待補清單，不再自動跳回欄位。②<b>保留手動定位</b>：待補清單每列的「定位欄位」仍保留，讓你先看清楚缺什麼、複製補完提示詞，需要時再自己點定位到那一格。③<b>右下提示文案同步</b>：改成「點這裡會停在待補清單，再用定位欄位去修」，避免誤會。<b>只動 QUICK SAVE 的跳轉節奏與提示文案；沒動資料結構、沒動 client.html、沒動六守門提示詞。</b><br>
+    <b>v234（QUICK SAVE 點擊可跳到待補修復位置）：</b>①<b>QUICK SAVE 變成智慧導引</b>：右下快速儲存卡如果顯示還有缺欄，主按鈕會改成「查看待補清單↓」，點一下就會跳到下方待補清單，並用品牌酒紅高亮，不用自己滑到最下方找提示。②<b>會定位到第一個需要修復的欄位</b>：跳到待補清單後，系統會再帶到第一個缺欄的表單位置，讓你知道要從哪裡補。③<b>每一列待補都多一顆「定位欄位」</b>：如果你要修特定欄位，例如拍攝素材或子題型，可以直接從待補清單點「定位欄位」回到那一格。④<b>沒有缺欄才直接儲存</b>：欄位都齊時 QUICK SAVE 才維持原本快速儲存行為。<b>只動 QUICK SAVE、待補清單與欄位定位；沒動資料結構、沒動 client.html、沒動六守門提示詞。</b><br>
     <b>v233（服務台客戶連動＋影片 deep-link＋留存欄位同步）：</b>①<b>服務台開啟會帶客戶</b>：從目前主角、帳號卡或影片卡打開「客戶服務台」時，會帶上 client 參數，服務台 cs-v3.12 可自動跳到同一個客戶；沒有指定客戶的總入口仍維持純服務台。②<b>服務台回工作台可定位影片</b>：影片卡加入 #video-{影片id} 落點，從服務台點「工作台」回來會自動捲到該影片並用品牌酒紅高亮。③<b>完播率／略過率可同步給服務台</b>：工作台存影片時會把完播率寫成 retention、略過率寫成 skipRate；影片雲端寫回前會先合併雲端既有欄位，避免洗掉服務台資料。<b>只動 index.html 的連動入口、影片卡落點與影片欄位同步；沒動 client.html、沒動六守門提示詞。</b><br>
     <b>v232（中文單字搜尋收緊＋txt 匯入防呆＋小幫手讀待補）：</b>①<b>中文單字搜尋再收緊</b>：影片庫主角客戶搜尋「理」時，若系統已找到顯示名稱／帳號名稱開頭命中的帳號，會先鎖定同層級結果，讓 @kl.legal 理鴻優先浮出，不再被「心理、主理人、管理」這類含字結果干擾。②<b>卡B txt 匯入加防呆</b>：非 .txt／非純文字檔會清楚提示不讀入；讀到不像 ATELIER 卡片的文字時，只先放進貼卡框並提醒檢查，不會引導亂填。③<b>QUICK SAVE 缺欄提醒分級</b>：右下快速儲存會分成「建議先補」與「可稍後補」，不再把可選欄位過度警告；小幫手也能回答目前缺哪些欄位，提醒你按「一次補全部＋重出卡B」。<b>只動 index.html 的搜尋排序、貼卡匯入防呆、待補/小幫手讀取；沒動資料結構、沒動 client.html、沒動六守門提示詞。</b><br>
     <b>v231（卡B檔案直丟＋多欄待補總提示＋快速儲存缺欄提醒）：</b>①<b>卡B txt 可直接匯入</b>：在「歸類卡」貼卡區可點選 .txt 檔或把檔案拖進來，系統會自動把檔案內容放進貼卡框，不必先打開文件複製。②<b>待補清單新增總按鈕</b>：若同時缺「拍攝素材、子題型」等多欄，會出現「一次補全部＋重出卡B」，把所有缺口合成同一支提示詞，一次判斷並重出整張卡B。③<b>QUICK SAVE 同步提醒缺欄</b>：右下快速儲存卡會顯示目前還缺哪幾欄或已填齊，避免滑到下方才發現還有欄位沒注入。<b>只動貼卡輸入、待補提示與快速儲存提醒；沒動資料結構、沒動六守門提示詞。</b><br>
@@ -9954,7 +9957,7 @@ document.addEventListener('DOMContentLoaded',function(){
 })();
 </script>
 
-<!-- v234：歸類卡 QUICK SAVE（有待補先導到修復位置；無待補才快速儲存） -->
+<!-- v235：歸類卡 QUICK SAVE（有待補先停在待補清單；無待補才快速儲存） -->
 <div id="stickyCardSave" style="display:none;position:fixed;bottom:84px;right:14px;z-index:10000;flex-direction:column;gap:6px;background:#fff;border:1.5px solid var(--rouge);border-radius:12px;padding:10px 14px;box-shadow:0 6px 24px rgba(0,0,0,.15);max-width:280px">
   <div style="font-size:11px;color:var(--gold-dark);font-weight:700;letter-spacing:.4px;text-transform:uppercase">Quick Save · 快速儲存</div>
   <button id="stickyCardBtn" class="btn btn-go" type="button" onclick="_cardQuickAction()" style="width:100%;font-size:13px;padding:9px 14px"><svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;vertical-align:-2px;margin-right:4px"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8M7 3v5h8"/></svg>儲存這支影片＋</button>
