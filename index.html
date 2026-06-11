@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="color-scheme" content="light only">
 <meta name="supported-color-schemes" content="light">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v235 (版本號僅留註解，不顯示於畫面)
+<!-- ATELIER 影片診斷工作台 · 內部版本 v236 (版本號僅留註解，不顯示於畫面)
+v236 更新（交辦單：Lisa 實測帳號管理發現 @kl.legal 明確有 32 支影片，但帳號卡只顯示 28/30，擔心影片數與頁數不可信）：【A 帳號影片數核對改成可解釋】新增 _videoAccountMatchMethod / _videoTextBlob / _videoMentionHit，videosOfAccount 不再只看 accountId 與 accountHandle，會把 caption / hashtag / note / raw 等文字中的精準 @handle 也納入「可安全歸屬」；同時新增 openAccountVideoAudit，帳號卡可一鍵打開「影片數核對」，列出每支影片是用 id、handle、文字 @handle 哪一種方式被算進來，並提示仍沒被算到的影片通常代表卡B 缺 IG帳號欄，不能硬猜。【B 一鍵回補已能安全辨識的影片連動】新增 relinkVideosForAccount(accId)，只針對已經能用精準 id/handle/@handle 對上的影片補回 accountId/accountHandle，避免之後帳號影片數因 id 空值而忽高忽低。【C 分頁固定整數 10】影片庫與帳號管理分頁文案明確標示每頁 10 支影片／10 個帳號，帳號頁維持 ACC_PER=10，影片庫維持 PER=10，避免出現 11 筆造成核對困難。未動資料結構、未動 client.html、未動六守門常數。
 v235 更新（交辦單：Lisa 實測 v234 後回報 QUICK SAVE 點擊會先跳到待補清單，但 0.05 秒後又被拉回目前欄位畫面）：【A QUICK SAVE 停在待補清單】根因是 v234 的 _scrollToInputTodo(targetId) 捲到 #inputTodo 後又 setTimeout 呼叫 _focusTodoField(targetId)，造成畫面立刻被拉回缺欄表單欄位；本版把 QUICK SAVE／右下缺欄提示改成只捲到待補清單，不再自動 focus 欄位。【B 需要修哪格才手動定位】保留待補清單每列的「定位欄位」按鈕，使用者看完缺口與提示詞後，再自行點該列定位到拍攝素材／子題型等欄位。【C 文案同步修正】右下提示改為「點這裡會停在待補清單」，避免誤以為會自動跳回欄位。未動資料結構、未動 client.html、未動六守門常數。
 v234 更新（交辦單：Lisa 回饋右下 QUICK SAVE 已會顯示缺欄，但點擊後仍只會去儲存，不能直接帶到待補清單／修復提示位置）：【A QUICK SAVE 改成智慧導引】新增 _cardQuickAction / _scrollToInputTodo / _focusTodoField；當目前仍有待補欄位時，右下主按鈕改為「查看待補清單↓」，點擊會先捲到待補清單、酒紅高亮提示區，並定位到第一個缺欄，不再直接送出儲存。【B 待補清單可定位欄位】每個缺欄列新增「定位欄位」小按鈕，會捲到對應表單欄位並高亮，適合 Lisa 從提示詞/待補區直接找到該修哪一格。【C 無缺欄才快速儲存】若關鍵欄位已填齊，QUICK SAVE 才維持原本快速捲到儲存鈕並觸發儲存。未動資料結構、未動 client.html、未動六守門常數。
 v233 更新（接續 v232 → v233 連動交接）：【A 服務台反向跳轉帶客戶】新增 _clientTargetUrl / _currentClientId / _openClientWindow，iframe 小窗、獨立視窗與帳號／影片卡的服務台入口會帶上 client.html?client={帳號id}，讓 cs-v3.12 可自動選到同一個客戶；總表入口無指定帳號時仍可開純服務台。【B 影片 deep-link 落點】影片卡新增 video-card class、id="video-{影片id}" 與 data-vid，補 _focusVideoFromHash 監聽 #video-{id}，可由服務台點回工作台並捲到該影片，以品牌酒紅高亮提示。【C 留存／略過率同步】新增 f-skip / ev-skipRate，影片儲存時把完播率同步寫入 retention、略過率寫入 skipRate；_fbPush 改為先讀雲端 videos 後依 id 合併，保留雲端已有欄位再寫回，避免洗掉服務台欄位。未動資料結構、未動 client.html、未動六守門常數。
@@ -839,7 +840,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v235</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v236</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -3610,7 +3611,7 @@ function renderLibrary(){
     for(var p=lo;p<=hi;p++) btns+=pb(p,String(p),p===libPage,false);
     if(hi<pages){ if(hi<pages-1) btns+='<span style="color:#B08A3E;margin:0 3px">…</span>'; btns+=pb(pages,String(pages),libPage===pages,false); }
     btns+=pb(libPage+1,'›',false,libPage>=pages);
-    return '<div class="lib-pager" style="display:flex;flex-wrap:wrap;justify-content:center;align-items:center;margin:12px 0">'+btns+'<span style="font-size:11px;color:#9C8A66;margin-left:8px">第 '+libPage+' / '+pages+' 頁 · 共 '+total+' 支</span></div>';
+    return '<div class="lib-pager" style="display:flex;flex-wrap:wrap;justify-content:center;align-items:center;margin:12px 0">'+btns+'<span style="font-size:11px;color:#9C8A66;margin-left:8px">第 '+libPage+' / '+pages+' 頁 · 每頁 10 支影片 · 共 '+total+' 支</span></div>';
   }
   box.innerHTML=_libPager()+shown.map(v=>vcard(v)).join('')+_libPager();
   box.querySelectorAll('.vdel').forEach(b=>b.onclick=()=>delVideo(b.dataset.id));
@@ -4254,7 +4255,8 @@ function renderManual(){
   <div class="form-card" style="border-left:3px solid var(--gold)">
     <div class="stitle" style="font-size:15px;color:var(--rouge)">更新紀錄 · 還沒做的</div>
     <p style="font-size:13px;color:var(--text);line-height:1.85;margin-top:8px">
-    <b>v235（這版 · 修 QUICK SAVE 跳到待補清單後又彈回欄位）：</b>①<b>修掉回彈感</b>：v234 點 QUICK SAVE 會先跳到待補清單，但因為系統又自動 focus 第一個缺欄，所以畫面會像閃一下後被拉回目前欄位。本版改成點 QUICK SAVE 只停在待補清單，不再自動跳回欄位。②<b>保留手動定位</b>：待補清單每列的「定位欄位」仍保留，讓你先看清楚缺什麼、複製補完提示詞，需要時再自己點定位到那一格。③<b>右下提示文案同步</b>：改成「點這裡會停在待補清單，再用定位欄位去修」，避免誤會。<b>只動 QUICK SAVE 的跳轉節奏與提示文案；沒動資料結構、沒動 client.html、沒動六守門提示詞。</b><br>
+    <b>v236（這版 · 修帳號影片數核對與分頁固定 10 筆）：</b>①<b>帳號影片數可以核對來源</b>：帳號卡「拆解過 N 支影片」旁新增「核對」，點開會列出每支影片是靠 accountId、影片 @handle，或卡片文字裡的 @handle 被算進來，不再只給一個黑盒數字。②<b>影片數少算的原因會明講</b>：如果妳手上確認有更多影片但沒出現在核對清單，通常代表那幾張卡B沒有 IG帳號／沒有任何 @handle，系統不能安全硬猜，所以不會亂算進去。③<b>一鍵回補安全連動</b>：已經能用精準 @handle 對上的影片，可一鍵補回 accountId/accountHandle，之後帳號卡數字會更穩。④<b>分頁固定 10 筆</b>：影片庫明確每頁 10 支影片，帳號管理明確每頁 10 個帳號，頁尾也會顯示，方便妳人工核對。<b>只動影片↔帳號計數、核對彈窗與分頁文案；沒動資料結構、沒動 client.html、沒動六守門提示詞。</b><br>
+    <b>v235（修 QUICK SAVE 跳到待補清單後又彈回欄位）：</b>①<b>修掉回彈感</b>：v234 點 QUICK SAVE 會先跳到待補清單，但因為系統又自動 focus 第一個缺欄，所以畫面會像閃一下後被拉回目前欄位。本版改成點 QUICK SAVE 只停在待補清單，不再自動跳回欄位。②<b>保留手動定位</b>：待補清單每列的「定位欄位」仍保留，讓你先看清楚缺什麼、複製補完提示詞，需要時再自己點定位到那一格。③<b>右下提示文案同步</b>：改成「點這裡會停在待補清單，再用定位欄位去修」，避免誤會。<b>只動 QUICK SAVE 的跳轉節奏與提示文案；沒動資料結構、沒動 client.html、沒動六守門提示詞。</b><br>
     <b>v234（QUICK SAVE 點擊可跳到待補修復位置）：</b>①<b>QUICK SAVE 變成智慧導引</b>：右下快速儲存卡如果顯示還有缺欄，主按鈕會改成「查看待補清單↓」，點一下就會跳到下方待補清單，並用品牌酒紅高亮，不用自己滑到最下方找提示。②<b>會定位到第一個需要修復的欄位</b>：跳到待補清單後，系統會再帶到第一個缺欄的表單位置，讓你知道要從哪裡補。③<b>每一列待補都多一顆「定位欄位」</b>：如果你要修特定欄位，例如拍攝素材或子題型，可以直接從待補清單點「定位欄位」回到那一格。④<b>沒有缺欄才直接儲存</b>：欄位都齊時 QUICK SAVE 才維持原本快速儲存行為。<b>只動 QUICK SAVE、待補清單與欄位定位；沒動資料結構、沒動 client.html、沒動六守門提示詞。</b><br>
     <b>v233（服務台客戶連動＋影片 deep-link＋留存欄位同步）：</b>①<b>服務台開啟會帶客戶</b>：從目前主角、帳號卡或影片卡打開「客戶服務台」時，會帶上 client 參數，服務台 cs-v3.12 可自動跳到同一個客戶；沒有指定客戶的總入口仍維持純服務台。②<b>服務台回工作台可定位影片</b>：影片卡加入 #video-{影片id} 落點，從服務台點「工作台」回來會自動捲到該影片並用品牌酒紅高亮。③<b>完播率／略過率可同步給服務台</b>：工作台存影片時會把完播率寫成 retention、略過率寫成 skipRate；影片雲端寫回前會先合併雲端既有欄位，避免洗掉服務台資料。<b>只動 index.html 的連動入口、影片卡落點與影片欄位同步；沒動 client.html、沒動六守門提示詞。</b><br>
     <b>v232（中文單字搜尋收緊＋txt 匯入防呆＋小幫手讀待補）：</b>①<b>中文單字搜尋再收緊</b>：影片庫主角客戶搜尋「理」時，若系統已找到顯示名稱／帳號名稱開頭命中的帳號，會先鎖定同層級結果，讓 @kl.legal 理鴻優先浮出，不再被「心理、主理人、管理」這類含字結果干擾。②<b>卡B txt 匯入加防呆</b>：非 .txt／非純文字檔會清楚提示不讀入；讀到不像 ATELIER 卡片的文字時，只先放進貼卡框並提醒檢查，不會引導亂填。③<b>QUICK SAVE 缺欄提醒分級</b>：右下快速儲存會分成「建議先補」與「可稍後補」，不再把可選欄位過度警告；小幫手也能回答目前缺哪些欄位，提醒你按「一次補全部＋重出卡B」。<b>只動 index.html 的搜尋排序、貼卡匯入防呆、待補/小幫手讀取；沒動資料結構、沒動 client.html、沒動六守門提示詞。</b><br>
@@ -4842,26 +4844,73 @@ function growth30Days(a){
   const delta=(parseInt(latest.count)||0)-(parseInt(past.count)||0);
   return {delta, fromDate:past.date, toDate:latest.date, fromCount:parseInt(past.count)||0, toCount:parseInt(latest.count)||0};
 }
-/* v210：影片↔帳號解析器——先用 accountId(精確) 認，認不到改用 normAccHandle 比對既有帳號的 handle。
-   解決舊影片有 accountHandle 但 accountId 空/失效時，誤判「尚未建檔」、帳號分析工具不顯示、帳號影片數少算。 */
+/* v236：影片↔帳號解析器升級——帳號影片數要可核對、可解釋。
+   原本只看 accountId / accountHandle，若卡B 沒寫回 id、但 caption/hashtag/note/raw 仍有精準 @handle，帳號卡會少算。
+   這裡只納入「精準 handle」線索，不用顯示名稱或主題硬猜，避免把別人的影片算進來。 */
+function _videoTextBlob(v){
+  if(!v) return '';
+  return [v.accountHandle,v.url,v.caption,v.hashtag,v.note,v.raw,v.sourceText,v.cardText,v.client].filter(Boolean).join(' ');
+}
+function _videoMentionHit(v,nh){
+  if(!nh) return false;
+  var blob=_videoTextBlob(v);
+  var re=/@([A-Za-z0-9._]+)/g, m;
+  while((m=re.exec(blob))){ if(normAccHandle(m[1])===nh) return true; }
+  /* profile URL 才算；reel/p/tv/stories/explore 不是帳號 handle，不拿來硬猜 */
+  var u=(v&&v.url)||''; var um=(u+'').match(/instagram\.com\/([A-Za-z0-9._]+)/i);
+  if(um && !/^(reel|reels|p|tv|stories|explore)$/i.test(um[1]) && normAccHandle(um[1])===nh) return true;
+  return false;
+}
+function _videoAccountMatchMethod(v,acc){
+  if(!v||!acc) return '';
+  if(v.accountId && v.accountId===acc.id) return 'id';
+  var nh=normAccHandle(acc.handle); if(!nh) return '';
+  var vh=normAccHandle(v.accountHandle);
+  if(vh && vh===nh) return v.accountId?'handle+otherId':'handle';
+  if(_videoMentionHit(v,nh)) return v.accountId?'mention+otherId':'mention';
+  return '';
+}
 function accountForVideo(v){
   if(!v) return null;
   if(v.accountId){ var a=accounts.find(function(x){return x.id===v.accountId;}); if(a) return a; }
-  var nh=(typeof normAccHandle==='function')?normAccHandle(v.accountHandle):'';
-  if(nh){ var b=accounts.find(function(x){return normAccHandle(x.handle)===nh;}); if(b) return b; }
+  for(var i=0;i<(accounts||[]).length;i++){ if(_videoAccountMatchMethod(v,accounts[i])) return accounts[i]; }
   return null;
 }
 function videosOfAccount(accId){
   var acc=accounts.find(function(a){return a.id===accId;});
-  var nh=acc?normAccHandle(acc.handle):'';
-  return videos.filter(function(v){
-    if(v.accountId===accId) return true;
-    if(nh && normAccHandle(v.accountHandle)===nh){
-      if(!v.accountId) return true;                                   /* 沒掛 id 但 handle 對得上 */
-      if(!accounts.some(function(a){return a.id===v.accountId;})) return true; /* 掛了失效 id */
-    }
-    return false;
-  });
+  if(!acc) return [];
+  return (videos||[]).filter(function(v){ return !!_videoAccountMatchMethod(v,acc); });
+}
+function _videoMatchLabel(method){
+  if(method==='id') return '已連 accountId';
+  if(method==='handle') return '用影片 @handle 對上';
+  if(method==='mention') return '用文字中的 @handle 對上';
+  if(method==='handle+otherId') return 'handle 對上，但 id 需回補';
+  if(method==='mention+otherId') return '文字 @handle 對上，但 id 需回補';
+  return '未歸屬';
+}
+function openAccountVideoAudit(accId){
+  var acc=accounts.find(function(a){return a.id===accId;}); if(!acc){ toast('找不到帳號'); return; }
+  var rows=(videos||[]).map(function(v){ return {v:v, method:_videoAccountMatchMethod(v,acc)}; }).filter(function(x){return x.method;});
+  rows.sort(function(a,b){ return ((b.v.date||b.v.logdate||'')+'').localeCompare((a.v.date||a.v.logdate||'')+''); });
+  var needs=rows.filter(function(x){ return x.v.accountId!==acc.id; });
+  var html='<div style="padding:18px 16px;max-height:80vh;overflow:auto">'
+    +'<div style="font-family:'Noto Serif TC',serif;font-size:18px;font-weight:900;margin-bottom:4px">影片數核對</div>'
+    +'<div style="font-size:12px;color:var(--gold-dark);margin-bottom:10px">'+esc(acc.handle||'@?')+'｜目前安全歸屬 '+rows.length+' 支影片</div>'
+    +'<div style="font-size:12px;color:var(--sub);line-height:1.8;margin-bottom:10px">這裡只用 accountId、影片 @handle、卡片文字中的精準 @handle 來算，不用標題或顯示名稱硬猜。若妳手上確認有更多影片但這裡沒出現，通常代表那幾張卡B缺「IG帳號」或沒有任何 @handle，需要回到影片編輯補上，系統才會安全計入。</div>'
+    +(needs.length?'<button class="btn" onclick="relinkVideosForAccount(''+esc(acc.id)+'')" style="width:100%;margin-bottom:10px">一鍵回補這 '+needs.length+' 支的帳號連動</button>':'')
+    +(rows.length?rows.map(function(x,i){ var v=x.v; return '<div style="border-top:1px solid var(--line);padding:8px 0;font-size:12px"><b>'+(i+1)+'. '+esc(v.title||'(未命名)')+'</b><div style="color:var(--sub);margin-top:2px">'+esc(_videoMatchLabel(x.method))+'｜'+esc(v.accountHandle||'無 @handle')+(v.accountId===acc.id?'｜id 已正確':'｜id 未回補')+'</div></div>'; }).join(''):'<div class="empty-res">目前沒有任何影片能安全歸屬到這個帳號。</div>')
+    +'</div>';
+  $('sheet').innerHTML=html; $('modal').style.display='flex';
+}
+function relinkVideosForAccount(accId){
+  var acc=accounts.find(function(a){return a.id===accId;}); if(!acc){ toast('找不到帳號'); return; }
+  var rows=(videos||[]).filter(function(v){ return _videoAccountMatchMethod(v,acc) && v.accountId!==acc.id; });
+  if(!rows.length){ toast('目前沒有需要回補的影片'); return; }
+  if(!confirm('確認把 '+rows.length+' 支已能精準對上 '+(acc.handle||'此帳號')+' 的影片，回補 accountId / accountHandle？')) return;
+  rows.forEach(function(v){ v.accountId=acc.id; v.accountHandle=acc.handle||v.accountHandle||''; });
+  saveVideos(); renderAll(); toast('已回補 '+rows.length+' 支影片連動');
+  setTimeout(function(){ try{ openAccountVideoAudit(accId); }catch(e){} },120);
 }
 
 /* ─── 列表渲染 ─── */
@@ -5588,7 +5637,7 @@ function renderAccounts(){
     var b=apb(accPage-1,'‹',false,accPage<=1);
     for(var p=1;p<=accPages;p++) b+=apb(p,String(p),p===accPage,false);
     b+=apb(accPage+1,'›',false,accPage>=accPages);
-    return '<div style="display:flex;flex-wrap:wrap;justify-content:center;align-items:center;margin:10px 0;gap:4px">'+b+'<span style="font-size:11px;color:var(--sub);margin-left:6px">共 '+list.length+' 個帳號</span></div>';
+    return '<div style="display:flex;flex-wrap:wrap;justify-content:center;align-items:center;margin:10px 0;gap:4px">'+b+'<span style="font-size:11px;color:var(--sub);margin-left:6px">每頁 10 個帳號 · 共 '+list.length+' 個帳號</span></div>';
   }
   box.innerHTML=_accPager()+accShown.map(a=>accCard(a)).join('')+_accPager();
   box.querySelectorAll('[data-acc-edit]').forEach(b=>b.onclick=()=>editAccount(b.dataset.accEdit));
@@ -5608,6 +5657,7 @@ function renderAccounts(){
   box.querySelectorAll('[data-acc-ident]').forEach(b=>b.onclick=()=>copyAccountIdentity(b.dataset.accIdent));
   box.querySelectorAll('[data-acc-export]').forEach(b=>b.onclick=()=>exportClientBundle(b.dataset.accExport));
   box.querySelectorAll('[data-acc-videos]').forEach(b=>b.onclick=()=>openAccountVideos(b.dataset.accVideos));
+  box.querySelectorAll('[data-acc-audit]').forEach(b=>b.onclick=()=>openAccountVideoAudit(b.dataset.accAudit));
   box.querySelectorAll('[data-acc-del]').forEach(b=>b.onclick=()=>delAccount(b.dataset.accDel));
   /* v183 P6：帳號分頁按鈕綁定 */
   box.querySelectorAll('.acc-pg').forEach(function(b){ b.onclick=function(){ var p=parseInt(b.getAttribute('data-pg'),10); if(!isNaN(p)&&p>=1){ accPage=p; renderAccounts(); } }; });
@@ -5744,7 +5794,7 @@ function accCard(a){
       ${a.industry?`<span class="lab">產業</span> ${esc(a.industry)}　·　`:''}
       <span class="lab">粉絲</span> ${f?f.toLocaleString():'—'}　·　
       <span class="lab">量級</span> ${esc(tw)} / ${esc(intl)}　·　
-      <span class="lab">拆解過</span> ${vidCount>0?('<span class="vlink" style="cursor:pointer;color:var(--rouge);font-weight:800" data-acc-videos="'+a.id+'">'+vidCount+' 支影片</span>'):'<span style="color:var(--sub)">尚未收錄影片</span>'}
+      <span class="lab">拆解過</span> ${vidCount>0?('<span class="vlink" style="cursor:pointer;color:var(--rouge);font-weight:800" data-acc-videos="'+a.id+'">'+vidCount+' 支影片</span> <span class="vlink" style="cursor:pointer;color:var(--gold-dark);font-weight:700;font-size:11px" data-acc-audit="'+a.id+'">核對</span>'):'<span style="color:var(--sub)">尚未收錄影片</span> <span class="vlink" style="cursor:pointer;color:var(--gold-dark);font-weight:700;font-size:11px" data-acc-audit="'+a.id+'">核對</span>'}
     </div>
     <div class="vmeta" style="margin-top:5px"><span class="lab">30天成長</span> ${gText}</div>
     ${relList?`<div class="vmeta" style="margin-top:5px"><span class="lab">關聯</span> ${relList}</div>`:''}
@@ -9957,7 +10007,7 @@ document.addEventListener('DOMContentLoaded',function(){
 })();
 </script>
 
-<!-- v235：歸類卡 QUICK SAVE（有待補先停在待補清單；無待補才快速儲存） -->
+<!-- v236：帳號影片數核對＋分頁固定 10；保留 v235 QUICK SAVE 行為 -->
 <div id="stickyCardSave" style="display:none;position:fixed;bottom:84px;right:14px;z-index:10000;flex-direction:column;gap:6px;background:#fff;border:1.5px solid var(--rouge);border-radius:12px;padding:10px 14px;box-shadow:0 6px 24px rgba(0,0,0,.15);max-width:280px">
   <div style="font-size:11px;color:var(--gold-dark);font-weight:700;letter-spacing:.4px;text-transform:uppercase">Quick Save · 快速儲存</div>
   <button id="stickyCardBtn" class="btn btn-go" type="button" onclick="_cardQuickAction()" style="width:100%;font-size:13px;padding:9px 14px"><svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;vertical-align:-2px;margin-right:4px"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8M7 3v5h8"/></svg>儲存這支影片＋</button>
