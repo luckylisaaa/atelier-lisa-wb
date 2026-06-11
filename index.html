@@ -8,7 +8,8 @@
 <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v254 (版本號僅留註解，不顯示於畫面)
+<!-- ATELIER 影片診斷工作台 · 內部版本 v255 (版本號僅留註解，不顯示於畫面)
+v255 更新（交辦單：Lisa 實測 v254 後，策略診斷搜尋仍像當機；同時要求把核心一條龍流程視覺化放進頁面）：【A 修復策略診斷主程式中斷】修正 renderStrategyActionBox 內 toast onclick 引號未跳脫造成整段 JavaScript 中斷的問題，讓策略診斷搜尋、按鈕、快看與結果列恢復。【B 新增策略診斷一條龍流程說明】在策略診斷頁新增「一條龍導航／學習小抄」視覺區，清楚標示建檔 32 支 → 策略快照 → Top/Bottom → 單支快看 → 可複製公式 → 補問客戶 → 客戶服務台交付 → 商業閉環校準。【C 自檢原則】本版不碰 CSV、不改 Firebase、不動 client.html、不動六支守門提示詞。
 v254 更新（交辦單：Lisa 實測 v254 後，策略診斷頁像當機，搜尋框可輸入但結果不出、按鈕也像失效）：【A 策略診斷選客戶改成獨立搜尋器】不再讓 stratAcc 依賴全站 csel 帳號下拉，改用策略診斷頁專用的「輸入搜尋＋結果列」元件，直接讀 accounts 資料、直接渲染帳號卡列，避免 csel options 非同步補灌與 MutationObserver 反覆失效。【B 保留真值 select】底層仍保留 hidden select id=stratAcc 作為 renderStrategyDiagnosis 的真值來源；選到帳號後會同步搜尋框文字、寫入 select value、立刻產生策略快照。只修策略診斷選客戶入口，不動影片庫 csel、不碰 CSV 彈窗、不寫入資料、不動 client.html、Firebase、商業閉環地圖與六支守門提示詞。
 v252 更新（交辦單：Lisa 希望策略診斷不要一直跳回影片庫，而是在同頁用小視窗核對單支影片；必要時才獨立開新視窗；同時把策略診斷整理成可持續操作的下一步中控台）：【A 策略診斷行動中控台】新增「下一步行動區」，把單一客戶診斷、Top 5 可複製公式、同主題案例對照、同素材腳本對照、A–E 商業閉環缺口、送客戶服務台交付六步驟放在同一頁，避免 Lisa 看到數據後不知道下一步。【B 單支影片小視窗核對】Top 觀看／Top 分享率／低觀看待複核每支影片新增「快看」按鈕，在策略診斷頁內以 modal 顯示該影片重點、數據、Hook 與顧問判斷，不再強制跳回影片庫。【C 需要時才獨立視窗】單支影片小視窗內新增「在影片庫定位」與「獨立視窗核對」兩個選項：前者才會跳回影片庫並高亮，後者會用新視窗打開該影片的 deep-link，方便 Lisa 左右並排核對。只讀資料，不寫入影片，不動 client.html、Firebase、商業閉環地圖與六支守門提示詞。
 v251 更新（交辦單：Lisa 實測 v250 後，策略診斷頁第一次進入仍像未載入，要隨便點按鈕才出現資料；同時釐清策略診斷、客戶服務台、商業閉環之間的工作用途）：【A 策略診斷自動初始化】新增 _strategyHydrate，切到策略診斷分頁時會多段延遲補灌帳號、同步 csel、若已有影片庫/帳號管理主角則自動帶入，並自動產生策略快照，不再要求 Lisa 亂點按鈕才刷新。【B 清楚化策略頁定位】策略診斷頁新增流程說明：它不是最終交付，而是 32 支影片的策略雷達；客戶服務台負責問診補資料與 PDF/HTML/PPT 交付；商業閉環地圖負責判斷 A-E 與 G1-G5 缺口。
@@ -859,7 +860,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v254</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v255</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -4486,6 +4487,7 @@ function renderManual(){
   <div class="form-card" style="border-left:3px solid var(--gold)">
     <div class="stitle" style="font-size:15px;color:var(--rouge)">更新紀錄 · 還沒做的</div>
     <p style="font-size:13px;color:var(--text);line-height:1.85;margin-top:8px">
+    <b>v255（策略診斷穩定化＋一條龍導航）：</b>修正策略診斷下一步行動區 toast 按鈕引號未跳脫造成主程式中斷的問題；新增一條龍導航／學習小抄，把建檔 32 支、策略快照、Top/Bottom、單支快看、可複製公式、補問客戶、客戶服務台交付與商業閉環校準整理成視覺流程。<b>不碰 CSV、不寫入資料、不動 client.html、Firebase 與六守門提示詞。</b><br>
     <b>v254（修復策略診斷主程式語法中斷）：</b>修正策略診斷頁選客戶下拉再次出現空白／搜尋不到帳號的問題。這版不再讓 stratAcc 依賴全站 csel 帳號下拉，改成策略診斷專用搜尋器：直接讀 accounts，直接顯示帳號結果列，選到後同步 hidden select 並立即產生策略快照，避免 csel 非同步補灌失效。<b>只修策略診斷選客戶入口，不動影片庫 csel、不碰 CSV 彈窗、不寫入資料、不動 client.html、Firebase、商業閉環地圖與六守門提示詞。</b><br>
     <b>v252（策略診斷行動中控台＋單支影片小視窗）：</b>策略診斷頁新增「下一步行動區」，把單一客戶診斷、Top 5 可複製公式、同主題案例對照、同素材腳本對照、A–E 商業閉環缺口、送客戶服務台交付六步驟整理成可持續操作的顧問流程。Top 觀看／Top 分享率／低觀看待複核的每支影片新增「快看」，可在同頁小視窗核對單支影片，不強制跳回影片庫；需要深入核對時再按「在影片庫定位」或「獨立視窗核對」。<b>只讀資料、不寫入資料、不碰 CSV 彈窗、不動 client.html、Firebase、商業閉環地圖與六守門提示詞。</b><br>
     <b>v251（策略診斷自動初始化＋定位說明）：</b>修正第一次切到策略診斷頁時需要亂點按鈕才產生資料的問題；新增 _strategyHydrate，多段延遲補灌帳號、同步下拉、沿用影片庫/帳號管理目前主角並自動產生策略快照。策略診斷頁也補上「工作流定位」，說明它是 32 支影片的策略雷達，不是最終交付；後續要接客戶服務台做問診補資料與 PDF/HTML/PPT 交付，再用商業閉環地圖校準 A-E 與 G1-G5 缺口。<b>只修策略頁初始化與說明，不碰 CSV 彈窗、不寫入資料、不動 client.html、Firebase、商業閉環地圖與六守門提示詞。</b><br>
@@ -10427,7 +10429,7 @@ document.addEventListener('DOMContentLoaded',function(){
       +'<div style="border:1px solid var(--gold-soft);border-radius:12px;padding:12px;background:var(--warm)"><b style="color:var(--rouge)">1. 單一客戶診斷</b><br><span style="font-size:12px;color:var(--text)">看這個帳號的 Top/Bottom、G 階段與 A–E 缺口。</span></div>'
       +'<div style="border:1px solid var(--gold-soft);border-radius:12px;padding:12px;background:var(--warm)"><b style="color:var(--rouge)">2. 案例對照</b><br><span style="font-size:12px;color:var(--text)">同主題、同素材、成功／失敗樣本放在一起比較。</span></div>'
       +'<div style="border:1px solid var(--gold-soft);border-radius:12px;padding:12px;background:var(--warm)"><b style="color:var(--rouge)">3. 交付輸出</b><br><span style="font-size:12px;color:var(--text)">送到客戶服務台補問，再產出 PDF / HTML / PPT。</span></div></div>'
-      +'<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px"><button class="btn btn-go" type="button" onclick="copyStrategyPrompt()" style="width:auto;font-size:12px;padding:8px 12px">送到 Stage 4 診斷</button><button class="btn btn-ghost" type="button" onclick="toast('下一版會做：同主題案例對照搜尋')" style="width:auto;font-size:12px;padding:8px 12px">找同主題案例</button><button class="btn btn-ghost" type="button" onclick="toast('下一版會做：同素材腳本對照')" style="width:auto;font-size:12px;padding:8px 12px">找同素材腳本</button><button class="btn btn-ghost" type="button" onclick="_strategyOpenClient()" style="width:auto;font-size:12px;padding:8px 12px">開客戶服務台交付</button></div>'
+      +'<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px"><button class="btn btn-go" type="button" onclick="copyStrategyPrompt()" style="width:auto;font-size:12px;padding:8px 12px">送到 Stage 4 診斷</button><button class="btn btn-ghost" type="button" onclick="toast(&quot;下一版會做：同主題案例對照搜尋&quot;)" style="width:auto;font-size:12px;padding:8px 12px">找同主題案例</button><button class="btn btn-ghost" type="button" onclick="toast(&quot;下一版會做：同素材腳本對照&quot;)" style="width:auto;font-size:12px;padding:8px 12px">找同素材腳本</button><button class="btn btn-ghost" type="button" onclick="_strategyOpenClient()" style="width:auto;font-size:12px;padding:8px 12px">開客戶服務台交付</button></div>'
       +'<div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:12px"><div style="font-family:Noto Serif TC,serif;font-weight:900;color:var(--ink);margin-bottom:4px">Top 5 可複製公式</div>'+formulas+'</div>'
       +(missingStages.length||missingGoals.length?'<div class="hint" style="margin-top:12px"><b>優先補洞：</b>目前缺 '+E([missingStages.length?('G 階段 '+missingStages.join('、')):'',missingGoals.length?('A–E '+missingGoals.join('、')):''].filter(Boolean).join('；'))+'。下一批內容不要只延續知識型，要補觀點、服務信任與成交轉化。</div>':'')
       +'</div>';
@@ -10576,7 +10578,7 @@ document.addEventListener('DOMContentLoaded',function(){
 <script>
 /* v239：自動防舊版快取。讓桌布捷徑／瀏覽器如果抓到舊 HTML，能自己比對線上最新版並導向。 */
 (function(){
-  var ATELIER_CURRENT_VERSION='v254';
+  var ATELIER_CURRENT_VERSION='v255';
   window.ATELIER_CURRENT_VERSION=ATELIER_CURRENT_VERSION;
   function _avNum(v){v=String(v||'');var m=v.match(/v\s*(\d+)/i);return m?parseInt(m[1],10):0;}
   function _avDetect(html){html=String(html||'');var m=html.match(/id=["']verBadge["'][^>]*>\s*(v\d+)/i)||html.match(/內部版本\s+(v\d+)/i);return m?m[1]:'';}
