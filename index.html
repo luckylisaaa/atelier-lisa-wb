@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="color-scheme" content="light only">
 <meta name="supported-color-schemes" content="light">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v226 (版本號僅留註解，不顯示於畫面)
+<!-- ATELIER 影片診斷工作台 · 內部版本 v227 (版本號僅留註解，不顯示於畫面)
+v227 更新（交辦單：Lisa 要一個會跟著系統變化的「系統感知型小幫手」，並補進說明書）：【ATELIER 系統小幫手】右下新增「？ 小幫手」浮動入口，點開可輸入問題或按快捷題，會讀目前頁面、分頁、說明書、流程 SOP、影片庫與帳號資料，提供操作指引與跳轉按鈕；不是外部 AI API、不是寫死 FAQ，而是以目前 DOM 與資料陣列即時建立索引。【會跟著系統更新】小幫手答案來源包含 renderManual 說明書、流程①②③④ SOP、現有分頁/按鈕、常見故障規則與 videos/accounts 即時資料，所以之後版本更新說明與流程文字同步更新時，小幫手會讀到新版內容。【安全邊界】小幫手只搜尋、說明、導頁與帶入搜尋，不寫資料、不改帳號/影片、不碰 client.html、不接外部 API、不動六守門提示詞(md5 5d2b1a50909c91b89ca7454e64f81911 不變)。
 v226 更新（交辦單：修 v225 後 Lisa 實測兩個殘留問題——①主角客戶下拉單一字搜尋排序不準，打 k / 理 仍可能先出現不相關帳號或沒有即時對準；②卡B 已有 @handle 但重新整理後帳號 profile 有時顯示、有時被判成尚未建檔）：【A 單字搜尋即時命中＋排序】csel 帳號型搜尋新增 query relevance 排序：搜尋中不再只照「系統建議/A-Z」排序，而是先把 handle/displayName/name/職稱/產業/領域等主身份欄位命中的帳號排到最前；handle 開頭命中優先（打 k 會優先 @kl.legal），中文單字命中主身份欄位也優先（打 理 會優先理鴻）。同時 input/keyup/compositionend 都補 setTimeout 再濾一次，降低注音/瀏覽器事件順序造成的單字不刷新。【B 帳號 profile race condition】_accFbSubscribe 帳號雲端到齊後補 renderLibrary()，避免影片先渲染、accounts 後到時，vcard 的 accountForVideo 還沒找到帳號，畫面停在「此帳號尚未建檔」；現在帳號到齊會重畫影片庫，@handle 對得上的卡B 會穩定帶出帳號名稱/身份/職稱/產業/粉絲與分析工具。只動 csel 搜尋排序/濾動時機與帳號到齊後的影片庫重畫，不動帳號/影片資料結構、不動六守門常數(md5 5d2b1a50909c91b89ca7454e64f81911 不變)。
 v225 更新（交辦單：修影片庫主角客戶下拉首開像當機——重新整理後第一次進影片庫，點主角搜尋時清單空白、搜尋也不出帳號，必須先亂點其他按鈕才刷新）：【主角下拉首開補灌】csel 開啟前若是帳號型下拉，會先依 select id 重新灌入最新帳號選項（vlibHero→_vlibHeroPopulate、accHero→_accHeroPopulate、cmpHero→populateCmpHero），避免原生 select 還停在 placeholder 時就被 csel build 成空清單。【雲端帳號到齊補刷新】_accFbSubscribe 帳號 onSnapshot 到齊後額外刷新影片庫主角下拉與帳號管理主角下拉，不只刷新版面對照與輸入頁下拉。【開啟中選項變動同步】csel 的 MutationObserver 不再只改按鈕文字；若面板正開著且 select options 被補灌，會即時重建清單，避免使用者已打開下拉時仍看到空白。只動帳號型下拉補灌/重建時機，不動帳號/影片資料結構、不動六守門常數(md5 5d2b1a50909c91b89ca7454e64f81911 不變)；版本號 4 處 v224→v225；check.js 無新增失敗；div/details 平衡。
 v224 更新（交辦單：Lisa 回饋——流程②（同帳號加新影片）裡 ChatGPT 做逐字稿很強（轉逐字＋標說話者＋抓畫面大字＋反覆自檢），希望把逐字稿從原 STEP3「逐字稿＋影片分析」綁一起拆出來、獨立成一步且標可略過，接 v223）：【流程② 5 步→6 步】opGuideHTML_v2 內：①新增 I6 圖示（影片）給影片分析步；②鳥瞰圖由 5 格改 6 格——STEP3「（選配）逐字稿／ChatGPT·剪映／逐句時間碼 TXT·SRT」、STEP4「影片分析／Gemini·ChatGPT／影片分析卡」分開，子題型→5、最後整合→6；③詳細步驟同步：原 step('3') 拆成 step('3') 逐字稿(選配·可略過，{copy:CHATGPT_TRANSCRIPT_PROMPT}，文案強調可做可不做、趕時間或下一步 AI 能直接讀影片就略過) 與 step('4') 影片分析({copy:VIDEO_AI_ANALYSIS_PROMPT,open:Gemini}，強調跳過逐字稿也能做、不能讀影片才補逐字稿)；原 step('4')子題型→step('5')、step('5')最後整合→step('6')(③SRT 標『選配·有做才有』)。④流程② 步數字樣「5 步驟」→「6 步驟」共 3 處(sopBlock 切換鈕＋opGuideInput 分頁鈕＋SOP 摘要)。opGuideHTML_v2 同時餵 #opGuideInput 與 #sopBlock_v2_body，改一處兩邊同步。只動流程② 說明文字/鳥瞰圖/步驟編號與按鈕，未動任何提示詞常數內容、未動 _atCopyPrompt/label map、未動資料結構與六守門常數(md5 5d2b1a50909c91b89ca7454e64f81911 不變)；版本號 4 處 v223→v224；check.js 無新增失敗；div/details 平衡。
@@ -743,6 +744,28 @@ input,select,textarea{color-scheme:light}
 .btn{ padding:14px }
 .hint,.tip{ line-height:1.7 }
 
+
+/* v227：ATELIER 系統感知型小幫手 */
+#sysHelpBtn{position:fixed;right:14px;bottom:132px;z-index:9600;background:#fff;color:var(--rouge);border:1px solid var(--rouge);border-radius:22px;padding:8px 13px;font-size:12.5px;font-weight:800;cursor:pointer;font-family:inherit;box-shadow:0 6px 18px rgba(0,0,0,.16);display:flex;align-items:center;gap:6px}
+#sysHelpBtn .q{width:18px;height:18px;border-radius:50%;background:var(--rouge);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:12px;line-height:1}
+#sysHelpPanel{display:none;position:fixed;right:16px;bottom:178px;width:390px;max-width:calc(100vw - 28px);height:560px;max-height:calc(100vh - 210px);z-index:9700;background:#fff;border:1px solid var(--gold-dark);border-radius:14px;box-shadow:0 16px 52px rgba(42,26,28,.25);overflow:hidden;flex-direction:column}
+#sysHelpHead{background:var(--rouge);color:#fff;padding:10px 12px;display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:13px;font-weight:800;flex:0 0 auto}
+#sysHelpHead button{background:rgba(255,255,255,.22);border:none;color:#fff;width:25px;height:25px;border-radius:6px;cursor:pointer;font-family:inherit}
+#sysHelpBody{padding:12px;overflow:auto;flex:1 1 auto;background:#FDFBF8}
+#sysHelpInputRow{display:flex;gap:7px;margin:0 0 10px}
+#sysHelpInput{flex:1;border:1px solid var(--line);border-radius:10px;padding:10px 11px;font-family:inherit;font-size:13px;background:#fff;outline:none}
+#sysHelpAsk{width:auto;padding:9px 12px;border-radius:10px;background:var(--rouge);color:#fff;border:none;font-size:12px;font-weight:800;font-family:inherit;cursor:pointer}
+.sysHelpCard{border:1px solid var(--line);border-radius:12px;background:#fff;padding:11px 12px;margin:9px 0;color:var(--text);font-size:12.5px;line-height:1.75}
+.sysHelpCard b{color:var(--rouge)}
+.sysHelpMini{font-size:11.5px;color:var(--sub);line-height:1.6}
+.sysHelpChips{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 10px}
+.sysHelpChip{border:1px solid var(--gold-soft);background:#fff;color:var(--gold-dark);border-radius:999px;padding:5px 9px;font-size:11.5px;font-weight:700;cursor:pointer;font-family:inherit}
+.sysHelpActions{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.sysHelpAct{border:1px solid var(--rouge);background:#fff;color:var(--rouge);border-radius:8px;padding:5px 9px;font-size:11.5px;font-weight:800;cursor:pointer;font-family:inherit}
+.sysHelpAct.primary{background:var(--rouge);color:#fff}
+.sysHelpResult{border-top:1px solid var(--line);padding-top:8px;margin-top:8px}
+@media(max-width:560px){#sysHelpPanel{right:10px;left:10px;width:auto;bottom:92px;max-height:70vh}#sysHelpBtn{right:12px;bottom:92px}}
+
 /* ===== v111 帳號工具卡併兩排 + 操作流程導引（品牌色） ===== */
 .acc-tools-grid{ display:grid; grid-template-columns:1fr; gap:12px; margin-bottom:14px; align-items:start }
 @media(min-width:680px){ .acc-tools-grid{ grid-template-columns:1fr 1fr } }
@@ -799,7 +822,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v226</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v227</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -4078,7 +4101,8 @@ function renderManual(){
   <div class="form-card" style="border-left:3px solid var(--gold)">
     <div class="stitle" style="font-size:15px;color:var(--rouge)">更新紀錄 · 還沒做的</div>
     <p style="font-size:13px;color:var(--text);line-height:1.85;margin-top:8px">
-    <b>v226（這版 · 修單字搜尋排序＋卡B帳號連動忽有忽無）：</b>修你這次截圖裡兩個狀況：第一，主角客戶下拉打單一字時，搜尋結果不能只是「有包含 k / 理 就算命中」，而是要先對準最像的帳號，所以現在搜尋中會先看 handle、顯示名稱、職稱、產業等主身份欄位，打「k」會優先把 @kl.legal 排到前面，打「理」會優先對到理鴻，不會再先跳 Amanda 這類只是內文含 KOL 的帳號。第二，卡B 明明有 @kl.legal、帳號管理也已建檔，但重新整理後影片卡有時帶出完整 profile、有時又顯示「此帳號尚未建檔」；這是影片先畫出來、帳號雲端資料後到的先後順序問題。現在帳號資料到齊後會主動重畫影片庫，讓 @handle 對得上的卡B 穩定連回帳號名稱、身份、職稱、產業、粉絲與分析工具。<b>只動搜尋排序/刷新時機與影片庫重畫，沒動資料結構、沒動六守門提示詞。</b><br>
+    <b>v227（這版 · 新增系統感知型小幫手）：</b>右下角新增「<b>？ 小幫手</b>」，這不是固定 FAQ，而是會讀目前系統狀態的操作助理。你可以問「卡B 要貼哪裡」「流程②怎麼跑」「為什麼影片沒有連到帳號」「我要找 @kl.legal 的影片」「分析工具在哪裡」。它會讀目前頁面、上方分頁、說明書、流程 SOP、影片庫與帳號資料，再給你最新操作指引；答案裡有按鈕可直接跳到輸入影片／影片庫／帳號管理／搜尋／說明書。安全版先不接外部 AI API、不寫入資料、不改影片或帳號、不碰六支守門提示詞。之後只要每版持續更新說明書與流程文字，小幫手就會一起讀到新版內容。<b>只新增右下小幫手 UI 與讀取式搜尋/導頁邏輯，沒動資料結構、沒動六守門提示詞。</b><br>
+    <b>v226（修單字搜尋排序＋卡B帳號連動忽有忽無）：</b>修你這次截圖裡兩個狀況：第一，主角客戶下拉打單一字時，搜尋結果不能只是「有包含 k / 理 就算命中」，而是要先對準最像的帳號，所以現在搜尋中會先看 handle、顯示名稱、職稱、產業等主身份欄位，打「k」會優先把 @kl.legal 排到前面，打「理」會優先對到理鴻，不會再先跳 Amanda 這類只是內文含 KOL 的帳號。第二，卡B 明明有 @kl.legal、帳號管理也已建檔，但重新整理後影片卡有時帶出完整 profile、有時又顯示「此帳號尚未建檔」；這是影片先畫出來、帳號雲端資料後到的先後順序問題。現在帳號資料到齊後會主動重畫影片庫，讓 @handle 對得上的卡B 穩定連回帳號名稱、身份、職稱、產業、粉絲與分析工具。<b>只動搜尋排序/刷新時機與影片庫重畫，沒動資料結構、沒動六守門提示詞。</b><br>
     <b>v225（修主角客戶下拉首開空白）：</b>修你截圖裡的狀況：重新整理後第一次進「影片庫」，點「主角客戶」下拉時看起來像當機，搜尋框可以打字但下面沒有帳號；要先亂點別的按鈕，再回來點主角客戶，帳號清單才會突然出現。這版把<b>主角客戶下拉改成「每次打開前先補灌最新帳號」</b>，雲端帳號載入完成後也會主動刷新影片庫／帳號管理的主角下拉；如果下拉已經開著、帳號選項才補進來，清單也會即時重建。之後第一次點開就應該直接看到帳號，打「理」、handle、職稱、產業都能直接搜，不用再先按其他地方喚醒。<b>只動下拉補灌與重建時機，沒動影片/帳號資料結構、沒動六守門提示詞。</b><br>
     <b>v224（流程②把「逐字稿」獨立成一步、可略過）：</b>你說 ChatGPT 做逐字稿其實很強（會逐字轉、標誰在說話、抓畫面大字、還會自己反覆檢查），所以這版把<b>流程②（同帳號加新影片）的逐字稿從原本和影片分析綁在一起的那一步拉出來、變成獨立的一步</b>，而且<b>標明「選配·可略過」</b>。現在流程②是 6 步：① 截圖＋連結 → ②（選配）封存 → <b>③（選配·可略過）做逐句時間碼逐字稿</b> → <b>④ 影片分析</b> → ⑤（需要才做）子題型 → ⑥ 最後整合只要卡B。鳥瞰圖、詳細步驟、複製鈕都跟著分開——想要精準時間碼或要核對台詞就做第③步；趕時間、或你用的 AI 本來就能直接讀影片，<b>第③步可以直接跳過</b>，到第④步讓它一起處理。<b>沒動任何提示詞（六守門常數 md5 不變）、沒動儲存邏輯與資料。</b><br>
     <b>v223（補完提示詞分三種＋建檔「第幾支」講清楚）：</b>兩個你實際用出來的小改良。①<b>待補清單的補完鈕變三顆</b>：以前只有一顆「複製補完提示詞」，你貼去問完還得自己再打一句「重出卡B」。現在每個缺的欄位有三顆——<b>只補這欄</b>（只判斷、給你答案，不出卡）、<b>補＋我先看</b>（判完先講理由給你看、先不出卡，等你說 OK 再出）、<b>補＋重出卡B</b>（判完直接把修正後的整張卡B重新輸出，你直接貼回工作台，不用再多打一句）。②<b>建檔確認框＆存檔提示的「第幾支」分清楚</b>：以前存完跳「這是第 55 支」會讓人以為這個帳號有 55 支，其實 55 是整個系統的總數。現在<b>建檔確認框分三行</b>看：影片（新增哪一支）／帳號（@kl.legal 這是它的第 4 支、帳號資料不覆蓋）／系統總計（存完共 55 支）；<b>存檔成功的提示</b>也改成「@kl.legal · 這個帳號第 4 支 · 系統第 55 支」，一眼分得出帳號層和系統層。<b>沒動任何提示詞（六守門常數 md5 不變）、沒動儲存邏輯與資料。</b><br>
@@ -9587,6 +9611,61 @@ document.addEventListener('DOMContentLoaded',function(){
   document.querySelectorAll('.tab').forEach(function(t){ t.addEventListener('click',function(){ setTimeout(_cardStickyUpdate,80); }); });
   setTimeout(_cardStickyUpdate,500);
 });
+</script>
+
+
+<!-- v227：ATELIER 系統感知型小幫手（讀目前說明書 / SOP / 影片 / 帳號，不接外部 API） -->
+<button id="sysHelpBtn" type="button" onclick="_sysHelpOpen()" title="打開 ATELIER 系統小幫手"><span class="q">?</span><span>小幫手</span></button>
+<div id="sysHelpPanel" role="dialog" aria-label="ATELIER 系統小幫手">
+  <div id="sysHelpHead"><span>ATELIER 系統小幫手</span><button type="button" onclick="_sysHelpClose()" title="關閉">×</button></div>
+  <div id="sysHelpBody">
+    <div id="sysHelpInputRow">
+      <input id="sysHelpInput" autocomplete="off" placeholder="問我：卡B怎麼貼、流程②、@kl.legal、分析工具在哪…">
+      <button id="sysHelpAsk" type="button" onclick="_sysHelpAsk()">查</button>
+    </div>
+    <div id="sysHelpOut"></div>
+  </div>
+</div>
+<script>
+/* v227：系統感知型小幫手——只讀目前 DOM / videos / accounts / SOP，不寫資料、不接外部 AI */
+(function(){
+  function H(id){return document.getElementById(id)}
+  function hx(s){try{return (typeof esc==='function'?esc(String(s||'')):String(s||'').replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]}));}catch(e){return String(s||'')}}
+  function hn(s){return String(s||'').toLowerCase().normalize?String(s||'').toLowerCase().normalize('NFKC'):String(s||'').toLowerCase()}
+  function hView(){var v=document.querySelector('.view.on'); return v&&v.id?v.id.replace('view-',''):'input'}
+  function hTabName(v){var t=document.querySelector('.tab[data-view="'+v+'"]'); return t?t.textContent.replace(/\s+/g,' ').trim():v}
+  function hCurrent(){var v=hView(); var extra=''; try{ if(v==='library'&&H('vlibHero')) extra='；主角='+((H('vlibHero').selectedOptions[0]||{}).textContent||'未選'); if(v==='input'){ var sub=['prep','flow','card'].find(function(x){var el=H('sub-'+x);return el&&el.style.display!=='none'}); extra='；子分頁='+(sub==='prep'?'準備動作':sub==='flow'?'操作流程':sub==='card'?'歸類卡':''); }}catch(e){} return '目前位置：'+hTabName(v)+extra+'。已存影片 '+((window.videos||[]).length||0)+' 支；帳號 '+((window.accounts||[]).length||0)+' 個。'}
+  function hButton(view,label,q,primary){return '<button class="sysHelpAct '+(primary?'primary':'')+'" type="button" onclick="_sysHelpGo('+JSON.stringify(view)+','+JSON.stringify(q||'')+')">'+hx(label)+'</button>'}
+  function hCard(title,body,actions){return '<div class="sysHelpCard"><b>'+hx(title)+'</b><div>'+body+'</div>'+(actions?'<div class="sysHelpActions">'+actions+'</div>':'')+'</div>'}
+  function hFindAccounts(q){var nq=hn(q).replace(/^@/,''); if(!nq) return []; return (window.accounts||[]).map(function(a){var fields=[a.handle,a.displayName,a.name,a.jobTitle,a.industry,a.domain,(a.types||[]).join(' ')]; var blob=hn(fields.join(' ')); var handle=hn(a.handle||'').replace(/^@/,''); var score=0; if(handle===nq) score+=80; if(handle.indexOf(nq)===0) score+=60; if(hn(a.displayName||'').indexOf(nq)>=0) score+=45; if(hn(a.name||'').indexOf(nq)>=0) score+=35; if(blob.indexOf(nq)>=0) score+=20; return {a:a,score:score}; }).filter(function(x){return x.score>0}).sort(function(a,b){return b.score-a.score}).slice(0,5);}
+  function hFindVideos(q){var nq=hn(q); if(!nq) return []; return (window.videos||[]).map(function(v){var acc=(typeof accountForVideo==='function'?accountForVideo(v):null)||{}; var blob=hn([v.title,v.themeName,v.matName,v.sub,v.trig,v.hook,v.note,v.client,v.accountHandle,acc.handle,acc.displayName,acc.name].join(' ')); var score=blob.indexOf(nq)>=0?20:0; if(hn(v.title||'').indexOf(nq)>=0) score+=30; if(hn(v.accountHandle||'').indexOf(nq)>=0) score+=25; return {v:v,score:score,acc:acc}; }).filter(function(x){return x.score>0}).sort(function(a,b){return b.score-a.score}).slice(0,5);}
+  function hDocSearch(q){var nq=hn(q); var docs=[]; try{ document.querySelectorAll('.tab').forEach(function(t){docs.push({t:'分頁',n:t.textContent.replace(/\s+/g,' ').trim(),v:t.dataset.view||''});}); }catch(e){}
+    var manual=H('manualBox'); if(manual) docs.push({t:'說明書',n:'目前說明書 / 更新紀錄',txt:manual.innerText||''});
+    ['sopBlock','sopBlock_v2','sopBlock_v3','sopBlock_v4','opGuideInput'].forEach(function(id){var el=H(id); if(el) docs.push({t:'流程SOP',n:id,txt:el.innerText||''});});
+    return docs.filter(function(d){return hn((d.n||'')+' '+(d.txt||'')).indexOf(nq)>=0;}).slice(0,4);
+  }
+  function hDefault(){var v=hView(); var chips=['卡B 要貼哪裡','流程② 怎麼跑','為什麼影片沒連到帳號','我要找 @kl.legal 的影片','分析工具在哪裡','說明書在哪']; var html='<div class="sysHelpCard"><b>我是讀取式小幫手</b><div class="sysHelpMini">'+hx(hCurrent())+'<br>我會讀目前系統的分頁、說明書、流程 SOP、影片庫與帳號資料；安全版只回答、導頁與帶入搜尋，不會寫入資料。</div></div><div class="sysHelpChips">'; chips.forEach(function(c){html+='<button class="sysHelpChip" type="button" onclick="_sysHelpAsk('+JSON.stringify(c)+')">'+hx(c)+'</button>';}); html+='</div>'; if(v==='library') html+=hCard('你現在在影片庫','可以問我「主角客戶怎麼搜」「只看某帳號影片」「分析工具在哪裡」。',hButton('library','留在影片庫','',true)+hButton('search','到搜尋','')); if(v==='input') html+=hCard('你現在在輸入影片','常用問題是流程①/②/③/④、卡A/B/C 要貼哪裡、待補清單怎麼用。',hButton('input','到歸類卡','card',true)+hButton('input','到操作流程','flow')); return html; }
+  function hAnswer(q){var raw=q||''; var n=hn(raw); var html='<div class="sysHelpMini">'+hx(hCurrent())+'</div>';
+    if(/卡b|卡Ｂ|流程②|流程二|只加影片|歸類卡/.test(n)){ html+=hCard('卡B / 流程②','卡B 是「同一個帳號已建檔，只新增一支影片」用的單支影片歸類卡。通常貼到「輸入影片」→「③ 歸類卡」；系統會讀卡內的 IG帳號 / @handle，去連回帳號管理裡既有帳號。',hButton('input','去貼歸類卡','card',true)+hButton('input','看流程②','flow')+hButton('manual','看說明書','卡B')); }
+    if(/帳號|連動|profile|分析工具|掛不上|尚未建檔|handle|@/.test(n)){ html+=hCard('帳號連動檢查','影片能不能出現帳號 profile 與分析工具，關鍵是卡B 裡的「IG帳號」是否能對上帳號管理裡的 @handle。若畫面一開始沒連上，先按右上「重新整理」；若仍沒有，去帳號管理確認 @handle 是否一致。',hButton('accounts','去帳號管理','',true)+hButton('library','回影片庫','')+hButton('search','搜尋帳號/影片',raw)); }
+    if(/搜尋|找|查|@kl|kl|理鴻|理/.test(n)){ html+=hCard('搜尋建議','要找系統內資料，可以用上方「搜尋」分頁查影片與架構；要篩某個帳號的影片，影片庫上方先選「主角客戶」。搜尋 @handle 通常比只打一個字更準，例如 @kl.legal、理鴻、郭柏鴻。',hButton('search','帶到搜尋',raw,true)+hButton('library','到影片庫主角篩選','')); }
+    if(/服務台|小窗|客戶/.test(n)){ html+=hCard('客戶服務台小窗','左下角「服務台小窗」會在工作台內開一個可拖曳、可縮放的小窗；上方「客戶服務台」分頁會開獨立視窗。',hButton('deliver','到客戶交付','')+'<button class="sysHelpAct" type="button" onclick="_csDockOpen&&_csDockOpen()">打開服務台小窗</button>'); }
+    if(/說明書|版本|更新|小幫手/.test(n)){ html+=hCard('說明書與小幫手','小幫手會讀目前說明書與流程文字；之後每版只要更新說明書 / SOP，它就會用新版內容回答。v227 已把小幫手用途補進說明書。',hButton('manual','去說明書','',true)); }
+    var am=hFindAccounts(raw), vm=hFindVideos(raw), dm=hDocSearch(raw);
+    if(am.length){ html+='<div class="sysHelpCard"><b>我找到的帳號</b><div class="sysHelpResult">'+am.map(function(x){var a=x.a; return '<div><b>'+hx(a.handle||'未填handle')+'</b>｜'+hx(a.displayName||a.name||'')+'｜'+hx(a.jobTitle||'')+'｜'+hx(a.industry||'')+'</div>';}).join('')+'</div><div class="sysHelpActions">'+hButton('accounts','去帳號管理',raw,true)+hButton('search','搜尋這個帳號',raw)+'</div></div>'; }
+    if(vm.length){ html+='<div class="sysHelpCard"><b>我找到的影片</b><div class="sysHelpResult">'+vm.map(function(x){return '<div>'+hx(x.v.title||'(未命名影片)')+'｜'+hx((x.acc&&x.acc.handle)||x.v.accountHandle||'未連帳號')+'</div>';}).join('')+'</div><div class="sysHelpActions">'+hButton('search','到搜尋看結果',raw,true)+hButton('library','回影片庫','')+'</div></div>'; }
+    if(dm.length){ html+='<div class="sysHelpCard"><b>我在系統說明裡找到</b><div class="sysHelpResult">'+dm.map(function(d){return '<div>'+hx(d.t)+'｜'+hx(d.n)+'</div>';}).join('')+'</div><div class="sysHelpActions">'+hButton('manual','打開說明書',raw)+'</div></div>'; }
+    if(html.indexOf('sysHelpCard')<0){ html+=hCard('我先幫你導到搜尋','這題我沒有抓到明確 FAQ，但可以先用系統搜尋查影片、帳號與架構；也可以換成 @handle、影片標題、流程名稱再問一次。',hButton('search','用這句去搜尋',raw,true)+hButton('manual','看說明書','')); }
+    return html;
+  }
+  window._sysHelpOpen=function(){var p=H('sysHelpPanel'); if(p){p.style.display='flex'; var o=H('sysHelpOut'); if(o&&!o.innerHTML) o.innerHTML=hDefault(); setTimeout(function(){var i=H('sysHelpInput'); if(i) i.focus();},60);}};
+  window._sysHelpClose=function(){var p=H('sysHelpPanel'); if(p) p.style.display='none';};
+  window._sysHelpAsk=function(q){var input=H('sysHelpInput'); var ask=(typeof q==='string'?q:(input?input.value:'')); if(input&&ask) input.value=ask; var out=H('sysHelpOut'); if(out) out.innerHTML=ask?hAnswer(ask):hDefault();};
+  window._sysHelpGo=function(view,q){try{ if(view==='input'&&q){switchTo('input'); setTimeout(function(){ if(q==='card'&&typeof showInputSub==='function')showInputSub('card'); if(q==='flow'&&typeof showInputSub==='function')showInputSub('flow');},50); }
+      else {switchTo(view); if(view==='search'&&q){setTimeout(function(){var gs=H('globalSearch'); if(gs){gs.value=q; if(H('gClr'))H('gClr').style.display='block'; if(H('gIc'))H('gIc').style.display='none'; if(typeof runGlobalSearch==='function')runGlobalSearch();}},80);} }
+      window.scrollTo(0,0); }catch(e){} };
+  document.addEventListener('DOMContentLoaded',function(){var i=H('sysHelpInput'); if(i){i.addEventListener('keydown',function(e){if(e.key==='Enter') _sysHelpAsk();});} setTimeout(function(){var out=H('sysHelpOut'); if(out&&!out.innerHTML) out.innerHTML=hDefault();},600);});
+})();
 </script>
 
 <button id="csDockBtn" type="button" onclick="_csDockOpen()" title="在頁內開一個可縮放的客戶服務台小窗（不離開工作台）" style="position:fixed;left:14px;bottom:14px;z-index:9400;background:var(--rouge);color:#fff;border:none;border-radius:20px;padding:8px 14px;font-size:12.5px;font-weight:700;cursor:pointer;font-family:inherit;box-shadow:0 4px 14px rgba(0,0,0,.2)">⊞ 服務台小窗</button>
