@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="color-scheme" content="light only">
 <meta name="supported-color-schemes" content="light">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v230 (版本號僅留註解，不顯示於畫面)
+<!-- ATELIER 影片診斷工作台 · 內部版本 v231 (版本號僅留註解，不顯示於畫面)
+v231 更新（交辦單：Lisa 實測 v230 後提出三個量產痛點——①卡B txt 檔要能直接丟進工作台，不必打開複製貼上②待補清單偵測到多個缺欄時，要有一顆「一次涵蓋全部＋重出卡B」提示詞③右下 QUICK SAVE 也要同步顯示目前缺哪幾欄，不要只提供儲存鈕）：【A 卡B 檔案直丟】歸類卡貼卡區新增 .txt 檔案匯入列，可點選檔案或拖曳 txt 到貼卡區／文字框，自動讀入 pasteBox、刷新待補清單與快速儲存提示，省去打開檔案複製貼上的步驟。【B 多欄待補一鍵提示詞】renderInputTodo 在缺漏欄位大於 1 個時新增「一次補全部＋重出卡B」總按鈕；新增 _todoCopyAll(mode)，會把所有待補分類欄位與各自合法選項合併成同一支提示詞，要求 AI 一次判斷所有缺口並完整重出卡B。【C QUICK SAVE 待補提醒】sticky 快速儲存卡新增 #stickyCardTodo，會同步顯示「還缺：拍攝素材、子題型」或「關鍵欄位已填齊」，讓使用者在右下角就知道按下儲存前還有哪些欄位沒有注入。未動資料結構、未動 client.html、未動六守門常數。
 v230 更新（交辦單：Lisa 實測 v229 後回報兩件流程痛點——①儲存完歸零後畫面停在表單中段，下一支還要自己滑回歸類卡貼卡區②影片庫主角搜尋單一中文字「理」仍把深層/職稱含字的帳號排在理鴻前面）：【A 存檔後回到貼卡入口】saveBtn 成功儲存並清空表單後，改為自動切回「輸入影片 > ③ 歸類卡」，捲到貼卡區並 focus pasteBox，讓下一支可以直接貼卡，不再停在下方欄位。同步刷新 QUICK SAVE 狀態。【B 中文單字搜尋強化】csel 帳號搜尋新增 data-name/data-job/data-ind/data-type 分層欄位與 _cselPrimaryBestRank；搜尋單一中文字時，若有帳號的顯示名稱/名稱以該字開頭（例如「理鴻」），優先只顯示這類最高命中，不再讓「主理人」「管理」「整理」等職稱/備註含字帳號排前。未動資料結構、未動 client.html、未動六守門常數。
 v229 更新（交辦單：Lisa 實測 v228 後回報兩個介面問題——①貼歸類卡後右下浮動元件會遮擋操作區②提示詞預覽彈窗內仍有外來 emoji icon）：【A 浮動小幫手避開輸入區】系統小幫手從右下改為左下堆疊在「服務台小窗」上方，避開 QUICK SAVE 快速儲存卡與表單操作區；小幫手面板同步改從左下展開。當全站 modal 開啟時，自動隱藏 QUICK SAVE、小幫手與服務台小窗按鈕，避免彈窗被浮動元件蓋住。【B 品牌 icon 統一】copyPrompt 提示詞預覽的編輯／返回／還原／唯讀狀態改成 ATELIER 線性 SVG icon，不再使用 📝／✏️／🔒 等彩色 emoji；關閉鍵也改品牌線性 X。服務台小窗入口也改品牌方格 SVG。未動資料結構、未動 client.html、未動六守門常數。
 v228 更新（交辦單：Lisa 實測 v227 後回報三個效率問題——①影片庫主角搜尋中文單字「理」仍跳不準②帳號管理「拆解過 8 支影片」要能直接點開看影片③系統建議帶去版面對照不應只卡主角＋3 個）：【A 中文單字搜尋再精準】csel 帳號搜尋加入「主欄位優先」邏輯：若搜尋字已命中 handle／顯示名稱／職稱／產業／領域／身份等主身份欄位，就先只顯示這些高相關結果，避免帳號物件深層備註或歷史文字含到單一中文字（例如「理」）就把 Amanda 等不相關帳號排前面；搜尋輸入同時加開啟期間的 value watcher，修注音/選字事件偶爾沒觸發導致單字要打第二個字才刷新。【B 帳號影片快覽】帳號管理卡片「拆解過 N 支影片」改成可點擊，新增 openAccountVideos(accId)：用 videosOfAccount 取該帳號全部影片，在彈窗列出標題、日期、階段主題、觀看/讚/留言/分享/狀態與 Hook，並提供「去影片庫看全部」與「定位這支」按鈕，能直接跳回影片庫並套用主角與搜尋。【C 版面對照容量放寬】系統建議勾選帶去版面對照時不再強制砍到 3 個對標；compare 多選上限由主角＋3 改成主角＋8，runCompare 上限同步改為 9 個帳號，並在結果外層加橫向捲動，讓同行比較能先看完整池，再由 Lisa 自己縮小。未動資料結構、未動 client.html、未動六守門常數。
@@ -828,7 +829,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v230</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v231</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -1121,6 +1122,11 @@ if('serviceWorker' in navigator){
     <div style="font-family:'Cormorant Garamond',serif;font-size:11px;letter-spacing:3px;color:var(--gold-dark);margin-bottom:6px">QUICK INPUT · AUTO-CLASSIFY</div>
     <div class="paste-h">貼上歸類卡，自動填好</div>
     <div class="paste-note">把 STEP⑦ 吐出的卡貼進來。可貼 <b>卡B（影片歸類卡）</b> 或 <b>卡A（影片×帳號合一）</b>——若內容含「<b>===ATELIER帳號分析卡===</b>」段，會自動同步更新「帳號管理」（先問你一句、只加快照不覆蓋）。<b>單張</b>→按「自動填入」帶到下方欄位檢查再存；<b>多張</b>→按「批次匯入」一次全部建檔。</div>
+    <div id="cardFileDrop" style="border:1px dashed var(--gold-soft);background:#fff;border-radius:9px;padding:10px 12px;margin:10px 0 8px;font-size:12.5px;color:var(--gold-dark);line-height:1.65;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap">
+      <span><svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.8;vertical-align:-2px;margin-right:5px"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M12 18v-6M9 15l3 3 3-3"/></svg><b>可直接丟卡B文字檔</b>：點這裡選 .txt，或把卡B檔拖進這區／貼卡框</span>
+      <button type="button" class="btn btn-ghost" id="cardFilePick" style="margin:0;padding:6px 10px;font-size:12px">選擇檔案</button>
+      <input type="file" id="cardFileInput" accept=".txt,text/plain" style="display:none">
+    </div>
     <textarea id="pasteBox" placeholder="把 Gemini 的歸類卡整段貼這裡，例：&#10;===ATELIER歸類卡===&#10;影片標題：律師教你看懂租屋合約陷阱&#10;階段：G1&#10;主題：G1-1 反直覺／挑戰權威&#10;...&#10;（可一次貼多張，每張之間空一行）"></textarea>
     <div class="paste-btns">
       <button class="btn btn-go" id="parseBtn" style="flex:2"><svg viewBox="0 0 24 24" style="width:15px;height:15px;fill:currentColor;vertical-align:-2px;margin-right:5px"><path d="M13 3L5 13h5l-1 8 8-11h-5z"/></svg>自動填入下面欄位（單張）</button>
@@ -3150,7 +3156,31 @@ $('parseBtn').onclick=async function(){
   toast('已自動填入，請檢查下方欄位');
   document.querySelector('.form-card').scrollIntoView({behavior:'smooth',block:'start'});
 };
-$('pasteClr').onclick=()=>{ $('pasteBox').value=''; $('parseMsg').innerHTML=''; };
+$('pasteClr').onclick=()=>{ $('pasteBox').value=''; $('parseMsg').innerHTML=''; if(typeof renderInputTodo==='function') renderInputTodo(); if(typeof _cardStickyUpdate==='function') _cardStickyUpdate(); };
+/* v231：卡B txt 檔案可直接丟進貼卡區，不必打開檔案複製貼上 */
+window._cardFileRead=function(file){
+  if(!file) return;
+  if(file.size>1024*1024*2){ if(typeof toast==='function') toast('檔案太大，請改貼文字內容'); return; }
+  var rd=new FileReader();
+  rd.onload=function(){
+    var txt=String(rd.result||'');
+    var pb=document.getElementById('pasteBox'); if(pb){ pb.value=txt; pb.dispatchEvent(new Event('input',{bubbles:true})); }
+    var msg=document.getElementById('parseMsg'); if(msg) msg.innerHTML='<div style="color:#2F6B4F">已讀入檔案：'+esc(file.name||'txt')+'，可按「自動填入下面欄位」。</div>';
+    if(typeof renderInputTodo==='function') renderInputTodo();
+    if(typeof _cardStickyUpdate==='function') _cardStickyUpdate();
+    if(typeof toast==='function') toast('已匯入卡B文字檔');
+  };
+  rd.onerror=function(){ if(typeof toast==='function') toast('讀取檔案失敗，請改用複製貼上'); };
+  rd.readAsText(file,'utf-8');
+};
+(function(){
+  var inp=document.getElementById('cardFileInput'), pick=document.getElementById('cardFilePick'), drop=document.getElementById('cardFileDrop'), pb=document.getElementById('pasteBox');
+  if(pick&&inp) pick.onclick=function(e){ e.stopPropagation(); inp.click(); };
+  if(drop&&inp) drop.onclick=function(){ inp.click(); };
+  if(inp) inp.onchange=function(){ if(inp.files&&inp.files[0]) window._cardFileRead(inp.files[0]); inp.value=''; };
+  function wireDrop(el){ if(!el) return; ['dragenter','dragover'].forEach(function(ev){ el.addEventListener(ev,function(e){ e.preventDefault(); e.stopPropagation(); if(drop){ drop.style.borderColor='var(--rouge)'; drop.style.background='var(--warm)'; } }); }); ['dragleave','drop'].forEach(function(ev){ el.addEventListener(ev,function(e){ if(drop){ drop.style.borderColor='var(--gold-soft)'; drop.style.background='#fff'; } }); }); el.addEventListener('drop',function(e){ e.preventDefault(); e.stopPropagation(); var f=e.dataTransfer&&e.dataTransfer.files&&e.dataTransfer.files[0]; if(f) window._cardFileRead(f); }); }
+  wireDrop(drop); wireDrop(pb);
+})();
 
 /* ---- 批次匯入：一次解析多張歸類卡，直接建檔 ---- */
 function parseCardText(block){
@@ -4120,7 +4150,21 @@ window._cardStickyUpdate=function(){
   var inCardView=(document.getElementById('sub-card')||{}).style && document.getElementById('sub-card').style.display!=='none';
   var pasted=(document.getElementById('pasteBox')||{}).value||'';
   var titled=(document.getElementById('f-title')||{}).value||'';
-  bar.style.display=(inCardView && (pasted.trim().length>20 || titled.trim().length>0))?'flex':'none';
+  var show=(inCardView && (pasted.trim().length>20 || titled.trim().length>0));
+  bar.style.display=show?'flex':'none';
+  var todo=document.getElementById('stickyCardTodo');
+  if(todo && show){
+    var gaps=(typeof _inputTodoGaps==='function'?_inputTodoGaps():[]);
+    if(gaps.length){
+      todo.style.color='var(--rouge)';
+      todo.style.background='rgba(165,24,32,.055)';
+      todo.innerHTML='<b>還缺：</b>'+gaps.map(function(f){return esc(f.label.replace('（必填）','').replace('（第5層）',''));}).join('、')+'<br><span style="color:var(--sub)">仍可儲存，但建議先補完再入庫</span>';
+    }else{
+      todo.style.color='#2F6B4F';
+      todo.style.background='#F0F5EC';
+      todo.innerHTML='關鍵欄位已填齊，可以直接儲存';
+    }
+  }
 };
 function renderManual(){
   $('manualBox').innerHTML=`
@@ -4130,7 +4174,8 @@ function renderManual(){
   <div class="form-card" style="border-left:3px solid var(--gold)">
     <div class="stitle" style="font-size:15px;color:var(--rouge)">更新紀錄 · 還沒做的</div>
     <p style="font-size:13px;color:var(--text);line-height:1.85;margin-top:8px">
-    <b>v230（這版 · 存檔後回貼卡區＋中文單字搜尋再強化）：</b>①<b>存檔後自動回到下一支入口</b>：儲存成功、表單清空後，畫面會自動切回「輸入影片 ＞ ③ 歸類卡」，捲到貼卡 textarea 並把游標放進去，下一支影片可以直接貼卡，不會再停在下方手動欄位。②<b>主角搜尋「理」更準</b>：帳號搜尋改成分層判斷，顯示名稱/帳號名稱開頭命中會壓過職稱、產業、備註的含字命中。像「理」會優先抓「理鴻」，不會再讓「主理人」「管理」這類含字帳號排前面。<b>只動存檔後定位與搜尋排序；沒動資料結構、沒動六守門提示詞。</b><br>
+    <b>v231（這版 · 卡B檔案直丟＋多欄待補總提示＋快速儲存缺欄提醒）：</b>①<b>卡B txt 可直接匯入</b>：在「歸類卡」貼卡區可點選 .txt 檔或把檔案拖進來，系統會自動把檔案內容放進貼卡框，不必先打開文件複製。②<b>待補清單新增總按鈕</b>：若同時缺「拍攝素材、子題型」等多欄，會出現「一次補全部＋重出卡B」，把所有缺口合成同一支提示詞，一次判斷並重出整張卡B。③<b>QUICK SAVE 同步提醒缺欄</b>：右下快速儲存卡會顯示目前還缺哪幾欄或已填齊，避免滑到下方才發現還有欄位沒注入。<b>只動貼卡輸入、待補提示與快速儲存提醒；沒動資料結構、沒動六守門提示詞。</b><br>
+    <b>v230（存檔後回貼卡區＋中文單字搜尋再強化）：</b>①<b>存檔後自動回到下一支入口</b>：儲存成功、表單清空後，畫面會自動切回「輸入影片 ＞ ③ 歸類卡」，捲到貼卡 textarea 並把游標放進去，下一支影片可以直接貼卡，不會再停在下方手動欄位。②<b>主角搜尋「理」更準</b>：帳號搜尋改成分層判斷，顯示名稱/帳號名稱開頭命中會壓過職稱、產業、備註的含字命中。像「理」會優先抓「理鴻」，不會再讓「主理人」「管理」這類含字帳號排前面。<b>只動存檔後定位與搜尋排序；沒動資料結構、沒動六守門提示詞。</b><br>
     <b>v229（小幫手不遮擋＋提示詞彈窗 icon 品牌化）：</b>①<b>小幫手避開輸入區</b>：右下角已有 QUICK SAVE 快速儲存卡，貼歸類卡時會浮出來，所以小幫手改成左下堆疊在「服務台小窗」上方，不再擠在右下擋住儲存區。②<b>彈窗開啟時自動收乾淨</b>：當補完提示詞、重出卡B、確認框等 modal 開啟時，QUICK SAVE、小幫手與服務台小窗按鈕會自動隱藏，避免浮動元件蓋在彈窗上。③<b>提示詞預覽 icon 品牌化</b>：把提示詞彈窗裡的編輯、返回、還原、唯讀狀態從彩色 emoji 改成 ATELIER 線性 SVG icon；服務台小窗入口也改成品牌方格 icon。<b>只動浮動元件位置與 icon 呈現；沒動資料結構、沒動六守門提示詞。</b><br>
     <b>v228（修搜尋精準度＋帳號影片快覽＋放寬版面對照）：</b>①<b>影片庫主角搜尋更精準</b>：搜尋單一中文字（例如「理」）時，會優先看 handle、顯示名稱、職稱、產業、領域、身份這些主欄位；如果主欄位已經命中，就不再讓帳號深層備註裡剛好含到同一個字的不相關帳號排在前面。②<b>帳號管理的「拆解過 N 支影片」可以點了</b>：點下去會跳出這個帳號底下的影片清單，包含標題、發布/建檔日期、階段主題、觀看/讚/留言/分享、狀態與 Hook，也可以一鍵跳到影片庫看全部或定位單支。③<b>版面對照比較不再只卡 3 個對標</b>：從影片庫系統建議帶去版面對照時，不會先砍掉你勾的對標；比較區上限放寬為主角＋最多 8 個對標，表格可橫向捲動，先看完整池再縮小。<b>只動搜尋排序、帳號影片快覽與版面對照容量；沒動資料結構、沒動六守門提示詞。</b><br>
     <b>v227（新增系統感知型小幫手）：</b>右下角新增「<b>？ 小幫手</b>」，這不是固定 FAQ，而是會讀目前系統狀態的操作助理。你可以問「卡B 要貼哪裡」「流程②怎麼跑」「為什麼影片沒有連到帳號」「我要找 @kl.legal 的影片」「分析工具在哪裡」。它會讀目前頁面、上方分頁、說明書、流程 SOP、影片庫與帳號資料，再給你最新操作指引；答案裡有按鈕可直接跳到輸入影片／影片庫／帳號管理／搜尋／說明書。安全版先不接外部 AI API、不寫入資料、不改影片或帳號、不碰六支守門提示詞。之後只要每版持續更新說明書與流程文字，小幫手就會一起讀到新版內容。<b>只新增右下小幫手 UI 與讀取式搜尋/導頁邏輯，沒動資料結構、沒動六守門提示詞。</b><br>
@@ -4418,16 +4463,28 @@ var _INPUT_TODO_FIELDS=[
   {id:'f-form',label:'內容形式'},
   {id:'f-goal',label:'合作目標層'}
 ];
+function _inputTodoGaps(){
+  return _INPUT_TODO_FIELDS.filter(function(f){ var el=document.getElementById(f.id); return el && (!el.value || el.value===''); });
+}
 function renderInputTodo(){
   var box=document.getElementById('inputTodo'); if(!box) return;
   var anyFilled=_INPUT_TODO_FIELDS.some(function(f){ var el=document.getElementById(f.id); return el && el.value && el.value!==''; });
   var pasted=(document.getElementById('pasteBox')||{}).value||'';
-  if(!anyFilled && !pasted.trim()){ box.style.display='none'; box.innerHTML=''; return; } /* 全空的新表單先不顯示 */
-  var gaps=_INPUT_TODO_FIELDS.filter(function(f){ var el=document.getElementById(f.id); return el && (!el.value || el.value===''); });
+  if(!anyFilled && !pasted.trim()){ box.style.display='none'; box.innerHTML=''; if(typeof _cardStickyUpdate==='function') _cardStickyUpdate(); return; } /* 全空的新表單先不顯示 */
+  var gaps=_inputTodoGaps();
   if(!gaps.length){
     box.style.display='block';
     box.innerHTML='<div style="border:1px solid var(--gold-soft);background:#F0F5EC;border-radius:9px;padding:9px 12px;margin-bottom:10px;font-size:12.5px;color:#2F6B4F;font-weight:600">✓ 這張卡的關鍵欄位都填好了</div>';
+    if(typeof _cardStickyUpdate==='function') _cardStickyUpdate();
     return;
+  }
+  var aiGaps=gaps.filter(function(f){return !f.manual;});
+  var topAction='';
+  if(aiGaps.length>1){
+    topAction='<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;background:#fff;border:1px solid var(--gold-soft);border-radius:8px;padding:8px 10px;margin:8px 0 4px">'
+      +'<span style="font-size:11.5px;color:var(--sub);line-height:1.5">偵測到多個分類缺口：'+aiGaps.map(function(f){return esc(f.label.replace('（第5層）','').replace('（必填）',''));}).join('、')+'</span>'
+      +'<button type="button" onclick="_todoCopyAll(\'card\')" style="flex:none;font-size:11px;font-weight:800;padding:5px 11px;border:1px solid var(--gold-dark);background:var(--gold-dark);color:#fff;border-radius:6px;cursor:pointer;font-family:inherit">一次補全部＋重出卡B</button>'
+      +'</div>';
   }
   var rows=gaps.map(function(f){
     var right;
@@ -4442,10 +4499,12 @@ function renderInputTodo(){
   box.style.display='block';
   box.innerHTML='<div style="border:1px solid var(--gold-dark);background:var(--warm);border-radius:9px;padding:10px 12px;margin-bottom:10px">'
     +'<div style="font-weight:700;color:var(--gold-dark);font-size:13px">待補清單 · 這張卡還有 '+gaps.length+' 欄沒填到</div>'
-    +'<div style="font-size:10.5px;color:var(--sub);margin:2px 0 4px">不想填的可忽略，這只是提醒、不擋你存檔。每欄三顆鈕：<b>只補這欄</b>＝只判斷、不出卡；<b>補＋我先看</b>＝判完先給你看、先不出卡；<b>補＋重出卡B</b>＝判完直接重出整張卡B。複製後貼回原本那個 AI 對話框問即可。</div>'
-    +rows+'</div>';
+    +'<div style="font-size:10.5px;color:var(--sub);margin:2px 0 4px">不想填的可忽略，這只是提醒、不擋你存檔。每欄三顆鈕：<b>只補這欄</b>＝只判斷、不出卡；<b>補＋我先看</b>＝判完先給你看、先不出卡；<b>補＋重出卡B</b>＝判完直接重出整張卡B。若缺多欄，可用總按鈕一次處理。</div>'
+    +topAction+rows+'</div>';
+  if(typeof _cardStickyUpdate==='function') _cardStickyUpdate();
 }
 window.renderInputTodo=renderInputTodo;
+window._inputTodoGaps=_inputTodoGaps;
 /* ═══════════ v216 A：產業定位排行表（看主角在同行裡排哪） ═══════════ */
 window.openPositioningTable=function(heroId){
   if(!heroId){ if(typeof toast==='function') toast('先在上面選一個主角客戶'); return; }
@@ -4526,6 +4585,39 @@ window._csDockMin=function(){
   if(d.getAttribute('data-min')==='1'){ if(f) f.style.display='block'; d.style.height=d.getAttribute('data-h')||'560px'; d.removeAttribute('data-min'); }
   else { d.setAttribute('data-h', d.style.height||(d.offsetHeight+'px')); if(f) f.style.display='none'; d.style.height='auto'; d.setAttribute('data-min','1'); }
 };
+window._todoCopyAll=function(mode){
+  mode=mode||'card';
+  var gaps=(typeof _inputTodoGaps==='function'?_inputTodoGaps():[]).filter(function(f){return !f.manual;});
+  if(!gaps.length){ if(typeof toast==='function') toast('目前沒有可用 AI 補完的缺口'); return; }
+  var title=(document.getElementById('f-title')||{}).value||'';
+  var raw=(document.getElementById('pasteBox')||{}).value||'';
+  var th=document.getElementById('f-theme'); var themeT=(th&&th.selectedIndex>=0)?(th.options[th.selectedIndex].textContent||'').trim():'';
+  var st=document.getElementById('f-stage'); var stageT=(st&&st.selectedIndex>=0)?(st.options[st.selectedIndex].textContent||'').trim():'';
+  var tr=(document.getElementById('contentTranscript')||{}).value||'';
+  var p='請依 ATELIER 短影音內容診斷架構，一次補完這張卡B目前缺漏的所有分類欄位，並重新輸出修正後的整張卡B。\n\n';
+  p+='影片標題：'+(title||'（未填）')+'\n';
+  p+='目前主題：'+(themeT||'（未選）')+'　目前階段：'+(stageT||'（未選）')+'\n\n';
+  p+='需要補完的欄位共有 '+gaps.length+' 個：\n';
+  gaps.forEach(function(f,i){
+    var sel=document.getElementById(f.id);
+    var opts=sel?[].slice.call(sel.options).map(function(o){return (o.textContent||'').trim();}).filter(function(t){return t && t.indexOf('\u2014')<0;}):[];
+    var lbl=f.label.replace('（必填）','').replace('（第5層）','');
+    p+='\n'+(i+1)+'. '+lbl+'\n';
+    if(opts.length){ p+='只能從下列合法選項挑 1 個，不可自編：\n'+opts.map(function(o){return '• '+o;}).join('\n')+'\n'; }
+  });
+  p+='\n判斷依據：\n';
+  p+='逐字稿／重點：'+(tr?tr.slice(0,2200):'（若下方原卡有逐字稿與備註，請優先讀原卡；不足以判斷就標註無法判斷，不要硬猜）')+'\n\n';
+  p+='原始卡B內容如下，請只修正上述缺漏欄位，其餘已存在欄位沿用原文，不要亂改：\n'+(raw?raw.slice(0,9000):'（目前貼卡框是空的，請依上方資料與逐字稿補判）')+'\n\n';
+  if(mode==='review'){
+    p+='先不要輸出卡B。請先列出每個缺漏欄位的判斷結果與理由，等我回「OK 出卡」後再輸出整張卡B。';
+  }else{
+    p+='最後請完整輸出【修正後的整張卡B】：第一行必須是 ===ATELIER歸類卡===，最後一行必須是 ===結束===，前後不要黏任何字，方便我直接貼回工作台。';
+  }
+  var tag=(mode==='review')?'一次補全部（先給我看）':'一次補全部＋重出卡B';
+  if(typeof copyPrompt==='function') copyPrompt(p,tag);
+  else if(typeof copyVal==='function'){ copyVal(p); if(typeof toast==='function') toast('已複製：'+tag); }
+};
+
 window._todoCopy=function(selId, mode){
   mode=mode||'only';
   var f=_INPUT_TODO_FIELDS.find(function(x){return x.id===selId;}); if(!f) return;
@@ -9708,7 +9800,7 @@ document.addEventListener('DOMContentLoaded',function(){
 <div id="stickyCardSave" style="display:none;position:fixed;bottom:84px;right:14px;z-index:10000;flex-direction:column;gap:6px;background:#fff;border:1.5px solid var(--rouge);border-radius:12px;padding:10px 14px;box-shadow:0 6px 24px rgba(0,0,0,.15);max-width:280px">
   <div style="font-size:11px;color:var(--gold-dark);font-weight:700;letter-spacing:.4px;text-transform:uppercase">Quick Save · 快速儲存</div>
   <button class="btn btn-go" type="button" onclick="(function(){var b=document.getElementById('saveBtn');if(b){b.scrollIntoView({behavior:'smooth',block:'center'});setTimeout(function(){b.click();},350);}})()" style="width:100%;font-size:13px;padding:9px 14px"><svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;vertical-align:-2px;margin-right:4px"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8M7 3v5h8"/></svg>儲存這支影片＋</button>
-  <div style="font-size:11px;color:var(--sub);line-height:1.4">不用滑到最底，這裡按就好</div>
+  <div id="stickyCardTodo" style="font-size:11px;color:var(--sub);line-height:1.45;border-radius:8px;padding:6px 7px;background:var(--warm)">檢查欄位中…</div>
 </div>
 <script>
 /* v197 D2：sticky 儲存浮窗監聽——pasteBox / f-title 異動 + showInputSub 切換時更新 */
