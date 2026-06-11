@@ -8,7 +8,8 @@
 <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v250 (版本號僅留註解，不顯示於畫面)
+<!-- ATELIER 影片診斷工作台 · 內部版本 v251 (版本號僅留註解，不顯示於畫面)
+v251 更新（交辦單：Lisa 實測 v250 後，策略診斷頁第一次進入仍像未載入，要隨便點按鈕才出現資料；同時釐清策略診斷、客戶服務台、商業閉環之間的工作用途）：【A 策略診斷自動初始化】新增 _strategyHydrate，切到策略診斷分頁時會多段延遲補灌帳號、同步 csel、若已有影片庫/帳號管理主角則自動帶入，並自動產生策略快照，不再要求 Lisa 亂點按鈕才刷新。【B 清楚化策略頁定位】策略診斷頁新增流程說明：它不是最終交付，而是 32 支影片的策略雷達；客戶服務台負責問診補資料與 PDF/HTML/PPT 交付；商業閉環地圖負責判斷 A-E 與 G1-G5 缺口。
 v250 更新（交辦單：Lisa 實測 v249 後，策略診斷客戶下拉搜尋「理鴻」仍只顯示排序頁籤、沒有帳號結果）：【A 修正 stratAcc 補灌根因】v249 的 populateStrategyAcc 使用 window.accounts 判斷，但主程式的 accounts 並不一定掛在 window 上，導致函式直接 return，select options 沒被灌入；本版改用 typeof accounts !== 'undefined' 的安全讀取，必要時才 fallback 到 window.accounts。【B 保留策略頁只讀原則】只修策略診斷選客戶下拉，不碰 CSV 彈窗、不寫入資料、不動 client.html、Firebase、商業閉環地圖與六支守門提示詞。
 v249 更新（交辦單：Lisa 實測 v248 策略診斷頁，選客戶下拉搜尋「理」時面板只剩排序頁籤、帳號列表空白，像當機）：【A 策略診斷客戶下拉補灌】csel 帳號型下拉開啟前新增 stratAcc 專用補灌 populateStrategyAcc，避免策略診斷頁新增的 select 在 csel 初始化時只有 placeholder，帳號 async 到齊後未被重建，導致搜尋單字沒有任何帳號列。【B 保留既有搜尋排序】沿用既有 csel 搜尋與中文單字排序邏輯，不改 v245 影片庫排序、不碰 v246 CSV 彈窗、不寫入資料，只修策略診斷頁的選帳號入口。未動 client.html、Firebase 資料結構、自媒體商業閉環知識地圖與六支守門提示詞。
 v248 更新（交辦單：Lisa 已確認理鴻 32 支影片完成建檔，下一階段要把影片庫、客戶服務台、商業閉環知識地圖串成「內容優化診斷」工作流）：【A 新增內容優化診斷分頁】新增「策略診斷」頁籤與 view-strategy，先不寫入資料，只讀目前帳號與影片庫，針對選定客戶彙整 32 支影片的數據快照、Top/Bottom、G 階段分布、合作目標 A–E 分布、內容缺口與下一步。【B 串接服務台與商業閉環】策略診斷頁提供「開客戶服務台」與「開商業閉環」入口，並產生可貼到客戶服務台 Stage 4 內容診斷的提示詞，把影片庫數據、商業閉環 A–E 與下一批影片方向帶進交付流程。【C 安全原則】本版從 v247 穩定 hotfix 接續，只新增讀取型策略頁與提示詞，不碰 client.html、不改自媒體商業閉環知識地圖、不改 Firebase 資料結構、不改六支守門提示詞，不再碰 v246 造成卡死的 CSV 彈窗。
@@ -856,7 +857,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v250</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v251</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -2460,6 +2461,10 @@ if('serviceWorker' in navigator){
     </div>
   </div>
   <div id="strategyBox"></div>
+  <div class="hint" style="margin-top:14px;background:#FFFDFC">
+    <b>策略頁定位：</b>這裡不是最終交付檔，而是「32 支影片策略雷達」。先用影片庫資料看 Top / Bottom、G 階段、A–E 商業閉環缺口；再把提示詞帶到客戶服務台 Stage 4 補問客戶資料，最後才輸出 PDF / HTML / PPT。<br>
+    <b>使用順序：</b>① 選客戶 → ② 看策略快照 → ③ 找出缺口 → ④ 開客戶服務台補問 → ⑤ 用商業閉環地圖校準下一批影片。
+  </div>
   <div class="hint"><b>使用方式：</b>先選客戶，例如 @kl.legal。這頁只讀影片庫，不會改資料。它會先把 32 支影片整理成策略快照，再複製給客戶服務台「內容診斷」階段使用，最後可輸出 PDF / HTML / PPT 交付物。</div>
 </div>
 
@@ -4474,6 +4479,7 @@ function renderManual(){
   <div class="form-card" style="border-left:3px solid var(--gold)">
     <div class="stitle" style="font-size:15px;color:var(--rouge)">更新紀錄 · 還沒做的</div>
     <p style="font-size:13px;color:var(--text);line-height:1.85;margin-top:8px">
+    <b>v251（策略診斷自動初始化＋定位說明）：</b>修正第一次切到策略診斷頁時需要亂點按鈕才產生資料的問題；新增 _strategyHydrate，多段延遲補灌帳號、同步下拉、沿用影片庫/帳號管理目前主角並自動產生策略快照。策略診斷頁也補上「工作流定位」，說明它是 32 支影片的策略雷達，不是最終交付；後續要接客戶服務台做問診補資料與 PDF/HTML/PPT 交付，再用商業閉環地圖校準 A-E 與 G1-G5 缺口。<b>只修策略頁初始化與說明，不碰 CSV 彈窗、不寫入資料、不動 client.html、Firebase、商業閉環地圖與六守門提示詞。</b><br>
     <b>v250（修策略診斷客戶搜尋仍空白）：</b>修正 v249 沒有真正灌入帳號的根因：策略診斷頁的 populateStrategyAcc 原本判斷 window.accounts，但主程式 accounts 不一定掛在 window 上，所以會直接 return，導致下拉面板只有排序頁籤、沒有帳號列。這版改用主程式 accounts 安全讀取，搜尋「理」「理鴻」「kl」應可正常出現理鴻帳號。<b>只修策略診斷客戶下拉，不碰 CSV 彈窗、不寫入資料、不動 client.html、Firebase、商業閉環地圖與六守門提示詞。</b><br>
     <b>v248（32 支影片內容優化診斷入口）：</b>①<b>新增策略診斷分頁</b>：讀取選定客戶的影片庫資料，快速彙整影片數、平均觀看、互動率、分享率、Top 表現、低表現、G 階段分布與合作目標 A–E 分布。②<b>串接客戶服務台</b>：可直接開同一客戶的服務台，並複製「Stage 4 內容診斷」提示詞，把影片庫數據轉成客戶服務台可用的診斷輸入。③<b>串接商業閉環</b>：把 A 認知、B 品牌、C 信任、D 轉化、E 組織成長與 G1–G5 內容策略接起來，讓理鴻 32 支影片從建檔進入優化診斷。<b>本版只讀資料、不寫入資料，不動 client.html、商業閉環地圖、Firebase 結構與六守門提示詞。</b><br>
     <b>v247（v246 災難回復＋保留影片庫策略排序）：</b>①<b>回到安全底</b>：v246 上線後再次造成主程式卡在首頁、影片/帳號顯示 0，本版不沿用 v246 的 CSV 彈窗寫法，改以 v245 安全版為底重新升版。②<b>保留策略排序</b>：影片庫仍保留最新/最舊發布、觀看/讚/留言/分享/儲存、分享率/互動率、合作目標層 A→E / E→A、階段 G1→G5 / G5→G1、主題編號排序，供理鴻 32 支影片進入內容優化診斷。③<b>保留跨頁批次</b>：全選目前清單仍可跨頁選取目前篩選全部影片；複製目前清單與匯出目前清單 CSV 回到 v245/v244 的安全寫法，避免彈窗字串再次打斷主程式。<b>只動版本校正與回復基底，不動資料結構、client.html、自媒體商業閉環知識地圖與六守門提示詞。</b><br>
@@ -10386,8 +10392,32 @@ document.addEventListener('DOMContentLoaded',function(){
     if(typeof copyPrompt==='function') copyPrompt(prompt,'Stage 4 內容診斷提示詞'); else if(typeof copyVal==='function') copyVal(prompt,'Stage 4 內容診斷提示詞');
   };
   window._strategyOpenClient=function(){ var p=currentPack(); if(typeof _openClientWindow==='function') _openClientWindow(p.id||''); else window.open('client.html','atelierClient'); };
+  function syncStrategySelectLabel(){
+    try{ var sel=H('stratAcc'); if(!sel) return; var w=sel.closest('.csel'); if(w){ var l=w.querySelector('.csel-label'); if(l){ l.textContent=(sel.options[sel.selectedIndex]?sel.options[sel.selectedIndex].textContent:'— 選一個帳號開始診斷 —'); } } }catch(_e){}
+  }
+  window._strategyHydrate=function(){
+    try{
+      populateStrategyAcc();
+      var sel=H('stratAcc');
+      if(sel && !sel.value){
+        var guess=(H('vlibHero')||H('accHero')||H('cmpHero')||{}).value||'';
+        if(guess){ sel.value=guess; }
+        if(!sel.value){
+          var list=(typeof accounts!=='undefined'&&accounts)?accounts:(window.accounts||[]);
+          var kl=(list||[]).find(function(a){return /kl\.legal/i.test(String(a.handle||'')) || /理鴻/.test(String(a.displayName||a.name||''));});
+          if(kl) sel.value=kl.id;
+        }
+      }
+      syncStrategySelectLabel();
+      if(typeof renderStrategyDiagnosis==='function') renderStrategyDiagnosis();
+    }catch(_e){}
+  };
   window.populateStrategyAcc=populateStrategyAcc;
-  document.addEventListener('DOMContentLoaded',function(){ var t=document.querySelector('.tab[data-view="strategy"]'); if(t) t.addEventListener('click',function(){ setTimeout(function(){populateStrategyAcc();renderStrategyDiagnosis();},80); }); });
+  document.addEventListener('DOMContentLoaded',function(){
+    var t=document.querySelector('.tab[data-view="strategy"]');
+    if(t) t.addEventListener('click',function(){ [0,80,250,700,1400].forEach(function(ms){ setTimeout(function(){ if(document.getElementById('view-strategy')&&document.getElementById('view-strategy').classList.contains('on')) window._strategyHydrate(); },ms); }); });
+    [300,900,1800].forEach(function(ms){ setTimeout(function(){ if(document.getElementById('view-strategy')&&document.getElementById('view-strategy').classList.contains('on')) window._strategyHydrate(); },ms); });
+  });
 })();
 </script>
 
@@ -10470,7 +10500,7 @@ document.addEventListener('DOMContentLoaded',function(){
 <script>
 /* v239：自動防舊版快取。讓桌布捷徑／瀏覽器如果抓到舊 HTML，能自己比對線上最新版並導向。 */
 (function(){
-  var ATELIER_CURRENT_VERSION='v250';
+  var ATELIER_CURRENT_VERSION='v251';
   window.ATELIER_CURRENT_VERSION=ATELIER_CURRENT_VERSION;
   function _avNum(v){v=String(v||'');var m=v.match(/v\s*(\d+)/i);return m?parseInt(m[1],10):0;}
   function _avDetect(html){html=String(html||'');var m=html.match(/id=["']verBadge["'][^>]*>\s*(v\d+)/i)||html.match(/內部版本\s+(v\d+)/i);return m?m[1]:'';}
