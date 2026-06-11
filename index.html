@@ -8,7 +8,8 @@
 <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v245 (版本號僅留註解，不顯示於畫面)
+<!-- ATELIER 影片診斷工作台 · 內部版本 v246 (版本號僅留註解，不顯示於畫面)
+v246 更新（交辦單：Lisa 實測 v245 仍按「匯出目前清單 CSV」沒有明確反應，導致無法一次匯出 @kl.legal 32 支做核對）：【A CSV 不再黑盒】匯出目前清單改成先開「CSV 匯出預覽」彈窗，直接顯示目前清單筆數、CSV 文字框、複製 CSV 與下載 CSV 兩顆按鈕；即使瀏覽器阻擋下載，也能一鍵複製完整 CSV，不會再按了像沒反應。【B 目前清單核對強化】彈窗標題會明確顯示目前篩選清單共幾支，例如 @kl.legal 32 支；下載失敗時保留文字內容可複製給 ChatGPT 核對。【C 保留 v245 進階排序與跨頁選取】不動資料結構、client.html 與六守門提示詞。
 v245 更新（交辦單：Lisa 實測 v244 上傳綠燈後畫面仍停在 v243，且影片庫需要依發布時間、觀看數、互動率、合作目標層與 G 階段等策略維度排序）：【A 版本卡住修復】修正 verBadge 與 ATELIER_CURRENT_VERSION 仍停在 v243 的漏改問題，讓 GitHub Pages / 桌布捷徑可正確吃到 v245，也讓自動防舊版快取有正確基準。【B 影片庫進階排序】排序下拉新增最新/最舊建檔、最新/最舊發布、觀看/讚/留言/分享/儲存/分享率/互動率、合作目標層 A→E / E→A、階段 G1→G5 / G5→G1、主題編號排序，支援先選 @kl.legal 再用策略維度看 32 支影片。【C 批次跨頁選取真正修正】全選目前清單改用 window._libSelectedIds 保存跨頁選取，複製目前清單/匯出目前清單永遠吃目前篩選完整清單；手動勾選仍可只選指定影片，取消目前清單選取會真正清掉目前篩選範圍。只動影片庫排序、批次選取/複製/匯出與版本顯示，不動資料結構、client.html 與六守門提示詞。
 
 v244 更新（交辦單：Lisa 實測 v243 後發現批次工具仍容易誤解——上方已選 @kl.legal 但「全選」只選本頁 10 支，複製/匯出會被勾選狀態干擾，且沒有真正清楚歸零）：【A 目前清單優先】影片庫新增「目前清單」概念明文化；複製目前清單／匯出目前清單 CSV 一律吃目前篩選後完整清單，不被本頁勾選干擾，@kl.legal 32 支會一次輸出 32 支。【B 全選改跨頁】批次「全選」改成全選目前篩選清單（跨全部頁），不是只選第 1 頁 10 支；按鈕會顯示「全選目前清單 / 取消目前清單選取」，選取數跨頁保留。【C 清除更明確】新增/強化清除選取行為，切換篩選會自動清除不在目前清單內的選取；畫面文案顯示目前清單共 N 支、已選 N 支。只動影片庫批次選取、複製與 CSV 匯出，不動資料結構、client.html 與六守門提示詞。
@@ -853,7 +854,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v245</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v246</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -3846,8 +3847,8 @@ function renderClientFilter(){
 }
 
 /* ---- 匯出 CSV ---- */
-function exportVideos(list){
-  if(!list.length){ toast('沒有可匯出的影片'); return; }
+function _videosToCsv(list){
+  list=list||[];
   const head=['影片名稱','連結','發布日期','記錄日期','時間分級','來源標籤','內容載體','產線狀態','合作目標層','核心破題Hook','完整文案','Hashtag','Hashtag數','總秒數','開頭Hook秒','鉤子型','換鏡節奏','字幕密度','情緒起伏','爆紅歸因','客戶落地','階段','主題','素材','子題型','流量觸發命根','內容形式','觀看','讚','留言','分享','儲存','觸及','互動率%','完播率%','綜合互動率%','分享率%','收藏率%','數據來源','是否架構接不住(待優化缺口)','備註','帳號','職稱','產業','CTA類型','含自動回覆','影片CTA原文'];
   const srcLabel={public:'公開',internal:'客戶內部',mixed:'混合'};
   const rt=(n,d)=>{const v=pct(parseFloat(n)||0,parseFloat(d)||0);return v==null?'':v.toFixed(2);};
@@ -3858,15 +3859,45 @@ function exportVideos(list){
     const tagN=(v.hashtag?(v.hashtag.match(/#?[^\s#,，]+/g)||[]).length:'');
     return [v.title,v.url,v.date,v.logdate||'',timeClass(v.date).label.replace(/[🔥🌲]/g,'').trim(),v.client,v.platform||'',v.prodStatus||'',v.goal||'',v.hook||'',v.caption||'',v.hashtag||'',tagN,v.specDur||'',v.specHookSec||'',v.specHookType||'',v.specPace||'',v.specSub||'',v.specEmotion||'',v.why||'',v.apply||'',v.stage,v.themeId+' '+v.themeName,v.matName,v.sub,v.trig,v.form,v.views||'',v.likes||'',v.comments||'',v.shares||'',v.saves||'',v.reach||'',v.engrate||'',v.complete||'',engR,rt(v.shares,vw),rt(v.saves,vw),srcLabel[v.srctype]||'',v.gap?'是':'',v.note,(v.accountHandle||_acc.handle||''),(_acc.jobTitle||''),(_acc.industry||''),(v.ctaType||'無'),(v.ctaAuto?'是':''),(v.ctaText||'')];
   });
-  const csv=[head,...rows].map(r=>r.map(c=>'"'+(c||'').replace(/"/g,'""')+'"').join(',')).join('\n');
-  const blob=new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8'});
-  const a=document.createElement('a'); a.href=URL.createObjectURL(blob);
-  a.download='ATELIER影片庫_'+new Date().toISOString().slice(0,10)+'.csv';
-  a.style.display='none'; document.body.appendChild(a);
-  try{ a.click(); toast('✓ 已匯出 '+list.length+' 支 CSV'); }
-  catch(e){ toast('瀏覽器擋住下載，已準備改用複製清單'); }
-  setTimeout(function(){ try{ URL.revokeObjectURL(a.href); a.remove(); }catch(e){} },1200);
+  return [head,...rows].map(r=>r.map(c=>'"'+String(c==null?'':c).replace(/"/g,'""')+'"').join(',')).join('\n');
 }
+function _downloadCsvText(csv,filename){
+  var blob=new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8'});
+  var url=URL.createObjectURL(blob);
+  var a=document.createElement('a');
+  a.href=url; a.download=filename||('ATELIER影片庫_'+new Date().toISOString().slice(0,10)+'.csv');
+  a.rel='noopener'; a.style.display='none'; document.body.appendChild(a);
+  try{ a.click(); toast('✓ 已觸發 CSV 下載'); }
+  catch(e){ toast('下載被瀏覽器擋住，請改用複製 CSV'); }
+  setTimeout(function(){ try{ URL.revokeObjectURL(url); a.remove(); }catch(e){} },1600);
+}
+function _openCsvExportModal(list,label){
+  list=list||[];
+  if(!list.length){ toast('沒有可匯出的影片'); return; }
+  var csv=_videosToCsv(list);
+  var sh=document.getElementById('sheet'), md=document.getElementById('modal');
+  if(!sh||!md){ copyVal(csv,'CSV'); return; }
+  var safe=esc(csv);
+  var title='CSV 匯出預覽｜'+(label||'目前清單')+'｜共 '+list.length+' 支';
+  sh.innerHTML='<div style="padding:18px;position:relative">'
+    +'<button id="csvX" style="position:absolute;top:12px;right:14px;background:none;border:none;color:var(--sub);cursor:pointer;font-family:inherit">×</button>'
+    +'<div style="font-family:'Noto Serif TC',serif;font-size:17px;font-weight:900;color:#5C0F14;margin-bottom:4px">'+esc(title)+'</div>'
+    +'<div style="font-size:12.5px;color:var(--sub);line-height:1.7;margin-bottom:10px">如果瀏覽器擋下載，直接按「複製 CSV」貼回 ChatGPT 核對。這份內容吃的是目前篩選後完整清單，不是本頁 10 支。</div>'
+    +'<textarea id="csvText" spellcheck="false" style="width:100%;box-sizing:border-box;min-height:280px;max-height:58vh;resize:vertical;border:1px solid var(--gold-soft);border-radius:10px;background:var(--warm-white,#FDFBF8);padding:12px;font-size:12px;line-height:1.55;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--ink)">'+safe+'</textarea>'
+    +'<div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">'
+    +'<button class="btn" id="csvCopy" style="flex:1 1 180px;background:#A51820;color:#fff;-webkit-text-fill-color:#fff">複製 CSV</button>'
+    +'<button class="btn btn-ghost" id="csvDown" style="flex:1 1 180px">下載 CSV</button>'
+    +'<button class="btn btn-ghost" id="csvClose" style="flex:0 0 auto">關閉</button></div>'
+    +'</div>';
+  md.style.alignItems='center'; sh.style.maxWidth='820px'; sh.style.width='calc(100% - 32px)'; md.classList.add('show');
+  function close(){ md.classList.remove('show'); sh.innerHTML=''; md.style.alignItems=''; sh.style.maxWidth=''; sh.style.width=''; }
+  var tx=document.getElementById('csvText');
+  document.getElementById('csvCopy').onclick=function(){ copyVal(tx.value,'CSV · '+list.length+' 支'); };
+  document.getElementById('csvDown').onclick=function(){ _downloadCsvText(tx.value,'ATELIER影片庫_'+(label||'目前清單')+'_'+new Date().toISOString().slice(0,10)+'.csv'); };
+  document.getElementById('csvClose').onclick=close; document.getElementById('csvX').onclick=close;
+  md.onclick=function(e){ if(e.target===md) close(); };
+}
+function exportVideos(list,label){ _openCsvExportModal(list,label||'目前清單'); }
 function _libCurrentList(){ return (window._lastLibFiltered&&window._lastLibFiltered.length)?window._lastLibFiltered.slice():videos.slice(); }
 function _videoAuditText(list,label){
   list=list||[];
@@ -3891,7 +3922,7 @@ function _copyVideoAuditList(list,label){
   if(!list.length){ toast('目前沒有可複製的影片清單'); return; }
   copyPrompt(_videoAuditText(list,label||'目前清單'), (label||'目前清單')+' · '+list.length+' 支');
 }
-function _exportCurrentCsv(){ var list=_libCurrentList(); exportVideos(list); }
+function _exportCurrentCsv(){ var list=_libCurrentList(); exportVideos(list,'目前篩選清單'); }
 if($('exportBtn')) $('exportBtn').onclick=_exportCurrentCsv;
 if($('libCopyCurrent')) $('libCopyCurrent').onclick=function(){ _copyVideoAuditList(_libCurrentList(),'目前篩選清單'); };
 function _libFilteredIds(){ return (_libCurrentList()||[]).map(function(v){return String(v.id);}).filter(Boolean); }
@@ -3924,7 +3955,7 @@ if($('libSelAllBtn')) $('libSelAllBtn').onclick=function(){
   renderLibrary(); updateLibSel();
 };
 if($('bulkDel')) $('bulkDel').onclick=async function(){ var ids=libSelIds(); if(!ids.length){ toast('先勾選要刪的影片'); return; } var removed=videos.filter(v=>ids.includes(String(v.id))); var names=removed.map(v=>'· '+(v.title||'(未命名)')).join('\n'); var a=prompt('即將刪除這 '+removed.length+' 支：\n'+names+'\n\n刪除後可在提示列「復原」幾秒內救回。確定請輸入：刪除'); if(a!=='刪除') return; videos=videos.filter(v=>!ids.includes(String(v.id))); await saveVideos(); renderAll(); toast('已刪除 '+removed.length+' 支 · 點這裡復原', async function(){ videos=videos.concat(removed); await saveVideos(); renderAll(); toast('已復原'); }); };
-if($('bulkExport')) $('bulkExport').onclick=function(){ var ids=libSelIds(); var list=ids.length?videos.filter(v=>ids.includes(String(v.id))):_libCurrentList(); exportVideos(list); };
+if($('bulkExport')) $('bulkExport').onclick=function(){ var ids=libSelIds(); var list=ids.length?videos.filter(v=>ids.includes(String(v.id))):_libCurrentList(); exportVideos(list,ids.length?'選取影片':'目前篩選清單'); };
 if($('bulkCopy')) $('bulkCopy').onclick=function(){ var ids=libSelIds(); if(!ids.length){ _copyVideoAuditList(_libCurrentList(),'目前篩選清單'); return; } var picked=videos.filter(v=>ids.includes(String(v.id))); var blocks=picked.map(function(v){ var L=[]; if(v.title)L.push('【標題】'+v.title); if(v.hook)L.push('【Hook】'+v.hook); if(v.why)L.push('【爆紅歸因】'+v.why); if(v.apply)L.push('【客戶落地】'+v.apply); if(v.icp)L.push('【目標人群】'+v.icp); if(v.caption)L.push('【完整文案】'+v.caption); if(v.transcript)L.push('【逐字稿】'+v.transcript); if(v.note)L.push('【備註】'+v.note); return (v.title||'(未命名)')+'\n'+L.join('\n'); }); copyVal(blocks.join('\n\n──────\n\n'),'已複製 '+picked.length+' 支重點'); };
 // v74：選取影片 → 產生「幫客戶套寫腳本」的提示詞
 // v80：影片庫卡片內，單項複製 / 整支複製
@@ -4446,6 +4477,7 @@ function renderManual(){
   <div class="form-card" style="border-left:3px solid var(--gold)">
     <div class="stitle" style="font-size:15px;color:var(--rouge)">更新紀錄 · 還沒做的</div>
     <p style="font-size:13px;color:var(--text);line-height:1.85;margin-top:8px">
+    <b>v246（CSV 匯出預覽＋下載/複製雙保險）：</b>①<b>修正匯出目前清單 CSV 按了像沒反應</b>：改成先開 CSV 匯出預覽彈窗，明確顯示目前清單共幾支，並提供「下載 CSV」與「複製 CSV」兩個出口。②<b>下載被瀏覽器擋也不會卡住</b>：CSV 文字會留在彈窗中，可直接複製貼回 ChatGPT 做 32 支核對。③<b>保留 v245 排序與跨頁選取</b>：目前清單仍吃上方篩選後的完整清單，不被本頁 10 支勾選影響。<b>只動 CSV 匯出顯示/下載/複製，不動資料結構、client.html 與六守門提示詞。</b><br>
     <b>v245（版本卡住修復＋影片庫進階排序）：</b>①<b>修正版本顯示漏改</b>：v244 檔案實際內容仍有 verBadge / ATELIER_CURRENT_VERSION 停在 v243，導致 GitHub 綠燈後畫面仍顯示舊版；本版補齊版本號，讓自動防舊版快取可用正確基準判斷。②<b>新增策略排序</b>：影片庫排序新增最新/最舊發布、觀看/讚/留言/分享/儲存、分享率/互動率、合作目標層 A→E / E→A、階段 G1→G5 / G5→G1、主題編號排序。③<b>批次選取更清楚</b>：全選目前清單會跨頁選取目前篩選全部影片；複製目前清單與匯出目前清單 CSV 永遠吃完整篩選清單，手動勾選則仍可只處理指定影片。<b>只動影片庫排序、批次選取/複製/匯出與版本顯示，不動資料結構、client.html 與六守門提示詞。</b><br>
     <b>v244（批次選取與目前清單修正）：</b>①<b>複製目前清單 / 匯出目前清單 CSV</b> 一律使用上方篩選後的完整清單，不被本頁勾選狀態干擾；例如主角客戶已選 @kl.legal，就會一次輸出 32 支，不再只出第 1 頁 10 支。②<b>全選改跨頁</b>：批次工具的全選會選取目前篩選清單全部頁面，不只是本頁。③<b>清除選取更明確</b>：按鈕會顯示「全選目前清單 / 取消目前清單選取」，並顯示目前清單共幾支、已選幾支。<b>只動影片庫批次選取、複製與 CSV 匯出，不動資料結構、client.html 與六守門提示詞。</b><br>
     <b>v243（匯出目前清單修穩）：</b>①<b>複製目前清單</b>：影片庫批次工具新增一顆清楚的複製按鈕，直接把目前篩選結果整理成純文字核對清單，方便 Lisa 丟回 ChatGPT 對本機資料夾。②<b>CSV 匯出不再黑盒</b>：下載改用更穩的 DOM click，按鈕文案改「匯出目前清單CSV」；未勾選時匯出目前篩選全部，已勾選時只匯出勾選項。③<b>核對流程更直覺</b>：不用再先全選每頁 10 支，也不用懷疑按鈕有沒有反應。<b>只動影片庫匯出/複製行為，不動資料結構、client.html 與六守門提示詞。</b><br>
@@ -10276,7 +10308,7 @@ document.addEventListener('DOMContentLoaded',function(){
 })();
 </script>
 
-<!-- v245：修正版本卡住＋影片庫進階排序＋目前清單跨頁批次選取；保留 v244/v243 匯出修穩、v242 完整盤點、v241 重複核對、v240 內容錯配與 v239 防快取 -->
+<!-- v246：修正 CSV 匯出預覽與複製/下載雙保險；保留 v245 進階排序、v244/v243 目前清單、v242 完整盤點、v241 重複核對、v240 內容錯配與 v239 防快取 -->
 <div id="stickyCardSave" style="display:none;position:fixed;bottom:84px;right:14px;z-index:10000;flex-direction:column;gap:6px;background:#fff;border:1.5px solid var(--rouge);border-radius:12px;padding:10px 14px;box-shadow:0 6px 24px rgba(0,0,0,.15);max-width:280px">
   <div style="font-size:11px;color:var(--gold-dark);font-weight:700;letter-spacing:.4px;text-transform:uppercase">Quick Save · 快速儲存</div>
   <button id="stickyCardBtn" class="btn btn-go" type="button" onclick="_cardQuickAction()" style="width:100%;font-size:13px;padding:9px 14px"><svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;vertical-align:-2px;margin-right:4px"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8M7 3v5h8"/></svg>儲存這支影片＋</button>
@@ -10355,7 +10387,7 @@ document.addEventListener('DOMContentLoaded',function(){
 <script>
 /* v239：自動防舊版快取。讓桌布捷徑／瀏覽器如果抓到舊 HTML，能自己比對線上最新版並導向。 */
 (function(){
-  var ATELIER_CURRENT_VERSION='v245';
+  var ATELIER_CURRENT_VERSION='v246';
   window.ATELIER_CURRENT_VERSION=ATELIER_CURRENT_VERSION;
   function _avNum(v){v=String(v||'');var m=v.match(/v\s*(\d+)/i);return m?parseInt(m[1],10):0;}
   function _avDetect(html){html=String(html||'');var m=html.match(/id=["']verBadge["'][^>]*>\s*(v\d+)/i)||html.match(/內部版本\s+(v\d+)/i);return m?m[1]:'';}
