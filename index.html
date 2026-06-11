@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="color-scheme" content="light only">
 <meta name="supported-color-schemes" content="light">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v231 (版本號僅留註解，不顯示於畫面)
+<!-- ATELIER 影片診斷工作台 · 內部版本 v232 (版本號僅留註解，不顯示於畫面)
+v232 更新（接續 v231 交接書，小步修搜尋與量產提醒）：【A 中文單字搜尋再收緊】csel 帳號下拉在搜尋 1–2 個中文字時，若已找到「handle／顯示名稱／帳號名稱開頭命中」的最高層結果，就只保留同層級結果，讓「理」優先對準理鴻，不再讓名稱含心理、主理人或職稱含管理的帳號混在第一批結果裡。【B 卡B txt 匯入防呆】_cardFileRead 先檢查副檔名／MIME，不是 .txt 或純文字就清楚提示不讀入；讀入後若內容不像 ATELIER 卡片，只放進貼卡框並提醒先檢查，不自動亂填。【C QUICK SAVE 分級提醒＋小幫手讀待補】待補欄位新增 severity 分級，QUICK SAVE 會區分嚴重欄位與可選／可稍後欄位；系統小幫手可讀目前待補清單，回答「現在缺什麼」並建議按一次補全部。未動資料結構、未動 client.html、未動六守門常數。
 v231 更新（交辦單：Lisa 實測 v230 後提出三個量產痛點——①卡B txt 檔要能直接丟進工作台，不必打開複製貼上②待補清單偵測到多個缺欄時，要有一顆「一次涵蓋全部＋重出卡B」提示詞③右下 QUICK SAVE 也要同步顯示目前缺哪幾欄，不要只提供儲存鈕）：【A 卡B 檔案直丟】歸類卡貼卡區新增 .txt 檔案匯入列，可點選檔案或拖曳 txt 到貼卡區／文字框，自動讀入 pasteBox、刷新待補清單與快速儲存提示，省去打開檔案複製貼上的步驟。【B 多欄待補一鍵提示詞】renderInputTodo 在缺漏欄位大於 1 個時新增「一次補全部＋重出卡B」總按鈕；新增 _todoCopyAll(mode)，會把所有待補分類欄位與各自合法選項合併成同一支提示詞，要求 AI 一次判斷所有缺口並完整重出卡B。【C QUICK SAVE 待補提醒】sticky 快速儲存卡新增 #stickyCardTodo，會同步顯示「還缺：拍攝素材、子題型」或「關鍵欄位已填齊」，讓使用者在右下角就知道按下儲存前還有哪些欄位沒有注入。未動資料結構、未動 client.html、未動六守門常數。
 v230 更新（交辦單：Lisa 實測 v229 後回報兩件流程痛點——①儲存完歸零後畫面停在表單中段，下一支還要自己滑回歸類卡貼卡區②影片庫主角搜尋單一中文字「理」仍把深層/職稱含字的帳號排在理鴻前面）：【A 存檔後回到貼卡入口】saveBtn 成功儲存並清空表單後，改為自動切回「輸入影片 > ③ 歸類卡」，捲到貼卡區並 focus pasteBox，讓下一支可以直接貼卡，不再停在下方欄位。同步刷新 QUICK SAVE 狀態。【B 中文單字搜尋強化】csel 帳號搜尋新增 data-name/data-job/data-ind/data-type 分層欄位與 _cselPrimaryBestRank；搜尋單一中文字時，若有帳號的顯示名稱/名稱以該字開頭（例如「理鴻」），優先只顯示這類最高命中，不再讓「主理人」「管理」「整理」等職稱/備註含字帳號排前。未動資料結構、未動 client.html、未動六守門常數。
 v229 更新（交辦單：Lisa 實測 v228 後回報兩個介面問題——①貼歸類卡後右下浮動元件會遮擋操作區②提示詞預覽彈窗內仍有外來 emoji icon）：【A 浮動小幫手避開輸入區】系統小幫手從右下改為左下堆疊在「服務台小窗」上方，避開 QUICK SAVE 快速儲存卡與表單操作區；小幫手面板同步改從左下展開。當全站 modal 開啟時，自動隱藏 QUICK SAVE、小幫手與服務台小窗按鈕，避免彈窗被浮動元件蓋住。【B 品牌 icon 統一】copyPrompt 提示詞預覽的編輯／返回／還原／唯讀狀態改成 ATELIER 線性 SVG icon，不再使用 📝／✏️／🔒 等彩色 emoji；關閉鍵也改品牌線性 X。服務台小窗入口也改品牌方格 SVG。未動資料結構、未動 client.html、未動六守門常數。
@@ -829,7 +830,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v231</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v232</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -3160,15 +3161,29 @@ $('pasteClr').onclick=()=>{ $('pasteBox').value=''; $('parseMsg').innerHTML=''; 
 /* v231：卡B txt 檔案可直接丟進貼卡區，不必打開檔案複製貼上 */
 window._cardFileRead=function(file){
   if(!file) return;
+  var fname=String(file.name||'');
+  var isTxt=/\.txt$/i.test(fname) || /^text\//i.test(String(file.type||''));
+  if(!isTxt){
+    var msg=document.getElementById('parseMsg');
+    if(msg) msg.innerHTML='<div style="color:var(--rouge)">這裡目前只支援 .txt / 純文字卡B 檔案。請換成 txt，或直接複製文字貼進貼卡框。</div>';
+    if(typeof toast==='function') toast('檔案格式不支援，請使用 .txt');
+    return;
+  }
   if(file.size>1024*1024*2){ if(typeof toast==='function') toast('檔案太大，請改貼文字內容'); return; }
   var rd=new FileReader();
   rd.onload=function(){
     var txt=String(rd.result||'');
     var pb=document.getElementById('pasteBox'); if(pb){ pb.value=txt; pb.dispatchEvent(new Event('input',{bubbles:true})); }
-    var msg=document.getElementById('parseMsg'); if(msg) msg.innerHTML='<div style="color:#2F6B4F">已讀入檔案：'+esc(file.name||'txt')+'，可按「自動填入下面欄位」。</div>';
+    var looksLike=/===\s*ATELIER(歸類卡|帳號分析卡)\s*===/.test(txt);
+    var msg=document.getElementById('parseMsg');
+    if(msg){
+      msg.innerHTML=looksLike
+        ? '<div style="color:#2F6B4F">已讀入檔案：'+esc(file.name||'txt')+'，可按「自動填入下面欄位」。</div>'
+        : '<div style="color:var(--gold-dark)">已讀入檔案：'+esc(file.name||'txt')+'，但內容不像 ATELIER 卡片。系統只先放進貼卡框，請確認後再按「自動填入下面欄位」。</div>';
+    }
     if(typeof renderInputTodo==='function') renderInputTodo();
     if(typeof _cardStickyUpdate==='function') _cardStickyUpdate();
-    if(typeof toast==='function') toast('已匯入卡B文字檔');
+    if(typeof toast==='function') toast(looksLike?'已匯入卡B文字檔':'已讀入文字，請先檢查內容');
   };
   rd.onerror=function(){ if(typeof toast==='function') toast('讀取檔案失敗，請改用複製貼上'); };
   rd.readAsText(file,'utf-8');
@@ -4154,11 +4169,20 @@ window._cardStickyUpdate=function(){
   bar.style.display=show?'flex':'none';
   var todo=document.getElementById('stickyCardTodo');
   if(todo && show){
-    var gaps=(typeof _inputTodoGaps==='function'?_inputTodoGaps():[]);
+    var summary=(typeof _inputTodoPublicSummary==='function')?_inputTodoPublicSummary():null;
+    var gaps=summary?summary.gaps:((typeof _inputTodoGaps==='function'?_inputTodoGaps():[]));
     if(gaps.length){
-      todo.style.color='var(--rouge)';
-      todo.style.background='rgba(165,24,32,.055)';
-      todo.innerHTML='<b>還缺：</b>'+gaps.map(function(f){return esc(f.label.replace('（必填）','').replace('（第5層）',''));}).join('、')+'<br><span style="color:var(--sub)">仍可儲存，但建議先補完再入庫</span>';
+      var major=summary?summary.major:gaps;
+      var soft=summary?summary.soft:[];
+      if(major.length){
+        todo.style.color='var(--rouge)';
+        todo.style.background='rgba(165,24,32,.055)';
+        todo.innerHTML='<b>建議先補：</b>'+major.map(function(f){return esc(f.label.replace('（必填）','').replace('（第5層）',''));}).join('、')+(soft.length?'<br><span style="color:var(--sub)">可稍後：'+soft.map(function(f){return esc(f.label.replace('（必填）','').replace('（第5層）',''));}).join('、')+'</span>':'')+'<br><span style="color:var(--sub)">仍可儲存，但補齊後入庫更穩</span>';
+      }else{
+        todo.style.color='var(--gold-dark)';
+        todo.style.background='var(--warm)';
+        todo.innerHTML='<b>可稍後補：</b>'+soft.map(function(f){return esc(f.label.replace('（必填）','').replace('（第5層）',''));}).join('、')+'<br><span style="color:var(--sub)">主要分類已齊，可先儲存</span>';
+      }
     }else{
       todo.style.color='#2F6B4F';
       todo.style.background='#F0F5EC';
@@ -4174,7 +4198,8 @@ function renderManual(){
   <div class="form-card" style="border-left:3px solid var(--gold)">
     <div class="stitle" style="font-size:15px;color:var(--rouge)">更新紀錄 · 還沒做的</div>
     <p style="font-size:13px;color:var(--text);line-height:1.85;margin-top:8px">
-    <b>v231（這版 · 卡B檔案直丟＋多欄待補總提示＋快速儲存缺欄提醒）：</b>①<b>卡B txt 可直接匯入</b>：在「歸類卡」貼卡區可點選 .txt 檔或把檔案拖進來，系統會自動把檔案內容放進貼卡框，不必先打開文件複製。②<b>待補清單新增總按鈕</b>：若同時缺「拍攝素材、子題型」等多欄，會出現「一次補全部＋重出卡B」，把所有缺口合成同一支提示詞，一次判斷並重出整張卡B。③<b>QUICK SAVE 同步提醒缺欄</b>：右下快速儲存卡會顯示目前還缺哪幾欄或已填齊，避免滑到下方才發現還有欄位沒注入。<b>只動貼卡輸入、待補提示與快速儲存提醒；沒動資料結構、沒動六守門提示詞。</b><br>
+    <b>v232（這版 · 中文單字搜尋收緊＋txt 匯入防呆＋小幫手讀待補）：</b>①<b>中文單字搜尋再收緊</b>：影片庫主角客戶搜尋「理」時，若系統已找到顯示名稱／帳號名稱開頭命中的帳號，會先鎖定同層級結果，讓 @kl.legal 理鴻優先浮出，不再被「心理、主理人、管理」這類含字結果干擾。②<b>卡B txt 匯入加防呆</b>：非 .txt／非純文字檔會清楚提示不讀入；讀到不像 ATELIER 卡片的文字時，只先放進貼卡框並提醒檢查，不會引導亂填。③<b>QUICK SAVE 缺欄提醒分級</b>：右下快速儲存會分成「建議先補」與「可稍後補」，不再把可選欄位過度警告；小幫手也能回答目前缺哪些欄位，提醒你按「一次補全部＋重出卡B」。<b>只動 index.html 的搜尋排序、貼卡匯入防呆、待補/小幫手讀取；沒動資料結構、沒動 client.html、沒動六守門提示詞。</b><br>
+    <b>v231（卡B檔案直丟＋多欄待補總提示＋快速儲存缺欄提醒）：</b>①<b>卡B txt 可直接匯入</b>：在「歸類卡」貼卡區可點選 .txt 檔或把檔案拖進來，系統會自動把檔案內容放進貼卡框，不必先打開文件複製。②<b>待補清單新增總按鈕</b>：若同時缺「拍攝素材、子題型」等多欄，會出現「一次補全部＋重出卡B」，把所有缺口合成同一支提示詞，一次判斷並重出整張卡B。③<b>QUICK SAVE 同步提醒缺欄</b>：右下快速儲存卡會顯示目前還缺哪幾欄或已填齊，避免滑到下方才發現還有欄位沒注入。<b>只動貼卡輸入、待補提示與快速儲存提醒；沒動資料結構、沒動六守門提示詞。</b><br>
     <b>v230（存檔後回貼卡區＋中文單字搜尋再強化）：</b>①<b>存檔後自動回到下一支入口</b>：儲存成功、表單清空後，畫面會自動切回「輸入影片 ＞ ③ 歸類卡」，捲到貼卡 textarea 並把游標放進去，下一支影片可以直接貼卡，不會再停在下方手動欄位。②<b>主角搜尋「理」更準</b>：帳號搜尋改成分層判斷，顯示名稱/帳號名稱開頭命中會壓過職稱、產業、備註的含字命中。像「理」會優先抓「理鴻」，不會再讓「主理人」「管理」這類含字帳號排前面。<b>只動存檔後定位與搜尋排序；沒動資料結構、沒動六守門提示詞。</b><br>
     <b>v229（小幫手不遮擋＋提示詞彈窗 icon 品牌化）：</b>①<b>小幫手避開輸入區</b>：右下角已有 QUICK SAVE 快速儲存卡，貼歸類卡時會浮出來，所以小幫手改成左下堆疊在「服務台小窗」上方，不再擠在右下擋住儲存區。②<b>彈窗開啟時自動收乾淨</b>：當補完提示詞、重出卡B、確認框等 modal 開啟時，QUICK SAVE、小幫手與服務台小窗按鈕會自動隱藏，避免浮動元件蓋在彈窗上。③<b>提示詞預覽 icon 品牌化</b>：把提示詞彈窗裡的編輯、返回、還原、唯讀狀態從彩色 emoji 改成 ATELIER 線性 SVG icon；服務台小窗入口也改成品牌方格 icon。<b>只動浮動元件位置與 icon 呈現；沒動資料結構、沒動六守門提示詞。</b><br>
     <b>v228（修搜尋精準度＋帳號影片快覽＋放寬版面對照）：</b>①<b>影片庫主角搜尋更精準</b>：搜尋單一中文字（例如「理」）時，會優先看 handle、顯示名稱、職稱、產業、領域、身份這些主欄位；如果主欄位已經命中，就不再讓帳號深層備註裡剛好含到同一個字的不相關帳號排在前面。②<b>帳號管理的「拆解過 N 支影片」可以點了</b>：點下去會跳出這個帳號底下的影片清單，包含標題、發布/建檔日期、階段主題、觀看/讚/留言/分享、狀態與 Hook，也可以一鍵跳到影片庫看全部或定位單支。③<b>版面對照比較不再只卡 3 個對標</b>：從影片庫系統建議帶去版面對照時，不會先砍掉你勾的對標；比較區上限放寬為主角＋最多 8 個對標，表格可橫向捲動，先看完整池再縮小。<b>只動搜尋排序、帳號影片快覽與版面對照容量；沒動資料結構、沒動六守門提示詞。</b><br>
@@ -4453,19 +4478,38 @@ function renderAll(){
 }
 /* ═══════════ v215：輸入表單「待補清單＋逐欄補完提示詞」 ═══════════ */
 var _INPUT_TODO_FIELDS=[
-  {id:'f-title',label:'影片名稱（必填）',manual:true,hint:'必填，請自己填'},
-  {id:'f-account',label:'連結到帳號',manual:true,hint:'可在⑥下拉手動選'},
-  {id:'f-theme',label:'主題'},
-  {id:'f-stage',label:'階段'},
-  {id:'f-mat',label:'拍攝素材（第5層）'},
-  {id:'f-sub',label:'子題型（第5層）'},
-  {id:'f-trig',label:'流量觸發'},
-  {id:'f-form',label:'內容形式'},
-  {id:'f-goal',label:'合作目標層'}
+  {id:'f-title',label:'影片名稱（必填）',manual:true,hint:'必填，請自己填',severity:'major'},
+  {id:'f-account',label:'連結到帳號',manual:true,hint:'可在⑥下拉手動選；若卡B有 @handle，系統會盡量回接既有帳號',severity:'soft'},
+  {id:'f-theme',label:'主題',severity:'major'},
+  {id:'f-stage',label:'階段',severity:'major'},
+  {id:'f-mat',label:'拍攝素材（第5層）',severity:'major'},
+  {id:'f-sub',label:'子題型（第5層）',severity:'major'},
+  {id:'f-trig',label:'流量觸發',severity:'major'},
+  {id:'f-form',label:'內容形式',severity:'soft'},
+  {id:'f-goal',label:'合作目標層',severity:'soft'}
 ];
 function _inputTodoGaps(){
   return _INPUT_TODO_FIELDS.filter(function(f){ var el=document.getElementById(f.id); return el && (!el.value || el.value===''); });
 }
+function _inputTodoSplitGaps(gaps){
+  gaps=gaps||_inputTodoGaps();
+  return {
+    major:gaps.filter(function(f){return f.severity==='major';}),
+    soft:gaps.filter(function(f){return f.severity!=='major';}),
+    ai:gaps.filter(function(f){return !f.manual;})
+  };
+}
+function _inputTodoPublicSummary(){
+  var gaps=(typeof _inputTodoGaps==='function'?_inputTodoGaps():[]);
+  if(!gaps.length) return {text:'目前關鍵欄位已填齊，可以直接儲存。',gaps:[],major:[],soft:[],ai:[]};
+  var sp=_inputTodoSplitGaps(gaps);
+  return {
+    text:(sp.major.length?'建議先補：'+sp.major.map(function(f){return f.label.replace('（必填）','').replace('（第5層）','');}).join('、'):'主要分類已齊')+(sp.soft.length?'；可稍後補：'+sp.soft.map(function(f){return f.label.replace('（必填）','').replace('（第5層）','');}).join('、'):''),
+    gaps:gaps,major:sp.major,soft:sp.soft,ai:sp.ai
+  };
+}
+window._inputTodoSplitGaps=_inputTodoSplitGaps;
+window._inputTodoPublicSummary=_inputTodoPublicSummary;
 function renderInputTodo(){
   var box=document.getElementById('inputTodo'); if(!box) return;
   var anyFilled=_INPUT_TODO_FIELDS.some(function(f){ var el=document.getElementById(f.id); return el && el.value && el.value!==''; });
@@ -4478,7 +4522,8 @@ function renderInputTodo(){
     if(typeof _cardStickyUpdate==='function') _cardStickyUpdate();
     return;
   }
-  var aiGaps=gaps.filter(function(f){return !f.manual;});
+  var split=(typeof _inputTodoSplitGaps==='function')?_inputTodoSplitGaps(gaps):{major:gaps,soft:[],ai:gaps.filter(function(f){return !f.manual;})};
+  var aiGaps=split.ai;
   var topAction='';
   if(aiGaps.length>1){
     topAction='<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;background:#fff;border:1px solid var(--gold-soft);border-radius:8px;padding:8px 10px;margin:8px 0 4px">'
@@ -4494,12 +4539,13 @@ function renderInputTodo(){
       var _tb=function(mode,label,solid){ return '<button type="button" onclick="_todoCopy(\''+f.id+'\',\''+mode+'\')" style="flex:none;font-size:11px;font-weight:700;padding:4px 9px;border:1px solid var(--gold-dark);background:'+(solid?'var(--gold-dark)':'#fff')+';color:'+(solid?'#fff':'var(--gold-dark)')+';border-radius:6px;cursor:pointer;font-family:inherit">'+label+'</button>'; };
       right='<div style="display:flex;gap:5px;flex:none;flex-wrap:wrap;justify-content:flex-end">'+_tb('only','只補這欄',false)+_tb('review','補＋我先看',false)+_tb('card','補＋重出卡B',true)+'</div>';
     }
-    return '<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:6px 0;border-top:1px solid var(--gold-soft);font-size:12.5px"><span>'+esc(f.label)+'</span>'+right+'</div>';
+    var badge=f.severity==='major'?'<span style="font-size:10px;color:var(--rouge);font-weight:800;margin-left:6px">建議先補</span>':'<span style="font-size:10px;color:var(--sub);font-weight:700;margin-left:6px">可稍後</span>';
+    return '<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:6px 0;border-top:1px solid var(--gold-soft);font-size:12.5px"><span>'+esc(f.label)+badge+'</span>'+right+'</div>';
   }).join('');
   box.style.display='block';
   box.innerHTML='<div style="border:1px solid var(--gold-dark);background:var(--warm);border-radius:9px;padding:10px 12px;margin-bottom:10px">'
     +'<div style="font-weight:700;color:var(--gold-dark);font-size:13px">待補清單 · 這張卡還有 '+gaps.length+' 欄沒填到</div>'
-    +'<div style="font-size:10.5px;color:var(--sub);margin:2px 0 4px">不想填的可忽略，這只是提醒、不擋你存檔。每欄三顆鈕：<b>只補這欄</b>＝只判斷、不出卡；<b>補＋我先看</b>＝判完先給你看、先不出卡；<b>補＋重出卡B</b>＝判完直接重出整張卡B。若缺多欄，可用總按鈕一次處理。</div>'
+    +'<div style="font-size:10.5px;color:var(--sub);margin:2px 0 4px">紅色「建議先補」會影響卡片完整度；灰色「可稍後」不過度警告、不擋你存檔。每欄三顆鈕：<b>只補這欄</b>＝只判斷、不出卡；<b>補＋我先看</b>＝判完先給你看、先不出卡；<b>補＋重出卡B</b>＝判完直接重出整張卡B。若缺多欄，可用總按鈕一次處理。</div>'
     +topAction+rows+'</div>';
   if(typeof _cardStickyUpdate==='function') _cardStickyUpdate();
 }
@@ -9706,7 +9752,10 @@ document.addEventListener('DOMContentLoaded',function(){
             /* v230：若有顯示名稱/主欄位高命中，就只保留同層級結果；避免「理」被主理人/管理/備註含字洗掉 */
             if(accpick && qtxt && ok && bestPrimary<999){
               var rj=_cselPrimaryBestRank(opts[j],qtxt);
-              ok=(rj<999 && (rj<=bestPrimary+6));
+              var nq=_cselNorm(qtxt);
+              var shortHan=/^[㐀-鿿豈-﫿]{1,2}$/.test(qtxt);
+              var tight=(shortHan && bestPrimary<=3) ? 0 : 6;
+              ok=(rj<999 && (rj<=bestPrimary+tight));
             }
             opts[j].style.display=ok?'':'none';
           }
@@ -9837,6 +9886,7 @@ document.addEventListener('DOMContentLoaded',function(){
   function hView(){var v=document.querySelector('.view.on'); return v&&v.id?v.id.replace('view-',''):'input'}
   function hTabName(v){var t=document.querySelector('.tab[data-view="'+v+'"]'); return t?t.textContent.replace(/\s+/g,' ').trim():v}
   function hCurrent(){var v=hView(); var extra=''; try{ if(v==='library'&&H('vlibHero')) extra='；主角='+((H('vlibHero').selectedOptions[0]||{}).textContent||'未選'); if(v==='input'){ var sub=['prep','flow','card'].find(function(x){var el=H('sub-'+x);return el&&el.style.display!=='none'}); extra='；子分頁='+(sub==='prep'?'準備動作':sub==='flow'?'操作流程':sub==='card'?'歸類卡':''); }}catch(e){} return '目前位置：'+hTabName(v)+extra+'。已存影片 '+((window.videos||[]).length||0)+' 支；帳號 '+((window.accounts||[]).length||0)+' 個。'}
+  function hTodoSummary(){try{ if(typeof _inputTodoPublicSummary==='function'){ var s=_inputTodoPublicSummary(); return s; } }catch(e){} return null;}
   function hButton(view,label,q,primary){return '<button class="sysHelpAct '+(primary?'primary':'')+'" type="button" onclick="_sysHelpGo('+JSON.stringify(view)+','+JSON.stringify(q||'')+')">'+hx(label)+'</button>'}
   function hCard(title,body,actions){return '<div class="sysHelpCard"><b>'+hx(title)+'</b><div>'+body+'</div>'+(actions?'<div class="sysHelpActions">'+actions+'</div>':'')+'</div>'}
   function hFindAccounts(q){var nq=hn(q).replace(/^@/,''); if(!nq) return []; return (window.accounts||[]).map(function(a){var fields=[a.handle,a.displayName,a.name,a.jobTitle,a.industry,a.domain,(a.types||[]).join(' ')]; var blob=hn(fields.join(' ')); var handle=hn(a.handle||'').replace(/^@/,''); var score=0; if(handle===nq) score+=80; if(handle.indexOf(nq)===0) score+=60; if(hn(a.displayName||'').indexOf(nq)>=0) score+=45; if(hn(a.name||'').indexOf(nq)>=0) score+=35; if(blob.indexOf(nq)>=0) score+=20; return {a:a,score:score}; }).filter(function(x){return x.score>0}).sort(function(a,b){return b.score-a.score}).slice(0,5);}
@@ -9846,8 +9896,9 @@ document.addEventListener('DOMContentLoaded',function(){
     ['sopBlock','sopBlock_v2','sopBlock_v3','sopBlock_v4','opGuideInput'].forEach(function(id){var el=H(id); if(el) docs.push({t:'流程SOP',n:id,txt:el.innerText||''});});
     return docs.filter(function(d){return hn((d.n||'')+' '+(d.txt||'')).indexOf(nq)>=0;}).slice(0,4);
   }
-  function hDefault(){var v=hView(); var chips=['卡B 要貼哪裡','流程② 怎麼跑','為什麼影片沒連到帳號','我要找 @kl.legal 的影片','分析工具在哪裡','說明書在哪']; var html='<div class="sysHelpCard"><b>我是讀取式小幫手</b><div class="sysHelpMini">'+hx(hCurrent())+'<br>我會讀目前系統的分頁、說明書、流程 SOP、影片庫與帳號資料；安全版只回答、導頁與帶入搜尋，不會寫入資料。</div></div><div class="sysHelpChips">'; chips.forEach(function(c){html+='<button class="sysHelpChip" type="button" onclick="_sysHelpAsk('+JSON.stringify(c)+')">'+hx(c)+'</button>';}); html+='</div>'; if(v==='library') html+=hCard('你現在在影片庫','可以問我「主角客戶怎麼搜」「只看某帳號影片」「分析工具在哪裡」。',hButton('library','留在影片庫','',true)+hButton('search','到搜尋','')); if(v==='input') html+=hCard('你現在在輸入影片','常用問題是流程①/②/③/④、卡A/B/C 要貼哪裡、待補清單怎麼用。',hButton('input','到歸類卡','card',true)+hButton('input','到操作流程','flow')); return html; }
+  function hDefault(){var v=hView(); var chips=['卡B 要貼哪裡','流程② 怎麼跑','為什麼影片沒連到帳號','我要找 @kl.legal 的影片','分析工具在哪裡','現在缺什麼','說明書在哪']; var html='<div class="sysHelpCard"><b>我是讀取式小幫手</b><div class="sysHelpMini">'+hx(hCurrent())+'<br>我會讀目前系統的分頁、說明書、流程 SOP、影片庫與帳號資料；安全版只回答、導頁與帶入搜尋，不會寫入資料。</div></div><div class="sysHelpChips">'; chips.forEach(function(c){html+='<button class="sysHelpChip" type="button" onclick="_sysHelpAsk('+JSON.stringify(c)+')">'+hx(c)+'</button>';}); html+='</div>'; if(v==='library') html+=hCard('你現在在影片庫','可以問我「主角客戶怎麼搜」「只看某帳號影片」「分析工具在哪裡」。',hButton('library','留在影片庫','',true)+hButton('search','到搜尋','')); if(v==='input') html+=hCard('你現在在輸入影片','常用問題是流程①/②/③/④、卡A/B/C 要貼哪裡、待補清單怎麼用。',hButton('input','到歸類卡','card',true)+hButton('input','到操作流程','flow')); return html; }
   function hAnswer(q){var raw=q||''; var n=hn(raw); var html='<div class="sysHelpMini">'+hx(hCurrent())+'</div>';
+    if(/缺什麼|待補|補欄|缺欄|沒填|quick save|快速儲存/.test(n)){ var ts=hTodoSummary(); if(ts&&ts.gaps&&ts.gaps.length){ html+=hCard('目前待補清單',hx(ts.text)+'<br><span class="sysHelpMini">如果缺兩個以上分類欄位，建議在待補清單按「一次補全部＋重出卡B」。</span>',hButton('input','回歸類卡看待補','card',true)); } else { html+=hCard('目前欄位狀態','目前沒有偵測到缺漏欄位，關鍵欄位已填齊，可以直接儲存。',hButton('input','回歸類卡','card',true)); } }
     if(/卡b|卡Ｂ|流程②|流程二|只加影片|歸類卡/.test(n)){ html+=hCard('卡B / 流程②','卡B 是「同一個帳號已建檔，只新增一支影片」用的單支影片歸類卡。通常貼到「輸入影片」→「③ 歸類卡」；系統會讀卡內的 IG帳號 / @handle，去連回帳號管理裡既有帳號。',hButton('input','去貼歸類卡','card',true)+hButton('input','看流程②','flow')+hButton('manual','看說明書','卡B')); }
     if(/帳號|連動|profile|分析工具|掛不上|尚未建檔|handle|@/.test(n)){ html+=hCard('帳號連動檢查','影片能不能出現帳號 profile 與分析工具，關鍵是卡B 裡的「IG帳號」是否能對上帳號管理裡的 @handle。若畫面一開始沒連上，先按右上「重新整理」；若仍沒有，去帳號管理確認 @handle 是否一致。',hButton('accounts','去帳號管理','',true)+hButton('library','回影片庫','')+hButton('search','搜尋帳號/影片',raw)); }
     if(/搜尋|找|查|@kl|kl|理鴻|理/.test(n)){ html+=hCard('搜尋建議','要找系統內資料，可以用上方「搜尋」分頁查影片與架構；要篩某個帳號的影片，影片庫上方先選「主角客戶」。搜尋 @handle 通常比只打一個字更準，例如 @kl.legal、理鴻、郭柏鴻。',hButton('search','帶到搜尋',raw,true)+hButton('library','到影片庫主角篩選','')); }
