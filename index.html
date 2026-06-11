@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="color-scheme" content="light only">
 <meta name="supported-color-schemes" content="light">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v228 (版本號僅留註解，不顯示於畫面)
+<!-- ATELIER 影片診斷工作台 · 內部版本 v229 (版本號僅留註解，不顯示於畫面)
+v229 更新（交辦單：Lisa 實測 v228 後回報兩個介面問題——①貼歸類卡後右下浮動元件會遮擋操作區②提示詞預覽彈窗內仍有外來 emoji icon）：【A 浮動小幫手避開輸入區】系統小幫手從右下改為左下堆疊在「服務台小窗」上方，避開 QUICK SAVE 快速儲存卡與表單操作區；小幫手面板同步改從左下展開。當全站 modal 開啟時，自動隱藏 QUICK SAVE、小幫手與服務台小窗按鈕，避免彈窗被浮動元件蓋住。【B 品牌 icon 統一】copyPrompt 提示詞預覽的編輯／返回／還原／唯讀狀態改成 ATELIER 線性 SVG icon，不再使用 📝／✏️／🔒 等彩色 emoji；關閉鍵也改品牌線性 X。服務台小窗入口也改品牌方格 SVG。未動資料結構、未動 client.html、未動六守門常數。
 v228 更新（交辦單：Lisa 實測 v227 後回報三個效率問題——①影片庫主角搜尋中文單字「理」仍跳不準②帳號管理「拆解過 8 支影片」要能直接點開看影片③系統建議帶去版面對照不應只卡主角＋3 個）：【A 中文單字搜尋再精準】csel 帳號搜尋加入「主欄位優先」邏輯：若搜尋字已命中 handle／顯示名稱／職稱／產業／領域／身份等主身份欄位，就先只顯示這些高相關結果，避免帳號物件深層備註或歷史文字含到單一中文字（例如「理」）就把 Amanda 等不相關帳號排前面；搜尋輸入同時加開啟期間的 value watcher，修注音/選字事件偶爾沒觸發導致單字要打第二個字才刷新。【B 帳號影片快覽】帳號管理卡片「拆解過 N 支影片」改成可點擊，新增 openAccountVideos(accId)：用 videosOfAccount 取該帳號全部影片，在彈窗列出標題、日期、階段主題、觀看/讚/留言/分享/狀態與 Hook，並提供「去影片庫看全部」與「定位這支」按鈕，能直接跳回影片庫並套用主角與搜尋。【C 版面對照容量放寬】系統建議勾選帶去版面對照時不再強制砍到 3 個對標；compare 多選上限由主角＋3 改成主角＋8，runCompare 上限同步改為 9 個帳號，並在結果外層加橫向捲動，讓同行比較能先看完整池，再由 Lisa 自己縮小。未動資料結構、未動 client.html、未動六守門常數。
 v227 更新（交辦單：Lisa 要一個會跟著系統變化的「系統感知型小幫手」，並補進說明書）：【ATELIER 系統小幫手】右下新增「？ 小幫手」浮動入口，點開可輸入問題或按快捷題，會讀目前頁面、分頁、說明書、流程 SOP、影片庫與帳號資料，提供操作指引與跳轉按鈕；不是外部 AI API、不是寫死 FAQ，而是以目前 DOM 與資料陣列即時建立索引。【會跟著系統更新】小幫手答案來源包含 renderManual 說明書、流程①②③④ SOP、現有分頁/按鈕、常見故障規則與 videos/accounts 即時資料，所以之後版本更新說明與流程文字同步更新時，小幫手會讀到新版內容。【安全邊界】小幫手只搜尋、說明、導頁與帶入搜尋，不寫資料、不改帳號/影片、不碰 client.html、不接外部 API、不動六守門提示詞(md5 5d2b1a50909c91b89ca7454e64f81911 不變)。
 v226 更新（交辦單：修 v225 後 Lisa 實測兩個殘留問題——①主角客戶下拉單一字搜尋排序不準，打 k / 理 仍可能先出現不相關帳號或沒有即時對準；②卡B 已有 @handle 但重新整理後帳號 profile 有時顯示、有時被判成尚未建檔）：【A 單字搜尋即時命中＋排序】csel 帳號型搜尋新增 query relevance 排序：搜尋中不再只照「系統建議/A-Z」排序，而是先把 handle/displayName/name/職稱/產業/領域等主身份欄位命中的帳號排到最前；handle 開頭命中優先（打 k 會優先 @kl.legal），中文單字命中主身份欄位也優先（打 理 會優先理鴻）。同時 input/keyup/compositionend 都補 setTimeout 再濾一次，降低注音/瀏覽器事件順序造成的單字不刷新。【B 帳號 profile race condition】_accFbSubscribe 帳號雲端到齊後補 renderLibrary()，避免影片先渲染、accounts 後到時，vcard 的 accountForVideo 還沒找到帳號，畫面停在「此帳號尚未建檔」；現在帳號到齊會重畫影片庫，@handle 對得上的卡B 會穩定帶出帳號名稱/身份/職稱/產業/粉絲與分析工具。只動 csel 搜尋排序/濾動時機與帳號到齊後的影片庫重畫，不動帳號/影片資料結構、不動六守門常數(md5 5d2b1a50909c91b89ca7454e64f81911 不變)。
@@ -747,9 +748,9 @@ input,select,textarea{color-scheme:light}
 
 
 /* v227：ATELIER 系統感知型小幫手 */
-#sysHelpBtn{position:fixed;right:14px;bottom:132px;z-index:9600;background:#fff;color:var(--rouge);border:1px solid var(--rouge);border-radius:22px;padding:8px 13px;font-size:12.5px;font-weight:800;cursor:pointer;font-family:inherit;box-shadow:0 6px 18px rgba(0,0,0,.16);display:flex;align-items:center;gap:6px}
+#sysHelpBtn{position:fixed;left:14px;right:auto;bottom:58px;z-index:9401;background:#fff;color:var(--rouge);border:1px solid var(--rouge);border-radius:22px;padding:8px 13px;font-size:12.5px;font-weight:800;cursor:pointer;font-family:inherit;box-shadow:0 6px 18px rgba(0,0,0,.16);display:flex;align-items:center;gap:6px}
 #sysHelpBtn .q{width:18px;height:18px;border-radius:50%;background:var(--rouge);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:12px;line-height:1}
-#sysHelpPanel{display:none;position:fixed;right:16px;bottom:178px;width:390px;max-width:calc(100vw - 28px);height:560px;max-height:calc(100vh - 210px);z-index:9700;background:#fff;border:1px solid var(--gold-dark);border-radius:14px;box-shadow:0 16px 52px rgba(42,26,28,.25);overflow:hidden;flex-direction:column}
+#sysHelpPanel{display:none;position:fixed;left:16px;right:auto;bottom:104px;width:390px;max-width:calc(100vw - 28px);height:560px;max-height:calc(100vh - 210px);z-index:9700;background:#fff;border:1px solid var(--gold-dark);border-radius:14px;box-shadow:0 16px 52px rgba(42,26,28,.25);overflow:hidden;flex-direction:column}
 #sysHelpHead{background:var(--rouge);color:#fff;padding:10px 12px;display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:13px;font-weight:800;flex:0 0 auto}
 #sysHelpHead button{background:rgba(255,255,255,.22);border:none;color:#fff;width:25px;height:25px;border-radius:6px;cursor:pointer;font-family:inherit}
 #sysHelpBody{padding:12px;overflow:auto;flex:1 1 auto;background:#FDFBF8}
@@ -765,7 +766,9 @@ input,select,textarea{color-scheme:light}
 .sysHelpAct{border:1px solid var(--rouge);background:#fff;color:var(--rouge);border-radius:8px;padding:5px 9px;font-size:11.5px;font-weight:800;cursor:pointer;font-family:inherit}
 .sysHelpAct.primary{background:var(--rouge);color:#fff}
 .sysHelpResult{border-top:1px solid var(--line);padding-top:8px;margin-top:8px}
-@media(max-width:560px){#sysHelpPanel{right:10px;left:10px;width:auto;bottom:92px;max-height:70vh}#sysHelpBtn{right:12px;bottom:92px}}
+.pp-ico{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;vertical-align:-2px;margin-right:5px}.pp-ico.only{margin-right:0;width:17px;height:17px} 
+@media(max-width:560px){#sysHelpPanel{right:10px;left:10px;width:auto;bottom:104px;max-height:70vh}#sysHelpBtn{left:12px;right:auto;bottom:58px}}
+#modal.show ~ #stickyCardSave,#modal.show ~ #sysHelpBtn,#modal.show ~ #sysHelpPanel,#modal.show ~ #csDockBtn{display:none!important}
 
 /* ===== v111 帳號工具卡併兩排 + 操作流程導引（品牌色） ===== */
 .acc-tools-grid{ display:grid; grid-template-columns:1fr; gap:12px; margin-bottom:14px; align-items:start }
@@ -824,7 +827,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v228</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v229</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -2538,6 +2541,18 @@ function copyVal(text,label){
     navigator.clipboard.writeText(text).then(()=>toast('✓ 已複製'+(label?'：'+label:''))).catch(()=>_copyFallback(text,label));
   } else { _copyFallback(text,label); }
 }
+function _uiIcon(name){
+  var path={
+    edit:'<path d="M4 20h4l10.5-10.5a2.2 2.2 0 0 0-3.1-3.1L5 16.8 4 20z"/><path d="M13.5 7.5l3 3"/>',
+    back:'<path d="M9 7l-5 5 5 5"/><path d="M4 12h11a5 5 0 0 1 5 5v1"/>',
+    reset:'<path d="M4 4v6h6"/><path d="M20 20v-6h-6"/><path d="M6.5 8.5A7 7 0 0 1 18 7"/><path d="M17.5 15.5A7 7 0 0 1 6 17"/>',
+    lock:'<rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/>',
+    unlock:'<rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 7.5-2"/>',
+    close:'<path d="M6 6l12 12"/><path d="M18 6L6 18"/>',
+    grid:'<rect x="4" y="4" width="6" height="6" rx="1"/><rect x="14" y="4" width="6" height="6" rx="1"/><rect x="4" y="14" width="6" height="6" rx="1"/><rect x="14" y="14" width="6" height="6" rx="1"/>'
+  }[name]||'';
+  return '<svg class="pp-ico" viewBox="0 0 24 24" aria-hidden="true">'+path+'</svg>';
+}
 function copyPrompt(text,label){
   copyVal(text,label);
   try{
@@ -2545,14 +2560,14 @@ function copyPrompt(text,label){
     var safe=esc(text||'');
     /* v186 A3：標準化「提示詞預覽」元件——預設唯讀、按筆才能改、可還原、右上 X */
     sh.innerHTML='<div style="padding:18px 18px 16px;position:relative">'
-      +'<button id="pp-xtop" style="position:absolute;top:12px;right:14px;background:none;border:none;font-size:20px;color:var(--sub);cursor:pointer;line-height:1;font-family:inherit" title="關閉">✕</button>'
+      +'<button id="pp-xtop" style="position:absolute;top:12px;right:14px;background:none;border:none;color:var(--sub);cursor:pointer;line-height:1;font-family:inherit" title="關閉">'+_uiIcon('close').replace('pp-ico','pp-ico only')+'</button>'
       +'<div style="font-family:\'Noto Serif TC\',serif;font-size:17px;font-weight:900;margin-bottom:4px;padding-right:30px">'+esc(label||'提示詞')+'</div>'
-      +'<div style="font-size:12px;color:var(--sub);line-height:1.6;margin-bottom:8px">已複製原始版到剪貼簿。預設唯讀——按 ✏️ 編輯鍵才能改字；改完按「複製」。</div>'
+      +'<div style="font-size:12px;color:var(--sub);line-height:1.6;margin-bottom:8px">已複製原始版到剪貼簿。預設唯讀——按「編輯」鍵才能改字；改完按「複製」。</div>'
       +'<div style="display:flex;gap:8px;margin-bottom:6px;align-items:center">'
-      +'<button id="pp-editlock" style="background:var(--warm-white,#FDFBF8);border:1px solid var(--gold-soft);border-radius:6px;padding:4px 10px;font-size:12px;cursor:pointer;color:var(--gold-dark);font-family:inherit" title="切換編輯 / 唯讀">✏️ 編輯</button>'
-      +'<button id="pp-undo" style="background:var(--warm-white,#FDFBF8);border:1px solid var(--gold-soft);border-radius:6px;padding:4px 10px;font-size:12px;cursor:pointer;color:var(--gold-dark);font-family:inherit" title="回退一步">↩ 返回</button>'
-      +'<button id="pp-resetall" style="background:var(--warm-white,#FDFBF8);border:1px solid var(--gold-soft);border-radius:6px;padding:4px 10px;font-size:12px;cursor:pointer;color:var(--gold-dark);font-family:inherit" title="還原成系統預設原版">↺ 還原全部</button>'
-      +'<span id="pp-lockstate" style="font-size:11px;color:var(--sub)">🔒 唯讀中</span></div>'
+      +'<button id="pp-editlock" style="background:var(--warm-white,#FDFBF8);border:1px solid var(--gold-soft);border-radius:6px;padding:4px 10px;font-size:12px;cursor:pointer;color:var(--gold-dark);font-family:inherit" title="切換編輯 / 唯讀">'+_uiIcon('edit')+'編輯</button>'
+      +'<button id="pp-undo" style="background:var(--warm-white,#FDFBF8);border:1px solid var(--gold-soft);border-radius:6px;padding:4px 10px;font-size:12px;cursor:pointer;color:var(--gold-dark);font-family:inherit" title="回退一步">'+_uiIcon('back')+'返回</button>'
+      +'<button id="pp-resetall" style="background:var(--warm-white,#FDFBF8);border:1px solid var(--gold-soft);border-radius:6px;padding:4px 10px;font-size:12px;cursor:pointer;color:var(--gold-dark);font-family:inherit" title="還原成系統預設原版">'+_uiIcon('reset')+'還原全部</button>'
+      +'<span id="pp-lockstate" style="font-size:11px;color:var(--sub)">'+_uiIcon('lock')+'唯讀中</span></div>'
       +'<textarea id="pp-edit" spellcheck="false" readonly style="display:block;width:100%;box-sizing:border-box;white-space:pre-wrap;word-break:break-word;font-size:12.5px;line-height:1.6;background:var(--warm-white,#FDFBF8);border:1px solid var(--gold-soft);border-radius:8px;padding:12px;min-height:200px;max-height:52vh;overflow:auto;color:var(--ink);font-family:inherit;resize:vertical;opacity:.85">'+safe+'</textarea>'
       +'<div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">'
       +'<button class="btn" id="pp-copy" style="flex:1 1 auto;min-width:180px;background:#8E2A2E;color:#fff;-webkit-text-fill-color:#fff;box-shadow:0 2px 8px rgba(140,43,48,.16)">複製（含修改）</button>'
@@ -2566,7 +2581,7 @@ function copyPrompt(text,label){
     var ed=document.getElementById('pp-edit');
     var ls=document.getElementById('pp-lockstate');
     /* 編輯鎖切換 */
-    var el=document.getElementById('pp-editlock'); if(el) el.onclick=function(){ if(ed.readOnly){ ed.readOnly=false; ed.style.opacity='1'; el.textContent='🔒 唯讀'; if(ls) ls.textContent='✏️ 編輯中'; } else { ed.readOnly=true; ed.style.opacity='.85'; el.textContent='✏️ 編輯'; if(ls) ls.textContent='🔒 唯讀中'; } };
+    var el=document.getElementById('pp-editlock'); if(el) el.onclick=function(){ if(ed.readOnly){ ed.readOnly=false; ed.style.opacity='1'; el.innerHTML=_uiIcon('lock')+'唯讀'; if(ls) ls.innerHTML=_uiIcon('edit')+'編輯中'; } else { ed.readOnly=true; ed.style.opacity='.85'; el.innerHTML=_uiIcon('edit')+'編輯'; if(ls) ls.innerHTML=_uiIcon('lock')+'唯讀中'; } };
     /* v187 A8：undo stack — 返回一步 / 還原全部 */
     var _ppHistory=[text];
     var _ppSnap=function(){ if(ed && _ppHistory[_ppHistory.length-1]!==ed.value) _ppHistory.push(ed.value); };
@@ -4103,7 +4118,8 @@ function renderManual(){
   <div class="form-card" style="border-left:3px solid var(--gold)">
     <div class="stitle" style="font-size:15px;color:var(--rouge)">更新紀錄 · 還沒做的</div>
     <p style="font-size:13px;color:var(--text);line-height:1.85;margin-top:8px">
-    <b>v228（這版 · 修搜尋精準度＋帳號影片快覽＋放寬版面對照）：</b>①<b>影片庫主角搜尋更精準</b>：搜尋單一中文字（例如「理」）時，會優先看 handle、顯示名稱、職稱、產業、領域、身份這些主欄位；如果主欄位已經命中，就不再讓帳號深層備註裡剛好含到同一個字的不相關帳號排在前面。②<b>帳號管理的「拆解過 N 支影片」可以點了</b>：點下去會跳出這個帳號底下的影片清單，包含標題、發布/建檔日期、階段主題、觀看/讚/留言/分享、狀態與 Hook，也可以一鍵跳到影片庫看全部或定位單支。③<b>版面對照比較不再只卡 3 個對標</b>：從影片庫系統建議帶去版面對照時，不會先砍掉你勾的對標；比較區上限放寬為主角＋最多 8 個對標，表格可橫向捲動，先看完整池再縮小。<b>只動搜尋排序、帳號影片快覽與版面對照容量；沒動資料結構、沒動六守門提示詞。</b><br>
+    <b>v229（這版 · 小幫手不遮擋＋提示詞彈窗 icon 品牌化）：</b>①<b>小幫手避開輸入區</b>：右下角已有 QUICK SAVE 快速儲存卡，貼歸類卡時會浮出來，所以小幫手改成左下堆疊在「服務台小窗」上方，不再擠在右下擋住儲存區。②<b>彈窗開啟時自動收乾淨</b>：當補完提示詞、重出卡B、確認框等 modal 開啟時，QUICK SAVE、小幫手與服務台小窗按鈕會自動隱藏，避免浮動元件蓋在彈窗上。③<b>提示詞預覽 icon 品牌化</b>：把提示詞彈窗裡的編輯、返回、還原、唯讀狀態從彩色 emoji 改成 ATELIER 線性 SVG icon；服務台小窗入口也改成品牌方格 icon。<b>只動浮動元件位置與 icon 呈現；沒動資料結構、沒動六守門提示詞。</b><br>
+    <b>v228（修搜尋精準度＋帳號影片快覽＋放寬版面對照）：</b>①<b>影片庫主角搜尋更精準</b>：搜尋單一中文字（例如「理」）時，會優先看 handle、顯示名稱、職稱、產業、領域、身份這些主欄位；如果主欄位已經命中，就不再讓帳號深層備註裡剛好含到同一個字的不相關帳號排在前面。②<b>帳號管理的「拆解過 N 支影片」可以點了</b>：點下去會跳出這個帳號底下的影片清單，包含標題、發布/建檔日期、階段主題、觀看/讚/留言/分享、狀態與 Hook，也可以一鍵跳到影片庫看全部或定位單支。③<b>版面對照比較不再只卡 3 個對標</b>：從影片庫系統建議帶去版面對照時，不會先砍掉你勾的對標；比較區上限放寬為主角＋最多 8 個對標，表格可橫向捲動，先看完整池再縮小。<b>只動搜尋排序、帳號影片快覽與版面對照容量；沒動資料結構、沒動六守門提示詞。</b><br>
     <b>v227（新增系統感知型小幫手）：</b>右下角新增「<b>？ 小幫手</b>」，這不是固定 FAQ，而是會讀目前系統狀態的操作助理。你可以問「卡B 要貼哪裡」「流程②怎麼跑」「為什麼影片沒有連到帳號」「我要找 @kl.legal 的影片」「分析工具在哪裡」。它會讀目前頁面、上方分頁、說明書、流程 SOP、影片庫與帳號資料，再給你最新操作指引；答案裡有按鈕可直接跳到輸入影片／影片庫／帳號管理／搜尋／說明書。安全版先不接外部 AI API、不寫入資料、不改影片或帳號、不碰六支守門提示詞。之後只要每版持續更新說明書與流程文字，小幫手就會一起讀到新版內容。<b>只新增右下小幫手 UI 與讀取式搜尋/導頁邏輯，沒動資料結構、沒動六守門提示詞。</b><br>
     <b>v226（修單字搜尋排序＋卡B帳號連動忽有忽無）：</b>修你這次截圖裡兩個狀況：第一，主角客戶下拉打單一字時，搜尋結果不能只是「有包含 k / 理 就算命中」，而是要先對準最像的帳號，所以現在搜尋中會先看 handle、顯示名稱、職稱、產業等主身份欄位，打「k」會優先把 @kl.legal 排到前面，打「理」會優先對到理鴻，不會再先跳 Amanda 這類只是內文含 KOL 的帳號。第二，卡B 明明有 @kl.legal、帳號管理也已建檔，但重新整理後影片卡有時帶出完整 profile、有時又顯示「此帳號尚未建檔」；這是影片先畫出來、帳號雲端資料後到的先後順序問題。現在帳號資料到齊後會主動重畫影片庫，讓 @handle 對得上的卡B 穩定連回帳號名稱、身份、職稱、產業、粉絲與分析工具。<b>只動搜尋排序/刷新時機與影片庫重畫，沒動資料結構、沒動六守門提示詞。</b><br>
     <b>v225（修主角客戶下拉首開空白）：</b>修你截圖裡的狀況：重新整理後第一次進「影片庫」，點「主角客戶」下拉時看起來像當機，搜尋框可以打字但下面沒有帳號；要先亂點別的按鈕，再回來點主角客戶，帳號清單才會突然出現。這版把<b>主角客戶下拉改成「每次打開前先補灌最新帳號」</b>，雲端帳號載入完成後也會主動刷新影片庫／帳號管理的主角下拉；如果下拉已經開著、帳號選項才補進來，清單也會即時重建。之後第一次點開就應該直接看到帳號，打「理」、handle、職稱、產業都能直接搜，不用再先按其他地方喚醒。<b>只動下拉補灌與重建時機，沒動影片/帳號資料結構、沒動六守門提示詞。</b><br>
@@ -9722,7 +9738,7 @@ document.addEventListener('DOMContentLoaded',function(){
 })();
 </script>
 
-<button id="csDockBtn" type="button" onclick="_csDockOpen()" title="在頁內開一個可縮放的客戶服務台小窗（不離開工作台）" style="position:fixed;left:14px;bottom:14px;z-index:9400;background:var(--rouge);color:#fff;border:none;border-radius:20px;padding:8px 14px;font-size:12.5px;font-weight:700;cursor:pointer;font-family:inherit;box-shadow:0 4px 14px rgba(0,0,0,.2)">⊞ 服務台小窗</button>
+<button id="csDockBtn" type="button" onclick="_csDockOpen()" title="在頁內開一個可縮放的客戶服務台小窗（不離開工作台）" style="position:fixed;left:14px;bottom:14px;z-index:9400;background:var(--rouge);color:#fff;border:none;border-radius:20px;padding:8px 14px;font-size:12.5px;font-weight:700;cursor:pointer;font-family:inherit;box-shadow:0 4px 14px rgba(0,0,0,.2);display:flex;align-items:center;gap:6px"><svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><rect x="4" y="4" width="6" height="6" rx="1"/><rect x="14" y="4" width="6" height="6" rx="1"/><rect x="4" y="14" width="6" height="6" rx="1"/><rect x="14" y="14" width="6" height="6" rx="1"/></svg><span>服務台小窗</span></button>
 <div id="csDock" style="display:none;flex-direction:column;position:fixed;right:16px;bottom:16px;width:400px;height:560px;min-width:300px;min-height:240px;z-index:9500;background:#fff;border:1px solid var(--gold-dark);border-radius:12px;box-shadow:0 12px 44px rgba(0,0,0,.3);overflow:hidden;resize:both">
   <div id="csDockBar" style="cursor:move;background:var(--rouge);color:#fff;padding:8px 12px;display:flex;align-items:center;justify-content:space-between;flex:0 0 auto;font-size:13px;font-weight:700;user-select:none">
     <span>客戶服務台 · 小窗（拖曳這條移動，右下角拉動縮放）</span>
