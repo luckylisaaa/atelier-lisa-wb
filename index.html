@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="color-scheme" content="light only">
 <meta name="supported-color-schemes" content="light">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v227 (版本號僅留註解，不顯示於畫面)
+<!-- ATELIER 影片診斷工作台 · 內部版本 v228 (版本號僅留註解，不顯示於畫面)
+v228 更新（交辦單：Lisa 實測 v227 後回報三個效率問題——①影片庫主角搜尋中文單字「理」仍跳不準②帳號管理「拆解過 8 支影片」要能直接點開看影片③系統建議帶去版面對照不應只卡主角＋3 個）：【A 中文單字搜尋再精準】csel 帳號搜尋加入「主欄位優先」邏輯：若搜尋字已命中 handle／顯示名稱／職稱／產業／領域／身份等主身份欄位，就先只顯示這些高相關結果，避免帳號物件深層備註或歷史文字含到單一中文字（例如「理」）就把 Amanda 等不相關帳號排前面；搜尋輸入同時加開啟期間的 value watcher，修注音/選字事件偶爾沒觸發導致單字要打第二個字才刷新。【B 帳號影片快覽】帳號管理卡片「拆解過 N 支影片」改成可點擊，新增 openAccountVideos(accId)：用 videosOfAccount 取該帳號全部影片，在彈窗列出標題、日期、階段主題、觀看/讚/留言/分享/狀態與 Hook，並提供「去影片庫看全部」與「定位這支」按鈕，能直接跳回影片庫並套用主角與搜尋。【C 版面對照容量放寬】系統建議勾選帶去版面對照時不再強制砍到 3 個對標；compare 多選上限由主角＋3 改成主角＋8，runCompare 上限同步改為 9 個帳號，並在結果外層加橫向捲動，讓同行比較能先看完整池，再由 Lisa 自己縮小。未動資料結構、未動 client.html、未動六守門常數。
 v227 更新（交辦單：Lisa 要一個會跟著系統變化的「系統感知型小幫手」，並補進說明書）：【ATELIER 系統小幫手】右下新增「？ 小幫手」浮動入口，點開可輸入問題或按快捷題，會讀目前頁面、分頁、說明書、流程 SOP、影片庫與帳號資料，提供操作指引與跳轉按鈕；不是外部 AI API、不是寫死 FAQ，而是以目前 DOM 與資料陣列即時建立索引。【會跟著系統更新】小幫手答案來源包含 renderManual 說明書、流程①②③④ SOP、現有分頁/按鈕、常見故障規則與 videos/accounts 即時資料，所以之後版本更新說明與流程文字同步更新時，小幫手會讀到新版內容。【安全邊界】小幫手只搜尋、說明、導頁與帶入搜尋，不寫資料、不改帳號/影片、不碰 client.html、不接外部 API、不動六守門提示詞(md5 5d2b1a50909c91b89ca7454e64f81911 不變)。
 v226 更新（交辦單：修 v225 後 Lisa 實測兩個殘留問題——①主角客戶下拉單一字搜尋排序不準，打 k / 理 仍可能先出現不相關帳號或沒有即時對準；②卡B 已有 @handle 但重新整理後帳號 profile 有時顯示、有時被判成尚未建檔）：【A 單字搜尋即時命中＋排序】csel 帳號型搜尋新增 query relevance 排序：搜尋中不再只照「系統建議/A-Z」排序，而是先把 handle/displayName/name/職稱/產業/領域等主身份欄位命中的帳號排到最前；handle 開頭命中優先（打 k 會優先 @kl.legal），中文單字命中主身份欄位也優先（打 理 會優先理鴻）。同時 input/keyup/compositionend 都補 setTimeout 再濾一次，降低注音/瀏覽器事件順序造成的單字不刷新。【B 帳號 profile race condition】_accFbSubscribe 帳號雲端到齊後補 renderLibrary()，避免影片先渲染、accounts 後到時，vcard 的 accountForVideo 還沒找到帳號，畫面停在「此帳號尚未建檔」；現在帳號到齊會重畫影片庫，@handle 對得上的卡B 會穩定帶出帳號名稱/身份/職稱/產業/粉絲與分析工具。只動 csel 搜尋排序/濾動時機與帳號到齊後的影片庫重畫，不動帳號/影片資料結構、不動六守門常數(md5 5d2b1a50909c91b89ca7454e64f81911 不變)。
 v225 更新（交辦單：修影片庫主角客戶下拉首開像當機——重新整理後第一次進影片庫，點主角搜尋時清單空白、搜尋也不出帳號，必須先亂點其他按鈕才刷新）：【主角下拉首開補灌】csel 開啟前若是帳號型下拉，會先依 select id 重新灌入最新帳號選項（vlibHero→_vlibHeroPopulate、accHero→_accHeroPopulate、cmpHero→populateCmpHero），避免原生 select 還停在 placeholder 時就被 csel build 成空清單。【雲端帳號到齊補刷新】_accFbSubscribe 帳號 onSnapshot 到齊後額外刷新影片庫主角下拉與帳號管理主角下拉，不只刷新版面對照與輸入頁下拉。【開啟中選項變動同步】csel 的 MutationObserver 不再只改按鈕文字；若面板正開著且 select options 被補灌，會即時重建清單，避免使用者已打開下拉時仍看到空白。只動帳號型下拉補灌/重建時機，不動帳號/影片資料結構、不動六守門常數(md5 5d2b1a50909c91b89ca7454e64f81911 不變)；版本號 4 處 v224→v225；check.js 無新增失敗；div/details 平衡。
@@ -789,6 +790,7 @@ if('serviceWorker' in navigator){
   });
 }
 </script>
+<style>/* v228：版面對照放寬到更多帳號，結果區允許橫向捲動 */#cmpResult{overflow-x:auto;-webkit-overflow-scrolling:touch}#cmpResult table{min-width:900px}</style>
 </head>
 <body>
 <!-- ═══ 登入鎖屏（未登入時覆蓋整頁）═══ -->
@@ -822,7 +824,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v227</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v228</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -4101,7 +4103,8 @@ function renderManual(){
   <div class="form-card" style="border-left:3px solid var(--gold)">
     <div class="stitle" style="font-size:15px;color:var(--rouge)">更新紀錄 · 還沒做的</div>
     <p style="font-size:13px;color:var(--text);line-height:1.85;margin-top:8px">
-    <b>v227（這版 · 新增系統感知型小幫手）：</b>右下角新增「<b>？ 小幫手</b>」，這不是固定 FAQ，而是會讀目前系統狀態的操作助理。你可以問「卡B 要貼哪裡」「流程②怎麼跑」「為什麼影片沒有連到帳號」「我要找 @kl.legal 的影片」「分析工具在哪裡」。它會讀目前頁面、上方分頁、說明書、流程 SOP、影片庫與帳號資料，再給你最新操作指引；答案裡有按鈕可直接跳到輸入影片／影片庫／帳號管理／搜尋／說明書。安全版先不接外部 AI API、不寫入資料、不改影片或帳號、不碰六支守門提示詞。之後只要每版持續更新說明書與流程文字，小幫手就會一起讀到新版內容。<b>只新增右下小幫手 UI 與讀取式搜尋/導頁邏輯，沒動資料結構、沒動六守門提示詞。</b><br>
+    <b>v228（這版 · 修搜尋精準度＋帳號影片快覽＋放寬版面對照）：</b>①<b>影片庫主角搜尋更精準</b>：搜尋單一中文字（例如「理」）時，會優先看 handle、顯示名稱、職稱、產業、領域、身份這些主欄位；如果主欄位已經命中，就不再讓帳號深層備註裡剛好含到同一個字的不相關帳號排在前面。②<b>帳號管理的「拆解過 N 支影片」可以點了</b>：點下去會跳出這個帳號底下的影片清單，包含標題、發布/建檔日期、階段主題、觀看/讚/留言/分享、狀態與 Hook，也可以一鍵跳到影片庫看全部或定位單支。③<b>版面對照比較不再只卡 3 個對標</b>：從影片庫系統建議帶去版面對照時，不會先砍掉你勾的對標；比較區上限放寬為主角＋最多 8 個對標，表格可橫向捲動，先看完整池再縮小。<b>只動搜尋排序、帳號影片快覽與版面對照容量；沒動資料結構、沒動六守門提示詞。</b><br>
+    <b>v227（新增系統感知型小幫手）：</b>右下角新增「<b>？ 小幫手</b>」，這不是固定 FAQ，而是會讀目前系統狀態的操作助理。你可以問「卡B 要貼哪裡」「流程②怎麼跑」「為什麼影片沒有連到帳號」「我要找 @kl.legal 的影片」「分析工具在哪裡」。它會讀目前頁面、上方分頁、說明書、流程 SOP、影片庫與帳號資料，再給你最新操作指引；答案裡有按鈕可直接跳到輸入影片／影片庫／帳號管理／搜尋／說明書。安全版先不接外部 AI API、不寫入資料、不改影片或帳號、不碰六支守門提示詞。之後只要每版持續更新說明書與流程文字，小幫手就會一起讀到新版內容。<b>只新增右下小幫手 UI 與讀取式搜尋/導頁邏輯，沒動資料結構、沒動六守門提示詞。</b><br>
     <b>v226（修單字搜尋排序＋卡B帳號連動忽有忽無）：</b>修你這次截圖裡兩個狀況：第一，主角客戶下拉打單一字時，搜尋結果不能只是「有包含 k / 理 就算命中」，而是要先對準最像的帳號，所以現在搜尋中會先看 handle、顯示名稱、職稱、產業等主身份欄位，打「k」會優先把 @kl.legal 排到前面，打「理」會優先對到理鴻，不會再先跳 Amanda 這類只是內文含 KOL 的帳號。第二，卡B 明明有 @kl.legal、帳號管理也已建檔，但重新整理後影片卡有時帶出完整 profile、有時又顯示「此帳號尚未建檔」；這是影片先畫出來、帳號雲端資料後到的先後順序問題。現在帳號資料到齊後會主動重畫影片庫，讓 @handle 對得上的卡B 穩定連回帳號名稱、身份、職稱、產業、粉絲與分析工具。<b>只動搜尋排序/刷新時機與影片庫重畫，沒動資料結構、沒動六守門提示詞。</b><br>
     <b>v225（修主角客戶下拉首開空白）：</b>修你截圖裡的狀況：重新整理後第一次進「影片庫」，點「主角客戶」下拉時看起來像當機，搜尋框可以打字但下面沒有帳號；要先亂點別的按鈕，再回來點主角客戶，帳號清單才會突然出現。這版把<b>主角客戶下拉改成「每次打開前先補灌最新帳號」</b>，雲端帳號載入完成後也會主動刷新影片庫／帳號管理的主角下拉；如果下拉已經開著、帳號選項才補進來，清單也會即時重建。之後第一次點開就應該直接看到帳號，打「理」、handle、職稱、產業都能直接搜，不用再先按其他地方喚醒。<b>只動下拉補灌與重建時機，沒動影片/帳號資料結構、沒動六守門提示詞。</b><br>
     <b>v224（流程②把「逐字稿」獨立成一步、可略過）：</b>你說 ChatGPT 做逐字稿其實很強（會逐字轉、標誰在說話、抓畫面大字、還會自己反覆檢查），所以這版把<b>流程②（同帳號加新影片）的逐字稿從原本和影片分析綁在一起的那一步拉出來、變成獨立的一步</b>，而且<b>標明「選配·可略過」</b>。現在流程②是 6 步：① 截圖＋連結 → ②（選配）封存 → <b>③（選配·可略過）做逐句時間碼逐字稿</b> → <b>④ 影片分析</b> → ⑤（需要才做）子題型 → ⑥ 最後整合只要卡B。鳥瞰圖、詳細步驟、複製鈕都跟著分開——想要精準時間碼或要核對台詞就做第③步；趕時間、或你用的 AI 本來就能直接讀影片，<b>第③步可以直接跳過</b>，到第④步讓它一起處理。<b>沒動任何提示詞（六守門常數 md5 不變）、沒動儲存邏輯與資料。</b><br>
@@ -5336,6 +5339,7 @@ function renderAccounts(){
   box.querySelectorAll('[data-acc-client]').forEach(b=>b.onclick=()=>setAccClient(b.dataset.accClient));
   box.querySelectorAll('[data-acc-ident]').forEach(b=>b.onclick=()=>copyAccountIdentity(b.dataset.accIdent));
   box.querySelectorAll('[data-acc-export]').forEach(b=>b.onclick=()=>exportClientBundle(b.dataset.accExport));
+  box.querySelectorAll('[data-acc-videos]').forEach(b=>b.onclick=()=>openAccountVideos(b.dataset.accVideos));
   box.querySelectorAll('[data-acc-del]').forEach(b=>b.onclick=()=>delAccount(b.dataset.accDel));
   /* v183 P6：帳號分頁按鈕綁定 */
   box.querySelectorAll('.acc-pg').forEach(function(b){ b.onclick=function(){ var p=parseInt(b.getAttribute('data-pg'),10); if(!isNaN(p)&&p>=1){ accPage=p; renderAccounts(); } }; });
@@ -5418,6 +5422,38 @@ function exportClientBundle(accId){
   var text=L.join('\n');
   if(typeof copyPrompt==='function') copyPrompt(text,'客戶體質彙整'); else if(typeof copyVal==='function') copyVal(text,'客戶體質彙整');
 }
+function openAccountVideos(accId){
+  var a=accounts.find(function(x){return x.id===accId;}); if(!a){ if(typeof toast==='function') toast('找不到帳號'); return; }
+  var vs=(typeof videosOfAccount==='function')?videosOfAccount(accId):[];
+  var title=esc((a.handle||'@?')+' 的拆解影片');
+  var rows=vs.map(function(v,i){
+    var nums=[]; [['views','觀看'],['likes','讚'],['comments','留言'],['shares','分享']].forEach(function(kv){ var val=v[kv[0]]; if(val!==''&&val!=null&&String(val)!=='') nums.push(kv[1]+' '+val); });
+    var meta=[v.date||v.publishDate||v.createdAt&&new Date(v.createdAt).toISOString().slice(0,10)||'', ((v.stage||'')+' '+(v.themeId||'')+' '+(v.themeName||'')).trim(), v.status||''].filter(Boolean).join('　·　');
+    return '<div style="border:1px solid var(--gold-soft);border-radius:10px;padding:10px 12px;margin:8px 0;background:#fff">'
+      +'<div style="display:flex;justify-content:space-between;gap:10px;align-items:flex-start"><b style="color:var(--ink);font-size:13px">'+(i+1)+'. '+esc(v.title||v.coverText||'(未命名影片)')+'</b>'+(v.url?'<a class="vlink" href="'+esc(v.url)+'" target="_blank">開影片 ↗</a>':'')+'</div>'
+      +(meta?'<div style="font-size:11.5px;color:var(--gold-dark);margin-top:4px">'+esc(meta)+'</div>':'')
+      +(nums.length?'<div style="font-size:12px;color:var(--rouge);font-weight:800;margin-top:5px">'+esc(nums.join('　'))+'</div>':'')
+      +(v.hook?'<div style="font-size:12px;color:var(--text);margin-top:5px;line-height:1.55"><span class="lab">Hook</span> '+esc(v.hook)+'</div>':'')
+      +'<div style="margin-top:7px"><button type="button" class="btn btn-ghost" style="font-size:11px;padding:5px 9px" onclick="_accVideoGo(\''+esc(accId)+'\',\''+esc(v.id||'')+'\')">定位這支到影片庫</button></div>'
+      +'</div>';
+  }).join('');
+  var html='<div style="padding:4px 2px"><h3 style="margin:0 0 4px;color:var(--rouge)">'+title+'</h3>'
+    +'<div style="font-size:12px;color:var(--sub);margin-bottom:10px">共 '+vs.length+' 支。這裡是帳號管理的快覽，不會改資料；要篩全部可跳回影片庫。</div>'
+    +'<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px"><button type="button" class="btn btn-go" onclick="_accVideoGo(\''+esc(accId)+'\',\'\')">去影片庫看這個帳號全部</button><button type="button" class="btn btn-ghost" onclick="closeModal()">關閉</button></div>'
+    +(vs.length?rows:'<div class="empty-res">這個帳號目前還沒有連到任何影片。</div>')+'</div>';
+  var sh=document.getElementById('sheet'), md=document.getElementById('modal'); if(sh&&md){ sh.innerHTML=html; md.classList.add('show'); } else { alert((a.handle||'')+' 共有 '+vs.length+' 支影片'); }
+}
+window.openAccountVideos=openAccountVideos;
+function _accVideoGo(accId,vidId){
+  try{ if(typeof closeModal==='function') closeModal(); }catch(e){}
+  try{ var tab=document.querySelector('.tab[data-view="library"]'); if(tab) tab.click(); else if(typeof switchTo==='function') switchTo('library'); }catch(e){}
+  setTimeout(function(){
+    try{ if(typeof vlibHeroSet==='function') vlibHeroSet(accId); var sel=document.getElementById('vlibHero'); if(sel){ sel.value=accId; sel.dispatchEvent(new Event('change',{bubbles:true})); } }catch(e){}
+    try{ if(vidId){ var v=(videos||[]).find(function(x){return x.id===vidId;}); var q=v?(v.title||v.coverText||''):''; var sb=document.getElementById('libSearch'); if(sb&&q){ sb.value=q.slice(0,30); sb.dispatchEvent(new Event('input',{bubbles:true})); } } }catch(e){}
+    try{ if(typeof renderLibrary==='function') renderLibrary(); window.scrollTo(0,0); }catch(e){}
+  },120);
+}
+window._accVideoGo=_accVideoGo;
 function accCard(a){
   const f=latestFollowers(a);
   const g=growth30Days(a);
@@ -5440,7 +5476,7 @@ function accCard(a){
       ${a.industry?`<span class="lab">產業</span> ${esc(a.industry)}　·　`:''}
       <span class="lab">粉絲</span> ${f?f.toLocaleString():'—'}　·　
       <span class="lab">量級</span> ${esc(tw)} / ${esc(intl)}　·　
-      <span class="lab">拆解過</span> ${vidCount>0?(vidCount+' 支影片'):'<span style="color:var(--sub)">尚未收錄影片</span>'}
+      <span class="lab">拆解過</span> ${vidCount>0?('<span class="vlink" style="cursor:pointer;color:var(--rouge);font-weight:800" data-acc-videos="'+a.id+'">'+vidCount+' 支影片</span>'):'<span style="color:var(--sub)">尚未收錄影片</span>'}
     </div>
     <div class="vmeta" style="margin-top:5px"><span class="lab">30天成長</span> ${gText}</div>
     ${relList?`<div class="vmeta" style="margin-top:5px"><span class="lab">關聯</span> ${relList}</div>`:''}
@@ -6542,7 +6578,7 @@ function _hubRenderRivalChecklist(box,rivalIds){
       +'<button type="button" onclick="renderLibrary()" style="font-size:12px;font-weight:700;padding:7px 12px;border:1px solid var(--rouge);background:var(--rouge);color:#fff;border-radius:7px;cursor:pointer;font-family:inherit">只看勾選的影片（<span id="vlibRivalCntA">'+n+'</span>）</button>'
       +'<button type="button" onclick="vlibRivalsCompare()" style="font-size:12px;font-weight:700;padding:7px 12px;border:1px solid var(--rouge);background:#fff;color:var(--rouge);border-radius:7px;cursor:pointer;font-family:inherit">↪ 帶去版面對照比較（<span id="vlibRivalCntB">'+n+'</span>）</button>'
     +'</div>'
-    +'<div style="font-size:10.5px;color:var(--sub);margin-top:5px">勾選＝設定要對標的人；左鈕只在這個影片庫篩、右鈕跳到版面對照並排比（主角＋最多 3 個）。</div>';
+    +'<div style="font-size:10.5px;color:var(--sub);margin-top:5px">勾選＝設定要對標的人；左鈕只在這個影片庫篩、右鈕跳到版面對照並排比（主角＋最多 8 個，可橫向捲動）。</div>';
 }
 function _vlibRivalToggle(id,on){
   if(!id) return;
@@ -6562,7 +6598,7 @@ window.vlibRivalsCompare=function(){
   if(!libHeroId){ if(typeof toast==='function') toast('先選一個主角客戶'); return; }
   var ids=(libRivalChecked||[]).slice();
   if(!ids.length){ if(typeof toast==='function') toast('先勾選至少一個對標帳號'); return; }
-  if(ids.length>3){ ids=ids.slice(0,3); if(typeof toast==='function') toast('版面對照最多主角＋3 個，先帶前 3 個對標'); }
+  /* v228：不再從影片庫帶去版面對照時先砍到 3 個；交給 compare 上限處理（主角＋最多 8 個） */
   var tab=document.querySelector('.tab[data-view="compare"]');
   if(tab) tab.click(); else if(typeof switchTo==='function') switchTo('compare');
   setTimeout(function(){
@@ -6702,7 +6738,7 @@ function renderComparePicker(){
   var _ext=$('cmpSearch'); if(_ext) _ext.style.display='none';
   if(!accounts.length){ box.style.cssText=''; box.innerHTML='<div class="empty-res" style="margin:0">尚無帳號可比較。先到「帳號管理」新增帳號並記錄版面快照。</div>'; return; }
   var heroId=($('cmpHero')||{value:''}).value;
-  renderAccountMultiPicker({ boxId:'cmpPicker', set:cmpSelected, max:(heroId?3:4), key:'cmp', placeholder:(heroId?'點開勾選比較對象（連主角共 2–4 個）…':'點開選擇要比較的帳號（2–4 個）…'), clientGetter:function(){ return ($('cmpHero')||{value:''}).value; } });
+  renderAccountMultiPicker({ boxId:'cmpPicker', set:cmpSelected, max:(heroId?8:9), key:'cmp', placeholder:(heroId?'點開勾選比較對象（連主角共 2–9 個，可多選）…':'點開選擇要比較的帳號（2–9 個）…'), clientGetter:function(){ return ($('cmpHero')||{value:''}).value; } });
 }
 function _cmpCell(raw){
   if(!raw && raw!==0) return '<span style="color:#bbb">—</span>';
@@ -6719,7 +6755,7 @@ function runCompare(){
   var ids=[]; if(heroId) ids.push(heroId);
   cmpSelected.forEach(function(id){ if(id!==heroId && ids.indexOf(id)<0) ids.push(id); });
   if(ids.length<2){ toast('請至少選 2 個帳號（含主角）'); return; }
-  if(ids.length>4){ toast('最多比較 4 個帳號'); return; }
+  if(ids.length>9){ toast('最多比較 9 個帳號（主角＋8 個對標）；請先取消幾個再比較'); return; }
   const sel=ids.map(id=>accounts.find(a=>a.id===id)).filter(Boolean);
   // 取每個帳號最新一筆版面快照
   const profs=sel.map(a=>{
@@ -9511,11 +9547,25 @@ document.addEventListener('DOMContentLoaded',function(){
         }
         h+='</div>';
         panel.innerHTML=h;
-        if(withSearch){ var si=panel.querySelector('.csel-search'); if(si){ si.placeholder=accpick?'搜尋帳號／handle／職稱／產業…':'搜尋…'; si.addEventListener('mousedown',function(e){e.stopPropagation();}); si.addEventListener('click',function(e){e.stopPropagation();}); si.addEventListener('touchstart',function(e){e.stopPropagation();}); var _cselFilter=function(){ var qq=si.value; var opts=panel.querySelectorAll('.csel-opt'); for(var j=0;j<opts.length;j++){ var hay=(opts[j].getAttribute('data-s')||opts[j].textContent||''); opts[j].style.display=_cselTextMatch(hay,qq)?'':'none'; }
-          /* v226：有輸入搜尋字時，帳號型下拉依命中度重新排序，handle/主身份欄位命中優先 */
+        if(withSearch){ var si=panel.querySelector('.csel-search'); if(si){ si.placeholder=accpick?'搜尋帳號／handle／職稱／產業…':'搜尋…'; si.addEventListener('mousedown',function(e){e.stopPropagation();}); si.addEventListener('click',function(e){e.stopPropagation();}); si.addEventListener('touchstart',function(e){e.stopPropagation();}); var _cselFilter=function(){ var qq=si.value; var opts=panel.querySelectorAll('.csel-opt');
+          var qtxt=String(qq||'').trim(), anyPrimary=false;
+          if(accpick && qtxt){
+            for(var pi=0;pi<opts.length;pi++){
+              var pr=_cselMatchRank(opts[pi],qtxt);
+              if(pr<=5){ anyPrimary=true; break; }
+            }
+          }
+          for(var j=0;j<opts.length;j++){
+            var hay=(opts[j].getAttribute('data-s')||opts[j].textContent||'');
+            var ok=_cselTextMatch(hay,qq);
+            /* v228：中文/英文單字搜尋先看主身份欄位；若已有主欄位命中，就不讓深層備註剛好含字的不相關帳號混進來 */
+            if(accpick && qtxt && ok && anyPrimary){ ok=_cselMatchRank(opts[j],qtxt)<=5; }
+            opts[j].style.display=ok?'':'none';
+          }
+          /* v226/v228：有輸入搜尋字時，帳號型下拉依命中度重新排序，handle/主身份欄位命中優先 */
           if(accpick){
             var list=panel.querySelector('.csel-list');
-            if(list && String(qq||'').trim()){
+            if(list && qtxt){
               var nodes=[].slice.call(list.querySelectorAll('.csel-opt'));
               nodes.sort(function(a,b){
                 var da=(a.style.display==='none'), db=(b.style.display==='none');
@@ -9525,7 +9575,7 @@ document.addEventListener('DOMContentLoaded',function(){
                 return (a.textContent||'').localeCompare(b.textContent||'');
               });
               nodes.forEach(function(n){ list.appendChild(n); });
-            } else if(list && !String(qq||'').trim()){
+            } else if(list && !qtxt){
               applyAccSort();
             }
           }
@@ -9561,7 +9611,11 @@ document.addEventListener('DOMContentLoaded',function(){
         } else {
           try{ var r=btn.getBoundingClientRect(); var below=window.innerHeight-r.bottom-12; var above=r.top-12; var up=(below<260&&above>below); wrap.classList.toggle('csel-up',up); panel.style.maxHeight=Math.max(240,Math.min(400,(up?above:below)))+'px'; }catch(e){}
         }
-        var s=panel.querySelector('.csel-opt.sel'); if(s&&s.scrollIntoView){ try{ s.scrollIntoView({block:'nearest'}); }catch(e){} } var si=panel.querySelector('.csel-search'); if(si) setTimeout(function(){ try{ si.focus(); }catch(e){} },0); }
+        var s=panel.querySelector('.csel-opt.sel'); if(s&&s.scrollIntoView){ try{ s.scrollIntoView({block:'nearest'}); }catch(e){} } var si=panel.querySelector('.csel-search'); if(si){
+          /* v228：下拉開啟期間監看搜尋值，補中文輸入法/瀏覽器事件偶爾漏觸發造成單字不刷新 */
+          try{ var _last=si.value; var _tm=setInterval(function(){ if(!wrap.classList.contains('open')){ clearInterval(_tm); return; } if(si.value!==_last){ _last=si.value; si.dispatchEvent(new Event('input',{bubbles:true})); } },120); }catch(_e){}
+          setTimeout(function(){ try{ si.focus(); }catch(e){} },0);
+        } }
       function close(){ wrap.classList.remove('open'); document.removeEventListener('mousedown',outside,true); document.removeEventListener('touchstart',outside,true);
         if(_cselMobile || _cselInModal){ panel.style.cssText=''; var bd=document.getElementById('csel-backdrop'); if(bd) bd.remove(); }
       }
