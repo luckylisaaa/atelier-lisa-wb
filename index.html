@@ -8,8 +8,9 @@
 <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v243 (版本號僅留註解，不顯示於畫面)
-v243 更新（交辦單：Lisa 在影片庫批次操作按「匯出選取／匯出全部CSV」沒有明確反應，無法快速匯出 @kl.legal 目前 31 支清單做本機對帳）：【A 匯出不再黑盒】影片庫會保存「目前篩選清單」；批次工具新增「複製目前清單」，會直接彈出可複製的純文字核對清單。【B CSV 匯出更穩】CSV 下載改為 append 到 DOM 後 click，並同步 toast；若瀏覽器擋下載，仍可用複製清單取得同一批資料。【C 按鈕語意修正】「匯出全部CSV」改為「匯出目前清單CSV」；未勾選時匯出/複製目前篩選全部，已勾選時匯出/複製勾選項。只動影片庫匯出與複製行為，不動資料結構、client.html 與六守門提示詞。
+<!-- ATELIER 影片診斷工作台 · 內部版本 v244 (版本號僅留註解，不顯示於畫面)
+v244 更新（交辦單：Lisa 實測 v243 後發現批次工具仍容易誤解——上方已選 @kl.legal 但「全選」只選本頁 10 支，複製/匯出會被勾選狀態干擾，且沒有真正清楚歸零）：【A 目前清單優先】影片庫新增「目前清單」概念明文化；複製目前清單／匯出目前清單 CSV 一律吃目前篩選後完整清單，不被本頁勾選干擾，@kl.legal 32 支會一次輸出 32 支。【B 全選改跨頁】批次「全選」改成全選目前篩選清單（跨全部頁），不是只選第 1 頁 10 支；按鈕會顯示「全選目前清單 / 取消目前清單選取」，選取數跨頁保留。【C 清除更明確】新增/強化清除選取行為，切換篩選會自動清除不在目前清單內的選取；畫面文案顯示目前清單共 N 支、已選 N 支。只動影片庫批次選取、複製與 CSV 匯出，不動資料結構、client.html 與六守門提示詞。
+
 v242 更新（交辦單：Lisa 批量核對理鴻影片時已手動核對五趟，仍剩兩支不確定是否完整歸檔，需要系統一次盤點而不是一支一支找）：【A 帳號完整盤點】帳號卡新增「完整盤點」入口，會一次掃該帳號已安全歸屬影片、需要回補 accountId 的影片、同網址重複、標題近似、缺連結/日期/觀看/分類欄位的影片，並列出全庫孤兒影片（沒有帳號歸屬）供人工檢查。【B 一鍵定位問題影片】完整盤點結果每一列都可「定位」，會切到影片庫、清掉篩選、搜尋並高亮該影片；若是安全可回補的影片，也可沿用既有一鍵回補。這版只新增核對與定位，不改資料結構、不動 client.html、不動六守門提示詞。
 v241 更新（交辦單：Lisa 實測發現重複／疑似重複彈窗只說「已建檔過」仍不夠安心，因為影片庫可能找不到、也看不出既有資料與這次卡B到底是否一致）：【A 建檔前重複核對卡】相同連結與標題相似兩種情境都改成「先核對再決定」，彈窗會列出庫裡既有資料與這次卡B的標題、帳號、發布日、封面／標題字、觀看數、連結，讓 Lisa 在未建檔前先判斷是不是同一支。【B 去影片庫查看這支】重複彈窗新增「去影片庫看這支」選項；系統會取消本次存檔、切到影片庫、清掉篩選、用既有影片標題搜尋並定位高亮，避免只說有資料卻找不到。【C 判斷文案更清楚】一般相同連結、內容錯配與標題相似三種彈窗分別說明「同一連結」、「同一連結但內容對不上」、「標題很像但網址不同」，降低誤覆蓋與誤新增。未動資料結構、未動 client.html、未動六守門常數。
 v240 更新（交辦單：Lisa 實測發現「相同影片連結」不一定代表同一支內容——本次卡B標題是報稅／撫養父母節稅，但系統用同一連結對到庫裡既有的情侶分手借貸影片）：【A 重複連結加內容交叉檢查】saveBtn 的相同連結偵測不再只說「這支影片已建檔過」；若新卡B標題／封面／發布日期與既有影片明顯不一致，會改跳「同一連結，但卡片內容對不上」的風險彈窗，明確列出既有影片與這次要存的影片，提醒可能是卡B連結拿錯、舊資料連結貼錯或曾經建檔中斷造成錯配。【B 危險情境預設不覆蓋】內容不一致時預設主按鈕改為「先不要建檔，回去檢查連結」，避免一按就把舊資料覆蓋；仍保留「確定這次卡B才對→覆蓋舊資料」與「仍新增一支」給 Lisa 手動判斷。【C 確認建檔文案更清楚】覆蓋路徑會明講「覆蓋既有影片、不新增」，系統總數維持不變，減少「還沒按確認但影片庫數字好像已經變了」的誤解。未動資料結構、未動 client.html、未動六守門常數。
@@ -1667,7 +1668,7 @@ if('serviceWorker' in navigator){
       <svg viewBox="0 0 24 24" style="width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>批次操作工具 <span style="font-weight:500;color:var(--sub);font-size:11px">全選 · 腳本範本 · 並排對比 · 匯出</span>
     </summary>
     <div id="libBulk" style="display:flex;gap:6px;align-items:center;padding:6px 12px 11px;flex-wrap:wrap">
-      <button class="btn btn-ghost" id="libSelAllBtn" style="width:auto;font-size:12px;padding:6px 12px">全選</button>
+      <button class="btn btn-ghost" id="libSelAllBtn" style="width:auto;font-size:12px;padding:6px 12px">全選目前清單</button>
       <span id="libSelCount" style="font-size:12px;color:var(--gold-dark)"></span>
       <button class="btn btn-ghost" id="bulkTemplate" style="width:auto;font-size:12px;padding:6px 12px"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:3px"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/></svg>產生腳本範本</button>
       <label style="display:inline-flex;align-items:center;gap:5px;font-size:11.5px;color:var(--gold-dark)" title="選了客戶＝範本提示詞會自動帶入他的職業／產業／主打與逐字稿節選；留空＝輸出空白樣板（____）給你手填，跟以前一樣。">腳本範本對標客戶<select id="tplClient" data-csearch="1" data-accpick="1" style="max-width:320px;padding:9px 12px;border:1px solid var(--gold-soft);border-radius:8px;background:#fff;color:var(--ink);font-family:inherit;font-size:14px"><option value="">— 不選客戶（空白樣板）—</option></select></label>
@@ -3702,7 +3703,7 @@ function renderLibrary(){
   else if(sortBy==='engage') list.sort((a,b)=>engRateOf(b)-engRateOf(a));
   window._lastLibFiltered=list.slice();
   const box=$('libList');
-  if(!list.length){ window._lastLibShown=[]; box.innerHTML='<div class="empty-res">沒有符合的影片。</div>'; return; }
+  if(!list.length){ window._lastLibShown=[]; if(typeof updateLibSel==='function') setTimeout(updateLibSel,0); box.innerHTML='<div class="empty-res">沒有符合的影片。</div>'; return; }
   // v161 B1：每頁 10 支、頁碼列上下各一排（品牌酒紅/金）
   const sig=[$('libSearch')?$('libSearch').value.trim():'',libFilter,libClient,libStageF,libGoalF,libTypeF,libJobF,libIndF,libHeroId,libRivalMode,(libRivalIds||[]).join(','),(libRivalChecked||[]).join(','),sortBy].join('|');
   if(sig!==_libSig){ libPage=1; _libSig=sig; }
@@ -3723,7 +3724,7 @@ function renderLibrary(){
   box.innerHTML=_libPager()+shown.map(v=>vcard(v)).join('')+_libPager();
   box.querySelectorAll('.vdel').forEach(b=>b.onclick=()=>delVideo(b.dataset.id));
   box.querySelectorAll('.vedit').forEach(b=>b.onclick=()=>editVideoModal(b.dataset.id));
-  box.querySelectorAll('.vsel').forEach(c=>c.onchange=updateLibSel);
+  box.querySelectorAll('.vsel').forEach(function(c){ c.checked=(window._libSelectedIds&&window._libSelectedIds.has(String(c.dataset.id))); c.onchange=function(){ var set=window._libSelectedIds||(window._libSelectedIds=new Set()); if(c.checked) set.add(String(c.dataset.id)); else set.delete(String(c.dataset.id)); updateLibSel(); }; });
   box.querySelectorAll('.lib-pg').forEach(function(b){ b.onclick=function(){ var p=parseInt(b.getAttribute('data-pg'),10); if(isNaN(p)) return; libPage=p; renderLibrary(); window.scrollTo({top:0,behavior:'smooth'}); }; });
   if($('libSelAll'))$('libSelAll').checked=false;
   updateLibSel();
@@ -4407,6 +4408,7 @@ function renderManual(){
   <div class="form-card" style="border-left:3px solid var(--gold)">
     <div class="stitle" style="font-size:15px;color:var(--rouge)">更新紀錄 · 還沒做的</div>
     <p style="font-size:13px;color:var(--text);line-height:1.85;margin-top:8px">
+    <b>v244（批次選取與目前清單修正）：</b>①<b>複製目前清單 / 匯出目前清單 CSV</b> 一律使用上方篩選後的完整清單，不被本頁勾選狀態干擾；例如主角客戶已選 @kl.legal，就會一次輸出 32 支，不再只出第 1 頁 10 支。②<b>全選改跨頁</b>：批次工具的全選會選取目前篩選清單全部頁面，不只是本頁。③<b>清除選取更明確</b>：按鈕會顯示「全選目前清單 / 取消目前清單選取」，並顯示目前清單共幾支、已選幾支。<b>只動影片庫批次選取、複製與 CSV 匯出，不動資料結構、client.html 與六守門提示詞。</b><br>
     <b>v243（匯出目前清單修穩）：</b>①<b>複製目前清單</b>：影片庫批次工具新增一顆清楚的複製按鈕，直接把目前篩選結果整理成純文字核對清單，方便 Lisa 丟回 ChatGPT 對本機資料夾。②<b>CSV 匯出不再黑盒</b>：下載改用更穩的 DOM click，按鈕文案改「匯出目前清單CSV」；未勾選時匯出目前篩選全部，已勾選時只匯出勾選項。③<b>核對流程更直覺</b>：不用再先全選每頁 10 支，也不用懷疑按鈕有沒有反應。<b>只動影片庫匯出/複製行為，不動資料結構、client.html 與六守門提示詞。</b><br>
     <b>v242（帳號影片一次完整盤點）：</b>①<b>完整盤點</b>：帳號卡新增「完整盤點」，一次看該帳號安全歸屬幾支、哪些只是用 @handle 對上但 id 還沒回補、哪些同網址重複、哪些標題近似、哪些缺連結／日期／觀看／分類欄位。②<b>孤兒影片一起列</b>：全庫沒有帳號歸屬的影片也會列出來，讓 Lisa 快速看是不是那兩支漏掛帳號的影片。③<b>一鍵定位</b>：盤點列可直接跳影片庫定位並高亮問題影片，不用一頁一頁翻。<b>這版只做核對與定位，不動資料結構、client.html 與六守門提示詞。</b><br>
     <b>v241（重複／疑似重複建檔前先看清楚）：</b>①<b>重複核對卡</b>：相同連結、標題很像、內容疑似錯配時，不再只跳一句「已建檔過」，而會把「庫裡既有」和「這次卡B」的標題、帳號、日期、封面／標題字、觀看數與連結列出來，讓 Lisa 在建檔前先看是不是同一支。②<b>去影片庫看這支</b>：彈窗新增「去影片庫看這支」選項，點下去會取消本次存檔、切到影片庫、清掉篩選、定位並高亮那支既有影片，避免系統說有但 Lisa 找不到。③<b>三種風險分開說</b>：同一連結、同一連結但內容對不上、標題很像但網址不同，文案分流說清楚，不再讓覆蓋／新增判斷混在一起。<b>這版只修建檔前核對與定位，不動資料結構、client.html 與六守門提示詞。</b><br>
@@ -10235,7 +10237,7 @@ document.addEventListener('DOMContentLoaded',function(){
 })();
 </script>
 
-<!-- v243：影片庫匯出/複製目前清單修穩；保留 v242 帳號影片完整盤點、v241 建檔前重複核對、v240 內容錯配檢查與 v239 自動防舊版快取 -->
+<!-- v244：影片庫目前清單跨頁複製/匯出與批次全選修正；保留 v243 匯出修穩、v242 完整盤點、v241 重複核對、v240 內容錯配與 v239 防快取 -->
 <div id="stickyCardSave" style="display:none;position:fixed;bottom:84px;right:14px;z-index:10000;flex-direction:column;gap:6px;background:#fff;border:1.5px solid var(--rouge);border-radius:12px;padding:10px 14px;box-shadow:0 6px 24px rgba(0,0,0,.15);max-width:280px">
   <div style="font-size:11px;color:var(--gold-dark);font-weight:700;letter-spacing:.4px;text-transform:uppercase">Quick Save · 快速儲存</div>
   <button id="stickyCardBtn" class="btn btn-go" type="button" onclick="_cardQuickAction()" style="width:100%;font-size:13px;padding:9px 14px"><svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;vertical-align:-2px;margin-right:4px"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8M7 3v5h8"/></svg>儲存這支影片＋</button>
