@@ -8,8 +8,8 @@
 <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v260 (版本號僅留註解，不顯示於畫面)
-v260 更新（hotfix：修正策略診斷帳號搜尋結果可看但無法點選）：移除 v259 檔內殘留的舊版策略診斷函式重複覆蓋，改用穩定的資料屬性點選事件處理，避免 inline onclick / 舊函式覆寫造成帳號列無法選取；保留策略診斷、案例雷達、案例價值與浮動核對窗，不動 client.html。
+<!-- ATELIER 影片診斷工作台 · 內部版本 v261 (版本號僅留註解，不顯示於畫面)
+v261 更新（策略診斷客戶卡與單支影片核對窗升級）：移除 v259 檔內殘留的舊版策略診斷函式重複覆蓋，改用穩定的資料屬性點選事件處理，避免 inline onclick / 舊函式覆寫造成帳號列無法選取；保留策略診斷、案例雷達、案例價值與浮動核對窗，不動 client.html。
 v259 更新（hotfix：修正 v258 在投影片下載函式內誤插入策略診斷 script，造成主程式 node --check 失敗與頁面可能中斷；保留 v258 的策略診斷、案例雷達與服務台開啟設計，不再改 client.html，客戶服務台維持 cs-v3.12 穩定版。）
  v258 更新（交辦單：Lisa 實測 v255 後，策略診斷雖可搜尋但版面重疊、選到客戶後框線超出、快看資訊太少且定位會跳離策略頁；同時要求把「案例價值標籤／案例分數」納入每支影片的顧問資料庫）：【A 策略診斷選客戶改成卡片式】移除可見的下拉 select，保留 hidden select 作真值；搜尋結果改為卡片列，選到帳號後在下方顯示「目前診斷客戶」卡，避免搜尋框與下拉重疊。【B 單支影片改成浮動核對窗】Top/Bottom 的「快看／定位」不再直接跳離策略診斷，改為同頁浮動小窗，內含完整數據、Hook、G/A-E、案例價值分數、案例標籤與可複製公式；需要時才按「去影片庫定位」或「獨立視窗核對」。【C 新增案例價值引擎】以觀看、互動率、分享率、G階段、A-E目標層與 Hook/標題語氣自動給「成功樣本／可複製 Hook／可複製題材／可複製結構／高觀看低轉化／低觀看高商業價值／不建議直接複製」等只讀標籤，並產生 0–100 案例價值分數，作為未來案例雷達資料基礎。只讀資料，不寫入 Firebase。
 v255 更新（交辦單：Lisa 實測 v254 後，策略診斷搜尋仍像當機；同時要求把核心一條龍流程視覺化放進頁面）：【A 修復策略診斷主程式中斷】修正 renderStrategyActionBox 內 toast onclick 引號未跳脫造成整段 JavaScript 中斷的問題，讓策略診斷搜尋、按鈕、快看與結果列恢復。【B 新增策略診斷一條龍流程說明】在策略診斷頁新增「一條龍導航／學習小抄」視覺區，清楚標示建檔 32 支 → 策略快照 → Top/Bottom → 單支快看 → 可複製公式 → 補問客戶 → 客戶服務台交付 → 商業閉環校準。【C 自檢原則】本版不碰 CSV、不改 Firebase、不動 client.html、不動六支守門提示詞。
@@ -1100,7 +1100,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v260</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v261</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -4738,6 +4738,7 @@ function renderManual(){
   <div class="form-card" style="border-left:3px solid var(--gold)">
     <div class="stitle" style="font-size:15px;color:var(--rouge)">更新紀錄 · 還沒做的</div>
     <p style="font-size:13px;color:var(--text);line-height:1.85;margin-top:8px">
+    <b>v261（優化策略診斷客戶卡與單支影片核對窗）：</b>策略診斷目前客戶卡補齊帳號管理式資訊摘要；單支影片核對窗改為 A–E 目標層優先於 G 階段，補上更完整的 Hook / ICP / 成功公式 / AI 複製工具，並整理 Top / Bottom 按鈕排列。<b>不動 client.html、Firebase、CSV 與六守門提示詞。</b><br>
     <b>v260（修正策略診斷帳號列無法點選）：</b>移除 v259 內殘留的舊版策略診斷函式覆蓋，改用穩定的 data-id 帳號卡點選事件，修正搜尋結果看得到但點不進去、無法產生策略快照的問題。<b>不動 client.html、Firebase、CSV 與六守門提示詞。</b><br>
     <b>v259（策略診斷卡片式選客戶＋案例價值引擎）：</b>修正策略診斷搜尋框／下拉重疊、選到客戶後框線超出與定位跳離頁面的問題；新增「目前診斷客戶」卡片、單支影片浮動核對窗、案例價值分數與案例標籤（成功樣本、可複製 Hook、可複製題材、可複製結構、高觀看低轉化、低觀看高商業價值、不建議直接複製），先作為只讀顧問判斷，不寫入資料庫。<b>不碰 CSV、不寫入 Firebase、不動 client.html 與六守門提示詞。</b><br>
     <b>v255（策略診斷穩定化＋一條龍導航）：</b>修正策略診斷下一步行動區 toast 按鈕引號未跳脫造成主程式中斷的問題；新增一條龍導航／學習小抄，把建檔 32 支、策略快照、Top/Bottom、單支快看、可複製公式、補問客戶、客戶服務台交付與商業閉環校準整理成視覺流程。<b>不碰 CSV、不寫入資料、不動 client.html、Firebase 與六守門提示詞。</b><br>
@@ -10917,7 +10918,7 @@ document.addEventListener('DOMContentLoaded',function(){
 <script>
 /* v239：自動防舊版快取。讓桌布捷徑／瀏覽器如果抓到舊 HTML，能自己比對線上最新版並導向。 */
 (function(){
-  var ATELIER_CURRENT_VERSION='v260';
+  var ATELIER_CURRENT_VERSION='v261';
   window.ATELIER_CURRENT_VERSION=ATELIER_CURRENT_VERSION;
   function _avNum(v){v=String(v||'');var m=v.match(/v\s*(\d+)/i);return m?parseInt(m[1],10):0;}
   function _avDetect(html){html=String(html||'');var m=html.match(/id=["']verBadge["'][^>]*>\s*(v\d+)/i)||html.match(/內部版本\s+(v\d+)/i);return m?m[1]:'';}
@@ -11001,5 +11002,104 @@ document.addEventListener('DOMContentLoaded',function(){
 })();
 </script>
 
+
+
+<script>
+/* ═══════════ v261：策略診斷客戶卡 + 單支影片核對窗升級（只讀，不寫入資料） ═══════════ */
+(function(){
+  function H(id){return document.getElementById(id)}
+  function E(x){return String(x==null?'':x).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]||c;});}
+  function N(x){var s=String(x||'').replace(/,/g,'').trim();var m=s.match(/(\d+(?:\.\d+)?)\s*(億|万|萬|w|W|k|K|千|M|m)?/);if(!m)return 0;var v=parseFloat(m[1]||'0')||0,u=m[2]||'';if(u==='億')v*=100000000;else if(u==='萬'||u==='万'||u==='w'||u==='W')v*=10000;else if(u==='k'||u==='K'||u==='千')v*=1000;else if(u==='M'||u==='m')v*=1000000;return Math.round(v)}
+  function score(v){var views=N(v&&v.views),likes=N(v&&v.likes),comments=N(v&&v.comments),shares=N(v&&v.shares),saves=N(v&&v.saves),reps=N((v&&v.reposts)||(v&&v.repost));var eng=likes+comments+shares+saves+reps;return {views:views,likes:likes,comments:comments,shares:shares,saves:saves,reposts:reps,eng:eng,engRate:views?eng/views:0,shareRate:views?shares/views:0};}
+  function goalLetter(v){var m=String((v&&v.goal)||'').toUpperCase().match(/[A-E]/);return m?m[0]:'未填'}
+  function stageLetter(v){var m=String((v&&v.stage)||'').toUpperCase().match(/G[1-5]/);return m?m[0]:'未填'}
+  function strategyVideos(){try{return (typeof videos!=='undefined'&&videos)?videos:(window.videos||[])}catch(e){return []}}
+  function strategyAccounts(){try{return (typeof accounts!=='undefined'&&accounts)?accounts:(window.accounts||[])}catch(e){return []}}
+  function findVideo(id){return strategyVideos().find(function(v){return String(v.id)===String(id)})}
+  function videosOfAcc(id){try{if(typeof videosOfAccount==='function')return videosOfAccount(id)||[]}catch(e){}return strategyVideos().filter(function(v){return String(v.accountId||v.accId||v.account_id||'')===String(id)})}
+  function caseValue(v,s){
+    if(typeof window._strategyCaseValue==='function'){try{return window._strategyCaseValue(v,s)}catch(e){}}
+    s=s||score(v);var txt=[v&&v.title,v&&v.hook,v&&v.notes].join(' '),pts=35,tags=[];
+    if(s.views>=50000){pts+=22;tags.push('成功樣本')}else if(s.views>=20000){pts+=16;tags.push('可複製題材')}else if(s.views>=10000){pts+=8;tags.push('普通樣本')}else if(s.views<7000){pts-=4}
+    if(s.shareRate>=0.005){pts+=14;tags.push('高分享樣本')}else if(s.shareRate>=0.002){pts+=9;tags.push('可複製 Hook')}
+    if(s.engRate>=0.02){pts+=10;tags.push('高互動樣本')}else if(s.engRate>=0.012){pts+=5}
+    if(/不一定|其實|差異|差別|VS|vs|迷思|破解|風險|避坑|怎麼辦|可以|不能|五大|三步驟|一分鐘/.test(txt)){pts+=10;tags.push('可複製結構')}
+    if(goalLetter(v)==='D'||goalLetter(v)==='E'||stageLetter(v)==='G5'){pts+=8;tags.push('商業轉化參考')}
+    pts=Math.max(0,Math.min(100,Math.round(pts)));return {score:pts,tags:tags.length?[].filter.call(tags,function(t,i,a){return a.indexOf(t)===i}):['待人工判斷']};
+  }
+  function pills(tags){return (tags||[]).map(function(t){return '<span class="strat-pill">'+E(t)+'</span>'}).join('')}
+  function formula(v){
+    if(typeof window._strategyFormula==='function'){try{return window._strategyFormula(v)}catch(e){}}
+    var txt=String((v&&v.title)||'')+' '+String((v&&v.hook)||'');
+    if(/差異|差別|VS|訂金|定金|雇傭|承攬|本票|借據|侮辱|誹謗/.test(txt))return '公式：A 跟 B 看起來很像，但後果完全不同 → 用生活損失開場 → 律師 60 秒判斷。';
+    if(/怎麼辦|五大|三步驟|一分鐘|求償|退貨|討債/.test(txt))return '公式：先講痛點情境 → 列出 3–5 個可執行步驟 → 收到諮詢或自保場景。';
+    if(/不起訴|偵查|詐騙|貪污|刑法/.test(txt))return '公式：社會事件切入 → 拆背後機制 → 讓觀眾知道專業判斷差在哪。';
+    return '公式：生活場景開場 → 降低法律門檻 → 補一個可保存的判斷句。';
+  }
+  function advice(v,s){
+    s=s||score(v);var txt=String((v&&v.title)||'')+' '+String((v&&v.hook)||''),bits=[];
+    if(s.views>=30000)bits.push('題材具明顯市場注意力，適合拆成可複製樣本。');
+    if(s.shareRate>=0.002)bits.push('分享率有訊號，代表內容可能具備轉傳、收藏或自保價值。');
+    if(goalLetter(v)==='D'||goalLetter(v)==='E')bits.push('這支較接近服務理解／成交轉化，可觀察它如何把知識導向需求。');
+    if(/差異|差別|VS|不一定|其實|風險|怎麼辦|可以|不能/.test(txt))bits.push('具備反直覺、避坑或可操作語氣，適合轉成下一批選題模板。');
+    if(s.views<7000)bits.push('觀看偏低，需回看前 3 秒是否太抽象、太法律化，或沒有明確生活情境。');
+    return bits.length?bits.join(' '):'這支可作為人工核對樣本，建議回影片卡看逐字稿、ICP、主題與商業閉環位置。';
+  }
+  function copyText(txt,label){try{navigator.clipboard.writeText(String(txt||'')); if(typeof toast==='function')toast((label||'內容')+'已複製');}catch(e){var ta=document.createElement('textarea');ta.value=String(txt||'');document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();if(typeof toast==='function')toast((label||'內容')+'已複製')}}
+  function videoPrompt(v,type){
+    var s=score(v),cv=caseValue(v,s),base='【案例影片】\n'+(v.title||'未命名')+'\n\n【分類】\n合作目標：'+goalLetter(v)+'\nG階段：'+stageLetter(v)+'\n主題 / 素材：'+[(v.topic||v.theme||''),(v.material||''),(v.subtype||v.format||'')].filter(Boolean).join(' / ')+'\n\n【數據】\n觀看：'+s.views+'\n讚：'+s.likes+'\n留言：'+s.comments+'\n分享：'+s.shares+'\n互動率：'+(s.engRate*100).toFixed(2)+'%\n分享率：'+(s.shareRate*100).toFixed(2)+'%\n案例分：'+cv.score+'\n案例標籤：'+cv.tags.join('、')+'\n\n【Hook】\n'+(v.hook||'未填')+'\n\n【顧問判斷】\n'+advice(v,s)+'\n\n【可複製公式】\n'+formula(v);
+    if(type==='script')return '請依照以下成功／參考樣本，改寫成 5–10 個適合我目前客戶的新短影音腳本方向。每個方向請包含：標題、前 3 秒 Hook、30 秒腳本骨架、CTA、可借鏡點、不可直接照抄的地方。\n\n'+base;
+    if(type==='success')return '請把以下短影音拆成「可複製成功公式」。請分析：前 3 秒、ICP、痛點、情緒觸發、資訊節奏、可複製句型、可轉換成不同產業的方式。\n\n'+base;
+    if(type==='risk')return '請判斷以下影片是否適合被我的客戶借鏡。請分析：可以複製什麼、不能複製什麼、可能失敗原因、需要如何改成符合客戶 ICP 與商業目標。\n\n'+base;
+    return base;
+  }
+  function ensureStyle(){if(H('strategyV261Style'))return;var st=document.createElement('style');st.id='strategyV261Style';st.textContent='\n.strat-pill{display:inline-block;margin:3px 5px 0 0;padding:3px 8px;border:1px solid var(--gold-soft);border-radius:999px;background:var(--warm);font-size:11px;color:var(--rouge)}\n.strategy-mini-actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;align-items:center}.strategy-mini-actions .btn{width:auto!important;font-size:11px!important;padding:5px 10px!important;margin:0!important}.strategy-float-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:12px}.strategy-ai-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:10px}.strategy-ai-actions .btn,.strategy-float-actions .btn{width:100%!important;font-size:12.5px!important;padding:9px 10px!important;white-space:normal}.strategy-info-card{border:1px solid var(--gold-soft);background:var(--warm);border-radius:14px;padding:13px 15px;font-size:12.5px;line-height:1.75}.strategy-info-card .chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.strategy-info-card .chips span{padding:3px 8px;border:1px solid var(--gold-soft);border-radius:999px;background:#fff}\n@media(max-width:760px){.strategy-ai-actions,.strategy-float-actions{grid-template-columns:1fr}.strategy-mini-actions .btn{flex:1}}\n';document.head.appendChild(st)}
+  function renderCurrentAccV261(a){
+    ensureStyle();var card=H('stratAccCurrent');if(!card)return;if(!a){card.style.display='none';card.innerHTML='';return}
+    var n=videosOfAcc(a.id).length;var handle=E(a.handle||''),name=E(a.displayName||a.name||''),job=E(a.jobTitle||''),ind=E(a.industry||a.domain||''),fans=E(a.followers||a.fans||a.followerText||''),tier=E(a.level||a.tier||a.scale||''),bio=E(a.bio||a.description||a.notes||a.remark||'');
+    card.innerHTML='<div class="strategy-info-card"><div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px"><div><b style="color:var(--rouge);font-family:Noto Serif TC,serif;letter-spacing:.8px">目前診斷客戶｜帳號管理摘要</b><br><b style="font-size:15px;color:var(--ink)">'+handle+' · '+name+'</b></div><button type="button" onclick="_strategyClearAcc()" style="border:0;background:#fff;color:var(--rouge);border-radius:999px;padding:6px 10px;cursor:pointer;font-size:12px;white-space:nowrap">清除／換客戶 ×</button></div><div class="chips">'+(job?'<span>職稱 '+job+'</span>':'')+(ind?'<span>產業 '+ind+'</span>':'')+(fans?'<span>粉絲 '+fans+'</span>':'')+(tier?'<span>量級 '+tier+'</span>':'')+'<span>影片 '+n+' 支</span></div>'+(bio?'<div style="margin-top:9px;color:var(--sub)"><b style="color:var(--ink)">帳號摘要：</b>'+bio+'</div>':'')+'<div style="margin-top:9px;color:var(--sub)"><b style="color:var(--rouge)">診斷用途：</b>這張卡承接帳號管理資料，用來確認目前分析對象；下方策略快照、Top / Bottom 與案例雷達都會以這個帳號為主角。</div></div>';
+    card.style.display='block';
+  }
+  function vidLineV261(v,i){
+    var s=score(v),cv=caseValue(v,s),id=E(String(v.id||''));
+    return '<div style="padding:10px 0;border-top:1px solid var(--line);font-size:12.5px;line-height:1.7"><b style="color:var(--ink)">'+(i+1)+'. '+E(v.title||'(未命名)')+'</b><br><span style="color:var(--sub)">合作目標 '+E(goalLetter(v))+'｜'+E(stageLetter(v))+'｜觀看 '+s.views.toLocaleString()+'｜互動率 '+(s.engRate*100).toFixed(2)+'%｜分享率 '+(s.shareRate*100).toFixed(2)+'%｜案例分 '+cv.score+'</span><br>'+pills(cv.tags.slice(0,3))+'<div class="strategy-mini-actions"><button type="button" class="btn btn-ghost" onclick="_strategyOpenVideoMini(\''+id+'\')">快看／核對</button><button type="button" class="btn btn-ghost" onclick="_strategyOpenVideoMini(\''+id+'\')">留在本頁</button><button type="button" class="btn btn-ghost" onclick="_strategyCopyVideoPrompt(\''+id+'\',\'script\')">複製改寫</button></div></div>';
+  }
+  function openVideoMiniV261(id){
+    ensureStyle();var v=findVideo(id);if(!v){if(typeof toast==='function')toast('找不到這支影片');return}var s=score(v),cv=caseValue(v,s),p=H('strategyFloatPanel');
+    var topic=[v.topic||v.theme||'',v.material||'',v.subtype||v.format||''].filter(Boolean).join('｜');
+    var html='<div onmousedown="_strategyStartDrag(event)" style="cursor:move;padding:12px 14px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px;background:var(--warm);border-radius:16px 16px 0 0"><b style="font-family:Noto Serif TC,serif;color:var(--rouge);font-size:16px;flex:1">單支影片核對窗｜策略樣本</b><button type="button" onclick="_strategyCloseFloat()" style="border:0;background:transparent;color:var(--rouge);font-size:20px;cursor:pointer">×</button></div>'
+      +'<div style="padding:15px;line-height:1.8;font-size:13px"><b style="color:var(--ink);font-size:15px">'+E(v.title||'(未命名影片)')+'</b><br><span style="color:var(--sub)">合作目標 '+E(goalLetter(v))+'｜'+E(stageLetter(v))+(topic?'｜'+E(topic):'')+'</span>'
+      +'<div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:12px 0"><div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:9px;text-align:center"><b style="color:var(--rouge);font-size:18px">'+s.views.toLocaleString()+'</b><br><span style="font-size:11px;color:var(--sub)">觀看</span></div><div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:9px;text-align:center"><b style="color:var(--rouge);font-size:18px">'+(s.engRate*100).toFixed(2)+'%</b><br><span style="font-size:11px;color:var(--sub)">互動率</span></div><div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:9px;text-align:center"><b style="color:var(--rouge);font-size:18px">'+(s.shareRate*100).toFixed(2)+'%</b><br><span style="font-size:11px;color:var(--sub)">分享率</span></div><div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:9px;text-align:center"><b style="color:var(--rouge);font-size:18px">'+cv.score+'</b><br><span style="font-size:11px;color:var(--sub)">案例分</span></div></div>'
+      +'<div style="padding:10px;background:var(--warm);border-radius:10px"><b style="color:var(--rouge)">案例價值：</b>'+pills(cv.tags)+'</div>'
+      +'<div style="margin-top:10px;padding:10px;background:#fff;border:1px solid var(--border);border-radius:10px"><b style="color:var(--rouge)">Hook：</b>'+E(v.hook||'未填')+'</div>'
+      +'<div style="margin-top:10px;padding:10px;background:#fff;border:1px solid var(--border);border-radius:10px"><b style="color:var(--rouge)">顧問判斷：</b>'+E(advice(v,s))+'<br><b style="color:var(--rouge)">可複製公式：</b>'+E(formula(v))+'</div>'
+      +'<div style="margin-top:10px;padding:10px;background:var(--warm);border-radius:10px"><b style="color:var(--rouge)">AI 工具：</b><div style="color:var(--sub);font-size:12px;margin-top:3px">把這支影片丟給 AI，可快速拆成功公式、翻寫 5–10 個新腳本，或判斷借鏡風險。</div><div class="strategy-ai-actions"><button class="btn btn-ghost" type="button" onclick="_strategyCopyVideoPrompt(\''+E(String(v.id||''))+'\',\'success\')">複製成功公式拆解</button><button class="btn btn-ghost" type="button" onclick="_strategyCopyVideoPrompt(\''+E(String(v.id||''))+'\',\'script\')">複製 5–10 支改寫提示</button><button class="btn btn-ghost" type="button" onclick="_strategyCopyVideoPrompt(\''+E(String(v.id||''))+'\',\'risk\')">複製借鏡風險判斷</button></div></div>'
+      +'<div class="strategy-float-actions"><button class="btn btn-go" type="button" onclick="_strategyGoVideoLibrary(\''+E(String(v.id||''))+'\')">去影片庫定位</button><button class="btn btn-ghost" type="button" onclick="_strategyOpenVideoWindow(\''+E(String(v.id||''))+'\')">獨立視窗核對</button><button class="btn btn-ghost" type="button" onclick="_strategyCloseFloat()">收起</button></div></div>';
+    if(p){p.innerHTML=html;p.style.display='block';p.style.right='22px';p.style.left='auto';p.style.top='120px';p.style.width='min(720px,calc(100vw - 40px))';p.style.maxWidth='720px'}else{alert((v.title||'')+'\n觀看 '+s.views)}
+  }
+  window._strategyRenderCurrentAcc=renderCurrentAccV261;
+  window._strategyOpenVideoMini=openVideoMiniV261;
+  window._strategyCopyVideoPrompt=function(id,type){var v=findVideo(id);if(!v)return;copyText(videoPrompt(v,type),'AI 提示詞')};
+  window._strategyVidLineV261=vidLineV261;
+  /* 覆寫 renderStrategyDiagnosis：只調整列表順序與按鈕排列，其他資料邏輯沿用。 */
+  var oldRender=window.renderStrategyDiagnosis;
+  window.renderStrategyDiagnosis=function(){
+    if(typeof oldRender==='function')oldRender();
+    try{
+      var box=H('strategyResult');if(!box)return;
+      var p=(function(){var sel=H('stratAcc'),id=sel&&sel.value;if(!id)return null;var a=strategyAccounts().find(function(x){return String(x.id)===String(id)});var vs=videosOfAcc(id);return {a:a,vs:vs}})();
+      if(!p||!p.a||!p.vs.length)return;
+      renderCurrentAccV261(p.a);
+      var vs=p.vs.slice(),scored=vs.map(function(v){return {v:v,s:score(v)}});
+      var topViews=scored.slice().sort(function(a,b){return b.s.views-a.s.views}).slice(0,5).map(function(x){return x.v});
+      var topShare=scored.slice().sort(function(a,b){return b.s.shareRate-a.s.shareRate}).filter(function(x){return x.s.views>0}).slice(0,5).map(function(x){return x.v});
+      var bottom=scored.slice().sort(function(a,b){return a.s.views-b.s.views}).slice(0,5).map(function(x){return x.v});
+      var cards=box.querySelectorAll('div[style*="grid-template-columns:repeat(3"] > div');
+      if(cards.length>=3){cards[0].innerHTML='<div style="font-family:\'Noto Serif TC\',serif;font-weight:900;color:var(--ink)">Top 觀看</div>'+topViews.map(vidLineV261).join('');cards[1].innerHTML='<div style="font-family:\'Noto Serif TC\',serif;font-weight:900;color:var(--ink)">Top 分享率</div>'+topShare.map(vidLineV261).join('');cards[2].innerHTML='<div style="font-family:\'Noto Serif TC\',serif;font-weight:900;color:var(--ink)">低觀看待複核</div>'+bottom.map(vidLineV261).join('');}
+    }catch(e){console.warn('[v261 strategy render]',e)}
+  };
+  document.addEventListener('DOMContentLoaded',function(){ensureStyle();setTimeout(function(){try{if(H('view-strategy')&&H('view-strategy').classList.contains('on')&&typeof window.renderStrategyDiagnosis==='function')window.renderStrategyDiagnosis()}catch(e){}},400)});
+})();
+</script>
 </body>
 </html>
