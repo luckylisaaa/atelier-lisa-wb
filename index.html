@@ -8,8 +8,9 @@
 <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v261 (版本號僅留註解，不顯示於畫面)
-v261 更新（策略診斷客戶卡與單支影片核對窗升級）：移除 v259 檔內殘留的舊版策略診斷函式重複覆蓋，改用穩定的資料屬性點選事件處理，避免 inline onclick / 舊函式覆寫造成帳號列無法選取；保留策略診斷、案例雷達、案例價值與浮動核對窗，不動 client.html。
+<!-- ATELIER 影片診斷工作台 · 內部版本 v262 (版本號僅留註解，不顯示於畫面)
+v262 更新（策略診斷顧問核對體驗重整）：目前診斷客戶卡改直接複用帳號管理完整帳號卡；策略診斷首次開啟不再自動殘留上一版選擇；單支影片核對窗改成精緻顧問版，A–E 先於 G 階段，補全影片庫式欄位、AI 提示詞預覽可編輯、按鈕排列收整。
+ v261 更新（策略診斷客戶卡與單支影片核對窗升級）：移除 v259 檔內殘留的舊版策略診斷函式重複覆蓋，改用穩定的資料屬性點選事件處理，避免 inline onclick / 舊函式覆寫造成帳號列無法選取；保留策略診斷、案例雷達、案例價值與浮動核對窗，不動 client.html。
 v259 更新（hotfix：修正 v258 在投影片下載函式內誤插入策略診斷 script，造成主程式 node --check 失敗與頁面可能中斷；保留 v258 的策略診斷、案例雷達與服務台開啟設計，不再改 client.html，客戶服務台維持 cs-v3.12 穩定版。）
  v258 更新（交辦單：Lisa 實測 v255 後，策略診斷雖可搜尋但版面重疊、選到客戶後框線超出、快看資訊太少且定位會跳離策略頁；同時要求把「案例價值標籤／案例分數」納入每支影片的顧問資料庫）：【A 策略診斷選客戶改成卡片式】移除可見的下拉 select，保留 hidden select 作真值；搜尋結果改為卡片列，選到帳號後在下方顯示「目前診斷客戶」卡，避免搜尋框與下拉重疊。【B 單支影片改成浮動核對窗】Top/Bottom 的「快看／定位」不再直接跳離策略診斷，改為同頁浮動小窗，內含完整數據、Hook、G/A-E、案例價值分數、案例標籤與可複製公式；需要時才按「去影片庫定位」或「獨立視窗核對」。【C 新增案例價值引擎】以觀看、互動率、分享率、G階段、A-E目標層與 Hook/標題語氣自動給「成功樣本／可複製 Hook／可複製題材／可複製結構／高觀看低轉化／低觀看高商業價值／不建議直接複製」等只讀標籤，並產生 0–100 案例價值分數，作為未來案例雷達資料基礎。只讀資料，不寫入 Firebase。
 v255 更新（交辦單：Lisa 實測 v254 後，策略診斷搜尋仍像當機；同時要求把核心一條龍流程視覺化放進頁面）：【A 修復策略診斷主程式中斷】修正 renderStrategyActionBox 內 toast onclick 引號未跳脫造成整段 JavaScript 中斷的問題，讓策略診斷搜尋、按鈕、快看與結果列恢復。【B 新增策略診斷一條龍流程說明】在策略診斷頁新增「一條龍導航／學習小抄」視覺區，清楚標示建檔 32 支 → 策略快照 → Top/Bottom → 單支快看 → 可複製公式 → 補問客戶 → 客戶服務台交付 → 商業閉環校準。【C 自檢原則】本版不碰 CSV、不改 Firebase、不動 client.html、不動六支守門提示詞。
@@ -1100,7 +1101,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v261</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v262</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -4738,6 +4739,7 @@ function renderManual(){
   <div class="form-card" style="border-left:3px solid var(--gold)">
     <div class="stitle" style="font-size:15px;color:var(--rouge)">更新紀錄 · 還沒做的</div>
     <p style="font-size:13px;color:var(--text);line-height:1.85;margin-top:8px">
+    <b>v262（策略診斷顧問核對體驗重整）：</b>目前診斷客戶卡直接複用帳號管理完整帳號卡，不再維持簡版；首次開 v262 會清除上一版殘留選擇，避免誤以為系統自己帶入舊客戶；單支影片核對窗升級成精緻顧問版，A–E 合作目標優先於 G 階段，補全影片庫式欄位、Hook、顧問判斷、可複製公式、AI 提示詞預覽／編輯／返回／還原；Top/Bottom 按鈕改為整齊橫排。<b>不動 client.html、Firebase、CSV 與六守門提示詞。</b><br>
     <b>v261（優化策略診斷客戶卡與單支影片核對窗）：</b>策略診斷目前客戶卡補齊帳號管理式資訊摘要；單支影片核對窗改為 A–E 目標層優先於 G 階段，補上更完整的 Hook / ICP / 成功公式 / AI 複製工具，並整理 Top / Bottom 按鈕排列。<b>不動 client.html、Firebase、CSV 與六守門提示詞。</b><br>
     <b>v260（修正策略診斷帳號列無法點選）：</b>移除 v259 內殘留的舊版策略診斷函式覆蓋，改用穩定的 data-id 帳號卡點選事件，修正搜尋結果看得到但點不進去、無法產生策略快照的問題。<b>不動 client.html、Firebase、CSV 與六守門提示詞。</b><br>
     <b>v259（策略診斷卡片式選客戶＋案例價值引擎）：</b>修正策略診斷搜尋框／下拉重疊、選到客戶後框線超出與定位跳離頁面的問題；新增「目前診斷客戶」卡片、單支影片浮動核對窗、案例價值分數與案例標籤（成功樣本、可複製 Hook、可複製題材、可複製結構、高觀看低轉化、低觀看高商業價值、不建議直接複製），先作為只讀顧問判斷，不寫入資料庫。<b>不碰 CSV、不寫入 Firebase、不動 client.html 與六守門提示詞。</b><br>
@@ -10918,7 +10920,7 @@ document.addEventListener('DOMContentLoaded',function(){
 <script>
 /* v239：自動防舊版快取。讓桌布捷徑／瀏覽器如果抓到舊 HTML，能自己比對線上最新版並導向。 */
 (function(){
-  var ATELIER_CURRENT_VERSION='v261';
+  var ATELIER_CURRENT_VERSION='v262';
   window.ATELIER_CURRENT_VERSION=ATELIER_CURRENT_VERSION;
   function _avNum(v){v=String(v||'');var m=v.match(/v\s*(\d+)/i);return m?parseInt(m[1],10):0;}
   function _avDetect(html){html=String(html||'');var m=html.match(/id=["']verBadge["'][^>]*>\s*(v\d+)/i)||html.match(/內部版本\s+(v\d+)/i);return m?m[1]:'';}
@@ -11005,7 +11007,7 @@ document.addEventListener('DOMContentLoaded',function(){
 
 
 <script>
-/* ═══════════ v261：策略診斷客戶卡 + 單支影片核對窗升級（只讀，不寫入資料） ═══════════ */
+/* ═══════════ v262：策略診斷顧問核對體驗重整（只讀，不寫入資料） ═══════════ */
 (function(){
   function H(id){return document.getElementById(id)}
   function E(x){return String(x==null?'':x).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]||c;});}
@@ -11096,10 +11098,168 @@ document.addEventListener('DOMContentLoaded',function(){
       var bottom=scored.slice().sort(function(a,b){return a.s.views-b.s.views}).slice(0,5).map(function(x){return x.v});
       var cards=box.querySelectorAll('div[style*="grid-template-columns:repeat(3"] > div');
       if(cards.length>=3){cards[0].innerHTML='<div style="font-family:\'Noto Serif TC\',serif;font-weight:900;color:var(--ink)">Top 觀看</div>'+topViews.map(vidLineV261).join('');cards[1].innerHTML='<div style="font-family:\'Noto Serif TC\',serif;font-weight:900;color:var(--ink)">Top 分享率</div>'+topShare.map(vidLineV261).join('');cards[2].innerHTML='<div style="font-family:\'Noto Serif TC\',serif;font-weight:900;color:var(--ink)">低觀看待複核</div>'+bottom.map(vidLineV261).join('');}
-    }catch(e){console.warn('[v261 strategy render]',e)}
+    }catch(e){console.warn('[v262 strategy render]',e)}
   };
   document.addEventListener('DOMContentLoaded',function(){ensureStyle();setTimeout(function(){try{if(H('view-strategy')&&H('view-strategy').classList.contains('on')&&typeof window.renderStrategyDiagnosis==='function')window.renderStrategyDiagnosis()}catch(e){}},400)});
 })();
 </script>
+
+<script>
+/* ═══════════ v262 hotfix · Strategy consultant UX hardening (final override only) ═══════════ */
+(function(){
+  var VERSION='v262';
+  function H(id){return document.getElementById(id)}
+  function E(s){try{return (typeof esc==='function')?esc(s||''):String(s||'').replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}catch(e){return String(s||'')}}
+  function A(){try{return (typeof accounts!=='undefined'&&accounts)?accounts:(window.accounts||[])}catch(e){return window.accounts||[]}}
+  function V(){try{return (typeof videos!=='undefined'&&videos)?videos:(window.videos||[])}catch(e){return window.videos||[]}}
+  function N(x){ if(x==null)return 0; var t=String(x).replace(/,/g,'').trim(); if(!t)return 0; var m=t.match(/([0-9]+(?:\.[0-9]+)?)/); if(!m)return 0; var n=parseFloat(m[1])||0; if(/[萬万]/.test(t))n*=10000; else if(/[千kK]/.test(t))n*=1000; return n; }
+  function fmt(n){ n=N(n); return n?Math.round(n).toLocaleString():'0'; }
+  function accBy(id){return A().filter(function(a){return a&&String(a.id)===String(id)})[0]||null}
+  function vidBy(id){return V().filter(function(v){return v&&String(v.id)===String(id)})[0]||null}
+  function vidsOfAcc(a){ if(!a)return[]; try{ if(typeof videosOfAccount==='function')return videosOfAccount(a.id)||[]; }catch(e){} var h=String(a.handle||'').replace(/^@/,'').toLowerCase(); return V().filter(function(v){return String(v.accountId||'')===String(a.id)||String(v.accountHandle||'').replace(/^@/,'').toLowerCase()===h}) }
+  function accForVid(v){ try{ if(typeof accountForVideo==='function')return accountForVideo(v); }catch(e){} return accBy(v&&v.accountId)||null; }
+  function goal(v){var m=String((v&&v.goal)||'').toUpperCase().match(/[A-E]/); return m?m[0]:'未填'}
+  function stage(v){var m=String((v&&v.stage)||'').toUpperCase().match(/G[1-5]/); return m?m[0]:'未填'}
+  function score(v){ var views=N(v&&v.views),likes=N(v&&v.likes),comments=N(v&&v.comments),shares=N(v&&v.shares),saves=N(v&&v.saves),reps=N((v&&v.reposts)||(v&&v.repost)); var eng=likes+comments+shares+saves+reps; return {views:views,likes:likes,comments:comments,shares:shares,saves:saves,reposts:reps,eng:eng,engRate:views?eng/views:0,shareRate:views?shares/views:0}; }
+  function pct(x){return ((x||0)*100).toFixed(2)+'%'}
+  function val(v,k){ return (v&&v[k])?String(v[k]):'' }
+  function tag(t,cls){return '<span class="v262-tag '+(cls||'')+'">'+E(t)+'</span>'}
+  function detailRow(label,value){ if(!value)return ''; return '<div class="v262-row"><span>'+E(label)+'</span><b>'+E(value)+'</b></div>' }
+  function promptOpen(text,label){ if(typeof copyPrompt==='function') copyPrompt(text,label||'提示詞'); else if(typeof copyVal==='function') copyVal(text,label||'提示詞'); }
+  function buildPrompt(v,mode){
+    var a=accForVid(v)||{}; var s=score(v); var base='【參考影片】\n標題：'+(v.title||'未命名')+'\n帳號：'+(a.handle||v.accountHandle||'')+' '+(a.displayName||'')+'\n合作目標：'+(v.goal||goal(v))+'\nG階段：'+(v.stage||stage(v))+'\n主題：'+(v.themeId||'')+' '+(v.themeName||'')+'\n素材：'+(v.matName||'')+'\n子題型：'+(v.sub||'')+'\n形式：'+(v.form||'')+'\n觀看：'+fmt(s.views)+'｜讚：'+fmt(s.likes)+'｜留言：'+fmt(s.comments)+'｜分享：'+fmt(s.shares)+'｜收藏：'+fmt(s.saves)+'\n互動率：'+pct(s.engRate)+'｜分享率：'+pct(s.shareRate)+'\nHook：'+(v.hook||v.cover||'未填')+'\n備註：'+(v.note||'')+'\n';
+    if(mode==='rewrite') return '你是 ATELIER 短影音腳本策略顧問。請先拆解下面參考影片的成功結構，再改寫成 5–10 支「可用於目前客戶」的新短影音題目與 3 秒開場。\n\n要求：\n1. 不要直接抄原影片。\n2. 每支都要標合作目標 A–E、G 階段、目標受眾、Hook、內容骨架、CTA。\n3. 說明哪些地方是借鏡、哪些地方要因客戶身分而改寫。\n\n'+base;
+    if(mode==='risk') return '你是 ATELIER 內容風險與借鏡判斷顧問。請分析下面影片能不能被其他客戶借鏡。\n\n請輸出：\n1. 可借鏡元素。\n2. 不可直接複製元素。\n3. 若套用到不同產業／不同人設會失敗的原因。\n4. 如何改成安全、符合客戶 ICP 的版本。\n5. 需要補問客戶的問題。\n\n'+base;
+    return '你是 ATELIER 短影音成功公式拆解顧問。請拆解下面這支影片為什麼有效。\n\n請輸出：\n1. 3 秒 Hook 拆解。\n2. 題材為什麼有市場注意力。\n3. 合作目標 A–E 與 G 階段是否匹配。\n4. 可複製公式。\n5. 可複製到哪些題材。\n6. 下一批影片如何沿用這個結構。\n\n'+base;
+  }
+  function initStyle(){
+    if(H('v262StrategyStyle'))return;
+    var st=document.createElement('style'); st.id='v262StrategyStyle'; st.textContent=[
+      '#stratAccCurrent .strategy-current-full{border:1px solid var(--gold-soft);border-radius:16px;background:#FFFDFC;padding:12px;margin-top:10px}',
+      '#stratAccCurrent .strategy-current-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:8px;color:var(--rouge);font-weight:900;font-family:Noto Serif TC,serif}',
+      '#stratAccCurrent .vcard{margin:0!important;box-shadow:none!important;border-color:var(--gold-soft)!important}',
+      '.strat-actions-v262{display:flex!important;flex-wrap:wrap!important;gap:7px!important;margin-top:8px!important;align-items:center!important}',
+      '.strat-actions-v262 button{width:auto!important;min-width:88px!important;white-space:nowrap!important;border-radius:999px!important;padding:6px 10px!important;font-size:11.5px!important;line-height:1.25!important}',
+      '#strategyFloatPanel{width:min(760px,calc(100vw - 44px))!important;max-height:calc(100vh - 130px)!important}',
+      '#strategyFloatPanel .sf-head{cursor:move;background:var(--warm);border-bottom:1px solid var(--gold-soft);padding:13px 16px;display:flex;justify-content:space-between;gap:10px;align-items:center}',
+      '#strategyFloatPanel .sf-body{padding:16px 18px}',
+      '.v262-kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:12px 0}',
+      '.v262-kpis div{border:1px solid var(--gold-soft);border-radius:12px;text-align:center;padding:11px 8px;background:#fff}',
+      '.v262-kpis b{display:block;color:var(--rouge);font-size:24px;line-height:1.1}',
+      '.v262-kpis span{font-size:11px;color:var(--sub)}',
+      '.v262-tags{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}',
+      '.v262-tag{display:inline-flex;align-items:center;border:1px solid var(--gold-soft);background:#FFF9F7;border-radius:999px;color:var(--rouge);font-size:11.5px;font-weight:800;padding:4px 8px}',
+      '.v262-section{border:1px solid var(--gold-soft);border-radius:12px;background:#fff;padding:11px 12px;margin-top:10px;font-size:12.5px;line-height:1.75;color:var(--ink)}',
+      '.v262-section b{color:var(--rouge)}',
+      '.v262-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:10px}',
+      '.v262-row{border:1px solid var(--gold-soft);border-radius:10px;padding:8px 10px;background:#FFFDFC;font-size:12px}.v262-row span{display:block;color:var(--sub);font-size:10.5px;margin-bottom:2px}.v262-row b{color:var(--ink);font-weight:700}',
+      '.v262-tools{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:10px}.v262-tools button{width:100%!important;border-radius:10px!important}',
+      '.v262-main-actions{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:12px}.v262-main-actions button{width:100%!important;border-radius:10px!important}',
+      '@media(max-width:720px){.v262-kpis,.v262-grid,.v262-tools,.v262-main-actions{grid-template-columns:1fr!important}}'
+    ].join('\n'); document.head.appendChild(st);
+  }
+  function clearFreshIfNeeded(){
+    try{
+      var last=localStorage.getItem('atelier_strategy_ui_version');
+      if(last!==VERSION){
+        localStorage.setItem('atelier_strategy_ui_version',VERSION);
+        var sel=H('stratAcc'); if(sel) sel.value='';
+        var q=H('stratAccQ'); if(q) q.value='';
+        var r=H('stratAccResults'); if(r){r.innerHTML='';r.style.display='none'}
+        var c=H('stratAccCurrent'); if(c){c.innerHTML='';c.style.display='none'}
+        var b=H('strategyBox'); if(b) b.innerHTML='<div style="border:1px dashed var(--gold-soft);border-radius:12px;padding:28px;text-align:center;color:var(--sub)">先選一個客戶帳號，系統會讀取這個帳號底下的影片做策略診斷。</div>';
+        var ab=H('strategyActionBox'); if(ab) ab.innerHTML='';
+      }
+    }catch(e){}
+  }
+  window._strategyRenderCurrentAcc=function(a){
+    initStyle(); var host=H('stratAccCurrent'); if(!host)return;
+    if(!a){host.style.display='none';host.innerHTML='';return;}
+    var full='';
+    try{ full=(typeof accCard==='function')?accCard(a):''; }catch(e){full='';}
+    if(!full){
+      full='<div class="vcard"><div class="vtop"><div class="vtitle">'+E(a.handle||'')+' <span style="font-weight:400">'+E(a.displayName||a.name||'')+'</span></div></div><div class="vmeta">'+E([a.jobTitle,a.industry||a.domain].filter(Boolean).join(' · '))+'</div></div>';
+    }
+    host.style.display='block';
+    host.innerHTML='<div class="strategy-current-full"><div class="strategy-current-head"><span>目前診斷客戶｜完整帳號卡</span><button type="button" class="btn btn-ghost" style="width:auto;font-size:12px;padding:6px 10px" onclick="_strategyClearAcc()">清除／換客戶</button></div>'+full+'<div style="font-size:12px;color:var(--sub);line-height:1.7;margin-top:8px"><b style="color:var(--rouge)">用途：</b>這張完整帳號卡直接複用帳號管理顯示內容，讓策略診斷先確認客戶身分、產業、定位、完整帳號檔與工具，再往下判斷 Top / Bottom 與案例價值。</div></div>';
+    try{ if(typeof bindAccountUI==='function') setTimeout(bindAccountUI,0); }catch(e){}
+  };
+  window._strategyClearAcc=function(){
+    var sel=H('stratAcc'); if(sel) sel.value='';
+    var q=H('stratAccQ'); if(q) q.value='';
+    var r=H('stratAccResults'); if(r){r.innerHTML='';r.style.display='none'}
+    window._strategyRenderCurrentAcc(null);
+    var box=H('strategyBox'); if(box) box.innerHTML='<div style="border:1px dashed var(--gold-soft);border-radius:12px;padding:28px;text-align:center;color:var(--sub)">先選一個客戶帳號，系統會讀取這個帳號底下的影片做策略診斷。</div>';
+    var ab=H('strategyActionBox'); if(ab) ab.innerHTML='';
+    var fp=H('strategyFloatPanel'); if(fp) fp.style.display='none';
+  };
+  window._strategyPickAcc=function(id){
+    var a=accBy(id); if(!a)return;
+    var sel=H('stratAcc'); if(sel){ if(!Array.prototype.some.call(sel.options,function(o){return String(o.value)===String(id)})){ var op=document.createElement('option'); op.value=id; op.textContent=(a.handle||'')+' · '+(a.displayName||a.name||''); sel.appendChild(op);} sel.value=id; }
+    var q=H('stratAccQ'); if(q) q.value=(a.handle||'')+' · '+(a.displayName||a.name||'');
+    var r=H('stratAccResults'); if(r){r.innerHTML='';r.style.display='none'}
+    window._strategyRenderCurrentAcc(a);
+    try{ if(typeof renderStrategyDiagnosis==='function') renderStrategyDiagnosis(); }catch(e){console.warn('[v262 pick]',e)}
+  };
+  var oldSearch=window._strategyAccSearch;
+  window._strategyAccSearch=function(){
+    initStyle();
+    try{ if(typeof oldSearch==='function') oldSearch(); }catch(e){}
+    var box=H('stratAccResults'); if(!box)return;
+    setTimeout(function(){
+      try{ box.querySelectorAll('button').forEach(function(b){ b.style.borderRadius='10px'; b.style.margin='3px 0'; }); }catch(e){}
+    },0);
+  };
+  function caseValue(v,s){ try{ if(typeof _strategyCaseValue==='function')return _strategyCaseValue(v,s); }catch(e){} var score=40; if(s.views>=50000)score+=25; else if(s.views>=20000)score+=16; else if(s.views>=10000)score+=8; if(s.engRate>=0.02)score+=14; if(s.shareRate>=0.003)score+=12; if(/[A-D]/.test(goal(v)))score+=6; return {score:Math.max(0,Math.min(100,score)),tags:score>=70?['成功樣本','可複製結構']:score>=55?['可複製題材']:['待人工判斷']}; }
+  function formula(v){ try{ if(typeof _strategyFormula==='function')return _strategyFormula(v); }catch(e){} return '公式：明確痛點／誤區 → 生活情境開場 → 律師判斷 → 可執行結論 → 導到下一步諮詢。'; }
+  function consultant(v,s,cv){
+    if(cv.score>=70) return '題材具有明顯市場注意力，可作為策略樣本。建議拆解 Hook、痛點、情境與結論，再改寫成下一批腳本。';
+    if(s.engRate>=0.02) return '互動率高於平均，代表受眾有反應；即使觀看不一定最高，也可能具有高信任或高商業價值。';
+    if(s.views<6000) return '觀看偏低，先不要直接判定失敗；需檢查題材是否太窄、Hook 是否太慢、或是否屬於低觀看但高成交價值內容。';
+    return '可作為普通樣本，適合對照同主題或同素材的高表現案例，找出差異。';
+  }
+  window._strategyCopy=function(text,label){ promptOpen(text,label||'策略提示詞'); };
+  window._strategyCopyVideoPrompt=function(id,mode){ var v=vidBy(id); if(!v){ if(typeof toast==='function')toast('找不到影片'); return; } var label=mode==='rewrite'?'改寫 5–10 支腳本提示':mode==='risk'?'借鏡風險判斷提示':'成功公式拆解提示'; promptOpen(buildPrompt(v,mode),label); };
+  var oldCopyStrategy=window.copyStrategyPrompt;
+  window.copyStrategyPrompt=function(){ try{ if(typeof oldCopyStrategy==='function') return oldCopyStrategy(); }catch(e){} };
+  window._strategyOpenVideoMini=function(id){
+    initStyle(); var v=vidBy(id); if(!v){ if(typeof toast==='function')toast('找不到影片'); return; }
+    var a=accForVid(v)||{}; var s=score(v); var cv=caseValue(v,s); var f=formula(v); var panel=H('strategyFloatPanel'); if(!panel)return;
+    var fields=''
+      +detailRow('帳號',((a.handle||v.accountHandle||'')+' '+(a.displayName||'')))
+      +detailRow('合作目標 A–E',v.goal||goal(v))
+      +detailRow('G 階段 / 主題',[(v.stage||stage(v)),(v.themeId||''),(v.themeName||'')].filter(Boolean).join(' · '))
+      +detailRow('素材 / 子題型',[(v.matName||''),(v.sub||'')].filter(Boolean).join(' · '))
+      +detailRow('內容形式 / 命根',[(v.form||''),(v.trig||'')].filter(Boolean).join(' · '))
+      +detailRow('平台 / 狀態',[(v.platform||''),(v.prodStatus||'')].filter(Boolean).join(' · '));
+    panel.innerHTML='<div class="sf-head" onmousedown="_strategyStartDrag(event)"><div><b style="font-family:Noto Serif TC,serif;color:var(--rouge)">單支影片核對窗｜策略樣本</b><div style="font-size:11px;color:var(--sub)">可拖曳 · 先看商業目標，再看內容策略與數據</div></div><button type="button" style="border:0;background:transparent;color:var(--rouge);font-size:22px;cursor:pointer" onclick="_strategyCloseFloat()">×</button></div>'
+      +'<div class="sf-body"><h3 style="margin:2px 0 4px;font-family:Noto Serif TC,serif;color:var(--ink)">'+E(v.title||'未命名影片')+'</h3>'
+      +'<div class="v262-tags">'+tag('合作目標 '+(v.goal||goal(v)))+tag(stage(v))+tag('案例分 '+cv.score)+((cv.tags||[]).map(function(t){return tag(t)}).join(''))+'</div>'
+      +'<div class="v262-kpis"><div><b>'+fmt(s.views)+'</b><span>觀看</span></div><div><b>'+pct(s.engRate)+'</b><span>互動率</span></div><div><b>'+pct(s.shareRate)+'</b><span>分享率</span></div><div><b>'+cv.score+'</b><span>案例分</span></div></div>'
+      +'<div class="v262-grid">'+fields+'</div>'
+      +'<div class="v262-section"><b>Hook：</b>'+E(v.hook||v.cover||'未填')+'</div>'
+      +(v.cover?'<div class="v262-section"><b>封面／標題字：</b>'+E(v.cover)+'</div>':'')
+      +'<div class="v262-section"><b>顧問判斷：</b>'+E(consultant(v,s,cv))+'<br><b>可複製公式：</b>'+E(f)+'</div>'
+      +(v.note?'<div class="v262-section"><b>備註／缺口說明：</b><br>'+E(v.note)+'</div>':'')
+      +'<div class="v262-section"><b>AI 工具：</b><div style="font-size:12px;color:var(--sub);margin:2px 0 8px">所有提示詞都會先打開預覽，可編輯、返回一步、還原全部，再複製。</div><div class="v262-tools"><button class="btn btn-ghost" type="button" onclick="_strategyCopyVideoPrompt('+JSON.stringify(String(id))+',\'success\')">成功公式拆解</button><button class="btn btn-ghost" type="button" onclick="_strategyCopyVideoPrompt('+JSON.stringify(String(id))+',\'rewrite\')">5–10 支改寫</button><button class="btn btn-ghost" type="button" onclick="_strategyCopyVideoPrompt('+JSON.stringify(String(id))+',\'risk\')">借鏡風險判斷</button></div></div>'
+      +'<div class="v262-main-actions"><button class="btn btn-go" type="button" onclick="_strategyGoVideoLibrary('+JSON.stringify(String(id))+')">去影片庫定位</button><button class="btn btn-ghost" type="button" onclick="_strategyOpenVideoWindow('+JSON.stringify(String(id))+')">獨立視窗核對</button><button class="btn btn-ghost" type="button" onclick="_strategyCloseFloat()">收起</button></div></div>';
+    panel.style.display='block'; panel.style.right='22px'; panel.style.top='120px';
+  };
+  function improveButtons(){
+    try{ document.querySelectorAll('#strategyBox button').forEach(function(b){ var txt=(b.textContent||'').trim(); if(/快看|核對|定位|改寫/.test(txt)){ var p=b.parentElement; if(p&&!p.classList.contains('strat-actions-v262'))p.classList.add('strat-actions-v262'); } }); }catch(e){}
+  }
+  var oldRender=window.renderStrategyDiagnosis;
+  if(typeof oldRender==='function'){
+    window.renderStrategyDiagnosis=function(){ var r=oldRender.apply(this,arguments); setTimeout(function(){ try{ var sel=H('stratAcc'); if(sel&&sel.value){ var a=accBy(sel.value); if(a) window._strategyRenderCurrentAcc(a); } improveButtons(); }catch(e){} },40); return r; };
+  }
+  window._strategyHydrate=function(){
+    initStyle(); clearFreshIfNeeded();
+    try{ if(typeof populateStrategyAcc==='function') populateStrategyAcc(); }catch(e){}
+    try{ var sel=H('stratAcc'); if(sel&&sel.value){ var a=accBy(sel.value); if(a){ var q=H('stratAccQ'); if(q)q.value=(a.handle||'')+' · '+(a.displayName||a.name||''); window._strategyRenderCurrentAcc(a); if(typeof renderStrategyDiagnosis==='function') renderStrategyDiagnosis(); } } }catch(e){}
+  };
+  document.addEventListener('DOMContentLoaded',function(){ initStyle(); clearFreshIfNeeded(); var t=document.querySelector('.tab[data-view="strategy"]'); if(t)t.addEventListener('click',function(){ setTimeout(function(){try{window._strategyHydrate()}catch(e){}},80); }); });
+})();
+</script>
+
 </body>
 </html>
