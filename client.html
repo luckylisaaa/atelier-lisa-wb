@@ -722,7 +722,7 @@ details.cat .cat-body{padding:14px 15px}
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">客戶服務台</span></span>
-    <span id="verBadge">cs-v4.10</span>
+    <span id="verBadge">cs-v4.11</span>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button type="button" id="popoutBtn" class="popout-btn" title="把客戶服務台開成獨立小視窗"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6"/><path d="M20 4l-9 9"/><path d="M14 12v7H5V10h7"/></svg>小視窗</button>
@@ -5485,5 +5485,43 @@ input:focus,textarea:focus,select:focus{outline:none!important;border-color:var(
 /* 版本徽章 */
 #verBadge{letter-spacing:.5px}
 </style>
+
+<!-- ═══════════════ cs-v4.11 收斂背景框：把重複的對標/閉環/影片庫收進可展開摺疊區 ═══════════════ -->
+<style id="cs-context-v411">
+details.cs-context{border:1px solid var(--border);border-radius:14px;background:linear-gradient(180deg,#FFFCF9,#FFFFFF);margin:14px 0;overflow:hidden;box-shadow:0 1px 2px rgba(90,40,45,.03)}
+details.cs-context>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:10px;padding:13px 16px}
+details.cs-context>summary::-webkit-details-marker{display:none}
+details.cs-context>summary::after{content:'＋';margin-left:auto;color:var(--gold-dark);font-weight:700;font-size:16px}
+details.cs-context[open]>summary::after{content:'－'}
+details.cs-context[open]>summary{border-bottom:1px solid var(--line)}
+details.cs-context .cs-context-t{font-weight:800;color:var(--ink);font-size:14px;display:inline-flex;align-items:center;gap:6px}
+details.cs-context .cs-context-h{font-size:11.5px;color:var(--sub)}
+details.cs-context>*:not(summary){margin:10px 14px}
+details.cs-context .section-card{box-shadow:none}
+</style>
+<script>
+(function(){
+  'use strict';
+  if(window.__atelierContextGroupV411){ return; } window.__atelierContextGroupV411=true;
+  function _I(k,f){ return (window.ICN&&ICN[k])||f||''; }
+  function _group(view){
+    if(!view||view.querySelector('details.cs-context')) return;
+    var sels=['[data-cs-benchmarks]','[data-loop-constitution]','[data-related-videos]'];
+    var panels=[]; sels.forEach(function(s){ var el=view.querySelector(s); if(el) panels.push(el); });
+    if(panels.length<2) return;                 /* 少於 2 個就不必收 */
+    var det=document.createElement('details'); det.className='cs-context';
+    var sum=document.createElement('summary');
+    sum.innerHTML='<span class="cs-context-t">'+_I('folder','')+'客戶背景資料</span><span class="cs-context-h">對標借鏡 · 閉環體質 · 影片庫（點此展開）</span>';
+    det.appendChild(sum);
+    panels[0].parentNode.insertBefore(det, panels[0]);
+    panels.forEach(function(p){ det.appendChild(p); });
+  }
+  var _inj=window.injectRelatedVideosSection;
+  window.injectRelatedVideosSection=function(view){
+    if(typeof _inj==='function') _inj(view);
+    try{ _group(view); }catch(e){ console.warn('[context group]',e); }
+  };
+})();
+</script>
 </body>
 </html>
