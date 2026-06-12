@@ -722,7 +722,7 @@ details.cat .cat-body{padding:14px 15px}
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">客戶服務台</span></span>
-    <span id="verBadge">cs-v4.18</span>
+    <span id="verBadge">cs-v4.19</span>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button type="button" id="popoutBtn" class="popout-btn" title="把客戶服務台開成獨立小視窗"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6"/><path d="M20 4l-9 9"/><path d="M14 12v7H5V10h7"/></svg>小視窗</button>
@@ -4829,7 +4829,7 @@ window.openStageInfo=function(stageName){
       var tvH=tv.length?('<div style="font-size:12px;color:#5A4A4C;margin-top:4px">代表作：'+tv.map(function(v){ return _esc(_vtitle(v))+(v.score?'<span style="color:#9C7D4A"> '+v.score+'</span>':''); }).join('、')+'</div>'):'';
       return '<div class="deliverable-card" style="border-radius:10px;padding:10px 12px;margin-top:8px;border-color:#E8D3C9">'
         +'<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px">'
-        +'<div style="min-width:0"><div style="font-weight:800;font-size:13px;color:#2A1A1C">@'+_esc(x.handle||x.displayName||'未命名')+(x.isClient?' <span style="font-size:10px;color:#9C7D4A">客戶</span>':'')+'</div>'
+        +'<div style="min-width:0"><div style="font-weight:800;font-size:13px;color:#2A1A1C">@'+_esc((x.handle||x.displayName||'未命名').replace(/^@+/,''))+(x.isClient?' <span style="font-size:10px;color:#9C7D4A">客戶</span>':'')+'</div>'
         +'<div style="font-size:11.5px;color:#8A7274">'+_esc(x.industry||'未填產業')+(x.jobTitle?' · '+_esc(x.jobTitle):'')+' · 影片 '+_vids(x).length+' 支</div>'+tvH+'</div>'
         +'<button type="button" class="btn-deliver-2" style="flex:0 0 auto;border-color:#D9B7B7;color:#A51820" onclick="_csBenchRemove(\''+_esc(x.id)+'\')">移除</button>'
         +'</div></div>';
@@ -4969,7 +4969,7 @@ window.openStageInfo=function(stageName){
         +'<div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><div style="font-weight:800;font-size:13.5px;color:#2A1A1C">'+_esc(p.t)+'</div>'
         +'<button type="button" class="btn-deliver-2" onclick="_csScoutCopy('+i+')">複製</button></div>'
         +'<div style="font-size:11.5px;color:#8A7274;margin:2px 0 6px">'+_esc(p.n)+'</div>'
-        +'<div style="white-space:pre-wrap;font-size:12.5px;line-height:1.7;color:#5A4A4C;background:#FAF6F1;border:1px solid #EFE7DC;border-radius:8px;padding:8px 10px;max-height:150px;overflow:auto">'+_esc(p.p)+'</div>'
+        +'<div style="white-space:pre-wrap;font-size:12.5px;line-height:1.7;color:#5A4A4C;background:#FAF6F1;border:1px solid #EFE7DC;border-radius:8px;padding:10px 12px">'+_esc(p.p)+'</div>'
         +'</div>';
     }).join('');
     sh.innerHTML='<div style="padding:4px 2px">'
@@ -5841,6 +5841,44 @@ details.cs-context .section-card{box-shadow:none}
   }
   var _rb=window.renderBanner;
   window.renderBanner=function(flash){ if(typeof _rb==='function') _rb(flash); try{ _injectMetricsBtn(); }catch(e){ console.warn('[metrics btn]',e); } };
+})();
+</script>
+
+<!-- ═══════════════ cs-v4.19 修正：上方「下一步」提示卡在④ + 儲存鈕/背景框間距 ═══════════════ -->
+<style id="cs-fix-v419">
+/* 儲存企劃提案 與 客戶背景資料 之間拉開，讓儲存鈕視覺上歸屬於上方內容 */
+details.cs-context{ margin-top:30px !important; }
+details.cs-context::before{ content:""; display:block; height:1px; background:linear-gradient(90deg,transparent,#EFE7DC 30%,#EFE7DC 70%,transparent); margin:-16px 0 16px; }
+</style>
+<script>
+(function(){
+  'use strict';
+  if(window.__atelierBannerNextFixV419){ return; } window.__atelierBannerNextFixV419=true;
+  var CIRC=['①','②','③','④','⑤','⑥','⑦'];
+  function _fixNext(){
+    var b=document.getElementById('csBanner'); if(!b||b.classList.contains('empty')) return;
+    var el=b.querySelector('.ob-next'); if(!el) return;
+    var a=(typeof curAcc==='function')?curAcc():null; if(!a) return;
+    var flow=(typeof DASH_FLOW!=='undefined'&&DASH_FLOW)||[]; if(!flow.length) return;
+    var st=function(k){ return (typeof flowStatus==='function')?flowStatus(a,k):'not-started'; };
+    var nextIdx=-1;
+    for(var i=0;i<flow.length;i++){ if(st(flow[i][0])!=='done'){ nextIdx=i; break; } }
+    if(nextIdx<0){
+      el.className='ob-next done';
+      el.setAttribute('onclick',"switchTo('stage7')");
+      el.title='七階段已完成，前往交付輸出';
+      el.innerHTML=(window.ICN&&ICN.check||'✓')+' 七階段已完成 — 前往 ⑦ 交付輸出成品';
+    } else {
+      var inprog=st(flow[nextIdx][0])==='in-progress';
+      el.className='ob-next';
+      el.setAttribute('onclick',"switchTo('stage"+(nextIdx+1)+"')");
+      el.title='點我跳到下一步';
+      el.innerHTML=(window.ICN&&ICN.spark||'')+' 下一步：'+CIRC[nextIdx]+' '+flow[nextIdx][1]+'（'+(inprog?'繼續填':'尚未開始')+'）';
+    }
+  }
+  var _rb=window.renderBanner;
+  window.renderBanner=function(flash){ if(typeof _rb==='function') _rb(flash); try{ _fixNext(); }catch(e){ console.warn('[next fix]',e); } };
+  setInterval(_fixNext, 1200);  /* 保險：階段狀態改變後也會更新 */
 })();
 </script>
 </body>
