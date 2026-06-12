@@ -722,7 +722,7 @@ details.cat .cat-body{padding:14px 15px}
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">客戶服務台</span></span>
-    <span id="verBadge">cs-v4.3</span>
+    <span id="verBadge">cs-v4.4</span>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button type="button" id="popoutBtn" class="popout-btn" title="把客戶服務台開成獨立小視窗"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6"/><path d="M20 4l-9 9"/><path d="M14 12v7H5V10h7"/></svg>小視窗</button>
@@ -4966,6 +4966,97 @@ window.openStageInfo=function(stageName){
       +'<div class="btn-row" style="margin-top:12px"><button class="btn btn-go" onclick="_csScoutCopyAll()">複製全部</button><button class="btn btn-ghost" onclick="closeModal()">關閉</button></div>'
       +'</div>';
     md.classList.add('show'); md.onclick=function(e){ if(e.target===md) closeModal(); };
+  };
+})();
+</script>
+
+<!-- ═══════════════ cs-v4.4 加厚②-c(甲-1b)：挑對標彈窗 多維度篩選 ═══════════════ -->
+<!-- 覆寫 _csOpenBenchmarkPicker：在搜尋上方加「閉環層／身份／產業／粉絲量級」過濾與「補客戶弱層」一鍵。
+     列結構(.bench-row + checkbox[data-id])不變，_csBenchConfirm 沿用。純前端過濾，不改資料。 -->
+<script>
+(function(){
+  'use strict';
+  if(window.__atelierPickFilterV44){ return; } window.__atelierPickFilterV44=true;
+  function _esc(s){ return (typeof esc==='function')?esc(s):String(s==null?'':s); }
+  function _I(k,f){ return (window.ICN&&ICN[k])||f||''; }
+  function _all(){ try{ return (typeof accounts!=='undefined'&&Array.isArray(accounts))?accounts:[]; }catch(e){ return []; } }
+  function _vids(x){ return (typeof accountVideos==='function')?accountVideos(x):[]; }
+  function _layerOf(v){ var m=String(v&&(v.goal||v.stage||v.code||v.gStage)||'').match(/[A-E]/); return m?m[0]:''; }
+  var LMAP=[['A','認知層'],['B','品牌層'],['C','信任層'],['D','轉化層'],['E','組織層']];
+  function _layersOf(x){ var s={}; _vids(x).forEach(function(v){ var L=_layerOf(v); if(L) s[L]=1; }); return Object.keys(s).join(''); }
+  function _fanTier(x){
+    var n=(typeof fanLatest==='function')?fanLatest(x):null;
+    if(n==null) return '';
+    if(n<10000) return 'S'; if(n<100000) return 'M'; return 'L';
+  }
+  var FANLAB={S:'<1萬',M:'1–10萬',L:'10萬+'};
+  function _idn(x){ return x.identity||(x.clientProfile&&x.clientProfile.identity)||''; }
+  function _weakLayerCode(a){
+    var lc={A:0,B:0,C:0,D:0,E:0}; _vids(a).forEach(function(v){ var L=_layerOf(v); if(L) lc[L]++; });
+    var empt=LMAP.filter(function(p){return !lc[p[0]];}); if(empt.length) return empt[0][0];
+    return LMAP.slice().sort(function(p,q){return lc[p[0]]-lc[q[0]];})[0][0];
+  }
+  function _opt(v,lab,sel){ return '<option value="'+_esc(v)+'"'+(sel?' selected':'')+'>'+_esc(lab)+'</option>'; }
+  function _selStyle(){ return 'flex:1;min-width:90px;padding:6px 8px;border:1px solid var(--line);border-radius:8px;font-family:inherit;font-size:12px;background:#fff'; }
+
+  function _pickerRow(x,checked){
+    var vc=_vids(x).length, idn=_idn(x), ft=_fanTier(x), lays=_layersOf(x);
+    var hay=((x.handle||'')+' '+(x.displayName||'')+' '+(x.industry||'')+' '+(x.jobTitle||'')+' '+idn).toLowerCase();
+    return '<label class="bench-row" data-search="'+_esc(hay)+'" data-layers="'+_esc(lays)+'" data-idn="'+_esc(idn)+'" data-ind="'+_esc(x.industry||'')+'" data-fan="'+_esc(ft)+'" style="display:flex;align-items:center;gap:10px;padding:8px 10px;border:1px solid #EEE7DC;border-radius:8px;margin-bottom:6px;cursor:pointer">'
+      +'<input type="checkbox" data-id="'+_esc(x.id)+'"'+(checked?' checked':'')+' style="width:16px;height:16px;flex:0 0 auto">'
+      +'<div style="flex:1;min-width:0">'
+      +'<div style="font-weight:700;font-size:13px;color:#2A1A1C">'+_esc(x.handle||x.displayName||'未命名')+(x.isClient?' <span style="font-size:10.5px;color:#9C7D4A">客戶</span>':'')+'</div>'
+      +'<div style="font-size:11.5px;color:#8A7274">'+_esc(x.industry||'未填產業')+(x.jobTitle?' · '+_esc(x.jobTitle):'')+(idn?' · '+_esc(idn):'')+(ft?' · '+FANLAB[ft]:'')+' · 影片 '+vc+' 支</div>'
+      +'</div></label>';
+  }
+  window._csBenchApply=function(){
+    var q=String((($('benchSearch')||{}).value)||'').toLowerCase().trim();
+    var fl=(($('benchFLayer')||{}).value)||'', fi=(($('benchFIdn')||{}).value)||'', fn=(($('benchFInd')||{}).value)||'', ff=(($('benchFFan')||{}).value)||'';
+    var rows=document.querySelectorAll('#benchList .bench-row'), shown=0;
+    rows.forEach(function(r){
+      var ok=true;
+      if(q && (r.getAttribute('data-search')||'').indexOf(q)<0) ok=false;
+      if(ok&&fl && (r.getAttribute('data-layers')||'').indexOf(fl)<0) ok=false;
+      if(ok&&fi && (r.getAttribute('data-idn')||'')!==fi) ok=false;
+      if(ok&&fn && (r.getAttribute('data-ind')||'')!==fn) ok=false;
+      if(ok&&ff && (r.getAttribute('data-fan')||'')!==ff) ok=false;
+      r.style.display=ok?'':'none'; if(ok) shown++;
+    });
+    var c=$('benchCount'); if(c) c.textContent=shown+' 筆符合';
+  };
+  window._csBenchFilter=function(){ window._csBenchApply(); };   /* 相容舊呼叫 */
+  window._csBenchWeak=function(){
+    var a=(typeof curAcc==='function')?curAcc():null; if(!a) return;
+    var code=_weakLayerCode(a); var sel=$('benchFLayer'); if(sel){ sel.value=code; } window._csBenchApply();
+    var lab=(LMAP.filter(function(p){return p[0]===code;})[0]||['','該層'])[1];
+    if(typeof toast==='function') toast(_I('target','')+' 已篩出「'+lab+'」強的對標');
+  };
+
+  window._csOpenBenchmarkPicker=function(){
+    var a=(typeof curAcc==='function')?curAcc():null; if(!a){ if(typeof toast==='function') toast(_I('warn','⚠')+' 尚未選定客戶'); return; }
+    var sh=$('sheet'), md=$('modal'); if(!sh||!md) return;
+    var sel={}; (a.benchmarkRefs||[]).forEach(function(id){ sel[id]=1; });
+    var others=_all().filter(function(x){ return x && x.id!==a.id; });
+    others.sort(function(p,q){ return _vids(q).length-_vids(p).length; });
+    var rows=others.map(function(x){ return _pickerRow(x,!!sel[x.id]); }).join('') || '<div class="sc-note">庫裡還沒有其他帳號可挑。</div>';
+    var inds={}; others.forEach(function(x){ if(x.industry) inds[x.industry]=1; });
+    var idns={}; others.forEach(function(x){ var i=_idn(x); if(i) idns[i]=1; });
+    var layerSel='<select id="benchFLayer" onchange="_csBenchApply()" style="'+_selStyle()+'">'+_opt('','閉環層：全部')+LMAP.map(function(p){return _opt(p[0],p[1]);}).join('')+'</select>';
+    var idnSel='<select id="benchFIdn" onchange="_csBenchApply()" style="'+_selStyle()+'">'+_opt('','身份：全部')+Object.keys(idns).sort().map(function(k){return _opt(k,k);}).join('')+'</select>';
+    var indSel='<select id="benchFInd" onchange="_csBenchApply()" style="'+_selStyle()+'">'+_opt('','產業：全部')+Object.keys(inds).sort().map(function(k){return _opt(k,k);}).join('')+'</select>';
+    var fanSel='<select id="benchFFan" onchange="_csBenchApply()" style="'+_selStyle()+'">'+_opt('','粉絲：全部')+_opt('S','<1萬')+_opt('M','1–10萬')+_opt('L','10萬+')+'</select>';
+    sh.innerHTML='<div style="padding:4px 2px">'
+      +'<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px"><h3 style="margin:0;font-size:16px;display:flex;align-items:center;gap:6px">'+_I('target','')+'挑對標範本</h3><button class="preview-modal-btn" style="margin-left:auto" onclick="closeModal()">關閉</button></div>'
+      +'<div class="sc-note" style="margin-bottom:8px">從你庫裡所有帳號挑（跨產業也行）。勾選的會成為這位客戶的對標範本，並自動進到每個 AI 提示詞。</div>'
+      +'<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px">'+layerSel+idnSel+indSel+fanSel
+      +'<button type="button" class="btn-deliver-2" style="flex:0 0 auto" onclick="_csBenchWeak()">'+_I('target','')+'補客戶弱層</button></div>'
+      +'<input id="benchSearch" placeholder="搜尋：@帳號 / 名稱 / 產業 / 職稱 / 身份…" oninput="_csBenchApply()" style="width:100%;box-sizing:border-box;padding:8px 12px;border:1px solid var(--line);border-radius:8px;margin-bottom:6px;font-family:inherit;font-size:13px">'
+      +'<div style="font-size:11.5px;color:#8A7274;margin-bottom:6px" id="benchCount">'+others.length+' 筆</div>'
+      +'<div id="benchList" style="max-height:42vh;overflow:auto">'+rows+'</div>'
+      +'<div class="btn-row" style="margin-top:10px"><button class="btn btn-go" onclick="_csBenchConfirm()">加入為對標</button><button class="btn btn-ghost" onclick="closeModal()">取消</button></div>'
+      +'</div>';
+    md.classList.add('show'); md.onclick=function(e){ if(e.target===md) closeModal(); };
+    var si=$('benchSearch'); if(si) si.focus();
   };
 })();
 </script>
