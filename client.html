@@ -722,7 +722,7 @@ details.cat .cat-body{padding:14px 15px}
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">客戶服務台</span></span>
-    <span id="verBadge">cs-v4.16</span>
+    <span id="verBadge">cs-v4.17</span>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button type="button" id="popoutBtn" class="popout-btn" title="把客戶服務台開成獨立小視窗"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6"/><path d="M20 4l-9 9"/><path d="M14 12v7H5V10h7"/></svg>小視窗</button>
@@ -1060,6 +1060,15 @@ function _vidSubscribe(){
   }, function(err){ console.error('[CS vid]',err); });
 }
 /* ─── 5) 把整個 accounts 陣列寫回雲端（掛在既有帳號物件上，不另開 collection）─── */
+/* cs-v4.17 雙寫安全：共寫陣列(deliveryPackages/clientFeedback)逐筆合併，進度旗標單調保留 */
+function _mergeCoOwnedArr(ca, la, flagKey, flagOn){
+  ca=Array.isArray(ca)?ca:[]; la=Array.isArray(la)?la:[];
+  var map={}, order=[];
+  [ca,la].forEach(function(arr){ arr.forEach(function(it){ if(!it||!it.id) return;
+    if(map[it.id]){ var prev=map[it.id]; var m=Object.assign({},prev,it); if(prev[flagKey]===flagOn||it[flagKey]===flagOn) m[flagKey]=flagOn; map[it.id]=m; }
+    else { map[it.id]=Object.assign({},it); order.push(it.id); } }); });
+  return order.map(function(k){ return map[k]; });
+}
 function _accPush(){
   if(!_fbReady||!_fbDB){ try{ localStorage.setItem(ACC_LS_KEY, JSON.stringify(accounts)); }catch(e){} return; }
   if(!accounts||!accounts.length) return;
@@ -1070,7 +1079,10 @@ function _accPush(){
   _ref.get().then(function(_doc){
     var _cloud=(_doc&&_doc.exists&&_doc.data()&&Array.isArray(_doc.data().accounts))?_doc.data().accounts:[];
     var _byId={}; _cloud.forEach(function(c){ if(c&&c.id) _byId[c.id]=c; });
-    var _merged=accounts.map(function(a){ var c=_byId[a.id]; return c?Object.assign({},c,a):a; });
+    var _merged=accounts.map(function(a){ var c=_byId[a.id]; if(!c) return a; var out=Object.assign({},c,a);
+      if(c.deliveryPackages||a.deliveryPackages) out.deliveryPackages=_mergeCoOwnedArr(c.deliveryPackages,a.deliveryPackages,'status','received');
+      if(c.clientFeedback||a.clientFeedback) out.clientFeedback=_mergeCoOwnedArr(c.clientFeedback,a.clientFeedback,'handled',true);
+      return out; });
     var _have={}; accounts.forEach(function(a){ if(a&&a.id) _have[a.id]=1; });
     _cloud.forEach(function(c){ if(c&&c.id&&!_have[c.id]) _merged.push(c); });
     return _ref.set({ accounts:_merged, updatedAt:Date.now(), count:_merged.length }, {merge:true});
