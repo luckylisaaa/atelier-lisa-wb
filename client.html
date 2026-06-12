@@ -722,7 +722,7 @@ details.cat .cat-body{padding:14px 15px}
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">客戶服務台</span></span>
-    <span id="verBadge">cs-v4.7</span>
+    <span id="verBadge">cs-v4.9</span>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button type="button" id="popoutBtn" class="popout-btn" title="把客戶服務台開成獨立小視窗"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6"/><path d="M20 4l-9 9"/><path d="M14 12v7H5V10h7"/></svg>小視窗</button>
@@ -3886,6 +3886,7 @@ window.addEventListener('DOMContentLoaded', function(){
   }
   function downloadBlob(content,mime,filename){ var blob=new Blob([content],{type:mime}); var url=URL.createObjectURL(blob); var a=document.createElement('a'); a.href=url; a.download=filename; document.body.appendChild(a); a.click(); setTimeout(function(){URL.revokeObjectURL(url); a.remove();},800); }
   window.downloadBlob=downloadBlob; window.safeFileName=safeFileName;
+  window.loadPptx=loadPptx; window.pptFactory=pptFactory; window.pptPalette=pptPalette; window.addPptHeader=addPptHeader; window.addPptFooter=addPptFooter; window.clipText=clipText;
   window.exportStage1HTML=function(){ var b=getS1Bundle(); if(!b){toast(ICN.warn+' 尚未選定客戶');return;} downloadBlob(buildS1HTMLDoc(b),'text/html;charset=utf-8','client_'+safeFileName(b.title)+'_'+b.audience+'.html'); toast(ICN.check+' 已下載 ATELIER 設計版 HTML'); };
   window.exportStage1PDF=function(){ var b=getS1Bundle(); if(!b){toast(ICN.warn+' 尚未選定客戶');return;} var w=window.open('','atelier_s1_pdf','width=1020,height=900,scrollbars=yes'); if(!w){toast(ICN.warn+' 瀏覽器擋住彈出視窗，請允許後再試');return;} w.document.open(); w.document.write(buildS1HTMLDoc(b)+'<script>setTimeout(function(){window.print()},650)<\/script>'); w.document.close(); toast('已開啟列印視窗，請選「另存為 PDF」'); };
 
@@ -5274,6 +5275,171 @@ window.openStageInfo=function(stageName){
       window._csInjectVerToggle();
       window._csSetVer('client');                /* 套用過濾 + 切換鈕狀態 */
     }catch(e){ console.warn('[dual ver]',e); }
+  };
+})();
+</script>
+
+<!-- ═══════════════ cs-v4.8 交付工廠③(乙-3)：每階段 原生 PPTX ═══════════════ -->
+<!-- 重用 IIFE 匯出的品牌輔助(loadPptx/pptFactory/pptPalette/addPptHeader/clipText)。讀當前階段 section-card，
+     依 window._csDeliverVer(客戶版排除『顧問』欄位)產生封面＋各區塊投影片。在預覽彈窗加「下載 PPTX」鈕。 -->
+<script>
+(function(){
+  'use strict';
+  if(window.__atelierPptxV48){ return; } window.__atelierPptxV48=true;
+  function _name(){ var a=(typeof curAcc==='function')?curAcc():null; return a?(a.displayName||a.handle||'客戶'):'客戶'; }
+  function _clip(t,n){ return (typeof clipText==='function')?clipText(t,n):String(t||'').slice(0,n||300); }
+  function _collect(cl){
+    var cur=document.querySelector('.view.on'); if(!cur) return null;
+    var title=((cur.querySelector('.ph-title')||{}).innerText||'交付物').trim();
+    var cards=[].slice.call(cur.querySelectorAll('.section-card'));
+    var secs=cards.map(function(card){
+      var h=(((card.querySelector('h3')||{}).innerText)||'').replace(/\s*預覽\s*$/,'').replace(/⊞/g,'').trim();
+      var fields=(typeof readSectionFields==='function')?readSectionFields(card):[];
+      fields=fields.filter(function(f){ if(!f.value||!String(f.value).trim()) return false; if(cl && /顧問/.test(f.label||'')) return false; return true; });
+      return { h:h||'區塊', fields:fields };
+    }).filter(function(s){ return s.fields.length; });
+    return { title:title, secs:secs };
+  }
+  window._csDeliverPPTX=async function(){
+    if(typeof loadPptx!=='function'||typeof pptFactory!=='function'){ if(typeof toast==='function') toast('PPTX 元件未就緒'); return; }
+    var cl=(window._csDeliverVer!=='advisor');
+    var data=_collect(cl); if(!data||!data.secs.length){ if(typeof toast==='function') toast('此版本沒有可呈現的內容'); return; }
+    var btn=document.activeElement, oldTxt=(btn&&btn.tagName==='BUTTON')?btn.innerHTML:'';
+    if(btn&&btn.tagName==='BUTTON'){ btn.disabled=true; btn.innerHTML='產生中…'; }
+    if(typeof toast==='function') toast('正在載入並產生 PPTX（約 5–15 秒）');
+    try{
+      var ok=await new Promise(function(r){ loadPptx(r); }); if(!ok) throw new Error('PPTX 函式庫載入失敗');
+      var pptx=pptFactory(), C=pptPalette(), name=_name(), d=new Date().toISOString().slice(0,10);
+      pptx.layout='LAYOUT_WIDE'; pptx.author='ATELIER'; pptx.company='ATELIER'; pptx.subject=data.title;
+      var chunked=data.secs.map(function(s){ var ch=[]; for(var i=0;i<s.fields.length;i+=3) ch.push(s.fields.slice(i,i+3)); return { h:s.h, chunks:ch }; });
+      var total=1+chunked.reduce(function(n,s){ return n+s.chunks.length; },0), page=1;
+      var cover=pptx.addSlide(); cover.background={color:C.bg};
+      cover.addText('ATELIER × '+String(name||'CLIENT').toUpperCase(),{x:.8,y:1.3,w:9,h:.24,fontSize:12,color:C.text3,fontFace:'Cormorant Garamond',charSpace:6});
+      cover.addText(name,{x:.8,y:2.3,w:12,h:1.0,fontSize:50,bold:true,color:C.text,fontFace:'Noto Sans TC,Microsoft JhengHei,sans-serif',fit:'shrink'});
+      cover.addText(data.title,{x:.8,y:4.0,w:9,h:.4,fontSize:24,color:C.primary,fontFace:'Noto Sans TC,Microsoft JhengHei,sans-serif'});
+      cover.addText((cl?'客戶版 · Client deliverable':'顧問版 · Advisor working copy')+' · '+d,{x:.8,y:4.8,w:8,h:.24,fontSize:13,color:C.text2,fontFace:'Cormorant Garamond'});
+      cover.addText('Inspire · Create · Shine.',{x:.8,y:6.8,w:4,h:.18,fontSize:11,italic:true,color:C.text3,fontFace:'Cormorant Garamond'});
+      chunked.forEach(function(sec){
+        sec.chunks.forEach(function(ch,ci){
+          page++; var s=pptx.addSlide();
+          addPptHeader(s,'ATELIER',page,total,sec.h+(sec.chunks.length>1?'（'+(ci+1)+'/'+sec.chunks.length+'）':''),name);
+          var y=2.75;
+          ch.forEach(function(f){
+            s.addText(_clip(f.label,40),{x:.8,y:y,w:11.6,h:.3,fontSize:13,bold:true,color:C.primary,fontFace:'Noto Sans TC,Microsoft JhengHei,sans-serif'});
+            s.addText(_clip(f.value,300),{x:.8,y:y+.34,w:11.7,h:.95,fontSize:12.5,color:C.text,fontFace:'Noto Sans TC,Microsoft JhengHei,sans-serif',valign:'top',fit:'shrink',breakLine:false});
+            y+=1.32;
+          });
+        });
+      });
+      await pptx.writeFile({ fileName:'ATELIER_'+safeFileName(name)+'_'+safeFileName(data.title)+'_'+(cl?'客戶版':'顧問版')+'.pptx' });
+      if(typeof toast==='function') toast((window.ICN&&ICN.check||'✓')+' 已下載 '+(cl?'客戶版':'顧問版')+' PPTX');
+    }catch(e){ console.warn('[stage pptx]',e); if(typeof toast==='function') toast('PPTX 產生失敗：'+(e&&e.message||e)); }
+    finally{ if(btn&&btn.tagName==='BUTTON'){ btn.disabled=false; btn.innerHTML=oldTxt||'下載 PPTX'; } }
+  };
+  window._csInjectPptxBtn=function(){
+    var pa=document.querySelector('#modal .preview-actions'); if(!pa||pa.querySelector('[data-cs-pptx]')) return;
+    var b=document.createElement('button'); b.className='preview-modal-btn'; b.setAttribute('data-cs-pptx','1'); b.textContent='下載 PPTX'; b.onclick=window._csDeliverPPTX;
+    var anchor=pa.querySelector('[data-cs-deliver]');
+    if(anchor) pa.insertBefore(b, anchor.nextSibling); else pa.insertBefore(b, pa.firstChild);
+  };
+  var _o3=window.openStageOverview;
+  window.openStageOverview=function(){
+    if(typeof _o3==='function') _o3();
+    try{ window._csInjectPptxBtn(); }catch(e){ console.warn('[pptx btn]',e); }
+  };
+})();
+</script>
+
+<!-- ═══════════════ cs-v4.9 交付工廠④(乙-4)：客戶進度視圖（七階段旅程，可給客戶看）═══════════════ -->
+<!-- 唯讀：以 DASH_FLOW + flowStatus 算出七階段狀態與完成度，做成客戶友善的旅程圖，可列印/下載給客戶。
+     在 cs-banner 注入「客戶進度」鈕（裝飾 renderBanner）。不改任何資料。 -->
+<script>
+(function(){
+  'use strict';
+  if(window.__atelierProgressV49){ return; } window.__atelierProgressV49=true;
+  function _esc(s){ return (typeof esc==='function')?esc(s):String(s==null?'':s); }
+  function _I(k,f){ return (window.ICN&&ICN[k])||f||''; }
+  var CIRC=['①','②','③','④','⑤','⑥','⑦','⑧','⑨','⑩'];
+  function _name(){ var a=(typeof curAcc==='function')?curAcc():null; return a?(a.displayName||a.handle||'客戶'):'客戶'; }
+  function _journey(a){
+    var flow=(typeof DASH_FLOW!=='undefined'&&DASH_FLOW)||[];
+    return flow.map(function(p,i){ return { no:i+1, key:p[0], name:p[1], status:(typeof flowStatus==='function')?flowStatus(a,p[0]):'not-started' }; });
+  }
+  function _pct(j){ var s=0; j.forEach(function(x){ s+=(x.status==='done')?1:(x.status==='in-progress'?0.5:0); }); return j.length?Math.round(s/j.length*100):0; }
+  function _col(st){ return st==='done'?'#4A6552':st==='in-progress'?'#9C7D4A':'#C4B5B8'; }
+  function _lab(st){ return st==='done'?'已完成':st==='in-progress'?'進行中':'待進行'; }
+  function _rows(j){
+    return j.map(function(st,i){
+      var c=_col(st.status);
+      return '<div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid #F0EAE2">'
+        +'<div style="font-size:24px;color:'+c+';line-height:1;width:28px;text-align:center">'+(CIRC[i]||(i+1))+'</div>'
+        +'<div style="flex:1;font-size:15px;color:#2A1A1C;font-weight:700">'+_esc(st.name)+'</div>'
+        +'<div style="font-size:12px;font-weight:700;color:'+c+';background:'+c+'18;border:1px solid '+c+'40;border-radius:999px;padding:3px 12px">'+_lab(st.status)+'</div>'
+        +'</div>';
+    }).join('');
+  }
+  function _bar(pct){
+    return '<div style="display:flex;align-items:center;gap:10px;margin:6px 0 14px"><div style="flex:1;height:10px;background:#F1ECE4;border-radius:99px;overflow:hidden"><div style="height:100%;width:'+pct+'%;background:#C8A86A;border-radius:99px"></div></div><div style="font-size:15px;font-weight:800;color:#9C7D4A;min-width:42px;text-align:right">'+pct+'%</div></div>';
+  }
+  window._csOpenProgress=function(){
+    var a=(typeof curAcc==='function')?curAcc():null; if(!a){ if(typeof toast==='function') toast(_I('warn','⚠')+' 尚未選定客戶'); return; }
+    var sh=$('sheet'), md=$('modal'); if(!sh||!md) return;
+    var j=_journey(a), pct=_pct(j);
+    sh.innerHTML='<div class="preview-wrap"><div class="preview-actions">'
+      +'<button class="preview-modal-btn" onclick="_csProgressPrint()">列印 / 存 PDF（給客戶）</button>'
+      +'<button class="preview-modal-btn" onclick="_csProgressDownload()">下載 HTML</button>'
+      +'<button class="preview-modal-btn" onclick="closeModal()">關閉</button></div>'
+      +'<div class="preview-paper"><div class="preview-kicker">ATELIER · YOUR JOURNEY</div>'
+      +'<h2>你的內容旅程</h2><div class="preview-gold-line"></div>'
+      +'<div class="preview-sub">'+_esc(_name())+' · 完成度 '+pct+'%</div>'
+      +_bar(pct)+_rows(j)
+      +'<div style="margin-top:16px;font-size:13px;color:#8A7274;line-height:1.8">每完成一步，你的內容方向就更清楚一點。我們會陪你一路走到交付。</div>'
+      +'</div></div>';
+    md.classList.add('show'); md.onclick=function(e){ if(e.target===md) closeModal(); };
+  };
+  function _doc(a){
+    var j=_journey(a), pct=_pct(j), name=_name(), d=new Date().toISOString().slice(0,10);
+    var rows=j.map(function(st,i){ var c=_col(st.status);
+      return '<tr><td style="font-size:22px;color:'+c+';width:40px;text-align:center;padding:10px 0">'+(CIRC[i]||(i+1))+'</td>'
+        +'<td style="font-size:16px;font-weight:700;color:#2A1A1C;padding:10px 0">'+_esc(st.name)+'</td>'
+        +'<td style="text-align:right;padding:10px 0"><span style="font-size:13px;font-weight:700;color:'+c+';background:'+c+'18;border:1px solid '+c+'40;border-radius:999px;padding:4px 14px">'+_lab(st.status)+'</span></td></tr>'; }).join('');
+    return '<!DOCTYPE html><html lang="zh-Hant"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>你的內容旅程 · '+_esc(name)+'</title>'
+      +'<style>body{font-family:"Noto Sans TC",system-ui,sans-serif;color:#2A1A1C;background:#fff;max-width:680px;margin:0 auto;padding:48px 40px}'
+      +'.k{font-family:"Cormorant Garamond",Georgia,serif;letter-spacing:4px;color:#C8A86A;font-size:13px;text-transform:uppercase}'
+      +'h1{font-family:"Noto Serif TC",serif;font-size:30px;margin:8px 0 4px;font-weight:900}.sub{color:#8A7274;font-size:14px}'
+      +'.line{width:60px;height:3px;background:#C8A86A;margin:14px 0 22px}'
+      +'.barwrap{display:flex;align-items:center;gap:10px;margin:0 0 22px}.bar{flex:1;height:12px;background:#F1ECE4;border-radius:99px;overflow:hidden}.bar i{display:block;height:100%;width:'+pct+'%;background:#C8A86A;border-radius:99px}.pct{font-size:18px;font-weight:800;color:#9C7D4A}'
+      +'table{width:100%;border-collapse:collapse;border-top:1px solid #EFE7DC}tr{border-bottom:1px solid #F0EAE2}'
+      +'.foot{margin-top:28px;color:#8A7274;font-size:13px;line-height:1.8}'
+      +'@media print{body{padding:24px}}</style></head><body>'
+      +'<div class="k">ATELIER · YOUR JOURNEY</div><h1>你的內容旅程</h1><div class="sub">'+_esc(name)+' · '+d+'</div><div class="line"></div>'
+      +'<div class="barwrap"><div class="bar"><i></i></div><div class="pct">'+pct+'%</div></div>'
+      +'<table>'+rows+'</table>'
+      +'<div class="foot">每完成一步，你的內容方向就更清楚一點。我們會陪你一路走到交付。<br>ATELIER · Inspire · Create · Shine.</div></body></html>';
+  }
+  function _safe(s){ return String(s||'').replace(/[\\/:*?"<>|\s]+/g,'_').slice(0,40); }
+  window._csProgressDownload=function(){
+    var a=(typeof curAcc==='function')?curAcc():null; if(!a) return; var html=_doc(a);
+    try{ var b=new Blob([html],{type:'text/html;charset=utf-8'}); var u=URL.createObjectURL(b); var el=document.createElement('a'); el.href=u; el.download='ATELIER_'+_safe(_name())+'_內容旅程_'+new Date().toISOString().slice(0,10)+'.html'; document.body.appendChild(el); el.click(); setTimeout(function(){ document.body.removeChild(el); URL.revokeObjectURL(u); },120); if(typeof toast==='function') toast(_I('check','✓')+' 已下載進度表'); }
+    catch(e){ if(typeof toast==='function') toast('下載失敗'); }
+  };
+  window._csProgressPrint=function(){
+    var a=(typeof curAcc==='function')?curAcc():null; if(!a) return;
+    var w=window.open('','_blank','width=820,height=900'); if(!w){ if(typeof toast==='function') toast('瀏覽器擋住彈窗，請允許後再試'); return; }
+    w.document.open(); w.document.write(_doc(a)+'<scr'+'ipt>setTimeout(function(){window.print()},450)</scr'+'ipt>'); w.document.close();
+  };
+  function _injectProgressBtn(){
+    var b=document.getElementById('csBanner'); if(!b||b.classList.contains('empty')) return;
+    if(b.querySelector('[data-cs-progress]')) return;
+    var anchor=b.querySelector('button[onclick*="openStageOverview"]');
+    var btn=document.createElement('button'); btn.className='mini-btn'; btn.type='button'; btn.setAttribute('data-cs-progress','1');
+    btn.setAttribute('onclick','_csOpenProgress()'); btn.title='客戶旅程進度（可給客戶看）'; btn.innerHTML=_I('target','')+' 客戶進度';
+    if(anchor&&anchor.parentNode) anchor.parentNode.insertBefore(btn, anchor.nextSibling); else b.appendChild(btn);
+  }
+  var _rb=window.renderBanner;
+  window.renderBanner=function(flash){
+    if(typeof _rb==='function') _rb(flash);
+    try{ _injectProgressBtn(); }catch(e){ console.warn('[progress btn]',e); }
   };
 })();
 </script>
