@@ -1221,7 +1221,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v289</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v291</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -9046,6 +9046,15 @@ function _accFbSubscribe(){
       }
     }, function(err){ console.error('[ATELIER FB acc]',err); });
 }
+/* v291 雙寫安全：共寫陣列(deliveryPackages/clientFeedback)逐筆合併，進度旗標單調保留 */
+function _mergeCoOwnedArr(ca, la, flagKey, flagOn){
+  ca=Array.isArray(ca)?ca:[]; la=Array.isArray(la)?la:[];
+  var map={}, order=[];
+  [ca,la].forEach(function(arr){ arr.forEach(function(it){ if(!it||!it.id) return;
+    if(map[it.id]){ var prev=map[it.id]; var m=Object.assign({},prev,it); if(prev[flagKey]===flagOn||it[flagKey]===flagOn) m[flagKey]=flagOn; map[it.id]=m; }
+    else { map[it.id]=Object.assign({},it); order.push(it.id); } }); });
+  return order.map(function(k){ return map[k]; });
+}
 function _accFbPush(){
   if(!_fbReady || !_fbDB) return;
   if(!accounts || accounts.length===0){ return; }
@@ -9059,6 +9068,8 @@ function _accFbPush(){
       var c=_byId[a.id]; if(!c) return a;
       var out=Object.assign({},c,a);                 // {...雲端,...本機}：本機覆蓋共用欄位，但從不刪雲端欄位
       _KEEP.forEach(function(k){ if(c[k]!==undefined) out[k]=c[k]; }); // 服務台欄位一律以雲端最新為準，工作台不蓋
+      if(c.deliveryPackages||a.deliveryPackages) out.deliveryPackages=_mergeCoOwnedArr(c.deliveryPackages,a.deliveryPackages,'status','received');
+      if(c.clientFeedback||a.clientFeedback) out.clientFeedback=_mergeCoOwnedArr(c.clientFeedback,a.clientFeedback,'handled',true);
       return out;
     });
     var _have={}; accounts.forEach(function(a){ if(a&&a.id) _have[a.id]=1; });
@@ -12228,5 +12239,113 @@ window._strategyRadarV267=radarResults;
 /* 顏色變化：關鍵數字古銅金，不再全黑 */
 .v267-kpi b,.v267-mini-cell b,#strategyFloatPanel .sf-kpis b,.strat-radar-card-v265 b{color:#9C6B1E !important}
 </style>
+<!-- ════════ ATELIER 工作台↔服務台 雙向連動（工作台側）v290：送出交付包 + 回饋收件匣 ════════ -->
+<script>
+(function(){
+  'use strict';
+  if(window.__atelierWBLinkV290) return; window.__atelierWBLinkV290=true;
+  function E(s){ return (typeof esc==='function')?esc(s):String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+  function T(m){ if(typeof toast==='function') toast(m); }
+  function A(id){ try{ if(typeof accById==='function'){ var a=accById(id); if(a) return a; } }catch(e){} return (window.accounts||[]).filter(function(x){return x&&x.id===id;})[0]||null; }
+  function save(){ try{ if(typeof saveAccounts==='function') saveAccounts(); }catch(e){ console.warn('[wb-link save]',e); } }
+  function uid(p){ return (p||'id')+'_'+Date.now().toString(36)+Math.random().toString(36).slice(2,6); }
+  function ov(inner){
+    var o=document.createElement('div'); o.className='wbl-ov';
+    o.style.cssText='position:fixed;inset:0;z-index:200000;background:rgba(42,26,28,.5);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);display:flex;align-items:center;justify-content:center;padding:18px;box-sizing:border-box';
+    var sh=document.createElement('div');
+    sh.style.cssText='background:#FDFBF8;max-width:660px;width:100%;max-height:90vh;overflow:auto;border:1px solid #EFE7DC;border-radius:16px;box-shadow:0 24px 64px rgba(42,26,28,.28);padding:22px;box-sizing:border-box;font-family:"Noto Sans TC",system-ui,sans-serif;color:#2A1A1C';
+    sh.innerHTML=inner; o.appendChild(sh);
+    o.addEventListener('click',function(e){ if(e.target===o) o.remove(); });
+    document.body.appendChild(o); return o;
+  }
+  window._wblClose=function(el){ var o=el&&el.closest?el.closest('.wbl-ov'):null; if(o){ o.remove(); return; } var x=document.querySelector('.wbl-ov'); if(x) x.remove(); };
+  function field(label,id,ph,ta){
+    return '<div style="margin-bottom:12px"><label style="display:block;font-size:12px;font-weight:800;color:#A51820;margin-bottom:5px">'+E(label)+'</label>'
+      +(ta?'<textarea id="'+id+'" rows="'+ta+'" placeholder="'+E(ph||'')+'" style="width:100%;box-sizing:border-box;border:1px solid #E8E3DA;border-radius:9px;padding:9px 11px;font-family:inherit;font-size:13.5px;line-height:1.7;color:#2A1A1C;background:#fff;resize:vertical"></textarea>'
+        :'<input id="'+id+'" placeholder="'+E(ph||'')+'" style="width:100%;box-sizing:border-box;border:1px solid #E8E3DA;border-radius:9px;padding:9px 11px;font-family:inherit;font-size:13.5px;color:#2A1A1C;background:#fff">')
+      +'</div>';
+  }
+  function btn(txt,go,primary){
+    return '<button type="button" onclick="'+go+'" style="border:1px solid '+(primary?'#A51820':'#DCC8CB')+';background:'+(primary?'#A51820':'#fff')+';color:'+(primary?'#fff':'#5C0F14')+';font-weight:700;font-size:13px;border-radius:999px;padding:8px 18px;cursor:pointer;font-family:inherit">'+E(txt)+'</button>';
+  }
+  window._wbSendDelivery=function(id){
+    var a=A(id); if(!a){ T('找不到此帳號'); return; }
+    var nm=E(a.displayName||a.handle||'此帳號');
+    var html='<div style="font-family:\'Cormorant Garamond\',serif;letter-spacing:4px;color:#A89498;font-size:11px;text-transform:uppercase;margin-bottom:4px">ATELIER · SEND TO SERVICE DESK</div>'
+      +'<div style="font-size:20px;font-weight:900;font-family:\'Noto Serif TC\',serif;margin-bottom:2px">送出交付包到服務台</div>'
+      +'<div style="font-size:12.5px;color:#8A7274;margin-bottom:16px">'+nm+'（'+E(a.handle||'')+'）· 服務台 ⑦交付 會收到這份包</div>'
+      +'<div style="font-size:12px;font-weight:800;color:#9C7D4A;margin:4px 0 8px">內容公式</div>'
+      +field('開場 Hook','wbl_hook','前 3 秒怎麼抓住人')
+      +field('結構 Structure','wbl_struct','例：痛點 → 誤解 → 正解 → CTA')
+      +field('語氣 Tone','wbl_tone','例：專業但親切')
+      +'<div style="font-size:12px;font-weight:800;color:#9C7D4A;margin:14px 0 8px">AI 提示詞（每行一條）</div>'
+      +field('提示詞','wbl_prompts','一行一條提示詞',4)
+      +'<div style="font-size:12px;font-weight:800;color:#9C7D4A;margin:14px 0 8px">診斷重點</div>'
+      +field('主要目標 topGoal','wbl_goal','例：提升私訊轉換')
+      +field('關鍵階段 topStage','wbl_stage','例：信任建立')
+      +field('缺口 gaps（每行一個）','wbl_gaps','一行一個缺口',3)
+      +field('備註 note','wbl_note','給服務台/客戶的補充',2)
+      +'<div style="display:flex;gap:8px;justify-content:flex-end;margin-top:8px">'+btn('取消','_wblClose(this)')+btn('送出交付包','_wbDoSend(\''+id+'\',this)',true)+'</div>';
+    ov(html);
+  };
+  window._wbDoSend=function(id,el){
+    var a=A(id); if(!a){ T('找不到此帳號'); return; }
+    function v(i){ var e=document.getElementById(i); return e?e.value.trim():''; }
+    function lines(i){ return v(i).split('\n').map(function(x){return x.trim();}).filter(Boolean); }
+    var pkg={ id:uid('dpkg'), createdAt:Date.now(), source:'workbench', clientHandle:a.handle||'',
+      formula:{ hook:v('wbl_hook'), structure:v('wbl_struct'), tone:v('wbl_tone') },
+      prompts:lines('wbl_prompts'), sampleVideoIds:[],
+      diagnosis:{ topGoal:v('wbl_goal'), topStage:v('wbl_stage'), gaps:lines('wbl_gaps') },
+      note:v('wbl_note'), status:'sent' };
+    a.deliveryPackages=a.deliveryPackages||[]; a.deliveryPackages.push(pkg);
+    a.updatedAt=Date.now(); save();
+    _wblClose(el); T('✓ 已送出交付包到服務台（'+(a.handle||'')+'）');
+  };
+  function fbLine(f){
+    var p=f.payload||{}; var keys=Object.keys(p);
+    var body=keys.length?keys.map(function(k){ var val=p[k]; if(val&&typeof val==='object') val=JSON.stringify(val); return '<div style="font-size:12.5px;color:#5C4248;margin-top:3px"><b style="color:#8A7274">'+E(k)+'：</b>'+E(String(val))+'</div>'; }).join(''):'<div style="font-size:12.5px;color:#A89498">（無附帶內容）</div>';
+    var t=new Date(f.createdAt||Date.now()).toLocaleString();
+    return '<div style="border:1px solid #E8E3DA;border-radius:10px;background:#fff;padding:13px 15px;margin-bottom:10px'+(f.handled?';opacity:.6':'')+'">'
+      +'<div style="display:flex;align-items:center;gap:8px;margin-bottom:4px"><span style="font-size:12px;font-weight:800;color:#A51820">'+E(f.type||'request')+'</span>'
+      +'<span style="font-size:11px;color:#A89498;margin-left:auto">'+E(t)+'</span></div>'+body
+      +'<div style="margin-top:9px;text-align:right">'+(f.handled?'<span style="font-size:11px;color:#4A6552;font-weight:700">✓ 已處理</span>':btn('標記已處理','_wbFbHandle(\''+f.id+'\',this)'))+'</div></div>';
+  }
+  window._wbOpenFeedback=function(id){
+    var a=A(id); if(!a){ T('找不到此帳號'); return; }
+    window.__wblAcc=id;
+    var fbs=(a.clientFeedback||[]).slice().sort(function(x,y){return (y.createdAt||0)-(x.createdAt||0);});
+    var nm=E(a.displayName||a.handle||'此帳號');
+    var list=fbs.length?fbs.map(fbLine).join(''):'<div style="font-size:13px;color:#8A7274;padding:18px 0;text-align:center">目前沒有來自服務台的回饋</div>';
+    var html='<div style="font-family:\'Cormorant Garamond\',serif;letter-spacing:4px;color:#A89498;font-size:11px;text-transform:uppercase;margin-bottom:4px">ATELIER · FEEDBACK INBOX</div>'
+      +'<div style="font-size:20px;font-weight:900;font-family:\'Noto Serif TC\',serif;margin-bottom:2px">回饋收件匣</div>'
+      +'<div style="font-size:12.5px;color:#8A7274;margin-bottom:16px">'+nm+'（'+E(a.handle||'')+'）· 來自服務台的需求/回饋</div>'
+      +list
+      +'<div style="display:flex;justify-content:flex-end;margin-top:8px">'+btn('關閉','_wblClose(this)')+'</div>';
+    ov(html);
+  };
+  window._wbFbHandle=function(fid,el){
+    var a=A(window.__wblAcc); if(!a) return;
+    (a.clientFeedback||[]).forEach(function(f){ if(f.id===fid) f.handled=true; });
+    a.updatedAt=Date.now(); save();
+    _wblClose(el); _wbOpenFeedback(window.__wblAcc);
+  };
+  function inject(){
+    [].slice.call(document.querySelectorAll('[data-acc-edit]')).forEach(function(eb){
+      var row=eb.parentNode; if(!row) return;
+      if(row.querySelector('[data-wbl-send]')) return;
+      var id=eb.getAttribute('data-acc-edit'); if(!id) return;
+      var a=A(id); if(!a) return;
+      var unread=((a.clientFeedback||[]).filter(function(f){return !f.handled;})).length;
+      var send=document.createElement('button'); send.type='button'; send.className=eb.className; send.setAttribute('data-wbl-send',id); send.textContent='送服務台'; send.onclick=function(){ _wbSendDelivery(id); };
+      var inbox=document.createElement('button'); inbox.type='button'; inbox.className=eb.className; inbox.setAttribute('data-wbl-inbox',id); inbox.innerHTML='回饋'+(unread?(' ('+unread+')'):''); inbox.onclick=function(){ _wbOpenFeedback(id); };
+      eb.insertAdjacentElement('afterend', inbox);
+      eb.insertAdjacentElement('afterend', send);
+    });
+  }
+  setInterval(inject, 1100);
+  if(document.readyState!=='loading') setTimeout(inject,500); else document.addEventListener('DOMContentLoaded',function(){ setTimeout(inject,500); });
+})();
+</script>
+
 </body>
 </html>
