@@ -722,7 +722,7 @@ details.cat .cat-body{padding:14px 15px}
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">客戶服務台</span></span>
-    <span id="verBadge">cs-v4.0</span>
+    <span id="verBadge">cs-v4.1</span>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button type="button" id="popoutBtn" class="popout-btn" title="把客戶服務台開成獨立小視窗"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6"/><path d="M20 4l-9 9"/><path d="M14 12v7H5V10h7"/></svg>小視窗</button>
@@ -4678,6 +4678,87 @@ window.openStageInfo=function(stageName){
   window.renderExtStage=function(stageId){
     if(typeof _origRenderExt==='function') _origRenderExt(stageId);
     if(stageId==='stage7'){ try{ _injectDeliveryPanel(); }catch(e){ console.warn('[link deliver panel]',e); } }
+  };
+})();
+</script>
+
+<!-- ═══════════════ cs-v4.1 加厚①：客戶「閉環體質總覽」(把全部影片加總成閉環健診) ═══════════════ -->
+<!-- 只讀:聚合 accountVideos(a) 既有欄位，不改任何資料。放在「客戶影片庫」上方，服務台一眼看出
+     這位客戶在閉環五層的分布與缺口，直接當提案切入點。用裝飾器包住既有 renderRelatedVideosHTML。 -->
+<script>
+(function(){
+  'use strict';
+  if(window.__atelierThickV41){ return; } window.__atelierThickV41=true;
+  function _esc(s){ return (typeof esc==='function')?esc(s):String(s==null?'':s); }
+  function _I(k,f){ return (window.ICN&&ICN[k])||f||''; }
+  var LMAP=[['A','認知層'],['B','品牌層'],['C','信任層'],['D','轉化層'],['E','組織層']];
+  function _layerOf(v){ var m=String(v&&(v.goal||v.stage||v.code||v.gStage)||'').match(/[A-E]/); return m?m[0]:''; }
+  function _dist(vs,getter){
+    var m={}; vs.forEach(function(v){ var k=String(getter(v)||'').trim(); if(k) m[k]=(m[k]||0)+1; });
+    return Object.keys(m).map(function(k){return {k:k,n:m[k]};}).sort(function(a,b){return b.n-a.n;});
+  }
+  function _chips(list,max){
+    if(!list.length) return '<span style="color:#A88;font-size:12px">—</span>';
+    return list.slice(0,max||6).map(function(o){ return '<span style="display:inline-block;background:#F4EFE8;border:1px solid #E8E0D4;border-radius:999px;padding:2px 10px;margin:2px 4px 2px 0;font-size:12px;color:#5A4A4C">'+_esc(o.k)+' <b style="color:#9C7D4A">×'+o.n+'</b></span>'; }).join('')
+      +(list.length>(max||6)?'<span style="font-size:11px;color:#A88;margin-left:4px">等 '+list.length+' 類</span>':'');
+  }
+  function _summaryText(a,vs,lc,unknown,scored,gaps,themes,goals,forms,mats){
+    function d(arr){ return arr.length?arr.map(function(o){return o.k+' ×'+o.n;}).join('、'):'—'; }
+    return 'ATELIER 閉環體質 · '+(a.handle||a.displayName||'—')+' · '+new Date().toISOString().slice(0,10)+'\n'
+      +'影片總數：'+vs.length+'（已評分 '+scored+'）\n'
+      +'閉環層分布：'+LMAP.map(function(p){return p[1]+' '+(lc[p[0]]||0);}).join('｜')+(unknown?'（未標層 '+unknown+'）':'')+'\n'
+      +'閉環缺口：'+(gaps.length?gaps.join('、')+' 完全沒有內容':'五層皆有內容')+'\n'
+      +'主題分布：'+d(themes)+'\n目標分布：'+d(goals)+'\n形式分布：'+d(forms)+'\n素材分布：'+d(mats);
+  }
+  window._csCopyLoop=function(){
+    var a=(typeof curAcc==='function')?curAcc():null; if(!a){ if(typeof toast==='function') toast(_I('warn','⚠')+' 尚未選定客戶'); return; }
+    var vs=(typeof accountVideos==='function')?accountVideos(a):[]; if(!vs.length){ if(typeof toast==='function') toast('這位客戶尚無影片可加總'); return; }
+    var lc={A:0,B:0,C:0,D:0,E:0}, unknown=0, scored=0;
+    vs.forEach(function(v){ var L=_layerOf(v); if(L) lc[L]++; else unknown++; if(Number(v.score||v.dataScore)>0) scored++; });
+    var gaps=LMAP.filter(function(p){return !lc[p[0]];}).map(function(p){return p[1];});
+    var txt=_summaryText(a,vs,lc,unknown,scored,gaps,_dist(vs,function(v){return v.themeName;}),_dist(vs,function(v){return v.goal;}),_dist(vs,function(v){return v.form;}),_dist(vs,function(v){return v.matName;}));
+    if(typeof copyVal==='function') copyVal(txt,'閉環體質摘要');
+  };
+  function _loopConstitutionHTML(a){
+    var vs=(typeof accountVideos==='function')?accountVideos(a):[];
+    if(!vs.length) return '';
+    var lc={A:0,B:0,C:0,D:0,E:0}, unknown=0, scored=0;
+    vs.forEach(function(v){ var L=_layerOf(v); if(L) lc[L]++; else unknown++; if(Number(v.score||v.dataScore)>0) scored++; });
+    var gaps=LMAP.filter(function(p){return !lc[p[0]];}).map(function(p){return p[1];});
+    var maxc=Math.max(1,lc.A,lc.B,lc.C,lc.D,lc.E);
+    var layerRow=LMAP.map(function(p){
+      var n=lc[p[0]]||0, empty=!n, h=Math.round((n/maxc)*46)+4;
+      return '<div style="flex:1;text-align:center;min-width:0">'
+        +'<div style="height:54px;display:flex;align-items:flex-end;justify-content:center"><div style="width:60%;max-width:34px;height:'+h+'px;border-radius:6px 6px 0 0;background:'+(empty?'#F0DADA':'#D9C3A0')+'"></div></div>'
+        +'<div style="font-size:18px;font-weight:800;color:'+(empty?'#A51820':'#2A1A1C')+';line-height:1.1">'+n+'</div>'
+        +'<div style="font-size:11.5px;color:#7A6A6C">'+p[1]+'</div>'
+        +(empty?'<div style="font-size:10.5px;color:#A51820;font-weight:700">缺口</div>':'<div style="height:14px"></div>')
+        +'</div>';
+    }).join('');
+    var insight = gaps.length
+      ? ('這位客戶 '+vs.length+' 支影片裡，<b style="color:#A51820">'+gaps.join('、')+'</b> 幾乎是空白——這正是你提案時最有力的切入點：先補這幾層，閉環才接得起來。')
+      : ('這位客戶閉環五層都有內容（共 '+vs.length+' 支），下一步是看哪一層「量夠但質不足」，用對標範本拉高水準。');
+    var themes=_dist(vs,function(v){return v.themeName;}), goals=_dist(vs,function(v){return v.goal;}),
+        forms=_dist(vs,function(v){return v.form;}), mats=_dist(vs,function(v){return v.matName;});
+    return '<div class="section-card" data-loop-constitution style="border-left:3px solid var(--gold)">'
+      +'<h3 style="display:flex;align-items:center;gap:6px">'+_I('target','')+'閉環體質總覽'
+      +'<button type="button" class="btn-deliver-2" style="margin-left:auto" onclick="_csCopyLoop()">複製摘要</button></h3>'
+      +'<div class="sc-note">把這位客戶全部 '+vs.length+' 支影片加總，一眼看出閉環五層的分布與缺口。這是「輸出成交」最快的切入點，可複製進提示詞或提案。</div>'
+      +'<div style="display:flex;gap:8px;align-items:flex-end;margin:10px 0 4px">'+layerRow+'</div>'
+      +(unknown?'<div style="font-size:11.5px;color:#A88;text-align:right">未標層 '+unknown+' 支</div>':'')
+      +'<div style="background:#FBF5EC;border:1px solid #EFE2CE;border-radius:10px;padding:10px 12px;font-size:13px;line-height:1.7;color:#5A4A4C;margin:8px 0">'+insight+'</div>'
+      +'<div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 16px">'
+      +'<div><div style="font-size:12px;color:#8A7274;margin-bottom:3px">主題分布</div>'+_chips(themes,6)+'</div>'
+      +'<div><div style="font-size:12px;color:#8A7274;margin-bottom:3px">目標分布</div>'+_chips(goals,6)+'</div>'
+      +'<div><div style="font-size:12px;color:#8A7274;margin-bottom:3px">形式分布</div>'+_chips(forms,6)+'</div>'
+      +'<div><div style="font-size:12px;color:#8A7274;margin-bottom:3px">素材分布</div>'+_chips(mats,6)+'</div>'
+      +'</div></div>';
+  }
+  var _origRRV=window.renderRelatedVideosHTML;
+  window.renderRelatedVideosHTML=function(a){
+    var base=(typeof _origRRV==='function')?_origRRV(a):'';
+    var panel=''; try{ panel=_loopConstitutionHTML(a); }catch(e){ console.warn('[loop constitution]',e); }
+    return panel+base;   /* 閉環體質放在影片庫上方 */
   };
 })();
 </script>
