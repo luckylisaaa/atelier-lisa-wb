@@ -722,7 +722,7 @@ details.cat .cat-body{padding:14px 15px}
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">客戶服務台</span></span>
-    <span id="verBadge">cs-v4.6</span>
+    <span id="verBadge">cs-v4.7</span>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button type="button" id="popoutBtn" class="popout-btn" title="把客戶服務台開成獨立小視窗"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6"/><path d="M20 4l-9 9"/><path d="M14 12v7H5V10h7"/></svg>小視窗</button>
@@ -5196,12 +5196,14 @@ window.openStageInfo=function(stageName){
     catch(e){ if(typeof toast==='function') toast('下載失敗'); }
   }
   window._csDeliverDownload=function(){
-    var s=_collectStage(true); if(!s) return;
-    _dl('ATELIER_'+_safe(_clientName())+'_'+_safe(s.title)+'_客戶版_'+new Date().toISOString().slice(0,10)+'.html', _doc(s.title,s.body,_clientName(),true));
-    if(typeof toast==='function') toast((window.ICN&&ICN.check||'✓')+' 已下載客戶版交付物');
+    var cl=(window._csDeliverVer!=='advisor');
+    var s=_collectStage(cl); if(!s) return;
+    _dl('ATELIER_'+_safe(_clientName())+'_'+_safe(s.title)+'_'+(cl?'客戶版':'顧問版')+'_'+new Date().toISOString().slice(0,10)+'.html', _doc(s.title,s.body,_clientName(),cl));
+    if(typeof toast==='function') toast((window.ICN&&ICN.check||'✓')+' 已下載'+(cl?'客戶版':'顧問版')+'交付物');
   };
   window._csDeliverPrint=function(){
-    var s=_collectStage(true); var html=_doc(s?s.title:'交付物', s?s.body:'', _clientName(), true);
+    var cl=(window._csDeliverVer!=='advisor');
+    var s=_collectStage(cl); var html=_doc(s?s.title:'交付物', s?s.body:'', _clientName(), cl);
     var w=window.open('','_blank','width=900,height=900'); if(!w){ if(typeof toast==='function') toast('瀏覽器擋住彈窗，請允許後再試'); return; }
     w.document.open(); w.document.write(html+'<scr'+'ipt>setTimeout(function(){window.print()},500)</scr'+'ipt>'); w.document.close();
   };
@@ -5215,6 +5217,63 @@ window.openStageInfo=function(stageName){
   window.openStageOverview=function(){
     if(typeof _oSO==='function') _oSO();
     try{ window._csInjectDeliverBtns(); }catch(e){ console.warn('[deliver btns]',e); }
+  };
+})();
+</script>
+
+<!-- ═══════════════ cs-v4.7 交付工廠②(乙-2)：客戶版／顧問版 雙軌切換 ═══════════════ -->
+<!-- 在階段預覽彈窗加「客戶版／顧問版」切換，即時重繪預覽內容(客戶版排除『顧問』欄位)，
+     並設 window._csDeliverVer 讓 v4.6 的下載/列印/複製跟著切。純讀畫面，不改資料。 -->
+<script>
+(function(){
+  'use strict';
+  if(window.__atelierDualVerV47){ return; } window.__atelierDualVerV47=true;
+  function _esc(s){ return (typeof esc==='function')?esc(s):String(s==null?'':s); }
+  function _renderBody(){
+    var box=document.getElementById('stagePreviewText'); if(!box) return;
+    var cur=document.querySelector('.view.on'); if(!cur) return;
+    var cl=(window._csDeliverVer!=='advisor');
+    var cards=[].slice.call(cur.querySelectorAll('.section-card'));
+    var html=cards.map(function(card,i){
+      var h=(((card.querySelector('h3')||{}).innerText)||('區塊 '+(i+1))).replace(/\s*預覽\s*$/,'').replace(/⊞/g,'').trim();
+      var fields=(typeof readSectionFields==='function')?readSectionFields(card):[];
+      fields=fields.filter(function(f){ if(!f.value||!String(f.value).trim()) return false; if(cl && /顧問/.test(f.label||'')) return false; return true; });
+      if(!fields.length) return '';
+      var inner=(typeof previewFieldsHTML==='function')?previewFieldsHTML(fields):fields.map(function(f){return '<div class="preview-field"><div class="pl">'+_esc(f.label)+'</div><div class="pv">'+_esc(f.value)+'</div></div>';}).join('');
+      return '<details class="stage-detail" '+(i===0?'open':'')+'><summary>'+_esc(h)+'</summary><div class="inside">'+inner+'</div></details>';
+    }).filter(Boolean).join('') || '<div class="preview-field"><div class="pk">EMPTY</div><div class="pl">此版本目前沒有可呈現的內容</div></div>';
+    box.innerHTML=html;
+  }
+  window._csSetVer=function(v){
+    window._csDeliverVer=v;
+    _renderBody();
+    var t=document.querySelector('#modal .preview-actions [data-cs-toggle]');
+    if(t){ [].slice.call(t.querySelectorAll('button')).forEach(function(b){
+      var on=(b.getAttribute('data-v')===v);
+      b.style.setProperty('background', on?'#A51820':'transparent', 'important');
+      b.style.setProperty('color', on?'#fff':'#5C0F14', 'important');
+    }); }
+  };
+  window._csInjectVerToggle=function(){
+    var pa=document.querySelector('#modal .preview-actions'); if(!pa||pa.querySelector('[data-cs-toggle]')) return;
+    var wrap=document.createElement('span'); wrap.setAttribute('data-cs-toggle','1');
+    wrap.style.cssText='display:inline-flex;border:1px solid #DCC8CB;border-radius:999px;overflow:hidden;margin-right:auto';
+    [['client','客戶版'],['advisor','顧問版']].forEach(function(p){
+      var b=document.createElement('button'); b.type='button'; b.setAttribute('data-v',p[0]); b.textContent=p[1];
+      b.style.cssText='border:0;background:transparent;color:#5C0F14;font-size:12px;padding:6px 14px;cursor:pointer;font-family:inherit';
+      b.onclick=function(){ window._csSetVer(p[0]); };
+      wrap.appendChild(b);
+    });
+    pa.insertBefore(wrap, pa.firstChild);
+  };
+  var _o2=window.openStageOverview;
+  window.openStageOverview=function(){
+    if(typeof _o2==='function') _o2();           /* 原版 + v4.6 注入下載/列印鈕 */
+    try{
+      window._csDeliverVer='client';             /* 每次開啟預設客戶版（避免不小心對客戶秀顧問版）*/
+      window._csInjectVerToggle();
+      window._csSetVer('client');                /* 套用過濾 + 切換鈕狀態 */
+    }catch(e){ console.warn('[dual ver]',e); }
   };
 })();
 </script>
