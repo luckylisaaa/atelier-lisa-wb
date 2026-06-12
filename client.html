@@ -100,7 +100,7 @@ svg.ic{vertical-align:-2px;flex:0 0 auto}
 .flow-dot.done{background:#E5EDE9;color:var(--green);border-color:#CFE0D7}
 .flow-dot.prog{background:#F3EAD8;color:var(--watch);border-color:#E7D7B6}
 .cli-card .cc-health{margin-top:9px;display:flex;align-items:center;gap:8px}
-.cli-card .cc-health .hbar{flex:1;height:7px;border-radius:4px;background:var(--line);overflow:hidden}
+.cli-card .cc-health .hbar{flex:1;height:7px;border-radius:4px;background:#EAE0DA;overflow:hidden}
 .cli-card .cc-health .hbar i{display:block;height:100%;background:linear-gradient(90deg,var(--gold),var(--rouge))}
 .cli-card .cc-health .hnum{font-size:11px;font-weight:800;color:var(--gold-dark);white-space:nowrap}
 .empty-res{text-align:center;color:var(--sub);font-size:13px;padding:30px 12px;line-height:1.9}
@@ -193,7 +193,7 @@ details.cat .cat-body{padding:14px 15px}
 .toast.show{transform:translateX(-50%) translateY(0);opacity:1}
 
 /* 彈窗（與 index.html 一致 · 中央） */
-.modal{display:none;position:fixed;inset:0;z-index:100000;background:rgba(42,32,36,.5);align-items:center;justify-content:center;padding:16px;box-sizing:border-box}
+.modal{display:none;position:fixed;inset:0;z-index:100000;background:rgba(42,32,36,.4);align-items:center;justify-content:center;padding:16px;box-sizing:border-box}
 .modal.show{display:flex}
 .sheet{background:var(--bg);width:100%;max-width:640px;max-height:90vh;overflow-y:auto;border-radius:18px;padding:20px 16px 24px;box-sizing:border-box}
 
@@ -430,14 +430,14 @@ details.cat .cat-body{padding:14px 15px}
 /* 健康評分雷達圖 */
 .health-radar-wrap{background:#FFFCFB;border:1px solid #E8E3DA;border-radius:14px;padding:18px;margin:14px 0;display:flex;justify-content:center}
 .health-radar-svg{max-width:380px;width:100%;height:auto}
-/* cs-v3.22 批次① · D onboarding 提示 + E 工作台跳轉鈕 */
+/* cs-v3.23 批次① · D onboarding 提示 + E 工作台跳轉鈕 */
 .ob-next{display:inline-flex;align-items:center;gap:5px;margin-left:8px;padding:4px 11px;border-radius:99px;background:#FAE8EA;color:#A51820;font-size:12px;font-weight:600;cursor:pointer;border:1px solid #F0D2D6;transition:all .15s ease}
 .ob-next:hover{background:#A51820;color:#fff;border-color:#A51820}
 .ob-next.done{background:#EEF3EF;color:#4A6552;border-color:#DBE6DD}
 .ob-next.done:hover{background:#4A6552;color:#fff;border-color:#4A6552}
 .vc-jump{display:inline-flex;align-items:center;gap:4px;margin-left:8px;padding:3px 9px;border-radius:8px;background:#F4F1EC;color:#8A7274;font-size:11.5px;font-weight:600;text-decoration:none;border:1px solid #E8E3DA;transition:all .15s ease}
 .vc-jump:hover{background:#A51820;color:#fff;border-color:#A51820}
-/* cs-v3.22 批次② · 經營儀表板 + 選客戶頁總覽縮圖 */
+/* cs-v3.23 批次② · 經營儀表板 + 選客戶頁總覽縮圖 */
 .cli-summary{display:flex;align-items:center;gap:20px;flex-wrap:wrap;background:#fff;border:1px solid #E8E3DA;border-radius:14px;padding:16px 22px;margin-bottom:18px;box-shadow:0 2px 10px rgba(42,26,28,.04)}
 .clis-item{text-align:center;min-width:64px}
 .clis-num{font-family:"Cormorant Garamond","Noto Serif TC",serif;font-size:30px;font-weight:700;color:#A51820;line-height:1}
@@ -499,12 +499,12 @@ details.cat .cat-body{padding:14px 15px}
 .dc-trend{font-size:11px;font-weight:700;white-space:nowrap}
 .dc-trend.up{color:#4A6552}.dc-trend.down{color:#A51820}
 @media(max-width:820px){.dash-kpis{grid-template-columns:repeat(2,1fr)}.dash-grid{grid-template-columns:1fr}}
-/* cs-v3.22 批次③ · ①②③④ 引導句 + 單項研究鈕 */
+/* cs-v3.23 批次③ · ①②③④ 引導句 + 單項研究鈕 */
 .s1guide{margin:-10px 0 20px;padding:11px 16px;background:#FAF3F4;border-left:3px solid #A51820;border-radius:0 9px 9px 0;font-size:13px;color:#5C4248;line-height:1.65;font-family:'Noto Sans TC',sans-serif}
 .hr-study{display:inline-flex;align-items:center;gap:3px;margin-left:6px;padding:2px 9px;border-radius:99px;background:#FAF3F4;border:1px solid #E8D7D9;color:#A51820;font-size:11px;cursor:pointer;font-family:inherit;vertical-align:middle}
 .hr-study:hover{background:#A51820;color:#fff;border-color:#A51820}
 .hr-study .ic{width:11px;height:11px}
-/* cs-v3.22 · A 影片表現對標 */
+/* cs-v3.23 · A 影片表現對標 */
 .vbm-card .vbm-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:14px 0 4px}
 .vbm-kpi{background:#FAF6F0;border:1px solid #EEE7DC;border-radius:10px;padding:12px 8px;text-align:center}
 .vbm-kpi b{display:block;font-family:'Cormorant Garamond',serif;font-size:23px;color:#A51820;line-height:1.1;font-weight:600}
@@ -519,7 +519,7 @@ details.cat .cat-body{padding:14px 15px}
 @media(max-width:560px){.vbm-card .vbm-kpis{grid-template-columns:repeat(2,1fr)}}
 .btn .btn-2l{display:inline-flex;flex-direction:column;align-items:center;line-height:1.3}
 .btn .btn-sub{font-size:11px;font-weight:400;opacity:.85;margin-top:1px}
-/* cs-v3.22 · 評分客戶/顧問雙 tab + 對比彈窗 */
+/* cs-v3.23 · 評分客戶/顧問雙 tab + 對比彈窗 */
 .hnote-tabs{display:flex;gap:8px;align-items:center;margin:16px 0 4px;flex-wrap:wrap}
 .hnote-tab{font-size:12px;font-weight:700;border:1px solid #DCC8CB;background:transparent;color:#7A1518;-webkit-text-fill-color:#7A1518;border-radius:999px;padding:6px 16px;cursor:pointer;font-family:inherit}
 .hnote-tab.on{background:#A51820;color:#fff;-webkit-text-fill-color:#fff;border-color:#A51820}
@@ -527,7 +527,7 @@ details.cat .cat-body{padding:14px 15px}
 .health-rows.mode-client .nc-advisor{display:none}
 .health-rows.mode-advisor .nc-client{display:none}
 .health-rows.mode-client .health-note-grid,.health-rows.mode-advisor .health-note-grid{grid-template-columns:1fr}
-.hcmp-overlay{position:fixed;inset:0;background:rgba(42,26,28,.46);z-index:99999;display:flex;align-items:flex-start;justify-content:center;padding:30px 14px;overflow:auto}
+.hcmp-overlay{position:fixed;inset:0;background:rgba(42,26,28,.3);z-index:99999;display:flex;align-items:flex-start;justify-content:center;padding:30px 14px;overflow:auto}
 .hcmp-paper{background:#FDFBF8;border:1px solid #E8E3DA;border-radius:14px;max-width:860px;width:100%;padding:24px 26px;box-shadow:0 18px 50px rgba(42,26,28,.22)}
 .hcmp-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
 .hcmp-title{font-family:'Noto Serif TC',serif;font-size:20px;font-weight:900;color:#2A1A1C}
@@ -538,12 +538,12 @@ details.cat .cat-body{padding:14px 15px}
 .hcmp-col .hk{font-family:'Cormorant Garamond',serif;font-size:10px;letter-spacing:2px;color:#D4A574;margin-bottom:4px}
 .hcmp-col .tx{font-size:13px;line-height:1.7;color:#5C4248;white-space:pre-wrap}
 @media(max-width:560px){.hcmp-cols{grid-template-columns:1fr}}
-/* cs-v3.22 · 客戶快速直達連結 */
+/* cs-v3.23 · 客戶快速直達連結 */
 .clinks-card .clinks-row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
 .clink{display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:700;text-decoration:none;border:1px solid #DCC8CB;color:#7A1518;-webkit-text-fill-color:#7A1518;background:transparent;border-radius:999px;padding:7px 15px;cursor:pointer;font-family:inherit}
 .clink:hover{background:#FAF3F4}
 .clink.edit{border-style:dashed;color:#8A7274;-webkit-text-fill-color:#8A7274;margin-left:auto}
-/* cs-v3.22 · ①②③④ 上方 header 瘦身聚焦 */
+/* cs-v3.23 · ①②③④ 上方 header 瘦身聚焦 */
 .cs-banner{padding:6px 14px!important;gap:8px!important;font-size:12px!important}
 .cs-banner>span:first-child{min-width:0;flex-shrink:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .cs-banner .who{font-weight:800}
@@ -554,14 +554,14 @@ details.cat .cat-body{padding:14px 15px}
   .cs-banner>span:first-child{font-size:11px;max-width:60vw}
   .cs-banner .ob-next{font-size:11px;padding:4px 10px}
 }
-/* cs-v3.22 · 可編輯預覽 */
+/* cs-v3.23 · 可編輯預覽 */
 .pv-edit{width:100%;min-height:62px;border:1px solid #E8E3DA;border-radius:8px;padding:10px 12px;font-family:inherit;font-size:14px;line-height:1.75;color:#2A1A1C;background:#fff;resize:vertical;margin-top:2px}
 .pv-edit:focus{outline:none;border-color:#A51820}
 #applyPreviewBtn{background:#A51820!important;color:#fff!important;border-color:#A51820!important}
-/* cs-v3.22 · 月報按鈕 */
+/* cs-v3.23 · 月報按鈕 */
 .dash-report-bar{display:flex;justify-content:center;margin:-2px 0 18px}
 .dash-report-bar .btn{max-width:360px}
-/* cs-v3.22 · 工作台數據評分 + 客戶簽核 */
+/* cs-v3.23 · 工作台數據評分 + 客戶簽核 */
 .vc-score b{color:#A51820!important}
 .signoff-row{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:10px;padding:12px 14px;border:1px solid #E8E3DA;border-radius:10px;background:#FCFAF8}
 .signoff-row.on{background:#F3F8F3;border-color:#CBE0CB}
@@ -569,10 +569,10 @@ details.cat .cat-body{padding:14px 15px}
 .signoff-row.on .signoff-status{color:#2E6B3E}
 .signoff-card .btn{width:auto;max-width:240px;margin:0}
 .signoff-card .signoff-cancel{background:transparent!important;color:#8A7274!important;-webkit-text-fill-color:#8A7274!important;border:1px solid #DCC8CB!important}
-/* cs-v3.22 · info 圖示對齊 */
+/* cs-v3.23 · info 圖示對齊 */
 .s1tab-info svg,.ph-title button svg,.health-title-row button svg,.s1tab-info,.hr-lab button svg{width:1em;height:1em;vertical-align:-0.13em}
 .s1tab-info svg{opacity:.75}
-/* cs-v3.22 · 策略診斷 handoff */
+/* cs-v3.23 · 策略診斷 handoff */
 .strat-handoff .strat-meta{font-size:13px;color:#5C4248;margin:8px 0 2px;font-weight:600}
 .strat-handoff .strat-h{font-size:11px;letter-spacing:1px;color:#D4A574;font-family:'Cormorant Garamond',serif;margin:12px 0 4px}
 .strat-chips{display:flex;flex-wrap:wrap;gap:6px}
@@ -581,10 +581,10 @@ details.cat .cat-body{padding:14px 15px}
 .strat-list li{margin-bottom:3px}
 .strat-empty{font-size:12.5px;color:#C4B5B8}
 .strat-handoff{border-left:3px solid #A51820}
-/* cs-v3.22 · 連結智能填入 */
+/* cs-v3.23 · 連結智能填入 */
 .cl-step{font-size:12px;font-weight:800;color:#A51820;margin:6px 0 6px}
 .cl-missing{font-size:12px;color:#5C4248;background:#FAF7F2;border:1px solid #EFE7DC;border-radius:8px;padding:8px 11px;margin-top:10px;line-height:1.6}
-/* cs-v3.22 · 通用智能填入 */
+/* cs-v3.23 · 通用智能填入 */
 .sf-bar{margin:8px 0 12px}
 .btn-sf{font-size:12px;font-weight:800;border:1px solid #A51820;background:#A51820;color:#fff;-webkit-text-fill-color:#fff;border-radius:999px;padding:6px 15px;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:5px}
 .btn-sf:hover{background:#7A1018;border-color:#7A1018}
@@ -593,7 +593,7 @@ details.cat .cat-body{padding:14px 15px}
 .sf-fld label{font-size:12px;color:#8A7274;font-weight:700;display:block;margin-bottom:4px}
 .sf-in{width:100%;min-height:54px;padding:9px 11px;border:1px solid #E8E3DA;border-radius:9px;font-family:inherit;font-size:13.5px;line-height:1.6;resize:vertical}
 .sf-in:focus{outline:none;border-color:#A51820}
-/* cs-v3.22 · 連結去向顯示 + 衝突保護 */
+/* cs-v3.23 · 連結去向顯示 + 衝突保護 */
 .clink-urls{margin:8px 0 2px;display:flex;flex-direction:column;gap:3px}
 .clu-row{font-size:11.5px;color:#8A7274;word-break:break-all}
 .clu-row b{color:#5C4248;font-weight:700;margin-right:6px}
@@ -603,7 +603,7 @@ details.cat .cat-body{padding:14px 15px}
 .cl-new{color:#A51820;font-weight:700;margin-left:2px}
 .cl-conf-row button{margin-left:8px;font-size:11px;border:1px solid #A51820;background:#A51820;color:#fff;-webkit-text-fill-color:#fff;border-radius:6px;padding:2px 9px;cursor:pointer;font-family:inherit}
 .cl-conf-row button:hover{background:#7A1018;border-color:#7A1018}
-/* cs-v3.22 · 影片豐富化 + 客戶版/顧問版 */
+/* cs-v3.23 · 影片豐富化 + 客戶版/顧問版 */
 .vc-attrs{display:flex;flex-wrap:wrap;gap:5px;margin:6px 0 2px}
 .vc-attr{font-size:11px;background:#FAF7F2;border:1px solid #EFE7DC;border-radius:6px;padding:2px 8px;color:#5C4248}
 .vc-attr b{color:#A51820;font-weight:700;margin-right:4px;font-size:10.5px}
@@ -624,10 +624,16 @@ details.cat .cat-body{padding:14px 15px}
 .vc-adv-grid textarea{width:100%;min-height:74px;padding:8px 10px;border:1px solid #E8E3DA;border-radius:8px;font-family:inherit;font-size:12.5px;line-height:1.55;box-sizing:border-box;resize:vertical}
 .vc-adv-grid textarea:focus,.vc-adv-paste:focus{outline:none;border-color:#A51820}
 .vc-adv-save{margin-top:10px}
-/* cs-v3.22 · 影片卡比照工作台（信任層/G碼/主題/子題） */
+/* cs-v3.23 · 影片卡比照工作台（信任層/G碼/主題/子題） */
 .vc-codes{display:flex;gap:5px;margin:3px 0 2px;flex-wrap:wrap}
 .vc-layer{font-size:10.5px;font-weight:800;background:#A51820;color:#fff;-webkit-text-fill-color:#fff;border-radius:5px;padding:1px 8px}
 .vc-gcode{font-size:10.5px;font-weight:800;background:#F3E7D8;color:#A87C45;border-radius:5px;padding:1px 8px}
+/* cs-v3.23 · 客戶卡豐富化 + 整體產出 */
+.cc-bio{font-size:11.5px;color:#6B5256;margin-top:5px;line-height:1.5;background:#FBF7F8;border-radius:6px;padding:5px 9px}
+.cc-bio .lab{color:#A51820}
+.btn-genall{font-size:12px;font-weight:800;border:1px solid #A51820;background:#A51820;color:#fff;-webkit-text-fill-color:#fff;border-radius:999px;padding:6px 15px;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:5px;margin-left:auto}
+.btn-genall:hover{background:#7A1018;border-color:#7A1018}
+.btn-genall svg{width:1em;height:1em}
 </style>
 </head>
 <body>
@@ -664,7 +670,7 @@ details.cat .cat-body{padding:14px 15px}
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">客戶服務台</span></span>
-    <span id="verBadge">cs-v3.22</span>
+    <span id="verBadge">cs-v3.23</span>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button type="button" id="popoutBtn" class="popout-btn" title="把客戶服務台開成獨立小視窗"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6"/><path d="M20 4l-9 9"/><path d="M14 12v7H5V10h7"/></svg>小視窗</button>
@@ -770,7 +776,7 @@ var ICN={
   dot:    '<svg class="ic" width="8" height="8" viewBox="0 0 8 8"><circle cx="4" cy="4" r="3" fill="currentColor"/></svg>',
   save:    _svg('<path d="M5 4h11l4 4v12H5z"/><path d="M8 4v5h8V4"/><circle cx="12" cy="14" r="2.2"/>',13,13)
 };
-/* === cs-v3.22 批次①：自繪 icon 擴充（取代 emoji；width=1em 跟著字級縮放）=== */
+/* === cs-v3.23 批次①：自繪 icon 擴充（取代 emoji；width=1em 跟著字級縮放）=== */
 function _svgi(d){ return '<svg class="ic" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">'+d+'</svg>'; }
 ICN.star=_svgi('<path d="M12 3l2.47 5.46 5.96.62-4.43 4.02 1.24 5.86L12 16.9 6.76 19.96 8 14.1 3.57 10.08l5.96-.62z"/>');
 ICN.pin=_svgi('<path d="M12 21s6.5-5.2 6.5-10A6.5 6.5 0 1 0 5.5 11c0 4.8 6.5 10 6.5 10z"/><circle cx="12" cy="10.5" r="2.3"/>');
@@ -1007,7 +1013,7 @@ function _accPush(){
   if(!accounts||!accounts.length) return;
   try{ localStorage.setItem(ACC_LS_KEY, JSON.stringify(accounts)); }catch(e){}
   _fbStatus('syncing','儲存中…');
-  /* cs-v3.22 資料安全：寫回前先抓雲端最新，用 {...雲端,...本機} 合併→永不刪掉工作台欄位；雲端有本機沒有的帳號也保留。 */
+  /* cs-v3.23 資料安全：寫回前先抓雲端最新，用 {...雲端,...本機} 合併→永不刪掉工作台欄位；雲端有本機沒有的帳號也保留。 */
   var _ref=_fbDB.collection(ACC_COLLECTION).doc(ATELIER_DOC_ID);
   _ref.get().then(function(_doc){
     var _cloud=(_doc&&_doc.exists&&_doc.data()&&Array.isArray(_doc.data().accounts))?_doc.data().accounts:[];
@@ -1200,7 +1206,7 @@ function renderBanner(flash){
     +'<button class="mini-btn" data-short="階段" onclick="openStageOverview()" title="只查看目前這個階段的資料">查看此階段</button>'
     +'<button class="mini-btn" data-short="上一步" onclick="undoLast()"'+(canUndo?'':' disabled')+' title="把目前畫面回退到上一個自動暫存點">'+ICN.undo+' 上一步'+(canUndo?(' ('+(_undoStack.length-1)+')'):'')+'</button>'
     +'<span class="savestate'+(flash?' flash':'')+'" id="ssBadge" title="'+esc(sstxt)+'">'+(flash?ICN.check:'<span class="save-dot"></span>')+' <span class="save-text">'+esc(sstxt)+'</span></span>';
-  /* cs-v3.22 批次① · D：onboarding 下一步提示 */
+  /* cs-v3.23 批次① · D：onboarding 下一步提示 */
   try{
     var _steps=[['stage1_initial','①','初診'],['stage2_filing','②','建檔'],['stage3_interview','③','問診']];
     var _next=_steps.filter(function(st){ return flowStatus(a,st[0])!=='done'; })[0];
@@ -1252,6 +1258,8 @@ function renderSelect(){
   box.innerHTML=_clientSummaryStrip()+list.map(cliCard).join('');
   box.querySelectorAll('[data-pick]').forEach(function(el){ el.onclick=function(){ pickClient(el.dataset.pick); }; });
 }
+function _tier(f){ f=f||0; if(f>=1000000) return '百萬網紅 / Mega'; if(f>=100000) return '大網紅 / Macro'; if(f>=10000) return '微網紅 / Micro'; if(f>=1000) return '奈米網紅 / Nano'; return '素人 / —'; }
+function _bioOf(a){ try{ var p=a.profile; if(!p) return ''; if(typeof p==='string') return p; return p.bio||p.intro||p.summary||p.desc||''; }catch(e){ return ''; } }
 function cliCard(a){
   var f=fanLatest(a), vc=vidCountOf(a), cur=(a.id===currentClientId);
   var s1=flowStatus(a,'stage1_initial'), s2=flowStatus(a,'stage2_filing'), s3=flowStatus(a,'stage3_interview');
@@ -1263,12 +1271,14 @@ function cliCard(a){
     +'<div class="cc-top"><div class="cc-handle">'+esc(a.handle||'@?')+' <span class="cc-name">'+esc(a.displayName||'')+'</span></div>'
     +'<div class="cc-plat">'+esc(a.platform||'IG')+'</div></div>'
     +'<div class="cc-meta">'
+    +(a.domain?'<span class="lab">領域</span> '+esc(a.domain)+'　':'')
     +(a.industry?'<span class="lab">產業</span> '+esc(a.industry)+'　·　':'')
     +(a.jobTitle?'<span class="lab">職稱</span> '+esc(a.jobTitle)+'　·　':'')
     +'<span class="lab">粉絲</span> '+(f?f.toLocaleString():'—')+'　·　'
     +'<span class="lab">影片</span> '+vc+' 支　·　'
     +'<span class="lab">更新</span> '+(fmtDate(a.updatedAt)||'—')
-    +'</div>'
+    +'<span class="lab">量級</span> '+_tier(fanLatest(a))+'</div>'
+    +(_bioOf(a)?'<div class="cc-bio"><span class="lab">Bio</span> '+esc(String(_bioOf(a)).slice(0,90))+'</div>':'')
     +'<div class="cc-flow">'+dot('①初診',s1)+dot('②建檔',s2)+dot('③問診',s3)+'</div>'
     +hbar
     +'</div>';
@@ -1294,7 +1304,7 @@ function pickClient(id){
 }
 
 
-/* ═══════════ cs-v3.22 批次②：B 經營儀表板 + G 跨客戶洞察 ═══════════ */
+/* ═══════════ cs-v3.23 批次②：B 經營儀表板 + G 跨客戶洞察 ═══════════ */
 var DASH_FLOW=[['stage1_initial','初診'],['stage2_filing','建檔'],['stage3_interview','問診'],['stage4_diagnosis','診斷'],['stage5_inventory','盤點'],['stage6_planning','企劃'],['stage7_delivery','交付']];
 function _clientProgress(a){
   var done=0,curIdx=-1;
@@ -2295,7 +2305,7 @@ function saveHealth(){
   closeModal(); renderBanner(); renderSelect();
 }
 
-/* ═══════════ cs-v3.22 批次③：健康評分 解決建議 / 單項研究 / 存檔選單 / 匯出 ═══════════ */
+/* ═══════════ cs-v3.23 批次③：健康評分 解決建議 / 單項研究 / 存檔選單 / 匯出 ═══════════ */
 function _readHealthItemsDOM(){
   var sh=$('sheet'); if(!sh) return [];
   return HEALTH_ITEMS.map(function(it){
@@ -2358,7 +2368,7 @@ function saveHealthOverwrite(){
 }
 function _buildHealthDoc(a,items){
   var total=items.reduce(function(s,x){return s+(x.score||0);},0); var d=new Date().toISOString().slice(0,10);
-  return '<!DOCTYPE html><html lang="zh-Hant"><head><meta charset="UTF-8"><title>ATELIER 健康評分表</title><style>body{background:#FDFBF8;color:#2A1A1C;font-family:"Noto Sans TC",sans-serif;padding:48px}h1{font-family:"Noto Serif TC",serif;font-size:34px}.k{font-family:"Cormorant Garamond",serif;color:#D4A574;letter-spacing:4px}.total{font-family:"Cormorant Garamond",serif;font-size:54px;color:#A51820}.row{display:grid;grid-template-columns:200px 1fr 40px;gap:14px;align-items:center;margin:14px 0}.bar{height:10px;background:#F4F1EC;border-radius:99px}.bar i{display:block;height:100%;background:#A51820;border-radius:99px}.note{color:#8A7274;font-size:13px;line-height:1.7;margin:6px 0 18px 0}</style></head><body><div class="k">ATELIER · CONTENT HEALTH</div><h1>'+esc(a.displayName||a.handle||'客戶')+'｜內容健康評分表</h1><div class="total">'+total+'<span style="font-size:18px;color:#8A7274"> / 50</span></div>'+items.map(function(it){return '<div class="row"><b>'+it.id+'. '+esc(it.label)+'</b><span class="bar"><i style="width:'+((it.score||0)/5*100)+'%"></i></span><b>'+(it.score||'—')+'</b></div>'+((it.noteClient||it.noteAdvisor)?'<div class="note">'+(it.noteClient?'客戶版：'+esc(it.noteClient):'')+(it.noteClient&&it.noteAdvisor?'<br>':'')+(it.noteAdvisor?'顧問版：'+esc(it.noteAdvisor):'')+'</div>':'');}).join('')+'<div style="margin-top:40px;color:#C4B5B8">cs-v3.22 · '+d+'</div></body></html>';
+  return '<!DOCTYPE html><html lang="zh-Hant"><head><meta charset="UTF-8"><title>ATELIER 健康評分表</title><style>body{background:#FDFBF8;color:#2A1A1C;font-family:"Noto Sans TC",sans-serif;padding:48px}h1{font-family:"Noto Serif TC",serif;font-size:34px}.k{font-family:"Cormorant Garamond",serif;color:#D4A574;letter-spacing:4px}.total{font-family:"Cormorant Garamond",serif;font-size:54px;color:#A51820}.row{display:grid;grid-template-columns:200px 1fr 40px;gap:14px;align-items:center;margin:14px 0}.bar{height:10px;background:#F4F1EC;border-radius:99px}.bar i{display:block;height:100%;background:#A51820;border-radius:99px}.note{color:#8A7274;font-size:13px;line-height:1.7;margin:6px 0 18px 0}</style></head><body><div class="k">ATELIER · CONTENT HEALTH</div><h1>'+esc(a.displayName||a.handle||'客戶')+'｜內容健康評分表</h1><div class="total">'+total+'<span style="font-size:18px;color:#8A7274"> / 50</span></div>'+items.map(function(it){return '<div class="row"><b>'+it.id+'. '+esc(it.label)+'</b><span class="bar"><i style="width:'+((it.score||0)/5*100)+'%"></i></span><b>'+(it.score||'—')+'</b></div>'+((it.noteClient||it.noteAdvisor)?'<div class="note">'+(it.noteClient?'客戶版：'+esc(it.noteClient):'')+(it.noteClient&&it.noteAdvisor?'<br>':'')+(it.noteAdvisor?'顧問版：'+esc(it.noteAdvisor):'')+'</div>':'');}).join('')+'<div style="margin-top:40px;color:#C4B5B8">cs-v3.23 · '+d+'</div></body></html>';
 }
 function exportHealthPDF(){
   var a=curAcc(); if(!a){ toast(ICN.warn+' 尚未選定客戶'); return; }
@@ -2554,6 +2564,23 @@ function saveVideoAdvisor(vid,btn){
   _saveVidNote(vid,obj);
   toast(ICN.check+' 顧問分析已儲存（只有你看得到，不會被工作台洗掉）');
 }
+function genAllVideoSolutions(){
+  var a=(typeof curAcc==='function')?curAcc():null; if(!a){ toast(ICN.warn+' 尚未選定客戶'); return; }
+  var vs=accountVideos(a); var notes=_vidNotes(a);
+  if(!vs.length){ toast('這位客戶還沒有影片'); return; }
+  var lines=vs.map(function(v,i){
+    var vid=String(v.id||v.videoId||videoTitle(v)); var n=notes[vid]||{};
+    return (i+1)+'. '+videoTitle(v)+'｜觀看 '+(v.views||0)+'、互動率 '+(((v.engRate||0)*100).toFixed(1))+'%'
+      +(v.themeName?('、主題 '+v.themeName):'')+(v.form?('、形式 '+v.form):'')+(v.trig?('、命根 '+v.trig):'')
+      +(n.pros?('\n   優點：'+n.pros):'')+(n.cons?('\n   缺點：'+n.cons):'')+(n.improve?('\n   改進：'+n.improve):'')+(n.keep?('\n   保留：'+n.keep):'');
+  }).join('\n');
+  var p='你是 ATELIER 的內容顧問。以下是客戶「'+(a.displayName||a.handle||'')+'」的 '+vs.length+' 支影片資料與我的顧問筆記。\n'
+    +'請產出「兩個版本」的解決方案，分開標示：\n\n'
+    +'【客戶版】用客戶看得懂、正面、有方向感的語氣：這批內容的強項總結、3 個可立刻執行的優化建議、下一步方向。\n'
+    +'【顧問版】用我（顧問）內部視角：跨影片的共同問題與模式、優先處理順序、每一點具體怎麼改、可複製的成功公式。\n\n'
+    +'影片資料與筆記：\n'+lines;
+  copyPrompt(p,'整體解決方案（客戶版＋顧問版）');
+}
 function renderRelatedVideosHTML(a){
   var vs=accountVideos(a); 
   // 帳號體質快照（永遠顯示，即使沒影片）
@@ -2665,13 +2692,13 @@ function renderRelatedVideosHTML(a){
       +'</div>';
   }).join('');
   
-  return '<div class="section-card related-video-section" data-related-videos="1"><h3>'+ICN.video+' 客戶影片庫（共 '+vs.length+' 支）</h3><div class="sc-note">從影片診斷工作台同步：主題／爆紅歸因／數據／逐字稿，可作為診斷、盤點、企劃的輔助資料。</div>'+snapshotHTML+'<div class="vc-mode"><span class="vc-mode-label">檢視：</span><button type="button" class="vc-mode-btn on" data-mode="client" onclick="setVideoMode(\'client\',this)">客戶版</button><button type="button" class="vc-mode-btn" data-mode="advisor" onclick="setVideoMode(\'advisor\',this)">顧問版（優缺點）</button></div><div class="vc-list">'+cards+'</div></div>';
+  return '<div class="section-card related-video-section" data-related-videos="1"><h3>'+ICN.video+' 客戶影片庫（共 '+vs.length+' 支）</h3><div class="sc-note">從影片診斷工作台同步：主題／爆紅歸因／數據／逐字稿，可作為診斷、盤點、企劃的輔助資料。</div>'+snapshotHTML+'<div class="vc-mode"><span class="vc-mode-label">檢視：</span><button type="button" class="vc-mode-btn on" data-mode="client" onclick="setVideoMode(\'client\',this)">客戶版</button><button type="button" class="vc-mode-btn" data-mode="advisor" onclick="setVideoMode(\'advisor\',this)">顧問版（優缺點）</button><button type="button" class="btn-genall" onclick="genAllVideoSolutions()">'+ICN.prompt+' 產生整體解決方案（客戶版＋顧問版）</button></div><div class="vc-list">'+cards+'</div></div>';
 }
 
 function formatNum(n){ n=Number(n)||0; if(n>=10000) return (n/10000).toFixed(1).replace(/\.0$/,'')+'萬'; if(n>=1000) return (n/1000).toFixed(1).replace(/\.0$/,'')+'k'; return String(n); }
 function injectRelatedVideosSection(view){ var a=curAcc(); if(!a||!view) return; if(['view-stage1','view-stage3','view-stage4','view-stage5','view-stage6'].indexOf(view.id)<0) return; if(view.querySelector('[data-related-videos]')) return; var html=renderRelatedVideosHTML(a); if(!html) return; view.insertAdjacentHTML('beforeend',html); enhanceSections(view); }
 
-/* ═══════════ cs-v3.22 · 方向 A：影片表現對標分析 ═══════════ */
+/* ═══════════ cs-v3.23 · 方向 A：影片表現對標分析 ═══════════ */
 function _videoViews(v){ return Math.max(0, Number((v&&(v.views||v.viewCount||v.view||v.plays||v.play))||0)||0); }
 function _videoEng(v){ var vw=_videoViews(v); if(vw<=0) return 0; var e=(Number((v&&v.likes)||0)||0)+(Number((v&&v.comments)||0)||0)+(Number((v&&v.shares)||0)||0); return e/vw; }
 function _videoOwnerAcc(v){
@@ -2829,7 +2856,7 @@ window.injectClientProgressBar=function(view){
   else { view.insertAdjacentHTML('afterbegin', pb); }
 };
 
-/* ═══════════ cs-v3.22 · 客戶快速直達連結 ═══════════ */
+/* ═══════════ cs-v3.23 · 客戶快速直達連結 ═══════════ */
 function _normUrl(u){ u=(u||'').trim(); if(!u) return ''; if(!/^https?:\/\//i.test(u)) u='https://'+u.replace(/^\/+/,''); return u; }
 function _platformHome(a){
   var p=(a.platform||'').toLowerCase(), h=(a.handle||'').trim().replace(/^@+/,'');
