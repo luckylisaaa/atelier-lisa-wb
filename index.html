@@ -8,7 +8,7 @@
 <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v280 (版本號僅留註解，不顯示於畫面)
+<!-- ATELIER 影片診斷工作台 · 內部版本 v281 (版本號僅留註解，不顯示於畫面)
 v267 更新（策略診斷硬修版：重做 Top/Bottom 固定列高、重綁單支核對窗與 AI 工具按鈕、補互動式 1–8 操作步驟與策略對標雷達；本版用最後一段 v267 override 強制接管策略診斷頁，避免舊版 v263/v265 殘留函式覆蓋。只動 index.html，不動 client.html、Firebase、CSV 與六守門提示詞。）
 v266 更新（hotfix：修正 v265 最後一段策略診斷事件代理少 catch，導致 v265 override script 無法執行、畫面徽章被前一段 v263 override 改回 v263，且策略診斷部分按鈕失效；本版補回 catch 並將顯示版本固定為 v266。只動 index.html，不動 client.html、Firebase、CSV 與六守門提示詞。）
 v265 更新（策略診斷按鈕修復、整齊 Top/Bottom、互動流程與策略對標雷達）：修正策略診斷 Top/Bottom 每支影片的按鈕高度與位置不一致；改用固定列高與事件代理，讓「快看／核對」「留在本頁定位」「改寫提示」以及單支核對窗內 AI 工具、去影片庫定位、獨立視窗核對、收起都可穩定點擊；將 1–8 操作流程改成可點擊小教學；新增策略對標雷達，從同產業、同職稱、同身份、A–E、G 階段、流量觸發、素材與高互動／高分享等面向找全庫可借鏡樣本。只動 index.html，不動 client.html、Firebase、CSV 與六守門提示詞。
@@ -1221,7 +1221,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v280</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v281</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -11040,7 +11040,7 @@ document.addEventListener('DOMContentLoaded',function(){
 <script>
 /* v239：自動防舊版快取。讓桌布捷徑／瀏覽器如果抓到舊 HTML，能自己比對線上最新版並導向。 */
 (function(){
-  var ATELIER_CURRENT_VERSION='v280';
+  var ATELIER_CURRENT_VERSION='v281';
   window.ATELIER_CURRENT_VERSION=ATELIER_CURRENT_VERSION;
   function _avNum(v){v=String(v||'');var m=v.match(/v\s*(\d+)/i);return m?parseInt(m[1],10):0;}
   function _avDetect(html){html=String(html||'');var m=html.match(/id=["']verBadge["'][^>]*>\s*(v\d+)/i)||html.match(/內部版本\s+(v\d+)/i);return m?m[1]:'';}
@@ -11672,7 +11672,7 @@ document.addEventListener('DOMContentLoaded',function(){
 /* ═══════════ v267 strategy hard patch：固定版面、重綁按鈕、互動說明與策略對標雷達（index.html only） ═══════════ */
 (function(){
   'use strict';
-  var VERSION='v280';
+  var VERSION='v281';
   function H(id){return document.getElementById(id)}
   function E(s){return String(s==null?'':s).replace(/[&<>'"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]})}
   function A(){try{return (typeof accounts!=='undefined'&&Array.isArray(accounts))?accounts:(Array.isArray(window.accounts)?window.accounts:[])}catch(e){return []}}
@@ -11724,9 +11724,9 @@ document.addEventListener('DOMContentLoaded',function(){
   }
   function stage(v){var s=txt(read(v,['stage','gStage','g','phase'])); var m=s.match(/G\s*([1-5])/i); return m?'G'+m[1]:(s||'未填')}
   function goal(v){var g=txt(read(v,['goal','goalLayer','businessGoal','ae','targetLayer'])); var m=g.match(/\b([A-E])\b|([A-E])\s*[認品信服成]/i); return m?(m[1]||m[2]).toUpperCase():(g||'未填')}
-  function trigger(v){return txt(read(v,['trigger','trafficTrigger','hookType','triggerName','flowTrigger']))||'未填'}
-  function material(v){return txt(read(v,['material','shootingMaterial','sourceMaterial','contentMaterial']))||'未填'}
-  function subtype(v){return txt(read(v,['subtype','subType','subTopicType','formatSub']))||''}
+  function trigger(v){return txt(read(v,['trigger','trig','trafficTrigger','lifeTrigger','hookType','triggerName','flowTrigger','trigName']))||'未填'}
+  function material(v){return txt(read(v,['matName','material','shootMaterial','materialName','shootingMaterial','sourceMaterial','contentMaterial']))||'未填'}
+  function subtype(v){return txt(read(v,['sub','subName','subtype','subType','subTopic','subTopicType','formatSub']))||''}
   function form(v){return txt(read(v,['format','contentFormat','form']))||'未填'}
   function hook(v){return txt(read(v,['hook','opening','caption','coverText','headline']))}
   function caseVal(v,s){
@@ -11809,7 +11809,7 @@ document.addEventListener('DOMContentLoaded',function(){
     box.innerHTML=html; renderActionBox(a,vs,topViews); setTimeout(function(){radarResults('industry')},60);
   };
   function findVideo(id){return V().find(function(v){return vidId(v)===txt(id) || txt(v.id)===txt(id)})}
-  function buildPrompt(v,mode){var s=score(v), cv=caseVal(v,s), base='【影片資料】\n標題：'+title(v)+'\n合作目標 A–E：'+goal(v)+'\nG 階段：'+stage(v)+'\n素材／子題型：'+material(v)+(subtype(v)?' / '+subtype(v):'')+'\n內容形式／流量觸發：'+form(v)+' / '+trigger(v)+'\n觀看：'+s.views+'\n互動率：'+pct(s.engRate)+'\n分享率：'+pct(s.shareRate)+'\n案例分：'+cv.score+'\n案例標籤：'+cv.tags.join('、')+'\nHook：'+(hook(v)||'未填')+'\n可複製公式：'+formula(v); var _er=s.engRate||0,_sr=s.shareRate||0,_vw=s.views||0,_tg=(cv.tags||[]).join('、');var _ang=_sr>=.005?'這支「分享率」特別突出（'+pct(_sr)+'），代表它有強轉傳或收藏價值，請重點拆解它為什麼讓人想分享。':_er>=.03?'這支「互動率」偏高（'+pct(_er)+'），代表它很會勾出留言與互動，請重點拆解它的互動鉤子。':_vw>=50000?'這支「觀看」很高（'+_vw+'）但互動／分享一般，注意力主要來自題材與前 3 秒 Hook，請從這裡切入。':(_vw>0&&_vw<5000)?'這支「觀看」偏低（'+_vw+'），請優先判斷是卡在前 3 秒 Hook、題材包裝、還是受眾承諾不夠清楚。':'這支數據中庸，請從題材切角與商業目的切入。';var _sys='【我的系統說明｜請先讀懂再用這套框架回答，不要自創框架】這是「ATELIER 自媒體商業閉環」短影音內容系統。請依下列定義理解資料：合作目標 A–E＝這支影片的商業目的層（A＝認知層、B＝品牌層、C＝信任層、D＝轉化層、E＝組織層）；G 階段＝內容在受眾旅程／轉化漏斗中的位置（G1～G5 的階段分層）；案例分、案例標籤、可複製公式、Hook 都是我方系統先前對「這一支影片」拆解後得到的結論，不是要你重算的；欄位若寫「未填」代表尚無資料、可略過，不要自行假設。請全程沿用以上定義作答。\n\n';var _lead='【先讀這支的切入點】本支現況：合作目標 A–E＝'+goal(v)+'，G 階段＝'+stage(v)+(_tg?'，案例標籤＝'+_tg:'')+'。'+_ang+'請務必針對「這一支」的數據與標籤給出具體判斷，不要套用通則或罐頭答案。\n\n';if(mode==='rewrite')return _sys+_lead+'請依照以下短影音樣本，幫目前客戶（目標 '+goal(v)+'／'+stage(v)+'）改寫 5–10 支下一批可拍題目。每支請輸出：合作目標 A–E、G 階段、標題、前 3 秒 Hook、30 秒口播大綱、CTA、不可直接照抄處。\n\n'+base;if(mode==='risk')return _sys+_lead+'請判斷以下短影音樣本是否適合借鏡。請分成：可以複製什麼、不能複製什麼、可能失敗原因、如何轉成目前客戶可用版本、合規與品牌風險。\n\n'+base;return _sys+_lead+'請把以下短影音拆成「可複製成功公式」。請輸出：前 3 秒 Hook、觀眾痛點、題材承諾、敘事順序、商業目的 A–E、G 階段角色、可複製句型、可套到下一批影片的 5 個方向。\n\n'+base}
+  function buildPrompt(v,mode){var s=score(v), cv=caseVal(v,s), base='【影片資料】\n標題：'+title(v)+'\n合作目標 A–E：'+goal(v)+'\nG 階段：'+stage(v)+'\n主題：'+theme(v)+'\n素材／子題型：'+material(v)+(subtype(v)?' / '+subtype(v):'')+'\n內容形式／流量觸發：'+form(v)+' / '+trigger(v)+'\n觀看：'+s.views+'\n互動率：'+pct(s.engRate)+'\n分享率：'+pct(s.shareRate)+'\n案例分：'+cv.score+'\n案例標籤：'+cv.tags.join('、')+'\nHook：'+(hook(v)||'未填')+'\n可複製公式：'+formula(v); var _er=s.engRate||0,_sr=s.shareRate||0,_vw=s.views||0,_tg=(cv.tags||[]).join('、');var _ang=_sr>=.005?'這支「分享率」特別突出（'+pct(_sr)+'），代表它有強轉傳或收藏價值，請重點拆解它為什麼讓人想分享。':_er>=.03?'這支「互動率」偏高（'+pct(_er)+'），代表它很會勾出留言與互動，請重點拆解它的互動鉤子。':_vw>=50000?'這支「觀看」很高（'+_vw+'）但互動／分享一般，注意力主要來自題材與前 3 秒 Hook，請從這裡切入。':(_vw>0&&_vw<5000)?'這支「觀看」偏低（'+_vw+'），請優先判斷是卡在前 3 秒 Hook、題材包裝、還是受眾承諾不夠清楚。':'這支數據中庸，請從題材切角與商業目的切入。';var _sys='【我的系統說明｜請先讀懂再用這套框架回答，不要自創框架】這是「ATELIER 自媒體商業閉環」短影音內容系統。請依下列定義理解資料：合作目標 A–E＝這支影片的商業目的層（A＝認知層、B＝品牌層、C＝信任層、D＝轉化層、E＝組織層）；G 階段＝內容在受眾旅程／轉化漏斗中的位置（G1～G5 的階段分層）；案例分、案例標籤、可複製公式、Hook 都是我方系統先前對「這一支影片」拆解後得到的結論，不是要你重算的；欄位若寫「未填」代表尚無資料、可略過，不要自行假設。請全程沿用以上定義作答。\n\n';var _lead='【先讀這支的切入點】本支現況：合作目標 A–E＝'+goal(v)+'，G 階段＝'+stage(v)+(_tg?'，案例標籤＝'+_tg:'')+'。'+_ang+'請務必針對「這一支」的數據與標籤給出具體判斷，不要套用通則或罐頭答案。\n\n';if(mode==='rewrite')return _sys+_lead+'請依照以下短影音樣本，幫目前客戶（目標 '+goal(v)+'／'+stage(v)+'）改寫 5–10 支下一批可拍題目。每支請輸出：合作目標 A–E、G 階段、標題、前 3 秒 Hook、30 秒口播大綱、CTA、不可直接照抄處。\n\n'+base;if(mode==='risk')return _sys+_lead+'請判斷以下短影音樣本是否適合借鏡。請分成：可以複製什麼、不能複製什麼、可能失敗原因、如何轉成目前客戶可用版本、合規與品牌風險。\n\n'+base;return _sys+_lead+'請把以下短影音拆成「可複製成功公式」。請輸出：前 3 秒 Hook、觀眾痛點、題材承諾、敘事順序、商業目的 A–E、G 階段角色、可複製句型、可套到下一批影片的 5 個方向。\n\n'+base}
   var promptState={original:'',history:[]};
   function openPrompt(text,label){addStyle(); closeV267Modal(); promptState.original=String(text||''); promptState.history=[promptState.original]; var wrap=document.createElement('div'); wrap.className='v267-modal'; wrap.id='v267PromptModal'; wrap.innerHTML='<div class="v267-modal-card"><h2>'+E(label||'策略提示詞預覽')+'</h2><p class="v267-muted">先預覽、可編輯、可返回一步、可還原全部，最後再複製。</p><textarea id="v267PromptText">'+E(promptState.original)+'</textarea><div class="v267-modal-actions"><button class="btn btn-ghost" type="button" data-v267-prompt-undo>返回一步</button><button class="btn btn-ghost" type="button" data-v267-prompt-reset>還原全部</button><button class="btn btn-go" type="button" data-v267-prompt-copy>複製提示詞</button><button class="btn btn-ghost" type="button" data-v267-modal-close>關閉</button></div></div>'; document.body.appendChild(wrap); var ta=H('v267PromptText'); if(ta){ta.addEventListener('input',function(){var cur=ta.value;if(promptState.history[promptState.history.length-1]!==cur)promptState.history.push(cur)})}}
   function closeV267Modal(){var m=H('v267PromptModal')||H('v267StepModal'); if(m)m.remove()}
@@ -11833,10 +11833,10 @@ document.addEventListener('DOMContentLoaded',function(){
 })();
 </script>
 
-<!-- ATELIER v280 PATCH BEGIN -->
+<!-- ATELIER v281 PATCH BEGIN -->
 <!-- 策略診斷優化：退紅校準＋全局診斷書；並關閉會與 SW 打架的自動跳版（純增量，勿刪原碼） -->
 <!-- Strategy polish: calmer UI + global brief; auto-version redirect disabled to stop reload-flicker (additive) -->
-<style id="v280Patch">
+<style id="v281Patch">
 #strategyBox{ --warm:#FBF7F2 !important; }
 #strategyFloatPanel{ --warm:#FBF7F2 !important; }
 #strategyBox .strat-client-card-v259{ background:#FFFDFC !important; border-color:#ECE6DC !important; }
@@ -11867,31 +11867,31 @@ document.addEventListener('DOMContentLoaded',function(){
   box-shadow:0 24px 60px rgba(60,20,20,.28) !important; border:1px solid #E8C9C6 !important;
   border-radius:16px !important; max-width:560px !important; z-index:99990 !important; background:#FFFDFC !important;
 }
-#v280DiagBtn{ display:inline-flex; align-items:center; gap:6px; border:1.5px solid #A51820; background:#fff;
+#v281DiagBtn{ display:inline-flex; align-items:center; gap:6px; border:1.5px solid #A51820; background:#fff;
   color:#A51820; border-radius:10px; padding:9px 14px; font-size:13px; font-weight:800; cursor:pointer;
   margin:0 0 14px; transition:background .15s,color .15s; }
-#v280DiagBtn:hover{ background:#A51820; color:#D4A574; }
-#v280DiagBackdrop{ position:fixed; inset:0; background:rgba(42,16,18,.45); z-index:99995; display:none; align-items:center; justify-content:center; padding:20px; }
-#v280DiagModal{ width:720px; max-width:100%; max-height:88vh; overflow:auto; background:#FDFBF8;
+#v281DiagBtn:hover{ background:#A51820; color:#D4A574; }
+#v281DiagBackdrop{ position:fixed; inset:0; background:rgba(42,16,18,.45); z-index:99995; display:none; align-items:center; justify-content:center; padding:20px; }
+#v281DiagModal{ width:720px; max-width:100%; max-height:88vh; overflow:auto; background:#FDFBF8;
   border:1px solid #D4A574; border-radius:18px; box-shadow:0 30px 70px rgba(60,20,20,.35); padding:22px 24px; }
-#v280DiagModal h3{ margin:0 0 2px; font-family:"Noto Serif TC",serif; color:#A51820; font-size:21px; }
-#v280DiagModal .sub{ color:#8A7274; font-size:12.5px; margin-bottom:14px; }
-#v280DiagModal .cards{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; margin-bottom:14px; }
-#v280DiagModal .cards .c{ border:1px solid #ECE6DC; background:#fff; border-radius:12px; padding:11px 12px; font-size:12.5px; line-height:1.7; color:#5C4248; }
-#v280DiagModal .cards .c b{ display:block; color:#A51820; font-size:12.5px; margin-bottom:4px; font-family:"Noto Serif TC",serif; }
-#v280DiagModal textarea{ width:100%; min-height:240px; resize:vertical; border:1px solid #E8E3DA; border-radius:12px;
+#v281DiagModal h3{ margin:0 0 2px; font-family:"Noto Serif TC",serif; color:#A51820; font-size:21px; }
+#v281DiagModal .sub{ color:#8A7274; font-size:12.5px; margin-bottom:14px; }
+#v281DiagModal .cards{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; margin-bottom:14px; }
+#v281DiagModal .cards .c{ border:1px solid #ECE6DC; background:#fff; border-radius:12px; padding:11px 12px; font-size:12.5px; line-height:1.7; color:#5C4248; }
+#v281DiagModal .cards .c b{ display:block; color:#A51820; font-size:12.5px; margin-bottom:4px; font-family:"Noto Serif TC",serif; }
+#v281DiagModal textarea{ width:100%; min-height:240px; resize:vertical; border:1px solid #E8E3DA; border-radius:12px;
   background:#fff; padding:14px; font-size:12.8px; line-height:1.75; color:#2A1A1C; font-family:"Noto Sans TC",system-ui,sans-serif; }
-#v280DiagModal .foot{ display:flex; flex-wrap:wrap; gap:9px; margin-top:14px; align-items:center; }
-#v280DiagModal .foot .hint{ color:#8A7274; font-size:11.5px; }
-.v280btn{ cursor:pointer; border-radius:10px; padding:10px 16px; font-size:13px; font-weight:800; border:1.5px solid #A51820; }
-.v280btn.gold{ background:#D4A574; color:#3A1E0A; border-color:#C79553; } .v280btn.gold:hover{ background:#C79553; }
-.v280btn.line{ background:#fff; color:#A51820; } .v280btn.line:hover{ background:#A51820; color:#fff; }
-.v280btn.ghost{ background:transparent; color:#8A7274; border-color:#E8E3DA; }
+#v281DiagModal .foot{ display:flex; flex-wrap:wrap; gap:9px; margin-top:14px; align-items:center; }
+#v281DiagModal .foot .hint{ color:#8A7274; font-size:11.5px; }
+.v281btn{ cursor:pointer; border-radius:10px; padding:10px 16px; font-size:13px; font-weight:800; border:1.5px solid #A51820; }
+.v281btn.gold{ background:#D4A574; color:#3A1E0A; border-color:#C79553; } .v281btn.gold:hover{ background:#C79553; }
+.v281btn.line{ background:#fff; color:#A51820; } .v281btn.line:hover{ background:#A51820; color:#fff; }
+.v281btn.ghost{ background:transparent; color:#8A7274; border-color:#E8E3DA; }
 </style>
 
-<script id="v280PatchJS">
+<script id="v281PatchJS">
 (function(){
-  try{ window.ATELIER_CURRENT_VERSION='v280'; }catch(e){}
+  try{ window.ATELIER_CURRENT_VERSION='v281'; }catch(e){}
   try{ sessionStorage.setItem('atelierSkipAutoUpdate','1'); }catch(e){}
   try{ if(navigator.serviceWorker && navigator.serviceWorker.getRegistrations){
         navigator.serviceWorker.getRegistrations().then(function(rs){ rs.forEach(function(r){ try{r.update();}catch(e){} }); }).catch(function(){});
@@ -11900,7 +11900,7 @@ document.addEventListener('DOMContentLoaded',function(){
   try{
     function H(id){ return document.getElementById(id); }
     function has(n){ try{ return typeof window[n]==='function'; }catch(e){ return false; } }
-    function toastMsg(m){ if(has('toast')) window.toast(m); else console.log('[v280]',m); }
+    function toastMsg(m){ if(has('toast')) window.toast(m); else console.log('[v281]',m); }
     function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c];}); }
 
     window._strategyExportGlobalDiagnosis = function(id){ try{
@@ -11945,37 +11945,37 @@ document.addEventListener('DOMContentLoaded',function(){
 '──── 層級分布 ────\nG 階段：'+distStr(gDist)+'\nA–E 目標：'+distStr(aDist)+'\n\n'+
 '──── 系統判斷的缺口 ────\n內容缺口（沒有或極少的 G 階段）：'+(gMiss.join('、')||'無明顯缺口')+'\n商業閉環缺口（沒有或極少的 A–E 目標）：'+(aMiss.join('、')||'無明顯缺口')+'\n局面判斷：'+situation+'\n\n'+
 '──── 請你接著產出 ────\n1. 客戶版內容診斷：目前定位判斷、受眾心理洞察、內容缺口、轉換缺口、優先改善順序。\n2. 顧問版判斷：同上但更直接，標出最該先補的 1–2 個缺口。\n3. 補問客戶清單：列出影片看不出來、下次會議必問的 5 個問題（真正想推的服務、最想吸引的客群、成交卡在哪、可公開案例、合規限制）。\n4. 下一批 10 支影片方向：每支含〔題目〕〔對應 A–E〕〔對應 G1–G5〕〔為什麼拍〕〔優先順序〕。\n';
-      var bd=H('v280DiagBackdrop');
-      if(!bd){ bd=document.createElement('div'); bd.id='v280DiagBackdrop'; bd.innerHTML='<div id="v280DiagModal"></div>';
+      var bd=H('v281DiagBackdrop');
+      if(!bd){ bd=document.createElement('div'); bd.id='v281DiagBackdrop'; bd.innerHTML='<div id="v281DiagModal"></div>';
         document.body.appendChild(bd); bd.addEventListener('click',function(e){ if(e.target===bd) bd.style.display='none'; }); }
-      var m=H('v280DiagModal');
+      var m=H('v281DiagModal');
       m.innerHTML='<h3>✨ 商業閉環診斷書 · '+esc(name)+'</h3>'+
         '<div class="sub">系統已自動撈取 '+rows.length+' 支影片打包。下面提示詞可直接編輯，再一鍵複製貼給 AI，或送客戶服務台 Stage 4。</div>'+
         '<div class="cards"><div class="c"><b>目前局面</b>'+esc(situation)+'</div>'+
         '<div class="c"><b>系統判斷</b>Top 主題：'+esc(theme(top[0].v))+'<br>缺口：'+(gMiss.concat(aMiss).join('、')||'無')+'<br>待補：'+todo+' 支</div>'+
         '<div class="c"><b>下一步任務</b>① 複製診斷書 → 貼 Stage 4<br>② 產補問清單給下次會議<br>③ 生下一批 10 支方向 → Stage 6</div></div>'+
-        '<textarea id="v280DiagText">'+esc(prompt)+'</textarea>'+
-        '<div class="foot"><button class="v280btn gold" id="v280Copy">一鍵複製完整診斷提示詞</button>'+
-        '<button class="v280btn line" id="v280Send">送客戶服務台 Stage 4</button>'+
-        '<button class="v280btn ghost" id="v280Close">關閉</button>'+
+        '<textarea id="v281DiagText">'+esc(prompt)+'</textarea>'+
+        '<div class="foot"><button class="v281btn gold" id="v281Copy">一鍵複製完整診斷提示詞</button>'+
+        '<button class="v281btn line" id="v281Send">送客戶服務台 Stage 4</button>'+
+        '<button class="v281btn ghost" id="v281Close">關閉</button>'+
         '<span class="hint">可先編輯再複製；複製後到客戶服務台 Stage 4 貼上即可產出客戶版／顧問版。</span></div>';
       bd.style.display='flex';
-      H('v280Copy').onclick=function(){ var t=H('v280DiagText').value;
+      H('v281Copy').onclick=function(){ var t=H('v281DiagText').value;
         function done(){ toastMsg('已複製完整診斷提示詞'); }
         if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(t).then(done,function(){ if(has('_copyFallback')){window._copyFallback(t);done();} }); }
         else if(has('_copyFallback')){ window._copyFallback(t); done(); }
-        else { H('v280DiagText').select(); document.execCommand('copy'); done(); } };
-      H('v280Send').onclick=function(){ var t=H('v280DiagText').value;
+        else { H('v281DiagText').select(); document.execCommand('copy'); done(); } };
+      H('v281Send').onclick=function(){ var t=H('v281DiagText').value;
         if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(t); }
         if(has('_strategySendToClientDesk')){ window._strategySendToClientDesk(); toastMsg('已複製並開啟客戶服務台 Stage 4'); }
         else if(has('_strategyOpenClient')){ window._strategyOpenClient(); }
         else { toastMsg('已複製，請切到客戶服務台 Stage 4 貼上'); } };
-      H('v280Close').onclick=function(){ bd.style.display='none'; };
-    }catch(err){ toastMsg('產出診斷書時發生問題，已略過'); try{console.warn('[v280 diag]',err);}catch(e){} } };
+      H('v281Close').onclick=function(){ bd.style.display='none'; };
+    }catch(err){ toastMsg('產出診斷書時發生問題，已略過'); try{console.warn('[v281 diag]',err);}catch(e){} } };
 
     function injectBtn(){ try{
-      var box=H('strategyBox'); if(!box || box.offsetParent===null) return; if(H('v280DiagBtn')) return;
-      var btn=document.createElement('button'); btn.id='v280DiagBtn';
+      var box=H('strategyBox'); if(!box || box.offsetParent===null) return; if(H('v281DiagBtn')) return;
+      var btn=document.createElement('button'); btn.id='v281DiagBtn';
       btn.innerHTML='✨ 一鍵打包全局數據：產出商業閉環診斷書';
       btn.onclick=function(){ var a=has('getStratAcc')?window.getStratAcc():null; window._strategyExportGlobalDiagnosis(a?a.id:null); };
       box.insertBefore(btn, box.firstChild);
@@ -11983,10 +11983,10 @@ document.addEventListener('DOMContentLoaded',function(){
     if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',function(){ setTimeout(injectBtn,500); });
     else setTimeout(injectBtn,500);
     document.addEventListener('click',function(e){ try{ var t=e.target&&e.target.closest&&e.target.closest('[data-tab="strategy"]'); if(t) setTimeout(injectBtn,300); }catch(_){} });
-  }catch(err){ try{console.warn('[v280 patch]',err);}catch(e){} }
+  }catch(err){ try{console.warn('[v281 patch]',err);}catch(e){} }
 })();
 </script>
-<!-- v280 變更摘要 / Change summary
+<!-- v281 變更摘要 / Change summary
      1. 視覺退紅：策略診斷標籤改安靜註解、按鈕才酒紅可點；標籤換行與核對窗壓欄位已修。
         Calmer UI: muted tags vs rouge action buttons; wrapping and modal overlap fixed.
      2. 新增 _strategyExportGlobalDiagnosis：一鍵打包該帳號 Top/Bottom、G 與 A–E 分布、缺口、待補，產出可編輯商業閉環診斷書，可複製或送 Stage 4。
@@ -11994,13 +11994,13 @@ document.addEventListener('DOMContentLoaded',function(){
      3. 安全：載入即設 atelierSkipAutoUpdate 並請 SW 更新，避免版本不一致一直重整；未改核心函式／Firebase／CSV／六守門提示詞。
         Safety: sets atelierSkipAutoUpdate on load and updates the SW to prevent version reload-loops; core logic untouched.
 -->
-<!-- ATELIER v280 PATCH END -->
+<!-- ATELIER v281 PATCH END -->
 
 
-<!-- ATELIER v280 ADDON BEGIN -->
+<!-- ATELIER v281 ADDON BEGIN -->
 <!-- 核對窗補齊影片庫等級完整資訊（純增量，包住原 _strategyOpenVideoMini、渲染後追加） -->
 <!-- Single-video modal gets full video-library-grade info (wraps original render, appends after) -->
-<script id="v280FloatInfo">
+<script id="v281FloatInfo">
 (function(){
   try{
     function H(id){return document.getElementById(id);}
@@ -12012,7 +12012,7 @@ document.addEventListener('DOMContentLoaded',function(){
       try{
         var panel=H('strategyFloatPanel'); if(!panel) return;
         var body=panel.querySelector('.sf-body'); if(!body) return;
-        if(body.querySelector('#v280FullInfo')) return;
+        if(body.querySelector('#v281FullInfo')) return;
         var v=(typeof window._strategyFindVideo==='function')?window._strategyFindVideo(id):null;
         if(!v && typeof window.getVids==='function'){ v=window.getVids().filter(function(x){return String(x.id)===String(id);})[0]; }
         if(!v) return;
@@ -12023,7 +12023,7 @@ document.addEventListener('DOMContentLoaded',function(){
         var rowsVid=row('主題',val(v.themeName,v.theme,v.topic))+row('素材',val(v.material,v.matName))+row('子題',val(v.subtype,v.sub))+row('形式',val(v.format,v.form))+row('命根',v.trig)+row('狀態',val(v.prodStatus,v.platform));
         var note=val(v.note);
         var noteBlock=note?'<details style="margin-top:8px"><summary style="cursor:pointer;color:var(--rouge);font-size:12px;font-weight:700">腳本靈感／逐字稿／備註（點開）</summary><div style="margin-top:6px;font-size:12px;line-height:1.75;color:var(--text);white-space:pre-wrap;max-height:220px;overflow:auto;border:1px solid var(--line);border-radius:8px;padding:8px 10px;background:#fff">'+esc(note)+'</div></details>':'';
-        var html='<div id="v280FullInfo" style="margin-top:12px;border-top:1px dashed var(--gold-soft);padding-top:10px">'+
+        var html='<div id="v281FullInfo" style="margin-top:12px;border-top:1px dashed var(--gold-soft);padding-top:10px">'+
           '<div style="font-family:Noto Serif TC,serif;color:var(--rouge);font-size:13px;margin-bottom:6px">完整資訊（同影片庫）</div>'+
           '<div style="background:var(--warm);border-radius:10px;padding:8px 11px;margin-bottom:8px">'+(rowsAcc||'<span style="font-size:12px;color:var(--sub)">此影片尚未連到帳號資料</span>')+'</div>'+
           '<div style="background:#fff;border:1px solid var(--line);border-radius:10px;padding:8px 11px">'+(rowsVid||'<span style="font-size:12px;color:var(--sub)">尚未填素材／形式等欄位</span>')+'</div>'+noteBlock+'</div>';
@@ -12033,24 +12033,24 @@ document.addEventListener('DOMContentLoaded',function(){
       }catch(e){}
     }
     function installWrap(){
-      if(window._strategyOpenVideoMini && !window._strategyOpenVideoMini.__v280){
+      if(window._strategyOpenVideoMini && !window._strategyOpenVideoMini.__v281){
         var _orig=window._strategyOpenVideoMini;
         var wrapped=function(id){ var r=_orig.call(this,id); setTimeout(function(){augment(id);},20); return r; };
-        wrapped.__v280=true; window._strategyOpenVideoMini=wrapped; return true;
+        wrapped.__v281=true; window._strategyOpenVideoMini=wrapped; return true;
       }
-      return !!(window._strategyOpenVideoMini && window._strategyOpenVideoMini.__v280);
+      return !!(window._strategyOpenVideoMini && window._strategyOpenVideoMini.__v281);
     }
     if(!installWrap()){ var n=0,iv=setInterval(function(){ if(installWrap()||++n>30) clearInterval(iv); },300); }
-  }catch(e){ try{console.warn('[v280 float]',e);}catch(_){} }
+  }catch(e){ try{console.warn('[v281 float]',e);}catch(_){} }
 })();
 </script>
-<!-- ATELIER v280 ADDON END -->
+<!-- ATELIER v281 ADDON END -->
 
 
-<!-- ATELIER v280 ADDON BEGIN -->
+<!-- ATELIER v281 ADDON BEGIN -->
 <!-- 載入即移除殘留 Service Worker 並清快取，避免卡在舊版／閃跳（只執行一次、不重整） -->
 <!-- On load: unregister any leftover Service Worker and clear caches to avoid stale-version/reload-flicker (runs once, no reload) -->
-<script id="v280SWClean">
+<script id="v281SWClean">
 (function(){
   try{
     if('serviceWorker' in navigator && navigator.serviceWorker.getRegistrations){
@@ -12063,16 +12063,16 @@ document.addEventListener('DOMContentLoaded',function(){
         ks.forEach(function(k){ try{ caches.delete(k); }catch(e){} });
       }).catch(function(){});
     }
-  }catch(e){ try{console.warn('[v280 sw-clean]',e);}catch(_){} }
+  }catch(e){ try{console.warn('[v281 sw-clean]',e);}catch(_){} }
 })();
 </script>
-<!-- ATELIER v280 ADDON END -->
+<!-- ATELIER v281 ADDON END -->
 
 
-<!-- ATELIER v280 ADDON BEGIN -->
+<!-- ATELIER v281 ADDON BEGIN -->
 <!-- 策略診斷視覺修正：隱藏重複流程、修固定列高切到、標籤退場/按鈕進場、退紅（對到正確的 v267-* class） -->
 <!-- Strategy visual fix: hide duplicate flow, fix clipped fixed-height cards, mute tags / clarify buttons, calmer red (targets the real v267-* classes) -->
-<style id="v280Visual">
+<style id="v281Visual">
 /* 1) 隱藏舊的重複流程（只留 v267 操作流程） */
 #strategyGuideV265{ display:none !important; }
 
@@ -12112,13 +12112,13 @@ document.addEventListener('DOMContentLoaded',function(){
 #strategyFloatPanel{ --warm:#FBF7F2 !important; }
 .v267-card{ box-shadow:0 8px 20px rgba(80,40,12,.05) !important; border-color:#ECE6DC !important; }
 </style>
-<!-- ATELIER v280 ADDON END -->
+<!-- ATELIER v281 ADDON END -->
 
 
-<!-- ATELIER v280 ADDON BEGIN -->
+<!-- ATELIER v281 ADDON BEGIN -->
 <!-- 深度退紅：內文/標題/數字改深色，酒紅只保留在按鈕與關鍵動作（對齊「輸入影片」頁的克制美感） -->
 <!-- Deep de-red: body/titles/numbers go dark ink; rouge reserved for buttons & key actions (matches the restrained Input page) -->
-<style id="v280Calm">
+<style id="v281Calm">
 /* 標題類：卡片/區段/彈窗標題 → 深墨色，不再整排酒紅 */
 .v267-guide h2, .v267-card h3, .v267-list-title, .v267-radar h3,
 .v267-modal-card h2, .strat-list-title-v265{ color:#2A1A1C !important; }
@@ -12130,11 +12130,11 @@ document.addEventListener('DOMContentLoaded',function(){
 /* 說明內文 → 柔灰，讀起來不刺眼 */
 .v267-card p, .v267-meta, .v267-modal-card p, .strat-radar-card-v265 p{ color:#6B5B5D !important; }
 </style>
-<!-- ATELIER v280 ADDON END -->
+<!-- ATELIER v281 ADDON END -->
 
 
-<!-- ATELIER v280 ADDON BEGIN：快速直達（帳號卡追加，獨立 try/catch，不動帳號卡本體與 Firebase） -->
-<style id="v280QuickLink">
+<!-- ATELIER v281 ADDON BEGIN：快速直達（帳號卡追加，獨立 try/catch，不動帳號卡本體與 Firebase） -->
+<style id="v281QuickLink">
 .qlink-box{margin-top:10px;padding:10px 12px;border:1px solid #ECE6DC;border-radius:12px;background:#FBF7F2}
 .qlink-head{display:flex;align-items:center;justify-content:space-between;gap:8px}
 .qlink-title{font-weight:800;color:#2A1A1C;font-size:12.5px;letter-spacing:.04em}
@@ -12191,10 +12191,10 @@ document.addEventListener('DOMContentLoaded',function(){
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){setTimeout(start,400)});else setTimeout(start,400);
 })();
 </script>
-<!-- ATELIER v280 ADDON END -->
+<!-- ATELIER v281 ADDON END -->
 
 
-<style id="v280Fix">
+<style id="v281Fix">
 .v267-radar-item{grid-template-rows:auto auto auto auto !important;min-height:0 !important}
 .v267-radar-item b{-webkit-line-clamp:unset !important;overflow:visible !important;line-height:1.5 !important}
 .v267-radar-item p{overflow:visible !important}
