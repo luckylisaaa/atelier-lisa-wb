@@ -722,7 +722,7 @@ details.cat .cat-body{padding:14px 15px}
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">客戶服務台</span></span>
-    <span id="verBadge">cs-v4.17</span>
+    <span id="verBadge">cs-v4.18</span>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button type="button" id="popoutBtn" class="popout-btn" title="把客戶服務台開成獨立小視窗"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6"/><path d="M20 4l-9 9"/><path d="M14 12v7H5V10h7"/></svg>小視窗</button>
@@ -5755,6 +5755,92 @@ details.cs-context .section-card{box-shadow:none}
     if(typeof _isfb==='function') _isfb(v);
     try{ _addExpandBtns(v); }catch(e){ console.warn('[box spec]',e); }
   };
+})();
+</script>
+
+<!-- ═══════════════ cs-v4.18 對外成效指標清單（交接書 §7／§5 待辦）═══════════════ -->
+<style id="cs-metrics-v418">
+.km-group{margin:0 0 16px}
+.km-gh{font-size:13px;font-weight:800;color:#A51820;margin:0 0 6px;display:flex;align-items:center;gap:8px}
+.km-gh .km-layer{font-size:11px;font-weight:700;color:#9C7D4A;background:#F6EFE4;border:1px solid #E8DBC4;border-radius:999px;padding:2px 9px}
+.km-row{display:flex;gap:10px;padding:7px 0;border-bottom:1px solid #F0EAE2;font-size:13px}
+.km-name{font-weight:800;color:#2A1A1C;min-width:120px}
+.km-why{color:#7A5A5E}
+.km-core{background:#FDF6F5;border:1px solid #F0DADA;border-radius:10px;padding:12px 14px;margin:6px 0 4px;font-size:13px;color:#5C4248;line-height:1.8}
+.km-core b{color:#A51820}
+</style>
+<script>
+(function(){
+  'use strict';
+  if(window.__atelierMetricsV418){ return; } window.__atelierMetricsV418=true;
+  function _esc(s){ return (typeof esc==='function')?esc(s):String(s==null?'':s); }
+  function _I(k,f){ return (window.ICN&&ICN[k])||f||''; }
+  var GROUPS=[
+    { layer:'A 認知', title:'觸及 / 被看見', items:[
+      ['曝光・觸及人數','內容被多少人看到——認知層的天花板，決定後面所有轉換的基數。'],
+      ['播放數・完播率','有沒有人看完——完播率低代表開場或選題沒抓住人。'],
+      ['平均觀看時長','留住注意力的能力，平台推薦的關鍵訊號。'],
+      ['新觸及粉絲比例','觸及的是不是新的人——成長靠新觸及，同溫層空轉是警訊。'] ] },
+    { layer:'B 品牌', title:'互動 / 被記住', items:[
+      ['互動率（讚+留言+分享+收藏）','內容有沒有打中——品牌記憶與演算法權重都看它。'],
+      ['分享數','願不願意幫你擴散——最強的品牌認同訊號。'],
+      ['收藏數','對受眾「有沒有用」——知識型/工具型內容的核心指標。'] ] },
+    { layer:'C 信任', title:'信任 / 被相信', items:[
+      ['主頁造訪・個人檔案點擊','有沒有人想更認識你——從單支內容走向認識「這個人」。'],
+      ['外部連結點擊','把信任導向你的官網/預約頁的能力。'],
+      ['私訊・詢問量','信任轉成主動接觸——成交前的最後一哩。'] ] },
+    { layer:'D 轉化', title:'轉化 / 採取行動', items:[
+      ['私訊→洽談轉換','詢問有沒有變成真的對話。'],
+      ['預約・購買・成交','最終商業結果——閉環的出口。'],
+      ['CTA 點擊率','你的行動呼籲有沒有效。'] ] },
+    { layer:'E 組織', title:'產能 / 可持續', items:[
+      ['發布頻率（上傳頻率）','老闆最常看的數字——穩定產出才有複利。'],
+      ['粉絲淨成長','扣掉流失後真的長了多少。'],
+      ['內容產出穩定度','是否能規模化、不靠一個人爆肝。'] ] }
+  ];
+  function _plain(){
+    var lines=['ATELIER 對外成效指標清單',''];
+    GROUPS.forEach(function(g){ lines.push('【'+g.layer+'】'+g.title);
+      g.items.forEach(function(it){ lines.push('· '+it[0]+'：'+it[1]); }); lines.push(''); });
+    lines.push('— 每月先看這 5 個核心數字：發布頻率、粉絲淨成長、觸及人數、互動率、私訊/成交。');
+    return lines.join('\n');
+  }
+  window._csCopyMetrics=function(){
+    var t=_plain();
+    try{ if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(t); if(typeof toast==='function') toast(_I('check','✓')+' 已複製成效指標清單'); return; } }catch(e){}
+    try{ var ta=document.createElement('textarea'); ta.value=t; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); if(typeof toast==='function') toast(_I('check','✓')+' 已複製成效指標清單'); }catch(e){ if(typeof toast==='function') toast('複製失敗'); }
+  };
+  function _bodyHTML(){
+    return GROUPS.map(function(g){
+      return '<div class="km-group"><div class="km-gh"><span class="km-layer">'+_esc(g.layer)+'</span>'+_esc(g.title)+'</div>'
+        +g.items.map(function(it){ return '<div class="km-row"><span class="km-name">'+_esc(it[0])+'</span><span class="km-why">'+_esc(it[1])+'</span></div>'; }).join('')
+        +'</div>';
+    }).join('')
+    +'<div class="km-core"><b>每月先看這 5 個核心數字</b>：發布頻率 · 粉絲淨成長 · 觸及人數 · 互動率 · 私訊/成交。其餘指標按客戶當前最弱的閉環層挑 2–3 個深看即可。</div>';
+  }
+  window._csOpenMetrics=function(){
+    var sh=$('sheet'), md=$('modal'); if(!sh||!md) return;
+    var a=(typeof curAcc==='function')?curAcc():null; var nm=a?(a.displayName||a.handle||''):'';
+    sh.innerHTML='<div class="preview-wrap"><div class="preview-actions">'
+      +'<button class="preview-modal-btn" onclick="_csCopyMetrics()">複製清單</button>'
+      +'<button class="preview-modal-btn" onclick="window.print()">列印 / 給老闆</button>'
+      +'<button class="preview-modal-btn" onclick="closeModal()">關閉</button></div>'
+      +'<div class="preview-paper"><div class="preview-kicker">ATELIER · PERFORMANCE METRICS</div>'
+      +'<h2>對外成效指標</h2><div class="preview-gold-line"></div>'
+      +'<div class="preview-sub">'+(nm?_esc(nm)+' · ':'')+'依自媒體商業閉環五層整理，給客戶與老闆看的數據清單</div>'
+      +_bodyHTML()+'</div></div>';
+    md.classList.add('show'); md.onclick=function(e){ if(e.target===md) closeModal(); };
+  };
+  function _injectMetricsBtn(){
+    var b=document.getElementById('csBanner'); if(!b||b.classList.contains('empty')) return;
+    if(b.querySelector('[data-cs-metrics]')) return;
+    var anchor=b.querySelector('[data-cs-progress]')||b.querySelector('button[onclick*="openStageOverview"]');
+    var btn=document.createElement('button'); btn.className='mini-btn'; btn.type='button'; btn.setAttribute('data-cs-metrics','1');
+    btn.setAttribute('onclick','_csOpenMetrics()'); btn.title='對外成效指標（給客戶/老闆看的數據清單）'; btn.innerHTML=_I('trendUp','')+' 成效指標';
+    if(anchor&&anchor.parentNode) anchor.parentNode.insertBefore(btn, anchor.nextSibling); else b.appendChild(btn);
+  }
+  var _rb=window.renderBanner;
+  window.renderBanner=function(flash){ if(typeof _rb==='function') _rb(flash); try{ _injectMetricsBtn(); }catch(e){ console.warn('[metrics btn]',e); } };
 })();
 </script>
 </body>
