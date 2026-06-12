@@ -8,7 +8,7 @@
 <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v270 (版本號僅留註解，不顯示於畫面)
+<!-- ATELIER 影片診斷工作台 · 內部版本 v271 (版本號僅留註解，不顯示於畫面)
 v267 更新（策略診斷硬修版：重做 Top/Bottom 固定列高、重綁單支核對窗與 AI 工具按鈕、補互動式 1–8 操作步驟與策略對標雷達；本版用最後一段 v267 override 強制接管策略診斷頁，避免舊版 v263/v265 殘留函式覆蓋。只動 index.html，不動 client.html、Firebase、CSV 與六守門提示詞。）
 v266 更新（hotfix：修正 v265 最後一段策略診斷事件代理少 catch，導致 v265 override script 無法執行、畫面徽章被前一段 v263 override 改回 v263，且策略診斷部分按鈕失效；本版補回 catch 並將顯示版本固定為 v266。只動 index.html，不動 client.html、Firebase、CSV 與六守門提示詞。）
 v265 更新（策略診斷按鈕修復、整齊 Top/Bottom、互動流程與策略對標雷達）：修正策略診斷 Top/Bottom 每支影片的按鈕高度與位置不一致；改用固定列高與事件代理，讓「快看／核對」「留在本頁定位」「改寫提示」以及單支核對窗內 AI 工具、去影片庫定位、獨立視窗核對、收起都可穩定點擊；將 1–8 操作流程改成可點擊小教學；新增策略對標雷達，從同產業、同職稱、同身份、A–E、G 階段、流量觸發、素材與高互動／高分享等面向找全庫可借鏡樣本。只動 index.html，不動 client.html、Firebase、CSV 與六守門提示詞。
@@ -1221,7 +1221,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v270</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v271</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -11833,10 +11833,10 @@ document.addEventListener('DOMContentLoaded',function(){
 })();
 </script>
 
-<!-- ATELIER v270 PATCH BEGIN -->
+<!-- ATELIER v271 PATCH BEGIN -->
 <!-- 策略診斷優化：退紅校準＋全局診斷書；並關閉會與 SW 打架的自動跳版（純增量，勿刪原碼） -->
 <!-- Strategy polish: calmer UI + global brief; auto-version redirect disabled to stop reload-flicker (additive) -->
-<style id="v270Patch">
+<style id="v271Patch">
 #strategyBox{ --warm:#FBF7F2 !important; }
 #strategyFloatPanel{ --warm:#FBF7F2 !important; }
 #strategyBox .strat-client-card-v259{ background:#FFFDFC !important; border-color:#ECE6DC !important; }
@@ -11867,31 +11867,31 @@ document.addEventListener('DOMContentLoaded',function(){
   box-shadow:0 24px 60px rgba(60,20,20,.28) !important; border:1px solid #E8C9C6 !important;
   border-radius:16px !important; max-width:560px !important; z-index:99990 !important; background:#FFFDFC !important;
 }
-#v270DiagBtn{ display:inline-flex; align-items:center; gap:6px; border:1.5px solid #A51820; background:#fff;
+#v271DiagBtn{ display:inline-flex; align-items:center; gap:6px; border:1.5px solid #A51820; background:#fff;
   color:#A51820; border-radius:10px; padding:9px 14px; font-size:13px; font-weight:800; cursor:pointer;
   margin:0 0 14px; transition:background .15s,color .15s; }
-#v270DiagBtn:hover{ background:#A51820; color:#D4A574; }
-#v270DiagBackdrop{ position:fixed; inset:0; background:rgba(42,16,18,.45); z-index:99995; display:none; align-items:center; justify-content:center; padding:20px; }
-#v270DiagModal{ width:720px; max-width:100%; max-height:88vh; overflow:auto; background:#FDFBF8;
+#v271DiagBtn:hover{ background:#A51820; color:#D4A574; }
+#v271DiagBackdrop{ position:fixed; inset:0; background:rgba(42,16,18,.45); z-index:99995; display:none; align-items:center; justify-content:center; padding:20px; }
+#v271DiagModal{ width:720px; max-width:100%; max-height:88vh; overflow:auto; background:#FDFBF8;
   border:1px solid #D4A574; border-radius:18px; box-shadow:0 30px 70px rgba(60,20,20,.35); padding:22px 24px; }
-#v270DiagModal h3{ margin:0 0 2px; font-family:"Noto Serif TC",serif; color:#A51820; font-size:21px; }
-#v270DiagModal .sub{ color:#8A7274; font-size:12.5px; margin-bottom:14px; }
-#v270DiagModal .cards{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; margin-bottom:14px; }
-#v270DiagModal .cards .c{ border:1px solid #ECE6DC; background:#fff; border-radius:12px; padding:11px 12px; font-size:12.5px; line-height:1.7; color:#5C4248; }
-#v270DiagModal .cards .c b{ display:block; color:#A51820; font-size:12.5px; margin-bottom:4px; font-family:"Noto Serif TC",serif; }
-#v270DiagModal textarea{ width:100%; min-height:240px; resize:vertical; border:1px solid #E8E3DA; border-radius:12px;
+#v271DiagModal h3{ margin:0 0 2px; font-family:"Noto Serif TC",serif; color:#A51820; font-size:21px; }
+#v271DiagModal .sub{ color:#8A7274; font-size:12.5px; margin-bottom:14px; }
+#v271DiagModal .cards{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; margin-bottom:14px; }
+#v271DiagModal .cards .c{ border:1px solid #ECE6DC; background:#fff; border-radius:12px; padding:11px 12px; font-size:12.5px; line-height:1.7; color:#5C4248; }
+#v271DiagModal .cards .c b{ display:block; color:#A51820; font-size:12.5px; margin-bottom:4px; font-family:"Noto Serif TC",serif; }
+#v271DiagModal textarea{ width:100%; min-height:240px; resize:vertical; border:1px solid #E8E3DA; border-radius:12px;
   background:#fff; padding:14px; font-size:12.8px; line-height:1.75; color:#2A1A1C; font-family:"Noto Sans TC",system-ui,sans-serif; }
-#v270DiagModal .foot{ display:flex; flex-wrap:wrap; gap:9px; margin-top:14px; align-items:center; }
-#v270DiagModal .foot .hint{ color:#8A7274; font-size:11.5px; }
-.v270btn{ cursor:pointer; border-radius:10px; padding:10px 16px; font-size:13px; font-weight:800; border:1.5px solid #A51820; }
-.v270btn.gold{ background:#D4A574; color:#3A1E0A; border-color:#C79553; } .v270btn.gold:hover{ background:#C79553; }
-.v270btn.line{ background:#fff; color:#A51820; } .v270btn.line:hover{ background:#A51820; color:#fff; }
-.v270btn.ghost{ background:transparent; color:#8A7274; border-color:#E8E3DA; }
+#v271DiagModal .foot{ display:flex; flex-wrap:wrap; gap:9px; margin-top:14px; align-items:center; }
+#v271DiagModal .foot .hint{ color:#8A7274; font-size:11.5px; }
+.v271btn{ cursor:pointer; border-radius:10px; padding:10px 16px; font-size:13px; font-weight:800; border:1.5px solid #A51820; }
+.v271btn.gold{ background:#D4A574; color:#3A1E0A; border-color:#C79553; } .v271btn.gold:hover{ background:#C79553; }
+.v271btn.line{ background:#fff; color:#A51820; } .v271btn.line:hover{ background:#A51820; color:#fff; }
+.v271btn.ghost{ background:transparent; color:#8A7274; border-color:#E8E3DA; }
 </style>
 
-<script id="v270PatchJS">
+<script id="v271PatchJS">
 (function(){
-  try{ window.ATELIER_CURRENT_VERSION='v270'; }catch(e){}
+  try{ window.ATELIER_CURRENT_VERSION='v271'; }catch(e){}
   try{ sessionStorage.setItem('atelierSkipAutoUpdate','1'); }catch(e){}
   try{ if(navigator.serviceWorker && navigator.serviceWorker.getRegistrations){
         navigator.serviceWorker.getRegistrations().then(function(rs){ rs.forEach(function(r){ try{r.update();}catch(e){} }); }).catch(function(){});
@@ -11900,7 +11900,7 @@ document.addEventListener('DOMContentLoaded',function(){
   try{
     function H(id){ return document.getElementById(id); }
     function has(n){ try{ return typeof window[n]==='function'; }catch(e){ return false; } }
-    function toastMsg(m){ if(has('toast')) window.toast(m); else console.log('[v270]',m); }
+    function toastMsg(m){ if(has('toast')) window.toast(m); else console.log('[v271]',m); }
     function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c];}); }
 
     window._strategyExportGlobalDiagnosis = function(id){ try{
@@ -11945,37 +11945,37 @@ document.addEventListener('DOMContentLoaded',function(){
 '──── 層級分布 ────\nG 階段：'+distStr(gDist)+'\nA–E 目標：'+distStr(aDist)+'\n\n'+
 '──── 系統判斷的缺口 ────\n內容缺口（沒有或極少的 G 階段）：'+(gMiss.join('、')||'無明顯缺口')+'\n商業閉環缺口（沒有或極少的 A–E 目標）：'+(aMiss.join('、')||'無明顯缺口')+'\n局面判斷：'+situation+'\n\n'+
 '──── 請你接著產出 ────\n1. 客戶版內容診斷：目前定位判斷、受眾心理洞察、內容缺口、轉換缺口、優先改善順序。\n2. 顧問版判斷：同上但更直接，標出最該先補的 1–2 個缺口。\n3. 補問客戶清單：列出影片看不出來、下次會議必問的 5 個問題（真正想推的服務、最想吸引的客群、成交卡在哪、可公開案例、合規限制）。\n4. 下一批 10 支影片方向：每支含〔題目〕〔對應 A–E〕〔對應 G1–G5〕〔為什麼拍〕〔優先順序〕。\n';
-      var bd=H('v270DiagBackdrop');
-      if(!bd){ bd=document.createElement('div'); bd.id='v270DiagBackdrop'; bd.innerHTML='<div id="v270DiagModal"></div>';
+      var bd=H('v271DiagBackdrop');
+      if(!bd){ bd=document.createElement('div'); bd.id='v271DiagBackdrop'; bd.innerHTML='<div id="v271DiagModal"></div>';
         document.body.appendChild(bd); bd.addEventListener('click',function(e){ if(e.target===bd) bd.style.display='none'; }); }
-      var m=H('v270DiagModal');
+      var m=H('v271DiagModal');
       m.innerHTML='<h3>✨ 商業閉環診斷書 · '+esc(name)+'</h3>'+
         '<div class="sub">系統已自動撈取 '+rows.length+' 支影片打包。下面提示詞可直接編輯，再一鍵複製貼給 AI，或送客戶服務台 Stage 4。</div>'+
         '<div class="cards"><div class="c"><b>目前局面</b>'+esc(situation)+'</div>'+
         '<div class="c"><b>系統判斷</b>Top 主題：'+esc(theme(top[0].v))+'<br>缺口：'+(gMiss.concat(aMiss).join('、')||'無')+'<br>待補：'+todo+' 支</div>'+
         '<div class="c"><b>下一步任務</b>① 複製診斷書 → 貼 Stage 4<br>② 產補問清單給下次會議<br>③ 生下一批 10 支方向 → Stage 6</div></div>'+
-        '<textarea id="v270DiagText">'+esc(prompt)+'</textarea>'+
-        '<div class="foot"><button class="v270btn gold" id="v270Copy">一鍵複製完整診斷提示詞</button>'+
-        '<button class="v270btn line" id="v270Send">送客戶服務台 Stage 4</button>'+
-        '<button class="v270btn ghost" id="v270Close">關閉</button>'+
+        '<textarea id="v271DiagText">'+esc(prompt)+'</textarea>'+
+        '<div class="foot"><button class="v271btn gold" id="v271Copy">一鍵複製完整診斷提示詞</button>'+
+        '<button class="v271btn line" id="v271Send">送客戶服務台 Stage 4</button>'+
+        '<button class="v271btn ghost" id="v271Close">關閉</button>'+
         '<span class="hint">可先編輯再複製；複製後到客戶服務台 Stage 4 貼上即可產出客戶版／顧問版。</span></div>';
       bd.style.display='flex';
-      H('v270Copy').onclick=function(){ var t=H('v270DiagText').value;
+      H('v271Copy').onclick=function(){ var t=H('v271DiagText').value;
         function done(){ toastMsg('已複製完整診斷提示詞'); }
         if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(t).then(done,function(){ if(has('_copyFallback')){window._copyFallback(t);done();} }); }
         else if(has('_copyFallback')){ window._copyFallback(t); done(); }
-        else { H('v270DiagText').select(); document.execCommand('copy'); done(); } };
-      H('v270Send').onclick=function(){ var t=H('v270DiagText').value;
+        else { H('v271DiagText').select(); document.execCommand('copy'); done(); } };
+      H('v271Send').onclick=function(){ var t=H('v271DiagText').value;
         if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(t); }
         if(has('_strategySendToClientDesk')){ window._strategySendToClientDesk(); toastMsg('已複製並開啟客戶服務台 Stage 4'); }
         else if(has('_strategyOpenClient')){ window._strategyOpenClient(); }
         else { toastMsg('已複製，請切到客戶服務台 Stage 4 貼上'); } };
-      H('v270Close').onclick=function(){ bd.style.display='none'; };
-    }catch(err){ toastMsg('產出診斷書時發生問題，已略過'); try{console.warn('[v270 diag]',err);}catch(e){} } };
+      H('v271Close').onclick=function(){ bd.style.display='none'; };
+    }catch(err){ toastMsg('產出診斷書時發生問題，已略過'); try{console.warn('[v271 diag]',err);}catch(e){} } };
 
     function injectBtn(){ try{
-      var box=H('strategyBox'); if(!box || box.offsetParent===null) return; if(H('v270DiagBtn')) return;
-      var btn=document.createElement('button'); btn.id='v270DiagBtn';
+      var box=H('strategyBox'); if(!box || box.offsetParent===null) return; if(H('v271DiagBtn')) return;
+      var btn=document.createElement('button'); btn.id='v271DiagBtn';
       btn.innerHTML='✨ 一鍵打包全局數據：產出商業閉環診斷書';
       btn.onclick=function(){ var a=has('getStratAcc')?window.getStratAcc():null; window._strategyExportGlobalDiagnosis(a?a.id:null); };
       box.insertBefore(btn, box.firstChild);
@@ -11983,10 +11983,10 @@ document.addEventListener('DOMContentLoaded',function(){
     if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',function(){ setTimeout(injectBtn,500); });
     else setTimeout(injectBtn,500);
     document.addEventListener('click',function(e){ try{ var t=e.target&&e.target.closest&&e.target.closest('[data-tab="strategy"]'); if(t) setTimeout(injectBtn,300); }catch(_){} });
-  }catch(err){ try{console.warn('[v270 patch]',err);}catch(e){} }
+  }catch(err){ try{console.warn('[v271 patch]',err);}catch(e){} }
 })();
 </script>
-<!-- v270 變更摘要 / Change summary
+<!-- v271 變更摘要 / Change summary
      1. 視覺退紅：策略診斷標籤改安靜註解、按鈕才酒紅可點；標籤換行與核對窗壓欄位已修。
         Calmer UI: muted tags vs rouge action buttons; wrapping and modal overlap fixed.
      2. 新增 _strategyExportGlobalDiagnosis：一鍵打包該帳號 Top/Bottom、G 與 A–E 分布、缺口、待補，產出可編輯商業閉環診斷書，可複製或送 Stage 4。
@@ -11994,7 +11994,57 @@ document.addEventListener('DOMContentLoaded',function(){
      3. 安全：載入即設 atelierSkipAutoUpdate 並請 SW 更新，避免版本不一致一直重整；未改核心函式／Firebase／CSV／六守門提示詞。
         Safety: sets atelierSkipAutoUpdate on load and updates the SW to prevent version reload-loops; core logic untouched.
 -->
-<!-- ATELIER v270 PATCH END -->
+<!-- ATELIER v271 PATCH END -->
+
+
+<!-- ATELIER v271 ADDON BEGIN -->
+<!-- 核對窗補齊影片庫等級完整資訊（純增量，包住原 _strategyOpenVideoMini、渲染後追加） -->
+<!-- Single-video modal gets full video-library-grade info (wraps original render, appends after) -->
+<script id="v271FloatInfo">
+(function(){
+  try{
+    function H(id){return document.getElementById(id);}
+    function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c];});}
+    function val(){ for(var i=0;i<arguments.length;i++){ var x=arguments[i]; if(x!=null && String(x).trim()!=='') return String(x); } return ''; }
+    function row(label,value){ if(!value) return ''; return '<div style="display:flex;gap:8px;padding:3px 0;font-size:12px;line-height:1.6"><span style="color:var(--rouge);min-width:52px;flex:none">'+label+'</span><span style="color:var(--text)">'+esc(value)+'</span></div>'; }
+
+    function augment(id){
+      try{
+        var panel=H('strategyFloatPanel'); if(!panel) return;
+        var body=panel.querySelector('.sf-body'); if(!body) return;
+        if(body.querySelector('#v271FullInfo')) return;
+        var v=(typeof window._strategyFindVideo==='function')?window._strategyFindVideo(id):null;
+        if(!v && typeof window.getVids==='function'){ v=window.getVids().filter(function(x){return String(x.id)===String(id);})[0]; }
+        if(!v) return;
+        var a=(typeof window.accById==='function')?window.accById(v.accountId):null; a=a||{};
+        var ident=val(a.identity,a.idType,a.persona,a.identityType);
+        var fans=val(a.followers,a.fans,a.followerText,a.follower);
+        var rowsAcc=row('名稱',val(a.name,a.displayName))+row('帳號',a.handle)+row('身份',ident)+row('職稱',a.jobTitle)+row('產業',val(a.industry,a.domain))+row('粉絲',fans);
+        var rowsVid=row('主題',val(v.themeName,v.theme,v.topic))+row('素材',val(v.material,v.matName))+row('子題',val(v.subtype,v.sub))+row('形式',val(v.format,v.form))+row('命根',v.trig)+row('狀態',val(v.prodStatus,v.platform));
+        var note=val(v.note);
+        var noteBlock=note?'<details style="margin-top:8px"><summary style="cursor:pointer;color:var(--rouge);font-size:12px;font-weight:700">腳本靈感／逐字稿／備註（點開）</summary><div style="margin-top:6px;font-size:12px;line-height:1.75;color:var(--text);white-space:pre-wrap;max-height:220px;overflow:auto;border:1px solid var(--line);border-radius:8px;padding:8px 10px;background:#fff">'+esc(note)+'</div></details>':'';
+        var html='<div id="v271FullInfo" style="margin-top:12px;border-top:1px dashed var(--gold-soft);padding-top:10px">'+
+          '<div style="font-family:Noto Serif TC,serif;color:var(--rouge);font-size:13px;margin-bottom:6px">完整資訊（同影片庫）</div>'+
+          '<div style="background:var(--warm);border-radius:10px;padding:8px 11px;margin-bottom:8px">'+(rowsAcc||'<span style="font-size:12px;color:var(--sub)">此影片尚未連到帳號資料</span>')+'</div>'+
+          '<div style="background:#fff;border:1px solid var(--line);border-radius:10px;padding:8px 11px">'+(rowsVid||'<span style="font-size:12px;color:var(--sub)">尚未填素材／形式等欄位</span>')+'</div>'+noteBlock+'</div>';
+        var tools=body.querySelector('.sf-tools');
+        var wrap=document.createElement('div'); wrap.innerHTML=html; var node=wrap.firstChild;
+        if(tools) body.insertBefore(node,tools); else body.appendChild(node);
+      }catch(e){}
+    }
+    function installWrap(){
+      if(window._strategyOpenVideoMini && !window._strategyOpenVideoMini.__v271){
+        var _orig=window._strategyOpenVideoMini;
+        var wrapped=function(id){ var r=_orig.call(this,id); setTimeout(function(){augment(id);},20); return r; };
+        wrapped.__v271=true; window._strategyOpenVideoMini=wrapped; return true;
+      }
+      return !!(window._strategyOpenVideoMini && window._strategyOpenVideoMini.__v271);
+    }
+    if(!installWrap()){ var n=0,iv=setInterval(function(){ if(installWrap()||++n>30) clearInterval(iv); },300); }
+  }catch(e){ try{console.warn('[v271 float]',e);}catch(_){} }
+})();
+</script>
+<!-- ATELIER v271 ADDON END -->
 
 </body>
 </html>
