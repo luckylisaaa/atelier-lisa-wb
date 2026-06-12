@@ -722,7 +722,7 @@ details.cat .cat-body{padding:14px 15px}
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">客戶服務台</span></span>
-    <span id="verBadge">cs-v4.2</span>
+    <span id="verBadge">cs-v4.3</span>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button type="button" id="popoutBtn" class="popout-btn" title="把客戶服務台開成獨立小視窗"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6"/><path d="M20 4l-9 9"/><path d="M14 12v7H5V10h7"/></svg>小視窗</button>
@@ -4808,7 +4808,7 @@ window.openStageInfo=function(stageName){
     var bl=_benchAccts(a);
     var head='<div class="section-card" data-cs-benchmarks style="border-left:3px solid var(--rouge)">'
       +'<h3 style="display:flex;align-items:center;gap:6px">'+_I('target','')+'對標借鏡範本'
-      +'<button type="button" class="btn-deliver-2" style="margin-left:auto" onclick="_csOpenBenchmarkPicker()">'+(bl.length?'編輯':'＋ 挑對標')+'</button></h3>'
+      +'<span style="margin-left:auto;display:inline-flex;gap:6px"><button type="button" class="btn-deliver-2" onclick="_csOpenScoutPrompts()">'+_I('search','')+'找新對標</button><button type="button" class="btn-deliver-2" onclick="_csOpenBenchmarkPicker()">'+(bl.length?'編輯':'＋ 挑對標')+'</button></span></h3>'
       +'<div class="sc-note">從你庫裡挑成功案例（跨產業也行）當這位客戶的範本。挑好的會自動進到每個 AI 提示詞，提案時也能直接拿給客戶看「我們要走這條路線」。</div>';
     if(!bl.length){ return head+'<div class="empty-deliver" style="margin-top:6px">尚未挑選對標。<br><span style="font-size:12px;color:#A88">按右上「＋ 挑對標」，從 50 多組帳號裡選幾個你覺得適合的範本。</span></div></div>'; }
     var cards=bl.map(function(x){
@@ -4894,6 +4894,78 @@ window.openStageInfo=function(stageName){
     var base=(typeof _rrv==='function')?_rrv(a):'';
     var panel=''; try{ panel=_benchmarkHTML(a); }catch(e){ console.warn('[benchmark panel]',e); }
     return panel+base;
+  };
+})();
+</script>
+
+<!-- ═══════════════ cs-v4.3 加厚②-b：多維度「找新對標」搜尋提示詞產生器 ═══════════════ -->
+<!-- 不改資料。依當前客戶(職稱/產業/身份/地區/閉環弱層)產生 5 種維度的搜尋提示詞，
+     讓顧問複製到 AI／搜尋引擎去網路上挖新對標；含「泛流量×興趣橋接」維度(哆啦A夢式概念橋)。 -->
+<script>
+(function(){
+  'use strict';
+  if(window.__atelierScoutV43){ return; } window.__atelierScoutV43=true;
+  function _esc(s){ return (typeof esc==='function')?esc(s):String(s==null?'':s); }
+  function _I(k,f){ return (window.ICN&&ICN[k])||f||''; }
+  var LMAP=[['A','認知層'],['B','品牌層'],['C','信任層'],['D','轉化層'],['E','組織層']];
+  function _layerOf(v){ var m=String(v&&(v.goal||v.stage||v.code||v.gStage)||'').match(/[A-E]/); return m?m[0]:''; }
+  function _fields(a){
+    var cp=a.clientProfile||{};
+    var job=a.jobTitle||cp.jobTitle||'（未填職稱）';
+    var ind=a.industry||cp.industry||'（未填產業）';
+    var idn=a.identity||cp.identity||'個人 IP';
+    var reg=a.region||cp.region||'台灣';
+    var vs=(typeof accountVideos==='function')?accountVideos(a):[];
+    var lc={A:0,B:0,C:0,D:0,E:0}; vs.forEach(function(v){ var L=_layerOf(v); if(L) lc[L]++; });
+    var empties=LMAP.filter(function(p){ return !lc[p[0]]; }).map(function(p){ return p[1]; });
+    var weak;
+    if(empties.length){ weak=empties.slice(0,2).join('、'); }
+    else { var min=LMAP.slice().sort(function(p,q){ return lc[p[0]]-lc[q[0]]; })[0]; weak=min?min[1]:'信任層'; }
+    return {job:job,ind:ind,idn:idn,reg:reg,weak:weak};
+  }
+  function _prompts(a){
+    var f=_fields(a), name=(a.handle||a.displayName||'我的客戶');
+    return [
+      {t:'同職業 · 自媒體經營者', n:'找跟客戶同職業、有在做短影音的人，借內容公式。',
+       p:'請幫我找出在【'+f.reg+'】、職業是【'+f.job+'】、有在經營自媒體（短影音／IG／YouTube）的創作者，列 8–12 位。每位附：帳號方向、主要內容形式、最常用的開場（Hook）、他如何建立專業信任、代表作。我要拿來當我客戶（同為'+f.job+'）的對標範本。請盡量附上可驗證的帳號或連結。'},
+      {t:'同身份類型', n:'依帳號類型（個人IP／KOC／機構號）找同質對象。',
+       p:'請幫我找出身份類型為【'+f.idn+'】、在【'+f.ind+'】領域、'+f.reg+'地區的自媒體創作者 8–12 位，附他們的內容主軸、經營方式與粉絲量級。我要對標同一種身份類型的人。'},
+      {t:'補弱層（'+f.weak+'）', n:'客戶閉環最弱的這一層，去找這層最強的人（不限產業）。',
+       p:'我的客戶在「自媒體商業閉環」的【'+f.weak+'】最弱（目前幾乎沒有這類內容）。請幫我找 6–10 位（不限產業）在「'+f.weak+'」這件事上做得很好的自媒體創作者，說明他們用什麼內容形式、什麼題材把這一層做起來。我要借他們的做法來補我客戶的'+f.weak+'。'},
+      {t:'同行權威 · 非自媒體', n:'同領域受敬重、但沒做自媒體的人或品牌，學定位與題目。',
+       p:'請幫我找【'+f.reg+'】、【'+f.ind+'／'+f.job+'】領域裡受敬重、但不一定有經營自媒體的權威人物或品牌 6–10 個，說明他們的定位、最常談的題目、為什麼被同行與客戶信任。我要學他們的「定位與題目方向」，再翻譯成我客戶的短影音內容。'},
+      {t:'泛流量 × 興趣橋接', n:'用客戶的個人興趣抓泛流量，再用概念橋接回專業（哆啦A夢式）。',
+       p:'我的客戶是【'+f.job+'】，個人興趣是【請填客戶的興趣／人格特質，例如：喜歡哆啦A夢、收藏公仔】。我想用這個興趣去拍能帶「泛流量」的影片，再用一個聰明的概念橋接回他的專業。\n請幫我：\n（1）找 5–8 位在這個興趣領域經營得不錯的'+f.reg+'創作者，說明他們的呈現方式與爆點；\n（2）提出 3 個把這個興趣「橋接回'+f.job+'專業」的概念連結，風格參考：哆啦A夢 → 天才 → 百寶袋 → '+f.job+'的頭腦（裝滿解決方案）。每個橋接各附一句影片開場。'}
+    ];
+  }
+  window._csScoutCopy=function(i){
+    var a=(typeof curAcc==='function')?curAcc():null; if(!a) return;
+    var p=_prompts(a)[i]; if(p&&typeof copyVal==='function') copyVal(p.p, '對標搜尋提示詞');
+  };
+  window._csScoutCopyAll=function(){
+    var a=(typeof curAcc==='function')?curAcc():null; if(!a) return;
+    var txt=_prompts(a).map(function(p,i){ return '【'+(i+1)+'. '+p.t+'】\n'+p.p; }).join('\n\n──────────\n\n');
+    if(typeof copyVal==='function') copyVal(txt,'全部對標搜尋提示詞');
+  };
+  window._csOpenScoutPrompts=function(){
+    var a=(typeof curAcc==='function')?curAcc():null; if(!a){ if(typeof toast==='function') toast(_I('warn','⚠')+' 尚未選定客戶'); return; }
+    var sh=$('sheet'), md=$('modal'); if(!sh||!md) return;
+    var list=_prompts(a);
+    var cards=list.map(function(p,i){
+      return '<div class="deliverable-card" style="border-radius:10px;padding:12px 14px;margin-top:10px;border-color:#E8D3C9">'
+        +'<div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><div style="font-weight:800;font-size:13.5px;color:#2A1A1C">'+_esc(p.t)+'</div>'
+        +'<button type="button" class="btn-deliver-2" onclick="_csScoutCopy('+i+')">複製</button></div>'
+        +'<div style="font-size:11.5px;color:#8A7274;margin:2px 0 6px">'+_esc(p.n)+'</div>'
+        +'<div style="white-space:pre-wrap;font-size:12.5px;line-height:1.7;color:#5A4A4C;background:#FAF6F1;border:1px solid #EFE7DC;border-radius:8px;padding:8px 10px;max-height:150px;overflow:auto">'+_esc(p.p)+'</div>'
+        +'</div>';
+    }).join('');
+    sh.innerHTML='<div style="padding:4px 2px">'
+      +'<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px"><h3 style="margin:0;font-size:16px;display:flex;align-items:center;gap:6px">'+_I('search','')+'找新對標 · 搜尋提示詞</h3><button class="preview-modal-btn" style="margin-left:auto" onclick="closeModal()">關閉</button></div>'
+      +'<div class="sc-note" style="margin-bottom:4px">已依這位客戶（'+_esc(a.handle||a.displayName||'—')+'）自動帶入職稱／產業／身份／地區／閉環弱層。複製到 AI 或搜尋引擎，把網路上的新對標挖出來，再用「＋ 挑對標」收進來。</div>'
+      +cards
+      +'<div class="btn-row" style="margin-top:12px"><button class="btn btn-go" onclick="_csScoutCopyAll()">複製全部</button><button class="btn btn-ghost" onclick="closeModal()">關閉</button></div>'
+      +'</div>';
+    md.classList.add('show'); md.onclick=function(e){ if(e.target===md) closeModal(); };
   };
 })();
 </script>
