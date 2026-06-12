@@ -722,7 +722,7 @@ details.cat .cat-body{padding:14px 15px}
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">客戶服務台</span></span>
-    <span id="verBadge">cs-v4.19</span>
+    <span id="verBadge">cs-v4.27</span>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button type="button" id="popoutBtn" class="popout-btn" title="把客戶服務台開成獨立小視窗"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6"/><path d="M20 4l-9 9"/><path d="M14 12v7H5V10h7"/></svg>小視窗</button>
@@ -4821,16 +4821,22 @@ window.openStageInfo=function(stageName){
     var bl=_benchAccts(a);
     var head='<div class="section-card" data-cs-benchmarks style="border-left:3px solid var(--rouge)">'
       +'<h3 style="display:flex;align-items:center;gap:6px">'+_I('target','')+'對標借鏡範本'
-      +'<span style="margin-left:auto;display:inline-flex;gap:6px"><button type="button" class="btn-deliver-2" onclick="_csOpenScoutPrompts()">'+_I('search','')+'找新對標</button><button type="button" class="btn-deliver-2" onclick="_csOpenBenchmarkPicker()">'+(bl.length?'編輯':'＋ 挑對標')+'</button></span></h3>'
+      +'<span style="margin-left:auto;display:inline-flex;gap:6px"><button type="button" class="btn-deliver-2" onclick="_csOpenBenchNext()">'+_I('spark','')+'借鏡後下一步</button><button type="button" class="btn-deliver-2" onclick="_csOpenScoutPrompts()">'+_I('search','')+'找新對標</button><button type="button" class="btn-deliver-2" onclick="_csOpenBenchmarkPicker()">'+(bl.length?'編輯':'＋ 挑對標')+'</button></span></h3>'
       +'<div class="sc-note">從你庫裡挑成功案例（跨產業也行）當這位客戶的範本。挑好的會自動進到每個 AI 提示詞，提案時也能直接拿給客戶看「我們要走這條路線」。</div>';
     if(!bl.length){ return head+'<div class="empty-deliver" style="margin-top:6px">尚未挑選對標。<br><span style="font-size:12px;color:#A88">按右上「＋ 挑對標」，從 50 多組帳號裡選幾個你覺得適合的範本。</span></div>'+(window._csBenchNotesHTML?_csBenchNotesHTML(a):'')+'</div>'; }
     var cards=bl.map(function(x){
       var tv=_topVids(x,3);
       var tvH=tv.length?('<div style="font-size:12px;color:#5A4A4C;margin-top:4px">代表作：'+tv.map(function(v){ return _esc(_vtitle(v))+(v.score?'<span style="color:#9C7D4A"> '+v.score+'</span>':''); }).join('、')+'</div>'):'';
+      var _ident=(x.identity||x.idType||x.persona||x.identityType||'');
+      var _fans=(x.followers||x.fans||x.followerText||x.follower||'');
+      var _bio=(x.bio||x.summary||x.note||'');
+      var _m2=[]; if(_ident)_m2.push(_esc(_ident)); if(_fans)_m2.push('粉絲 '+_esc(_fans));
+      var _m2H=_m2.length?('<div style="font-size:11px;color:#A0888C;margin-top:2px">'+_m2.join(' · ')+'</div>'):'';
+      var _bioH=_bio?('<div style="font-size:11.5px;color:#6A5256;margin-top:5px;line-height:1.6;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">'+_esc(_bio)+'</div>'):'';
       return '<div class="deliverable-card" style="border-radius:10px;padding:10px 12px;margin-top:8px;border-color:#E8D3C9">'
         +'<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px">'
         +'<div style="min-width:0"><div style="font-weight:800;font-size:13px;color:#2A1A1C">@'+_esc((x.handle||x.displayName||'未命名').replace(/^@+/,''))+(x.isClient?' <span style="font-size:10px;color:#9C7D4A">客戶</span>':'')+'</div>'
-        +'<div style="font-size:11.5px;color:#8A7274">'+_esc(x.industry||'未填產業')+(x.jobTitle?' · '+_esc(x.jobTitle):'')+' · 影片 '+_vids(x).length+' 支</div>'+tvH+'</div>'
+        +'<div style="font-size:11.5px;color:#8A7274">'+_esc(x.industry||'未填產業')+(x.jobTitle?' · '+_esc(x.jobTitle):'')+' · 影片 '+_vids(x).length+' 支</div>'+_m2H+_bioH+tvH+'</div>'
         +'<button type="button" class="btn-deliver-2" style="flex:0 0 auto;border-color:#D9B7B7;color:#A51820" onclick="_csBenchRemove(\''+_esc(x.id)+'\')">移除</button>'
         +'</div></div>';
     }).join('');
@@ -5879,6 +5885,550 @@ details.cs-context::before{ content:""; display:block; height:1px; background:li
   var _rb=window.renderBanner;
   window.renderBanner=function(flash){ if(typeof _rb==='function') _rb(flash); try{ _fixNext(); }catch(e){ console.warn('[next fix]',e); } };
   setInterval(_fixNext, 1200);  /* 保險：階段狀態改變後也會更新 */
+})();
+</script>
+
+<!-- ═══════════════ cs-v4.20 對標「共同性＋借鏡後下一步」（深-1／深-3）═══════════════ -->
+<!-- 自動算出選取對標的共同點，並給 5 個可操作方向，每個都有可見、可複製、且帶入目前服務客戶的 AI 提示詞。 -->
+<style id="cs-benchnext-v420">
+.bn-common{background:#FDF6F5;border:1px solid #F0DADA;border-radius:12px;padding:12px 14px;margin:0 0 14px;font-size:13px;color:#5C4248;line-height:1.8}
+.bn-common b{color:#A51820}
+.bn-card{border:1px solid #E8E3DA;border-radius:12px;background:#fff;padding:14px 16px;margin:0 0 12px;box-shadow:0 1px 3px rgba(90,40,45,.04)}
+.bn-card h4{margin:0 0 4px;font-size:14.5px;font-weight:800;color:#2A1A1C;display:flex;align-items:center;gap:8px}
+.bn-card .bn-num{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:700;color:#A51820}
+.bn-card .bn-sub{font-size:12px;color:#8A7274;margin:0 0 8px}
+.bn-prompt{white-space:pre-wrap;font-size:12.5px;line-height:1.7;color:#5A4A4C;background:#FAF6F1;border:1px solid #EFE7DC;border-radius:8px;padding:10px 12px}
+.bn-copy{margin-top:8px;font-size:12px;font-weight:700;border:1px solid #DCC8CB;background:#fff;color:#5C0F14;border-radius:999px;padding:6px 14px;cursor:pointer;font-family:inherit}
+.bn-copy:hover{background:#FAF3F4}
+</style>
+<script>
+(function(){
+  'use strict';
+  if(window.__atelierBenchNextV420){ return; } window.__atelierBenchNextV420=true;
+  function _esc(s){ return (typeof esc==='function')?esc(s):String(s==null?'':s); }
+  function _I(k,f){ return (window.ICN&&ICN[k])||f||''; }
+  function _accs(){ try{ return (typeof accounts!=='undefined'&&accounts)?accounts:(window.accounts||[]); }catch(e){ return window.accounts||[]; } }
+  function _picked(a){ var by={}; _accs().forEach(function(x){ if(x&&x.id) by[x.id]=x; }); return ((a&&a.benchmarkRefs)||[]).map(function(id){return by[id];}).filter(Boolean); }
+  function _hand(x){ return '@'+String(x.handle||x.displayName||'?').replace(/^@+/,''); }
+  function _top(list,key){ var c={}; list.forEach(function(x){ var v=String(x[key]||'').trim(); if(v) c[v]=(c[v]||0)+1; }); var k=Object.keys(c).sort(function(p,q){return c[q]-c[p];})[0]; return k?{val:k,n:c[k]}:null; }
+  function _weakLayer(a){
+    var LN={A:'認知層',B:'品牌層',C:'信任層',D:'轉化層',E:'組織層'}, order=['A','B','C','D','E'], cnt={A:0,B:0,C:0,D:0,E:0};
+    var vs=(typeof accountVideos==='function')?accountVideos(a):[];
+    vs.forEach(function(v){ var m=String(v&&(v.goal||v.stage||v.code||v.gStage)||'').match(/[A-E]/); if(m) cnt[m[0]]++; });
+    var empt=order.filter(function(k){return !cnt[k];}); var w=empt.length?empt[0]:order.slice().sort(function(p,q){return cnt[p]-cnt[q];})[0];
+    return LN[w]||'信任層';
+  }
+  window._csCopyText=function(t,el){
+    function ok(){ if(typeof toast==='function') toast(_I('check','✓')+' 已複製提示詞'); }
+    try{ if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(t).then(ok); return; } }catch(e){}
+    try{ var ta=document.createElement('textarea'); ta.value=t; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); ok(); }catch(e){ if(typeof toast==='function') toast('複製失敗'); }
+  };
+  window._csOpenBenchNext=function(){
+    var a=(typeof curAcc==='function')?curAcc():null; if(!a){ if(typeof toast==='function') toast(_I('warn','⚠')+' 尚未選定客戶'); return; }
+    var sh=$('sheet'), md=$('modal'); if(!sh||!md) return;
+    var bl=_picked(a);
+    if(!bl.length){ if(typeof toast==='function') toast('先在「對標借鏡」挑幾個對標，再看下一步'); return; }
+    var cname=a.displayName||a.handle||'本客戶'; var cind=a.industry||'這個產業'; var weak=_weakLayer(a);
+    var hands=bl.map(_hand).join('、'); var N=bl.length;
+    var ind=_top(bl,'industry'), job=_top(bl,'jobTitle');
+    var commonBits=[];
+    if(ind) commonBits.push('產業多為「<b>'+_esc(ind.val)+'</b>」（'+ind.n+'/'+N+'）');
+    if(job) commonBits.push('職稱多為「<b>'+_esc(job.val)+'</b>」（'+job.n+'/'+N+'）');
+    var common='<div class="bn-common">你挑的這 '+N+' 個對標共同點：'+(commonBits.length?commonBits.join('、'):'目前看不出明顯共同欄位')+'。<br>＝ 你是用「'+_esc(job&&job.val||ind&&ind.val||'同類型')+'」這個共同性在借鏡——下面 5 個方向都會把它收斂回你目前服務的 <b>'+_esc(cname)+'</b>。</div>';
+    var DIRS=[
+      ['拆公式找 AI','把對標的成功開場/結構/題型，改寫成本客戶可拍的版本',
+       '以下是我要讓客戶「'+cname+'」（'+cind+'）模仿的對標：'+hands+'。\n請逐一拆解他們影片的開場 Hook、內容結構、常用題型與呈現方式，並改寫成「'+cname+'」可直接拍的 3 個版本（每個含一句 Hook、結構大綱、適用題目）。'],
+      ['用範本拍腳本','挑一支對標代表作，用它的結構幫本客戶寫腳本',
+       '從這些對標：'+hands+'，挑出最適合「'+cname+'」的一支代表作，用它的影片結構，幫「'+cname+'」寫一支 45–60 秒短影音腳本，包含：逐字稿、分鏡提示、字卡重點、結尾 CTA。'],
+      ['SWOT／差異化定位','用對標當外部標竿，找出本客戶獨一無二的角度',
+       '以這些對標為外部標竿：'+hands+'。請幫「'+cname+'」（'+cind+'）做一份 SWOT 分析，並特別找出「對標都沒做、但'+cname+'能做」的差異化定位，讓'+cname+'在市場上獨一無二。最後給 3 個能體現此差異化的內容主軸。'],
+      ['補閉環弱層','對照本客戶最弱的閉環層，向對標借該層做法',
+       '「'+cname+'」在自媒體商業閉環最弱的是「'+weak+'」。請從這些對標：'+hands+'，借鏡他們在「'+weak+'」這一層的做法（內容形式、題材、呈現），給「'+cname+'」5 個可立即執行的內容點子，每個註明預期補強什麼。'],
+      ['對齊市場需求','找對標最受歡迎的題目，轉成本客戶的高需求題庫',
+       '分析這些對標：'+hands+' 最受歡迎的題目與市場需求訊號，幫「'+cname+'」（'+cind+'）列出 10 個「既符合市場需求、又能發揮'+cname+'專業」的高需求短影音題目，並依預期成效排序。']
+    ];
+    var cards=DIRS.map(function(d,i){
+      return '<div class="bn-card"><h4><span class="bn-num">'+(i+1)+'</span>'+_esc(d[0])+'</h4><div class="bn-sub">'+_esc(d[1])+'</div>'
+        +'<div class="bn-prompt" id="bnp'+i+'">'+_esc(d[2])+'</div>'
+        +'<button type="button" class="bn-copy" onclick="_csCopyText(document.getElementById(\'bnp'+i+'\').innerText)">'+_I('copy','')+'複製這個提示詞</button></div>';
+    }).join('');
+    sh.innerHTML='<div class="preview-wrap"><div class="preview-actions"><button class="preview-modal-btn" onclick="closeModal()">關閉</button></div>'
+      +'<div class="preview-paper"><div class="preview-kicker">ATELIER · NEXT STEPS</div>'
+      +'<h2>借鏡後下一步</h2><div class="preview-gold-line"></div>'
+      +'<div class="preview-sub">'+_esc(cname)+' · 你挑了 '+N+' 個對標，接下來這樣用</div>'
+      +common+cards
+      +'<div style="font-size:12px;color:#8A7274;margin-top:6px;line-height:1.8">每個提示詞都已帶入你目前服務的客戶與對標名單，複製後直接貼到 AI 即可。最終都是為了讓「'+_esc(cname)+'」拍出能打到市場的內容。</div>'
+      +'</div></div>';
+    md.classList.add('show'); md.onclick=function(e){ if(e.target===md) closeModal(); };
+  };
+})();
+</script>
+
+<!-- ═══════════════ cs-v4.21 客戶進度也能輸出 PPTX（深-4：每環節 PPT/PDF/HTML）═══════════════ -->
+<script>
+(function(){
+  'use strict';
+  if(window.__atelierProgPptxV421){ return; } window.__atelierProgPptxV421=true;
+  function _I(k,f){ return (window.ICN&&ICN[k])||f||''; }
+  var SERIF='Noto Serif CJK TC,Noto Serif TC,Microsoft JhengHei,serif';
+  var SANS='Noto Sans CJK TC,Noto Sans TC,Microsoft JhengHei,sans-serif';
+  var CORM='Cormorant Garamond,Noto Serif TC,serif';
+  var CIRC=['①','②','③','④','⑤','⑥','⑦'];
+  function _name(){ var a=(typeof curAcc==='function')?curAcc():null; return a?(a.displayName||a.handle||'客戶'):'客戶'; }
+  function _journey(a){ var flow=(typeof DASH_FLOW!=='undefined'&&DASH_FLOW)||[]; return flow.map(function(p,i){ return { no:i+1, name:p[1], status:(typeof flowStatus==='function')?flowStatus(a,p[0]):'not-started' }; }); }
+  function _pct(j){ var s=0; j.forEach(function(x){ s+=(x.status==='done')?1:(x.status==='in-progress'?0.5:0); }); return j.length?Math.round(s/j.length*100):0; }
+  function _lab(s){ return s==='done'?'已完成':s==='in-progress'?'進行中':'待進行'; }
+  function _col(s){ return s==='done'?'4A6552':s==='in-progress'?'9C7D4A':'C4B5B8'; }
+  window._csProgressPPTX=async function(){
+    if(typeof loadPptx!=='function'||typeof pptFactory!=='function'){ if(typeof toast==='function') toast('PPTX 元件未就緒'); return; }
+    var a=(typeof curAcc==='function')?curAcc():null; if(!a){ if(typeof toast==='function') toast('尚未選定客戶'); return; }
+    var btn=document.activeElement, oldTxt=(btn&&btn.tagName==='BUTTON')?btn.innerHTML:'';
+    if(btn&&btn.tagName==='BUTTON'){ btn.disabled=true; btn.innerHTML='產生中…'; }
+    if(typeof toast==='function') toast('正在產生進度 PPTX（約 5–15 秒）');
+    try{
+      var ok=await new Promise(function(r){ loadPptx(r); }); if(!ok) throw new Error('PPTX 函式庫載入失敗');
+      var pptx=pptFactory(), C=pptPalette(), name=_name(), d=new Date().toISOString().slice(0,10);
+      pptx.layout='LAYOUT_WIDE'; pptx.author='ATELIER'; pptx.company='ATELIER'; pptx.subject='內容旅程進度';
+      var j=_journey(a), pct=_pct(j);
+      var cover=pptx.addSlide(); cover.background={color:C.bg};
+      cover.addText('ATELIER × '+String(name).toUpperCase(),{x:.8,y:.7,w:10,h:.4,fontSize:11,color:C.text3,fontFace:CORM,charSpace:4});
+      cover.addText('你的內容旅程',{x:.8,y:2.4,w:11,h:1.4,fontSize:60,bold:true,color:C.text,fontFace:SERIF,fit:'shrink'});
+      cover.addText(name+'　·　完成度 '+pct+'%',{x:.8,y:5.3,w:12,h:.55,fontSize:20,color:C.primary,fontFace:SERIF});
+      cover.addText('Inspire · Create · Shine.',{x:.8,y:5.95,w:10,h:.4,fontSize:14,color:C.text2,fontFace:CORM});
+      cover.addText('Client journey · '+d,{x:.8,y:7.0,w:9,h:.35,fontSize:10,color:C.text3,fontFace:CORM});
+      var s=pptx.addSlide(); s.background={color:C.bg};
+      s.addText('JOURNEY',{x:.8,y:.7,w:8,h:.35,fontSize:10,color:C.text3,fontFace:CORM,charSpace:3});
+      s.addText('七階段進度',{x:.8,y:1.3,w:12,h:.9,fontSize:32,bold:true,color:C.text,fontFace:SERIF});
+      s.addText('',{x:.8,y:2.32,w:.55,h:.035,fill:{color:C.primary}});
+      var y=2.7;
+      j.forEach(function(st,i){
+        s.addText((CIRC[i]||(i+1)),{x:.8,y:y,w:.5,h:.4,fontSize:22,color:_col(st.status),fontFace:CORM});
+        s.addText(st.name,{x:1.45,y:y+.03,w:6,h:.35,fontSize:16,bold:true,color:C.text,fontFace:SERIF});
+        s.addText(_lab(st.status),{x:10.5,y:y+.04,w:2,h:.3,fontSize:13,bold:true,color:_col(st.status),fontFace:SANS,align:'right'});
+        y+=.62;
+      });
+      s.addText('ATELIER',{x:.8,y:7.08,w:3,h:.3,fontSize:9,color:C.text4,fontFace:SANS});
+      s.addText('Inspire · Create · Shine.',{x:8.5,y:7.08,w:4,h:.3,fontSize:9,color:C.text4,fontFace:CORM,align:'right'});
+      var e=pptx.addSlide(); e.background={color:C.bg};
+      e.addText('每完成一步，',{x:.8,y:2.7,w:12,h:1.0,fontSize:48,bold:true,color:C.text,fontFace:SERIF});
+      e.addText('內容方向就更清楚一點。',{x:.8,y:3.7,w:12,h:1.0,fontSize:48,bold:true,color:C.primary,fontFace:SERIF});
+      e.addText('我們會陪你一路走到交付。',{x:.8,y:5.2,w:11,h:.4,fontSize:14,color:C.text2,fontFace:SANS});
+      e.addText('ATELIER',{x:.8,y:7.05,w:4,h:.3,fontSize:11,color:C.text3,fontFace:SANS});
+      e.addText('Inspire · Create · Shine.',{x:8.5,y:7.05,w:4,h:.3,fontSize:11,color:C.text3,fontFace:CORM,align:'right'});
+      await pptx.writeFile({ fileName:'ATELIER_'+(typeof safeFileName==='function'?safeFileName(name):name)+'_內容旅程_'+d+'.pptx' });
+      if(typeof toast==='function') toast(_I('check','✓')+' 已下載進度 PPTX');
+    }catch(err){ console.warn('[progress pptx]',err); if(typeof toast==='function') toast('PPTX 產生失敗：'+(err&&err.message||err)); }
+    finally{ if(btn&&btn.tagName==='BUTTON'){ btn.disabled=false; btn.innerHTML=oldTxt||'下載 PPTX'; } }
+  };
+  var _op=window._csOpenProgress;
+  window._csOpenProgress=function(){
+    if(typeof _op==='function') _op();
+    try{ var pa=document.querySelector('#modal .preview-actions'); if(pa&&!pa.querySelector('[data-cs-prog-pptx]')){ var b=document.createElement('button'); b.className='preview-modal-btn'; b.setAttribute('data-cs-prog-pptx','1'); b.textContent='下載 PPTX'; b.onclick=window._csProgressPPTX; pa.insertBefore(b, pa.firstChild); } }catch(e){ console.warn('[prog pptx btn]',e); }
+  };
+})();
+</script>
+
+<!-- ═══════════════ cs-v4.22 每個區塊「查看提示詞」（深-2：任何提示詞都看得到內容）═══════════════ -->
+<script>
+(function(){
+  'use strict';
+  if(window.__atelierViewPromptV422){ return; } window.__atelierViewPromptV422=true;
+  function _esc(s){ return (typeof esc==='function')?esc(s):String(s==null?'':s); }
+  function _I(k,f){ return (window.ICN&&ICN[k])||f||''; }
+  function _promptText(card){
+    var title=(typeof _sfTitle==='function')?_sfTitle(card):'這個區塊';
+    var fields=(typeof _sfFields==='function')?_sfFields(card):[];
+    var a=(typeof curAcc==='function')?curAcc():null;
+    var ctx=[]; if(a){ if(a.displayName)ctx.push('客戶：'+a.displayName); if(a.handle)ctx.push(a.handle); if(a.industry)ctx.push('產業：'+a.industry); if(a.jobTitle)ctx.push(a.jobTitle); }
+    var p='我在做內容顧問服務，要填寫「'+title+'」這個區塊。\n'
+      +(ctx.length?('【客戶背景】\n'+ctx.join('・')+'\n\n'):'\n')
+      +'請依下列欄位，逐欄擬出專業、具體、可直接用的內容。規則：\n'
+      +'- 用「欄位名稱：內容」格式，一行一欄，欄位名稱一字不差照抄下面的字。\n'
+      +'- 不確定或需要我補資料的欄位，值寫「待補：<你需要我提供什麼>」，不要編造。\n'
+      +'- 每欄內容精簡到能直接用。\n\n【欄位】\n'
+      +fields.map(function(f){return '- '+f.label;}).join('\n');
+    return { title:title, p:p, n:fields.length };
+  }
+  window._csOpenSectionPrompt=function(card){
+    if(!card){ return; }
+    var r=_promptText(card);
+    if(!r.n){ if(typeof toast==='function') toast('這個區塊沒有可填欄位'); return; }
+    var sh=$('sheet'), md=$('modal'); if(!sh||!md) return;
+    sh.innerHTML='<div class="preview-wrap"><div class="preview-actions">'
+      +'<button class="preview-modal-btn" onclick="(window._csCopyText||function(t){})(document.getElementById(\'cssp-box\').innerText)">複製提示詞</button>'
+      +'<button class="preview-modal-btn" onclick="closeModal()">關閉</button></div>'
+      +'<div class="preview-paper"><div class="preview-kicker">ATELIER · AI PROMPT</div>'
+      +'<h2>'+_esc(r.title)+' · AI 提示詞</h2><div class="preview-gold-line"></div>'
+      +'<div class="preview-sub">這就是「AI 智能填入」會送給 AI 的提示詞，已帶入這位客戶。複製貼到 AI，再把回覆貼回「AI 智能填入」即可一鍵匯入。</div>'
+      +'<div id="cssp-box" style="white-space:pre-wrap;font-size:13px;line-height:1.85;color:#3A2A2C;background:#FAF6F1;border:1px solid #EFE7DC;border-radius:10px;padding:14px 16px">'+_esc(r.p)+'</div>'
+      +'</div></div>';
+    md.classList.add('show'); md.onclick=function(e){ if(e.target===md) closeModal(); };
+  };
+  function _addPromptBtns(v){
+    var scope=v||document;
+    [].slice.call(scope.querySelectorAll('.sf-bar')).forEach(function(bar){
+      if(bar.querySelector('[data-cs-prompt]')) return;
+      var card=bar.closest('.section-card'); if(!card) return;
+      var b=document.createElement('button'); b.type='button'; b.className='btn-cs-expand'; b.setAttribute('data-cs-prompt','1');
+      b.innerHTML=_I('prompt','')+' 查看提示詞';
+      b.onclick=function(){ window._csOpenSectionPrompt(card); };
+      bar.appendChild(b);
+    });
+  }
+  var _isfb=window.injectSectionFillButtons;
+  window.injectSectionFillButtons=function(v){ if(typeof _isfb==='function') _isfb(v); try{ _addPromptBtns(v); }catch(e){ console.warn('[view prompt]',e); } };
+})();
+</script>
+
+<!-- ═══════════════ cs-v4.23 評分歷史也能輸出 PPTX（深-7）═══════════════ -->
+<script>
+(function(){
+  'use strict';
+  if(window.__atelierHealthPptxV423){ return; } window.__atelierHealthPptxV423=true;
+  function _I(k,f){ return (window.ICN&&ICN[k])||f||''; }
+  var SERIF='Noto Serif CJK TC,Noto Serif TC,Microsoft JhengHei,serif';
+  var SANS='Noto Sans CJK TC,Noto Sans TC,Microsoft JhengHei,sans-serif';
+  var CORM='Cormorant Garamond,Noto Serif TC,serif';
+  function _name(){ var a=(typeof curAcc==='function')?curAcc():null; return a?(a.displayName||a.handle||'客戶'):'客戶'; }
+  function _clip(t,n){ return (typeof clipText==='function')?clipText(t,n):String(t||'').slice(0,n||120); }
+  window._csHealthPPTX=async function(){
+    if(typeof loadPptx!=='function'||typeof pptFactory!=='function'){ if(typeof toast==='function') toast('PPTX 元件未就緒'); return; }
+    var a=(typeof curAcc==='function')?curAcc():null; if(!a){ if(typeof toast==='function') toast('尚未選定客戶'); return; }
+    var entry=(typeof latestHealthEntry==='function')?latestHealthEntry(a):null;
+    if(!entry){ if(typeof toast==='function') toast('這位客戶還沒有評分'); return; }
+    var items=(typeof normalizeHealthItems==='function')?normalizeHealthItems(entry.items):[];
+    var total=(typeof healthEntryTotal==='function')?healthEntryTotal(entry):items.reduce(function(s,it){return s+(it.score||0);},0);
+    var btn=document.activeElement, oldTxt=(btn&&btn.tagName==='BUTTON')?btn.innerHTML:'';
+    if(btn&&btn.tagName==='BUTTON'){ btn.disabled=true; btn.innerHTML='產生中…'; }
+    if(typeof toast==='function') toast('正在產生評分 PPTX（約 5–15 秒）');
+    try{
+      var ok=await new Promise(function(r){ loadPptx(r); }); if(!ok) throw new Error('PPTX 函式庫載入失敗');
+      var pptx=pptFactory(), C=pptPalette(), name=_name(), d=new Date().toISOString().slice(0,10);
+      pptx.layout='LAYOUT_WIDE'; pptx.author='ATELIER'; pptx.company='ATELIER'; pptx.subject='內容健康評分';
+      var cover=pptx.addSlide(); cover.background={color:C.bg};
+      cover.addText('ATELIER × '+String(name).toUpperCase(),{x:.8,y:.7,w:10,h:.4,fontSize:11,color:C.text3,fontFace:CORM,charSpace:4});
+      cover.addText('內容健康評分',{x:.8,y:2.4,w:11,h:1.4,fontSize:60,bold:true,color:C.text,fontFace:SERIF,fit:'shrink'});
+      cover.addText(name+'　·　'+total+' / 50',{x:.8,y:5.3,w:12,h:.55,fontSize:20,color:C.primary,fontFace:SERIF});
+      cover.addText('Inspire · Create · Shine.',{x:.8,y:5.95,w:10,h:.4,fontSize:14,color:C.text2,fontFace:CORM});
+      cover.addText((entry.cycleLabel||'評分')+' · '+d,{x:.8,y:7.0,w:9,h:.35,fontSize:10,color:C.text3,fontFace:CORM});
+      var per=4, pages=Math.ceil(items.length/per), total_pages=pages;
+      for(var pg=0; pg<pages; pg++){
+        var s=pptx.addSlide(); s.background={color:C.bg};
+        s.addText('HEALTH SCORE',{x:.8,y:.7,w:8,h:.35,fontSize:10,color:C.text3,fontFace:CORM,charSpace:3});
+        s.addText(String(pg+1).padStart(2,'0')+' / '+String(total_pages).padStart(2,'0'),{x:10.8,y:.72,w:1.7,h:.3,fontSize:10,color:C.text4,fontFace:CORM,align:'right'});
+        s.addText('十維評分'+(pages>1?'（'+(pg+1)+'/'+pages+'）':''),{x:.8,y:1.3,w:12,h:.9,fontSize:32,bold:true,color:C.text,fontFace:SERIF,fit:'shrink'});
+        s.addText('',{x:.8,y:2.32,w:.55,h:.035,fill:{color:C.primary}});
+        var y=2.6;
+        items.slice(pg*per,(pg+1)*per).forEach(function(it){
+          s.addText(it.label,{x:.8,y:y,w:8.5,h:.34,fontSize:15,bold:true,color:C.text,fontFace:SERIF,fit:'shrink'});
+          s.addText((it.score||0)+' / 5',{x:10.3,y:y,w:2.2,h:.34,fontSize:16,bold:true,color:C.primary,fontFace:SANS,align:'right'});
+          var note=it.noteAdvisor||it.note||'';
+          if(note) s.addText(_clip(note,160),{x:.8,y:y+.36,w:11.7,h:.72,fontSize:11.5,color:C.text2,fontFace:SANS,valign:'top',fit:'shrink',breakLine:false});
+          y+=1.15;
+        });
+        s.addText('ATELIER',{x:.8,y:7.08,w:3,h:.3,fontSize:9,color:C.text4,fontFace:SANS});
+        s.addText('Inspire · Create · Shine.',{x:8.5,y:7.08,w:4,h:.3,fontSize:9,color:C.text4,fontFace:CORM,align:'right'});
+      }
+      var e=pptx.addSlide(); e.background={color:C.bg};
+      e.addText('看得見分數，',{x:.8,y:2.7,w:12,h:1.0,fontSize:48,bold:true,color:C.text,fontFace:SERIF});
+      e.addText('才知道往哪裡進步。',{x:.8,y:3.7,w:12,h:1.0,fontSize:48,bold:true,color:C.primary,fontFace:SERIF});
+      e.addText('ATELIER',{x:.8,y:7.05,w:4,h:.3,fontSize:11,color:C.text3,fontFace:SANS});
+      e.addText('Inspire · Create · Shine.',{x:8.5,y:7.05,w:4,h:.3,fontSize:11,color:C.text3,fontFace:CORM,align:'right'});
+      await pptx.writeFile({ fileName:'ATELIER_'+(typeof safeFileName==='function'?safeFileName(name):name)+'_內容健康評分_'+d+'.pptx' });
+      if(typeof toast==='function') toast(_I('check','✓')+' 已下載評分 PPTX');
+    }catch(err){ console.warn('[health pptx]',err); if(typeof toast==='function') toast('PPTX 產生失敗：'+(err&&err.message||err)); }
+    finally{ if(btn&&btn.tagName==='BUTTON'){ btn.disabled=false; btn.innerHTML=oldTxt||'下載 PPTX'; } }
+  };
+  var _ohh=window.openHealthHistory;
+  window.openHealthHistory=function(){
+    if(typeof _ohh==='function') _ohh();
+    try{ var pa=document.querySelector('#modal .preview-actions'); if(pa&&!pa.querySelector('[data-cs-health-pptx]')){ var b=document.createElement('button'); b.className='preview-modal-btn'; b.setAttribute('data-cs-health-pptx','1'); b.textContent='下載 PPTX'; b.onclick=window._csHealthPPTX; pa.insertBefore(b, pa.firstChild); } }catch(e){ console.warn('[health pptx btn]',e); }
+  };
+})();
+</script>
+
+<!-- ═══════════════ cs-v4.24 客戶進度：每階段完成%＋缺什麼（深-5，畫面/列印/HTML/PPTX 一致）═══════════════ -->
+<script>
+(function(){
+  'use strict';
+  if(window.__atelierProgDetailV424){ return; } window.__atelierProgDetailV424=true;
+  function _esc(s){ return (typeof esc==='function')?esc(s):String(s==null?'':s); }
+  function _I(k,f){ return (window.ICN&&ICN[k])||f||''; }
+  function _name(){ var a=(typeof curAcc==='function')?curAcc():null; return a?(a.displayName||a.handle||'客戶'):'客戶'; }
+  function _safe(s){ return (typeof safeFileName==='function')?safeFileName(s):String(s||'').replace(/[^\w\u4e00-\u9fa5-]+/g,'_'); }
+  var FLAB={resultClient:'客戶版結果',resultAdvisor:'顧問版結果',handle:'帳號',displayName:'名稱',industry:'產業',painPoints:'痛點',goals:'目標',positioning:'定位判斷',audienceInsight:'受眾洞察',contentGap:'內容缺口',conversionGap:'轉換缺口',priorityAdvice:'優先建議',assets:'既有資產',pillars:'內容主軸',stories:'故事素材',serviceProof:'服務證據',shootingAssets:'拍攝素材',goal:'企劃目標',proposalAngle:'提案角度',contentPillars:'內容支柱',topicList:'題目清單',firstScripts:'首批腳本',timeline:'時程',kpi:'KPI',deliveredItems:'交付項目',feedback:'客戶回饋',nextStep:'下一步'};
+  function _lab(k){ return FLAB[k]||k; }
+  function _prog(a){
+    if(typeof computeClientProgress==='function'){ try{ return computeClientProgress(a); }catch(e){} }
+    return {percent:0,stages:[],doneCount:0,totalCount:0};
+  }
+  function _stStat(s){ return s.done?{t:'已完成',c:'#4A6552'}:(s.filled>0?{t:'進行中',c:'#9C7D4A'}:{t:'未開始',c:'#B8A6AA'}); }
+  function _CIRC(n){ return ['①','②','③','④','⑤','⑥','⑦'][n-1]||('('+n+')'); }
+  /* ── 畫面上的每階段列 ── */
+  function _rowsRich(prog){
+    return prog.stages.map(function(s){
+      var st=_stStat(s), pct=s.total?Math.round(s.filled/s.total*100):0;
+      var miss=(!s.done&&s.missing&&s.missing.length)?('<div style="font-size:11.5px;color:#A6857E;margin-top:5px;line-height:1.6">還缺：'+s.missing.map(function(k){return _esc(_lab(k));}).join('、')+'</div>'):'';
+      return '<div style="display:flex;align-items:flex-start;gap:12px;padding:13px 0;border-bottom:1px solid #F1ECE4">'
+        +'<div style="font-family:\'Cormorant Garamond\',serif;font-size:21px;color:'+st.c+';min-width:26px;line-height:1.2">'+_CIRC(s.no)+'</div>'
+        +'<div style="flex:1;min-width:0">'
+        +'<div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px"><span style="font-weight:800;font-size:15px;color:#2A1A1C">'+_esc(s.name)+'</span>'
+        +'<span style="font-size:12px;font-weight:800;color:'+st.c+';white-space:nowrap">'+st.t+' · '+s.filled+'/'+s.total+' 欄</span></div>'
+        +'<div style="display:flex;align-items:center;gap:8px;margin-top:6px"><div style="flex:1;height:6px;background:#F1ECE4;border-radius:99px;overflow:hidden"><div style="height:100%;width:'+pct+'%;background:'+st.c+';border-radius:99px"></div></div><span style="font-size:11px;color:#A89498;min-width:30px;text-align:right">'+pct+'%</span></div>'
+        +miss+'</div></div>';
+    }).join('');
+  }
+  function _bar(pct){ return '<div style="display:flex;align-items:center;gap:10px;margin:6px 0 14px"><div style="flex:1;height:10px;background:#F1ECE4;border-radius:99px;overflow:hidden"><div style="height:100%;width:'+pct+'%;background:#C8A86A;border-radius:99px"></div></div><div style="font-size:15px;font-weight:800;color:#9C7D4A;min-width:42px;text-align:right">'+pct+'%</div></div>'; }
+  /* ── 畫面：完整接管進度視窗 ── */
+  window._csOpenProgress=function(){
+    var a=(typeof curAcc==='function')?curAcc():null; if(!a){ if(typeof toast==='function') toast(_I('warn','⚠')+' 尚未選定客戶'); return; }
+    var sh=$('sheet'), md=$('modal'); if(!sh||!md) return;
+    var prog=_prog(a);
+    sh.innerHTML='<div class="preview-wrap"><div class="preview-actions">'
+      +'<button class="preview-modal-btn" data-cs-prog-pptx="1" onclick="window._csProgressPPTX&&_csProgressPPTX()">下載 PPTX</button>'
+      +'<button class="preview-modal-btn" onclick="window._csProgressPrint&&_csProgressPrint()">列印 / 存 PDF（給客戶）</button>'
+      +'<button class="preview-modal-btn" onclick="window._csProgressDownload&&_csProgressDownload()">下載 HTML</button>'
+      +'<button class="preview-modal-btn" onclick="closeModal()">關閉</button></div>'
+      +'<div class="preview-paper"><div class="preview-kicker">ATELIER · YOUR JOURNEY</div>'
+      +'<h2>你的內容旅程</h2><div class="preview-gold-line"></div>'
+      +'<div class="preview-sub">'+_esc(_name())+' · 完成度 '+prog.percent+'%　|　已完成 '+prog.doneCount+' / '+prog.totalCount+' 階段</div>'
+      +_bar(prog.percent)+_rowsRich(prog)
+      +'<div style="margin-top:16px;font-size:13px;color:#8A7274;line-height:1.8">每一階段都標了完成度與還缺哪些欄位。把缺的補齊，後面的企劃、交付與結案會越輕鬆。</div>'
+      +'</div></div>';
+    md.classList.add('show'); md.onclick=function(e){ if(e.target===md) closeModal(); };
+  };
+  /* ── 列印 / 下載 HTML：用同一份豐富內容 ── */
+  function _richDoc(a){
+    var prog=_prog(a), name=_name(), d=new Date().toISOString().slice(0,10);
+    var rows=prog.stages.map(function(s){
+      var st=_stStat(s), pct=s.total?Math.round(s.filled/s.total*100):0;
+      var miss=(!s.done&&s.missing&&s.missing.length)?('<div class="miss">還缺：'+s.missing.map(function(k){return _esc(_lab(k));}).join('、')+'</div>'):'';
+      return '<div class="row"><div class="no" style="color:'+st.c+'">'+_CIRC(s.no)+'</div><div class="bd"><div class="rh"><span class="nm">'+_esc(s.name)+'</span><span class="stt" style="color:'+st.c+'">'+st.t+' · '+s.filled+'/'+s.total+' 欄</span></div><div class="pb"><i style="width:'+pct+'%;background:'+st.c+'"></i></div>'+miss+'</div></div>';
+    }).join('');
+    return '<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>內容旅程 · '+_esc(name)+'</title>'
+      +'<style>@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Noto+Serif+TC:wght@500;700&family=Noto+Sans+TC:wght@400;700&display=swap");'
+      +'*{box-sizing:border-box}body{margin:0;background:#FDFBF8;color:#2A1A1C;font-family:"Noto Sans TC",sans-serif;-webkit-print-color-adjust:exact;print-color-adjust:exact}'
+      +'.wrap{max-width:720px;margin:0 auto;padding:54px 44px}.kick{font-family:"Cormorant Garamond",serif;letter-spacing:3px;color:#A89498;font-size:13px}'
+      +'h1{font-family:"Noto Serif TC",serif;font-size:34px;margin:6px 0 4px}.gl{width:54px;height:3px;background:#C8A86A;margin:10px 0 14px;border-radius:2px}'
+      +'.sub{color:#8A7274;font-size:13px;margin-bottom:18px}.topbar{height:11px;background:#F1ECE4;border-radius:99px;overflow:hidden;margin-bottom:22px}.topbar i{display:block;height:100%;background:#C8A86A;width:'+prog.percent+'%}'
+      +'.row{display:flex;gap:13px;padding:14px 0;border-bottom:1px solid #F1ECE4}.no{font-family:"Cormorant Garamond",serif;font-size:23px;min-width:28px}.bd{flex:1}'
+      +'.rh{display:flex;justify-content:space-between;align-items:baseline;gap:8px}.nm{font-family:"Noto Serif TC",serif;font-weight:700;font-size:16px}.stt{font-size:12.5px;font-weight:700;white-space:nowrap}'
+      +'.pb{height:6px;background:#F1ECE4;border-radius:99px;overflow:hidden;margin:7px 0}.pb i{display:block;height:100%}.miss{font-size:12px;color:#A6857E;margin-top:4px;line-height:1.6}'
+      +'.ft{margin-top:26px;color:#A89498;font-size:11px;font-family:"Cormorant Garamond",serif;display:flex;justify-content:space-between}</style></head>'
+      +'<body><div class="wrap"><div class="kick">ATELIER · YOUR JOURNEY</div><h1>你的內容旅程</h1><div class="gl"></div>'
+      +'<div class="sub">'+_esc(name)+'　·　完成度 '+prog.percent+'%　|　已完成 '+prog.doneCount+' / '+prog.totalCount+' 階段</div>'
+      +'<div class="topbar"><i></i></div>'+rows
+      +'<div class="ft"><span>ATELIER</span><span>Inspire · Create · Shine.　'+d+'</span></div></div></body></html>';
+  }
+  window._csProgressPrint=function(){
+    var a=(typeof curAcc==='function')?curAcc():null; if(!a) return;
+    var w=window.open('','_blank','width=820,height=900'); if(!w){ if(typeof toast==='function') toast('瀏覽器擋住彈窗，請允許後再試'); return; }
+    w.document.open(); w.document.write(_richDoc(a)+'<scr'+'ipt>setTimeout(function(){window.print()},500)</scr'+'ipt>'); w.document.close();
+  };
+  window._csProgressDownload=function(){
+    var a=(typeof curAcc==='function')?curAcc():null; if(!a) return;
+    try{ var html=_richDoc(a); var b=new Blob([html],{type:'text/html;charset=utf-8'}); var u=URL.createObjectURL(b); var el=document.createElement('a'); el.href=u; el.download='ATELIER_'+_safe(_name())+'_內容旅程_'+new Date().toISOString().slice(0,10)+'.html'; document.body.appendChild(el); el.click(); setTimeout(function(){ document.body.removeChild(el); URL.revokeObjectURL(u); },120); if(typeof toast==='function') toast(_I('check','✓')+' 已下載進度表'); }
+    catch(e){ if(typeof toast==='function') toast('下載失敗'); }
+  };
+  /* ── PPTX：每階段補上 欄位數/缺漏 ── */
+  var SERIF='Noto Serif CJK TC,Noto Serif TC,Microsoft JhengHei,serif', SANS='Noto Sans CJK TC,Noto Sans TC,Microsoft JhengHei,sans-serif', CORM='Cormorant Garamond,Noto Serif TC,serif';
+  window._csProgressPPTX=async function(){
+    if(typeof loadPptx!=='function'||typeof pptFactory!=='function'){ if(typeof toast==='function') toast('PPTX 元件未就緒'); return; }
+    var a=(typeof curAcc==='function')?curAcc():null; if(!a){ if(typeof toast==='function') toast('尚未選定客戶'); return; }
+    var btn=document.activeElement, oldTxt=(btn&&btn.tagName==='BUTTON')?btn.innerHTML:'';
+    if(btn&&btn.tagName==='BUTTON'){ btn.disabled=true; btn.innerHTML='產生中…'; }
+    if(typeof toast==='function') toast('正在產生進度 PPTX（約 5–15 秒）');
+    try{
+      var ok=await new Promise(function(r){ loadPptx(r); }); if(!ok) throw new Error('PPTX 函式庫載入失敗');
+      var pptx=pptFactory(), C=pptPalette(), name=_name(), d=new Date().toISOString().slice(0,10), prog=_prog(a);
+      pptx.layout='LAYOUT_WIDE';
+      var cover=pptx.addSlide(); cover.background={color:C.bg};
+      cover.addText('ATELIER × '+String(name).toUpperCase(),{x:.8,y:.7,w:10,h:.4,fontSize:11,color:C.text3,fontFace:CORM,charSpace:4});
+      cover.addText('你的內容旅程',{x:.8,y:2.4,w:11,h:1.4,fontSize:60,bold:true,color:C.text,fontFace:SERIF,fit:'shrink'});
+      cover.addText(name+'　·　完成度 '+prog.percent+'%（'+prog.doneCount+'/'+prog.totalCount+' 階段）',{x:.8,y:5.3,w:12,h:.55,fontSize:20,color:C.primary,fontFace:SERIF});
+      cover.addText('Client journey · '+d,{x:.8,y:7.0,w:9,h:.35,fontSize:10,color:C.text3,fontFace:CORM});
+      var s=pptx.addSlide(); s.background={color:C.bg};
+      s.addText('JOURNEY',{x:.8,y:.7,w:8,h:.35,fontSize:10,color:C.text3,fontFace:CORM,charSpace:3});
+      s.addText('七階段進度',{x:.8,y:1.3,w:12,h:.9,fontSize:32,bold:true,color:C.text,fontFace:SERIF});
+      s.addText('',{x:.8,y:2.32,w:.55,h:.035,fill:{color:C.primary}});
+      var y=2.62;
+      prog.stages.forEach(function(st){ var ss=_stStat(st), col=ss.c.replace('#','');
+        s.addText(_CIRC(st.no),{x:.8,y:y,w:.5,h:.4,fontSize:21,color:col,fontFace:CORM});
+        s.addText(st.name,{x:1.45,y:y+.02,w:4,h:.34,fontSize:15,bold:true,color:C.text,fontFace:SERIF});
+        s.addText(ss.t+' · '+st.filled+'/'+st.total+' 欄',{x:5.4,y:y+.04,w:3,h:.3,fontSize:12.5,bold:true,color:col,fontFace:SANS});
+        var miss=(!st.done&&st.missing&&st.missing.length)?('還缺：'+st.missing.map(function(k){return _lab(k);}).join('、')):'';
+        if(miss) s.addText((typeof clipText==='function'?clipText(miss,46):miss),{x:8.6,y:y+.05,w:4,h:.3,fontSize:10.5,color:C.text2,fontFace:SANS,align:'left',breakLine:false});
+        y+=.6;
+      });
+      s.addText('ATELIER',{x:.8,y:7.08,w:3,h:.3,fontSize:9,color:C.text4,fontFace:SANS});
+      s.addText('Inspire · Create · Shine.',{x:8.5,y:7.08,w:4,h:.3,fontSize:9,color:C.text4,fontFace:CORM,align:'right'});
+      await pptx.writeFile({ fileName:'ATELIER_'+_safe(name)+'_內容旅程_'+d+'.pptx' });
+      if(typeof toast==='function') toast(_I('check','✓')+' 已下載進度 PPTX');
+    }catch(err){ console.warn('[progress pptx v424]',err); if(typeof toast==='function') toast('PPTX 產生失敗：'+(err&&err.message||err)); }
+    finally{ if(btn&&btn.tagName==='BUTTON'){ btn.disabled=false; btn.innerHTML=oldTxt||'下載 PPTX'; } }
+  };
+})();
+</script>
+
+<!-- ═══════════════ cs-v4.25 查看全貌：可掃讀（深-6：頂部重點摘要＋區塊預設收合）═══════════════ -->
+<style id="cs-overview-v425">
+.ovx-card{border:1px solid #F0DADA;background:#FDF6F5;border-radius:12px;padding:14px 16px;margin:0 0 14px}
+.ovx-card .ovx-h{font-size:11px;font-weight:800;letter-spacing:2px;color:#A51820;margin-bottom:10px;font-family:'Cormorant Garamond',serif}
+.ovx-row{display:flex;flex-wrap:wrap;gap:7px;align-items:center;margin-bottom:9px}
+.ovx-lab{font-size:11.5px;color:#8A7274;min-width:42px}
+.ovx-chip{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:700;border-radius:999px;padding:4px 11px;border:1px solid #E6D6D8;background:#fff;color:#5C4248}
+.ovx-chip.done{border-color:#BEDAC6;background:#F1F7F2;color:#3C5A47}
+.ovx-chip.part{border-color:#E6CFA6;background:#FBF5E9;color:#866320}
+.ovx-chip.zero{border-color:#E8DEDF;background:#FAF6F6;color:#A89498}
+.ovx-big{font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:700;color:#A51820;line-height:1}
+.ovx-weak{font-size:12px;color:#8A6520;background:#FBF5E9;border:1px solid #E6CFA6;border-radius:999px;padding:3px 10px;font-weight:700}
+details.ovBlock > summary .ovx-tag{float:right;font-size:11px;font-weight:700;color:#A89498}
+details.ovBlock > summary .ovx-tag.has{color:#9C7D4A}
+</style>
+<script>
+(function(){
+  'use strict';
+  if(window.__atelierOverviewScanV425){ return; } window.__atelierOverviewScanV425=true;
+  function _esc(s){ return (typeof esc==='function')?esc(s):String(s==null?'':s); }
+  function _prog(a){ if(typeof computeClientProgress==='function'){ try{ return computeClientProgress(a); }catch(e){} } return {percent:0,stages:[],doneCount:0,totalCount:0}; }
+  var CIRC=['①','②','③','④','⑤','⑥','⑦'];
+  function _weakest(a){
+    try{
+      var e=(typeof latestHealthEntry==='function')?latestHealthEntry(a):null; if(!e) return null;
+      var items=(typeof normalizeHealthItems==='function')?normalizeHealthItems(e.items):[]; if(!items.length) return null;
+      var m=items.slice().sort(function(p,q){return (p.score||0)-(q.score||0);})[0];
+      return m?{label:m.label,score:m.score||0}:null;
+    }catch(e){ return null; }
+  }
+  function _health(a){ try{ if(typeof healthTotal==='function'){ var h=healthTotal(a); return h&&h.has?h.total:null; } }catch(e){} try{ var en=latestHealthEntry(a); return en?healthEntryTotal(en):null; }catch(e){} return null; }
+  function _summaryCard(a){
+    var prog=_prog(a), hv=_health(a), wk=_weakest(a);
+    var idBits=[]; if(a.handle) idBits.push(_esc(a.handle)); if(a.displayName) idBits.push(_esc(a.displayName));
+    var meta=[]; if(a.industry) meta.push(_esc(a.industry)); if(a.jobTitle) meta.push(_esc(a.jobTitle));
+    var chips=prog.stages.map(function(s){ var cls=s.done?'done':(s.filled>0?'part':'zero'); return '<span class="ovx-chip '+cls+'">'+(CIRC[s.no-1]||s.no)+' '+_esc(s.name)+' '+s.filled+'/'+s.total+'</span>'; }).join('');
+    return '<div class="ovx-card"><div class="ovx-h">AT A GLANCE · 重點摘要</div>'
+      +'<div class="ovx-row"><span class="ovx-lab">身份</span><span style="font-weight:800;color:#2A1A1C;font-size:14px">'+(idBits.join(' ')||'未命名')+'</span>'+(meta.length?'<span style="font-size:12px;color:#8A7274">· '+meta.join(' · ')+'</span>':'')+'</div>'
+      +'<div class="ovx-row"><span class="ovx-lab">健康</span><span class="ovx-big">'+(hv==null?'—':hv)+'</span><span style="font-size:12px;color:#8A7274">/ 50</span>'+(wk?'<span class="ovx-weak">最弱：'+_esc(wk.label)+' '+wk.score+'/5</span>':'')+'<span style="margin-left:auto;font-size:12px;color:#9C7D4A;font-weight:800">完成度 '+prog.percent+'%</span></div>'
+      +'<div class="ovx-row" style="margin-bottom:0"><span class="ovx-lab">進度</span><span style="display:flex;flex-wrap:wrap;gap:6px">'+chips+'</span></div>'
+      +'</div>';
+  }
+  function _enhance(){
+    var sh=$('sheet'); if(!sh) return;
+    var first=sh.querySelector('details.ovBlock'); if(!first) return;            /* 確認是「查看全貌」彈窗 */
+    if(sh.querySelector('.ovx-card')) return;                                     /* 冪等 */
+    var a=(typeof curAcc==='function')?curAcc():null; if(!a) return;
+    /* 1) 區塊預設收合 + 標示有無資料 */
+    [].slice.call(sh.querySelectorAll('details.ovBlock')).forEach(function(d){
+      d.removeAttribute('open');
+      var sm=d.querySelector('summary'); if(sm&&!sm.querySelector('.ovx-tag')){
+        var body=d.querySelector('div'); var txt=(d.textContent||'');
+        var empty=/（尚未|（沒有|（8 大類尚未|（10 問尚未|（5 個進階|（健康分數尚未/.test(txt);
+        var tag=document.createElement('span'); tag.className='ovx-tag'+(empty?'':' has'); tag.textContent=empty?'（空）':'有資料';
+        sm.appendChild(tag);
+      }
+    });
+    /* 2) 頂部插入重點摘要卡 */
+    var card=document.createElement('div'); card.innerHTML=_summaryCard(a);
+    first.parentNode.insertBefore(card.firstChild, first);
+  }
+  var _oo=window.openOverview;
+  window.openOverview=function(){ if(typeof _oo==='function') _oo(); try{ _enhance(); }catch(e){ console.warn('[overview scan]',e); } };
+})();
+</script>
+
+<!-- ═══════════════ cs-v4.27 評分 PPTX 加「雷達圖」一頁（canvas→PNG 嵌入）═══════════════ -->
+<script>
+(function(){
+  'use strict';
+  if(window.__atelierRadarPptxV427){ return; } window.__atelierRadarPptxV427=true;
+  function _I(k,f){ return (window.ICN&&ICN[k])||f||''; }
+  var SERIF='Noto Serif CJK TC,Noto Serif TC,Microsoft JhengHei,serif', SANS='Noto Sans CJK TC,Noto Sans TC,Microsoft JhengHei,sans-serif', CORM='Cormorant Garamond,Noto Serif TC,serif';
+  var SHORT={1:'定位',2:'服務',3:'客群',4:'一致',5:'信任',6:'記憶',7:'視覺',8:'CTA',9:'資產',10:'成熟'};
+  function _name(){ var a=(typeof curAcc==='function')?curAcc():null; return a?(a.displayName||a.handle||'客戶'):'客戶'; }
+  function _safe(s){ return (typeof safeFileName==='function')?safeFileName(s):String(s||'').replace(/[^\w\u4e00-\u9fa5-]+/g,'_'); }
+  /* ── 用 canvas 畫十維雷達 → PNG dataURL ── */
+  window._csRadarPNG=function(items){
+    items=Array.isArray(items)?items:[]; var n=items.length; if(!n) return null;
+    var S=920, cx=S/2, cy=S/2+8, R=S*0.30, max=5;
+    var cv=document.createElement('canvas'); cv.width=S; cv.height=S; var g=cv.getContext('2d'); if(!g) return null;
+    g.fillStyle='#FFFFFF'; g.fillRect(0,0,S,S);
+    function pt(i,r){ var ang=-Math.PI/2 + i*(2*Math.PI/n); return [cx+Math.cos(ang)*r, cy+Math.sin(ang)*r]; }
+    g.lineWidth=1.5;
+    for(var ring=1; ring<=max; ring++){ g.beginPath(); for(var i=0;i<n;i++){ var p=pt(i, R*ring/max); if(i===0)g.moveTo(p[0],p[1]); else g.lineTo(p[0],p[1]); } g.closePath(); g.strokeStyle=(ring===max?'#D9CFC2':'#ECE5DB'); g.stroke(); }
+    for(var i=0;i<n;i++){ var pe=pt(i,R); g.beginPath(); g.moveTo(cx,cy); g.lineTo(pe[0],pe[1]); g.strokeStyle='#EFE7DC'; g.lineWidth=1; g.stroke(); }
+    g.beginPath(); for(var i=0;i<n;i++){ var sc=Math.max(0,Math.min(max, items[i].score||0)); var p=pt(i, R*sc/max); if(i===0)g.moveTo(p[0],p[1]); else g.lineTo(p[0],p[1]); } g.closePath();
+    g.fillStyle='rgba(165,24,32,0.16)'; g.fill(); g.strokeStyle='#A51820'; g.lineWidth=3.5; g.stroke();
+    for(var i=0;i<n;i++){ var sc2=Math.max(0,Math.min(max, items[i].score||0)); var p=pt(i, R*sc2/max); g.beginPath(); g.arc(p[0],p[1],5.5,0,2*Math.PI); g.fillStyle='#A51820'; g.fill(); }
+    g.textAlign='center'; g.textBaseline='middle';
+    for(var i=0;i<n;i++){
+      var lp=pt(i, R+50);
+      var lab=SHORT[items[i].id]|| String(items[i].label||'').replace(/^\d+\.?\s*/,'').slice(0,4);
+      g.fillStyle='#2A1A1C'; g.font='700 27px '+SANS; g.fillText(lab, lp[0], lp[1]-2);
+      var sp=pt(i, R+50); g.fillStyle='#9C7D4A'; g.font='700 20px '+SANS; g.fillText(String(items[i].score||0), sp[0], sp[1]+24);
+    }
+    try{ return cv.toDataURL('image/png'); }catch(e){ return null; }
+  };
+  /* ── 重新定義評分 PPTX：封面 + 雷達頁 + 十維分頁 + 結尾 ── */
+  window._csHealthPPTX=async function(){
+    if(typeof loadPptx!=='function'||typeof pptFactory!=='function'){ if(typeof toast==='function') toast('PPTX 元件未就緒'); return; }
+    var a=(typeof curAcc==='function')?curAcc():null; if(!a){ if(typeof toast==='function') toast('尚未選定客戶'); return; }
+    var entry=(typeof latestHealthEntry==='function')?latestHealthEntry(a):null;
+    if(!entry){ if(typeof toast==='function') toast('這位客戶還沒有評分'); return; }
+    var items=(typeof normalizeHealthItems==='function')?normalizeHealthItems(entry.items):[];
+    var total=(typeof healthEntryTotal==='function')?healthEntryTotal(entry):items.reduce(function(s,it){return s+(it.score||0);},0);
+    var btn=document.activeElement, oldTxt=(btn&&btn.tagName==='BUTTON')?btn.innerHTML:'';
+    if(btn&&btn.tagName==='BUTTON'){ btn.disabled=true; btn.innerHTML='產生中…'; }
+    if(typeof toast==='function') toast('正在產生評分 PPTX（含雷達圖）');
+    try{
+      var ok=await new Promise(function(r){ loadPptx(r); }); if(!ok) throw new Error('PPTX 函式庫載入失敗');
+      var radar=null; try{ radar=window._csRadarPNG(items); }catch(e){ console.warn('[radar]',e); }
+      var pptx=pptFactory(), C=pptPalette(), name=_name(), d=new Date().toISOString().slice(0,10), clip=(typeof clipText==='function')?clipText:function(t,n){return String(t||'').slice(0,n);};
+      pptx.layout='LAYOUT_WIDE'; pptx.author='ATELIER'; pptx.company='ATELIER'; pptx.subject='內容健康評分';
+      var cover=pptx.addSlide(); cover.background={color:C.bg};
+      cover.addText('ATELIER × '+String(name).toUpperCase(),{x:.8,y:.7,w:10,h:.4,fontSize:11,color:C.text3,fontFace:CORM,charSpace:4});
+      cover.addText('內容健康評分',{x:.8,y:2.4,w:11,h:1.4,fontSize:60,bold:true,color:C.text,fontFace:SERIF,fit:'shrink'});
+      cover.addText(name+'　·　'+total+' / 50',{x:.8,y:5.3,w:12,h:.55,fontSize:20,color:C.primary,fontFace:SERIF});
+      cover.addText((entry.cycleLabel||'評分')+' · '+d,{x:.8,y:7.0,w:9,h:.35,fontSize:10,color:C.text3,fontFace:CORM});
+      if(radar){
+        var rs=pptx.addSlide(); rs.background={color:C.bg};
+        rs.addText('HEALTH RADAR',{x:.8,y:.7,w:8,h:.35,fontSize:10,color:C.text3,fontFace:CORM,charSpace:3});
+        rs.addText('評分雷達圖',{x:.8,y:1.25,w:7,h:.9,fontSize:32,bold:true,color:C.text,fontFace:SERIF});
+        rs.addText('',{x:.8,y:2.27,w:.55,h:.035,fill:{color:C.primary}});
+        rs.addImage({ data:radar, x:4.55, y:1.35, w:5.6, h:5.6 });
+        rs.addText(total+'',{x:.95,y:3.0,w:2.6,h:1.0,fontSize:64,bold:true,color:C.primary,fontFace:CORM});
+        rs.addText('/ 50',{x:1.05,y:4.05,w:2,h:.4,fontSize:18,color:C.text2,fontFace:SANS});
+        rs.addText('十維平均 '+(items.length?(total/items.length).toFixed(1):'0')+' / 5',{x:.95,y:4.6,w:3.2,h:.4,fontSize:13,color:C.text2,fontFace:SANS});
+        rs.addText('ATELIER',{x:.8,y:7.08,w:3,h:.3,fontSize:9,color:C.text4,fontFace:SANS});
+        rs.addText('Inspire · Create · Shine.',{x:8.5,y:7.08,w:4,h:.3,fontSize:9,color:C.text4,fontFace:CORM,align:'right'});
+      }
+      var per=4, pages=Math.ceil(items.length/per);
+      for(var pg=0; pg<pages; pg++){
+        var s=pptx.addSlide(); s.background={color:C.bg};
+        s.addText('HEALTH SCORE',{x:.8,y:.7,w:8,h:.35,fontSize:10,color:C.text3,fontFace:CORM,charSpace:3});
+        s.addText(String(pg+1).padStart(2,'0')+' / '+String(pages).padStart(2,'0'),{x:10.8,y:.72,w:1.7,h:.3,fontSize:10,color:C.text4,fontFace:CORM,align:'right'});
+        s.addText('十維評分'+(pages>1?'（'+(pg+1)+'/'+pages+'）':''),{x:.8,y:1.3,w:12,h:.9,fontSize:32,bold:true,color:C.text,fontFace:SERIF,fit:'shrink'});
+        s.addText('',{x:.8,y:2.32,w:.55,h:.035,fill:{color:C.primary}});
+        var y=2.6;
+        items.slice(pg*per,(pg+1)*per).forEach(function(it){
+          s.addText(it.label,{x:.8,y:y,w:8.5,h:.34,fontSize:15,bold:true,color:C.text,fontFace:SERIF,fit:'shrink'});
+          s.addText((it.score||0)+' / 5',{x:10.3,y:y,w:2.2,h:.34,fontSize:16,bold:true,color:C.primary,fontFace:SANS,align:'right'});
+          var note=it.noteAdvisor||it.note||'';
+          if(note) s.addText(clip(note,160),{x:.8,y:y+.36,w:11.7,h:.72,fontSize:11.5,color:C.text2,fontFace:SANS,valign:'top',fit:'shrink',breakLine:false});
+          y+=1.15;
+        });
+        s.addText('ATELIER',{x:.8,y:7.08,w:3,h:.3,fontSize:9,color:C.text4,fontFace:SANS});
+        s.addText('Inspire · Create · Shine.',{x:8.5,y:7.08,w:4,h:.3,fontSize:9,color:C.text4,fontFace:CORM,align:'right'});
+      }
+      var e=pptx.addSlide(); e.background={color:C.bg};
+      e.addText('看得見分數，',{x:.8,y:2.7,w:12,h:1.0,fontSize:48,bold:true,color:C.text,fontFace:SERIF});
+      e.addText('才知道往哪裡進步。',{x:.8,y:3.7,w:12,h:1.0,fontSize:48,bold:true,color:C.primary,fontFace:SERIF});
+      e.addText('ATELIER',{x:.8,y:7.05,w:4,h:.3,fontSize:11,color:C.text3,fontFace:SANS});
+      e.addText('Inspire · Create · Shine.',{x:8.5,y:7.05,w:4,h:.3,fontSize:11,color:C.text3,fontFace:CORM,align:'right'});
+      await pptx.writeFile({ fileName:'ATELIER_'+_safe(name)+'_內容健康評分_'+d+'.pptx' });
+      if(typeof toast==='function') toast(_I('check','✓')+' 已下載評分 PPTX（含雷達圖）');
+    }catch(err){ console.warn('[health pptx v427]',err); if(typeof toast==='function') toast('PPTX 產生失敗：'+(err&&err.message||err)); }
+    finally{ if(btn&&btn.tagName==='BUTTON'){ btn.disabled=false; btn.innerHTML=oldTxt||'下載 PPTX'; } }
+  };
 })();
 </script>
 </body>
