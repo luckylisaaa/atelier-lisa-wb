@@ -722,7 +722,7 @@ details.cat .cat-body{padding:14px 15px}
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">客戶服務台</span></span>
-    <span id="verBadge">cs-v4.9</span>
+    <span id="verBadge">cs-v4.10</span>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button type="button" id="popoutBtn" class="popout-btn" title="把客戶服務台開成獨立小視窗"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6"/><path d="M20 4l-9 9"/><path d="M14 12v7H5V10h7"/></svg>小視窗</button>
@@ -5443,5 +5443,47 @@ window.openStageInfo=function(stageName){
   };
 })();
 </script>
+
+<!-- ═══════════════ cs-v4.10 整體視覺優化（純增補 CSS，不改版面結構）═══════════════ -->
+<style id="cs-visual-v410">
+/* 全域過場：讓互動更順 */
+.section-card,.video-card,.deliverable-card,.cli-card,.btn,.btn-go,.btn-gold,.btn-ghost,.mini-btn,.btn-deliver,.btn-deliver-2,.tab,.preview-modal-btn,input,textarea,select{
+  transition:box-shadow .22s ease,border-color .22s ease,background .18s ease,color .18s ease,transform .12s ease;
+}
+/* 卡片：更細緻的層次與 hover 提示 */
+.section-card{box-shadow:0 1px 2px rgba(90,40,45,.03),0 6px 18px rgba(90,40,45,.035)}
+.section-card:hover{box-shadow:0 2px 6px rgba(90,40,45,.05),0 12px 30px rgba(90,40,45,.06)}
+.video-card:hover,.deliverable-card:hover{box-shadow:0 8px 22px rgba(165,24,32,.06);border-color:#E6D2C9}
+.cli-card{transition:box-shadow .22s ease,border-color .22s ease,transform .12s ease}
+.cli-card:hover{box-shadow:0 10px 26px rgba(90,40,45,.07)}
+/* 輸入框：金色聚焦光環 */
+input:focus,textarea:focus,select:focus{outline:none!important;border-color:var(--gold)!important;box-shadow:0 0 0 3px rgba(212,165,116,.20)!important}
+/* 按鈕：點下回饋 + 主鈕 hover 加深 */
+.btn:active,.mini-btn:active,.btn-deliver:active,.btn-deliver-2:active,.btn-go:active,.btn-gold:active{transform:translateY(1px)}
+.btn-go:hover,.btn-gold:hover{background:#7A1018;box-shadow:0 4px 12px rgba(165,24,32,.22)}
+.btn-ghost:hover{background:#FAF3F4;border-color:#E0D2CE}
+.mini-btn:hover{background:var(--rouge);box-shadow:0 2px 8px rgba(165,24,32,.18)}
+.btn-deliver-2:hover{background:#FBEDED}
+/* 分頁列：hover 與選中更清楚 */
+.tab:hover{color:var(--rouge)}
+/* 彈窗：背景微毛玻璃、紙張更立體、進場淡入上浮 */
+.modal{background:rgba(42,26,28,.46);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px)}
+.sheet{box-shadow:0 24px 64px rgba(42,26,28,.22);border:1px solid #EFE7DC}
+.modal.show .sheet{animation:csPop .26s cubic-bezier(.2,.8,.2,1)}
+@keyframes csPop{from{opacity:0;transform:translateY(10px) scale(.985)}to{opacity:1;transform:none}}
+/* 交付/預覽紙張：給一點漂浮感（premium）*/
+.preview-paper{box-shadow:0 10px 40px rgba(42,26,28,.10)!important}
+/* 新功能面板：統一圓角與陰影語彙 */
+[data-loop-constitution],[data-cs-benchmarks],[data-cs-deliveries]{border-radius:14px;box-shadow:0 2px 14px rgba(90,40,45,.05)}
+/* 挑對標清單列 hover */
+.bench-row:hover{background:#FBF6F1;border-color:#E2D6C4!important}
+/* 細緻捲軸（彈窗與內捲區）*/
+.sheet::-webkit-scrollbar,#benchList::-webkit-scrollbar,.vc-transcript-body::-webkit-scrollbar{width:9px;height:9px}
+.sheet::-webkit-scrollbar-thumb,#benchList::-webkit-scrollbar-thumb,.vc-transcript-body::-webkit-scrollbar-thumb{background:#E2D6C8;border-radius:99px;border:2px solid transparent;background-clip:padding-box}
+.sheet::-webkit-scrollbar-track,#benchList::-webkit-scrollbar-track{background:transparent}
+.sheet::-webkit-scrollbar-thumb:hover{background:#D2C2AE}
+/* 版本徽章 */
+#verBadge{letter-spacing:.5px}
+</style>
 </body>
 </html>
