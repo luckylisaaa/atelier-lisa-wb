@@ -722,7 +722,7 @@ details.cat .cat-body{padding:14px 15px}
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">客戶服務台</span></span>
-    <span id="verBadge">cs-v4.1</span>
+    <span id="verBadge">cs-v4.2</span>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button type="button" id="popoutBtn" class="popout-btn" title="把客戶服務台開成獨立小視窗"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6"/><path d="M20 4l-9 9"/><path d="M14 12v7H5V10h7"/></svg>小視窗</button>
@@ -4759,6 +4759,141 @@ window.openStageInfo=function(stageName){
     var base=(typeof _origRRV==='function')?_origRRV(a):'';
     var panel=''; try{ panel=_loopConstitutionHTML(a); }catch(e){ console.warn('[loop constitution]',e); }
     return panel+base;   /* 閉環體質放在影片庫上方 */
+  };
+})();
+</script>
+
+<!-- ═══════════════ cs-v4.2 加厚②：對標借鏡(從庫裡挑任意帳號當客戶範本，自動進提示詞) ═══════════════ -->
+<!-- 存在 account.benchmarkRefs=[accId...]；走既有 _accPush 欄位保留合併。初診面板可挑/看/移除/複製；
+     並裝飾 atelierDiagnosisFormat 讓選好的對標自動出現在每個 AI 提示詞(⑧對標借鏡範本)。 -->
+<script>
+(function(){
+  'use strict';
+  if(window.__atelierBenchV42){ return; } window.__atelierBenchV42=true;
+  function _esc(s){ return (typeof esc==='function')?esc(s):String(s==null?'':s); }
+  function _I(k,f){ return (window.ICN&&ICN[k])||f||''; }
+  function _allAccounts(){ try{ return (typeof accounts!=='undefined'&&Array.isArray(accounts))?accounts:[]; }catch(e){ return []; } }
+  function _vids(x){ return (typeof accountVideos==='function')?accountVideos(x):[]; }
+  function _vtitle(v){ return (typeof videoTitle==='function')?videoTitle(v):(v&&(v.title||v.id)||'影片'); }
+  function _benchAccts(a){
+    if(!a||!Array.isArray(a.benchmarkRefs)) return [];
+    var byId={}; _allAccounts().forEach(function(x){ if(x&&x.id) byId[x.id]=x; });
+    return a.benchmarkRefs.map(function(id){ return byId[id]; }).filter(Boolean);
+  }
+  function _topVids(x,n){
+    var vs=_vids(x).slice();
+    vs.sort(function(p,q){ return (Number(q.score||q.dataScore)||0)-(Number(p.score||p.dataScore)||0); });
+    return vs.slice(0,n||3);
+  }
+
+  /* ── 自動餵進每個 AI 提示詞 ── */
+  function _benchPromptBlock(a){
+    var bl=_benchAccts(a); if(!bl.length) return '';
+    var lines=bl.map(function(x){
+      var tv=_topVids(x,3).map(function(v){ return '「'+_vtitle(v)+'」'+(v.score?'('+v.score+'分)':''); }).join('、');
+      return '- @'+(x.handle||x.displayName||x.id)+'（'+(x.industry||'未填產業')+(x.jobTitle?' / '+x.jobTitle:'')+'）'+(tv?'：代表作 '+tv:'');
+    }).join('\n');
+    return '\n⑧ 對標借鏡範本（顧問指定、要讓本客戶模仿的成功案例，跨產業亦適用）：\n'+lines+'\n請具體說明：能從這些對標借用哪些開場 / 結構 / 題型 / 呈現方式，套到本客戶。\n';
+  }
+  var _origDF=window.atelierDiagnosisFormat;
+  window.atelierDiagnosisFormat=function(a){
+    a=a||((typeof curAcc==='function')?curAcc():null);
+    var base=(typeof _origDF==='function')?_origDF(a):'';
+    var add=''; try{ add=_benchPromptBlock(a); }catch(e){}
+    return base+add;
+  };
+
+  /* ── 初診面板 ── */
+  function _benchmarkHTML(a){
+    var bl=_benchAccts(a);
+    var head='<div class="section-card" data-cs-benchmarks style="border-left:3px solid var(--rouge)">'
+      +'<h3 style="display:flex;align-items:center;gap:6px">'+_I('target','')+'對標借鏡範本'
+      +'<button type="button" class="btn-deliver-2" style="margin-left:auto" onclick="_csOpenBenchmarkPicker()">'+(bl.length?'編輯':'＋ 挑對標')+'</button></h3>'
+      +'<div class="sc-note">從你庫裡挑成功案例（跨產業也行）當這位客戶的範本。挑好的會自動進到每個 AI 提示詞，提案時也能直接拿給客戶看「我們要走這條路線」。</div>';
+    if(!bl.length){ return head+'<div class="empty-deliver" style="margin-top:6px">尚未挑選對標。<br><span style="font-size:12px;color:#A88">按右上「＋ 挑對標」，從 50 多組帳號裡選幾個你覺得適合的範本。</span></div></div>'; }
+    var cards=bl.map(function(x){
+      var tv=_topVids(x,3);
+      var tvH=tv.length?('<div style="font-size:12px;color:#5A4A4C;margin-top:4px">代表作：'+tv.map(function(v){ return _esc(_vtitle(v))+(v.score?'<span style="color:#9C7D4A"> '+v.score+'</span>':''); }).join('、')+'</div>'):'';
+      return '<div class="deliverable-card" style="border-radius:10px;padding:10px 12px;margin-top:8px;border-color:#E8D3C9">'
+        +'<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px">'
+        +'<div style="min-width:0"><div style="font-weight:800;font-size:13px;color:#2A1A1C">@'+_esc(x.handle||x.displayName||'未命名')+(x.isClient?' <span style="font-size:10px;color:#9C7D4A">客戶</span>':'')+'</div>'
+        +'<div style="font-size:11.5px;color:#8A7274">'+_esc(x.industry||'未填產業')+(x.jobTitle?' · '+_esc(x.jobTitle):'')+' · 影片 '+_vids(x).length+' 支</div>'+tvH+'</div>'
+        +'<button type="button" class="btn-deliver-2" style="flex:0 0 auto;border-color:#D9B7B7;color:#A51820" onclick="_csBenchRemove(\''+_esc(x.id)+'\')">移除</button>'
+        +'</div></div>';
+    }).join('');
+    return head+cards+'<div class="btn-row" style="margin-top:8px"><button class="btn-deliver-2" onclick="_csCopyBenchmarks()">複製對標摘要</button></div></div>';
+  }
+
+  /* ── 挑對標彈窗（含搜尋，55 帳號用得到）── */
+  function _pickerRow(x,checked){
+    var vc=_vids(x).length;
+    var hay=((x.handle||'')+' '+(x.displayName||'')+' '+(x.industry||'')+' '+(x.jobTitle||'')).toLowerCase();
+    return '<label class="bench-row" data-search="'+_esc(hay)+'" style="display:flex;align-items:center;gap:10px;padding:8px 10px;border:1px solid #EEE7DC;border-radius:8px;margin-bottom:6px;cursor:pointer">'
+      +'<input type="checkbox" data-id="'+_esc(x.id)+'"'+(checked?' checked':'')+' style="width:16px;height:16px;flex:0 0 auto">'
+      +'<div style="flex:1;min-width:0">'
+      +'<div style="font-weight:700;font-size:13px;color:#2A1A1C">'+_esc(x.handle||x.displayName||'未命名')+(x.isClient?' <span style="font-size:10.5px;color:#9C7D4A">客戶</span>':'')+'</div>'
+      +'<div style="font-size:11.5px;color:#8A7274">'+_esc(x.industry||'未填產業')+(x.jobTitle?' · '+_esc(x.jobTitle):'')+' · 影片 '+vc+' 支</div>'
+      +'</div></label>';
+  }
+  window._csOpenBenchmarkPicker=function(){
+    var a=(typeof curAcc==='function')?curAcc():null; if(!a){ if(typeof toast==='function') toast(_I('warn','⚠')+' 尚未選定客戶'); return; }
+    var sh=$('sheet'), md=$('modal'); if(!sh||!md) return;
+    var sel={}; (a.benchmarkRefs||[]).forEach(function(id){ sel[id]=1; });
+    var others=_allAccounts().filter(function(x){ return x && x.id!==a.id; });
+    others.sort(function(p,q){ return _vids(q).length-_vids(p).length; });
+    var rows=others.map(function(x){ return _pickerRow(x,!!sel[x.id]); }).join('') || '<div class="sc-note">庫裡還沒有其他帳號可挑。</div>';
+    sh.innerHTML='<div style="padding:4px 2px">'
+      +'<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px"><h3 style="margin:0;font-size:16px;display:flex;align-items:center;gap:6px">'+_I('target','')+'挑對標範本</h3><button class="preview-modal-btn" style="margin-left:auto" onclick="closeModal()">關閉</button></div>'
+      +'<div class="sc-note" style="margin-bottom:8px">從你庫裡所有帳號挑（跨產業也行）。勾選的會成為這位客戶的對標範本，並自動進到每個 AI 提示詞。</div>'
+      +'<input id="benchSearch" placeholder="搜尋：@帳號 / 名稱 / 產業 / 職稱…" oninput="_csBenchFilter(this.value)" style="width:100%;box-sizing:border-box;padding:8px 12px;border:1px solid var(--line);border-radius:8px;margin-bottom:10px;font-family:inherit;font-size:13px">'
+      +'<div id="benchList" style="max-height:48vh;overflow:auto">'+rows+'</div>'
+      +'<div class="btn-row" style="margin-top:10px"><button class="btn btn-go" onclick="_csBenchConfirm()">加入為對標</button><button class="btn btn-ghost" onclick="closeModal()">取消</button></div>'
+      +'</div>';
+    md.classList.add('show'); md.onclick=function(e){ if(e.target===md) closeModal(); };
+    var si=$('benchSearch'); if(si) si.focus();
+  };
+  window._csBenchFilter=function(q){
+    q=String(q||'').toLowerCase().trim();
+    var rows=document.querySelectorAll('#benchList .bench-row');
+    rows.forEach(function(r){ var h=r.getAttribute('data-search')||''; r.style.display=(!q||h.indexOf(q)>=0)?'':'none'; });
+  };
+  function _refreshBenchPanels(){
+    var view=document.querySelector('.view.on'); if(!view) return;
+    ['[data-cs-benchmarks]','[data-loop-constitution]','[data-related-videos]'].forEach(function(s){ var el=view.querySelector(s); if(el) el.remove(); });
+    if(typeof injectRelatedVideosSection==='function'){ try{ injectRelatedVideosSection(view); }catch(e){} }
+  }
+  window._csBenchConfirm=function(){
+    var a=(typeof curAcc==='function')?curAcc():null; if(!a) return;
+    var ids=[]; document.querySelectorAll('#benchList .bench-row input:checked').forEach(function(c){ var id=c.getAttribute('data-id'); if(id) ids.push(id); });
+    a.benchmarkRefs=ids; a.updatedAt=Date.now();
+    try{ if(typeof _accPush==='function') _accPush(); }catch(e){}
+    if(typeof closeModal==='function') closeModal();
+    _refreshBenchPanels();
+    if(typeof toast==='function') toast(_I('check','✓')+' 已設定 '+ids.length+' 個對標');
+  };
+  window._csBenchRemove=function(id){
+    var a=(typeof curAcc==='function')?curAcc():null; if(!a||!Array.isArray(a.benchmarkRefs)) return;
+    a.benchmarkRefs=a.benchmarkRefs.filter(function(x){ return x!==id; }); a.updatedAt=Date.now();
+    try{ if(typeof _accPush==='function') _accPush(); }catch(e){}
+    _refreshBenchPanels();
+    if(typeof toast==='function') toast(_I('check','✓')+' 已移除');
+  };
+  window._csCopyBenchmarks=function(){
+    var a=(typeof curAcc==='function')?curAcc():null; var bl=_benchAccts(a);
+    if(!bl.length){ if(typeof toast==='function') toast('尚未選對標'); return; }
+    var txt='ATELIER 對標借鏡 · '+(a.handle||a.displayName||'—')+'\n'+bl.map(function(x){
+      var tv=_topVids(x,3).map(function(v){ return _vtitle(v)+(v.score?'('+v.score+')':''); }).join('、');
+      return '・@'+(x.handle||x.displayName||x.id)+'（'+(x.industry||'未填')+(x.jobTitle?' / '+x.jobTitle:'')+'）'+(tv?' 代表作：'+tv:'');
+    }).join('\n');
+    if(typeof copyVal==='function') copyVal(txt,'對標借鏡');
+  };
+
+  /* ── 把面板放到最上面（裝飾 renderRelatedVideosHTML）── */
+  var _rrv=window.renderRelatedVideosHTML;
+  window.renderRelatedVideosHTML=function(a){
+    var base=(typeof _rrv==='function')?_rrv(a):'';
+    var panel=''; try{ panel=_benchmarkHTML(a); }catch(e){ console.warn('[benchmark panel]',e); }
+    return panel+base;
   };
 })();
 </script>
