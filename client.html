@@ -722,7 +722,7 @@ details.cat .cat-body{padding:14px 15px}
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">客戶服務台</span></span>
-    <span id="verBadge">cs-v4.11</span>
+    <span id="verBadge">cs-v4.14</span>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button type="button" id="popoutBtn" class="popout-btn" title="把客戶服務台開成獨立小視窗"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6"/><path d="M20 4l-9 9"/><path d="M14 12v7H5V10h7"/></svg>小視窗</button>
@@ -5505,21 +5505,194 @@ details.cs-context .section-card{box-shadow:none}
   if(window.__atelierContextGroupV411){ return; } window.__atelierContextGroupV411=true;
   function _I(k,f){ return (window.ICN&&ICN[k])||f||''; }
   function _group(view){
-    if(!view||view.querySelector('details.cs-context')) return;
-    var sels=['[data-cs-benchmarks]','[data-loop-constitution]','[data-related-videos]'];
+    if(!view) return;
+    var sels=['[data-cs-benchmarks]','[data-loop-constitution]','[data-related-videos]','[data-video-benchmark]','[data-client-overview]','[data-full-profile]','[data-client-links]'];
     var panels=[]; sels.forEach(function(s){ var el=view.querySelector(s); if(el) panels.push(el); });
-    if(panels.length<2) return;                 /* 少於 2 個就不必收 */
-    var det=document.createElement('details'); det.className='cs-context';
-    var sum=document.createElement('summary');
-    sum.innerHTML='<span class="cs-context-t">'+_I('folder','')+'客戶背景資料</span><span class="cs-context-h">對標借鏡 · 閉環體質 · 影片庫（點此展開）</span>';
-    det.appendChild(sum);
-    panels[0].parentNode.insertBefore(det, panels[0]);
-    panels.forEach(function(p){ det.appendChild(p); });
+    var det=view.querySelector('details.cs-context');
+    if(!det){
+      if(panels.length<2) return;               /* 少於 2 個就不必收 */
+      det=document.createElement('details'); det.className='cs-context';
+      var sum=document.createElement('summary');
+      sum.innerHTML='<span class="cs-context-t">'+_I('folder','')+'客戶背景資料</span><span class="cs-context-h">總覽 · 檔案 · 對標借鏡 · 閉環體質 · 影片庫 · 連結（點此展開）</span>';
+      det.appendChild(sum);
+      panels[0].parentNode.insertBefore(det, panels[0]);
+    }
+    panels.forEach(function(p){ det.appendChild(p); });  /* 冪等：把所有目標框依序收進摺疊區（含刷新後跑到外面的）*/
   }
   var _inj=window.injectRelatedVideosSection;
   window.injectRelatedVideosSection=function(view){
     if(typeof _inj==='function') _inj(view);
     try{ _group(view); }catch(e){ console.warn('[context group]',e); }
+  };
+})();
+</script>
+
+<!-- ═══════════════ cs-v4.13 閉環透鏡（丙-3）：每階段標出閉環焦點＋客戶最弱層，並可開閉環地圖 ═══════════════ -->
+<style id="cs-lens-v413">
+.cs-lens{display:flex;align-items:center;flex-wrap:wrap;gap:8px 14px;background:linear-gradient(180deg,#FFFCF7,#FFFFFF);border:1px solid var(--border);border-left:3px solid var(--gold);border-radius:12px;padding:9px 14px;margin:10px 0 4px}
+.cs-lens-k{font-size:12px;font-weight:800;color:var(--gold-dark);display:inline-flex;align-items:center;gap:5px}
+.cs-lens-focus,.cs-lens-gap{font-size:12.5px;color:var(--sub)}.cs-lens-focus b,.cs-lens-gap b{color:var(--ink)}
+.cs-lens-dots{display:inline-flex;gap:5px;align-items:center}
+.cs-lens-dot{width:11px;height:11px;border-radius:50%;border:1px solid #E2D6C4}
+.cs-lens-dot.on{background:var(--gold);border-color:var(--gold)}
+.cs-lens-dot.off{background:#F1ECE4}
+.cs-lens-map{margin-left:auto;font-size:11.5px;font-weight:700;border:1px solid #DCC8CB;background:#fff;color:#5C0F14;border-radius:999px;padding:4px 12px;cursor:pointer;font-family:inherit}
+.cs-lens-map:hover{background:#FAF3F4}
+.cs-lens-note{font-size:11.5px;color:var(--text-3,#A89498);margin:0 2px 8px;line-height:1.6}
+.lm-table{width:100%;border-collapse:collapse;font-size:13px;margin:6px 0 14px}
+.lm-table td{padding:8px 10px;border-bottom:1px solid #F0EAE2;vertical-align:top}
+.lm-stage{font-weight:800;color:var(--ink);white-space:nowrap}
+.lm-focus{color:#9C7D4A;font-weight:700;white-space:nowrap}
+.lm-note{color:var(--sub)}
+.lm-layer{display:flex;gap:10px;padding:7px 0;border-bottom:1px solid #F0EAE2;font-size:13px}
+.lm-lc{font-weight:800;width:64px;color:var(--ink)}
+</style>
+<script>
+(function(){
+  'use strict';
+  if(window.__atelierLensV413){ return; } window.__atelierLensV413=true;
+  function _esc(s){ return (typeof esc==='function')?esc(s):String(s==null?'':s); }
+  function _I(k,f){ return (window.ICN&&ICN[k])||f||''; }
+  var LORDER=['A','B','C','D','E'];
+  var LNAME={A:'認知層',B:'品牌層',C:'信任層',D:'轉化層',E:'組織層'};
+  var LDEF={
+    A:'讓對的人第一次認識你（被看見、被搜尋到）',
+    B:'讓人記得你是誰、做什麼（識別、定位）',
+    C:'讓人相信你的專業（案例、證據、故事）',
+    D:'讓人採取行動（私訊、預約、購買）',
+    E:'讓產出可持續、可規模化（流程、團隊、系統）'
+  };
+  var SLM={
+    stage1:{focus:'認知 · 品牌',note:'看外人怎麼認識這個帳號、品牌識別清不清楚——這是閉環的入口。'},
+    stage2:{focus:'品牌 · 信任',note:'把服務、案例、證據建檔，作為日後「信任層」內容的素材來源。'},
+    stage3:{focus:'信任 · 轉化',note:'挖出客戶真正的價值主張與成交斷點（轉化層卡在哪）。'},
+    stage4:{focus:'全閉環收斂',note:'把前面資料收斂成定位（認知/品牌）、受眾、內容缺口與轉換缺口、優先順序。'},
+    stage5:{focus:'信任',note:'把證據／案例／故事盤點出來，專補最常缺的「信任層」。'},
+    stage6:{focus:'認知 → 轉化 全鏈',note:'用內容主軸把五層串成一套可拍、可執行的企劃。'},
+    stage7:{focus:'組織',note:'流程化、可持續產出，建立「組織層」的長期能力。'}
+  };
+  function _vids(a){ return (typeof accountVideos==='function')?accountVideos(a):[]; }
+  function _layerOf(v){ var m=String(v&&(v.goal||v.stage||v.code||v.gStage)||'').match(/[A-E]/); return m?m[0]:''; }
+  function _counts(a){ var s={A:0,B:0,C:0,D:0,E:0}; _vids(a).forEach(function(v){ var L=_layerOf(v); if(L) s[L]++; }); return s; }
+  function _weak(a){ var lc=_counts(a); var empt=LORDER.filter(function(k){return !lc[k];}); if(empt.length) return empt[0]; return LORDER.slice().sort(function(p,q){return lc[p]-lc[q];})[0]; }
+  function _dots(a){ var lc=_counts(a); return '<span class="cs-lens-dots">'+LORDER.map(function(k){ var on=lc[k]>0; return '<span class="cs-lens-dot '+(on?'on':'off')+'" title="'+LNAME[k]+'：'+(lc[k]||0)+' 支"></span>'; }).join('')+'</span>'; }
+  function _lensHTML(stageId,a){
+    var slm=SLM[stageId]||{focus:'—',note:''}; var w=_weak(a);
+    return '<div data-cs-lens class="cs-lens">'
+      +'<span class="cs-lens-k">'+_I('target','')+'閉環透鏡</span>'
+      +'<span class="cs-lens-focus">本步焦點：<b>'+_esc(slm.focus)+'</b></span>'
+      +_dots(a)
+      +'<span class="cs-lens-gap">客戶最弱：<b>'+_esc(LNAME[w]||'—')+'</b></span>'
+      +'<button type="button" class="cs-lens-map" onclick="_csOpenLoopMap()">閉環地圖</button>'
+      +'</div>'
+      +'<div class="cs-lens-note">'+_esc(slm.note)+'</div>';
+  }
+  function _injectLens(){
+    var v=document.querySelector('.view.on'); if(!v) return;
+    var m=v.id.match(/^view-(stage[1-7])$/); if(!m) return;
+    if(v.querySelector('[data-cs-lens]')) return;
+    var a=(typeof curAcc==='function')?curAcc():null; if(!a) return;
+    var head=v.querySelector('.page-head'); if(!head) return;
+    try{ head.insertAdjacentHTML('afterend', _lensHTML(m[1],a)); }catch(e){}
+  }
+  window._csOpenLoopMap=function(){
+    var a=(typeof curAcc==='function')?curAcc():null; var sh=$('sheet'), md=$('modal'); if(!sh||!md) return;
+    var STG=[['stage1','①初診'],['stage2','②建檔'],['stage3','③問診'],['stage4','④診斷'],['stage5','⑤盤點'],['stage6','⑥企劃'],['stage7','⑦交付']];
+    var rows=STG.map(function(p){ var s=SLM[p[0]]||{}; return '<tr><td class="lm-stage">'+p[1]+'</td><td class="lm-focus">'+_esc(s.focus||'')+'</td><td class="lm-note">'+_esc(s.note||'')+'</td></tr>'; }).join('');
+    var lc=a?_counts(a):{A:0,B:0,C:0,D:0,E:0};
+    var defs=LORDER.map(function(k){ return '<div class="lm-layer"><span class="lm-lc" style="color:'+(lc[k]>0?'#4A6552':'#A51820')+'">'+k+' '+LNAME[k]+'</span><span class="lm-note">'+_esc(LDEF[k])+'　<b style="color:'+(lc[k]>0?'#4A6552':'#A51820')+'">'+(a?('本客戶 '+(lc[k]||0)+' 支'+(lc[k]?'':' · 缺口')):'')+'</b></span></div>'; }).join('');
+    sh.innerHTML='<div class="preview-wrap"><div class="preview-actions"><button class="preview-modal-btn" onclick="closeModal()">關閉</button></div>'
+      +'<div class="preview-paper"><div class="preview-kicker">ATELIER · CLOSED-LOOP MAP</div>'
+      +'<h2>七階段 × 自媒體商業閉環</h2><div class="preview-gold-line"></div>'
+      +'<div class="preview-sub">服務流程（七階段）如何一步步推進你的內容閉環（五層）</div>'
+      +'<table class="lm-table"><tr><td style="color:#A89498;font-size:11px">階段</td><td style="color:#A89498;font-size:11px">閉環焦點</td><td style="color:#A89498;font-size:11px">這一步在閉環做什麼</td></tr>'+rows+'</table>'
+      +'<div style="font-size:13px;font-weight:800;color:var(--ink);margin:10px 0 4px">閉環五層'+(a?'（含本客戶現況）':'')+'</div>'+defs
+      +'</div></div>';
+    md.classList.add('show'); md.onclick=function(e){ if(e.target===md) closeModal(); };
+  };
+  /* enhanceCurrentView 是 setInterval 直接抓原始參考，裝飾無效 → 自走一個冪等輪詢 */
+  setInterval(_injectLens, 950);
+  if(document.readyState!=='loading') setTimeout(_injectLens,300); else document.addEventListener('DOMContentLoaded',function(){ setTimeout(_injectLens,300); });
+})();
+</script>
+
+<!-- ═══════════════ cs-v4.14 統一框框規格（丙-1）：每個工作區塊一致的「AI 填入｜展開編輯」 ═══════════════ -->
+<!-- 延伸既有 .sf-bar，加「展開編輯」：放大編輯該區塊欄位，即時寫回原欄位（觸發自動暫存），並可復原本次修改。 -->
+<style id="cs-boxspec-v414">
+.sf-bar{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.btn-cs-expand{font-size:11.5px;font-weight:700;border:1px solid #DCC8CB;background:#fff;color:#5C0F14;border-radius:999px;padding:5px 12px;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:5px}
+.btn-cs-expand:hover{background:#FAF3F4;border-color:#CBB2B6}
+.cse-field{margin:0 0 14px}
+.cse-field label{display:block;font-size:12px;font-weight:800;color:var(--ink);margin:0 0 5px}
+.cse-field textarea{width:100%;box-sizing:border-box;border:1px solid var(--border);border-radius:10px;padding:10px 12px;font-family:inherit;font-size:14px;line-height:1.7;color:var(--ink);background:#fff;min-height:84px;resize:vertical}
+.cse-field textarea:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(212,165,116,.2)}
+</style>
+<script>
+(function(){
+  'use strict';
+  if(window.__atelierBoxSpecV414){ return; } window.__atelierBoxSpecV414=true;
+  function _esc(s){ return (typeof esc==='function')?esc(s):String(s==null?'':s); }
+  function _fieldsOf(card){
+    return [].slice.call(card.querySelectorAll('input[type="text"],textarea')).filter(function(el){
+      if(el.classList.contains('pv-edit')||el.id==='cl-import'||el.id==='sf-import'||el.classList.contains('sf-in')) return false;
+      if(el.closest('.preview-wrap')) return false;
+      return true;
+    });
+  }
+  function _labelOf(el,i){
+    var lab=el.closest('.fld,div'); var L=lab?lab.querySelector('label,.clab,.m-title'):null;
+    return (L&&(L.innerText||'').trim())||el.getAttribute('placeholder')||('欄位 '+(i+1));
+  }
+  window._csOpenSectionEditor=function(card){
+    if(!card){ return; }
+    var sh=$('sheet'), md=$('modal'); if(!sh||!md) return;
+    var title=(((card.querySelector('h2,h3')||{}).innerText)||'區塊').replace(/\s*預覽\s*$/,'').replace(/⊞/g,'').trim();
+    var els=_fieldsOf(card);
+    if(!els.length){ if(typeof toast==='function') toast('這個區塊沒有可編輯欄位'); return; }
+    var snap=els.map(function(el){ return el.value; });
+    window.__cseEls=els; window.__cseSnap=snap;
+    var fieldsHTML=els.map(function(el,i){
+      return '<div class="cse-field"><label>'+_esc(_labelOf(el,i))+'</label><textarea data-cse-i="'+i+'">'+_esc(el.value)+'</textarea></div>';
+    }).join('');
+    sh.innerHTML='<div class="preview-wrap"><div class="preview-actions">'
+      +'<button class="preview-modal-btn" onclick="_csSectionEditorUndo()">復原本次修改</button>'
+      +'<button class="preview-modal-btn" onclick="closeModal()">完成</button></div>'
+      +'<div class="preview-paper"><div class="preview-kicker">ATELIER · EDIT</div><h2>'+_esc(title)+'</h2><div class="preview-gold-line"></div>'
+      +'<div class="preview-sub">展開編輯這個區塊，修改會即時寫回並自動暫存；可隨時「復原本次修改」。</div>'+fieldsHTML+'</div></div>';
+    [].slice.call(sh.querySelectorAll('textarea[data-cse-i]')).forEach(function(ta){
+      ta.addEventListener('input',function(){
+        var i=+ta.getAttribute('data-cse-i'); var real=window.__cseEls&&window.__cseEls[i]; if(!real) return;
+        real.value=ta.value;
+        try{ real.dispatchEvent(new Event('input',{bubbles:true})); }catch(e){}
+        try{ real.dispatchEvent(new Event('change',{bubbles:true})); }catch(e){}
+      });
+    });
+    md.classList.add('show'); md.onclick=function(e){ if(e.target===md) closeModal(); };
+  };
+  window._csSectionEditorUndo=function(){
+    var els=window.__cseEls, snap=window.__cseSnap; if(!els||!snap) return;
+    var sh=$('sheet');
+    els.forEach(function(real,i){ if(!real) return; real.value=snap[i];
+      try{ real.dispatchEvent(new Event('input',{bubbles:true})); }catch(e){}
+      try{ real.dispatchEvent(new Event('change',{bubbles:true})); }catch(e){} });
+    if(sh) [].slice.call(sh.querySelectorAll('textarea[data-cse-i]')).forEach(function(ta){ var i=+ta.getAttribute('data-cse-i'); ta.value=snap[i]; });
+    if(typeof toast==='function') toast((window.ICN&&ICN.undo||'↶')+' 已復原本次修改');
+  };
+  function _addExpandBtns(v){
+    var scope=v||document;
+    [].slice.call(scope.querySelectorAll('.sf-bar')).forEach(function(bar){
+      if(bar.querySelector('[data-cs-expand]')) return;
+      var card=bar.closest('.section-card'); if(!card) return;
+      var b=document.createElement('button'); b.type='button'; b.className='btn-cs-expand'; b.setAttribute('data-cs-expand','1');
+      b.innerHTML='⊞ 展開編輯';
+      b.onclick=function(){ window._csOpenSectionEditor(card); };
+      bar.appendChild(b);
+    });
+  }
+  var _isfb=window.injectSectionFillButtons;
+  window.injectSectionFillButtons=function(v){
+    if(typeof _isfb==='function') _isfb(v);
+    try{ _addExpandBtns(v); }catch(e){ console.warn('[box spec]',e); }
   };
 })();
 </script>
