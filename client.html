@@ -722,7 +722,7 @@ details.cat .cat-body{padding:14px 15px}
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">客戶服務台</span></span>
-    <span id="verBadge">cs-v3.39</span>
+    <span id="verBadge">cs-v4.0</span>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button type="button" id="popoutBtn" class="popout-btn" title="把客戶服務台開成獨立小視窗"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6"/><path d="M20 4l-9 9"/><path d="M14 12v7H5V10h7"/></svg>小視窗</button>
@@ -4532,6 +4532,154 @@ window.openStageInfo=function(stageName){
 };
 
 
+</script>
+
+<!-- ═══════════════ cs-v4.0 雙向連動 ①核心：交付包(讀) + 客戶回饋(寫) ═══════════════ -->
+<!-- 設計：交付包/回饋都「掛在帳號物件上」(account.deliveryPackages / account.clientFeedback)，
+     走既有 creator_accounts/main 同步與 _accPush 欄位保留合併，不另開 Firestore collection。
+     全部連動程式集中在此區塊，用裝飾器(wrap)包住既有全域函式，原本 4500 行幾乎不動。 -->
+<script>
+(function(){
+  'use strict';
+  if(window.__atelierLinkV40){ return; } window.__atelierLinkV40=true;
+
+  /* ── 小工具 ── */
+  function _uid(p){ return (p||'id')+'_'+Date.now().toString(36)+'_'+Math.random().toString(36).slice(2,7); }
+  function _ensureArr(a,key){ if(!a) return []; if(!Array.isArray(a[key])) a[key]=[]; return a[key]; }
+  function _I(k,f){ return (window.ICN&&ICN[k])||f||''; }
+
+  /* ── 讀：交付包(工作台 → 服務台)；非破壞性，不會在帳號上寫出空欄位 ── */
+  function csDeliveries(a){
+    var list=(a&&Array.isArray(a.deliveryPackages))?a.deliveryPackages.slice():[];
+    list.sort(function(x,y){ return (y.createdAt||0)-(x.createdAt||0); });
+    return list;
+  }
+  function csUnreceivedCount(a){
+    if(!a||!Array.isArray(a.deliveryPackages)) return 0;
+    return a.deliveryPackages.filter(function(p){ return p && p.status==='sent'; }).length;
+  }
+  window.csDeliveries=csDeliveries;
+  window.csUnreceivedCount=csUnreceivedCount;
+
+  /* ── 寫：客戶回饋(服務台 → 工作台)；type: 'intake'|'rating'|'request' ── */
+  function csWriteFeedback(type, payload, opts){
+    opts=opts||{};
+    var a=(typeof curAcc==='function')?curAcc():null;
+    if(!a){ if(typeof toast==='function') toast(_I('warn','⚠')+' 尚未選定客戶'); return null; }
+    var fb={ id:(opts.id||_uid('fb')), type:(type||'request'), payload:(payload||{}),
+             createdAt:Date.now(), source:'service-desk', handled:false };
+    _ensureArr(a,'clientFeedback').push(fb);
+    a.updatedAt=Date.now();
+    try{ if(typeof _accPush==='function') _accPush(); }catch(e){ console.warn('[link feedback push]',e); }
+    if(!opts.silent && typeof toast==='function') toast(_I('outbox','')+' 已記錄並回送工作台');
+    if(typeof renderBanner==='function') try{ renderBanner(); }catch(e){}
+    return fb;
+  }
+  window.csWriteFeedback=csWriteFeedback;
+
+  /* ── 開發/測試：在 console 執行 csSeedSampleDelivery() 塞一筆假交付包，驗證 ⑦交付 呈現 ── */
+  window.csSeedSampleDelivery=function(){
+    var a=(typeof curAcc==='function')?curAcc():null;
+    if(!a){ console.warn('[seed] 請先在「選擇客戶」選一位'); return; }
+    _ensureArr(a,'deliveryPackages').push({
+      id:_uid('dpkg'), createdAt:Date.now(), source:'workbench', clientHandle:a.handle||'',
+      formula:{ hook:'前 3 秒用反差提問開場', structure:'痛點 → 常見誤解 → 正解 → 行動呼籲', tone:'專業但親切' },
+      prompts:['幫我把這支影片開場改寫成 3 個版本，各 1 句。','針對「'+(a.industry||'這個產業')+'」列出 10 個高搜尋意圖題目。'],
+      sampleVideoIds:[], diagnosis:{ topGoal:'提升私訊轉換', topStage:'信任建立', gaps:['缺案例證據','CTA 不明確'] },
+      note:'（測試資料）由 csSeedSampleDelivery 產生', status:'sent'
+    });
+    a.updatedAt=Date.now(); if(typeof _accPush==='function') _accPush();
+    if(typeof renderExtStage==='function'){ try{ renderExtStage('stage7'); }catch(e){} }
+    console.log('[seed] 已塞入 1 筆測試交付包，切到 ⑦交付 即可看到。');
+  };
+
+  /* ════ ②讀取側：在 ⑦交付 呈現「來自診斷工作台的交付包」(公式＋提示詞＋推薦樣本) ════ */
+  function _esc(s){ return (typeof esc==='function')?esc(s):String(s==null?'':s); }
+  function _vTitle(id){
+    try{
+      var arr=(typeof videos!=='undefined'&&Array.isArray(videos))?videos:[];
+      var v=arr.filter(function(x){return x&&x.id===id;})[0];
+      return v?((typeof videoTitle==='function')?videoTitle(v):(v.title||id)):('影片 '+String(id).slice(0,6));
+    }catch(e){ return '影片'; }
+  }
+  function _pkgPlainText(p){
+    var f=p.formula||{}, out=['【公式】'];
+    Object.keys(f).forEach(function(k){ out.push(k+'：'+f[k]); });
+    if(Array.isArray(p.prompts)&&p.prompts.length){ out.push(''); out.push('【AI 提示詞】'); p.prompts.forEach(function(pr,i){ out.push((i+1)+'. '+pr); }); }
+    return out.join('\n');
+  }
+  function _pkgHTML(a){
+    var list=csDeliveries(a);
+    var head='<div class="section-card" style="border-left:3px solid var(--gold);background:linear-gradient(180deg,#FFFCF7,#fff)">'
+      +'<h3 style="display:flex;align-items:center;gap:6px">'+_I('boxPkg','')+'來自診斷工作台的交付包</h3>'
+      +'<div class="sc-note">這些是工作台「策略診斷」拆完公式後送過來的成果（公式＋提示詞＋推薦樣本）。確認後可一鍵填入下方交付摘要，或複製給客戶。</div>';
+    if(!list.length){
+      return head+'<div class="empty-deliver" style="margin-top:6px">尚未收到交付包。<br><span style="font-size:12px;color:#A88">在工作台跑完策略診斷、按「送到服務台」後，這裡就會出現。</span></div></div>';
+    }
+    var rows=list.map(function(p){
+      var st=p.status==='applied'?'已套用':(p.status==='received'?'已接收':'新到');
+      var stc=p.status==='applied'?'#4A6552':(p.status==='received'?'#9C7D4A':'#A51820');
+      var f=p.formula||{}, fk=Object.keys(f);
+      var formulaH=fk.length?('<table style="width:100%;border-collapse:collapse;margin:6px 0;font-size:13px">'
+        +fk.map(function(k){return '<tr><td style="padding:3px 8px;color:#8A7274;white-space:nowrap;vertical-align:top;border-bottom:1px solid #F0EAE2">'+_esc(k)+'</td><td style="padding:3px 8px;border-bottom:1px solid #F0EAE2">'+_esc(f[k])+'</td></tr>';}).join('')
+        +'</table>'):'<div class="sc-note">（此包未帶公式欄位）</div>';
+      var prompts=Array.isArray(p.prompts)?p.prompts:[];
+      var promptH=prompts.length?('<div style="margin:6px 0"><b style="font-size:12.5px">AI 提示詞</b>'
+        +prompts.map(function(pr,i){return '<div style="display:flex;gap:6px;align-items:flex-start;margin:4px 0"><button class="btn-deliver-2" style="flex:0 0 auto" onclick="_csPkgCopyPrompt(\''+p.id+'\','+i+')">複製</button><div style="font-size:12.5px;line-height:1.6;background:#FAF6F1;border:1px solid #EFE7DC;border-radius:8px;padding:6px 10px;flex:1">'+_esc(pr)+'</div></div>';}).join('')
+        +'</div>'):'';
+      var ids=Array.isArray(p.sampleVideoIds)?p.sampleVideoIds:[];
+      var sampleH=ids.length?('<div style="margin:6px 0"><b style="font-size:12.5px">推薦樣本影片</b><div style="font-size:12.5px;color:#5A4A4C;margin-top:3px">'+ids.map(function(id){return '・'+_esc(_vTitle(id));}).join('<br>')+'</div></div>'):'';
+      var dg=p.diagnosis||{}; var gaps=Array.isArray(dg.gaps)?dg.gaps:[];
+      var diagH=(dg.topGoal||dg.topStage||gaps.length)?('<div style="margin:6px 0;font-size:12.5px;color:#5A4A4C">'
+        +(dg.topGoal?'<div>目標：'+_esc(dg.topGoal)+'</div>':'')
+        +(dg.topStage?'<div>階段：'+_esc(dg.topStage)+'</div>':'')
+        +(gaps.length?'<div>缺口：'+gaps.map(_esc).join('、')+'</div>':'')+'</div>'):'';
+      var noteH=p.note?'<div style="font-size:12px;font-style:italic;color:#A88;margin-top:4px">'+_esc(p.note)+'</div>':'';
+      return '<div class="deliverable-card" style="border-radius:12px;padding:14px 16px;margin-top:10px">'
+        +'<div style="display:flex;justify-content:space-between;align-items:center;gap:8px">'
+        +'<span style="font-weight:800;color:'+stc+';font-size:13px">'+st+'</span>'
+        +'<span style="font-size:11.5px;color:#A88">'+((typeof fmtDate==='function')?fmtDate(p.createdAt):'')+'</span></div>'
+        +formulaH+promptH+sampleH+diagH+noteH
+        +'<div class="btn-row" style="margin-top:8px"><button class="btn-deliver-2" onclick="_csPkgCopyAll(\''+p.id+'\')">複製公式＋提示詞</button>'
+        +'<button class="btn-deliver-2" onclick="_csPkgToSummary(\''+p.id+'\')">填入交付摘要</button>'
+        +(p.status==='sent'?'<button class="btn-deliver" onclick="_csPkgReceive(\''+p.id+'\')">標記已接收</button>':'')+'</div>'
+        +'</div>';
+    }).join('');
+    return head+rows+'</div>';
+  }
+  function _findPkg(id){
+    var a=(typeof curAcc==='function')?curAcc():null; if(!a||!Array.isArray(a.deliveryPackages)) return null;
+    var p=a.deliveryPackages.filter(function(x){return x&&x.id===id;})[0]; return p?{a:a,p:p}:null;
+  }
+  window._csPkgCopyAll=function(id){ var r=_findPkg(id); if(r&&typeof copyVal==='function') copyVal(_pkgPlainText(r.p),'交付包'); };
+  window._csPkgCopyPrompt=function(id,i){ var r=_findPkg(id); if(!r) return; var pr=(r.p.prompts||[])[i]; if(pr&&typeof copyVal==='function') copyVal(pr,'提示詞'); };
+  window._csPkgToSummary=function(id){
+    var r=_findPkg(id); if(!r) return; var ta=document.getElementById('x-stage7-deliverySummary');
+    if(!ta){ if(typeof toast==='function') toast(_I('warn','⚠')+' 請先在 ⑦交付 頁'); return; }
+    var add='— 交付包（'+((typeof fmtDate==='function')?fmtDate(r.p.createdAt):'')+'）—\n'+_pkgPlainText(r.p);
+    ta.value=(ta.value?ta.value.replace(/\s+$/,'')+'\n\n':'')+add;
+    if(typeof _scheduleAutoSave==='function'){ try{ _scheduleAutoSave(); }catch(e){} }
+    if(typeof toast==='function') toast(_I('check','✓')+' 已填入交付摘要');
+  };
+  window._csPkgReceive=function(id){
+    var r=_findPkg(id); if(!r) return; r.p.status='received'; r.a.updatedAt=Date.now();
+    try{ if(typeof _accPush==='function') _accPush(); }catch(e){}
+    if(typeof renderExtStage==='function'){ try{ renderExtStage('stage7'); }catch(e){} }
+    if(typeof toast==='function') toast(_I('check','✓')+' 已標記接收');
+  };
+  function _injectDeliveryPanel(){
+    var box=document.getElementById('view-stage7'); var a=(typeof curAcc==='function')?curAcc():null; if(!box||!a) return;
+    if(box.querySelector('[data-cs-deliveries]')) return;            /* 同一次渲染不重複插入 */
+    var html='<div data-cs-deliveries>'+_pkgHTML(a)+'</div>';
+    var head=box.querySelector('.page-head');
+    if(head){ head.insertAdjacentHTML('afterend',html); } else { box.insertAdjacentHTML('afterbegin',html); }
+  }
+  var _origRenderExt=window.renderExtStage;
+  window.renderExtStage=function(stageId){
+    if(typeof _origRenderExt==='function') _origRenderExt(stageId);
+    if(stageId==='stage7'){ try{ _injectDeliveryPanel(); }catch(e){ console.warn('[link deliver panel]',e); } }
+  };
+})();
 </script>
 </body>
 </html>
