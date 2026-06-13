@@ -8,7 +8,7 @@
 <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v315 (版本號僅留註解，不顯示於畫面)
+<!-- ATELIER 影片診斷工作台 · 內部版本 v316 (版本號僅留註解，不顯示於畫面)
 v267 更新（策略診斷硬修版：重做 Top/Bottom 固定列高、重綁單支核對窗與 AI 工具按鈕、補互動式 1–8 操作步驟與策略對標雷達；本版用最後一段 v267 override 強制接管策略診斷頁，避免舊版 v263/v265 殘留函式覆蓋。只動 index.html，不動 client.html、Firebase、CSV 與六守門提示詞。）
 v266 更新（hotfix：修正 v265 最後一段策略診斷事件代理少 catch，導致 v265 override script 無法執行、畫面徽章被前一段 v263 override 改回 v263，且策略診斷部分按鈕失效；本版補回 catch 並將顯示版本固定為 v266。只動 index.html，不動 client.html、Firebase、CSV 與六守門提示詞。）
 v265 更新（策略診斷按鈕修復、整齊 Top/Bottom、互動流程與策略對標雷達）：修正策略診斷 Top/Bottom 每支影片的按鈕高度與位置不一致；改用固定列高與事件代理，讓「快看／核對」「留在本頁定位」「改寫提示」以及單支核對窗內 AI 工具、去影片庫定位、獨立視窗核對、收起都可穩定點擊；將 1–8 操作流程改成可點擊小教學；新增策略對標雷達，從同產業、同職稱、同身份、A–E、G 階段、流量觸發、素材與高互動／高分享等面向找全庫可借鏡樣本。只動 index.html，不動 client.html、Firebase、CSV 與六守門提示詞。
@@ -1221,7 +1221,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v315</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v316</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -11051,7 +11051,7 @@ document.addEventListener('DOMContentLoaded',function(){
 <script>
 /* v239：自動防舊版快取。讓桌布捷徑／瀏覽器如果抓到舊 HTML，能自己比對線上最新版並導向。 */
 (function(){
-  var ATELIER_CURRENT_VERSION='v315';
+  var ATELIER_CURRENT_VERSION='v316';
   window.ATELIER_CURRENT_VERSION=ATELIER_CURRENT_VERSION;
   function _avNum(v){v=String(v||'');var m=v.match(/v\s*(\d+)/i);return m?parseInt(m[1],10):0;}
   function _avDetect(html){html=String(html||'');var m=html.match(/id=["']verBadge["'][^>]*>\s*(v\d+)/i)||html.match(/內部版本\s+(v\d+)/i);return m?m[1]:'';}
@@ -11698,7 +11698,7 @@ return '<div class="strat-radar-card-v265"><b>目前沒有符合樣本</b><p>可
 /* ═══════════ v267 strategy hard patch：固定版面、重綁按鈕、互動說明與策略對標雷達（index.html only） ═══════════ */
 (function(){
   'use strict';
-  var VERSION='v315';
+  var VERSION='v316';
   function H(id){return document.getElementById(id)}
   function E(s){return String(s==null?'':s).replace(/[&<>'"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]})}
   function A(){try{return (typeof accounts!=='undefined'&&Array.isArray(accounts))?accounts:(Array.isArray(window.accounts)?window.accounts:[])}catch(e){return []}}
@@ -11927,7 +11927,7 @@ window._strategyRadarV267=radarResults;
 
 <script id="v289PatchJS">
 (function(){
-  try{ window.ATELIER_CURRENT_VERSION='v315'; }catch(e){}
+  try{ window.ATELIER_CURRENT_VERSION='v316'; }catch(e){}
   try{ sessionStorage.setItem('atelierSkipAutoUpdate','1'); }catch(e){}
   try{ if(navigator.serviceWorker && navigator.serviceWorker.getRegistrations){
         navigator.serviceWorker.getRegistrations().then(function(rs){ rs.forEach(function(r){ try{r.update();}catch(e){} }); }).catch(function(){});
@@ -13314,6 +13314,7 @@ button[data-wbl-send],button[data-wbl-inbox]{padding:3px 12px !important;font-si
     L.push('【這支影片】');
     L.push('標題：'+(v.title||'')); if(v.hook) L.push('Hook：'+v.hook);
     if(parts.length) L.push('分析標籤：'+parts.join('、'));
+    if(v.mktTags&&typeof v.mktTags==='object'){ var _mt=[]; for(var _k in v.mktTags){ if(v.mktTags[_k]&&v.mktTags[_k].length) _mt.push(v.mktTags[_k].join('/')); } if(_mt.length) L.push('行銷標籤：'+_mt.join('｜')); }
     if(v.transcript) L.push('逐字稿（節錄）：'+clip(v.transcript,400));
     (function(){ var a=null; try{ if(typeof accounts!=='undefined'&&accounts) a=accounts.filter(function(x){return x&&(x.id===v.accountId||x.handle===v.accountHandle);})[0]; }catch(e){} var mb=(a&&a.marketingBrief)||null; if(mb){ var seg=[]; if(mb.market)seg.push('市場位置：'+mb.market); if(mb.icp)seg.push('ICP：'+mb.icp); if(mb.fear)seg.push('最卡的點：'+mb.fear); if(mb.core)seg.push('核心Offer：'+mb.core); if(mb.free)seg.push('免費入口：'+mb.free); if(mb.window)seg.push('承接窗口：'+mb.window); if(seg.length){ L.push(''); L.push('【這位客戶的行銷脈絡（行銷問診卡）】'); seg.forEach(function(x){L.push('・'+x);}); } } })();
     L.push('');
@@ -13570,6 +13571,97 @@ button[data-wbl-send],button[data-wbl-inbox]{padding:3px 12px !important;font-si
   }
   setInterval(function(){ try{inject();}catch(e){} }, 950);
   if(document.readyState!=='loading') setTimeout(inject,500); else document.addEventListener('DOMContentLoaded',function(){ setTimeout(inject,500); });
+})();
+</script>
+
+
+<!-- ═══════════ v316 · 影片行銷判斷標籤（可選浮窗，不鋪欄位）═══════════
+     行銷層最後一塊：每支影片加「⊕ 行銷標籤」按鈕→浮窗用點選標籤快速分類 9 維度
+     （內容目的/受眾狀態/痛點/購買阻力/CTA類型/承接完整度/Offer對應/證據/可複製價值）。
+     存 v.mktTags + saveVideos() 同步。刻意用 chip 點選、非打字、可選不強制。注入、不動原碼。 -->
+<style>
+.mkt-line{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:8px}
+.mkt-btn{display:inline-flex;align-items:center;gap:5px;font-size:11px;color:#A51820;background:#fff;border:1px solid #EBD8D8;border-radius:8px;padding:6px 12px;cursor:pointer;font-family:inherit;font-weight:800}
+.mkt-btn:hover{background:#FBEAEA;border-color:#A51820}
+.mkt-btn.has{background:#A51820;color:#fff;border-color:#A51820}
+.mkt-ov{position:fixed;inset:0;z-index:100000;background:rgba(43,38,34,.45);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);display:flex;align-items:flex-start;justify-content:center;padding:38px 16px 16px;box-sizing:border-box}
+.mkt-card{background:#FDFBF8;max-width:660px;width:100%;max-height:88vh;overflow:auto;border:1px solid #EAE0D2;border-radius:16px;box-shadow:0 24px 64px rgba(43,38,34,.3);padding:20px 22px;font-family:inherit;color:#2A1A1C}
+.mkt-kick{font-family:'Cormorant Garamond',serif;letter-spacing:3px;color:#A51820;font-size:11px;text-transform:uppercase;margin-bottom:2px}
+.mkt-h{font-size:18px;font-weight:900;margin:0 0 2px}
+.mkt-ctx{font-size:12px;color:#7A5A5E;margin-bottom:12px}
+.mkt-dim{margin-bottom:11px}
+.mkt-dim .dl{font-size:12px;font-weight:800;color:#6B4A4E;margin-bottom:5px}
+.mkt-chip{display:inline-block;font-size:11.5px;color:#7A5A5E;background:#fff;border:1px solid #E3DAD0;border-radius:999px;padding:4px 11px;margin:0 5px 5px 0;cursor:pointer;font-family:inherit;user-select:none}
+.mkt-chip.on{background:#A51820;color:#fff;border-color:#A51820;font-weight:700}
+.mkt-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:16px;position:sticky;bottom:-1px;background:#FDFBF8;padding-top:10px}
+.mkt-x{border:1px solid #DACFBE;background:#fff;color:#6B5A38;font-weight:700;font-size:13px;border-radius:999px;padding:9px 18px;cursor:pointer;font-family:inherit}
+.mkt-save{border:1px solid #A51820;background:#A51820;color:#fff;-webkit-text-fill-color:#fff;font-weight:800;font-size:13px;border-radius:999px;padding:9px 22px;cursor:pointer;font-family:inherit}
+</style>
+<script>
+/* v316：影片行銷標籤（注入，不動原碼） */
+(function(){
+  var DIMS=[
+    ['purpose','內容目的',['曝光','教育','信任','互動','私訊','預約','成交']],
+    ['audience','受眾狀態',['完全陌生','有痛點但不懂','正在比較','已想購買','已成交客戶']],
+    ['pain','痛點類型',['恐懼型','慾望型','省錢型','避險型','身份型','效率型']],
+    ['resist','購買阻力',['不信任','覺得太貴','不急','不知道差異','不知道下一步']],
+    ['cta','CTA 類型',['收藏','留言','私訊','預約','下載','進 LINE','看官網']],
+    ['channel','承接完整度',['無承接','弱承接','有承接','強承接']],
+    ['offer','Offer 對應',['沒有對應','間接對應','直接對應某服務']],
+    ['evidence','證據類型',['案例','數據','專業資格','流程','客戶故事','前後對比']],
+    ['reuse','可複製價值',['Hook','題材','結構','CTA','視覺','轉換路徑','不建議複製']]
+  ];
+  function V(id){ try{ if(typeof videos!=='undefined'&&videos){ var v=videos.filter(function(x){return x&&x.id===id;})[0]; if(v)return v; } }catch(e){} return null; }
+  function save(){ try{ if(typeof saveVideos==='function'){ saveVideos(); return true; } }catch(e){} try{ if(window.saveVideos){ window.saveVideos(); return true; } }catch(e){} return false; }
+  function E(s){ return String(s==null?'':s).replace(/[&<>]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;'}[c];}); }
+
+  function open(id){
+    var v=V(id); if(!v){ if(typeof toast==='function') toast('找不到這支影片'); return; }
+    var cur=(v.mktTags&&typeof v.mktTags==='object')?v.mktTags:{};
+    var sel={}; DIMS.forEach(function(d){ sel[d[0]]=Array.isArray(cur[d[0]])?cur[d[0]].slice():[]; });
+    var ov=document.createElement('div'); ov.className='mkt-ov';
+    var body=DIMS.map(function(d){
+      var chips=d[2].map(function(opt){ var on=sel[d[0]].indexOf(opt)>=0; return '<span class="mkt-chip'+(on?' on':'')+'" data-dim="'+d[0]+'" data-opt="'+E(opt)+'">'+E(opt)+'</span>'; }).join('');
+      return '<div class="mkt-dim"><div class="dl">'+E(d[1])+'</div>'+chips+'</div>';
+    }).join('');
+    ov.innerHTML='<div class="mkt-card">'
+      +'<div class="mkt-kick">ATELIER · MARKETING TAGS</div>'
+      +'<h3 class="mkt-h">影片行銷標籤</h3>'
+      +'<div class="mkt-ctx">'+E((v.title||'這支影片').slice(0,40))+'　·　點選符合的標籤即可（可複選、可不選），存檔後會餵進這位客戶的 CTA1 與分析。</div>'
+      +body
+      +'<div class="mkt-actions"><button type="button" class="mkt-x">關閉</button><button type="button" class="mkt-save">儲存標籤</button></div>'
+      +'</div>';
+    document.body.appendChild(ov);
+    ov.addEventListener('click',function(e){ if(e.target===ov) ov.remove(); });
+    ov.querySelectorAll('.mkt-chip').forEach(function(ch){ ch.onclick=function(){ var dim=ch.getAttribute('data-dim'), opt=ch.getAttribute('data-opt'); var arr=sel[dim]; var i=arr.indexOf(opt); if(i>=0){ arr.splice(i,1); ch.classList.remove('on'); } else { arr.push(opt); ch.classList.add('on'); } }; });
+    ov.querySelector('.mkt-x').onclick=function(){ ov.remove(); };
+    ov.querySelector('.mkt-save').onclick=function(){
+      var out={}; var any=false; DIMS.forEach(function(d){ if(sel[d[0]].length){ out[d[0]]=sel[d[0]]; any=true; } });
+      v.mktTags=out; v.updatedAt=Date.now();
+      var ok=save();
+      ov.remove();
+      if(typeof toast==='function') toast(ok?'已儲存行銷標籤並同步':'已存到這支影片');
+      try{ var card=document.querySelector('.video-card[data-vid="'+id+'"]'); if(card){ var btn=card.querySelector('.mkt-btn'); if(btn) btn.classList.toggle('has', any); } }catch(e){}
+    };
+    document.addEventListener('keydown',function k(e){ if(e.key==='Escape'){ ov.remove(); document.removeEventListener('keydown',k); } });
+  }
+  window._wbOpenMktTags = open;
+
+  function inject(){
+    var cards=document.querySelectorAll('.video-card'); if(!cards.length) return;
+    cards.forEach(function(card){
+      if(card.getAttribute('data-mkttag')) return;
+      var id=card.getAttribute('data-vid'); if(!id){ var m=(card.id||'').match(/^video-(.+)$/); if(m)id=m[1]; }
+      if(!id) return; card.setAttribute('data-mkttag','1');
+      var v=V(id); var has=!!(v&&v.mktTags&&Object.keys(v.mktTags).length);
+      var line=document.createElement('div'); line.className='mkt-line';
+      line.innerHTML='<button type="button" class="mkt-btn'+(has?' has':'')+'">⊕ 行銷標籤</button><span style="font-size:10.5px;color:#7A5A5E">點選分類，餵進 CTA1 與分析</span>';
+      line.querySelector('.mkt-btn').onclick=function(){ open(id); };
+      card.appendChild(line);
+    });
+  }
+  setInterval(function(){ try{inject();}catch(e){} }, 950);
+  if(document.readyState!=='loading') setTimeout(inject,480); else document.addEventListener('DOMContentLoaded',function(){ setTimeout(inject,480); });
 })();
 </script>
 
