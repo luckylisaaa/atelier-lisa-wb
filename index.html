@@ -8,7 +8,7 @@
 <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v309 (版本號僅留註解，不顯示於畫面)
+<!-- ATELIER 影片診斷工作台 · 內部版本 v310 (版本號僅留註解，不顯示於畫面)
 v267 更新（策略診斷硬修版：重做 Top/Bottom 固定列高、重綁單支核對窗與 AI 工具按鈕、補互動式 1–8 操作步驟與策略對標雷達；本版用最後一段 v267 override 強制接管策略診斷頁，避免舊版 v263/v265 殘留函式覆蓋。只動 index.html，不動 client.html、Firebase、CSV 與六守門提示詞。）
 v266 更新（hotfix：修正 v265 最後一段策略診斷事件代理少 catch，導致 v265 override script 無法執行、畫面徽章被前一段 v263 override 改回 v263，且策略診斷部分按鈕失效；本版補回 catch 並將顯示版本固定為 v266。只動 index.html，不動 client.html、Firebase、CSV 與六守門提示詞。）
 v265 更新（策略診斷按鈕修復、整齊 Top/Bottom、互動流程與策略對標雷達）：修正策略診斷 Top/Bottom 每支影片的按鈕高度與位置不一致；改用固定列高與事件代理，讓「快看／核對」「留在本頁定位」「改寫提示」以及單支核對窗內 AI 工具、去影片庫定位、獨立視窗核對、收起都可穩定點擊；將 1–8 操作流程改成可點擊小教學；新增策略對標雷達，從同產業、同職稱、同身份、A–E、G 階段、流量觸發、素材與高互動／高分享等面向找全庫可借鏡樣本。只動 index.html，不動 client.html、Firebase、CSV 與六守門提示詞。
@@ -1221,7 +1221,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v309</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v310</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -11051,7 +11051,7 @@ document.addEventListener('DOMContentLoaded',function(){
 <script>
 /* v239：自動防舊版快取。讓桌布捷徑／瀏覽器如果抓到舊 HTML，能自己比對線上最新版並導向。 */
 (function(){
-  var ATELIER_CURRENT_VERSION='v309';
+  var ATELIER_CURRENT_VERSION='v310';
   window.ATELIER_CURRENT_VERSION=ATELIER_CURRENT_VERSION;
   function _avNum(v){v=String(v||'');var m=v.match(/v\s*(\d+)/i);return m?parseInt(m[1],10):0;}
   function _avDetect(html){html=String(html||'');var m=html.match(/id=["']verBadge["'][^>]*>\s*(v\d+)/i)||html.match(/內部版本\s+(v\d+)/i);return m?m[1]:'';}
@@ -11698,7 +11698,7 @@ return '<div class="strat-radar-card-v265"><b>目前沒有符合樣本</b><p>可
 /* ═══════════ v267 strategy hard patch：固定版面、重綁按鈕、互動說明與策略對標雷達（index.html only） ═══════════ */
 (function(){
   'use strict';
-  var VERSION='v309';
+  var VERSION='v310';
   function H(id){return document.getElementById(id)}
   function E(s){return String(s==null?'':s).replace(/[&<>'"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]})}
   function A(){try{return (typeof accounts!=='undefined'&&Array.isArray(accounts))?accounts:(Array.isArray(window.accounts)?window.accounts:[])}catch(e){return []}}
@@ -11927,7 +11927,7 @@ window._strategyRadarV267=radarResults;
 
 <script id="v289PatchJS">
 (function(){
-  try{ window.ATELIER_CURRENT_VERSION='v309'; }catch(e){}
+  try{ window.ATELIER_CURRENT_VERSION='v310'; }catch(e){}
   try{ sessionStorage.setItem('atelierSkipAutoUpdate','1'); }catch(e){}
   try{ if(navigator.serviceWorker && navigator.serviceWorker.getRegistrations){
         navigator.serviceWorker.getRegistrations().then(function(rs){ rs.forEach(function(r){ try{r.update();}catch(e){} }); }).catch(function(){});
@@ -12198,7 +12198,7 @@ window._strategyRadarV267=radarResults;
  function accId(card){try{var el=card.querySelector('[data-acc-videos],[data-acc-audit]');if(el)return el.getAttribute('data-acc-videos')||el.getAttribute('data-acc-audit');var m=card.innerHTML.match(/openVideoArchiveAudit\(&quot;([^&]+)&quot;\)/)||card.innerHTML.match(/openVideoArchiveAudit\('([^']+)'\)/);return m?m[1]:''}catch(e){return''}}
  function handleOf(card){try{var t=card.querySelector('.vtitle');if(!t)return'';var m=t.textContent.match(/@\S+/);return m?m[0]:''}catch(e){return''}}
  function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
- function links(id,h){var out=[];var ig=igFrom(h);if(ig)out.push({label:'IG 主頁',url:ig});lsGet(id).forEach(function(c){if(c&&c.url)out.push({label:c.label||'連結',url:c.url})});return out}
+ function links(id,h){var arr=lsGet(id);var hasIg=arr.some(function(c){return c&&c.ig});var out=[];if(!hasIg){var ig0=igFrom(h);if(ig0)out.push({label:'Instagram',url:ig0,ig:true})}arr.forEach(function(c){if(!c)return;if(c.ig){var ig=igFrom(h);if(ig)out.push({label:c.label||'Instagram',url:ig,ig:true})}else if(c.url){out.push({label:c.label||'連結',url:c.url})}});return out}
  function render(card){try{
    if(card.querySelector('.qlink-box'))return;
    var id=accId(card);if(!id)return; var h=handleOf(card);
@@ -12209,15 +12209,25 @@ window._strategyRadarV267=radarResults;
        +'<div class="qlink-btns">'+(btns||'<span class="qlink-empty">尚未設定連結，點「展開／編輯」新增</span>')+'</div>'
        +'<div class="qlink-edit" style="display:none"></div>';
      box.querySelector('.qlink-toggle').onclick=function(){var ed=box.querySelector('.qlink-edit');var open=ed.style.display!=='none';ed.style.display=open?'none':'block';if(!open)paintEdit()};}
-   function paintEdit(){var c=lsGet(id);
-     var rows=c.map(function(x,i){return '<div class="qlink-row"><input class="qlink-in-label" value="'+esc(x.label||'')+'" placeholder="名稱（如 官網）"><input class="qlink-in-url" value="'+esc(x.url||'')+'" placeholder="https://..."><button type="button" class="qlink-del" data-i="'+i+'">刪</button></div>'}).join('');
+   function fullList(){var a=lsGet(id);if(!a.some(function(c){return c&&c.ig})){var ig=igFrom(h);if(ig)a.unshift({label:'Instagram',ig:true})}return a}
+   function readRowsRaw(ed){var a=[];var R=ed.querySelectorAll('.qlink-row');for(var k=0;k<R.length;k++){var li=R[k].querySelector('.qlink-in-label'),ui=R[k].querySelector('.qlink-in-url');var isIg=li&&li.getAttribute('data-ig')==='1';a.push(isIg?{label:(li?li.value:'').trim()||'Instagram',ig:true}:{label:(li?li.value:'').trim(),url:(ui?ui.value:'').trim()})}return a}
+   function paintEdit(){var c=fullList();
+     var rows=c.map(function(x,i){
+       var isIg=!!(x&&x.ig);
+       var btnS='border:1px solid #E3DCD0;background:#fff;border-radius:7px;padding:0 8px;cursor:pointer;color:#6B5B5D;font-size:12px';
+       var up=(i>0)?'<button type="button" class="qlink-mv" data-mv="up" data-i="'+i+'" title="往前移" style="'+btnS+'">▲</button>':'<span style="display:inline-block;width:28px"></span>';
+       var dn=(i<c.length-1)?'<button type="button" class="qlink-mv" data-mv="down" data-i="'+i+'" title="往後移" style="'+btnS+'">▼</button>':'<span style="display:inline-block;width:28px"></span>';
+       var labIn='<input class="qlink-in-label" data-i="'+i+'"'+(isIg?' data-ig="1"':'')+' value="'+esc(x.label||(isIg?'Instagram':''))+'" placeholder="名稱（如 官網）">';
+       var urlCell=isIg?'<input class="qlink-in-url" data-i="'+i+'" value="'+esc(igFrom(h))+'" disabled title="Instagram 主頁網址自動帶入" style="background:#F4EFE8;color:#8A7274">':'<input class="qlink-in-url" data-i="'+i+'" value="'+esc(x.url||'')+'" placeholder="https://...">';
+       var del=isIg?'<span style="display:inline-block;width:30px"></span>':'<button type="button" class="qlink-del" data-i="'+i+'">刹</button>';
+       return '<div class="qlink-row" data-i="'+i+'">'+up+dn+labIn+urlCell+del+'</div>';
+     }).join('');
      var ed=box.querySelector('.qlink-edit');
-     ed.innerHTML='<div class="qlink-note">IG 主頁自動帶入；其他連結（官網／LINE／FB…）在這裡新增，存在這台瀏覽器。</div>'+rows+'<div class="qlink-actions"><button type="button" class="qlink-add">＋ 新增一條</button><button type="button" class="qlink-save">儲存</button></div>';
-     ed.querySelector('.qlink-add').onclick=function(){var a=lsGet(id);a.push({label:'',url:''});lsSet(id,a);paintEdit()};
-     Array.prototype.forEach.call(ed.querySelectorAll('.qlink-del'),function(b){b.onclick=function(){var a=lsGet(id);a.splice(+b.getAttribute('data-i'),1);lsSet(id,a);paintEdit()}});
-     ed.querySelector('.qlink-save').onclick=function(){var a=[];var L=ed.querySelectorAll('.qlink-in-label'),U=ed.querySelectorAll('.qlink-in-url');
-       for(var k=0;k<L.length;k++){var u=U[k].value.trim();if(u){var pm=u.match(/\((https?:\/\/[^)\s]+)\)/);if(pm)u=pm[1];u=u.replace(/[\[\]()]/g,'').trim();if(!/^https?:\/\//.test(u))u='https://'+u;a.push({label:L[k].value.trim()||'連結',url:u})}}
-       lsSet(id,a);paint();box.querySelector('.qlink-edit').style.display='block';paintEdit();
+     ed.innerHTML='<div class="qlink-note">▲▼ 可前後移動排序；名稱都能改（含 Instagram）。Instagram 主頁網址自動帶入，其他連結在這裡新增，存在這台瀏覽器。</div>'+rows+'<div class="qlink-actions"><button type="button" class="qlink-add">＋ 新增一條</button><button type="button" class="qlink-save">儲存</button></div>';
+     ed.querySelector('.qlink-add').onclick=function(){var a=readRowsRaw(ed);a.push({label:'',url:''});lsSet(id,a);paintEdit()};
+     Array.prototype.forEach.call(ed.querySelectorAll('.qlink-del'),function(b){b.onclick=function(){var a=readRowsRaw(ed);a.splice(+b.getAttribute('data-i'),1);lsSet(id,a);paintEdit()}});
+     Array.prototype.forEach.call(ed.querySelectorAll('.qlink-mv'),function(b){b.onclick=function(){var a=readRowsRaw(ed);var i=+b.getAttribute('data-i');var j=(b.getAttribute('data-mv')==='up')?i-1:i+1;if(j<0||j>=a.length)return;var tmp=a[i];a[i]=a[j];a[j]=tmp;lsSet(id,a);paintEdit()}});
+     ed.querySelector('.qlink-save').onclick=function(){var raw=readRowsRaw(ed);var a=[];raw.forEach(function(x){if(x.ig){a.push({label:x.label||'Instagram',ig:true});return}var u=(x.url||'').trim();if(!u)return;var pm=u.match(/\((https?:\/\/[^)\s]+)\)/);if(pm)u=pm[1];u=u.replace(/[\[\]()]/g,'').trim();if(!/^https?:\/\//.test(u))u='https://'+u;a.push({label:x.label||'連結',url:u})});lsSet(id,a);paint();box.querySelector('.qlink-edit').style.display='block';paintEdit();
        try{if(typeof toast==='function')toast('✓ 快速直達已儲存（'+a.length+' 條）')}catch(e){}
        try{var sb=box.querySelector('.qlink-save');if(sb){sb.textContent='✓ 已儲存 '+a.length+' 條';sb.style.background='#0F6E56';sb.style.color='#fff';setTimeout(function(){sb.textContent='儲存';sb.style.background='';sb.style.color='';},1800);}}catch(e){}};}
    paint();card.appendChild(box);
