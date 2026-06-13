@@ -8,7 +8,7 @@
 <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v298 (版本號僅留註解，不顯示於畫面)
+<!-- ATELIER 影片診斷工作台 · 內部版本 v299 (版本號僅留註解，不顯示於畫面)
 v267 更新（策略診斷硬修版：重做 Top/Bottom 固定列高、重綁單支核對窗與 AI 工具按鈕、補互動式 1–8 操作步驟與策略對標雷達；本版用最後一段 v267 override 強制接管策略診斷頁，避免舊版 v263/v265 殘留函式覆蓋。只動 index.html，不動 client.html、Firebase、CSV 與六守門提示詞。）
 v266 更新（hotfix：修正 v265 最後一段策略診斷事件代理少 catch，導致 v265 override script 無法執行、畫面徽章被前一段 v263 override 改回 v263，且策略診斷部分按鈕失效；本版補回 catch 並將顯示版本固定為 v266。只動 index.html，不動 client.html、Firebase、CSV 與六守門提示詞。）
 v265 更新（策略診斷按鈕修復、整齊 Top/Bottom、互動流程與策略對標雷達）：修正策略診斷 Top/Bottom 每支影片的按鈕高度與位置不一致；改用固定列高與事件代理，讓「快看／核對」「留在本頁定位」「改寫提示」以及單支核對窗內 AI 工具、去影片庫定位、獨立視窗核對、收起都可穩定點擊；將 1–8 操作流程改成可點擊小教學；新增策略對標雷達，從同產業、同職稱、同身份、A–E、G 階段、流量觸發、素材與高互動／高分享等面向找全庫可借鏡樣本。只動 index.html，不動 client.html、Firebase、CSV 與六守門提示詞。
@@ -1221,7 +1221,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v298</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v299</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -7023,7 +7023,7 @@ function addProfileSnapshot(accId){
       <div style="font-family:'Noto Serif TC',serif;font-size:17px;font-weight:900;margin-bottom:12px">+ 版面快照 · ${esc(a.handle)}</div>
       <div class="tip" style="margin-bottom:10px">記錄這個帳號在這個時間點的版面策略——之後可以橫向比較同師承的多個帳號版面差異</div>
       <div class="fld"><label>日期</label><input type="date" id="ps-date" value="${today}" style="width:100%;padding:9px 10px;border:1px solid var(--border);border-radius:8px"></div>
-      <div class="fld"><label>Bio 第 1 行（含 emoji）</label><input id="ps-bio1" placeholder="例：💼 律師｜租屋糾紛專家" style="width:100%;padding:9px 10px;border:1px solid var(--border);border-radius:8px"></div>
+      <div class="fld"><label>Bio 第 1 行（含 emoji）</label><input id="ps-bio1" placeholder="例：律師｜租屋糾紛專家" style="width:100%;padding:9px 10px;border:1px solid var(--border);border-radius:8px"></div>
       <div class="fld"><label>Bio 第 2 行</label><input id="ps-bio2" placeholder="" style="width:100%;padding:9px 10px;border:1px solid var(--border);border-radius:8px"></div>
       <div class="fld"><label>Bio 第 3 行</label><input id="ps-bio3" placeholder="" style="width:100%;padding:9px 10px;border:1px solid var(--border);border-radius:8px"></div>
       <div class="fld"><label>Bio CTA / 連結</label><input id="ps-cta" placeholder="例：免費諮詢 → linktr.ee/xxx" style="width:100%;padding:9px 10px;border:1px solid var(--border);border-radius:8px"></div>
@@ -11051,7 +11051,7 @@ document.addEventListener('DOMContentLoaded',function(){
 <script>
 /* v239：自動防舊版快取。讓桌布捷徑／瀏覽器如果抓到舊 HTML，能自己比對線上最新版並導向。 */
 (function(){
-  var ATELIER_CURRENT_VERSION='v298';
+  var ATELIER_CURRENT_VERSION='v299';
   window.ATELIER_CURRENT_VERSION=ATELIER_CURRENT_VERSION;
   function _avNum(v){v=String(v||'');var m=v.match(/v\s*(\d+)/i);return m?parseInt(m[1],10):0;}
   function _avDetect(html){html=String(html||'');var m=html.match(/id=["']verBadge["'][^>]*>\s*(v\d+)/i)||html.match(/內部版本\s+(v\d+)/i);return m?m[1]:'';}
@@ -11698,7 +11698,7 @@ return '<div class="strat-radar-card-v265"><b>目前沒有符合樣本</b><p>可
 /* ═══════════ v267 strategy hard patch：固定版面、重綁按鈕、互動說明與策略對標雷達（index.html only） ═══════════ */
 (function(){
   'use strict';
-  var VERSION='v298';
+  var VERSION='v299';
   function H(id){return document.getElementById(id)}
   function E(s){return String(s==null?'':s).replace(/[&<>'"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]})}
   function A(){try{return (typeof accounts!=='undefined'&&Array.isArray(accounts))?accounts:(Array.isArray(window.accounts)?window.accounts:[])}catch(e){return []}}
@@ -11927,7 +11927,7 @@ window._strategyRadarV267=radarResults;
 
 <script id="v289PatchJS">
 (function(){
-  try{ window.ATELIER_CURRENT_VERSION='v298'; }catch(e){}
+  try{ window.ATELIER_CURRENT_VERSION='v299'; }catch(e){}
   try{ sessionStorage.setItem('atelierSkipAutoUpdate','1'); }catch(e){}
   try{ if(navigator.serviceWorker && navigator.serviceWorker.getRegistrations){
         navigator.serviceWorker.getRegistrations().then(function(rs){ rs.forEach(function(r){ try{r.update();}catch(e){} }); }).catch(function(){});
@@ -11985,7 +11985,7 @@ window._strategyRadarV267=radarResults;
       if(!bd){ bd=document.createElement('div'); bd.id='v289DiagBackdrop'; bd.innerHTML='<div id="v289DiagModal"></div>';
         document.body.appendChild(bd); bd.addEventListener('click',function(e){ if(e.target===bd) bd.style.display='none'; }); }
       var m=H('v289DiagModal');
-      m.innerHTML='<h3>✨ 商業閉環診斷書 · '+esc(name)+'</h3>'+
+      m.innerHTML='<h3>商業閉環診斷書 · '+esc(name)+'</h3>'+
         '<div class="sub">系統已自動撈取 '+rows.length+' 支影片打包。下面提示詞可直接編輯，再一鍵複製貼給 AI，或送客戶服務台 Stage 4。</div>'+
         '<div class="cards"><div class="c"><b>目前局面</b>'+esc(situation)+'</div>'+
         '<div class="c"><b>系統判斷</b>Top 主題：'+esc(theme(top[0].v))+'<br>缺口：'+(gMiss.concat(aMiss).join('、')||'無')+'<br>待補：'+todo+' 支</div>'+
@@ -12012,7 +12012,7 @@ window._strategyRadarV267=radarResults;
     function injectBtn(){ try{
       var box=H('strategyBox'); if(!box || box.offsetParent===null) return; if(H('v289DiagBtn')) return;
       var btn=document.createElement('button'); btn.id='v289DiagBtn';
-      btn.innerHTML='✨ 一鍵打包全局數據：產出商業閉環診斷書';
+      btn.innerHTML='一鍵打包全局數據：產出商業閉環診斷書';
       btn.onclick=function(){ var a=has('getStratAcc')?window.getStratAcc():null; window._strategyExportGlobalDiagnosis(a?a.id:null); };
       box.insertBefore(btn, box.firstChild);
     }catch(e){} }
@@ -12484,7 +12484,7 @@ window._strategyRadarV267=radarResults;
     var acctM=title.match(/@[\w.]+/); var acct=acctM?acctM[0]:'';
     var host=s.firstElementChild;
     var box=document.createElement('div'); box.className='aifill-box'; box.setAttribute('data-aifill','1');
-    box.innerHTML='<div class="aif-h">⚡ AI 助填（這格不用自己一個一個查）</div>'
+    box.innerHTML='<div class="aif-h"><svg viewBox="0 0 24 24" width="13" height="13" fill="#A51820" style="vertical-align:-2px;margin-right:5px"><path d="M13 2L4 14h6l-1 8 9-12h-6z"/></svg>AI 助填（這格不用自己一個一個查）</div>'
       +'<div class="aif-sub">先「複製 AI 提示詞」丟給 AI，把它回的「欄位：值」整段貼回下面，按「智能填入」自動帶進欄位。</div>'
       +'<div class="aif-btns"><button type="button" class="aif-b" data-aif-copy>複製 AI 提示詞</button><button type="button" class="aif-b" data-aif-view>查看提示詞</button></div>'
       +'<div data-aif-promptwrap></div>'
@@ -12669,6 +12669,68 @@ window._strategyRadarV267=radarResults;
     });
   }
   setInterval(wire, 250);
+})();
+</script>
+
+<!-- ═══════════════ v299 快速直達 AI 助填：複製「找連結」提示詞 + 智能匯入成連結列 ═══════════════ -->
+<script>
+(function(){
+  'use strict';
+  if(window.__atelierQlinkAiV299){ return; } window.__atelierQlinkAiV299=true;
+  function esc(s){ return (typeof window.esc==='function')?window.esc(s):String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+  var SVG='<svg viewBox="0 0 24 24" width="12" height="12" fill="#A51820" style="vertical-align:-2px;margin-right:4px"><path d="M13 2L4 14h6l-1 8 9-12h-6z"/></svg>';
+  function accOf(node){
+    var card=node&&node.closest?node.closest('.vcard'):null; if(!card) return {id:'',a:null};
+    var eb=card.querySelector('[data-acc-edit]'); var id=eb?eb.getAttribute('data-acc-edit'):'';
+    var a=(id&&typeof accById==='function')?accById(id):null; return {id:id,a:a};
+  }
+  function buildPrompt(a){
+    var h=a?(a.handle||''):''; var nm=a?(a.displayName||h):'';
+    return '請幫我找出「'+(nm||'這個帳號')+(h?('（'+h+'）'):'')+'」對外的官方連結，用「名稱：網址」格式逐行回我，找不到的略過、不要編造：\n- 官網\n- LINE 官方帳號\n- Facebook 粉專\n- YouTube 頻道\n- 預約／表單連結\n- Linktree 等彙整頁\n- 其他重要連結';
+  }
+  function copy(t){ try{ if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(t); } else if(typeof copyVal==='function'){ copyVal(t,'AI 提示詞'); } if(typeof toast==='function') toast('已複製 AI 提示詞'); }catch(e){ if(typeof copyVal==='function') copyVal(t,'AI 提示詞'); } }
+  function importLines(ed,text){
+    var actions=ed.querySelector('.qlink-actions'); if(!actions) return 0; var n=0;
+    String(text||'').split(/\n+/).forEach(function(line){
+      var idx=line.search(/[:：]/); if(idx<0) return;
+      var label=line.slice(0,idx).replace(/^[\s\-*•]+/,'').trim();
+      var url=line.slice(idx+1).trim();
+      if(!label||!url) return;
+      if(!/^https?:\/\//i.test(url) && !/\.[a-z]{2,}/i.test(url)) return;
+      var row=document.createElement('div'); row.className='qlink-row';
+      row.innerHTML='<input class="qlink-in-label" value="'+esc(label)+'" placeholder="名稱（如 官網）"><input class="qlink-in-url" value="'+esc(url)+'" placeholder="https://..."><button type="button" class="qlink-del">刪</button>';
+      actions.parentNode.insertBefore(row, actions);
+      row.querySelector('.qlink-del').onclick=function(){ row.remove(); };
+      n++;
+    });
+    return n;
+  }
+  function inject(){
+    Array.prototype.forEach.call(document.querySelectorAll('.qlink-edit'),function(ed){
+      if(!ed || ed.style.display==='none') return;
+      if(!ed.querySelector('.qlink-actions')) return;
+      if(ed.querySelector('[data-qlink-ai]')) return;
+      var info=accOf(ed);
+      var bar=document.createElement('div'); bar.setAttribute('data-qlink-ai','1');
+      bar.style.cssText='margin:8px 0 10px;border:1px solid #E6CFA6;border-radius:10px;background:#FBF5E9;padding:9px 11px';
+      bar.innerHTML='<div style="font-size:12px;font-weight:800;color:#A51820">'+SVG+'AI 找連結（不用自己一個一個查）</div>'
+        +'<div style="font-size:11px;color:#8A7274;margin:3px 0 7px;line-height:1.6">複製提示詞請 AI 找出官網／LINE／FB／YouTube／預約等連結，把它回的「名稱：網址」整段貼回下面按「匯入」，自動變成下方連結列，再按「儲存」。</div>'
+        +'<button type="button" data-ql-copy style="font-size:12px;font-weight:700;border:1px solid #DCC8CB;background:#fff;color:#5C0F14;border-radius:999px;padding:5px 12px;cursor:pointer;font-family:inherit">複製 AI 提示詞</button>'
+        +'<textarea data-ql-paste placeholder="把 AI 回的「名稱：網址」整段貼這裡" style="width:100%;box-sizing:border-box;height:62px;margin-top:8px;padding:7px 9px;border:1px solid #E8E3DA;border-radius:8px;font-family:inherit;font-size:12px"></textarea>'
+        +'<button type="button" data-ql-import style="margin-top:6px;width:100%;font-size:12px;font-weight:800;border:1px solid #A51820;background:#A51820;color:#fff;-webkit-text-fill-color:#fff;border-radius:999px;padding:7px;cursor:pointer;font-family:inherit">匯入成連結列</button>'
+        +'<div data-ql-msg style="font-size:11.5px;margin-top:5px"></div>';
+      ed.insertBefore(bar, ed.firstChild);
+      var prompt=buildPrompt(info.a);
+      bar.querySelector('[data-ql-copy]').onclick=function(){ copy(prompt); };
+      bar.querySelector('[data-ql-import]').onclick=function(){
+        var ta=bar.querySelector('[data-ql-paste]'); var n=importLines(ed, ta&&ta.value);
+        var m=bar.querySelector('[data-ql-msg]');
+        if(m) m.innerHTML=n?('<span style="color:#0F6E56;font-weight:700">✓ 已新增 '+n+' 列</span>，請確認後按下方「儲存」。'):('<span style="color:#A51820">沒解析到「名稱：網址」</span>——請確認 AI 是用「名稱：網址」一行一條。');
+        if(n&&typeof toast==='function') toast('已新增 '+n+' 列連結');
+      };
+    });
+  }
+  setInterval(inject, 600);
 })();
 </script>
 
