@@ -722,7 +722,7 @@ details.cat .cat-body{padding:14px 15px}
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">客戶服務台</span></span>
-    <span id="verBadge">cs-v4.53</span>
+    <span id="verBadge">cs-v4.54</span>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button type="button" id="popoutBtn" class="popout-btn" title="把客戶服務台開成獨立小視窗"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6"/><path d="M20 4l-9 9"/><path d="M14 12v7H5V10h7"/></svg>小視窗</button>
@@ -7900,7 +7900,7 @@ details.ovBlock > summary .ovx-tag.has{color:#D4A574}
 
 
 
-<!-- ═══════════ cs-v4.53 SAFE LATEST · 六站流程與交付包（乾淨注入版）═══════════ -->
+<!-- ═══════════ cs-v4.54 SAFE LATEST · 六站流程與交付包（乾淨注入版）═══════════ -->
 <style id="atl452-safe-style">
 .atl452safe{border:1px solid #E8E3DA;border-left:4px solid #A51820;background:linear-gradient(180deg,#FFFCFB,#FFFFFF);border-radius:15px;padding:14px;margin:12px 0 16px;box-shadow:0 4px 18px rgba(90,40,45,.045);font-family:inherit;color:#2A1A1C}.atl452safe h3{font-family:Noto Serif TC,serif;margin:0 0 5px;font-size:15px;color:#7A1018}.atl452safe p{margin:0 0 10px;font-size:12px;color:#7A5A5E;line-height:1.75}.atl452safe-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px}.atl452safe-card{background:#fff;border:1px solid #E8E3DA;border-radius:11px;padding:8px}.atl452safe-card b{display:block;font-size:11px;color:#A51820}.atl452safe-card span{display:block;margin-top:2px;font-size:10.5px;color:#5C4248;line-height:1.45}.atl452safe-actions,.atl452safe-filter,.atl452safe-mode{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}.atl452safe-btn,.atl452safe-filter button,.atl452safe-mode button{font-family:inherit;font-size:12px;font-weight:850;border-radius:9px;padding:8px 12px;cursor:pointer;border:1px solid #A51820;background:#A51820;color:#fff;-webkit-text-fill-color:#fff}.atl452safe-filter button,.atl452safe-mode button{font-size:11.5px;border-radius:999px;background:#fff;color:#7A5A5E;-webkit-text-fill-color:#7A5A5E;border-color:#E8E3DA;padding:5px 10px}.atl452safe-filter button.on,.atl452safe-mode button.on{background:#7A1018;border-color:#7A1018;color:#fff;-webkit-text-fill-color:#fff}.atl452safe-btn.ghost{background:#fff;color:#A51820;-webkit-text-fill-color:#A51820}.atl452safe-pill{display:inline-flex;margin:2px 5px 2px 0;font-size:10.5px;font-weight:850;border:1px solid #E8E3DA;background:#fff;color:#7A5A5E;border-radius:999px;padding:3px 8px}.atl452safe-pill.ok{color:#7A5A5E;background:#F3F7F4;border-color:#FAEEDA}.atl452safe-pill.hot{color:#A51820;background:#FFF8F7;border-color:#EAD9D6}.atl452safe-ta{width:100%;box-sizing:border-box;border:1px solid #E8E3DA;border-radius:10px;padding:9px 11px;font-family:inherit;font-size:13px;line-height:1.6;min-height:64px;resize:vertical;background:#fff;color:#2A1A1C}.atl452safe-mini{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.atl452safe-mini label{display:block;font-size:11px;font-weight:800;color:#7A1018;margin-bottom:3px}.atl452safe-note{font-size:11px;color:#8A7274;line-height:1.65;margin-top:8px}body.atl452safe-filter-research .atl452safe-kind:not([data-atl452safe-kind="研究用"]){display:none!important}body.atl452safe-filter-intake .atl452safe-kind:not([data-atl452safe-kind="問診用"]){display:none!important}body.atl452safe-filter-delivery .atl452safe-kind:not([data-atl452safe-kind="交付用"]){display:none!important}body.atl452safe-mode-quick [data-atl452safe-level="standard"],body.atl452safe-mode-quick [data-atl452safe-level="deep"]{display:none!important}body.atl452safe-mode-standard [data-atl452safe-level="deep"]{display:none!important}@media(max-width:820px){.atl452safe-grid,.atl452safe-mini{grid-template-columns:1fr}.atl452safe-actions{flex-direction:column}.atl452safe-btn{width:100%}}
 </style>
@@ -7918,9 +7918,133 @@ function setFilter(m){document.body.classList.remove('atl452safe-filter-research
 function setMode(m){document.body.classList.remove('atl452safe-mode-quick','atl452safe-mode-standard','atl452safe-mode-deep');document.body.classList.add('atl452safe-mode-'+m);try{localStorage.setItem('atelier_case_mode',m)}catch(e){}document.querySelectorAll('.atl452safe-mode button').forEach(function(b){b.classList.toggle('on',b.getAttribute('data-mode')===m)})}
 function classify(){document.querySelectorAll('button,a').forEach(function(b){if(b.getAttribute('data-atl452safe-kind'))return;var t=(b.textContent||'').trim();if(!/提示詞|複製|Hook|CTA|行動出口|特點|賣點|轉譯|交接|戰役|問診|AI|診斷|PPT|PDF|HTML/.test(t))return;var k='交付用';if(/問診|ICP|Offer|承接|證據|原料|補/.test(t))k='問診用';if(/市場|案例|對標|Hook|拆|轉譯公式|工作台/.test(t))k='研究用';if(/交付|戰役|CTA|行動出口|客戶版|顧問版|PPT|PDF|HTML/.test(t))k='交付用';b.setAttribute('data-atl452safe-kind',k);b.classList.add('atl452safe-kind');b.title=(b.title?b.title+'｜':'')+'提示詞分類：'+k})}
 function exportHTML(a){var w=window.open('','_blank');if(!w){cp(packText(a),'已複製交付包');return}var html='<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><title>ATELIER 客戶賣點交付包</title><style>body{font-family:Noto Sans TC,sans-serif;background:#FDFBF8;color:#2A1A1C;padding:44px;line-height:1.8;white-space:pre-wrap}h1{font-family:Noto Serif TC,serif;color:#A51820}</style></head><body><h1>ATELIER 客戶賣點交付包</h1>'+esc(packText(a))+'</body></html>';w.document.write(html);w.document.close()}
-function render(){var host=document.querySelector('.view.on')||document.body;if(!host||host.querySelector('[data-atl452safe]'))return;var a=cur(),st=status(a),b=brief(a);var div=document.createElement('div');div.className='atl452safe';div.setAttribute('data-atl452safe','1');div.innerHTML='<h3>cs-v4.53 SAFE｜服務台總控</h3><p>乾淨注入版：服務台只負責收客戶原料、特點變賣點、CTA 行動出口、內容戰役與交付。</p><div class="atl452safe-grid"><div class="atl452safe-card"><b>1 工作台策略</b><span>'+(st.handoff?'已接住':'待從工作台保存')+'</span></div><div class="atl452safe-card"><b>2 商業原料</b><span>'+(st.raw?'已有原料':'待補 ICP / Offer / 承接')+'</span></div><div class="atl452safe-card"><b>3 特點賣點</b><span>'+(st.sell?'可供 CTA 與戰役':'待補特點與白話利益')+'</span></div><div class="atl452safe-card"><b>4 交付輸出</b><span>'+(st.pack?'已合成交付包':'待合成')+'</span></div></div><div><span class="atl452safe-pill '+(st.handoff?'ok':'hot')+'">策略 '+(st.handoff?'OK':'待補')+'</span><span class="atl452safe-pill '+(st.raw?'ok':'hot')+'">原料 '+(st.raw?'OK':'待補')+'</span><span class="atl452safe-pill '+(st.sell?'ok':'hot')+'">賣點 '+(st.sell?'OK':'待補')+'</span><span class="atl452safe-pill '+(st.pack?'ok':'hot')+'">交付包 '+(st.pack?'OK':'待合成')+'</span></div><div class="atl452safe-mode"><button data-mode="quick">快速模式</button><button data-mode="standard">標準模式</button><button data-mode="deep">深度模式</button></div><div class="atl452safe-filter"><button data-filter="all">全部提示詞</button><button data-filter="research">只看研究用</button><button data-filter="intake">只看問診用</button><button data-filter="delivery">只看交付用</button></div><div class="atl452safe-mini" data-atl452safe-level="standard"><label>客戶特點<textarea class="atl452safe-ta" data-k="features">'+esc(b.features||'')+'</textarea></label><label>觀眾痛點<textarea class="atl452safe-ta" data-k="pain">'+esc(b.pain||'')+'</textarea></label><label>白話利益<textarea class="atl452safe-ta" data-k="benefit">'+esc(b.benefit||'')+'</textarea></label><label>CTA 行動出口<textarea class="atl452safe-ta" data-k="cta">'+esc(b.cta||'')+'</textarea></label><label>可用 Hook<textarea class="atl452safe-ta" data-k="hook">'+esc(b.hook||'')+'</textarea></label><label>可拍主題<textarea class="atl452safe-ta" data-k="topics">'+esc(b.topics||'')+'</textarea></label></div><div class="atl452safe-actions"><button class="atl452safe-btn" data-save>保存特點→賣點卡</button><button class="atl452safe-btn ghost" data-pack>合成/複製交付包</button><button class="atl452safe-btn ghost" data-html data-atl452safe-level="deep">輸出 HTML</button></div><div class="atl452safe-note">CTA 行動出口＝誰×卡點×下一步×承接窗口×得到什麼。</div>';div.querySelector('[data-save]').onclick=function(){var aa=cur();if(!aa){alert('請先選客戶');return}aa.sellingPointBrief=aa.sellingPointBrief||{};div.querySelectorAll('[data-k]').forEach(function(x){aa.sellingPointBrief[x.getAttribute('data-k')]=x.value});aa.sellingPointBrief.updatedAt=new Date().toISOString();save()};div.querySelector('[data-pack]').onclick=function(){var aa=cur();if(!aa){alert('請先選客戶');return}aa.sellingPointDeliveryPack={text:packText(aa),updatedAt:new Date().toISOString(),source:'service-desk-v452-safe'};save();cp(aa.sellingPointDeliveryPack.text,'已合成並複製交付包')};div.querySelector('[data-html]').onclick=function(){exportHTML(cur())};div.querySelectorAll('[data-filter]').forEach(function(bn){bn.onclick=function(){setFilter(bn.getAttribute('data-filter'))}});div.querySelectorAll('[data-mode]').forEach(function(bn){bn.onclick=function(){setMode(bn.getAttribute('data-mode'))}});host.insertBefore(div,host.firstChild);setMode(localStorage.getItem('atelier_case_mode')||'standard')}
+function render(){var host=document.querySelector('.view.on')||document.body;if(!host||host.querySelector('[data-atl452safe]'))return;var a=cur(),st=status(a),b=brief(a);var div=document.createElement('div');div.className='atl452safe';div.setAttribute('data-atl452safe','1');div.innerHTML='<h3>cs-v4.54 SAFE｜服務台總控</h3><p>乾淨注入版：服務台只負責收客戶原料、特點變賣點、CTA 行動出口、內容戰役與交付。</p><div class="atl452safe-grid"><div class="atl452safe-card"><b>1 工作台策略</b><span>'+(st.handoff?'已接住':'待從工作台保存')+'</span></div><div class="atl452safe-card"><b>2 商業原料</b><span>'+(st.raw?'已有原料':'待補 ICP / Offer / 承接')+'</span></div><div class="atl452safe-card"><b>3 特點賣點</b><span>'+(st.sell?'可供 CTA 與戰役':'待補特點與白話利益')+'</span></div><div class="atl452safe-card"><b>4 交付輸出</b><span>'+(st.pack?'已合成交付包':'待合成')+'</span></div></div><div><span class="atl452safe-pill '+(st.handoff?'ok':'hot')+'">策略 '+(st.handoff?'OK':'待補')+'</span><span class="atl452safe-pill '+(st.raw?'ok':'hot')+'">原料 '+(st.raw?'OK':'待補')+'</span><span class="atl452safe-pill '+(st.sell?'ok':'hot')+'">賣點 '+(st.sell?'OK':'待補')+'</span><span class="atl452safe-pill '+(st.pack?'ok':'hot')+'">交付包 '+(st.pack?'OK':'待合成')+'</span></div><div class="atl452safe-mode"><button data-mode="quick">快速模式</button><button data-mode="standard">標準模式</button><button data-mode="deep">深度模式</button></div><div class="atl452safe-filter"><button data-filter="all">全部提示詞</button><button data-filter="research">只看研究用</button><button data-filter="intake">只看問診用</button><button data-filter="delivery">只看交付用</button></div><div class="atl452safe-mini" data-atl452safe-level="standard"><label>客戶特點<textarea class="atl452safe-ta" data-k="features">'+esc(b.features||'')+'</textarea></label><label>觀眾痛點<textarea class="atl452safe-ta" data-k="pain">'+esc(b.pain||'')+'</textarea></label><label>白話利益<textarea class="atl452safe-ta" data-k="benefit">'+esc(b.benefit||'')+'</textarea></label><label>CTA 行動出口<textarea class="atl452safe-ta" data-k="cta">'+esc(b.cta||'')+'</textarea></label><label>可用 Hook<textarea class="atl452safe-ta" data-k="hook">'+esc(b.hook||'')+'</textarea></label><label>可拍主題<textarea class="atl452safe-ta" data-k="topics">'+esc(b.topics||'')+'</textarea></label></div><div class="atl452safe-actions"><button class="atl452safe-btn" data-save>保存特點→賣點卡</button><button class="atl452safe-btn ghost" data-pack>合成/複製交付包</button><button class="atl452safe-btn ghost" data-html data-atl452safe-level="deep">輸出 HTML</button></div><div class="atl452safe-note">CTA 行動出口＝誰×卡點×下一步×承接窗口×得到什麼。</div>';div.querySelector('[data-save]').onclick=function(){var aa=cur();if(!aa){alert('請先選客戶');return}aa.sellingPointBrief=aa.sellingPointBrief||{};div.querySelectorAll('[data-k]').forEach(function(x){aa.sellingPointBrief[x.getAttribute('data-k')]=x.value});aa.sellingPointBrief.updatedAt=new Date().toISOString();save()};div.querySelector('[data-pack]').onclick=function(){var aa=cur();if(!aa){alert('請先選客戶');return}aa.sellingPointDeliveryPack={text:packText(aa),updatedAt:new Date().toISOString(),source:'service-desk-v452-safe'};save();cp(aa.sellingPointDeliveryPack.text,'已合成並複製交付包')};div.querySelector('[data-html]').onclick=function(){exportHTML(cur())};div.querySelectorAll('[data-filter]').forEach(function(bn){bn.onclick=function(){setFilter(bn.getAttribute('data-filter'))}});div.querySelectorAll('[data-mode]').forEach(function(bn){bn.onclick=function(){setMode(bn.getAttribute('data-mode'))}});host.insertBefore(div,host.firstChild);setMode(localStorage.getItem('atelier_case_mode')||'standard')}
 function tick(){try{classify();render()}catch(e){console.warn('[atl452 safe]',e)}}
 setInterval(tick,1200);setTimeout(tick,300);
+})();
+</script>
+
+<script>
+/* v328 / cs-v4.54：欄位 textarea 自動撐高 —— 手動編輯或 AI 智能填入後，整欄內容都看得到，不必在小框裡捲動。
+   涵蓋動態渲染的欄位（MutationObserver，含服務台 SAFE 模組／各環節欄位）；冪等（data-autogrow）；過高才出現捲軸（上限 80vh）。 */
+(function(){
+  if(window.__atlAutoGrow) return; window.__atlAutoGrow=true;
+  function grow(ta){
+    if(!ta||ta.tagName!=='TEXTAREA') return;
+    try{
+      ta.style.height='auto';
+      var h=ta.scrollHeight, max=Math.round(window.innerHeight*0.8);
+      ta.style.height=(h>max?max:h)+'px';
+      ta.style.overflowY=(h>max?'auto':'hidden');
+    }catch(e){}
+  }
+  function growAll(root){
+    try{ (root||document).querySelectorAll('textarea').forEach(function(ta){
+      if(!ta.dataset.autogrow){ ta.dataset.autogrow='1'; ta.addEventListener('input',function(){grow(ta);}); }
+      grow(ta);
+    }); }catch(e){}
+  }
+  var _t; function schedule(){ clearTimeout(_t); _t=setTimeout(function(){growAll(document);},80); }
+  function boot(){
+    growAll(document);
+    try{ var mo=new MutationObserver(function(muts){ var need=false; muts.forEach(function(m){ if(m.addedNodes&&m.addedNodes.length) need=true; }); if(need) schedule(); }); mo.observe(document.body,{childList:true,subtree:true}); }catch(e){}
+    window.addEventListener('resize',schedule);
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',boot); else boot();
+  [400,1200,2600].forEach(function(ms){ setTimeout(function(){growAll(document);},ms); });
+})();
+</script>
+
+<script>
+/* cs-v4.54：服務台 SAFE 模組「客戶賣點」欄位增強（安全 addon，靠 [data-k] 選擇器從外部增強，不改 SAFE 模組原字串）
+   為每個填空補齊三件套＋整體預覽＋下一步：①每欄「提示詞」(複製給 AI) ②整段「貼上 AI 回覆自動填入」 ③手動編輯(原生 textarea，已由 autogrow 撐高) ④「整體預覽」客戶版＋顧問版 ⑤下一步指引。冪等 data-atlsafefx。 */
+(function(){
+  if(window.__atlSafeFx) return; window.__atlSafeFx=true;
+  var LAB={features:'客戶特點',pain:'觀眾痛點',benefit:'白話利益',cta:'CTA 行動出口',hook:'可用 Hook',topics:'可拍主題'};
+  var PROMPT={
+    features:'你是短影音內容顧問。請依這位客戶的資料，條列 5–8 個「專業特點」（具體、可佐證，避免空話）。只輸出條列。',
+    pain:'你是短影音內容顧問。請列出這位客戶的目標觀眾「痛點與常見誤區」5–8 條（觀眾真正在意、會點開的）。只輸出條列。',
+    benefit:'你是短影音內容顧問。請把客戶的專業特點，翻成觀眾聽得懂的「白話利益」5–8 條（特點→對我有什麼好處）。只輸出條列。',
+    cta:'你是短影音內容顧問。請依「CTA 行動出口公式：誰 × 卡點 × 下一步 × 承接窗口 × 得到什麼」，設計 2–3 組可直接用的 CTA 行動出口原句。',
+    hook:'你是短影音內容顧問。請給 5 個可直接用的開場 Hook（前 2 秒抓住人，對應觀眾痛點）。只輸出條列。',
+    topics:'你是短影音內容顧問。請給 10 個可拍主題（對齊客戶特點與觀眾痛點，標每題對應的漏斗階段 A–E）。只輸出條列。'
+  };
+  function copy(t,msg){ try{ var ta=document.createElement('textarea'); ta.value=t; ta.style.position='fixed'; ta.style.opacity='0'; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); if(window.toast)toast(msg||'已複製'); }catch(e){ if(window.toast)toast('複製失敗，請手動選取'); } }
+  function fields(root){ return Array.prototype.slice.call(root.querySelectorAll('[data-k]')).filter(function(el){return LAB[el.getAttribute('data-k')];}); }
+  function val(root,k){ var el=root.querySelector('[data-k="'+k+'"]'); return el?(el.value||'').trim():''; }
+  function buildPreview(root){
+    var f=val(root,'features'),p=val(root,'pain'),b=val(root,'benefit'),c=val(root,'cta'),h=val(root,'hook'),t=val(root,'topics');
+    var client='【客戶版 · 賣點摘要】\n\n你的觀眾在意：\n'+(p||'（待填 觀眾痛點）')+'\n\n你能給的利益：\n'+(b||'（待填 白話利益）')+'\n\n行動出口：\n'+(c||'（待填 CTA 行動出口）')+'\n\n可以開始拍的主題：\n'+(t||'（待填 可拍主題）');
+    var advisor='【顧問版 · 作戰摘要】\n\n一、客戶特點\n'+(f||'（待填）')+'\n\n二、觀眾痛點/誤區\n'+(p||'（待填）')+'\n\n三、特點→白話利益（翻譯）\n'+(b||'（待填）')+'\n\n四、CTA 行動出口（誰×卡點×下一步×承接窗口×得到什麼）\n'+(c||'（待填）')+'\n\n五、可用 Hook\n'+(h||'（待填）')+'\n\n六、可拍主題（含 A–E 階段）\n'+(t||'（待填）');
+    return {client:client,advisor:advisor};
+  }
+  function enhance(root){
+    if(root.getAttribute('data-atlsafefx')) return; root.setAttribute('data-atlsafefx','1');
+    // 1) 每欄補「提示詞」按鈕（放在 label 裡）
+    fields(root).forEach(function(el){
+      var k=el.getAttribute('data-k'); var lab=el.closest('label')||el.parentNode;
+      if(lab && !lab.querySelector('[data-fx-prompt]')){
+        var btn=document.createElement('button'); btn.type='button'; btn.setAttribute('data-fx-prompt',k);
+        btn.textContent='提示詞'; btn.title='複製這欄的 AI 提示詞，貼到 ChatGPT／Claude';
+        btn.style.cssText='margin-left:8px;font-size:11px;padding:2px 8px;border:1px solid var(--gold-soft,#D4A574);background:var(--warm,#FDFBF8);color:var(--rouge,#A51820);border-radius:10px;cursor:pointer;font-family:inherit;vertical-align:middle';
+        btn.onclick=function(ev){ ev.preventDefault(); var ctx=val(root,'features'); copy(PROMPT[k]+(ctx?('\n\n【已知客戶特點，供參考】\n'+ctx):'')+'\n\n（請只輸出「'+LAB[k]+'」內容，方便我貼回欄位）',LAB[k]+'：提示詞已複製，貼到 AI 即可'); };
+        // 放到 label 第一個文字節點後
+        if(el.previousSibling) lab.insertBefore(btn, el); else lab.appendChild(btn);
+      }
+    });
+    // 2) 動作列加「貼上 AI 回覆自動填入 / 整體預覽 / 下一步」
+    var act=root.querySelector('.atl452safe-actions')||root;
+    if(act && !act.querySelector('[data-fx-bar]')){
+      var bar=document.createElement('div'); bar.setAttribute('data-fx-bar','1'); bar.style.cssText='display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;width:100%';
+      var bFill=document.createElement('button'); bFill.type='button'; bFill.textContent='貼上 AI 回覆自動填入'; bFill.style.cssText=fxBtn();
+      var bPrev=document.createElement('button'); bPrev.type='button'; bPrev.textContent='整體預覽（客戶版＋顧問版）'; bPrev.style.cssText=fxBtn();
+      bar.appendChild(bFill); bar.appendChild(bPrev);
+      var next=document.createElement('div'); next.style.cssText='flex-basis:100%;font-size:12px;color:var(--ink-soft,#7A5A5E);margin-top:2px';
+      next.textContent='下一步：填好六欄 → 按「整體預覽」確認樣貌 → 按上面「保存特點⇒賣點卡」存起來 → 「合成/複裝交付包」帶去交付。';
+      bar.appendChild(next);
+      // 填入區（預設收合）
+      var fillWrap=document.createElement('div'); fillWrap.style.cssText='flex-basis:100%;display:none;margin-top:6px';
+      fillWrap.innerHTML='<textarea placeholder="把 AI 回覆整段貼進來（最好含「客戶特點：」「觀眾痛點：」「白話利益：」「CTA：」「Hook：」「可拍主題：」這類標題），按下面解析自動分配到各欄。" style="width:100%;min-height:90px;padding:8px 10px;border:1px solid var(--gold-soft,#D4A574);border-radius:8px;font-size:13px;font-family:inherit"></textarea><div style="margin-top:6px"><button type="button" style="'+fxBtn()+'">解析並填入各欄</button></div>';
+      bar.appendChild(fillWrap);
+      // 預覽區（預設收合）
+      var prevWrap=document.createElement('div'); prevWrap.style.cssText='flex-basis:100%;display:none;margin-top:6px;gap:10px;flex-wrap:wrap';
+      bar.appendChild(prevWrap);
+      act.appendChild(bar);
+      bFill.onclick=function(){ fillWrap.style.display=fillWrap.style.display==='none'?'block':'none'; };
+      fillWrap.querySelector('button').onclick=function(){
+        var raw=fillWrap.querySelector('textarea').value||''; if(!raw.trim()){ if(window.toast)toast('請先貼上 AI 回覆'); return; }
+        var map=[['features',/客戶?特點/],['pain',/(觀眾)?痛點|誤區/],['benefit',/(白話)?利益/],['cta',/CTA|行動出口/i],['hook',/hook/i],['topics',/可?拍?主題/]];
+        var lines=raw.split(/\r?\n/); var cur=null, buf={}; 
+        lines.forEach(function(ln){
+          var hit=null; for(var i=0;i<map.length;i++){ var m=ln.match(/^[\s*•\-\d.、]*([^：:]{1,14})[：:]/); if(m && map[i][1].test(m[1])){ hit=map[i][0]; break; } }
+          if(hit){ cur=hit; var after=ln.replace(/^[^：:]*[：:]/,'').trim(); buf[cur]=(buf[cur]?buf[cur]+'\n':'')+(after||''); }
+          else if(cur){ buf[cur]=(buf[cur]?buf[cur]+'\n':'')+ln; }
+        });
+        var n=0; Object.keys(buf).forEach(function(k){ var el=root.querySelector('[data-k="'+k+'"]'); if(el){ el.value=(buf[k]||'').trim(); el.dispatchEvent(new Event('input',{bubbles:true})); n++; } });
+        if(window.toast)toast(n?('已自動填入 '+n+' 欄，請檢查並可手動修改'):'沒對到欄位標題，請確認格式或手動填');
+      };
+      bPrev.onclick=function(){
+        if(prevWrap.style.display!=='none'){ prevWrap.style.display='none'; return; }
+        var pv=buildPreview(root);
+        prevWrap.style.display='flex';
+        prevWrap.innerHTML='';
+        [['客戶版',pv.client],['顧問版',pv.advisor]].forEach(function(pair){
+          var col=document.createElement('div'); col.style.cssText='flex:1 1 280px;min-width:260px;border:1px solid var(--gold-soft,#D4A574);border-radius:10px;background:var(--warm,#FDFBF8);padding:10px';
+          var hd=document.createElement('div'); hd.style.cssText='display:flex;justify-content:space-between;align-items:center;margin-bottom:6px';
+          hd.innerHTML='<b style="font-size:13px;color:var(--rouge,#A51820)">'+pair[0]+'</b>';
+          var cpb=document.createElement('button'); cpb.type='button'; cpb.textContent='複製'; cpb.style.cssText='font-size:11px;padding:2px 8px;border:1px solid var(--gold-soft,#D4A574);background:#fff;color:var(--rouge,#A51820);border-radius:9px;cursor:pointer;font-family:inherit';
+          cpb.onclick=function(){ copy(pair[1], pair[0]+' 已複製'); }; hd.appendChild(cpb);
+          var pre=document.createElement('div'); pre.style.cssText='white-space:pre-wrap;font-size:12.5px;line-height:1.6;color:var(--ink,#2A1A1C);max-height:50vh;overflow:auto'; pre.textContent=pair[1];
+          col.appendChild(hd); col.appendChild(pre); prevWrap.appendChild(col);
+        });
+      };
+    }
+  }
+  function fxBtn(){ return 'font-size:12px;padding:6px 12px;border:1px solid var(--gold-dark,#D4A574);background:#fff;color:var(--rouge,#A51820);border-radius:10px;cursor:pointer;font-family:inherit'; }
+  function scan(){ document.querySelectorAll('.atl452safe').forEach(enhance); }
+  var _t; function sched(){ clearTimeout(_t); _t=setTimeout(scan,120); }
+  function boot(){ scan(); try{ new MutationObserver(function(ms){ var n=false; ms.forEach(function(m){ if(m.addedNodes&&m.addedNodes.length)n=true; }); if(n)sched(); }).observe(document.body,{childList:true,subtree:true}); }catch(e){} [500,1500,3000].forEach(function(ms){setTimeout(scan,ms);}); }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',boot); else boot();
 })();
 </script>
 
