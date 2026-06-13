@@ -8,7 +8,7 @@
 <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v312 (版本號僅留註解，不顯示於畫面)
+<!-- ATELIER 影片診斷工作台 · 內部版本 v313 (版本號僅留註解，不顯示於畫面)
 v267 更新（策略診斷硬修版：重做 Top/Bottom 固定列高、重綁單支核對窗與 AI 工具按鈕、補互動式 1–8 操作步驟與策略對標雷達；本版用最後一段 v267 override 強制接管策略診斷頁，避免舊版 v263/v265 殘留函式覆蓋。只動 index.html，不動 client.html、Firebase、CSV 與六守門提示詞。）
 v266 更新（hotfix：修正 v265 最後一段策略診斷事件代理少 catch，導致 v265 override script 無法執行、畫面徽章被前一段 v263 override 改回 v263，且策略診斷部分按鈕失效；本版補回 catch 並將顯示版本固定為 v266。只動 index.html，不動 client.html、Firebase、CSV 與六守門提示詞。）
 v265 更新（策略診斷按鈕修復、整齊 Top/Bottom、互動流程與策略對標雷達）：修正策略診斷 Top/Bottom 每支影片的按鈕高度與位置不一致；改用固定列高與事件代理，讓「快看／核對」「留在本頁定位」「改寫提示」以及單支核對窗內 AI 工具、去影片庫定位、獨立視窗核對、收起都可穩定點擊；將 1–8 操作流程改成可點擊小教學；新增策略對標雷達，從同產業、同職稱、同身份、A–E、G 階段、流量觸發、素材與高互動／高分享等面向找全庫可借鏡樣本。只動 index.html，不動 client.html、Firebase、CSV 與六守門提示詞。
@@ -72,9 +72,9 @@ v203 更新（流程①③ STEP 說明比照流程② 寫清楚，無功能／�
 v202 更新（把操作流程講清楚，無功能／無提示詞改動）：改寫 opGuideHTML_v2（流程②）的 step 文字——STEP1 hint 加「截文案那張帶 @帳號」；STEP2 改寫成「檔名來自截圖、不用卡C、不靠連結、.txt 只存電腦不進庫、趕時間可跳」；STEP3 hint 改「剪映匯出 SRT、Gemini 只看影片本體帳號填待補不用卡C」；STEP5 改寫成「丟五樣：三截圖／兩連結／SRT／Gemini／既有卡C（去帳號管理複製、這步才貼），只請輸出卡B，@帳號純 handle」。未動六守門常數（md5 未變）、未動 PROMPT_0／GEM_PROMPT／PROMPT_C、未動任何 id／函式／資料結構。版本號 4 處 v201→v202；check.js 16/16；div／details 平衡。
 v201 更新（按 v200 交接書鐵則收尾，無功能改動）：①補跑六常數 md5 守門驗證＝7c8bc3efbfc92d316b511a13b91a49bd，相符，確認 v200 的 POST_PROMPT＋流程④ 未污染六常數。②可見 changelog 拔掉 v199／v200 殘留的「（這版）」，只留 v201。③補登本 dev-changelog 的 v200／v201 兩條（v200 當時漏補）。版本號 4 處 v200→v201；六常數 md5 未動；check.js 16/16 inline scripts pass；div／details 平衡。
 v200 更新（上一個對話框臨時新增「流程④ 建貼文」一條龍，非交接書 backlog 內五項）：①新增 POST_PROMPT 第 7 支提示詞常數（接在 PROMPT_0A 之後，不動六守門常數）——讀貼文截圖直接出 ATELIER歸類卡（內容載體＝IG輪播圖文／IG單圖），含 ATELIER 五階段＋20 主題＋8 爆點＋A–E 精簡對照、@帳號要求純 handle、影片才有的欄位（總秒數／加工方式／Hook／換鏡）一律填無。②新增 opGuideHTML_v4()（流程④ 3 步：截貼文→複製建貼文提示詞→智慧貼上），鳥瞰圖＋詳細步驟比照 opGuideHTML_v2；複製鈕經 _atCopyPrompt(POST_PROMPT)。③sopBlock 切換鈕加第 4 顆（data-sopflow=4）＋新增 #sopBlock_v4／#sopBlock_v4_body；sopFlowShow 陣列加 sopBlock_v4；mount() 注入 v4_body；FLOW_TABS 加第 4 顆；opGuideShowFlow 處理 n===4。④_atCopyPrompt map／labels 加 POST_PROMPT。⑤流程② 鳥瞰圖 ovStep2 改標（選配）封存·不進庫／存電腦資料夾、ovStep5 輸出改 卡B → 進影片庫，澄清 07_連結.txt 不進庫、卡B 才進庫。新增 1 個 details；貼文不需要 Gemini／SRT。
-v199 更新（交辦單：Lisa 抓 v198 後實測 + backlog 一氣呵成做完，不丟下版）：【A1 流程 ②／③ 鳥瞰圖去黃（v197 修一半的真因）】v197 B1 我以為「綠色 #0F6E56 → 金、淺金 #A98A4C → 深金」就改完了——Lisa 還是說太黃。實際元兇是鳥瞰圖卡片底色 #FFFAF0（米黃），整片 5 張卡鋪米黃＋金邊＋金字＝一片黃湯。本版用 sed 一次處理三個流程（line 8317／8393／8456）的 ovStep 卡片背景 #FFFAF0 → #fff、邊框 var(--gold-soft) → var(--line) 淡灰；流程① 順手把 v197 漏改的 STEP 編號 #A98A4C → GD、→輸出 #0F6E56 → GD，三個流程的鳥瞰圖視覺完全統一。【A2 適用情境框去黃】流程 ②／③ intro 的 var(--warm) 暖米底也是黃源，本版改成「白底＋左 3px 酒紅強調線」callout 樣式，純白為主、酒紅當提醒符號，不再有暖米感。【B1-B5 ⚠️ emoji 換 SVG（5 處可換的）】交接書 backlog 列了 10 處 ⚠️ 殘留，本版盤點後分類處理：可換 5 處（pm-miss 數字檢查 / 影片卡需逐字稿提示 / cardFlowHint 「@帳號務必填對」/ 避坑對標標題 / 帳號卡低效案例 badge）全部換成統一 triangle warning SVG；不換 5 處（toast 訊息 textContent 限制 / modal title 跑 esc() 限制 / option 內 HTML 限制 / got 陣列收集到 pm-miss / 說明文字內的引號標記）——這些是訊息標籤不是 icon 入口，emoji 反而適合。【C1 清 v194 殘留死碼】_vchPopulate / _vchGoCompare 在 v197 hub 取代後就無人呼叫，本版直接刪掉兩個 window 函式（line 6151-6199 共 49 行），dev-changelog 留註記「v199 清掉」。已驗證 grep -c 顯示僅剩 2 處 ref（v194 changelog 註解 + 本版 v199 註解），實際函式體完全移除。【D · backlog 大功能擱置下版】市場搜尋工具（按產業搜最高觀看率）／帳號成長回測視圖（fanSnapshots 圖表）／客戶交付總整提示詞→PDF 流程／歸類卡自動歸類重訂——這 4 件都是新功能、需要先談需求，硬做會像 v194 對標助手那次方向錯。維持原計畫留下版動工前先 spec。版本號 4 處 v198→v199；六常數依守門 md5（7c8bc3efbfc92d316b511a13b91a49bd）驗證未動；可見 changelog 嚴禁反引號（v196 P0c 教訓）；全檔 node --check 16 script 全過、div/details/CSS 平衡。
+v199 更新（交辦單：Lisa 抓 v198 後實測 + backlog 一氣呵成做完，不丟下版）：【A1 流程 ②／③ 鳥瞰圖去黃（v197 修一半的真因）】v197 B1 我以為「綠色 #0F6E56 → 金、淺金 #7A5A5E → 深金」就改完了——Lisa 還是說太黃。實際元兇是鳥瞰圖卡片底色 #FFFAF0（米黃），整片 5 張卡鋪米黃＋金邊＋金字＝一片黃湯。本版用 sed 一次處理三個流程（line 8317／8393／8456）的 ovStep 卡片背景 #FFFAF0 → #fff、邊框 var(--gold-soft) → var(--line) 淡灰；流程① 順手把 v197 漏改的 STEP 編號 #7A5A5E → GD、→輸出 #0F6E56 → GD，三個流程的鳥瞰圖視覺完全統一。【A2 適用情境框去黃】流程 ②／③ intro 的 var(--warm) 暖米底也是黃源，本版改成「白底＋左 3px 酒紅強調線」callout 樣式，純白為主、酒紅當提醒符號，不再有暖米感。【B1-B5 ⚠️ emoji 換 SVG（5 處可換的）】交接書 backlog 列了 10 處 ⚠️ 殘留，本版盤點後分類處理：可換 5 處（pm-miss 數字檢查 / 影片卡需逐字稿提示 / cardFlowHint 「@帳號務必填對」/ 避坑對標標題 / 帳號卡低效案例 badge）全部換成統一 triangle warning SVG；不換 5 處（toast 訊息 textContent 限制 / modal title 跑 esc() 限制 / option 內 HTML 限制 / got 陣列收集到 pm-miss / 說明文字內的引號標記）——這些是訊息標籤不是 icon 入口，emoji 反而適合。【C1 清 v194 殘留死碼】_vchPopulate / _vchGoCompare 在 v197 hub 取代後就無人呼叫，本版直接刪掉兩個 window 函式（line 6151-6199 共 49 行），dev-changelog 留註記「v199 清掉」。已驗證 grep -c 顯示僅剩 2 處 ref（v194 changelog 註解 + 本版 v199 註解），實際函式體完全移除。【D · backlog 大功能擱置下版】市場搜尋工具（按產業搜最高觀看率）／帳號成長回測視圖（fanSnapshots 圖表）／客戶交付總整提示詞→PDF 流程／歸類卡自動歸類重訂——這 4 件都是新功能、需要先談需求，硬做會像 v194 對標助手那次方向錯。維持原計畫留下版動工前先 spec。版本號 4 處 v198→v199；六常數依守門 md5（7c8bc3efbfc92d316b511a13b91a49bd）驗證未動；可見 changelog 嚴禁反引號（v196 P0c 教訓）；全檔 node --check 16 script 全過、div/details/CSS 平衡。
 v198 更新（交辦單：Lisa 抓的 6 件事一次做完——①配色太醜（紅金堆疊太花）②主角下拉初始顯示尚無帳號 bug ③下拉太陽春缺 csel 升級 ④同職稱配不到律師（精確相等比對失敗）⑤重複的搜尋框跟客戶下拉 ⑥hub 太佔版面，接 v197）：【A1/A2 hub 配色全面重做】v197 紅 1.5px 邊框＋暖白底＋土黃金 chip＋紅實心 chip 的組合，Lisa 說一頁五種色塊看起來很重很雜。本版改：①邊框 1.5px solid var(--rouge) → 1px solid var(--gold-soft) 金色細邊；②背景 var(--warm) 暖灰 → 純白 #fff；③① 主角客戶 label 從 var(--rouge) 紅色 → var(--gold-dark) 深金；④主角下拉邊框從 var(--rouge) → var(--border) 淡邊框；⑤摘要卡背景 #fff＋gold-soft 邊框 → var(--warm) 暖灰底＋無邊框；⑥對標 chip 未選狀態從 1px rouge 邊框＋rouge 字 → 1px border 灰邊＋ink 黑字，選中狀態維持酒紅實心；⑦對標清單背景從 #fff＋虛 gold-soft → var(--warm)＋無邊框。整體：白底為主、金色細邊、黑字主導，酒紅只在「主角已選／chip 選中」這兩個關鍵狀態出現，視覺重量大幅降低。chip 列加 「(先選主角才會啟用)」副標題 + 寬度 width:100% 獨佔一行，加大 padding 7px 13px、font-size 12.5px，標籤不再被截斷。【B1 hub 下拉 csel 升級】v197 主角下拉用原生 <select>，比現有「客戶」下拉還陽春（沒有 A→Z 排序頁籤）。本版加 data-csearch="1" data-accpick="1" 兩個屬性——既有 csel 系統的 enhanceSelect()/applyAccSort 會自動偵測升級成「品牌下拉 + 搜尋框 + 5 個排序頁籤（系統建議／依成效／產業·領域／案例類型／A–Z）」，跟「客戶選擇器」完全同款。【C1 _hubPopulateSelect bug 修】根因：accounts 是雲端 async 載入，第一次進影片庫時 accounts 還沒到，原本 if(!accounts.length) 顯示「(尚無帳號，請先建檔)」誤導 Lisa。修法：accounts 還沒到時保持 placeholder「— 主角（從帳號裡選 1 個）—」，不寫死「尚無帳號」；等 renderLibrary/_accFbSubscribe 之後再呼叫一次 populate 自動補上。【C2 _hubComputeRivals 寬鬆關鍵詞匹配】根因：v197 用 x.jobTitle===heroAcc.jobTitle 精確相等，但主角是「律師事務所合夥律師（郭柏鴻＝主持律師、李牧宸＝合夥律師）」而其他律師可能填「律師」或「執業律師」，精確比對全部 false → 「找不到符合的對標帳號」。修法：抽出 _coreKeywords(text) helper——清掉括號註解、split by 標點、收集 2 字以上 token，加上常見職業後綴詞清單 SUFFIX（律師／醫師／教練／設計師／顧問／創辦人／工程師／分析師／治療師／營養師／會計師／藥師／護理師／建築師／投資人／創業家／作家／編輯／主廚／講師／老師）；_matchByKeywords(heroVal,candVal) 雙向 includes 比對，主角任一關鍵字出現在 cand value 內就算 match。產業也用同樣邏輯。【D1 影片庫快速篩選摺成 details】把 line 1546-1558 的「快速篩選」整段（含 libStageF/libGoalF/libTypeF + libJobF/libIndF 兩排 grid + libClientRow 來源 chip）包進 details 預設收起，summary 「進階篩選 · 階段 · 目標層 · 身份 · 職稱 · 產業 · 來源」。【D2 影片庫批次工具列摺成 details】libBulk 整段（全選/腳本範本/客戶選擇器/並排對比/匯出選取/複製選取/匯出CSV）包進 details 預設收起，summary 「批次操作工具 · 全選 · 腳本範本 · 並排對比 · 匯出」；順手把 tplClient 的 label 從「客戶」改名為「腳本範本對標客戶」（區分跟 hub 主角的用途）。【E1 libSearch placeholder 拿掉客戶】#libSearch placeholder 從「在影片庫裡找…（標題／主題／客戶）」→「在影片庫裡找…（標題／主題）」——客戶選擇交給 hub 處理，搜尋框專責純文字搜尋。【F1 帳號管理篩選列摺成 details】把 line 1739-1782 整段 filterrow（accFilterType/Tier/Job/Ind/Sort 五個 select）包進 details 預設收起，summary「進階篩選 · 身份 · 量級 · 職稱 · 產業 · 排序」，min-width:140px 讓五個下拉在桌機一排顯示、手機自動換行。版本號 4 處 v197→v198；六常數依守門 md5 驗證未動；可見 changelog 嚴禁反引號（v196 P0c 教訓）；全檔 node --check 16 script 全過，div/details/CSS 平衡。
-v197 更新（交辦單：四件大事一次做完——A 影片庫＋帳號管理改主角中心 hub、B 流程② / ③ 視覺對齊流程①、C 影片庫使用說明 icon 換 SVG、D 歸類卡 ①②③ chip + sticky 儲存浮窗）：【A1/A2 主角中心 hub · 取代 v194 對標助手】v194 我做的「主角+對標多選→跳版面對照」設計被 Lisa 退回三次——她真正要的是「**主從關係明確的雙欄聚焦**」：① 選 1 個主角 → 立刻看主角的影片；② 一鍵套用「同職稱／同產業／同身份」自動算對標；③ chip 切換顯示模式。本版設計 #vlibHeroHub（影片庫）/ #accHeroHub（帳號管理）——top of view，紅邊框、永遠在頁面頂部、不折疊；包含 ①主角下拉（accounts 動態 populate，按更新時間排序）②主角資訊摘要卡（選好浮現，顯示 handle/職稱/產業/粉絲/量級/影片數/30天成長/更新日期）③ 5 顆對標 chip（只看主角／同職稱／同產業／同身份／全部不限，按精確相等匹配 jobTitle/industry/types[]）④對標清單預覽（最多列 8 筆，更多顯示 +N）⑤無主角時的提示文字。state 加 libHeroId/libRivalMode/libRivalIds 與 accHeroId/accRivalMode/accRivalIds，renderLibrary 開頭把 hub 算出的「允許 accountId 集合」準備好（有主角時 v.accountId 必須在允許集內，否則照舊全列），renderAccounts 同樣邏輯但篩 a.id。sig 加入 hub state 變數確保 filter 變了 page 重置。沒選主角＝行為完全跟舊版一樣（既有篩選器全部可用、不破壞 libSelIds 勾選工具）。【B1 流程② / ③ 視覺對齊流程① sopBlock】Lisa 反映「新增的 ②③ 顏色用得很可怕、視覺不清晰」。修法：①step() 函式內按鈕 inline 樣式改成跟流程① sopBlock 內 .btn.btn-ghost 完全一致——拿掉粗邊框（1.5px→預設）、拿掉粗體（700→預設）、padding/font-size 改 6px 12px / 12px；②開工具連結改用 .btn.btn-ghost class（不再用金邊+暖白底自製樣式）；③鳥瞰圖 ovStep 內 STEP 編號的「#A98A4C 較淺金」改成 GD（var(--gold-dark)，與其他金色一致）、「→ 輸出」線的綠色 #0F6E56 改成 GD 金色（消除花俏綠色）；④流程② 跟 流程③ 一起改。【C1 影片庫使用說明 ℹ️ 換 SVG】Lisa 抓到「使用說明有別人的符號」。把 line 1564 details summary 內 ℹ️ emoji 換成品牌風格 SVG info circle（1.8 stroke）。其他 ⚠️ 殘留在 toast title / pm-miss 訊息標籤內、不是 icon 入口，本版先不動（Lisa 看到還有要換的可下版列清單）。【D1 歸類卡 ①②③ chip】把 v196 加的「歸類卡也對應流程？details」拿掉、改成 4 顆顯眼 chip：自動分流（預設）／流程① 卡A／流程② 卡B／流程③ 卡C。chip 只當視覺指引，系統仍靠 ===ATELIER... === 標記自動分流。選了非「自動分流」時下方浮出 cardFlowHint 給對應提示文字（強調 @handle 純度等）。【D2 歸類卡 sticky 儲存浮窗】Lisa 痛點「每次都要滑到最底才能按建檔」。fixed bottom-right 浮窗 #stickyCardSave（z-index 9000），偵測到 #pasteBox 有 >20 字 OR #f-title 有值 → 浮出來，提供「儲存這支影片＋」按鈕——點下去 scrollIntoView 找到原 #saveBtn 並 350ms 後觸發 click，不破壞既有 saveBtn 整套確認流程。pasteBox/f-title 加 input listener、subtab 切換時也檢查、tab click 後也檢查。版本號 4 處 v196→v197；六常數依守門 md5（7c8bc3efbfc92d316b511a13b91a49bd）驗證未動；全檔 node --check 全過（16 script，多了 1 個 sticky DOMContentLoaded listener block）、div/details/CSS 平衡。
+v197 更新（交辦單：四件大事一次做完——A 影片庫＋帳號管理改主角中心 hub、B 流程② / ③ 視覺對齊流程①、C 影片庫使用說明 icon 換 SVG、D 歸類卡 ①②③ chip + sticky 儲存浮窗）：【A1/A2 主角中心 hub · 取代 v194 對標助手】v194 我做的「主角+對標多選→跳版面對照」設計被 Lisa 退回三次——她真正要的是「**主從關係明確的雙欄聚焦**」：① 選 1 個主角 → 立刻看主角的影片；② 一鍵套用「同職稱／同產業／同身份」自動算對標；③ chip 切換顯示模式。本版設計 #vlibHeroHub（影片庫）/ #accHeroHub（帳號管理）——top of view，紅邊框、永遠在頁面頂部、不折疊；包含 ①主角下拉（accounts 動態 populate，按更新時間排序）②主角資訊摘要卡（選好浮現，顯示 handle/職稱/產業/粉絲/量級/影片數/30天成長/更新日期）③ 5 顆對標 chip（只看主角／同職稱／同產業／同身份／全部不限，按精確相等匹配 jobTitle/industry/types[]）④對標清單預覽（最多列 8 筆，更多顯示 +N）⑤無主角時的提示文字。state 加 libHeroId/libRivalMode/libRivalIds 與 accHeroId/accRivalMode/accRivalIds，renderLibrary 開頭把 hub 算出的「允許 accountId 集合」準備好（有主角時 v.accountId 必須在允許集內，否則照舊全列），renderAccounts 同樣邏輯但篩 a.id。sig 加入 hub state 變數確保 filter 變了 page 重置。沒選主角＝行為完全跟舊版一樣（既有篩選器全部可用、不破壞 libSelIds 勾選工具）。【B1 流程② / ③ 視覺對齊流程① sopBlock】Lisa 反映「新增的 ②③ 顏色用得很可怕、視覺不清晰」。修法：①step() 函式內按鈕 inline 樣式改成跟流程① sopBlock 內 .btn.btn-ghost 完全一致——拿掉粗邊框（1.5px→預設）、拿掉粗體（700→預設）、padding/font-size 改 6px 12px / 12px；②開工具連結改用 .btn.btn-ghost class（不再用金邊+暖白底自製樣式）；③鳥瞰圖 ovStep 內 STEP 編號的「#7A5A5E 較淺金」改成 GD（var(--gold-dark)，與其他金色一致）、「→ 輸出」線的綠色 #0F6E56 改成 GD 金色（消除花俏綠色）；④流程② 跟 流程③ 一起改。【C1 影片庫使用說明 ℹ️ 換 SVG】Lisa 抓到「使用說明有別人的符號」。把 line 1564 details summary 內 ℹ️ emoji 換成品牌風格 SVG info circle（1.8 stroke）。其他 ⚠️ 殘留在 toast title / pm-miss 訊息標籤內、不是 icon 入口，本版先不動（Lisa 看到還有要換的可下版列清單）。【D1 歸類卡 ①②③ chip】把 v196 加的「歸類卡也對應流程？details」拿掉、改成 4 顆顯眼 chip：自動分流（預設）／流程① 卡A／流程② 卡B／流程③ 卡C。chip 只當視覺指引，系統仍靠 ===ATELIER... === 標記自動分流。選了非「自動分流」時下方浮出 cardFlowHint 給對應提示文字（強調 @handle 純度等）。【D2 歸類卡 sticky 儲存浮窗】Lisa 痛點「每次都要滑到最底才能按建檔」。fixed bottom-right 浮窗 #stickyCardSave（z-index 9000），偵測到 #pasteBox 有 >20 字 OR #f-title 有值 → 浮出來，提供「儲存這支影片＋」按鈕——點下去 scrollIntoView 找到原 #saveBtn 並 350ms 後觸發 click，不破壞既有 saveBtn 整套確認流程。pasteBox/f-title 加 input listener、subtab 切換時也檢查、tab click 後也檢查。版本號 4 處 v196→v197；六常數依守門 md5（7c8bc3efbfc92d316b511a13b91a49bd）驗證未動；全檔 node --check 全過（16 script，多了 1 個 sticky DOMContentLoaded listener block）、div/details/CSS 平衡。
 v196 更新（交辦單：Lisa 從 claude.ai artifact preview 看到流程② 顯示「內容載入失敗：intro is not defined」——真正抓到 v195 我留下的嚴重 bug；同場加碼 ②歸類卡也要對應流程①／②／③ ③影片庫＋帳號管理要能用「同職稱／同產業」當篩選條件，接 v195）：【P1 真 hotfix · opGuideHTML_v2 缺 var intro=... 行】真因確認（用 node eval 實際跑 opGuideHTML_v2 dump 出 ReferenceError）：v195 我做 `function step(n,icon,title,provide,hint){...}` → `function step(...,opts){...複製按鈕...}` 的 str_replace 時，old_str/new_str 範圍**沒包含到下一行 var intro=...**，但因為兩段相連，導致實際 replace 後 step() 函式結尾 } 之後直接接 ovStep——`var intro` 整段被吃掉。流程③ 因為當時新增 P3 ④ 改的是另一段（包含 intro 一起 replace 並 new_str 完整保留），沒被波及。本版補回：line 8126 step 函式 } 後新增 var intro='<div style=...">適用情境：這個帳號之前<b>已經建檔過</b>...</div>';。實測 node eval：流程② 13,162 字 HTML + 3 顆 _atCopyPrompt 按鈕（PROMPT_0/GEM_PROMPT/PROMPT_C）+ 2 個開工具連結（Gemini/子題型工具）全部正確渲染。【P1B sopFlowShow 加 force mount 保險】保留 v196 P1 原本的 sopFlowShow 進入第一行 try{ mount(); }catch(e){}——切流程時強制呼叫 mount() 重新檢查並注入 sopBlock_v2_body / _v3_body 內容（mount() 內部已有 dataset.done 防重複機制，重複呼叫無副作用），不依賴 DOMContentLoaded 跑到。【P2 歸類卡分頁加流程對應說明】Lisa 問「歸類卡也有一個流程①／②／③ 的方式嗎？」實際上系統靠卡內 ===ATELIER... === 標記自動分流，使用者不需要選。本版在 #sub-card 的 paste-card 之前加 details 折疊區（預設收起）：含三組對照——卡A（影片＋帳號）=流程①／卡B（單支影片）=流程②／卡C（只有帳號分析）=流程③，每組標明系統怎麼判別，並補充「批次匯入可一次貼多張、單張用自動填入再檢查」。【P3-A1 影片庫加職稱／產業篩選】Lisa 核心需求：「我同樣是律師找律師同行影片」「我選擇相同的職業或是相同的身分或是相同的合作目標」。現有篩選僅階段／目標層／身份（粗類別）+ 來源 chip，沒有具體職稱（jobTitle）／產業（industry）。修法：①HTML 在「快速篩選」grid（3 欄）下新增第二行 grid（2 欄）放 #libJobF / #libIndF；②state 加 libJobF/libIndF 兩個空字串；③新增 populateLibAdvFilters() 從 accounts[].jobTitle/.industry dedupe sort 後動態填 options，保留 prev value；④renderLibrary 開頭呼叫 populate，filter 加兩條 if（v.accountId 反查 accounts 比對精確相等）；⑤sig 加入 libJobF/libIndF；⑥onchange 綁定。【P3-B1 帳號管理同樣加職稱／產業】帳號管理現有篩選列已含全部身份／全部量級／排序，本版在 accFilterTier 與 accSort 之間插入 #accFilterJob / #accFilterInd 兩個 select；renderAccounts 開頭呼叫 populateAccAdvFilters()；filter 加兩條精確比對；_accSig 加入；既有 event 綁定陣列加兩個 id。【未做·留下版】v194 「對標助手」（vlibCompareHelper / accCompareHelper）目前是「主角+對標多選→跳版面對照」設計，Lisa 真正要的是「選主角→一鍵套用同職稱／同產業篩選」。本版時間不夠+風險高，下版專心改造對標助手。版本號 4 處 v195→v196；六常數依守門 md5（7c8bc3efbfc92d316b511a13b91a49bd）驗證未動；全檔 node --check 全過（15 script）、div/details/CSS 平衡。
 v195 更新（交辦單：流程② / ③ 詳細 SOP 也要像流程① 一樣有「複製提示詞」按鈕可以直接按，接 v194）：【P3 流程② / ③ 加複製提示詞按鈕】Lisa 反饋：流程① sopBlock 每步有「複製提示詞 A/C/0/0A」按鈕（line 830/930/1002，attach() 綁定 PROMPT_A/C/0/0A 常數），但流程② / ③ 的內容（opGuideHTML_v2 / _v3）是 v189 A5 寫的「純說明書版」、**只有文字說明、沒有按鈕**。本版修法：①在 opGuideHTML 系列 IIFE 開頭加 window._atCopyPrompt(name) 全域函式（接 PROMPT_0/PROMPT_A/PROMPT_C/PROMPT_0A/GEM_PROMPT 5 個常數，clipboard.writeText + toast 顯示字數），不污染 IIFE scope（透過 typeof 防呆）；②opGuideHTML_v2 內 step() 函式加第 6 個 opts 參數（{copy, open, openLabel}），自動加複製按鈕（酒紅實心邊框）＋開工具連結（金邊鋸齒 anchor target=_blank），三步加 copy 標記：step 2={copy:'PROMPT_0'}（封存）、step 3={copy:'GEM_PROMPT',open:'https://gemini.google.com/app',openLabel:'開 Gemini'}（Gemini 影片分析）、step 5={copy:'PROMPT_C'}（最後整合·只要卡B）；step 4 加 open 到 https://luckylisaaa.github.io/atelier-subtype/（子題型工具網頁）；③opGuideHTML_v3 內 step() 函式同樣升級接 opts，step 2={copy:'PROMPT_A'}（帳號分析）。流程① sopBlock 既有 4 顆按鈕（line 830/930/1002，attach() 機制）保留不動；六常數本身一字未動，只是多了一個全域函式提供讀取入口。版本號 4 處 v194→v195；六常數依守門 md5（7c8bc3efbfc92d316b511a13b91a49bd）驗證未動；全檔 node --check 全過（15 script）、div/details/CSS 平衡。
 v194 更新（交辦單：Lisa 實測抓三個 bug 一次修：①卡C only 流程死路 ②清空按鈕沒清乾淨 ③雙選擇器第 5 次提出必須做，接 v193）：【P1 parseBtn 卡C only 走不下去】Lisa 場景：在「③ 歸類卡」貼**只有帳號分析卡（卡C）、沒有影片段**的文字 → atelierChoose「第一次偵測到新帳號 @qbeetw」彈窗 → 選「建立帳號」→ pending 帳號設好＋表單填好 → **但整頁只有「儲存這支影片」按鈕**，因為沒影片標題會跳「至少要填影片名稱」警示 → 帳號永遠卡在 pending 入不了庫。根因：parseBtn line 2683 `if(!vidM){return;}` 直接 return，pending 帳號沒被 commit。修法：return 前判斷 _mode!=='skip'＋ pending 物件存在 → 立刻 accounts.unshift+saveAccounts+清 pending option+populateAccountSelect+toast「✓ 已建立新帳號 @xxx（帳號管理 +1）」。bulkBtn 是批次處理多張卡，路徑不同，本版不動。【P2 clearBtn 沒清乾淨】Lisa 場景：按「清空表單」鈕，帳號 ⑥下拉/職稱/產業/版面解析/九宮格收集盤都沒清掉。對齊 saveBtn 成功後的完整清空邏輯，補 6 項：①f-account selectedIndex=0 + syncAccountJobFields；②清掉 pending 帳號（_pendingAcc / _pendingAccId / _pendingOpt option）；③收合並清空 filingBoardBoxInput 九宮格；④f-srctype；⑤f-account-quick；⑥pasteBox（智慧貼上 textarea）+ parseMsg；⑦syncProdStatus；⑧renderGoalKit。【A1 影片庫＋帳號管理 雙選擇器 · 第 5 次必須做了】Lisa 反覆要求：「影片庫跟帳號管理我是需要他像版面對照一樣有兩個可以選擇」。最小可行做法：①view-library 頂部（sumrow 之前）+ view-accounts 帳號清單頂部（+新增帳號 之前）各加一個 details#vlibCompareHelper / #accCompareHelper「對標助手」折疊區，預設收起、ontoggle 展開時自動 _vchPopulate；②兩個 details 內部結構一致——主角單選 `<select>` + 對標 `<select multiple size="6">`（HTML 原生多選，按住 Cmd/Ctrl 選 1-3 個）+「跳到版面對照並比較」按鈕；③新增 window._vchPopulate(prefix='vlib'|'acc')—— populate accounts 到兩個 select（handle + displayName/jobTitle 顯示），保留上次選擇；④新增 window._vchGoCompare(prefix)——驗證主角＋對標數量、自動 click 「.tab[data-view='compare']」切換版面對照分頁、setTimeout 350ms 後設 cmpHero.value + 清空 cmpSelected + add(rivalIds) + renderComparePicker + runCompare。不破壞既有 libSelIds 自由勾選工具列、不動 cmpHero/cmpPicker 的既有 csel 結構。版本號 4 處 v193→v194；六常數依守門 md5（7c8bc3efbfc92d316b511a13b91a49bd）驗證未動；全檔 node --check 全過（15 script）、div/details/CSS 平衡。
@@ -1221,7 +1221,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v312</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v313</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -9374,7 +9374,7 @@ window.addEventListener('DOMContentLoaded', function(){
       +'<label class="op-noprint" title="勾選＝建議先拍；取消＝備選" style="display:flex;align-items:flex-start;justify-content:center;padding-top:4px"><input type="checkbox" class="op-pick" '+(alt?'':'checked')+' style="width:15px;height:15px;accent-color:#7A1318;cursor:pointer"></label>'
       +'<div style="font-family:'+CG+';font-size:22px;color:#B08A3E;font-weight:500">'+n+'</div>'
       +'<div>'
-      +'<div style="font-size:10px;letter-spacing:.16em;margin-bottom:3px"><span class="op-tag" style="color:'+(alt?'#A98A4C':'#7A1318')+';font-weight:600">'+(alt?'備選':'建議先拍')+'</span>'+codeSpan+'</div>'
+      +'<div style="font-size:10px;letter-spacing:.16em;margin-bottom:3px"><span class="op-tag" style="color:'+(alt?'#7A5A5E':'#7A1318')+';font-weight:600">'+(alt?'備選':'建議先拍')+'</span>'+codeSpan+'</div>'
       +'<div class="op-edit" contenteditable="true" style="font-size:15px;color:#2B2521;font-weight:500;line-height:1.5">'+esc2(topic)+'</div>'
       +'<div class="op-edit" contenteditable="true" style="font-family:'+CG+';font-size:17px;color:#6E5E44;margin:5px 0 6px">「'+esc2(hook)+'」</div>'
       +'<div style="font-size:12px;color:#9C8A66">給 — <span class="op-edit" contenteditable="true">'+esc2(who)+'</span>　·　任務 — <span class="op-edit" contenteditable="true">'+esc2(task)+'</span></div>'
@@ -9401,21 +9401,21 @@ window.addEventListener('DOMContentLoaded', function(){
     var mainPos=cands.length?cands[0].text:'在這裡寫一句話定位。';
     var posWhy=hasIntake?'依你問診卡與帳號檔上的定位、人設、受眾痛點綜合判斷出來的。':'依你帳號檔上的定位、人設與受眾資料判斷出來的。';
     var chooserHtml='<div class="op-noprint" style="margin:10px 0 0;border:1px dashed #D7BE8C;border-radius:6px;padding:10px 12px;background:#FFFDF8">'
-      +'<div style="font-size:11px;color:#A98A4C;letter-spacing:.12em;margin-bottom:7px">選一個當主定位（顧問首選已先幫你選好，可換）</div>';
+      +'<div style="font-size:11px;color:#7A5A5E;letter-spacing:.12em;margin-bottom:7px">選一個當主定位（顧問首選已先幫你選好，可換）</div>';
     cands.forEach(function(cd,i){
       chooserHtml+='<label style="display:flex;gap:8px;align-items:flex-start;padding:5px 0;cursor:pointer">'
         +'<input type="radio" name="opPosPick" class="op-pospick" data-pos="'+esc2(cd.text)+'" '+(i===0?'checked':'')+' style="margin-top:3px;accent-color:#7A1318">'
-        +'<span style="font-size:12.5px;color:#3A322C;line-height:1.55">'+(i===0?'<b style="color:#7A1318">顧問首選 · </b>':'<span style="color:#A98A4C">備選 · </span>')+(cd.style?'<span style="color:#B08A3E">【'+esc2(cd.style)+'】</span> ':'')+esc2(cd.text)+'<br><span style="font-size:11px;color:#A6906A">'+esc2(cd.why)+'</span></span></label>';
+        +'<span style="font-size:12.5px;color:#3A322C;line-height:1.55">'+(i===0?'<b style="color:#7A1318">顧問首選 · </b>':'<span style="color:#7A5A5E">備選 · </span>')+(cd.style?'<span style="color:#B08A3E">【'+esc2(cd.style)+'】</span> ':'')+esc2(cd.text)+'<br><span style="font-size:11px;color:#A6906A">'+esc2(cd.why)+'</span></span></label>';
     });
     chooserHtml+='</div>';
     /* v163 顧問版底稿：定位候選全列（含手法與適合調性），可印 */
     var advPosHtml=(opMode==='advisor')?(
       '<div style="margin-top:10px;border:1px solid #E2D2A8;border-radius:6px;padding:10px 12px;background:#FBF8F0">'
-      +'<div style="letter-spacing:.2em;font-size:10px;color:#A98A4C;margin-bottom:6px">底稿 · 一句話定位候選全列（含手法／適合調性，顧問挑用）</div>'
-      +cands.map(function(cd,i){ return '<div style="font-size:12.5px;color:#3A322C;line-height:1.6;padding:5px 0;border-top:'+(i?'1px solid #EADFC6':'0')+'">'+(i===0?'<b style="color:#7A1318">顧問首選</b>':'<span style="color:#A98A4C">備選</span>')+(cd.style?' <span style="color:#B08A3E">【'+esc2(cd.style)+'】</span>':'')+'　'+esc2(cd.text)+'<br><span style="font-size:11px;color:#A6906A">適合：'+esc2(cd.why)+'</span></div>'; }).join('')
+      +'<div style="letter-spacing:.2em;font-size:10px;color:#7A5A5E;margin-bottom:6px">底稿 · 一句話定位候選全列（含手法／適合調性，顧問挑用）</div>'
+      +cands.map(function(cd,i){ return '<div style="font-size:12.5px;color:#3A322C;line-height:1.6;padding:5px 0;border-top:'+(i?'1px solid #EADFC6':'0')+'">'+(i===0?'<b style="color:#7A1318">顧問首選</b>':'<span style="color:#7A5A5E">備選</span>')+(cd.style?' <span style="color:#B08A3E">【'+esc2(cd.style)+'】</span>':'')+'　'+esc2(cd.text)+'<br><span style="font-size:11px;color:#A6906A">適合：'+esc2(cd.why)+'</span></div>'; }).join('')
       +'</div>'
     ):'';
-    var altPosHtml='<div class="op-alt" style="margin-top:10px;font-size:12.5px;color:#6E5E44;line-height:1.7"><span style="letter-spacing:.2em;font-size:10px;color:#A98A4C">備選定位 · ALTERNATIVES</span><br>'
+    var altPosHtml='<div class="op-alt" style="margin-top:10px;font-size:12.5px;color:#6E5E44;line-height:1.7"><span style="letter-spacing:.2em;font-size:10px;color:#7A5A5E">備選定位 · ALTERNATIVES</span><br>'
       +cands.slice(1).map(function(cd){ return '· '+esc2(cd.text); }).join('<br>')+'</div>';
     /* 受眾 */
     var audTxt=opReal(pf.icpAudience);
@@ -9443,7 +9443,7 @@ window.addEventListener('DOMContentLoaded', function(){
     }
     var snapHtml=snapBits.length?(
       '<div style="margin:16px 0 4px;border:1px solid #E2D2A8;background:#FBF8F0;border-radius:6px;padding:11px 14px">'
-      +'<div style="letter-spacing:.26em;font-size:10px;color:#A98A4C;margin-bottom:5px">SNAPSHOT · 帳號現況盤點</div>'
+      +'<div style="letter-spacing:.26em;font-size:10px;color:#7A5A5E;margin-bottom:5px">SNAPSHOT · 帳號現況盤點</div>'
       +'<div class="op-edit" contenteditable="true" style="font-size:13px;color:#4A4038;line-height:1.7">'+esc2(snapBits.join('　·　'))+'</div></div>'
     ):'';
     /* 這一輪建議方向：候選池（本輪支數＋緩衝） */
@@ -9468,32 +9468,32 @@ window.addEventListener('DOMContentLoaded', function(){
       +'<div style="letter-spacing:.28em;font-size:11px;color:#8C7B5C;margin-top:7px">主打 <span class="op-edit" contenteditable="true">'+(esc2(topic)||'——')+'</span>　·　'+ds+'</div></div>'
       +snapHtml
       +'<hr style="height:1px;background:#D7BE8C;border:0;margin:20px 0">'
-      +'<div style="margin:18px 0 22px"><div style="letter-spacing:.26em;font-size:11px;color:#A98A4C;margin-bottom:9px">POSITIONING · 一句話定位</div>'
+      +'<div style="margin:18px 0 22px"><div style="letter-spacing:.26em;font-size:11px;color:#7A5A5E;margin-bottom:9px">POSITIONING · 一句話定位</div>'
       +'<div id="opPosMain" class="op-edit" contenteditable="true" style="font-size:18px;line-height:1.75;color:#3A322C">'+esc2(mainPos)+'</div>'
       +_whyLine(posWhy)
       +chooserHtml
       +advPosHtml
       +altPosHtml
       +'</div>'
-      +'<div style="margin:18px 0 22px"><div style="letter-spacing:.26em;font-size:11px;color:#A98A4C;margin-bottom:9px">AUDIENCE · 主要說給誰聽</div>'
+      +'<div style="margin:18px 0 22px"><div style="letter-spacing:.26em;font-size:11px;color:#7A5A5E;margin-bottom:9px">AUDIENCE · 主要說給誰聽</div>'
       +'<div class="op-edit" contenteditable="true" style="font-size:14px;line-height:1.8;color:#4A4038">'+audHtml+'</div>'+_whyLine(audWhy)+'</div>'
       +'<div style="display:grid;grid-template-columns:1fr 1px 1fr;gap:20px;margin:22px 0">'
-      +'<div><div style="letter-spacing:.26em;font-size:11px;color:#A98A4C;margin-bottom:8px">現在的問題</div><div class="op-edit" contenteditable="true" style="font-size:14px;line-height:1.8;color:#4A4038">'+probHtml+'</div>'+_whyLine(probWhy)+'</div>'
+      +'<div><div style="letter-spacing:.26em;font-size:11px;color:#7A5A5E;margin-bottom:8px">現在的問題</div><div class="op-edit" contenteditable="true" style="font-size:14px;line-height:1.8;color:#4A4038">'+probHtml+'</div>'+_whyLine(probWhy)+'</div>'
       +'<div style="background:#E2D2A8"></div>'
-      +'<div><div style="letter-spacing:.26em;font-size:11px;color:#A98A4C;margin-bottom:8px">看到的機會</div><div class="op-edit" contenteditable="true" style="font-size:14px;line-height:1.8;color:#4A4038">'+oppoHtml+'</div>'+_whyLine(oppoWhy)+'</div></div>'
+      +'<div><div style="letter-spacing:.26em;font-size:11px;color:#7A5A5E;margin-bottom:8px">看到的機會</div><div class="op-edit" contenteditable="true" style="font-size:14px;line-height:1.8;color:#4A4038">'+oppoHtml+'</div>'+_whyLine(oppoWhy)+'</div></div>'
       +'<hr style="height:1px;background:#D7BE8C;border:0;margin:24px 0 16px">'
-      +'<div style="display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:6px"><div style="letter-spacing:.26em;font-size:11px;color:#A98A4C">THIS ROUND · 這一輪建議方向</div>'
+      +'<div style="display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:6px"><div style="letter-spacing:.26em;font-size:11px;color:#7A5A5E">THIS ROUND · 這一輪建議方向</div>'
       +'<div class="op-noprint" style="font-size:11px;color:#9C8A66">建議先拍 '+roundN+' 支 · 共列 '+poolN+' 個候選（勾選＝採用、取消＝備選）</div></div>'
       +_whyLine(roundWhy)
       +'<div id="opRows" style="margin-top:6px">'+rowsHtml+'</div>'
       +'<button class="btn btn-ghost op-noprint" id="opAddRow" style="width:auto;font-size:12px;padding:5px 12px;margin-top:10px">＋ 新增一列</button>'
       +'<hr style="height:1px;background:#D7BE8C;border:0;margin:22px 0 16px">'
-      +'<div style="margin-bottom:14px"><div style="letter-spacing:.26em;font-size:11px;color:#A98A4C;margin-bottom:9px">RATIONALE · 為什麼這樣排</div>'
+      +'<div style="margin-bottom:14px"><div style="letter-spacing:.26em;font-size:11px;color:#7A5A5E;margin-bottom:9px">RATIONALE · 為什麼這樣排</div>'
       +'<div class="op-edit" contenteditable="true" style="font-size:14px;line-height:1.8;color:#4A4038">整體節奏：前段先讓人看見、中段建立信任、後段帶到諮詢／轉化。</div></div>'
       +'<div id="opMarketSlot"></div>'
       +'<div id="opPitfallSlot"></div>'
       +'<div class="op-noprint" style="border:1px dashed #D7BE8C;border-radius:6px;padding:10px 12px;background:#FFFDF8;margin:12px 0;display:flex;flex-direction:column;gap:7px">'
-      +'<div style="font-size:11px;color:#A98A4C;letter-spacing:.12em">列印設定</div>'
+      +'<div style="font-size:11px;color:#7A5A5E;letter-spacing:.12em">列印設定</div>'
       +'<label style="display:flex;gap:8px;align-items:center;font-size:12.5px;color:#3A322C;cursor:pointer"><input type="checkbox" id="opPrintAlt" style="accent-color:#7A1318">列印時也印出「備選定位」與「備選主題」（不勾＝只印首選與建議先拍）</label>'
       +'<label style="display:flex;gap:8px;align-items:center;font-size:12.5px;color:#3A322C;cursor:pointer"><input type="checkbox" id="opShowCodes" style="accent-color:#7A1318">顯示專業註記（漏斗代號 G1–G5，內部備查用，預設關閉）</label>'
       +'<label style="display:flex;gap:8px;align-items:center;font-size:12.5px;color:#3A322C;cursor:pointer"><input type="checkbox" id="opPitfall" style="accent-color:#7A1318">附「避坑提醒」區塊（同領域失敗／低效案例＋你要避開什麼；顧問版底稿預設帶入）</label>'
@@ -9522,7 +9522,7 @@ window.addEventListener('DOMContentLoaded', function(){
           var row=cb.closest('.op-row'); if(!row) return;
           var tag=row.querySelector('.op-tag');
           if(cb.checked){ row.classList.remove('op-alt'); if(tag){ tag.textContent='建議先拍'; tag.style.color='#7A1318'; } }
-          else { row.classList.add('op-alt'); if(tag){ tag.textContent='備選'; tag.style.color='#A98A4C'; } }
+          else { row.classList.add('op-alt'); if(tag){ tag.textContent='備選'; tag.style.color='#7A5A5E'; } }
         });
       });
     }
@@ -9532,13 +9532,13 @@ window.addEventListener('DOMContentLoaded', function(){
     var sc=document.getElementById('opShowCodes'); if(sc) sc.addEventListener('change',function(){ box.classList.toggle('show-codes',sc.checked); });
     if(opMode==='advisor'){ if(pa) pa.checked=true; if(sc) sc.checked=true; var _pf=document.getElementById('opPitfall'); if(_pf) _pf.checked=true; }
     var mslot=document.getElementById('opMarketSlot');
-    if(mslot){ var emb=document.getElementById('pqEmbed'); if(emb&&emb.checked&&pqLastHtml){ mslot.innerHTML='<hr style="height:1px;background:#D7BE8C;border:0;margin:22px 0 16px"><div style="letter-spacing:.26em;font-size:11px;color:#A98A4C;margin-bottom:7px">MARKET POSITION · 市場定位象限</div>'+(pqLastAxes?'<div style="font-size:11px;color:#9C8A66;margin-bottom:4px">座標：'+esc2(pqLastAxes)+'</div>':'')+pqLastHtml; } else { mslot.innerHTML=''; } }
+    if(mslot){ var emb=document.getElementById('pqEmbed'); if(emb&&emb.checked&&pqLastHtml){ mslot.innerHTML='<hr style="height:1px;background:#D7BE8C;border:0;margin:22px 0 16px"><div style="letter-spacing:.26em;font-size:11px;color:#7A5A5E;margin-bottom:7px">MARKET POSITION · 市場定位象限</div>'+(pqLastAxes?'<div style="font-size:11px;color:#9C8A66;margin-bottom:4px">座標：'+esc2(pqLastAxes)+'</div>':'')+pqLastHtml; } else { mslot.innerHTML=''; } }
     var pslot=document.getElementById('opPitfallSlot');
     if(pslot){
       var _pfc=document.getElementById('opPitfall'); var wantP=(opMode==='advisor')||(_pfc&&_pfc.checked);
       if(wantP && typeof _failCases==='function'){
         var fc=_failCases(c);
-        var ph='<hr style="height:1px;background:#D7BE8C;border:0;margin:22px 0 16px"><div style="letter-spacing:.26em;font-size:11px;color:#A98A4C;margin-bottom:8px">PITFALLS · 避坑提醒（同領域失敗／低效案例）</div>';
+        var ph='<hr style="height:1px;background:#D7BE8C;border:0;margin:22px 0 16px"><div style="letter-spacing:.26em;font-size:11px;color:#7A5A5E;margin-bottom:8px">PITFALLS · 避坑提醒（同領域失敗／低效案例）</div>';
         if(fc.length){ fc.forEach(function(f){ ph+='<div style="font-size:13px;color:#4A4038;line-height:1.7;margin-bottom:6px"><b style="color:#7A1318">'+esc2(f.a.displayName||('@'+String(f.a.handle||'').replace(/^@/,'')))+'</b>　卡在：'+esc2(f.reason)+'　→ 要避開同樣的問題</div>'; }); }
         else { ph+='<div style="font-size:12.5px;color:#6E5E44">目前沒有標記為失敗／低效的同領域案例（可到帳號管理把案例類型標成「失敗／低效」）。</div>'; }
         pslot.innerHTML=ph;
@@ -9583,10 +9583,10 @@ window.addEventListener('DOMContentLoaded', function(){
     svg+='<line x1="'+m+'" y1="'+sy(0.5)+'" x2="'+(m+iw)+'" y2="'+sy(0.5)+'" stroke="#D7BE8C" stroke-dasharray="4 4"/>';
     svg+='<text x="'+m+'" y="'+(H-14)+'" font-size="11" fill="#8C7B5C">'+esc2(AX.lo)+'</text>';
     svg+='<text x="'+(m+iw)+'" y="'+(H-14)+'" font-size="11" fill="#8C7B5C" text-anchor="end">'+esc2(AX.hi)+'</text>';
-    svg+='<text x="'+(m+iw/2)+'" y="'+(H-2)+'" font-size="10.5" fill="#A98A4C" text-anchor="middle">'+esc2(AX.label)+'</text>';
+    svg+='<text x="'+(m+iw/2)+'" y="'+(H-2)+'" font-size="10.5" fill="#7A5A5E" text-anchor="middle">'+esc2(AX.label)+'</text>';
     svg+='<text x="14" y="'+(m+ih)+'" font-size="11" fill="#8C7B5C">'+esc2(AY.lo)+'</text>';
     svg+='<text x="14" y="'+(m+10)+'" font-size="11" fill="#8C7B5C">'+esc2(AY.hi)+'</text>';
-    svg+='<text x="13" y="'+(m+ih/2)+'" font-size="10.5" fill="#A98A4C" transform="rotate(-90 13 '+(m+ih/2)+')" text-anchor="middle">'+esc2(AY.label)+'</text>';
+    svg+='<text x="13" y="'+(m+ih/2)+'" font-size="10.5" fill="#7A5A5E" transform="rotate(-90 13 '+(m+ih/2)+')" text-anchor="middle">'+esc2(AY.label)+'</text>';
     pts.forEach(function(p,i){
       var X=sx(p.x), Y=sy(p.y);
       svg+='<circle cx="'+X.toFixed(1)+'" cy="'+Y.toFixed(1)+'" r="7" fill="#fff" stroke="#B08A3E" stroke-width="1.5"/>';
@@ -11051,7 +11051,7 @@ document.addEventListener('DOMContentLoaded',function(){
 <script>
 /* v239：自動防舊版快取。讓桌布捷徑／瀏覽器如果抓到舊 HTML，能自己比對線上最新版並導向。 */
 (function(){
-  var ATELIER_CURRENT_VERSION='v312';
+  var ATELIER_CURRENT_VERSION='v313';
   window.ATELIER_CURRENT_VERSION=ATELIER_CURRENT_VERSION;
   function _avNum(v){v=String(v||'');var m=v.match(/v\s*(\d+)/i);return m?parseInt(m[1],10):0;}
   function _avDetect(html){html=String(html||'');var m=html.match(/id=["']verBadge["'][^>]*>\s*(v\d+)/i)||html.match(/內部版本\s+(v\d+)/i);return m?m[1]:'';}
@@ -11698,7 +11698,7 @@ return '<div class="strat-radar-card-v265"><b>目前沒有符合樣本</b><p>可
 /* ═══════════ v267 strategy hard patch：固定版面、重綁按鈕、互動說明與策略對標雷達（index.html only） ═══════════ */
 (function(){
   'use strict';
-  var VERSION='v312';
+  var VERSION='v313';
   function H(id){return document.getElementById(id)}
   function E(s){return String(s==null?'':s).replace(/[&<>'"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]})}
   function A(){try{return (typeof accounts!=='undefined'&&Array.isArray(accounts))?accounts:(Array.isArray(window.accounts)?window.accounts:[])}catch(e){return []}}
@@ -11927,7 +11927,7 @@ window._strategyRadarV267=radarResults;
 
 <script id="v289PatchJS">
 (function(){
-  try{ window.ATELIER_CURRENT_VERSION='v312'; }catch(e){}
+  try{ window.ATELIER_CURRENT_VERSION='v313'; }catch(e){}
   try{ sessionStorage.setItem('atelierSkipAutoUpdate','1'); }catch(e){}
   try{ if(navigator.serviceWorker && navigator.serviceWorker.getRegistrations){
         navigator.serviceWorker.getRegistrations().then(function(rs){ rs.forEach(function(r){ try{r.update();}catch(e){} }); }).catch(function(){});
@@ -12372,7 +12372,7 @@ window._strategyRadarV267=radarResults;
     return '<div style="border:1px solid #E8E3DA;border-radius:10px;background:#fff;padding:13px 15px;margin-bottom:10px'+(f.handled?';opacity:.6':'')+'">'
       +'<div style="display:flex;align-items:center;gap:8px;margin-bottom:4px"><span style="font-size:12px;font-weight:800;color:#A51820">'+E(f.type||'request')+'</span>'
       +'<span style="font-size:11px;color:#A89498;margin-left:auto">'+E(t)+'</span></div>'+body
-      +'<div style="margin-top:9px;text-align:right">'+(f.handled?'<span style="font-size:11px;color:#4A6552;font-weight:700">✓ 已處理</span>':btn('標記已處理','_wbFbHandle(\''+f.id+'\',this)'))+'</div></div>';
+      +'<div style="margin-top:9px;text-align:right">'+(f.handled?'<span style="font-size:11px;color:#5C0F14;font-weight:700">✓ 已處理</span>':btn('標記已處理','_wbFbHandle(\''+f.id+'\',this)'))+'</div></div>';
   }
   window._wbOpenFeedback=function(id){
     var a=A(id); if(!a){ T('找不到此帳號'); return; }
@@ -12953,7 +12953,7 @@ button[data-wbl-send],button[data-wbl-inbox]{padding:3px 12px !important;font-si
   background:var(--warm,#F4F1EC);border-radius:9px;padding:9px 12px;margin:2px 0 12px;font-size:12.5px}
 .smsel-bar label{display:flex;align-items:center;gap:7px;cursor:pointer;font-weight:800;color:var(--ink,#2b2622)}
 .smsel-bar input[type=checkbox]{width:16px;height:16px;accent-color:#A51820;cursor:pointer;flex:none}
-.smsel-count{margin-left:auto;font-size:11.5px;font-weight:800;color:var(--gold-dark,#A98A4C);
+.smsel-count{margin-left:auto;font-size:11.5px;font-weight:800;color:var(--gold-dark,#7A5A5E);
   border:1px solid var(--gold-soft,#E6CFA6);border-radius:10px;padding:1px 9px;background:#fff;white-space:nowrap}
 .smsel-cb{display:flex;align-items:flex-start;padding-top:1px;cursor:pointer;flex:none}
 .smsel-cb input[type=checkbox]{width:16px;height:16px;accent-color:#A51820;cursor:pointer;margin-top:2px}
@@ -13151,17 +13151,17 @@ button[data-wbl-send],button[data-wbl-inbox]{padding:3px 12px !important;font-si
 .wb-ov1{position:fixed;inset:0;z-index:99997;background:rgba(43,38,34,.42);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);display:flex;align-items:flex-start;justify-content:center;padding:48px 16px 16px;box-sizing:border-box}
 .wb-ov1-card{background:#fff;max-width:620px;width:100%;max-height:86vh;overflow:auto;border:1px solid #EAE0D2;border-radius:16px;box-shadow:0 24px 64px rgba(43,38,34,.28);padding:22px 24px;font-family:inherit}
 .wb-ov1 h4{margin:0 0 2px;font-size:19px;font-weight:900;color:#2b2622}
-.wb-ov1 .wb-ov1-kick{font-family:'Cormorant Garamond',serif;letter-spacing:4px;color:#A98A4C;font-size:11px;text-transform:uppercase;margin-bottom:4px}
+.wb-ov1 .wb-ov1-kick{font-family:'Cormorant Garamond',serif;letter-spacing:4px;color:#7A5A5E;font-size:11px;text-transform:uppercase;margin-bottom:4px}
 .wb-ov1-sec{margin-top:16px;border-top:1px solid #F0E8DB;padding-top:12px}
-.wb-ov1-lab{font-size:11px;font-weight:800;letter-spacing:1px;color:#A98A4C;text-transform:uppercase;margin-bottom:6px}
+.wb-ov1-lab{font-size:11px;font-weight:800;letter-spacing:1px;color:#7A5A5E;text-transform:uppercase;margin-bottom:6px}
 .wb-ov1-v{font-size:13.5px;color:#2b2622;line-height:1.7}
-.wb-ov1-chip{display:inline-block;font-size:12px;font-weight:700;background:#F7EFE0;color:#7A5A1E;border-radius:11px;padding:2px 10px;margin:0 6px 6px 0}
+.wb-ov1-chip{display:inline-block;font-size:12px;font-weight:700;background:#F7EFE0;color:#7A5A5E;border-radius:11px;padding:2px 10px;margin:0 6px 6px 0}
 .wb-ov1-row{margin-bottom:5px}
 .wb-ov1-row b{color:#7A1018}
 .wb-ov1-empty{color:#A39A8C;font-size:12.5px}
 .wb-ov1-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:20px}
 .wb-ov1-go{border:1px solid #A51820;background:#A51820;color:#fff;-webkit-text-fill-color:#fff;font-weight:800;font-size:13px;border-radius:999px;padding:9px 20px;cursor:pointer;font-family:inherit}
-.wb-ov1-x{border:1px solid #DACFBE;background:#fff;color:#6B5A38;font-weight:700;font-size:13px;border-radius:999px;padding:9px 18px;cursor:pointer;font-family:inherit}
+.wb-ov1-x{border:1px solid #DACFBE;background:#fff;color:#7A5A5E;font-weight:700;font-size:13px;border-radius:999px;padding:9px 18px;cursor:pointer;font-family:inherit}
 .wb-ov1-pill{display:inline-flex;align-items:center;gap:6px;font-size:11px;border:1px solid #E2D6D3;border-radius:13px;padding:3px 11px;margin:7px 8px 2px 0;cursor:pointer;color:#7A1018;background:#FBF1F0;white-space:nowrap}
 .wb-ov1-pill:hover{border-color:#A51820}
 </style>
@@ -13213,7 +13213,7 @@ button[data-wbl-send],button[data-wbl-inbox]{padding:3px 12px !important;font-si
     var diagHTML; if(g.diag){ var gaps=(g.diag.gaps&&g.diag.gaps.length)?g.diag.gaps.map(E).join('、'):'—';
       diagHTML='<div class="wb-ov1-row">主攻：<b>目標層 '+E(g.diag.topGoal||'—')+'</b> · 階段 <b>'+E(g.diag.topStage||'—')+'</b></div><div class="wb-ov1-row">缺口：'+gaps+'</div>'+(g.note?('<div class="wb-ov1-row" style="color:#8A7274">交付備註：'+E(g.note)+'</div>'):''); }
     else diagHTML='<span class="wb-ov1-empty">尚未送過交付包（帳號卡「⮕ 送服務台」送一份後就會帶出）</span>';
-    var profHTML=g.prof.length?g.prof.map(function(pr){return '<div class="wb-ov1-row"><b style="color:#A98A4C">'+E(pr[0])+'</b>：'+E(pr[1].length>140?pr[1].slice(0,140)+'…':pr[1])+'</div>';}).join(''):'<span class="wb-ov1-empty">尚未整理問診卡（帳號卡「客戶前置問診」整理後就會帶出）</span>';
+    var profHTML=g.prof.length?g.prof.map(function(pr){return '<div class="wb-ov1-row"><b style="color:#7A5A5E">'+E(pr[0])+'</b>：'+E(pr[1].length>140?pr[1].slice(0,140)+'…':pr[1])+'</div>';}).join(''):'<span class="wb-ov1-empty">尚未整理問診卡（帳號卡「客戶前置問診」整理後就會帶出）</span>';
     var stageLine=g.hasFlow?('第 '+(g.curIdx+1)+'/7 站 · '+STAGES[g.curIdx][1]+'　·　已完成 '+g.done+'/7　·　下一步：'+((g.done>=7)?'已走完':STAGES[g.curIdx][1])):'尚未進服務台產線（第 1 站 · 初診）';
     ov.innerHTML='<div class="wb-ov1-card">'
       +'<div class="wb-ov1-kick">ATELIER · CLIENT ONE-PAGER</div>'
@@ -13265,25 +13265,25 @@ button[data-wbl-send],button[data-wbl-inbox]{padding:3px 12px !important;font-si
      警告標籤/資料不足守則）。純讀既有 videos、copyPrompt、注入、不動原碼。 -->
 <style>
 .cta1-line{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:8px}
-.cta1-btn{display:inline-flex;align-items:center;gap:5px;font-size:11px;color:#fff;background:linear-gradient(180deg,#A51820,#7A1018);border:none;border-radius:8px;padding:6px 12px;cursor:pointer;font-family:inherit;font-weight:800}
+.cta1-btn{display:inline-flex;align-items:center;gap:5px;font-size:11px;color:#fff;background:#A51820;border:none;border-radius:8px;padding:6px 12px;cursor:pointer;font-family:inherit;font-weight:800}
 .cta1-btn:hover{filter:brightness(1.07)}
 .cta1-ov{position:fixed;inset:0;z-index:100000;background:rgba(43,38,34,.45);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);display:flex;align-items:flex-start;justify-content:center;padding:40px 16px 16px;box-sizing:border-box}
 .cta1-card{background:#FDFBF8;max-width:680px;width:100%;max-height:88vh;overflow:auto;border:1px solid #EAE0D2;border-radius:16px;box-shadow:0 24px 64px rgba(43,38,34,.3);padding:22px 24px;font-family:inherit;color:#2A1A1C}
-.cta1-kick{font-family:'Cormorant Garamond',serif;letter-spacing:4px;color:#9C7048;font-size:11px;text-transform:uppercase;margin-bottom:4px}
+.cta1-kick{font-family:'Cormorant Garamond',serif;letter-spacing:4px;color:#A51820;font-size:11px;text-transform:uppercase;margin-bottom:4px}
 .cta1-h{font-size:19px;font-weight:900;margin:0 0 2px}
 .cta1-formula{font-size:13px;color:#A51820;font-weight:800;margin:6px 0 2px}
 .cta1-pos{font-size:11.5px;color:#7A5A5E;line-height:1.6;margin-bottom:12px}
 .cta1-ctx{font-size:12px;color:#5C4A3C;background:#F4F1EC;border-radius:10px;padding:9px 12px;line-height:1.6;margin-bottom:14px}
 .cta1-q{margin-bottom:9px}
-.cta1-q label{display:block;font-size:12px;font-weight:800;color:#6B4A2E;margin-bottom:3px}
+.cta1-q label{display:block;font-size:12px;font-weight:800;color:#7A5A5E;margin-bottom:3px}
 .cta1-q .hint{font-weight:400;color:#A08C7A}
 .cta1-q textarea{width:100%;box-sizing:border-box;border:1px solid #E3DCD0;border-radius:8px;padding:7px 10px;font-family:inherit;font-size:12.5px;color:#2A1A1C;background:#fff;resize:vertical;line-height:1.5}
 .cta1-ref{margin-top:14px;border-top:1px solid #ECE3D5;padding-top:10px}
-.cta1-ref summary{font-size:12px;font-weight:800;color:#9C7048;cursor:pointer}
+.cta1-ref summary{font-size:12px;font-weight:800;color:#A51820;cursor:pointer}
 .cta1-ref .body{font-size:11.5px;color:#5C4A3C;line-height:1.7;margin-top:7px}
 .cta1-ref .body b{color:#A51820}
 .cta1-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:18px;position:sticky;bottom:-1px;background:#FDFBF8;padding-top:10px}
-.cta1-x{border:1px solid #DACFBE;background:#fff;color:#6B5A38;font-weight:700;font-size:13px;border-radius:999px;padding:9px 18px;cursor:pointer;font-family:inherit}
+.cta1-x{border:1px solid #DACFBE;background:#fff;color:#7A5A5E;font-weight:700;font-size:13px;border-radius:999px;padding:9px 18px;cursor:pointer;font-family:inherit}
 .cta1-go{border:1px solid #A51820;background:#A51820;color:#fff;-webkit-text-fill-color:#fff;font-weight:800;font-size:13px;border-radius:999px;padding:9px 20px;cursor:pointer;font-family:inherit}
 </style>
 <script>
@@ -13353,7 +13353,7 @@ button[data-wbl-send],button[data-wbl-inbox]{padding:3px 12px !important;font-si
       +'<div class="cta1-formula">誰 × 卡點 × 下一步 × 承接窗口 × 得到什麼</div>'
       +'<div class="cta1-pos">CTA1 不是影片結尾文案，而是整支短影音的商業出口設計：把觀眾從「理解」帶到「行動」，再被正確的承接窗口接住。</div>'
       +'<div class="cta1-ctx"><b>這支：</b>'+E(clip(v.title,40))+(v.hook?('<br><b>Hook：</b>'+E(clip(v.hook,80))):'')+'</div>'
-      +'<div style="font-size:12px;font-weight:800;color:#6B4A2E;margin-bottom:8px">引導式問診（填越多，CTA 越精準；留空系統會自動列出要補問客戶的問題）</div>'
+      +'<div style="font-size:12px;font-weight:800;color:#7A5A5E;margin-bottom:8px">引導式問診（填越多，CTA 越精準；留空系統會自動列出要補問客戶的問題）</div>'
       +qsHTML
       +'<details class="cta1-ref"><summary>對照表：A–E 對應 CTA／Fit Score／警告標籤</summary><div class="body">'
       +'<b>A–E 對應 CTA</b>：A 認知—追蹤/收藏/看下一集/分享；B 品牌—留言觀點/追蹤系列；C 信任—收藏/留言問題/領檢核表/私訊關鍵字；D 轉化—私訊/LINE/表單/預約/諮詢；E 組織—下載SOP/加名單/進服務流程。<br>'
@@ -13382,7 +13382,7 @@ button[data-wbl-send],button[data-wbl-inbox]{padding:3px 12px !important;font-si
       var id=card.getAttribute('data-vid'); if(!id){ var m=(card.id||'').match(/^video-(.+)$/); if(m)id=m[1]; }
       if(!id) return; card.setAttribute('data-cta1','1');
       var line=document.createElement('div'); line.className='cta1-line';
-      line.innerHTML='<button type="button" class="cta1-btn">⊕ CTA1 行動出口診斷</button><span style="font-size:10.5px;color:#9C7048">誰×卡點×下一步×承接窗口×得到什麼</span>';
+      line.innerHTML='<button type="button" class="cta1-btn">⊕ CTA1 行動出口診斷</button><span style="font-size:10.5px;color:#A51820">誰×卡點×下一步×承接窗口×得到什麼</span>';
       line.querySelector('.cta1-btn').onclick=function(){ open(id); };
       card.appendChild(line);
     });
@@ -13401,18 +13401,18 @@ button[data-wbl-send],button[data-wbl-inbox]{padding:3px 12px !important;font-si
 .cf-badge{display:inline-flex;align-items:center;gap:7px;border:1px solid #E5D9CF;border-radius:999px;padding:4px 12px 4px 8px;cursor:pointer;background:#fff;font-family:inherit;font-size:12px;font-weight:800;color:#2A1A1C}
 .cf-badge:hover{border-color:#A51820}
 .cf-dot{width:11px;height:11px;border-radius:50%;flex:none}
-.cf-sub{font-size:10.5px;font-weight:600;color:#9C7048}
+.cf-sub{font-size:10.5px;font-weight:600;color:#A51820}
 .cf-panel{margin-top:7px;border:1px solid #ECE3D5;border-radius:10px;background:#FDFBF8;padding:11px 13px;font-size:12px;color:#2A1A1C}
 .cf-chk{display:flex;align-items:center;gap:7px;margin:3px 0;line-height:1.5}
 .cf-ic{width:16px;height:16px;border-radius:50%;flex:none;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;color:#fff}
-.cf-ok{background:#4A6552}.cf-no{background:#A51820}
+.cf-ok{background:#5C0F14}.cf-no{background:#A51820}
 .cf-tags{margin-top:8px;display:flex;flex-wrap:wrap;gap:5px}
 .cf-tag{font-size:10.5px;font-weight:800;background:#FBEAEA;color:#A51820;border:1px solid #F0CFCF;border-radius:9px;padding:1px 8px}
 .cf-ov{margin-top:9px;border-top:1px dashed #E3D8C8;padding-top:8px}
 .cf-ov .lab{font-size:11px;color:#7A5A5E;font-weight:700;margin-right:6px}
-.cf-num{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border:1px solid #E0D4C5;border-radius:7px;cursor:pointer;font-weight:800;font-size:12px;color:#6B5A38;background:#fff;margin-right:4px}
+.cf-num{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border:1px solid #E0D4C5;border-radius:7px;cursor:pointer;font-weight:800;font-size:12px;color:#7A5A5E;background:#fff;margin-right:4px}
 .cf-num.on{background:#A51820;color:#fff;border-color:#A51820}
-.cf-manual{font-size:10.5px;color:#4A6552;font-weight:800;margin-left:6px}
+.cf-manual{font-size:10.5px;color:#5C0F14;font-weight:800;margin-left:6px}
 </style>
 <script>
 /* v312：CTA1 Fit Score 自動判分（注入，不動原碼） */
@@ -13457,7 +13457,7 @@ button[data-wbl-send],button[data-wbl-inbox]{padding:3px 12px !important;font-si
   function getOv(id){ try{ var v=localStorage.getItem(ovKey(id)); return v==null?null:parseInt(v); }catch(e){ return null; } }
   function setOv(id,v){ try{ if(v==null) localStorage.removeItem(ovKey(id)); else localStorage.setItem(ovKey(id),String(v)); }catch(e){} }
 
-  function color(s){ return s>=4?'#4A6552':(s>=2?'#9C7048':'#A51820'); }
+  function color(s){ return s>=4?'#5C0F14':(s>=2?'#D4A574':'#A51820'); }
 
   function render(card,id){
     var v=V(id); if(!v) return;
@@ -13468,11 +13468,11 @@ button[data-wbl-send],button[data-wbl-inbox]{padding:3px 12px !important;font-si
     function paintPanel(){
       var ov2=getOv(id); var shown2=(ov2==null?r.s:ov2);
       var chk=r.checks.map(function(c){ return '<div class="cf-chk"><span class="cf-ic '+(c[1]?'cf-ok':'cf-no')+'">'+(c[1]?'✓':'✗')+'</span>'+c[0]+'</div>'; }).join('');
-      var tags=r.tags.length?('<div class="cf-tags">'+r.tags.map(function(t){return '<span class="cf-tag">'+t+'</span>';}).join('')+'</div>'):'<div style="font-size:11px;color:#4A6552;font-weight:700;margin-top:6px">沒有明顯缺口，CTA 結構相對完整。</div>';
+      var tags=r.tags.length?('<div class="cf-tags">'+r.tags.map(function(t){return '<span class="cf-tag">'+t+'</span>';}).join('')+'</div>'):'<div style="font-size:11px;color:#5C0F14;font-weight:700;margin-top:6px">沒有明顯缺口，CTA 結構相對完整。</div>';
       var nums=''; for(var i=0;i<=5;i++){ nums+='<span class="cf-num'+(i===shown2?' on':'')+'" data-n="'+i+'">'+i+'</span>'; }
       panel.innerHTML='<div style="font-weight:800;color:#7A1018;font-size:12px;margin-bottom:6px">自我校準（系統自問自答）</div>'+chk+tags
         +'<div class="cf-ov"><span class="lab">系統判分 '+r.s+'／5。人工覆蓋：</span>'+nums+(ov2!=null?'<span class="cf-num" data-n="reset" title="清除人工分數" style="color:#A51820">↺</span>':'')+'</div>'
-        +'<div style="font-size:10.5px;color:#9C7048;margin-top:7px">評分標準 0 沒CTA · 1 模糊 · 2 清楚但無承接 · 3 有基本承接 · 4 對齊受眾/痛點/A–E · 5 完整對齊五要素</div>';
+        +'<div style="font-size:10.5px;color:#A51820;margin-top:7px">評分標準 0 沒CTA · 1 模糊 · 2 清楚但無承接 · 3 有基本承接 · 4 對齊受眾/痛點/A–E · 5 完整對齊五要素</div>';
       panel.querySelectorAll('.cf-num').forEach(function(b){ b.onclick=function(){ var n=b.getAttribute('data-n'); setOv(id, n==='reset'?null:parseInt(n)); paintPanel(); var dot=line.querySelector('.cf-dot'); var nv=getOv(id); var sv=(nv==null?r.s:nv); dot.style.background=color(sv); line.querySelector('.cf-badge').childNodes[1].nodeValue='CTA1 Fit '+sv+' / 5'; var man=line.querySelector('.cf-manual'); if(nv!=null&&!man){ var sp=document.createElement('span'); sp.className='cf-manual'; sp.textContent='已校準'; line.querySelector('.cf-badge').appendChild(sp);} else if(nv==null&&man){ man.remove(); } }; });
     }
     line.querySelector('.cf-badge').onclick=function(){ if(panel.style.display==='none'){ paintPanel(); panel.style.display='block'; } else panel.style.display='none'; };
