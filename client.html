@@ -722,7 +722,7 @@ details.cat .cat-body{padding:14px 15px}
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">客戶服務台</span></span>
-    <span id="verBadge">cs-v4.40</span>
+    <span id="verBadge">cs-v4.41</span>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button type="button" id="popoutBtn" class="popout-btn" title="把客戶服務台開成獨立小視窗"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6"/><path d="M20 4l-9 9"/><path d="M14 12v7H5V10h7"/></svg>小視窗</button>
@@ -7418,6 +7418,134 @@ details.ovBlock > summary .ovx-tag.has{color:#9C7D4A}
   function tick(){ try{ var a=curA(); var id=a?a.id:null; if(id!==_last){ _last=id; document.querySelectorAll('.stppt-box').forEach(function(e){e.remove();}); } inject(); }catch(e){} }
   setInterval(tick, 950);
   if(document.readyState!=='loading') setTimeout(tick,500); else document.addEventListener('DOMContentLoaded',function(){ setTimeout(tick,500); });
+})();
+</script>
+
+
+<!-- ═══════════ cs-v4.41 · 行銷問診卡（市場位置×ICP×Offer×承接×證據）═══════════
+     行銷層第一塊：在③問診加一張卡，問出影片看不到的「誰會買、賣什麼、看完去哪、憑什麼信」。
+     可填→存進 a.marketingBrief（_accPush 同步）；可一鍵產 AI 提示詞；可貼回自動分欄。
+     一個入口、不鋪滿欄位。純注入、不動原碼。 -->
+<style>
+.mkb-card{border:1px solid #EAD9D6;border-left:3px solid #A51820;background:linear-gradient(180deg,#FFFCFA,#FCF4F2);border-radius:12px;padding:14px 16px;margin:0 0 14px}
+.mkb-h{font-weight:900;color:#7A1018;font-size:15px;display:flex;align-items:center;gap:7px;margin-bottom:2px}
+.mkb-f{font-size:12px;color:#A51820;font-weight:800;margin:3px 0}
+.mkb-note{font-size:12px;color:#7A5A5E;line-height:1.6;margin-bottom:10px}
+.mkb-actions{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.mkb-btn{font-size:12px;font-weight:800;border-radius:8px;padding:7px 13px;cursor:pointer;font-family:inherit;border:1px solid #A51820;background:#A51820;color:#fff;-webkit-text-fill-color:#fff}
+.mkb-btn.ghost{background:#fff;color:#A51820;-webkit-text-fill-color:#A51820}
+.mkb-btn:hover{filter:brightness(1.06)}
+.mkb-paste{width:100%;box-sizing:border-box;border:1px dashed #D9C7C4;border-radius:9px;padding:9px 11px;font-family:inherit;font-size:12.5px;color:#2A1A1C;background:#fff;resize:vertical;min-height:60px;margin-bottom:8px}
+.mkb-sec{font-size:11px;font-weight:900;letter-spacing:.05em;color:#7A5A5E;margin:12px 0 5px;text-transform:uppercase}
+.mkb-row{margin-bottom:8px}
+.mkb-row label{display:block;font-size:12px;font-weight:800;color:#6B4A4E;margin-bottom:3px}
+.mkb-row .hint{font-weight:400;color:#A08C7A}
+.mkb-row textarea{width:100%;box-sizing:border-box;border:1px solid #E3DAD0;border-radius:8px;padding:7px 10px;font-family:inherit;font-size:12.5px;color:#2A1A1C;background:#fff;resize:vertical;line-height:1.5;min-height:42px}
+.mkb-save{display:block;width:100%;box-sizing:border-box;border:1.5px solid #7A1018;background:#A51820;color:#fff;-webkit-text-fill-color:#fff;font-weight:800;font-size:13.5px;border-radius:10px;padding:11px;cursor:pointer;font-family:inherit;margin-top:6px}
+.mkb-save:hover{filter:brightness(1.07)}
+</style>
+<script>
+/* cs-v4.41：行銷問診卡（注入，不動原碼） */
+(function(){
+  var SECS=[
+    ['市場位置',[
+      ['market','市場位置','紅海/藍海？同類帳號多不多？可切入哪個沒人講清楚的空位'],
+      ['mem','市場記憶點','陌生人 3 秒內要記住他什麼（一句話）']
+    ]],
+    ['ICP · 誰會買',[
+      ['icp','理想成交客戶','會付錢的人是誰（不是泛指觀眾）'],
+      ['fear','最怕的損失／最卡的一句話','他在怕什麼、誤解什麼'],
+      ['decide','決策標準','價格／信任／案例／身份／速度／安全感']
+    ]],
+    ['Offer · 賣什麼',[
+      ['free','免費入口','檢核表／私訊關鍵字／諮詢'],
+      ['low','低門檻入口','初談／小額服務'],
+      ['core','核心服務','最想推／高利潤的服務']
+    ]],
+    ['承接窗口',[
+      ['window','承接窗口','LINE／表單／私訊／官網／預約'],
+      ['keyword','私訊關鍵字／話術','觀眾要回覆什麼、收到什麼']
+    ]],
+    ['證據資產',[
+      ['proof','可信證據','可公開案例／數據成果／資歷／客戶見證']
+    ]]
+  ];
+  var LABELMAP={'市場位置':'market','市場記憶點':'mem','理想成交客戶':'icp','最怕的損失':'fear','決策標準':'decide','免費入口':'free','低門檻入口':'low','核心服務':'core','承接窗口':'window','私訊關鍵字':'keyword','可信證據':'proof'};
+  function curA(){ try{ if(typeof curAcc==='function') return curAcc(); }catch(e){} try{ if(window.curAcc) return window.curAcc(); }catch(e){} return null; }
+  function push(){ try{ if(typeof _accPush==='function'){ _accPush(); return; } }catch(e){} try{ if(window._accPush) window._accPush(); }catch(e){} }
+  function num(n){ n=parseInt(n); return isNaN(n)?0:n; }
+  function fmtV(v){ v=num(v); return v>=10000?(Math.round(v/1000)/10+'萬'):v.toLocaleString(); }
+  function clip(t,n){ t=String(t==null?'':t).trim(); return t.length>n?t.slice(0,n)+'…':t; }
+  function vidsOf(a){ try{ if(typeof accountVideos==='function') return accountVideos(a)||[]; }catch(e){} try{ if(typeof videos!=='undefined'&&Array.isArray(videos)) return videos.filter(function(v){return v&&(v.accountId===a.id||v.accountHandle===a.handle);}); }catch(e){} return []; }
+  function vtitle(v){ try{ if(typeof videoTitle==='function') return videoTitle(v); }catch(e){} return (v&&(v.title||v.topic||v.hook))||'未命名影片'; }
+
+  function aiPrompt(a,mb){
+    var vs=vidsOf(a).slice().sort(function(x,y){return num(y.views)-num(x.views);}).slice(0,8);
+    var L=['你是 ATELIER 的行銷問診顧問。請幫這位客戶補齊「行銷作戰問診」——重點是影片看不到的商業資訊：誰會買、賣什麼、看完去哪、憑什麼相信。',''];
+    L.push('客戶：'+(a.handle||'')+' '+(a.displayName||'')+'｜'+(a.domain||a.industry||''));
+    if(vs.length){ L.push('影片庫前幾名（判斷市場與受眾用）：'); vs.forEach(function(v,i){ L.push((i+1)+'. '+vtitle(v)+'｜觀看 '+fmtV(v.views)+(v.hook?('｜Hook：'+clip(v.hook,40)):'')); }); }
+    var filled=Object.keys(mb||{}).filter(function(k){return (mb[k]||'').trim();});
+    if(filled.length){ L.push('','顧問已填（請尊重、只補空白並可優化）：'); SECS.forEach(function(s){ s[1].forEach(function(f){ if((mb[f[0]]||'').trim()) L.push('・'+f[1]+'：'+mb[f[0]].trim()); }); }); }
+    L.push('','請依下面格式逐行輸出（沒把握的給 2–3 個選項讓顧問挑；不要寒暄）：');
+    L.push('市場位置：');
+    L.push('市場記憶點：');
+    L.push('理想成交客戶：');
+    L.push('最怕的損失／最卡的一句話：');
+    L.push('決策標準：');
+    L.push('免費入口：');
+    L.push('低門檻入口：');
+    L.push('核心服務：');
+    L.push('承接窗口：');
+    L.push('私訊關鍵字／話術：');
+    L.push('可信證據：');
+    return L.join('\n');
+  }
+
+  function parseBack(text, fields){
+    var lines=String(text||'').split(/\r?\n/); var hit=0;
+    lines.forEach(function(ln){
+      var m=ln.split(/[:：]/); if(m.length<2) return;
+      var key=m[0].trim(); var val=m.slice(1).join('：').trim(); if(!val) return;
+      var fk=null; Object.keys(LABELMAP).forEach(function(lab){ if(key.indexOf(lab)===0) fk=LABELMAP[lab]; });
+      if(fk && fields[fk]){ fields[fk].value=val; hit++; }
+    });
+    return hit;
+  }
+
+  function build(host, a){
+    var mb=a.marketingBrief||{};
+    var box=document.createElement('div'); box.className='mkb-card'; box.setAttribute('data-mktbrief','1');
+    var html='<div class="mkb-h">🎯 行銷問診卡</div>'
+      +'<div class="mkb-f">誰會買 × 賣什麼 × 看完去哪 × 憑什麼信</div>'
+      +'<div class="mkb-note">問出影片看不到的商業資訊。填越多，後面 CTA1 與各階段 PPT 越準。可先按「複製 AI 問診提示詞」讓 AI 幫你擬，再貼回下面自動分欄。</div>'
+      +'<div class="mkb-actions"><button type="button" class="mkb-btn ghost" data-act="ai">複製 AI 問診提示詞</button></div>'
+      +'<textarea class="mkb-paste" placeholder="把 AI 回覆貼這裡 → 按下面自動分欄…"></textarea>'
+      +'<button type="button" class="mkb-btn" data-act="parse" style="margin-bottom:4px">貼回自動分欄</button>';
+    SECS.forEach(function(s){
+      html+='<div class="mkb-sec">'+s[0]+'</div>';
+      s[1].forEach(function(f){ html+='<div class="mkb-row"><label>'+f[1]+' <span class="hint">'+f[2]+'</span></label><textarea data-mk="'+f[0]+'"></textarea></div>'; });
+    });
+    html+='<button type="button" class="mkb-save">儲存行銷問診</button>';
+    box.innerHTML=html;
+    // 取欄位 map
+    var fields={}; box.querySelectorAll('textarea[data-mk]').forEach(function(t){ fields[t.getAttribute('data-mk')]=t; t.value=(mb[t.getAttribute('data-mk')]||''); });
+    box.querySelector('[data-act="ai"]').onclick=function(){ var p=aiPrompt(a, collect(fields)); try{ navigator.clipboard.writeText(p); }catch(e){} if(typeof toast==='function') toast('已複製 AI 問診提示詞'); };
+    box.querySelector('[data-act="parse"]').onclick=function(){ var ta=box.querySelector('.mkb-paste'); var n=parseBack(ta.value, fields); if(typeof toast==='function') toast(n?('已分到 '+n+' 欄，確認後請按儲存'):'沒抓到可分欄的內容，確認格式是「項目：內容」'); };
+    box.querySelector('.mkb-save').onclick=function(){ a.marketingBrief=collect(fields); a.updatedAt=Date.now(); push(); if(typeof toast==='function') toast('已儲存行銷問診並同步'); };
+    host.insertBefore(box, host.firstChild);
+  }
+  function collect(fields){ var o={}; Object.keys(fields).forEach(function(k){ var v=(fields[k].value||'').trim(); if(v) o[k]=v; }); return o; }
+
+  function inject(){
+    var host=document.getElementById('view-stage3'); if(!host||!host.children.length) return;
+    if(host.querySelector('[data-mktbrief]')) return;
+    var a=curA(); if(!a) return;
+    try{ build(host, a); }catch(e){}
+  }
+  var _last=null;
+  function tick(){ try{ var a=curA(); var id=a?a.id:null; if(id!==_last){ _last=id; document.querySelectorAll('.mkb-card').forEach(function(e){e.remove();}); } inject(); }catch(e){} }
+  setInterval(tick, 950);
+  if(document.readyState!=='loading') setTimeout(tick,520); else document.addEventListener('DOMContentLoaded',function(){ setTimeout(tick,520); });
 })();
 </script>
 
