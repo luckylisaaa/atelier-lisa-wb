@@ -8,7 +8,7 @@
 <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v302 (版本號僅留註解，不顯示於畫面)
+<!-- ATELIER 影片診斷工作台 · 內部版本 v306 (版本號僅留註解，不顯示於畫面)
 v267 更新（策略診斷硬修版：重做 Top/Bottom 固定列高、重綁單支核對窗與 AI 工具按鈕、補互動式 1–8 操作步驟與策略對標雷達；本版用最後一段 v267 override 強制接管策略診斷頁，避免舊版 v263/v265 殘留函式覆蓋。只動 index.html，不動 client.html、Firebase、CSV 與六守門提示詞。）
 v266 更新（hotfix：修正 v265 最後一段策略診斷事件代理少 catch，導致 v265 override script 無法執行、畫面徽章被前一段 v263 override 改回 v263，且策略診斷部分按鈕失效；本版補回 catch 並將顯示版本固定為 v266。只動 index.html，不動 client.html、Firebase、CSV 與六守門提示詞。）
 v265 更新（策略診斷按鈕修復、整齊 Top/Bottom、互動流程與策略對標雷達）：修正策略診斷 Top/Bottom 每支影片的按鈕高度與位置不一致；改用固定列高與事件代理，讓「快看／核對」「留在本頁定位」「改寫提示」以及單支核對窗內 AI 工具、去影片庫定位、獨立視窗核對、收起都可穩定點擊；將 1–8 操作流程改成可點擊小教學；新增策略對標雷達，從同產業、同職稱、同身份、A–E、G 階段、流量觸發、素材與高互動／高分享等面向找全庫可借鏡樣本。只動 index.html，不動 client.html、Firebase、CSV 與六守門提示詞。
@@ -1221,7 +1221,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v302</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v306</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -11051,7 +11051,7 @@ document.addEventListener('DOMContentLoaded',function(){
 <script>
 /* v239：自動防舊版快取。讓桌布捷徑／瀏覽器如果抓到舊 HTML，能自己比對線上最新版並導向。 */
 (function(){
-  var ATELIER_CURRENT_VERSION='v302';
+  var ATELIER_CURRENT_VERSION='v306';
   window.ATELIER_CURRENT_VERSION=ATELIER_CURRENT_VERSION;
   function _avNum(v){v=String(v||'');var m=v.match(/v\s*(\d+)/i);return m?parseInt(m[1],10):0;}
   function _avDetect(html){html=String(html||'');var m=html.match(/id=["']verBadge["'][^>]*>\s*(v\d+)/i)||html.match(/內部版本\s+(v\d+)/i);return m?m[1]:'';}
@@ -11698,7 +11698,7 @@ return '<div class="strat-radar-card-v265"><b>目前沒有符合樣本</b><p>可
 /* ═══════════ v267 strategy hard patch：固定版面、重綁按鈕、互動說明與策略對標雷達（index.html only） ═══════════ */
 (function(){
   'use strict';
-  var VERSION='v302';
+  var VERSION='v306';
   function H(id){return document.getElementById(id)}
   function E(s){return String(s==null?'':s).replace(/[&<>'"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]})}
   function A(){try{return (typeof accounts!=='undefined'&&Array.isArray(accounts))?accounts:(Array.isArray(window.accounts)?window.accounts:[])}catch(e){return []}}
@@ -11927,7 +11927,7 @@ window._strategyRadarV267=radarResults;
 
 <script id="v289PatchJS">
 (function(){
-  try{ window.ATELIER_CURRENT_VERSION='v302'; }catch(e){}
+  try{ window.ATELIER_CURRENT_VERSION='v306'; }catch(e){}
   try{ sessionStorage.setItem('atelierSkipAutoUpdate','1'); }catch(e){}
   try{ if(navigator.serviceWorker && navigator.serviceWorker.getRegistrations){
         navigator.serviceWorker.getRegistrations().then(function(rs){ rs.forEach(function(r){ try{r.update();}catch(e){} }); }).catch(function(){});
@@ -12269,6 +12269,43 @@ window._strategyRadarV267=radarResults;
   function btn(txt,go,primary){
     return '<button type="button" onclick="'+go+'" style="border:1px solid '+(primary?'#A51820':'#DCC8CB')+';background:'+(primary?'#A51820':'#fff')+';color:'+(primary?'#fff':'#5C0F14')+';font-weight:700;font-size:13px;border-radius:999px;padding:8px 18px;cursor:pointer;font-family:inherit">'+E(txt)+'</button>';
   }
+  function _wbDelivPrompt(a){
+    var nm=(a&&(a.displayName||a.handle))||'這位客戶';
+    var h=(a&&a.handle)||''; var ind=(a&&a.industry)||''; var job=(a&&a.jobTitle)||''; var dom=(a&&(a.domain||a.field))||'';
+    var hw='';
+    try{ var hc=(a&&a.healthChecks&&a.healthChecks.length)?a.healthChecks[a.healthChecks.length-1]:null;
+      if(hc){ var t3=(hc.top3||[]).map(function(k){ return (typeof HEALTH_DIMS!=='undefined'?((HEALTH_DIMS.find(function(d){return d.key===k;})||{}).label||k):k); }).filter(Boolean).join('、');
+        hw='最近帳號健檢：'+(hc.total||0)+'/40'+(t3?('，最弱項目：'+t3):'')+'\n'; } }catch(e){}
+    return '請依下面這位客戶的資料，幫我擬一份 ATELIER「客戶交付包」。\n\n'
+      +'客戶：'+nm+(h?('（'+h+'）'):'')+'\n'
+      +(ind?('產業：'+ind+'　'):'')+(job?('職稱：'+job+'　'):'')+(dom?('領域：'+dom):'')+'\n'
+      +hw+'\n'
+      +'【輸出格式｜務必遵守】只輸出「欄位：值」每行一欄，欄位名一字不差照抄下面，不要加任何開場白、說明、標題、編號或 Markdown：\n\n'
+      +'開場 Hook：（這位客戶短影音前 3 秒怎麼抓住人，一句具體的）\n'
+      +'結構 Structure：（一條可重複套用的內容結構，例：痛點→誤解→正解→CTA）\n'
+      +'語氣 Tone：（這個品牌該用的語氣）\n'
+      +'提示詞：（給這位客戶可直接用的 2-3 條拍片 AI 提示詞，一行一條）\n'
+      +'主要目標 topGoal：（這次交付要幫客戶達成的主要目標）\n'
+      +'關鍵階段 topStage：（目前最該補的漏斗階段）\n'
+      +'缺口 gaps：（最該補的 2-3 個缺口，一行一個）\n'
+      +'備註 note：（給客戶的一句提醒）';
+  }
+  window._wbDelivCopy=function(id,el){ var a=A(id); var p=_wbDelivPrompt(a); try{ if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(p); } else if(typeof copyVal==='function'){ copyVal(p,'AI 提示詞'); } T('已複製 AI 提示詞'); }catch(e){ if(typeof copyVal==='function') copyVal(p,'AI 提示詞'); } };
+  window._wbDelivFill=function(el){
+    var ta=document.getElementById('wbl_ai_paste'); var text=ta?ta.value:''; 
+    var map={'開場 hook':'wbl_hook','hook':'wbl_hook','開場':'wbl_hook','結構 structure':'wbl_struct','structure':'wbl_struct','結構':'wbl_struct','語氣 tone':'wbl_tone','tone':'wbl_tone','語氣':'wbl_tone','提示詞':'wbl_prompts','prompts':'wbl_prompts','主要目標 topgoal':'wbl_goal','topgoal':'wbl_goal','主要目標':'wbl_goal','關鍵階段 topstage':'wbl_stage','topstage':'wbl_stage','關鍵階段':'wbl_stage','缺口 gaps':'wbl_gaps','gaps':'wbl_gaps','缺口':'wbl_gaps','備註 note':'wbl_note','note':'wbl_note','備註':'wbl_note'};
+    var vals={}, cur=null;
+    String(text||'').split(/\n+/).forEach(function(line){
+      var idx=line.search(/[:：]/);
+      var key=idx>=0?line.slice(0,idx).replace(/^[\s\-*•]+/,'').replace(/[（(].*$/,'').trim().toLowerCase():'';
+      if(idx>=0&&map[key]){ cur=map[key]; var v=line.slice(idx+1).trim(); vals[cur]=(vals[cur]?vals[cur]+'\n':'')+v; }
+      else if(cur){ var ex=line.replace(/^[\s\-*•]+/,'').trim(); if(ex) vals[cur]+=(vals[cur]?'\n':'')+ex; }
+    });
+    var n=0; Object.keys(vals).forEach(function(idd){ var e=document.getElementById(idd); var vv=(vals[idd]||'').trim(); if(e&&vv&&!/^待補/.test(vv)){ e.value=vv; n++; } });
+    var m=document.getElementById('wbl_ai_msg');
+    if(m) m.innerHTML=n?('<span style="color:#0F6E56;font-weight:700">✓ 已帶入 '+n+' 欄</span>，可再微調後送出。'):('<span style="color:#A51820">沒對到欄位</span>——請確認 AI 是用「欄位：值」格式、欄位名跟上面一致。');
+    if(n) T('已帶入 '+n+' 欄');
+  };
   window._wbSendDelivery=function(id){
     var a=A(id); if(!a){ T('找不到此帳號'); return; }
     var nm=E(a.displayName||a.handle||'此帳號');
@@ -12276,6 +12313,14 @@ window._strategyRadarV267=radarResults;
       +'<div style="font-size:20px;font-weight:900;font-family:\'Noto Serif TC\',serif;margin-bottom:2px">送出交付包到服務台</div>'
       +'<div style="font-size:12.5px;color:#8A7274;margin-bottom:10px">'+nm+'（'+E(a.handle||'')+'）· 服務台 ⑦交付 會收到這份包</div>'
       +'<div style="font-size:12px;color:#5A4A4C;line-height:1.75;background:#FCF8F7;border:1px solid #ECD9D6;border-left:3px solid #A51820;border-radius:8px;padding:9px 11px;margin-bottom:14px"><b style="color:#A51820">這一站是做什麼的：</b>整個流程的<b>最後一站</b>——把你幫這位客戶整理的<b>內容公式＋AI 提示詞＋診斷重點</b>打包，送到「服務台 → ⑦ 客戶交付」，客戶在服務台就看得到你這次的交付。下面「缺口」已自動帶入最近一次帳號健檢最弱的項目，可再補。</div>'
+      +'<div style="margin-bottom:14px;border:1px solid #ECD9D6;border-radius:10px;background:#FCF8F7;padding:10px 12px">'
+        +'<div style="font-size:12px;font-weight:800;color:#A51820"><svg viewBox="0 0 24 24" width="12" height="12" fill="#A51820" style="vertical-align:-2px;margin-right:4px"><path d="M13 2L4 14h6l-1 8 9-12h-6z"/></svg>AI 助填（一次幫你想好整份交付包）</div>'
+        +'<div style="font-size:11px;color:#8A7274;margin:3px 0 7px;line-height:1.6">複製提示詞 → 丟給 ChatGPT／Claude → 把它回的「欄位：值」整段貼回下面，按「智能填入」自動帶進下面所有欄位。</div>'
+        +'<button type="button" onclick="_wbDelivCopy(\''+id+'\',this)" style="font-size:12px;font-weight:700;border:1px solid #DCC8CB;background:#fff;color:#5C0F14;border-radius:999px;padding:5px 12px;cursor:pointer;font-family:inherit">複製 AI 提示詞</button>'
+        +'<textarea id="wbl_ai_paste" placeholder="把 AI 回的「欄位：值」整段貼這裡" style="width:100%;box-sizing:border-box;height:60px;margin-top:8px;padding:7px 9px;border:1px solid #E8E3DA;border-radius:8px;font-family:inherit;font-size:12px"></textarea>'
+        +'<button type="button" onclick="_wbDelivFill(this)" style="margin-top:6px;width:100%;font-size:12px;font-weight:800;border:1px solid #A51820;background:#A51820;color:#fff;-webkit-text-fill-color:#fff;border-radius:999px;padding:7px;cursor:pointer;font-family:inherit">AI 智能填入</button>'
+        +'<div id="wbl_ai_msg" style="font-size:11.5px;margin-top:5px"></div>'
+      +'</div>'
       +'<div style="font-size:12px;font-weight:800;color:#9C7D4A;margin:4px 0 8px">內容公式</div>'
       +field('開場 Hook','wbl_hook','前 3 秒怎麼抓住人')
       +field('結構 Structure','wbl_struct','例：痛點 → 誤解 → 正解 → CTA')
@@ -12760,6 +12805,131 @@ window._strategyRadarV267=radarResults;
     });
   }
   setInterval(inject, 600);
+})();
+</script>
+
+<!-- ═══════════════ v304 帳號卡微調：@帳號名可直接點開主頁、隱藏多餘「看主頁」、按鈕列縮小 ═══════════════ -->
+<style id="v304layout">
+.vmeta{gap:9px 12px !important;align-items:center !important;}
+.vmeta .vlink{font-size:11.5px !important;}
+button[data-wbl-send],button[data-wbl-inbox]{padding:3px 12px !important;font-size:11px !important;}
+.vtitle-link{color:var(--rouge);font-weight:800;text-decoration:none;cursor:pointer}
+.vtitle-link:hover{text-decoration:underline}
+</style>
+<script>
+(function(){
+  'use strict';
+  if(window.__atelierCardTidyV304){ return; } window.__atelierCardTidyV304=true;
+  function accOf(card){
+    var eb=card.querySelector('[data-acc-edit]'); var id=eb?eb.getAttribute('data-acc-edit'):'';
+    var a=null; try{ if(id&&typeof accounts!=='undefined'&&accounts) a=accounts.filter(function(x){return x&&x.id===id;})[0]||null; }catch(e){}
+    if(!a&&id&&typeof accById==='function'){ try{ a=accById(id); }catch(e){} }
+    return a;
+  }
+  function tidy(){
+    Array.prototype.forEach.call(document.querySelectorAll('.vcard'),function(card){
+      var t=card.querySelector('.vtitle'); if(!t || t.getAttribute('data-handle-link')) return;
+      var a=accOf(card); var url=(a&&typeof _accURL==='function')?_accURL(a):'';
+      if(!url){ t.setAttribute('data-handle-link','skip'); return; }
+      try{
+        var nodes=t.childNodes;
+        for(var i=0;i<nodes.length;i++){
+          var nd=nodes[i];
+          if(nd.nodeType===3 && nd.nodeValue && nd.nodeValue.indexOf('@')>=0){
+            var txt=nd.nodeValue; var m=txt.match(/(@\S+)/); if(!m) continue;
+            var link=document.createElement('a'); link.href=url; link.target='_blank'; link.rel='noopener';
+            link.className='vtitle-link'; link.title='點擊開啟主頁';
+            link.innerHTML=(m[1])+'<svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-1px;margin-left:2px"><path d="M14 5h5v5"/><path d="M19 5l-8 8"/><path d="M19 13v5a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg>';
+            var frag=document.createDocumentFragment();
+            var before=txt.slice(0,m.index), after=txt.slice(m.index+m[1].length);
+            if(before) frag.appendChild(document.createTextNode(before));
+            frag.appendChild(link);
+            if(after) frag.appendChild(document.createTextNode(after));
+            t.replaceChild(frag,nd);
+            break;
+          }
+        }
+        /* 隱藏動作列多餘的「看主頁」（名字已可點） */
+        Array.prototype.forEach.call(card.querySelectorAll('.vmeta a, .vmeta .vlink'),function(el){
+          if((el.textContent||'').indexOf('看主頁')>=0) el.style.display='none';
+        });
+      }catch(e){}
+      t.setAttribute('data-handle-link','1');
+    });
+  }
+  setInterval(tidy, 800);
+  if(document.readyState!=='loading') setTimeout(tidy,400); else document.addEventListener('DOMContentLoaded',function(){ setTimeout(tidy,400); });
+})();
+</script>
+
+<!-- ═══════════════ v305 帳號卡動作列分組排序：送出/交付｜帳號操作｜資料｜刪除（末） ═══════════════ -->
+<style id="v305meta">
+.vmeta-div{display:inline-block;width:1px;height:14px;background:#E6D6D8;margin:0 3px;vertical-align:middle;border-radius:1px}
+.vmeta [data-acc-del]{color:#B08A8E !important}
+</style>
+<script>
+(function(){
+  'use strict';
+  if(window.__atelierMetaOrderV305){ return; } window.__atelierMetaOrderV305=true;
+  function div(){ var s=document.createElement('span'); s.className='vmeta-div'; s.setAttribute('data-vdiv','1'); return s; }
+  function byText(meta,s){ return Array.prototype.slice.call(meta.children).filter(function(el){return el.getAttribute&&el.getAttribute('data-vdiv')===null?false:(el.textContent||'').indexOf(s)>=0&&!el.getAttribute('data-vdiv');})[0]; }
+  function pick(meta,sel){ try{ return meta.querySelector(sel); }catch(e){ return null; } }
+  function reorder(){
+    Array.prototype.forEach.call(document.querySelectorAll('.vcard .vmeta'),function(meta){
+      if(meta.getAttribute('data-reordered')) return;
+      var send=pick(meta,'[data-wbl-send]'), inbox=pick(meta,'[data-wbl-inbox]');
+      if(!send||!inbox) return; /* 等送服務台/回饋鈕注入後再排 */
+      var edit=pick(meta,'[data-acc-edit]'), intake=pick(meta,'[data-acc-intake]'),
+          caseSel=pick(meta,'.acc-case-sel'), client=pick(meta,'[data-acc-client]'),
+          ident=pick(meta,'[data-acc-ident]'), exp=pick(meta,'[data-acc-export]'), del=pick(meta,'[data-acc-del]'),
+          desk=null;
+      Array.prototype.slice.call(meta.children).forEach(function(el){ if(!desk && el.tagName==='A' && (el.textContent||'').indexOf('客戶服務台')>=0) desk=el; });
+      var seq=[send,inbox,div(), edit,intake,caseSel,client,div(), desk,ident,exp,div(), del];
+      seq.forEach(function(el){ if(el) meta.appendChild(el); }); /* appendChild 會把既有元素依序移到末端 */
+      meta.setAttribute('data-reordered','1');
+    });
+  }
+  setInterval(reorder, 800);
+  if(document.readyState!=='loading') setTimeout(reorder,500); else document.addEventListener('DOMContentLoaded',function(){ setTimeout(reorder,500); });
+})();
+</script>
+
+<!-- ═══════════════ v306 更多分析工具：依用途分三組（看體質／找方向／記錄數據）＋每顆 hover 微說明 ═══════════════ -->
+<script>
+(function(){
+  'use strict';
+  if(window.__atelierToolsGroupV306){ return; } window.__atelierToolsGroupV306=true;
+  var GROUPS=[
+    {label:'看體質', items:['data-acc-health','data-acc-hcheck','data-acc-clientdx']},
+    {label:'找方向', items:['data-acc-success','data-acc-borrow','data-acc-fab']},
+    {label:'記錄數據', items:['data-acc-snap','data-acc-growth','data-acc-prof','data-acc-market']}
+  ];
+  var TIPS={
+    'data-acc-health':'帳號體檢：快速體質檢查',
+    'data-acc-hcheck':'帳號健檢：10 維度打分，找最弱的項目',
+    'data-acc-clientdx':'客戶診斷：三關產物一次看',
+    'data-acc-success':'成功庫對標：自動撈出最像的成功標竿',
+    'data-acc-borrow':'借技法寫腳本：借別人的招式，幫這個客戶寫腳本',
+    'data-acc-fab':'特點→賣點：把專業翻成觀眾聽得懂的人話',
+    'data-acc-snap':'粉絲快照：記一筆粉絲數，之後畫成長曲線',
+    'data-acc-growth':'成長曲線：看這個帳號的粉絲走勢',
+    'data-acc-prof':'版面快照：記錄這個時間點的版面策略',
+    'data-acc-market':'市場熱度：手填這個主題的市場指標'
+  };
+  function chip(txt){ var s=document.createElement('span'); s.setAttribute('data-tg-label','1'); s.textContent=txt; s.style.cssText='font-size:10.5px;font-weight:800;color:#9C7D4A;background:#FCF8F7;border:1px solid #ECD9D6;border-radius:999px;padding:2px 9px;align-self:center'; return s; }
+  function group(){
+    Array.prototype.forEach.call(document.querySelectorAll('.vstrat .vmeta'),function(meta){
+      if(!meta.querySelector('[data-acc-fab]')) return;          /* 只處理工具列（含特點→賣點），不碰動作列 */
+      if(meta.getAttribute('data-tools-grouped')) return;
+      GROUPS.forEach(function(g){
+        meta.appendChild(chip(g.label));
+        g.items.forEach(function(attr){ var el=meta.querySelector('['+attr+']'); if(el){ if(TIPS[attr]) el.title=TIPS[attr]; meta.appendChild(el); } });
+      });
+      meta.setAttribute('data-tools-grouped','1');
+    });
+  }
+  setInterval(group, 800);
+  if(document.readyState!=='loading') setTimeout(group,500); else document.addEventListener('DOMContentLoaded',function(){ setTimeout(group,500); });
 })();
 </script>
 
