@@ -8,7 +8,7 @@
 <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v311 (版本號僅留註解，不顯示於畫面)
+<!-- ATELIER 影片診斷工作台 · 內部版本 v312 (版本號僅留註解，不顯示於畫面)
 v267 更新（策略診斷硬修版：重做 Top/Bottom 固定列高、重綁單支核對窗與 AI 工具按鈕、補互動式 1–8 操作步驟與策略對標雷達；本版用最後一段 v267 override 強制接管策略診斷頁，避免舊版 v263/v265 殘留函式覆蓋。只動 index.html，不動 client.html、Firebase、CSV 與六守門提示詞。）
 v266 更新（hotfix：修正 v265 最後一段策略診斷事件代理少 catch，導致 v265 override script 無法執行、畫面徽章被前一段 v263 override 改回 v263，且策略診斷部分按鈕失效；本版補回 catch 並將顯示版本固定為 v266。只動 index.html，不動 client.html、Firebase、CSV 與六守門提示詞。）
 v265 更新（策略診斷按鈕修復、整齊 Top/Bottom、互動流程與策略對標雷達）：修正策略診斷 Top/Bottom 每支影片的按鈕高度與位置不一致；改用固定列高與事件代理，讓「快看／核對」「留在本頁定位」「改寫提示」以及單支核對窗內 AI 工具、去影片庫定位、獨立視窗核對、收起都可穩定點擊；將 1–8 操作流程改成可點擊小教學；新增策略對標雷達，從同產業、同職稱、同身份、A–E、G 階段、流量觸發、素材與高互動／高分享等面向找全庫可借鏡樣本。只動 index.html，不動 client.html、Firebase、CSV 與六守門提示詞。
@@ -1221,7 +1221,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v311</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v312</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -11051,7 +11051,7 @@ document.addEventListener('DOMContentLoaded',function(){
 <script>
 /* v239：自動防舊版快取。讓桌布捷徑／瀏覽器如果抓到舊 HTML，能自己比對線上最新版並導向。 */
 (function(){
-  var ATELIER_CURRENT_VERSION='v311';
+  var ATELIER_CURRENT_VERSION='v312';
   window.ATELIER_CURRENT_VERSION=ATELIER_CURRENT_VERSION;
   function _avNum(v){v=String(v||'');var m=v.match(/v\s*(\d+)/i);return m?parseInt(m[1],10):0;}
   function _avDetect(html){html=String(html||'');var m=html.match(/id=["']verBadge["'][^>]*>\s*(v\d+)/i)||html.match(/內部版本\s+(v\d+)/i);return m?m[1]:'';}
@@ -11698,7 +11698,7 @@ return '<div class="strat-radar-card-v265"><b>目前沒有符合樣本</b><p>可
 /* ═══════════ v267 strategy hard patch：固定版面、重綁按鈕、互動說明與策略對標雷達（index.html only） ═══════════ */
 (function(){
   'use strict';
-  var VERSION='v311';
+  var VERSION='v312';
   function H(id){return document.getElementById(id)}
   function E(s){return String(s==null?'':s).replace(/[&<>'"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]})}
   function A(){try{return (typeof accounts!=='undefined'&&Array.isArray(accounts))?accounts:(Array.isArray(window.accounts)?window.accounts:[])}catch(e){return []}}
@@ -11927,7 +11927,7 @@ window._strategyRadarV267=radarResults;
 
 <script id="v289PatchJS">
 (function(){
-  try{ window.ATELIER_CURRENT_VERSION='v311'; }catch(e){}
+  try{ window.ATELIER_CURRENT_VERSION='v312'; }catch(e){}
   try{ sessionStorage.setItem('atelierSkipAutoUpdate','1'); }catch(e){}
   try{ if(navigator.serviceWorker && navigator.serviceWorker.getRegistrations){
         navigator.serviceWorker.getRegistrations().then(function(rs){ rs.forEach(function(r){ try{r.update();}catch(e){} }); }).catch(function(){});
@@ -13389,6 +13389,107 @@ button[data-wbl-send],button[data-wbl-inbox]{padding:3px 12px !important;font-si
   }
   setInterval(function(){ try{inject();}catch(e){} }, 900);
   if(document.readyState!=='loading') setTimeout(inject,440); else document.addEventListener('DOMContentLoaded',function(){ setTimeout(inject,440); });
+})();
+</script>
+
+
+<!-- ═══════════ v312 · CTA1 Fit Score 自動判分引擎（數據化／前後自我校準）═══════════
+     系統自己從影片資料算 CTA1 Fit Score（0–5）＋紅黃綠燈＋逐項自我校準（自問自答：有CTA？有承接？
+     受眾明確？…）＋自動警告標籤；可人工覆蓋（存 localStorage）。純讀 videos/accounts、注入、不動原碼。 -->
+<style>
+.cf-line{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:8px}
+.cf-badge{display:inline-flex;align-items:center;gap:7px;border:1px solid #E5D9CF;border-radius:999px;padding:4px 12px 4px 8px;cursor:pointer;background:#fff;font-family:inherit;font-size:12px;font-weight:800;color:#2A1A1C}
+.cf-badge:hover{border-color:#A51820}
+.cf-dot{width:11px;height:11px;border-radius:50%;flex:none}
+.cf-sub{font-size:10.5px;font-weight:600;color:#9C7048}
+.cf-panel{margin-top:7px;border:1px solid #ECE3D5;border-radius:10px;background:#FDFBF8;padding:11px 13px;font-size:12px;color:#2A1A1C}
+.cf-chk{display:flex;align-items:center;gap:7px;margin:3px 0;line-height:1.5}
+.cf-ic{width:16px;height:16px;border-radius:50%;flex:none;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;color:#fff}
+.cf-ok{background:#4A6552}.cf-no{background:#A51820}
+.cf-tags{margin-top:8px;display:flex;flex-wrap:wrap;gap:5px}
+.cf-tag{font-size:10.5px;font-weight:800;background:#FBEAEA;color:#A51820;border:1px solid #F0CFCF;border-radius:9px;padding:1px 8px}
+.cf-ov{margin-top:9px;border-top:1px dashed #E3D8C8;padding-top:8px}
+.cf-ov .lab{font-size:11px;color:#7A5A5E;font-weight:700;margin-right:6px}
+.cf-num{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border:1px solid #E0D4C5;border-radius:7px;cursor:pointer;font-weight:800;font-size:12px;color:#6B5A38;background:#fff;margin-right:4px}
+.cf-num.on{background:#A51820;color:#fff;border-color:#A51820}
+.cf-manual{font-size:10.5px;color:#4A6552;font-weight:800;margin-left:6px}
+</style>
+<script>
+/* v312：CTA1 Fit Score 自動判分（注入，不動原碼） */
+(function(){
+  var CTA_RE=/追蹤|訂閱|收藏|分享|留言|私訊|加\s*line|line|表單|預約|諮詢|報名|名額|連結|看下一|下一支|下一集|領取|索取|加入|填\s*表|填寫|dm|關鍵字|點(個讚|下方|連結|擊)|回覆|留言「|打「/i;
+  var WIN_RE=/line|表單|官網|私訊|dm|預約|連結|e-?mail|信箱|google\s*form|服務頁|pdf|檢核表|名單|諮詢|預約頁|報名表/i;
+  var BEN_RE=/免費|送你|送大家|得到|拿到|領取|教你|幫你|解決|清單|範本|懶人包|檢核表|sop|優惠|折扣|名額|限時|一次搞懂|學會|避免|省下/i;
+  function num(n){ n=parseInt(n); return isNaN(n)?0:n; }
+  function V(id){ try{ if(typeof videos!=='undefined'&&videos){ var v=videos.filter(function(x){return x&&x.id===id;})[0]; if(v)return v; } }catch(e){} return null; }
+  function accOf(v){ try{ if(typeof accounts!=='undefined'&&accounts){ return accounts.filter(function(a){return a&&(a.id===v.accountId||a.handle===v.accountHandle);})[0]||null; } }catch(e){} return null; }
+  function isHint(s){ try{ if(typeof isHintText==='function') return isHintText(s); }catch(e){} return !s; }
+
+  function score(v){
+    var text=[v.transcript,v.caption,v.note,v.hook,v.cover,v.title].filter(Boolean).join(' ');
+    var hasCTA=CTA_RE.test(text), hasWindow=WIN_RE.test(text), hasBenefit=BEN_RE.test(text);
+    var hasHook=!!(v.hook&&String(v.hook).trim());
+    var a=accOf(v); var pf=(a&&a.profile)||{};
+    var hasAudience=!!(v.icp&&String(v.icp).trim()) || !!((pf.icpAudience&&!isHint(pf.icpAudience))||(pf.icpPersona&&!isHint(pf.icpPersona))||(pf.positioning&&!isHint(pf.positioning)));
+    var gl=String(v.goal||v.goalLayer||'');
+    var hasLayer=/\b[A-E]\b|認知|品牌|信任|轉化|轉換|組織/.test(gl);
+    var views=num(v.views);
+    var s;
+    if(!hasCTA) s=0;
+    else if(!hasWindow) s=(hasAudience||hasBenefit)?2:1;
+    else { if(hasAudience&&hasLayer&&hasBenefit) s=5; else if(hasAudience&&hasLayer) s=4; else s=3; }
+    var tags=[];
+    if(!hasCTA){ tags.push('無 CTA'); if(views>=10000) tags.push('有流量但無轉換'); }
+    if(hasCTA&&!hasWindow){ tags.push('缺 LINE／表單承接'); if(hasHook) tags.push('有 Hook 但無承接'); }
+    if(hasCTA&&hasWindow&&!hasBenefit) tags.push('缺觀眾行動後利益');
+    if(!hasAudience) tags.push('受眾不夠明確');
+    return { s:s, checks:[
+      ['有明確的 CTA（行動呼籲）', hasCTA],
+      ['有承接窗口（LINE／表單／私訊…）', hasWindow],
+      ['受眾明確（影片或帳號檔有寫）', hasAudience],
+      ['有 Hook（痛點入口）', hasHook],
+      ['對應 A–E 商業層級', hasLayer],
+      ['有講「行動後得到什麼」', hasBenefit]
+    ], tags:tags };
+  }
+
+  function ovKey(id){ return 'atelier_cta1fit_'+id; }
+  function getOv(id){ try{ var v=localStorage.getItem(ovKey(id)); return v==null?null:parseInt(v); }catch(e){ return null; } }
+  function setOv(id,v){ try{ if(v==null) localStorage.removeItem(ovKey(id)); else localStorage.setItem(ovKey(id),String(v)); }catch(e){} }
+
+  function color(s){ return s>=4?'#4A6552':(s>=2?'#9C7048':'#A51820'); }
+
+  function render(card,id){
+    var v=V(id); if(!v) return;
+    var r=score(v); var ov=getOv(id); var shown=(ov==null?r.s:ov);
+    var line=document.createElement('div'); line.className='cf-line';
+    line.innerHTML='<button type="button" class="cf-badge"><span class="cf-dot" style="background:'+color(shown)+'"></span>CTA1 Fit '+shown+' / 5'+(ov!=null?'<span class="cf-manual">已校準</span>':'')+'</button><span class="cf-sub">系統自動判分・點開看自我校準</span>';
+    var panel=document.createElement('div'); panel.className='cf-panel'; panel.style.display='none';
+    function paintPanel(){
+      var ov2=getOv(id); var shown2=(ov2==null?r.s:ov2);
+      var chk=r.checks.map(function(c){ return '<div class="cf-chk"><span class="cf-ic '+(c[1]?'cf-ok':'cf-no')+'">'+(c[1]?'✓':'✗')+'</span>'+c[0]+'</div>'; }).join('');
+      var tags=r.tags.length?('<div class="cf-tags">'+r.tags.map(function(t){return '<span class="cf-tag">'+t+'</span>';}).join('')+'</div>'):'<div style="font-size:11px;color:#4A6552;font-weight:700;margin-top:6px">沒有明顯缺口，CTA 結構相對完整。</div>';
+      var nums=''; for(var i=0;i<=5;i++){ nums+='<span class="cf-num'+(i===shown2?' on':'')+'" data-n="'+i+'">'+i+'</span>'; }
+      panel.innerHTML='<div style="font-weight:800;color:#7A1018;font-size:12px;margin-bottom:6px">自我校準（系統自問自答）</div>'+chk+tags
+        +'<div class="cf-ov"><span class="lab">系統判分 '+r.s+'／5。人工覆蓋：</span>'+nums+(ov2!=null?'<span class="cf-num" data-n="reset" title="清除人工分數" style="color:#A51820">↺</span>':'')+'</div>'
+        +'<div style="font-size:10.5px;color:#9C7048;margin-top:7px">評分標準 0 沒CTA · 1 模糊 · 2 清楚但無承接 · 3 有基本承接 · 4 對齊受眾/痛點/A–E · 5 完整對齊五要素</div>';
+      panel.querySelectorAll('.cf-num').forEach(function(b){ b.onclick=function(){ var n=b.getAttribute('data-n'); setOv(id, n==='reset'?null:parseInt(n)); paintPanel(); var dot=line.querySelector('.cf-dot'); var nv=getOv(id); var sv=(nv==null?r.s:nv); dot.style.background=color(sv); line.querySelector('.cf-badge').childNodes[1].nodeValue='CTA1 Fit '+sv+' / 5'; var man=line.querySelector('.cf-manual'); if(nv!=null&&!man){ var sp=document.createElement('span'); sp.className='cf-manual'; sp.textContent='已校準'; line.querySelector('.cf-badge').appendChild(sp);} else if(nv==null&&man){ man.remove(); } }; });
+    }
+    line.querySelector('.cf-badge').onclick=function(){ if(panel.style.display==='none'){ paintPanel(); panel.style.display='block'; } else panel.style.display='none'; };
+    card.appendChild(line); card.appendChild(panel);
+  }
+
+  function inject(){
+    var cards=document.querySelectorAll('.video-card'); if(!cards.length) return;
+    cards.forEach(function(card){
+      if(card.getAttribute('data-cta1fit')) return;
+      var id=card.getAttribute('data-vid'); if(!id){ var m=(card.id||'').match(/^video-(.+)$/); if(m)id=m[1]; }
+      if(!id) return; card.setAttribute('data-cta1fit','1');
+      try{ render(card,id); }catch(e){}
+    });
+  }
+  setInterval(function(){ try{inject();}catch(e){} }, 900);
+  if(document.readyState!=='loading') setTimeout(inject,460); else document.addEventListener('DOMContentLoaded',function(){ setTimeout(inject,460); });
 })();
 </script>
 
