@@ -8,7 +8,7 @@
 <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v301 (版本號僅留註解，不顯示於畫面)
+<!-- ATELIER 影片診斷工作台 · 內部版本 v302 (版本號僅留註解，不顯示於畫面)
 v267 更新（策略診斷硬修版：重做 Top/Bottom 固定列高、重綁單支核對窗與 AI 工具按鈕、補互動式 1–8 操作步驟與策略對標雷達；本版用最後一段 v267 override 強制接管策略診斷頁，避免舊版 v263/v265 殘留函式覆蓋。只動 index.html，不動 client.html、Firebase、CSV 與六守門提示詞。）
 v266 更新（hotfix：修正 v265 最後一段策略診斷事件代理少 catch，導致 v265 override script 無法執行、畫面徽章被前一段 v263 override 改回 v263，且策略診斷部分按鈕失效；本版補回 catch 並將顯示版本固定為 v266。只動 index.html，不動 client.html、Firebase、CSV 與六守門提示詞。）
 v265 更新（策略診斷按鈕修復、整齊 Top/Bottom、互動流程與策略對標雷達）：修正策略診斷 Top/Bottom 每支影片的按鈕高度與位置不一致；改用固定列高與事件代理，讓「快看／核對」「留在本頁定位」「改寫提示」以及單支核對窗內 AI 工具、去影片庫定位、獨立視窗核對、收起都可穩定點擊；將 1–8 操作流程改成可點擊小教學；新增策略對標雷達，從同產業、同職稱、同身份、A–E、G 階段、流量觸發、素材與高互動／高分享等面向找全庫可借鏡樣本。只動 index.html，不動 client.html、Firebase、CSV 與六守門提示詞。
@@ -1221,7 +1221,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v301</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v302</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -11051,7 +11051,7 @@ document.addEventListener('DOMContentLoaded',function(){
 <script>
 /* v239：自動防舊版快取。讓桌布捷徑／瀏覽器如果抓到舊 HTML，能自己比對線上最新版並導向。 */
 (function(){
-  var ATELIER_CURRENT_VERSION='v301';
+  var ATELIER_CURRENT_VERSION='v302';
   window.ATELIER_CURRENT_VERSION=ATELIER_CURRENT_VERSION;
   function _avNum(v){v=String(v||'');var m=v.match(/v\s*(\d+)/i);return m?parseInt(m[1],10):0;}
   function _avDetect(html){html=String(html||'');var m=html.match(/id=["']verBadge["'][^>]*>\s*(v\d+)/i)||html.match(/內部版本\s+(v\d+)/i);return m?m[1]:'';}
@@ -11698,7 +11698,7 @@ return '<div class="strat-radar-card-v265"><b>目前沒有符合樣本</b><p>可
 /* ═══════════ v267 strategy hard patch：固定版面、重綁按鈕、互動說明與策略對標雷達（index.html only） ═══════════ */
 (function(){
   'use strict';
-  var VERSION='v301';
+  var VERSION='v302';
   function H(id){return document.getElementById(id)}
   function E(s){return String(s==null?'':s).replace(/[&<>'"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]})}
   function A(){try{return (typeof accounts!=='undefined'&&Array.isArray(accounts))?accounts:(Array.isArray(window.accounts)?window.accounts:[])}catch(e){return []}}
@@ -11927,7 +11927,7 @@ window._strategyRadarV267=radarResults;
 
 <script id="v289PatchJS">
 (function(){
-  try{ window.ATELIER_CURRENT_VERSION='v301'; }catch(e){}
+  try{ window.ATELIER_CURRENT_VERSION='v302'; }catch(e){}
   try{ sessionStorage.setItem('atelierSkipAutoUpdate','1'); }catch(e){}
   try{ if(navigator.serviceWorker && navigator.serviceWorker.getRegistrations){
         navigator.serviceWorker.getRegistrations().then(function(rs){ rs.forEach(function(r){ try{r.update();}catch(e){} }); }).catch(function(){});
@@ -12216,9 +12216,10 @@ window._strategyRadarV267=radarResults;
      ed.querySelector('.qlink-add').onclick=function(){var a=lsGet(id);a.push({label:'',url:''});lsSet(id,a);paintEdit()};
      Array.prototype.forEach.call(ed.querySelectorAll('.qlink-del'),function(b){b.onclick=function(){var a=lsGet(id);a.splice(+b.getAttribute('data-i'),1);lsSet(id,a);paintEdit()}});
      ed.querySelector('.qlink-save').onclick=function(){var a=[];var L=ed.querySelectorAll('.qlink-in-label'),U=ed.querySelectorAll('.qlink-in-url');
-       for(var k=0;k<L.length;k++){var u=U[k].value.trim();if(u){if(!/^https?:\/\//.test(u))u='https://'+u;a.push({label:L[k].value.trim()||'連結',url:u})}}
+       for(var k=0;k<L.length;k++){var u=U[k].value.trim();if(u){var pm=u.match(/\((https?:\/\/[^)\s]+)\)/);if(pm)u=pm[1];u=u.replace(/[\[\]()]/g,'').trim();if(!/^https?:\/\//.test(u))u='https://'+u;a.push({label:L[k].value.trim()||'連結',url:u})}}
        lsSet(id,a);paint();box.querySelector('.qlink-edit').style.display='block';paintEdit();
-       try{if(typeof toast==='function')toast('快速直達已儲存')}catch(e){}};}
+       try{if(typeof toast==='function')toast('✓ 快速直達已儲存（'+a.length+' 條）')}catch(e){}
+       try{var sb=box.querySelector('.qlink-save');if(sb){sb.textContent='✓ 已儲存 '+a.length+' 條';sb.style.background='#0F6E56';sb.style.color='#fff';setTimeout(function(){sb.textContent='儲存';sb.style.background='';sb.style.color='';},1800);}}catch(e){}};}
    paint();card.appendChild(box);
  }catch(e){}}
  var t=null;function scan(){try{Array.prototype.forEach.call(document.querySelectorAll('.vcard'),render)}catch(e){}}
@@ -12251,7 +12252,7 @@ window._strategyRadarV267=radarResults;
   function uid(p){ return (p||'id')+'_'+Date.now().toString(36)+Math.random().toString(36).slice(2,6); }
   function ov(inner){
     var o=document.createElement('div'); o.className='wbl-ov';
-    o.style.cssText='position:fixed;inset:0;z-index:200000;background:rgba(42,26,28,.5);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);display:flex;align-items:center;justify-content:center;padding:18px;box-sizing:border-box';
+    o.style.cssText='position:fixed;inset:0;z-index:200000;background:rgba(58,42,44,.4);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);display:flex;align-items:center;justify-content:center;padding:18px;box-sizing:border-box';
     var sh=document.createElement('div');
     sh.style.cssText='background:#FDFBF8;max-width:660px;width:100%;max-height:90vh;overflow:auto;border:1px solid #EFE7DC;border-radius:16px;box-shadow:0 24px 64px rgba(42,26,28,.28);padding:22px;box-sizing:border-box;font-family:"Noto Sans TC",system-ui,sans-serif;color:#2A1A1C';
     sh.innerHTML=inner; o.appendChild(sh);
@@ -12260,7 +12261,7 @@ window._strategyRadarV267=radarResults;
   }
   window._wblClose=function(el){ var o=el&&el.closest?el.closest('.wbl-ov'):null; if(o){ o.remove(); return; } var x=document.querySelector('.wbl-ov'); if(x) x.remove(); };
   function field(label,id,ph,ta){
-    return '<div style="margin-bottom:12px"><label style="display:block;font-size:12px;font-weight:800;color:#A51820;margin-bottom:5px">'+E(label)+'</label>'
+    return '<div style="margin-bottom:12px"><label style="display:block;font-size:12px;font-weight:700;color:#6F5458;margin-bottom:5px">'+E(label)+'</label>'
       +(ta?'<textarea id="'+id+'" rows="'+ta+'" placeholder="'+E(ph||'')+'" style="width:100%;box-sizing:border-box;border:1px solid #E8E3DA;border-radius:9px;padding:9px 11px;font-family:inherit;font-size:13.5px;line-height:1.7;color:#2A1A1C;background:#fff;resize:vertical"></textarea>'
         :'<input id="'+id+'" placeholder="'+E(ph||'')+'" style="width:100%;box-sizing:border-box;border:1px solid #E8E3DA;border-radius:9px;padding:9px 11px;font-family:inherit;font-size:13.5px;color:#2A1A1C;background:#fff">')
       +'</div>';
@@ -12273,7 +12274,8 @@ window._strategyRadarV267=radarResults;
     var nm=E(a.displayName||a.handle||'此帳號');
     var html='<div style="font-family:\'Cormorant Garamond\',serif;letter-spacing:4px;color:#A89498;font-size:11px;text-transform:uppercase;margin-bottom:4px">ATELIER · SEND TO SERVICE DESK</div>'
       +'<div style="font-size:20px;font-weight:900;font-family:\'Noto Serif TC\',serif;margin-bottom:2px">送出交付包到服務台</div>'
-      +'<div style="font-size:12.5px;color:#8A7274;margin-bottom:16px">'+nm+'（'+E(a.handle||'')+'）· 服務台 ⑦交付 會收到這份包</div>'
+      +'<div style="font-size:12.5px;color:#8A7274;margin-bottom:10px">'+nm+'（'+E(a.handle||'')+'）· 服務台 ⑦交付 會收到這份包</div>'
+      +'<div style="font-size:12px;color:#5A4A4C;line-height:1.75;background:#FCF8F7;border:1px solid #ECD9D6;border-left:3px solid #A51820;border-radius:8px;padding:9px 11px;margin-bottom:14px"><b style="color:#A51820">這一站是做什麼的：</b>整個流程的<b>最後一站</b>——把你幫這位客戶整理的<b>內容公式＋AI 提示詞＋診斷重點</b>打包，送到「服務台 → ⑦ 客戶交付」，客戶在服務台就看得到你這次的交付。下面「缺口」已自動帶入最近一次帳號健檢最弱的項目，可再補。</div>'
       +'<div style="font-size:12px;font-weight:800;color:#9C7D4A;margin:4px 0 8px">內容公式</div>'
       +field('開場 Hook','wbl_hook','前 3 秒怎麼抓住人')
       +field('結構 Structure','wbl_struct','例：痛點 → 誤解 → 正解 → CTA')
@@ -12287,6 +12289,13 @@ window._strategyRadarV267=radarResults;
       +field('備註 note','wbl_note','給服務台/客戶的補充',2)
       +'<div style="display:flex;gap:8px;justify-content:flex-end;margin-top:8px">'+btn('取消','_wblClose(this)')+btn('送出交付包','_wbDoSend(\''+id+'\',this)',true)+'</div>';
     ov(html);
+    try{
+      var hc=(a.healthChecks&&a.healthChecks.length)?a.healthChecks[a.healthChecks.length-1]:null;
+      if(hc&&hc.top3&&hc.top3.length){
+        var labs=hc.top3.map(function(k){ return (typeof HEALTH_DIMS!=='undefined'?((HEALTH_DIMS.find(function(d){return d.key===k;})||{}).label||k):k); }).filter(Boolean);
+        var gt=document.getElementById('wbl_gaps'); if(gt&&!gt.value) gt.value=labs.join('\n');
+      }
+    }catch(e){}
   };
   window._wbDoSend=function(id,el){
     var a=A(id); if(!a){ T('找不到此帳號'); return; }
@@ -12701,14 +12710,22 @@ window._strategyRadarV267=radarResults;
     return '請幫我找出「'+(nm||'這個帳號')+(h?('（'+h+'）'):'')+'」對外的官方連結。\n【輸出格式｜務必遵守】每行一條，用「名稱：網址」，名稱在前、網址在後；找不到的略過、不要編造；不要加任何說明、標題、編號或 Markdown。\n要找的類型：\n- 官網：\n- LINE 官方帳號：\n- Facebook 粉專：\n- YouTube 頻道：\n- 預約／表單：\n- Linktree 等彙整頁：\n- 其他重要連結：';
   }
   function copy(t){ try{ if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(t); } else if(typeof copyVal==='function'){ copyVal(t,'AI 提示詞'); } if(typeof toast==='function') toast('已複製 AI 提示詞'); }catch(e){ if(typeof copyVal==='function') copyVal(t,'AI 提示詞'); } }
+  function cleanUrl(raw){
+    var u=String(raw||'').trim();
+    var m=u.match(/\((https?:\/\/[^)\s]+)\)/);          /* markdown [text](url) → 取括號內 */
+    if(m){ u=m[1]; }
+    else { var hm=u.match(/https?:\/\/[^\s\]\)]+/i); if(hm) u=hm[0]; }
+    u=u.replace(/[\[\]()]/g,'').replace(/[↗↘→›»、。，,]+$/,'').trim();
+    return u;
+  }
   function importLines(ed,text){
     var actions=ed.querySelector('.qlink-actions'); if(!actions) return 0; var n=0;
     String(text||'').split(/\n+/).forEach(function(line){
       var idx=line.search(/[:：]/); if(idx<0) return;
-      var label=line.slice(0,idx).replace(/^[\s\-*•]+/,'').trim();
-      var url=line.slice(idx+1).trim();
+      var label=line.slice(0,idx).replace(/^[\s\-*•]+/,'').replace(/[\[\]]/g,'').trim();
+      var url=cleanUrl(line.slice(idx+1));
       if(!label||!url) return;
-      if(!/^https?:\/\//i.test(url) && !/\.[a-z]{2,}/i.test(url)) return;
+      if(!/^https?:\/\//i.test(url) && !/^[\w.-]+\.[a-z]{2,}/i.test(url)) return;
       var row=document.createElement('div'); row.className='qlink-row';
       row.innerHTML='<input class="qlink-in-label" value="'+esc(label)+'" placeholder="名稱（如 官網）"><input class="qlink-in-url" value="'+esc(url)+'" placeholder="https://..."><button type="button" class="qlink-del">刪</button>';
       actions.parentNode.insertBefore(row, actions);
