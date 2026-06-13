@@ -722,7 +722,7 @@ details.cat .cat-body{padding:14px 15px}
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">客戶服務台</span></span>
-    <span id="verBadge">cs-v4.32</span>
+    <span id="verBadge">cs-v4.34</span>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button type="button" id="popoutBtn" class="popout-btn" title="把客戶服務台開成獨立小視窗"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6"/><path d="M20 4l-9 9"/><path d="M14 12v7H5V10h7"/></svg>小視窗</button>
@@ -6693,6 +6693,235 @@ details.ovBlock > summary .ovx-tag.has{color:#9C7D4A}
   var _rb=window.renderBanner;
   if(typeof _rb==='function'){ window.renderBanner=function(flash){ var r=_rb.apply(this,arguments); try{inject();}catch(e){} return r; }; }
   if(document.readyState!=='loading') setTimeout(inject,350); else document.addEventListener('DOMContentLoaded',function(){ setTimeout(inject,350); });
+})();
+</script>
+
+
+<!-- ═══════════ cs-v4.33 · 客戶影片庫總覽（把工作台影片庫的豐富分析攤進服務台）═══════════
+     校準：服務台應「鑽深這一位客戶」。影片其實早已同步（videos，以 v.accountId 對應），
+     只是沒攤在畫面上。banner 加「客戶影片庫」→ 自包含覆蓋層列出這位客戶所有影片＋分析，
+     底部「複製全部重點」當初診/交付素材。純讀既有 videos、注入、不動原碼。 -->
+<style>
+.cs-vl-ov{position:fixed;inset:0;z-index:99996;background:rgba(58,42,44,.42);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);display:flex;align-items:flex-start;justify-content:center;padding:40px 16px 16px;box-sizing:border-box}
+.cs-vl-card{background:#fff;max-width:760px;width:100%;max-height:88vh;display:flex;flex-direction:column;border:1px solid #EFE7DC;border-radius:16px;box-shadow:0 24px 64px rgba(42,26,28,.28);overflow:hidden;font-family:inherit}
+.cs-vl-head{padding:16px 20px 10px;border-bottom:1px solid #F2EAE0}
+.cs-vl-kick{font-family:'Cormorant Garamond',serif;letter-spacing:4px;color:#A89498;font-size:11px;text-transform:uppercase;margin-bottom:3px}
+.cs-vl-h4{font-size:18px;font-weight:900;color:#2A1A1C;margin:0}
+.cs-vl-sub{font-size:12px;color:#8A7274;margin-top:3px}
+.cs-vl-list{overflow:auto;padding:8px 14px 8px}
+.cs-vl-row{border:1px solid #EEE6DA;border-radius:12px;padding:11px 13px;margin:8px 0;background:#FFFDFA}
+.cs-vl-t{font-weight:800;color:#2A1A1C;font-size:13.5px;line-height:1.5}
+.cs-vl-m{font-size:11.5px;color:#8A7274;margin-top:3px}
+.cs-vl-m b{color:#A51820;font-weight:800}
+.cs-vl-tag{display:inline-block;font-size:11px;font-weight:700;background:#F6EEDF;color:#7A5A1E;border-radius:10px;padding:1px 8px;margin:5px 5px 0 0}
+.cs-vl-hook{font-size:12px;color:#5C4A3C;margin-top:6px;font-style:italic;line-height:1.5;border-left:2px solid #E2C275;padding-left:8px}
+.cs-vl-foot{padding:12px 18px;border-top:1px solid #F2EAE0;display:flex;gap:8px;justify-content:flex-end;background:#FCF8F2}
+.cs-vl-copy{border:1px solid #A51820;background:#A51820;color:#fff;-webkit-text-fill-color:#fff;font-weight:800;font-size:13px;border-radius:999px;padding:9px 18px;cursor:pointer;font-family:inherit}
+.cs-vl-x{border:1px solid #DCC8CB;background:#fff;color:#5C0F14;font-weight:700;font-size:13px;border-radius:999px;padding:9px 16px;cursor:pointer;font-family:inherit}
+.cs-vl-empty{padding:26px;text-align:center;color:#8A7274;font-size:13px}
+.cs-banner .cs-vl-btn{font-size:11px;font-weight:700;color:#fff;background:#8A6D2F;border:none;border-radius:8px;padding:5px 12px;cursor:pointer;font-family:inherit;margin-left:6px}
+.cs-banner .cs-vl-btn:hover{background:#6E561F}
+</style>
+<script>
+/* cs-v4.33：客戶影片庫總覽（注入，不動原碼） */
+(function(){
+  function E(s){ try{ if(typeof esc==='function') return esc(s); }catch(e){} return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+  function vidsOf(a){ try{ if(typeof videos!=='undefined'&&videos&&a) return videos.filter(function(v){return v&&v.accountId===a.id;}); }catch(e){} return []; }
+  function num(n){ n=parseInt(n);return isNaN(n)?0:n; }
+  function fmtViews(v){ v=num(v); return v>=10000?(Math.round(v/1000)/10+'萬'):v.toLocaleString(); }
+
+  function rowHTML(v){
+    var tags=[];
+    if(v.goal) tags.push(v.goal);
+    if(v.topic) tags.push(v.topic);
+    if(v.form) tags.push(v.form);
+    var tagHTML=tags.map(function(t){return '<span class="cs-vl-tag">'+E(t)+'</span>';}).join('');
+    var stat='<b>觀看 '+fmtViews(v.views)+'</b>'+(v.likes?('　讚 '+num(v.likes).toLocaleString()):'')+(v.shareRate?('　分享率 '+E(v.shareRate)):'')+(v.publishedAt?('　·　'+E(String(v.publishedAt).slice(0,10))):'');
+    var hook=v.hook?('<div class="cs-vl-hook">Hook：'+E(String(v.hook).slice(0,120))+'</div>'):'';
+    var note=v.note?('<div class="cs-vl-m" style="margin-top:5px;color:#6B5B5D">顧問筆記：'+E(String(v.note).slice(0,140))+'</div>'):'';
+    return '<div class="cs-vl-row"><div class="cs-vl-t">'+E(v.title||'（未命名影片）')+'</div>'
+      +'<div class="cs-vl-m">'+stat+'</div>'+(tagHTML?('<div>'+tagHTML+'</div>'):'')+hook+note+'</div>';
+  }
+
+  function digest(a,list){
+    var L=['【'+(a.handle||'')+' '+(a.displayName||'')+'｜影片庫重點（'+list.length+' 支）】',''];
+    var sorted=list.slice().sort(function(x,y){return num(y.views)-num(x.views);});
+    sorted.forEach(function(v,i){
+      var parts=[];
+      if(v.goal)parts.push(v.goal); if(v.topic)parts.push(v.topic); if(v.form)parts.push(v.form);
+      L.push((i+1)+'. '+(v.title||'（未命名）')+'｜觀看 '+fmtViews(v.views)+(v.likes?('／讚 '+num(v.likes)):'')+(parts.length?('｜'+parts.join('·')):''));
+      if(v.hook) L.push('   Hook：'+String(v.hook).slice(0,120));
+      if(v.note) L.push('   顧問筆記：'+String(v.note).slice(0,140));
+    });
+    return L.join('\n');
+  }
+
+  function open(){
+    var a=(typeof curAcc==='function')?curAcc():null;
+    if(!a){ if(typeof toast==='function') toast('請先在上方選擇一位客戶'); return; }
+    var list=vidsOf(a);
+    var ov=document.createElement('div'); ov.className='cs-vl-ov';
+    var totalViews=list.reduce(function(s,v){return s+num(v.views);},0);
+    var body=list.length?list.slice().sort(function(x,y){return num(y.views)-num(x.views);}).map(rowHTML).join(''):'<div class="cs-vl-empty">這位客戶在影片庫還沒有影片。<br>到工作台「輸入影片」貼上她的影片、建檔後，這裡就會自動帶出（兩邊同一個雲端帳號會自動同步）。</div>';
+    ov.innerHTML='<div class="cs-vl-card">'
+      +'<div class="cs-vl-head"><div class="cs-vl-kick">ATELIER · CLIENT VIDEO LIBRARY</div>'
+      +'<h4 class="cs-vl-h4">'+E(a.handle||'@?')+' <span style="font-weight:600;color:#6B5A48">'+E(a.displayName||'')+'</span> 的影片庫</h4>'
+      +'<div class="cs-vl-sub">共 '+list.length+' 支　·　累積觀看 '+fmtViews(totalViews)+'　·　依觀看由高到低排序（這些就是做「初診觀察／交付建議」的原料）</div></div>'
+      +'<div class="cs-vl-list">'+body+'</div>'
+      +'<div class="cs-vl-foot"><button type="button" class="cs-vl-x">關閉</button>'+(list.length?'<button type="button" class="cs-vl-copy">複製全部重點（提案素材）</button>':'')+'</div>'
+      +'</div>';
+    document.body.appendChild(ov);
+    ov.addEventListener('click',function(e){ if(e.target===ov) ov.remove(); });
+    ov.querySelector('.cs-vl-x').onclick=function(){ ov.remove(); };
+    var cp=ov.querySelector('.cs-vl-copy');
+    if(cp) cp.onclick=function(){ var txt=digest(a,list);
+      try{ navigator.clipboard.writeText(txt); }catch(e){}
+      if(typeof toast==='function') toast('已複製影片庫重點（'+list.length+' 支）'); };
+    document.addEventListener('keydown',function k(e){ if(e.key==='Escape'){ ov.remove(); document.removeEventListener('keydown',k); } });
+  }
+  window._csVideoLibrary = open;
+
+  function inject(){
+    var b=document.getElementById('csBanner'); if(!b) return;
+    if(b.querySelector('.cs-vl-btn')) return;
+    var a=(typeof curAcc==='function')?curAcc():null; var n=a?vidsOf(a).length:0;
+    var btn=document.createElement('button'); btn.type='button'; btn.className='cs-vl-btn';
+    btn.title='看這位客戶的所有影片＋分析（初診觀察、交付建議的原料）';
+    btn.innerHTML='▦ 影片庫'+(n?(' '+n):'');
+    btn.onclick=open; b.appendChild(btn);
+  }
+  var _rb=window.renderBanner;
+  if(typeof _rb==='function'){ window.renderBanner=function(){ var r=_rb.apply(this,arguments); try{inject();}catch(e){} return r; }; }
+  if(document.readyState!=='loading') setTimeout(inject,380); else document.addEventListener('DOMContentLoaded',function(){ setTimeout(inject,380); });
+})();
+</script>
+
+
+<!-- ═══════════ cs-v4.34 · ⑦交付「一鍵自動產生客戶交付 PPT」（不繞 AI，從真實資料長出）═══════════
+     ⑦交付原本只有「複製提示詞→貼回匯出 PDF/HTML」。本版在同區加一顆鈕，直接用既有
+     pptFactory + _csRadarPNG + 健康評分 + 影片庫 + 最近交付包診斷，長出多頁客戶交付簡報。
+     純讀既有資料、注入、不動原碼。 -->
+<style>
+.cs-dppt-btn{display:block;width:100%;box-sizing:border-box;margin-top:10px;border:1.5px solid #8A6D2F;background:linear-gradient(180deg,#A9842F,#8A6D2F);color:#fff;-webkit-text-fill-color:#fff;font-weight:800;font-size:13.5px;border-radius:10px;padding:11px;cursor:pointer;font-family:inherit}
+.cs-dppt-btn:hover{filter:brightness(1.06)}
+.cs-dppt-note{font-size:11.5px;color:#8A7274;margin-top:6px;line-height:1.55}
+</style>
+<script>
+/* cs-v4.34：一鍵自動客戶交付 PPT（注入，不動原碼） */
+(function(){
+  function num(n){ n=parseInt(n); return isNaN(n)?0:n; }
+  function fmtV(v){ v=num(v); return v>=10000?(Math.round(v/1000)/10+'萬'):v.toLocaleString(); }
+  function vidsOf(a){ try{ if(typeof accountVideos==='function') return accountVideos(a)||[]; }catch(e){} try{ if(typeof videos!=='undefined'&&videos) return videos.filter(function(v){return v&&v.accountId===a.id;}); }catch(e){} return []; }
+  function clip(t,n){ t=String(t==null?'':t); return t.length>n?t.slice(0,n)+'…':t; }
+
+  window._csDeliverablePPTX = async function(){
+    if(typeof loadPptx!=='function'||typeof pptFactory!=='function'){ if(typeof toast==='function') toast('PPTX 元件未就緒'); return; }
+    var a=(typeof curAcc==='function')?curAcc():null; if(!a){ if(typeof toast==='function') toast('請先在上方選一位客戶'); return; }
+    var btn=document.activeElement, oldHTML=(btn&&btn.tagName==='BUTTON')?btn.innerHTML:'';
+    if(btn&&btn.tagName==='BUTTON'){ btn.disabled=true; btn.innerHTML='產生中…'; }
+    if(typeof toast==='function') toast('正在產生客戶交付 PPT…');
+    try{
+      var ok=await new Promise(function(r){ loadPptx(r); }); if(!ok) throw new Error('PPTX 函式庫載入失敗');
+      var _serif=(typeof SERIF!=='undefined')?SERIF:'Georgia, "Noto Serif TC", serif';
+      var _sans=(typeof SANS!=='undefined')?SANS:'"Noto Sans TC", system-ui, sans-serif';
+      var _corm=(typeof CORM!=='undefined')?CORM:'"Cormorant Garamond", serif';
+      var C=(typeof pptPalette==='function')?pptPalette():{bg:'#FBF7F2',text:'#2A1A1C',text2:'#5C4A3C',text3:'#8A7274',text4:'#A89498',primary:'#A51820'};
+      var name=(a.displayName||a.handle||'客戶'), handle=(a.handle||''), d=new Date().toISOString().slice(0,10);
+
+      // 資料蒐集
+      var he=(typeof latestHealthEntry==='function')?latestHealthEntry(a):null;
+      var items=(he&&typeof normalizeHealthItems==='function')?normalizeHealthItems(he.items):[];
+      var total=(he&&typeof healthEntryTotal==='function')?healthEntryTotal(he):items.reduce(function(s,it){return s+(it.score||0);},0);
+      var radar=null; try{ if(items.length&&typeof window._csRadarPNG==='function') radar=window._csRadarPNG(items); }catch(e){}
+      var vs=vidsOf(a).slice().sort(function(x,y){return num(y.views)-num(x.views);});
+      var totalViews=vs.reduce(function(s,v){return s+num(v.views);},0);
+      var weak=items.slice().sort(function(x,y){return (x.score||0)-(y.score||0);}).slice(0,3);
+      var notes=vs.filter(function(v){return v.note;}).slice(0,3);
+      var dps=(a.deliveryPackages||[]); var diag=dps.length?(dps[dps.length-1].diagnosis||null):null;
+
+      var pptx=pptFactory(); pptx.layout='LAYOUT_WIDE'; pptx.author='ATELIER'; pptx.company='ATELIER'; pptx.subject='客戶內容交付';
+
+      // 1 封面
+      var s1=pptx.addSlide(); s1.background={color:C.bg};
+      s1.addText('ATELIER × '+String(name).toUpperCase(),{x:.8,y:.7,w:11,h:.4,fontSize:11,color:C.text3,fontFace:_corm,charSpace:4});
+      s1.addText('內容診斷與方向',{x:.8,y:2.3,w:11.4,h:1.4,fontSize:58,bold:true,color:C.text,fontFace:_serif,fit:'shrink'});
+      s1.addText(name+(handle?('　·　'+handle):''),{x:.8,y:5.2,w:12,h:.55,fontSize:20,color:C.primary,fontFace:_serif});
+      s1.addText('客戶交付・'+d,{x:.8,y:7.0,w:9,h:.35,fontSize:10,color:C.text3,fontFace:_corm});
+
+      // 2 現況（雷達 + 分數）
+      if(radar||items.length){
+        var s2=pptx.addSlide(); s2.background={color:C.bg};
+        s2.addText('CURRENT STATE',{x:.8,y:.7,w:8,h:.35,fontSize:10,color:C.text3,fontFace:_corm,charSpace:3});
+        s2.addText('目前內容健康',{x:.8,y:1.25,w:7,h:.9,fontSize:32,bold:true,color:C.text,fontFace:_serif});
+        if(radar){ s2.addImage({data:radar,x:4.7,y:1.4,w:5.4,h:5.4}); }
+        s2.addText(String(total),{x:.95,y:2.9,w:2.8,h:1.0,fontSize:64,bold:true,color:C.primary,fontFace:_corm});
+        s2.addText('/ 50',{x:1.05,y:3.95,w:2,h:.4,fontSize:18,color:C.text2,fontFace:_sans});
+        s2.addText('依目前公開內容整理出的內容健康概況。',{x:.95,y:4.7,w:3.5,h:.8,fontSize:13,color:C.text2,fontFace:_sans});
+      }
+
+      // 3 你已具備的內容資產（觀看前幾名）
+      var s3=pptx.addSlide(); s3.background={color:C.bg};
+      s3.addText('WHAT YOU ALREADY HAVE',{x:.8,y:.7,w:9,h:.35,fontSize:10,color:C.text3,fontFace:_corm,charSpace:3});
+      s3.addText('你已經具備的內容資產',{x:.8,y:1.25,w:11.5,h:.9,fontSize:32,bold:true,color:C.text,fontFace:_serif});
+      s3.addText('穩定產出 '+vs.length+' 支　·　累積觀看 '+fmtV(totalViews),{x:.8,y:2.15,w:11,h:.4,fontSize:14,color:C.primary,fontFace:_sans});
+      var top=vs.slice(0,4), ty=2.9;
+      if(top.length){ top.forEach(function(v){
+        var tags=[v.goal,v.topic,v.form].filter(Boolean).join('　·　');
+        s3.addText('▸ '+clip(v.title||'（未命名）',34),{x:.9,y:ty,w:8.4,h:.4,fontSize:15,bold:true,color:C.text,fontFace:_sans});
+        s3.addText('觀看 '+fmtV(v.views)+(v.likes?('　讚 '+num(v.likes)):''),{x:9.4,y:ty,w:3,h:.4,fontSize:13,color:C.primary,fontFace:_sans,align:'right'});
+        if(tags) s3.addText(tags,{x:.9,y:ty+.4,w:11,h:.32,fontSize:11.5,color:C.text3,fontFace:_sans});
+        ty+=1.0;
+      }); } else { s3.addText('（影片庫尚無影片，建檔後自動帶出）',{x:.9,y:2.9,w:10,h:.5,fontSize:14,color:C.text3,fontFace:_sans}); }
+
+      // 4 可優化方向（最弱 + 顧問筆記）
+      var s4=pptx.addSlide(); s4.background={color:C.bg};
+      s4.addText('WHAT TO OPTIMIZE',{x:.8,y:.7,w:9,h:.35,fontSize:10,color:C.text3,fontFace:_corm,charSpace:3});
+      s4.addText('可以優化的方向',{x:.8,y:1.25,w:11.5,h:.9,fontSize:32,bold:true,color:C.text,fontFace:_serif});
+      var oy=2.5;
+      if(weak.length){ s4.addText('內容健康最該補的三項',{x:.8,y:oy,w:11,h:.35,fontSize:13,bold:true,color:C.primary,fontFace:_sans}); oy+=.5;
+        weak.forEach(function(it){ s4.addText('▸ '+(it.label||'')+'（'+(it.score||0)+'/5）',{x:.95,y:oy,w:11,h:.38,fontSize:14,color:C.text,fontFace:_sans}); oy+=.5; }); oy+=.2; }
+      if(notes.length){ s4.addText('影片觀察筆記',{x:.8,y:oy,w:11,h:.35,fontSize:13,bold:true,color:C.primary,fontFace:_sans}); oy+=.5;
+        notes.forEach(function(v){ s4.addText('· '+clip(v.title||'',16)+'：'+clip(v.note,60),{x:.95,y:oy,w:11.4,h:.42,fontSize:12.5,color:C.text2,fontFace:_sans}); oy+=.55; }); }
+      if(!weak.length&&!notes.length){ s4.addText('（先在工作台做帳號健檢／影片顧問筆記，這頁會自動長出）',{x:.9,y:2.6,w:11,h:.5,fontSize:14,color:C.text3,fontFace:_sans}); }
+
+      // 5 內容方向（最近交付包診斷）
+      var s5=pptx.addSlide(); s5.background={color:C.bg};
+      s5.addText('DIRECTION',{x:.8,y:.7,w:8,h:.35,fontSize:10,color:C.text3,fontFace:_corm,charSpace:3});
+      s5.addText('接下來的內容方向',{x:.8,y:1.25,w:11.5,h:.9,fontSize:32,bold:true,color:C.text,fontFace:_serif});
+      if(diag){
+        s5.addText('主攻：目標層 '+(diag.topGoal||'—')+'　·　關鍵階段 '+(diag.topStage||'—'),{x:.85,y:2.6,w:11.5,h:.5,fontSize:16,bold:true,color:C.primary,fontFace:_sans});
+        var gaps=(diag.gaps&&diag.gaps.length)?diag.gaps:[]; var gy=3.5;
+        if(gaps.length){ s5.addText('最該補的缺口',{x:.85,y:gy,w:11,h:.35,fontSize:13,bold:true,color:C.text2,fontFace:_sans}); gy+=.5;
+          gaps.slice(0,4).forEach(function(g){ s5.addText('▸ '+clip(g,46),{x:1.0,y:gy,w:11,h:.4,fontSize:14,color:C.text,fontFace:_sans}); gy+=.5; }); }
+      } else { s5.addText('在工作台「策略診斷」跑完、按「送服務台」後，這頁會帶出目標層／關鍵階段／缺口。',{x:.85,y:2.6,w:11,h:.8,fontSize:14,color:C.text3,fontFace:_sans}); }
+
+      // 6 結尾
+      var s6=pptx.addSlide(); s6.background={color:C.primary};
+      s6.addText('ATELIER',{x:.8,y:2.8,w:11,h:.6,fontSize:16,color:'#FFFFFF',fontFace:_corm,charSpace:5});
+      s6.addText('讓專業被看見，讓品牌被記住。',{x:.8,y:3.5,w:11.5,h:1,fontSize:34,bold:true,color:'#FFFFFF',fontFace:_serif});
+      s6.addText('Inspire · Create · Shine.',{x:.8,y:5.0,w:11,h:.5,fontSize:14,color:'#F4D9DB',fontFace:_corm});
+
+      await pptx.writeFile({ fileName:'ATELIER_客戶交付_'+String(name).replace(/[\\/:*?"<>|]/g,'')+'_'+d+'.pptx' });
+      if(typeof toast==='function') toast('✓ 客戶交付 PPT 已產生');
+    }catch(e){ try{console.warn('[cs-v4.34 deliverable pptx]',e);}catch(_){} if(typeof toast==='function') toast('產生失敗，請看 Console'); }
+    finally{ if(btn&&btn.tagName==='BUTTON'){ btn.disabled=false; btn.innerHTML=oldHTML; } }
+  };
+
+  function inject(){
+    var cards=document.querySelectorAll('.deliverable-card'); if(!cards.length) return;
+    cards.forEach(function(card){
+      if(card.getAttribute('data-csppt')) return; card.setAttribute('data-csppt','1');
+      var wrap=document.createElement('div');
+      wrap.innerHTML='<button type="button" class="cs-dppt-btn">▣ 自動產生客戶交付 PPT（含雷達圖，不用繞 AI）</button>'
+        +'<div class="cs-dppt-note">直接用這位客戶的健康分數＋影片庫＋診斷，一鍵長出多頁簡報（封面／現況雷達／已具備資產／可優化方向／內容方向）。要更客製，仍可用上面的提示詞流程。</div>';
+      wrap.querySelector('.cs-dppt-btn').onclick=window._csDeliverablePPTX;
+      var anchor=card.querySelector('.btn-deliver');
+      if(anchor&&anchor.parentNode){ anchor.parentNode.insertBefore(wrap, anchor.nextSibling); }
+      else card.appendChild(wrap);
+    });
+  }
+  setInterval(function(){ try{inject();}catch(e){} }, 900);
+  if(document.readyState!=='loading') setTimeout(inject,420); else document.addEventListener('DOMContentLoaded',function(){ setTimeout(inject,420); });
 })();
 </script>
 
