@@ -722,7 +722,7 @@ details.cat .cat-body{padding:14px 15px}
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">客戶服務台</span></span>
-    <span id="verBadge">cs-v4.35</span>
+    <span id="verBadge">cs-v4.37</span>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button type="button" id="popoutBtn" class="popout-btn" title="把客戶服務台開成獨立小視窗"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6"/><path d="M20 4l-9 9"/><path d="M14 12v7H5V10h7"/></svg>小視窗</button>
@@ -6719,8 +6719,8 @@ details.ovBlock > summary .ovx-tag.has{color:#9C7D4A}
 .cs-vl-copy{border:1px solid #A51820;background:#A51820;color:#fff;-webkit-text-fill-color:#fff;font-weight:800;font-size:13px;border-radius:999px;padding:9px 18px;cursor:pointer;font-family:inherit}
 .cs-vl-x{border:1px solid #DCC8CB;background:#fff;color:#5C0F14;font-weight:700;font-size:13px;border-radius:999px;padding:9px 16px;cursor:pointer;font-family:inherit}
 .cs-vl-empty{padding:26px;text-align:center;color:#8A7274;font-size:13px}
-.cs-banner .cs-vl-btn{font-size:11px;font-weight:700;color:#fff;background:#8A6D2F;border:none;border-radius:8px;padding:5px 12px;cursor:pointer;font-family:inherit;margin-left:6px}
-.cs-banner .cs-vl-btn:hover{background:#6E561F}
+.cs-banner .cs-vl-btn{font-size:11px;font-weight:700;color:#fff;background:#9C7048;border:none;border-radius:8px;padding:5px 12px;cursor:pointer;font-family:inherit;margin-left:6px}
+.cs-banner .cs-vl-btn:hover{background:#7A1018}
 </style>
 <script>
 /* cs-v4.33：客戶影片庫總覽（注入，不動原碼） */
@@ -6802,7 +6802,7 @@ details.ovBlock > summary .ovx-tag.has{color:#9C7D4A}
      pptFactory + _csRadarPNG + 健康評分 + 影片庫 + 最近交付包診斷，長出多頁客戶交付簡報。
      純讀既有資料、注入、不動原碼。 -->
 <style>
-.cs-dppt-btn{display:block;width:100%;box-sizing:border-box;margin-top:10px;border:1.5px solid #8A6D2F;background:linear-gradient(180deg,#A9842F,#8A6D2F);color:#fff;-webkit-text-fill-color:#fff;font-weight:800;font-size:13.5px;border-radius:10px;padding:11px;cursor:pointer;font-family:inherit}
+.cs-dppt-btn{display:block;width:100%;box-sizing:border-box;margin-top:10px;border:1.5px solid #7A1018;background:linear-gradient(180deg,#A51820,#7A1018);color:#fff;-webkit-text-fill-color:#fff;font-weight:800;font-size:13.5px;border-radius:10px;padding:11px;cursor:pointer;font-family:inherit}
 .cs-dppt-btn:hover{filter:brightness(1.06)}
 .cs-dppt-note{font-size:11.5px;color:#8A7274;margin-top:6px;line-height:1.55}
 </style>
@@ -6822,9 +6822,9 @@ details.ovBlock > summary .ovx-tag.has{color:#9C7D4A}
     if(typeof toast==='function') toast('正在產生客戶交付 PPT…');
     try{
       var ok=await new Promise(function(r){ loadPptx(r); }); if(!ok) throw new Error('PPTX 函式庫載入失敗');
-      var _serif=(typeof SERIF!=='undefined')?SERIF:'Georgia, "Noto Serif TC", serif';
-      var _sans=(typeof SANS!=='undefined')?SANS:'"Noto Sans TC", system-ui, sans-serif';
-      var _corm=(typeof CORM!=='undefined')?CORM:'"Cormorant Garamond", serif';
+      var _serif=(typeof SERIF!=='undefined')?SERIF:'Noto Serif TC,Microsoft JhengHei,serif';
+      var _sans=(typeof SANS!=='undefined')?SANS:'Noto Sans TC,Microsoft JhengHei,sans-serif';
+      var _corm=(typeof CORM!=='undefined')?CORM:'Cormorant Garamond,Noto Serif TC,serif';
       var C=(typeof pptPalette==='function')?pptPalette():{bg:'#FBF7F2',text:'#2A1A1C',text2:'#5C4A3C',text3:'#8A7274',text4:'#A89498',primary:'#A51820'};
       var name=(a.displayName||a.handle||'客戶'), handle=(a.handle||''), d=new Date().toISOString().slice(0,10);
 
@@ -6956,9 +6956,9 @@ details.ovBlock > summary .ovx-tag.has{color:#9C7D4A}
     if(typeof toast==='function') toast('正在產生初診會前簡報…');
     try{
       var ok=await new Promise(function(r){ loadPptx(r); }); if(!ok) throw new Error('PPTX 載入失敗');
-      var _serif=(typeof SERIF!=='undefined')?SERIF:'Georgia, "Noto Serif TC", serif';
-      var _sans=(typeof SANS!=='undefined')?SANS:'"Noto Sans TC", system-ui, sans-serif';
-      var _corm=(typeof CORM!=='undefined')?CORM:'"Cormorant Garamond", serif';
+      var _serif=(typeof SERIF!=='undefined')?SERIF:'Noto Serif TC,Microsoft JhengHei,serif';
+      var _sans=(typeof SANS!=='undefined')?SANS:'Noto Sans TC,Microsoft JhengHei,sans-serif';
+      var _corm=(typeof CORM!=='undefined')?CORM:'Cormorant Garamond,Noto Serif TC,serif';
       var C=(typeof pptPalette==='function')?pptPalette():{bg:'#FBF7F2',text:'#2A1A1C',text2:'#5C4A3C',text3:'#8A7274',text4:'#A89498',primary:'#A51820'};
       var name=(a.displayName||a.handle||'客戶'), handle=(a.handle||''), d=new Date().toISOString().slice(0,10);
 
@@ -7049,6 +7049,90 @@ details.ovBlock > summary .ovx-tag.has{color:#9C7D4A}
   }
   setInterval(function(){ try{inject();}catch(e){} }, 900);
   if(document.readyState!=='loading') setTimeout(inject,440); else document.addEventListener('DOMContentLoaded',function(){ setTimeout(inject,440); });
+})();
+</script>
+
+
+<!-- ═══════════ cs-v4.36 · 各工作階段頂端「客戶現況」即時摘要（Item 2）═══════════
+     使用者：服務台每個階段資訊太少。本版在 ②建檔～⑥企劃 每階段頂端注入一條精簡可收合摘要：
+     健康分數＋最弱三項＋第幾站/下一步＋影片庫概況＋定位。純讀既有函式、注入、不動原碼。 -->
+<style>
+.cs-ctx{border:1px solid #EAD9D6;background:linear-gradient(180deg,#FFFCFA,#FCF4F2);border-radius:12px;padding:11px 14px;margin:0 0 12px}
+.cs-ctx-head{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.cs-ctx-ttl{font-weight:900;color:#7A1018;font-size:12.5px;letter-spacing:.04em;display:flex;align-items:center;gap:6px}
+.cs-ctx-tog{background:none;border:0;color:#9A7A7C;font-size:12px;cursor:pointer;font-family:inherit}
+.cs-ctx-body{margin-top:8px;display:grid;grid-template-columns:1fr 1fr;gap:7px 18px}
+.cs-ctx-cell{font-size:12px;color:#5C4A3C;line-height:1.55}
+.cs-ctx-cell .k{font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#A98A4C;text-transform:uppercase;display:block;margin-bottom:1px}
+.cs-ctx-cell b{color:#A51820}
+.cs-ctx-chip{display:inline-block;font-size:11px;font-weight:700;background:#F6EEDF;color:#7A5A1E;border-radius:10px;padding:1px 8px;margin:2px 5px 0 0}
+@media(max-width:680px){.cs-ctx-body{grid-template-columns:1fr}}
+</style>
+<script>
+/* cs-v4.36：各工作階段頂端客戶現況摘要（注入，不動原碼） */
+(function(){
+  var collapsed=false;
+  function num(n){ n=parseInt(n); return isNaN(n)?0:n; }
+  function fmtV(v){ v=num(v); return v>=10000?(Math.round(v/1000)/10+'萬'):v.toLocaleString(); }
+  function E(s){ try{ if(typeof esc==='function') return esc(s); }catch(e){} return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+  function vidsOf(a){ try{ if(typeof accountVideos==='function') return accountVideos(a)||[]; }catch(e){} try{ if(typeof videos!=='undefined'&&videos) return videos.filter(function(v){return v&&v.accountId===a.id;}); }catch(e){} return []; }
+  function vTitle(v){ try{ if(typeof videoTitle==='function') return videoTitle(v); }catch(e){} return (v&&(v.title||v.name))||'（未命名）'; }
+  function clip(t,n){ t=String(t==null?'':t).trim(); return t.length>n?t.slice(0,n)+'…':t; }
+  function prof(a,k){ try{ if(typeof profileText==='function'){ var v=profileText(a,k); if(v&&String(v).trim()) return String(v).trim(); } }catch(e){} try{ var p=a.profile||{}; return (p[k]&&String(p[k]).trim())||''; }catch(e){} return ''; }
+
+  function snapshot(a){
+    var flow=(typeof DASH_FLOW!=='undefined')?DASH_FLOW:[['stage1_initial','初診'],['stage2_filing','建檔'],['stage3_interview','問診'],['stage4_diagnosis','診斷'],['stage5_inventory','盤點'],['stage6_planning','企劃'],['stage7_delivery','交付']];
+    var prog=(typeof _clientProgress==='function')?_clientProgress(a):{done:0,curIdx:0};
+    var stageNow=flow[prog.curIdx]?flow[prog.curIdx][1]:'—';
+    var next=(prog.done>=flow.length)?'已走完 7 站':(flow[prog.curIdx]?flow[prog.curIdx][1]:'—');
+    var he=(typeof latestHealthEntry==='function')?latestHealthEntry(a):null;
+    var items=(he&&typeof normalizeHealthItems==='function')?normalizeHealthItems(he.items):[];
+    var total=(he&&typeof healthEntryTotal==='function')?healthEntryTotal(he):items.reduce(function(s,it){return s+(it.score||0);},0);
+    var weak=items.slice().sort(function(x,y){return (x.score||0)-(y.score||0);}).slice(0,3).map(function(it){return it.label;});
+    var vs=vidsOf(a).slice().sort(function(x,y){return num(y.views)-num(x.views);});
+    var tv=vs.reduce(function(s,v){return s+num(v.views);},0);
+    var pos=prof(a,'positioning')||prof(a,'icpPersona')||prof(a,'persona');
+    return { done:prog.done, total:total, hasHealth:!!he, stageNow:stageNow, next:next, weak:weak, vn:vs.length, tv:tv, topTitle:vs.length?vTitle(vs[0]):'', pos:pos };
+  }
+
+  function build(a){
+    var s=snapshot(a);
+    var weakHTML=s.weak.length?s.weak.map(function(w){return '<span class="cs-ctx-chip">'+E(w)+'</span>';}).join(''):'<span style="color:#A39A8C">尚無健檢</span>';
+    var box=document.createElement('div'); box.className='cs-ctx'; box.setAttribute('data-cs-ctx','1');
+    box.innerHTML='<div class="cs-ctx-head"><span class="cs-ctx-ttl">◎ 客戶現況（'+E(a.handle||'')+'）</span>'
+      +'<button type="button" class="cs-ctx-tog">'+(collapsed?'⌄ 展開':'⌃ 收合')+'</button></div>'
+      +'<div class="cs-ctx-body"'+(collapsed?' style="display:none"':'')+'>'
+      +'<div class="cs-ctx-cell"><span class="k">內容健康</span>'+(s.hasHealth?('<b>'+s.total+'</b> / 50'):'尚未評分')+'　·　目前 <b>'+E(s.stageNow)+'</b>（'+s.done+'/7）</div>'
+      +'<div class="cs-ctx-cell"><span class="k">最弱三項</span>'+weakHTML+'</div>'
+      +'<div class="cs-ctx-cell"><span class="k">影片庫</span><b>'+s.vn+'</b> 支　·　累積觀看 '+fmtV(s.tv)+(s.topTitle?('　·　最高：'+E(clip(s.topTitle,18))):'')+'</div>'
+      +'<div class="cs-ctx-cell"><span class="k">定位</span>'+(s.pos?E(clip(s.pos,46)):'<span style="color:#A39A8C">尚未整理問診卡</span>')+'</div>'
+      +'</div>';
+    box.querySelector('.cs-ctx-tog').onclick=function(){ collapsed=!collapsed; var b=box.querySelector('.cs-ctx-body'); var t=box.querySelector('.cs-ctx-tog'); if(collapsed){b.style.display='none';t.textContent='⌄ 展開';}else{b.style.display='';t.textContent='⌃ 收合';} };
+    return box;
+  }
+
+  function inject(){
+    var a=(typeof curAcc==='function')?curAcc():null; if(!a) return;
+    [2,3,4,5,6].forEach(function(n){
+      var hosts=document.querySelectorAll('#view-stage'+n);
+      Array.prototype.forEach.call(hosts,function(host){
+        if(!host||!host.children.length) return;
+        if(host.querySelector('[data-cs-ctx]')) return;
+        try{ host.insertBefore(build(a), host.firstChild); }catch(e){}
+      });
+    });
+  }
+  // 換客戶/換階段時，舊摘要會殘留舊資料 → 換客戶時清掉重建
+  var _lastId=null;
+  function tick(){
+    try{
+      var a=(typeof curAcc==='function')?curAcc():null; var id=a?a.id:null;
+      if(id!==_lastId){ _lastId=id; document.querySelectorAll('.cs-ctx').forEach(function(el){el.remove();}); }
+      inject();
+    }catch(e){}
+  }
+  setInterval(tick, 900);
+  if(document.readyState!=='loading') setTimeout(tick,460); else document.addEventListener('DOMContentLoaded',function(){ setTimeout(tick,460); });
 })();
 </script>
 
