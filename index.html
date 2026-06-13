@@ -8,7 +8,7 @@
 <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v313 (版本號僅留註解，不顯示於畫面)
+<!-- ATELIER 影片診斷工作台 · 內部版本 v314 (版本號僅留註解，不顯示於畫面)
 v267 更新（策略診斷硬修版：重做 Top/Bottom 固定列高、重綁單支核對窗與 AI 工具按鈕、補互動式 1–8 操作步驟與策略對標雷達；本版用最後一段 v267 override 強制接管策略診斷頁，避免舊版 v263/v265 殘留函式覆蓋。只動 index.html，不動 client.html、Firebase、CSV 與六守門提示詞。）
 v266 更新（hotfix：修正 v265 最後一段策略診斷事件代理少 catch，導致 v265 override script 無法執行、畫面徽章被前一段 v263 override 改回 v263，且策略診斷部分按鈕失效；本版補回 catch 並將顯示版本固定為 v266。只動 index.html，不動 client.html、Firebase、CSV 與六守門提示詞。）
 v265 更新（策略診斷按鈕修復、整齊 Top/Bottom、互動流程與策略對標雷達）：修正策略診斷 Top/Bottom 每支影片的按鈕高度與位置不一致；改用固定列高與事件代理，讓「快看／核對」「留在本頁定位」「改寫提示」以及單支核對窗內 AI 工具、去影片庫定位、獨立視窗核對、收起都可穩定點擊；將 1–8 操作流程改成可點擊小教學；新增策略對標雷達，從同產業、同職稱、同身份、A–E、G 階段、流量觸發、素材與高互動／高分享等面向找全庫可借鏡樣本。只動 index.html，不動 client.html、Firebase、CSV 與六守門提示詞。
@@ -1221,7 +1221,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v313</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v314</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -11051,7 +11051,7 @@ document.addEventListener('DOMContentLoaded',function(){
 <script>
 /* v239：自動防舊版快取。讓桌布捷徑／瀏覽器如果抓到舊 HTML，能自己比對線上最新版並導向。 */
 (function(){
-  var ATELIER_CURRENT_VERSION='v313';
+  var ATELIER_CURRENT_VERSION='v314';
   window.ATELIER_CURRENT_VERSION=ATELIER_CURRENT_VERSION;
   function _avNum(v){v=String(v||'');var m=v.match(/v\s*(\d+)/i);return m?parseInt(m[1],10):0;}
   function _avDetect(html){html=String(html||'');var m=html.match(/id=["']verBadge["'][^>]*>\s*(v\d+)/i)||html.match(/內部版本\s+(v\d+)/i);return m?m[1]:'';}
@@ -11698,7 +11698,7 @@ return '<div class="strat-radar-card-v265"><b>目前沒有符合樣本</b><p>可
 /* ═══════════ v267 strategy hard patch：固定版面、重綁按鈕、互動說明與策略對標雷達（index.html only） ═══════════ */
 (function(){
   'use strict';
-  var VERSION='v313';
+  var VERSION='v314';
   function H(id){return document.getElementById(id)}
   function E(s){return String(s==null?'':s).replace(/[&<>'"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]})}
   function A(){try{return (typeof accounts!=='undefined'&&Array.isArray(accounts))?accounts:(Array.isArray(window.accounts)?window.accounts:[])}catch(e){return []}}
@@ -11927,7 +11927,7 @@ window._strategyRadarV267=radarResults;
 
 <script id="v289PatchJS">
 (function(){
-  try{ window.ATELIER_CURRENT_VERSION='v313'; }catch(e){}
+  try{ window.ATELIER_CURRENT_VERSION='v314'; }catch(e){}
   try{ sessionStorage.setItem('atelierSkipAutoUpdate','1'); }catch(e){}
   try{ if(navigator.serviceWorker && navigator.serviceWorker.getRegistrations){
         navigator.serviceWorker.getRegistrations().then(function(rs){ rs.forEach(function(r){ try{r.update();}catch(e){} }); }).catch(function(){});
@@ -13490,6 +13490,85 @@ button[data-wbl-send],button[data-wbl-inbox]{padding:3px 12px !important;font-si
   }
   setInterval(function(){ try{inject();}catch(e){} }, 900);
   if(document.readyState!=='loading') setTimeout(inject,460); else document.addEventListener('DOMContentLoaded',function(){ setTimeout(inject,460); });
+})();
+</script>
+
+
+<!-- ═══════════ v314 · 帳號卡「收到的客戶回饋」收件匣 ═══════════
+     服務台送回的回饋(clientFeedback)其實有存在帳號上、也有雲端同步，但工作台沒有畫面顯示→
+     使用者覺得「看一次就消失」。這裡在每張帳號卡加收件匣：列出回饋＋可標記已處理(saveAccounts+_accFbPush+renderAccounts)。
+     純讀 accounts、注入、不動原碼。 -->
+<style>
+.fbx-pill{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:800;border-radius:999px;padding:4px 12px;cursor:pointer;font-family:inherit;margin:7px 6px 0 0;border:1px solid #E5D9CF;background:#fff;color:#7A5A5E}
+.fbx-pill.has{border-color:#A51820;color:#A51820;background:#FBEAEA}
+.fbx-dot{display:inline-flex;align-items:center;justify-content:center;min-width:17px;height:17px;border-radius:999px;background:#A51820;color:#fff;font-size:10.5px;font-weight:900;padding:0 4px}
+.fbx-panel{margin-top:8px;border:1px solid #ECE3D5;border-radius:10px;background:#FDFBF8;padding:10px 12px}
+.fbx-item{border-bottom:1px solid #EFE6D8;padding:8px 0}
+.fbx-item:last-child{border-bottom:none}
+.fbx-top{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:3px}
+.fbx-type{font-size:10.5px;font-weight:800;border-radius:7px;padding:1px 8px;background:#A51820;color:#fff}
+.fbx-type.note{background:#7A5A5E}.fbx-type.rating{background:#D4A574;color:#2A1A1C}
+.fbx-date{font-size:10.5px;color:#9A8478}
+.fbx-done{font-size:10.5px;color:#5C0F14;font-weight:800;margin-left:auto}
+.fbx-body{font-size:12.5px;color:#2A1A1C;line-height:1.6;white-space:pre-wrap}
+.fbx-mark{font-size:11px;font-weight:800;color:#fff;background:#A51820;border:none;border-radius:7px;padding:3px 11px;cursor:pointer;font-family:inherit;margin-top:5px}
+.fbx-empty{font-size:12px;color:#9A8478;padding:4px 0}
+</style>
+<script>
+/* v314：帳號卡客戶回饋收件匣（注入，不動原碼） */
+(function(){
+  function A(id){ try{ if(typeof accounts!=='undefined'&&accounts){ return accounts.filter(function(a){return a&&a.id===id;})[0]||null; } }catch(e){} return null; }
+  function E(s){ return String(s==null?'':s).replace(/[&<>]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;'}[c];}); }
+  function typeLabel(t){ return ({request:'需求',rating:'評價',note:'備註'})[t]||'回饋'; }
+  function fbText(fb){
+    var p=fb.payload||{};
+    var s=p.content||p.text||p.note||p.message||p.comment||p.detail||'';
+    if(!s && p.rating!=null) s='評分：'+p.rating+(p.reason?('　'+p.reason):'');
+    if(!s){ s=Object.keys(p).map(function(k){return p[k];}).filter(function(x){return typeof x==='string'&&x.trim();}).join('　'); }
+    return s||'（無文字內容）';
+  }
+  function fmtDate(ts){ if(!ts) return ''; try{ var d=new Date(ts); return d.getFullYear()+'/'+(d.getMonth()+1)+'/'+d.getDate()+' '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0'); }catch(e){ return ''; } }
+
+  function save(){ try{ if(typeof saveAccounts==='function') saveAccounts(); }catch(e){} try{ if(typeof _accFbPush==='function') _accFbPush(); }catch(e){} }
+  function refresh(){ try{ if(typeof renderAccounts==='function') renderAccounts(); }catch(e){} }
+
+  function buildPanel(a){
+    var fb=(a.clientFeedback||[]).slice().sort(function(x,y){return (y.createdAt||0)-(x.createdAt||0);});
+    var panel=document.createElement('div'); panel.className='fbx-panel';
+    if(!fb.length){ panel.innerHTML='<div class="fbx-empty">目前沒有收到客戶回饋。在服務台用「✎ 回饋給工作台」送出後，這裡就會出現。</div>'; return panel; }
+    fb.forEach(function(f){
+      var it=document.createElement('div'); it.className='fbx-item';
+      it.innerHTML='<div class="fbx-top"><span class="fbx-type '+(f.type||'')+'">'+typeLabel(f.type)+'</span><span class="fbx-date">'+fmtDate(f.createdAt)+'</span>'+(f.handled?'<span class="fbx-done">✓ 已處理</span>':'')+'</div>'
+        +'<div class="fbx-body">'+E(fbText(f))+'</div>';
+      if(!f.handled){
+        var b=document.createElement('button'); b.type='button'; b.className='fbx-mark'; b.textContent='標記已處理';
+        b.onclick=function(){ f.handled=true; save(); refresh(); };
+        it.appendChild(b);
+      }
+      panel.appendChild(it);
+    });
+    return panel;
+  }
+
+  function inject(){
+    var cards=document.querySelectorAll('#accList .vcard'); if(!cards.length) return;
+    cards.forEach(function(card){
+      if(card.getAttribute('data-fbinbox')) return;
+      var attrs=['data-acc-client','data-acc-edit','data-acc-health','data-acc-success','data-acc-hcheck','data-acc-export'];
+      var id=''; for(var i=0;i<attrs.length;i++){ var el=card.querySelector('['+attrs[i]+']'); if(el){ var v=el.getAttribute(attrs[i]); if(v){ id=v; break; } } }
+      if(!id) return; card.setAttribute('data-fbinbox','1');
+      var a=A(id); if(!a) return;
+      var fb=a.clientFeedback||[]; var un=fb.filter(function(f){return !f.handled;}).length;
+      var pill=document.createElement('div'); pill.className='fbx-pill'+(un?' has':'');
+      pill.innerHTML='<span style="font-weight:900">📨</span> 收到的客戶回饋'+(fb.length?(' '+fb.length):'')+(un?(' <span class="fbx-dot">'+un+'</span>'):'');
+      var panel=null;
+      pill.onclick=function(){ if(panel){ panel.remove(); panel=null; return; } panel=buildPanel(A(id)||a); pill.parentNode.insertBefore(panel, pill.nextSibling); };
+      var anchor=card.querySelector('.wb-ov1-pill')||card.querySelector('.vtop')||card.firstElementChild;
+      if(anchor && anchor.parentNode) anchor.parentNode.insertBefore(pill, anchor.nextSibling); else card.insertBefore(pill, card.firstChild);
+    });
+  }
+  setInterval(function(){ try{inject();}catch(e){} }, 950);
+  if(document.readyState!=='loading') setTimeout(inject,500); else document.addEventListener('DOMContentLoaded',function(){ setTimeout(inject,500); });
 })();
 </script>
 
