@@ -8,7 +8,7 @@
 <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v317 (版本號僅留註解，不顯示於畫面)
+<!-- ATELIER 影片診斷工作台 · 內部版本 v318 (版本號僅留註解，不顯示於畫面)
 v267 更新（策略診斷硬修版：重做 Top/Bottom 固定列高、重綁單支核對窗與 AI 工具按鈕、補互動式 1–8 操作步驟與策略對標雷達；本版用最後一段 v267 override 強制接管策略診斷頁，避免舊版 v263/v265 殘留函式覆蓋。只動 index.html，不動 client.html、Firebase、CSV 與六守門提示詞。）
 v266 更新（hotfix：修正 v265 最後一段策略診斷事件代理少 catch，導致 v265 override script 無法執行、畫面徽章被前一段 v263 override 改回 v263，且策略診斷部分按鈕失效；本版補回 catch 並將顯示版本固定為 v266。只動 index.html，不動 client.html、Firebase、CSV 與六守門提示詞。）
 v265 更新（策略診斷按鈕修復、整齊 Top/Bottom、互動流程與策略對標雷達）：修正策略診斷 Top/Bottom 每支影片的按鈕高度與位置不一致；改用固定列高與事件代理，讓「快看／核對」「留在本頁定位」「改寫提示」以及單支核對窗內 AI 工具、去影片庫定位、獨立視窗核對、收起都可穩定點擊；將 1–8 操作流程改成可點擊小教學；新增策略對標雷達，從同產業、同職稱、同身份、A–E、G 階段、流量觸發、素材與高互動／高分享等面向找全庫可借鏡樣本。只動 index.html，不動 client.html、Firebase、CSV 與六守門提示詞。
@@ -1221,7 +1221,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v317</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v318</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -11060,7 +11060,7 @@ document.addEventListener('DOMContentLoaded',function(){
 <script>
 /* v239：自動防舊版快取。讓桌布捷徑／瀏覽器如果抓到舊 HTML，能自己比對線上最新版並導向。 */
 (function(){
-  var ATELIER_CURRENT_VERSION='v317';
+  var ATELIER_CURRENT_VERSION='v318';
   window.ATELIER_CURRENT_VERSION=ATELIER_CURRENT_VERSION;
   function _avNum(v){v=String(v||'');var m=v.match(/v\s*(\d+)/i);return m?parseInt(m[1],10):0;}
   function _avDetect(html){html=String(html||'');var m=html.match(/id=["']verBadge["'][^>]*>\s*(v\d+)/i)||html.match(/內部版本\s+(v\d+)/i);return m?m[1]:'';}
@@ -11707,7 +11707,7 @@ return '<div class="strat-radar-card-v265"><b>目前沒有符合樣本</b><p>可
 /* ═══════════ v267 strategy hard patch：固定版面、重綁按鈕、互動說明與策略對標雷達（index.html only） ═══════════ */
 (function(){
   'use strict';
-  var VERSION='v317';
+  var VERSION='v318';
   function H(id){return document.getElementById(id)}
   function E(s){return String(s==null?'':s).replace(/[&<>'"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]})}
   function A(){try{return (typeof accounts!=='undefined'&&Array.isArray(accounts))?accounts:(Array.isArray(window.accounts)?window.accounts:[])}catch(e){return []}}
@@ -11936,7 +11936,7 @@ window._strategyRadarV267=radarResults;
 
 <script id="v289PatchJS">
 (function(){
-  try{ window.ATELIER_CURRENT_VERSION='v317'; }catch(e){}
+  try{ window.ATELIER_CURRENT_VERSION='v318'; }catch(e){}
   try{ sessionStorage.setItem('atelierSkipAutoUpdate','1'); }catch(e){}
   try{ if(navigator.serviceWorker && navigator.serviceWorker.getRegistrations){
         navigator.serviceWorker.getRegistrations().then(function(rs){ rs.forEach(function(r){ try{r.update();}catch(e){} }); }).catch(function(){});
@@ -13121,7 +13121,7 @@ button[data-wbl-send],button[data-wbl-inbox]{padding:3px 12px !important;font-si
     if(document.getElementById('wbPosline')) return;
     var tabs=document.querySelector('.tabs'); if(!tabs||!tabs.parentNode) return;
     var el=document.createElement('div'); el.id='wbPosline'; el.className='wb-posline';
-    el.innerHTML='<b>後台 · 工廠</b>｜這裡對內、跨帳號：把陌生帳號分析、累積成可交付的成果。給客戶看的呈現與交付在服務台做。';
+    el.innerHTML='<b>後台 · 工廠｜資料判斷與內容診斷中控台</b><br>看單支影片、看整體帳號策略，判斷 Hook／CTA／A–E／G 階段／行銷標籤／成功公式／商業缺口。<b style="color:#A51820">工作台負責「看出問題」</b>；給客戶看的問診與交付在服務台做。';
     tabs.parentNode.insertBefore(el, tabs.nextSibling);
   }
   function badges(){
@@ -13671,6 +13671,189 @@ button[data-wbl-send],button[data-wbl-inbox]{padding:3px 12px !important;font-si
   }
   setInterval(function(){ try{inject();}catch(e){} }, 950);
   if(document.readyState!=='loading') setTimeout(inject,480); else document.addEventListener('DOMContentLoaded',function(){ setTimeout(inject,480); });
+})();
+</script>
+
+<!-- ═══════════ v318 · ATELIER 雙向提示燈（工作台側：卡片匯入／單片／策略頁＋復盤摘要）═══════════
+     全部檔尾注入、不動原碼；品牌色、無 emoji、可收合（<details>）；data-* 旗標冪等。
+     共用元件 window._atlLight(opts)。 -->
+<style id="atlLightStyleWB">
+.atl-light{border:1px solid #E8E3DA;border-left:3px solid #A51820;border-radius:10px;background:#FDFBF8;
+  margin:10px 0;overflow:hidden;font-family:inherit}
+.atl-light>summary{list-style:none;cursor:pointer;padding:9px 12px;display:flex;align-items:center;gap:8px;
+  font-size:12.5px;font-weight:700;color:#A51820;letter-spacing:.2px;user-select:none}
+.atl-light>summary::-webkit-details-marker{display:none}
+.atl-light>summary .atl-dot{width:7px;height:7px;border-radius:50%;background:#A51820;flex:none}
+.atl-light>summary .atl-chev{margin-left:auto;width:14px;height:14px;flex:none;transition:transform .2s;color:#7A5A5E}
+.atl-light[open]>summary .atl-chev{transform:rotate(90deg)}
+.atl-light-body{padding:2px 12px 11px}
+.atl-row{display:flex;gap:8px;padding:3px 0;font-size:12px;line-height:1.55;align-items:baseline}
+.atl-k{flex:none;width:84px;color:#A51820;font-weight:600}
+.atl-v{color:#2A1A1C;flex:1}
+.atl-row.muted .atl-k{color:#7A5A5E}
+.atl-go{margin-top:8px;display:flex;flex-wrap:wrap;gap:7px;align-items:center}
+.atl-go .atl-goto{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;color:#7A5A5E}
+.atl-go .atl-goto b{color:#A51820;font-weight:700}
+.atl-go button.atl-btn{font-family:inherit;font-size:11.5px;font-weight:700;border:1px solid #A51820;color:#fff;
+  background:#A51820;border-radius:7px;padding:5px 11px;cursor:pointer}
+.atl-go button.atl-btn.ghost{background:transparent;color:#A51820}
+.atl-light.slim>summary{padding:7px 11px;font-size:12px;font-weight:600}
+.atl-rev{border:1px solid #E8E3DA;border-left:3px solid #D4A574;border-radius:9px;background:#FDFBF8;margin:8px 0;padding:8px 11px}
+.atl-rev .atl-rev-h{font-size:11.5px;font-weight:700;color:#A51820;margin-bottom:4px}
+.atl-rev .atl-rev-row{font-size:11.5px;color:#2A1A1C;line-height:1.5;padding:1px 0}
+.atl-rev .atl-rev-row span{color:#7A5A5E;font-weight:600;margin-right:5px}
+</style>
+<script>
+/* v318 雙向提示燈 — 工作台 */
+(function(){
+  if(window.__atlLightWB) return; window.__atlLightWB=1;
+  var CHEV='<svg class="atl-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>';
+  function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+  // opts: {title, open, slim, rows:[[k,v,muted?],...], goText, goHTML, btn:{label,onClick,ghost?}}
+  window._atlLight=function(opts){
+    opts=opts||{};
+    var d=document.createElement('details'); d.className='atl-light'+(opts.slim?' slim':''); if(opts.open!==false) d.setAttribute('open','');
+    var rows=(opts.rows||[]).map(function(r){
+      return '<div class="atl-row'+(r[2]?' muted':'')+'"><span class="atl-k">'+esc(r[0])+'</span><span class="atl-v">'+esc(r[1])+'</span></div>';
+    }).join('');
+    var go='';
+    if(opts.goHTML||opts.goText||opts.btn){
+      go='<div class="atl-go">';
+      if(opts.goText) go+='<span class="atl-goto">→ 要去哪裡：<b>'+esc(opts.goText)+'</b></span>';
+      if(opts.goHTML) go+=opts.goHTML;
+      go+='</div>';
+    }
+    d.innerHTML='<summary><span class="atl-dot"></span>'+esc(opts.title||'ATELIER 提示燈')+CHEV+'</summary>'
+      +'<div class="atl-light-body">'+rows+go+'</div>';
+    if(opts.btn){ var b=document.createElement('button'); b.className='atl-btn'+(opts.btn.ghost?' ghost':''); b.type='button'; b.textContent=opts.btn.label; b.onclick=opts.btn.onClick; var gow=d.querySelector('.atl-go'); if(!gow){ gow=document.createElement('div'); gow.className='atl-go'; d.querySelector('.atl-light-body').appendChild(gow);} gow.appendChild(b); }
+    return d;
+  };
+
+  /* ───── 提示燈 1：卡片匯入（偵測卡A/B/C，直接化解「帳號沒顯示」的困惑）───── */
+  var CARD_SPEC={
+    'A':{title:'卡片匯入提示燈 · 讀到卡A（影片＋帳號合一）',
+      rows:[['目前狀態','讀到卡A（影片＋帳號合一）'],
+            ['現在缺什麼','版面欄位（粉絲量級／連動帳號／報價…）要按過「自動填入下面欄位」＋確認建立／同步帳號後才會出現；只貼進框、還沒按自動填入時是空的，屬正常。',true],
+            ['為什麼重要','這會同時影響影片庫與帳號管理'],
+            ['建議下一步','自動填入欄位 → 確認建立／同步帳號 → 儲存影片'],
+            ['完成後會影響','影片庫、帳號管理、策略診斷、服務台客戶資料']],
+      goText:'按下方「自動填入下面欄位」'},
+    'B':{title:'卡片匯入提示燈 · 讀到卡B（單支影片）',
+      rows:[['目前狀態','讀到卡B（單支影片）'],
+            ['為什麼重要','這支影片會成為策略診斷的資料'],
+            ['建議下一步','自動填入欄位 → 確認帳號是否對得上 → 儲存影片'],
+            ['完成後會影響','影片庫、單支診斷、策略診斷']],
+      goText:'按下方「自動填入下面欄位」'},
+    'C':{title:'卡片匯入提示燈 · 讀到卡C（只更新帳號）',
+      rows:[['目前狀態','讀到卡C（只更新帳號）'],
+            ['為什麼重要','這會補齊客戶身份、定位、產業、服務等背景資料'],
+            ['建議下一步','自動填入欄位 → 建立／同步帳號'],
+            ['完成後會影響','帳號管理、服務台問診、PPT、CTA1 診斷']],
+      goText:'按下方「自動填入下面欄位」'}
+  };
+  function detectCard(txt){
+    txt=String(txt||''); if(!txt.trim()) return null;
+    var hasVid=/===\s*ATELIER\s*歸類卡\s*===/.test(txt);
+    var hasAcc=/===\s*ATELIER\s*帳號分析卡\s*===/.test(txt);
+    if(hasVid&&hasAcc) return 'A'; if(hasVid) return 'B'; if(hasAcc) return 'C'; return null;
+  }
+  function paintCardLight(){
+    var pb=document.getElementById('pasteBox'); var anchor=document.getElementById('parseMsg')||pb; if(!pb||!anchor) return;
+    var kind=detectCard(pb.value);
+    var existing=document.getElementById('atlCardLight');
+    if(!kind){ if(existing) existing.remove(); return; }
+    if(existing&&existing.getAttribute('data-kind')===kind) return;
+    if(existing) existing.remove();
+    var sp=CARD_SPEC[kind]; var el=window._atlLight({title:sp.title, rows:sp.rows, goText:sp.goText, open:true});
+    el.id='atlCardLight'; el.setAttribute('data-kind',kind);
+    anchor.parentNode.insertBefore(el, anchor.nextSibling);
+  }
+  (function(){ var pb=document.getElementById('pasteBox'); if(pb){ ['input','paste','change','keyup'].forEach(function(ev){ pb.addEventListener(ev, function(){ setTimeout(paintCardLight,30); }); }); } })();
+  setInterval(function(){ try{ var pb=document.getElementById('pasteBox'); if(pb && document.getElementById('sub-card') && document.getElementById('sub-card').style.display!=='none') paintCardLight(); }catch(e){} }, 1100);
+
+  /* ───── 提示燈 2：單支影片卡（尚未完成商業出口判斷時）───── */
+  function vById(id){ try{ if(typeof videos!=='undefined'&&videos) return videos.filter(function(v){return v&&v.id===id;})[0]; }catch(e){} return null; }
+  function cta1Done(v){ try{ return !!localStorage.getItem('atelier_cta1fit_'+v.id); }catch(e){} return false; }
+  function mktDone(v){ var t=v&&v.mktTags; if(!t) return false; return Object.keys(t).some(function(k){return Array.isArray(t[k])&&t[k].length;}); }
+  function paintVideoLights(){
+    var lib=document.getElementById('view-library'); if(!lib) return;
+    var cards=lib.querySelectorAll('.video-card'); if(!cards.length) return;
+    [].forEach.call(cards,function(card){
+      if(card.getAttribute('data-wblight-vid')) return;
+      var id=card.getAttribute('data-vid'); if(!id) return; card.setAttribute('data-wblight-vid','1');
+      var v=vById(id); if(!v) return;
+      if(cta1Done(v)&&mktDone(v)) return; // 兩項都做了就不打擾
+      var el=window._atlLight({slim:true, open:false, title:'提示燈 · 這支尚未完成商業出口判斷',
+        rows:[['目前狀態','這支影片尚未完成商業出口判斷'+(mktDone(v)?'':'（行銷標籤未填）')+(cta1Done(v)?'':'（CTA1 行動出口未做）')],
+              ['為什麼重要','如果不知道觀眾看完後去哪裡，流量可能無法轉成私訊、名單或預約'],
+              ['建議下一步','先做 CTA1 行動出口診斷，再補行銷標籤'],
+              ['完成後會影響','單支改寫、案例價值、策略診斷、下一批戰役']]});
+      // 插到卡片底部
+      try{ card.appendChild(el); }catch(e){}
+    });
+  }
+  setInterval(paintVideoLights, 1300);
+
+  /* ───── 提示燈 3：策略診斷頁（缺客戶脈絡 → 去服務台 Stage3）＋復盤摘要 ───── */
+  function accAll(){ try{ if(typeof accounts!=='undefined'&&accounts) return accounts; }catch(e){} return []; }
+  function stratClientId(){
+    try{ var s=document.getElementById('stratAcc'); if(s&&s.value) return s.value; }catch(e){}
+    return null;
+  }
+  function revBlock(a){
+    var rb=a&&a.reviewBrief; if(!rb) return ''; var L=[];
+    if(rb.result||rb.proven||rb.insight) L.push(['上一輪復盤結論', rb.insight||rb.result||rb.proven]);
+    if(rb.keep) L.push(['下一輪建議延續', rb.keep]);
+    if(rb.stop) L.push(['下一輪建議停止', rb.stop]);
+    if(rb.nextPlan) L.push(['下一輪要測的 Hook／CTA', rb.nextPlan]);
+    if(!L.length) return '';
+    var h='<div class="atl-rev"><div class="atl-rev-h">上一輪復盤摘要（讓你看影片時知道在驗證哪個假設）</div>';
+    L.forEach(function(r){ h+='<div class="atl-rev-row"><span>'+esc(r[0])+'：</span>'+esc(r[1])+'</div>'; });
+    return h+'</div>';
+  }
+  function paintStrategyLight(){
+    var view=document.getElementById('view-strategy'); if(!view||!view.classList.contains('on')) { var ex=document.getElementById('atlStratLight'); if(ex) ex.remove(); return; }
+    var host=document.getElementById('strategyBox')||view;
+    var cid=stratClientId(); var a=cid?accAll().filter(function(x){return x&&x.id===cid;})[0]:null;
+    var sig=(cid||'-')+'|'+(a&&a.reviewBrief?'rb':'no');
+    var ex=document.getElementById('atlStratLight');
+    if(ex&&ex.getAttribute('data-sig')===sig) return; if(ex) ex.remove();
+    var el=window._atlLight({title:'提示燈 · 策略診斷（看得出表現，看不出客戶想成交什麼）', open:true,
+      rows:[['目前狀態', a?('已彙整 '+(a.displayName||a.handle||'此客戶')+' 多支影片資料'):'已彙整此客戶多支影片資料'],
+            ['現在缺什麼','缺客戶真實 Offer、ICP、承接窗口、成交阻力'],
+            ['為什麼重要','影片看得出內容表現，但看不出客戶真正想成交什麼'],
+            ['建議下一步','前往客戶服務台 Stage 3 行銷問診卡'],
+            ['完成後會影響','Stage 4 內容診斷、CTA1 跨影片診斷、Stage 6 戰役規劃、PPT 交付']],
+      goText:'客戶服務台 → Stage 3 行銷問診卡'});
+    el.id='atlStratLight'; el.setAttribute('data-sig',sig);
+    if(cid&&typeof window._openClientWindow==='function'){
+      var b=document.createElement('button'); b.className='atl-btn'; b.type='button'; b.textContent='帶這位客戶去服務台 Stage 3';
+      b.onclick=function(){ try{ window._openClientWindow(cid); }catch(e){} };
+      var gow=el.querySelector('.atl-go'); if(gow) gow.appendChild(b);
+    }
+    // 復盤摘要（§七）：策略頁有選到客戶且有 reviewBrief 時，附在提示燈下方
+    if(a){ var rh=revBlock(a); if(rh){ var wrap=document.createElement('div'); wrap.innerHTML=rh; el.querySelector('.atl-light-body').appendChild(wrap.firstChild); } }
+    host.insertBefore(el, host.firstChild);
+  }
+  setInterval(paintStrategyLight, 1000);
+
+  /* ───── 復盤摘要（§七）：客戶帳號卡也顯示一條小摘要 ───── */
+  function paintAccReview(){
+    var cards=document.querySelectorAll('#accList .vcard'); if(!cards.length) return;
+    [].forEach.call(cards,function(card){
+      var id=card.getAttribute('data-acc-id')||card.getAttribute('data-id');
+      if(!id){ var h=card.querySelector('[data-acc-edit],[data-acc-del],[data-acc-health],[data-acc-audit],[data-acc-ident]'); if(h){ id=h.getAttribute('data-acc-edit')||h.getAttribute('data-acc-del')||h.getAttribute('data-acc-health')||h.getAttribute('data-acc-audit')||h.getAttribute('data-acc-ident'); } }
+      var a=id?accAll().filter(function(x){return x&&x.id===id;})[0]:null;
+      var rb=a&&a.reviewBrief; 
+      var sig=rb?(rb.insight||rb.result||'')+'|'+(rb.keep||'')+'|'+(rb.stop||'')+'|'+(rb.nextPlan||''):'';
+      var ex=card.querySelector('[data-atl-accrev]');
+      if(!rb){ if(ex) ex.remove(); return; }
+      if(ex&&ex.getAttribute('data-sig')===sig) return; if(ex) ex.remove();
+      var wrap=document.createElement('div'); wrap.setAttribute('data-atl-accrev','1'); wrap.setAttribute('data-sig',sig);
+      wrap.innerHTML=revBlock(a); if(wrap.firstChild){ try{ card.appendChild(wrap); }catch(e){} }
+    });
+  }
+  setInterval(paintAccReview, 1400);
 })();
 </script>
 
