@@ -722,7 +722,7 @@ details.cat .cat-body{padding:14px 15px}
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">客戶服務台</span></span>
-    <span id="verBadge">cs-v4.29</span>
+    <span id="verBadge">cs-v4.30</span>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button type="button" id="popoutBtn" class="popout-btn" title="把客戶服務台開成獨立小視窗"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6"/><path d="M20 4l-9 9"/><path d="M14 12v7H5V10h7"/></svg>小視窗</button>
@@ -6519,6 +6519,69 @@ details.ovBlock > summary .ovx-tag.has{color:#9C7D4A}
   // 首次掛載也補一次（防呆：頁面已渲染但尚未觸發 renderBanner 時）
   if(document.readyState!=='loading') setTimeout(_link, 300);
   else document.addEventListener('DOMContentLoaded', function(){ setTimeout(_link, 300); });
+})();
+</script>
+
+
+<!-- ═══════════ cs-v4.30 · 校準＋單一產線感 ═══════════
+     ① 定位句：講清楚「前台·門市＝只服務選定的這一位客戶」。
+     ② 產線進度條：把這位客戶在 7 階段（初診→…→交付）走到哪、下一步是什麼、已交付幾包，
+        做成一條可點的進度列（點任一站＝switchTo 跳該階段）。沿用既有 flowStatus/DASH_FLOW/switchTo，
+        裝飾 renderBanner（疊在既有裝飾鏈最後）後更新。原碼不動。 -->
+<style>
+.cs-posline{display:flex;align-items:center;gap:7px;font-size:11.5px;color:var(--sub);
+  background:var(--warm,#F4F1EC);border-left:3px solid var(--rouge,#A51820);padding:6px 14px;margin:0}
+.cs-posline b{color:var(--rouge,#A51820);font-weight:800}
+.cs-pline{display:flex;align-items:center;flex-wrap:wrap;gap:6px;padding:8px 14px;margin:0;
+  background:#FFFCFB;border-bottom:1px solid #EEE6E3;font-size:11.5px}
+.cs-pline-lab{font-weight:800;color:var(--rouge,#A51820);margin-right:2px}
+.cs-pstep{display:inline-flex;align-items:center;gap:5px;border:1px solid #E2D6D3;border-radius:14px;
+  padding:3px 10px;cursor:pointer;color:var(--sub);background:#fff;white-space:nowrap;transition:border-color .12s}
+.cs-pstep:hover{border-color:var(--rouge,#A51820)}
+.cs-pstep .cs-pdot{width:7px;height:7px;border-radius:50%;background:#D8CCC9;flex:none}
+.cs-pstep.done{color:#0F6E56;border-color:#9FE1CB;background:#E1F5EE}
+.cs-pstep.done .cs-pdot{background:#1D9E75}
+.cs-pstep.cur{color:#fff;background:var(--rouge,#A51820);border-color:var(--rouge,#A51820);font-weight:800}
+.cs-pstep.cur .cs-pdot{background:#fff}
+.cs-pnext{margin-left:auto;font-size:11.5px;color:var(--sub)}
+.cs-pnext b{color:var(--rouge,#A51820);font-weight:800}
+</style>
+<script>
+/* cs-v4.30：定位句 + 7 階段產線進度條（裝飾器，不動原碼） */
+(function(){
+  var STAGES=[['stage1_initial','初診'],['stage2_filing','建檔'],['stage3_interview','問診'],['stage4_diagnosis','診斷'],['stage5_inventory','盤點'],['stage6_planning','企劃'],['stage7_delivery','交付']];
+  function _fs(a,key){ try{ if(typeof flowStatus==='function') return flowStatus(a,key); }catch(e){} var f=(a&&a.clientFlow&&a.clientFlow[key])||null; return (f&&f.status)||'not-started'; }
+  function _posline(){
+    if(document.getElementById('csPosline')) return;
+    var b=document.getElementById('csBanner'); if(!b||!b.parentNode) return;
+    var el=document.createElement('div'); el.id='csPosline'; el.className='cs-posline';
+    el.innerHTML='<b>前台 · 門市</b>｜這裡只服務你選定的這一位客戶：看進度、產出 PDF / HTML / PPT、收回饋。跨帳號的分析在工作台做。';
+    b.parentNode.insertBefore(el, b);
+  }
+  function _pline(){
+    var b=document.getElementById('csBanner'); if(!b||!b.parentNode) return;
+    var host=document.getElementById('csPline');
+    var a=(typeof curAcc==='function')?curAcc():null;
+    if(!a){ if(host) host.style.display='none'; return; }
+    if(!host){ host=document.createElement('div'); host.id='csPline'; host.className='cs-pline'; b.parentNode.insertBefore(host, b.nextSibling); }
+    host.style.display='';
+    var done=0, curIdx=-1, sts=STAGES.map(function(s){ var st=_fs(a,s[0]); if(st==='done')done++; return st; });
+    for(var i=0;i<sts.length;i++){ if(sts[i]!=='done'){ curIdx=i; break; } }
+    if(curIdx<0) curIdx=STAGES.length-1;
+    var html='<span class="cs-pline-lab">產線進度</span>';
+    STAGES.forEach(function(s,i){
+      var cls='cs-pstep'+(sts[i]==='done'?' done':(i===curIdx?' cur':''));
+      html+='<span class="'+cls+'" onclick="if(typeof switchTo===\'function\')switchTo(\'stage'+(i+1)+'\')" title="跳到 '+s[1]+'"><span class="cs-pdot"></span>'+(i+1)+' '+s[1]+'</span>';
+    });
+    var delN=0; try{ if(typeof csDeliveries==='function'){ var d=csDeliveries(a); delN=(d&&d.length)||0; } }catch(e){}
+    var nextLab=(done>=STAGES.length)?'已走完 7 站':STAGES[curIdx][1];
+    html+='<span class="cs-pnext">已完成 <b>'+done+'/7</b>'+(delN?('　·　已交付 <b>'+delN+'</b> 包'):'')+'　·　下一步：<b>'+nextLab+'</b></span>';
+    host.innerHTML=html;
+  }
+  var _rb=window.renderBanner;
+  if(typeof _rb==='function'){ window.renderBanner=function(flash){ var r=_rb.apply(this,arguments); try{_posline();}catch(e){} try{_pline();}catch(e){} return r; }; }
+  function init(){ try{_posline();}catch(e){} try{_pline();}catch(e){} }
+  if(document.readyState!=='loading') setTimeout(init,300); else document.addEventListener('DOMContentLoaded',function(){setTimeout(init,300);});
 })();
 </script>
 
