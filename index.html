@@ -8,7 +8,7 @@
 <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v307 (版本號僅留註解，不顯示於畫面)
+<!-- ATELIER 影片診斷工作台 · 內部版本 v308 (版本號僅留註解，不顯示於畫面)
 v267 更新（策略診斷硬修版：重做 Top/Bottom 固定列高、重綁單支核對窗與 AI 工具按鈕、補互動式 1–8 操作步驟與策略對標雷達；本版用最後一段 v267 override 強制接管策略診斷頁，避免舊版 v263/v265 殘留函式覆蓋。只動 index.html，不動 client.html、Firebase、CSV 與六守門提示詞。）
 v266 更新（hotfix：修正 v265 最後一段策略診斷事件代理少 catch，導致 v265 override script 無法執行、畫面徽章被前一段 v263 override 改回 v263，且策略診斷部分按鈕失效；本版補回 catch 並將顯示版本固定為 v266。只動 index.html，不動 client.html、Firebase、CSV 與六守門提示詞。）
 v265 更新（策略診斷按鈕修復、整齊 Top/Bottom、互動流程與策略對標雷達）：修正策略診斷 Top/Bottom 每支影片的按鈕高度與位置不一致；改用固定列高與事件代理，讓「快看／核對」「留在本頁定位」「改寫提示」以及單支核對窗內 AI 工具、去影片庫定位、獨立視窗核對、收起都可穩定點擊；將 1–8 操作流程改成可點擊小教學；新增策略對標雷達，從同產業、同職稱、同身份、A–E、G 階段、流量觸發、素材與高互動／高分享等面向找全庫可借鏡樣本。只動 index.html，不動 client.html、Firebase、CSV 與六守門提示詞。
@@ -1221,7 +1221,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v307</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v308</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -11051,7 +11051,7 @@ document.addEventListener('DOMContentLoaded',function(){
 <script>
 /* v239：自動防舊版快取。讓桌布捷徑／瀏覽器如果抓到舊 HTML，能自己比對線上最新版並導向。 */
 (function(){
-  var ATELIER_CURRENT_VERSION='v307';
+  var ATELIER_CURRENT_VERSION='v308';
   window.ATELIER_CURRENT_VERSION=ATELIER_CURRENT_VERSION;
   function _avNum(v){v=String(v||'');var m=v.match(/v\s*(\d+)/i);return m?parseInt(m[1],10):0;}
   function _avDetect(html){html=String(html||'');var m=html.match(/id=["']verBadge["'][^>]*>\s*(v\d+)/i)||html.match(/內部版本\s+(v\d+)/i);return m?m[1]:'';}
@@ -11698,7 +11698,7 @@ return '<div class="strat-radar-card-v265"><b>目前沒有符合樣本</b><p>可
 /* ═══════════ v267 strategy hard patch：固定版面、重綁按鈕、互動說明與策略對標雷達（index.html only） ═══════════ */
 (function(){
   'use strict';
-  var VERSION='v307';
+  var VERSION='v308';
   function H(id){return document.getElementById(id)}
   function E(s){return String(s==null?'':s).replace(/[&<>'"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]})}
   function A(){try{return (typeof accounts!=='undefined'&&Array.isArray(accounts))?accounts:(Array.isArray(window.accounts)?window.accounts:[])}catch(e){return []}}
@@ -11927,7 +11927,7 @@ window._strategyRadarV267=radarResults;
 
 <script id="v289PatchJS">
 (function(){
-  try{ window.ATELIER_CURRENT_VERSION='v307'; }catch(e){}
+  try{ window.ATELIER_CURRENT_VERSION='v308'; }catch(e){}
   try{ sessionStorage.setItem('atelierSkipAutoUpdate','1'); }catch(e){}
   try{ if(navigator.serviceWorker && navigator.serviceWorker.getRegistrations){
         navigator.serviceWorker.getRegistrations().then(function(rs){ rs.forEach(function(r){ try{r.update();}catch(e){} }); }).catch(function(){});
@@ -13067,6 +13067,68 @@ button[data-wbl-send],button[data-wbl-inbox]{padding:3px 12px !important;font-si
       return r;
     };
   }
+})();
+</script>
+
+
+<!-- ═══════════ v308 · 校準＋單一產線感（工作台側）═══════════
+     ① 定位句：講清楚「後台·工廠＝對內、跨帳號、把陌生帳號分析累積成可交付成果」。
+     ② 帳號卡服務台產線徽章：只對「我的客戶」顯示，讀共用的 a.clientFlow 算出在 7 階段第幾站、下一步，
+        點一下＝用既有 _openClientWindow 帶這位客戶進服務台 → 兩支接成同一條線。
+     依交接書 §4：accounts 用裸名取；全 additive，不動原函式。 -->
+<style>
+.wb-posline{display:flex;align-items:center;gap:7px;font-size:11.5px;color:var(--sub);
+  background:var(--warm);border-left:3px solid var(--rouge,#A51820);padding:6px 16px;margin:0}
+.wb-posline b{color:var(--rouge,#A51820);font-weight:800}
+.wb-pline{display:inline-flex;align-items:center;gap:6px;font-size:11px;border:1px solid #E2D6D3;
+  border-radius:13px;padding:3px 11px;margin:7px 0 2px;cursor:pointer;color:#7A1018;background:#FBF1F0;white-space:nowrap;transition:border-color .12s}
+.wb-pline:hover{border-color:var(--rouge,#A51820)}
+.wb-pline .wb-pdot{width:7px;height:7px;border-radius:50%;background:#1D9E75;flex:none}
+.wb-pline.todo{color:var(--sub);background:#F4F1EC;border-color:#E0DAD0}
+.wb-pline.todo .wb-pdot{background:#C9C2B6}
+</style>
+<script>
+/* v308：定位句 + 帳號卡服務台產線徽章（裝飾/注入，不動原碼） */
+(function(){
+  var STAGES=[['stage1_initial','初診'],['stage2_filing','建檔'],['stage3_interview','問診'],['stage4_diagnosis','診斷'],['stage5_inventory','盤點'],['stage6_planning','企劃'],['stage7_delivery','交付']];
+  function A(id){ try{ if(typeof accounts!=='undefined'&&accounts){ var b=accounts.filter(function(x){return x&&x.id===id;})[0]; if(b)return b; } }catch(e){} try{ if(typeof accById==='function'){var a=accById(id); if(a)return a;} }catch(e){} return null; }
+  function fs(a,key){ var f=(a&&a.clientFlow&&a.clientFlow[key])||null; return (f&&f.status)||'not-started'; }
+  function cardId(card){
+    var attrs=['data-acc-client','data-acc-edit','data-acc-health','data-acc-success','data-acc-hcheck','data-acc-export'];
+    for(var i=0;i<attrs.length;i++){ var el=card.querySelector('['+attrs[i]+']'); if(el){ var v=el.getAttribute(attrs[i]); if(v) return v; } }
+    return '';
+  }
+  function posline(){
+    if(document.getElementById('wbPosline')) return;
+    var tabs=document.querySelector('.tabs'); if(!tabs||!tabs.parentNode) return;
+    var el=document.createElement('div'); el.id='wbPosline'; el.className='wb-posline';
+    el.innerHTML='<b>後台 · 工廠</b>｜這裡對內、跨帳號：把陌生帳號分析、累積成可交付的成果。給客戶看的呈現與交付在服務台做。';
+    tabs.parentNode.insertBefore(el, tabs.nextSibling);
+  }
+  function badges(){
+    var cards=document.querySelectorAll('#accList .vcard'); if(!cards.length) return;
+    cards.forEach(function(card){
+      if(card.getAttribute('data-wbpl')) return;
+      var id=cardId(card); if(!id) return;
+      var a=A(id); if(!a) return;
+      card.setAttribute('data-wbpl','1');
+      if(!a.isClient) return;                       /* 只有「我的客戶」才在服務台產線上 */
+      var done=0, curIdx=-1, sts=STAGES.map(function(s){ var st=fs(a,s[0]); if(st==='done')done++; return st; });
+      for(var i=0;i<sts.length;i++){ if(sts[i]!=='done'){ curIdx=i; break; } }
+      if(curIdx<0) curIdx=STAGES.length-1;
+      var hasFlow=!!(a.clientFlow && Object.keys(a.clientFlow).length);
+      var pill=document.createElement('div');
+      if(!hasFlow){ pill.className='wb-pline todo'; pill.innerHTML='<span class="wb-pdot"></span>服務台產線：尚未開始（下一步 第 1 站 · 初診）'; }
+      else { pill.className='wb-pline'; pill.innerHTML='<span class="wb-pdot"></span>服務台產線：第 '+(curIdx+1)+'/7 站 · 下一步：'+(done>=7?'已走完':STAGES[curIdx][1]); }
+      pill.title='點開＝在客戶服務台帶入這位客戶（同一條產線）';
+      pill.onclick=function(){ try{ if(typeof _openClientWindow==='function'){ _openClientWindow(id); } else { window.open('client.html','atelierClient'); } }catch(e){} };
+      var top=card.querySelector('.vtop')||card.querySelector('.vtitle')||card.firstElementChild;
+      if(top && top.parentNode){ top.parentNode.insertBefore(pill, top.nextSibling); } else { card.insertBefore(pill, card.firstChild); }
+    });
+  }
+  function tick(){ try{posline();}catch(e){} try{badges();}catch(e){} }
+  setInterval(tick, 900);
+  if(document.readyState!=='loading') setTimeout(tick,400); else document.addEventListener('DOMContentLoaded',function(){setTimeout(tick,400);});
 })();
 </script>
 
