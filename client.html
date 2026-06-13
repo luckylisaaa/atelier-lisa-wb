@@ -722,7 +722,7 @@ details.cat .cat-body{padding:14px 15px}
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">客戶服務台</span></span>
-    <span id="verBadge">cs-v4.28</span>
+    <span id="verBadge">cs-v4.29</span>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button type="button" id="popoutBtn" class="popout-btn" title="把客戶服務台開成獨立小視窗"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6"/><path d="M20 4l-9 9"/><path d="M14 12v7H5V10h7"/></svg>小視窗</button>
@@ -6470,5 +6470,57 @@ details.ovBlock > summary .ovx-tag.has{color:#9C7D4A}
   };
 })();
 </script>
+
+<!-- ═══════════ cs-v4.29 · banner 客戶名稱可點開主頁（對齊工作台 v304）═══════════
+     裝飾 renderBanner（疊在既有裝飾鏈最後）：每次渲染後，把 .who 內的 @handle 變成
+     可點連結 → 用既有 _platformHome(a) 帶平台主頁；無平台時退回 instagram。原碼不動。 -->
+<style>
+.cs-banner .who-link{color:inherit;text-decoration:none;border-bottom:1px solid rgba(165,24,32,.35);
+  padding-bottom:1px;cursor:pointer;transition:border-color .15s}
+.cs-banner .who-link:hover{border-bottom-color:var(--rouge,#A51820)}
+.cs-banner .who-ext{display:inline-block;width:11px;height:11px;margin-left:2px;vertical-align:-1px;opacity:.6}
+</style>
+<script>
+/* cs-v4.29：banner 客戶 @handle 可點開主頁（裝飾器，不動原 renderBanner） */
+(function(){
+  function _homeUrl(a){
+    if(!a) return '';
+    var u=''; try{ if(typeof _platformHome==='function') u=_platformHome(a); }catch(e){}
+    if(!u){
+      var h=(a.handle||'').trim().replace(/^@+/,'');
+      if(h) u='https://instagram.com/'+h;   // 系統以 IG 為主，無平台欄位時的合理預設
+    }
+    return u;
+  }
+  function _esc(s){ try{ if(typeof esc==='function') return esc(s); }catch(e){} return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+  var EXT='<svg class="who-ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M9 7h8v8"/></svg>';
+
+  function _link(){
+    try{
+      var b=document.getElementById('csBanner'); if(!b) return;
+      var a=(typeof curAcc==='function')?curAcc():null; if(!a) return;
+      var who=b.querySelector('.who'); if(!who) return;
+      if(who.querySelector('a.who-link')) return;        // 冪等
+      var url=_homeUrl(a); if(!url) return;
+      var handle=_esc(a.handle||'@?');
+      var name=_esc(a.displayName||'');
+      who.innerHTML='<a class="who-link" href="'+url+'" target="_blank" rel="noopener" title="開啟 '+handle+' 的主頁">'+handle+EXT+'</a>'+(name?(' '+name):'');
+    }catch(e){ try{ console.warn('[cs-v4.29 who-link]', e); }catch(_){} }
+  }
+
+  var _rb = window.renderBanner;
+  if(typeof _rb==='function'){
+    window.renderBanner = function(flash){
+      var r = _rb.apply(this, arguments);
+      _link();
+      return r;
+    };
+  }
+  // 首次掛載也補一次（防呆：頁面已渲染但尚未觸發 renderBanner 時）
+  if(document.readyState!=='loading') setTimeout(_link, 300);
+  else document.addEventListener('DOMContentLoaded', function(){ setTimeout(_link, 300); });
+})();
+</script>
+
 </body>
 </html>
