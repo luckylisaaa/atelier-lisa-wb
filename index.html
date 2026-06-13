@@ -8,7 +8,7 @@
 <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v292 (版本號僅留註解，不顯示於畫面)
+<!-- ATELIER 影片診斷工作台 · 內部版本 v296 (版本號僅留註解，不顯示於畫面)
 v267 更新（策略診斷硬修版：重做 Top/Bottom 固定列高、重綁單支核對窗與 AI 工具按鈕、補互動式 1–8 操作步驟與策略對標雷達；本版用最後一段 v267 override 強制接管策略診斷頁，避免舊版 v263/v265 殘留函式覆蓋。只動 index.html，不動 client.html、Firebase、CSV 與六守門提示詞。）
 v266 更新（hotfix：修正 v265 最後一段策略診斷事件代理少 catch，導致 v265 override script 無法執行、畫面徽章被前一段 v263 override 改回 v263，且策略診斷部分按鈕失效；本版補回 catch 並將顯示版本固定為 v266。只動 index.html，不動 client.html、Firebase、CSV 與六守門提示詞。）
 v265 更新（策略診斷按鈕修復、整齊 Top/Bottom、互動流程與策略對標雷達）：修正策略診斷 Top/Bottom 每支影片的按鈕高度與位置不一致；改用固定列高與事件代理，讓「快看／核對」「留在本頁定位」「改寫提示」以及單支核對窗內 AI 工具、去影片庫定位、獨立視窗核對、收起都可穩定點擊；將 1–8 操作流程改成可點擊小教學；新增策略對標雷達，從同產業、同職稱、同身份、A–E、G 階段、流量觸發、素材與高互動／高分享等面向找全庫可借鏡樣本。只動 index.html，不動 client.html、Firebase、CSV 與六守門提示詞。
@@ -1221,7 +1221,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v292</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v296</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -5526,7 +5526,7 @@ function openAccountVideoAudit(accId){
     +(needs.length?'<button class="btn" onclick="relinkVideosForAccount(&quot;'+esc(acc.id)+'&quot;)" style="width:100%;margin-bottom:10px">一鍵回補這 '+needs.length+' 支的帳號連動</button>':'')
     +(rows.length?rows.map(function(x,i){ var v=x.v; return '<div style="border-top:1px solid var(--line);padding:8px 0;font-size:12px"><b>'+(i+1)+'. '+esc(v.title||'(未命名)')+'</b><div style="color:var(--sub);margin-top:2px">'+esc(_videoMatchLabel(x.method))+'｜'+esc(v.accountHandle||'無 @handle')+(v.accountId===acc.id?'｜id 已正確':'｜id 未回補')+'</div></div>'; }).join(''):'<div class="empty-res">目前沒有任何影片能安全歸屬到這個帳號。</div>')
     +'</div>';
-  $('sheet').innerHTML=html; $('modal').style.display='flex';
+  $('sheet').innerHTML=html; $('modal').classList.add('show');
 }
 function relinkVideosForAccount(accId){
   var acc=accounts.find(function(a){return a.id===accId;}); if(!acc){ toast('找不到帳號'); return; }
@@ -5604,7 +5604,7 @@ function openVideoArchiveAudit(accId){
     +sec('同標題重複',dupTitles,function(g){return '<div style="border-top:1px solid var(--line);padding:8px 0;font-size:12px"><b>'+esc(g[0].title||'(未命名)')+'</b>'+g.map(function(v){return _auditRow(v,'同標題群組','共 '+g.length+' 筆');}).join('')+'</div>';},'沒有同標題重複')
     +sec('全庫孤兒影片（沒有帳號歸屬）',orphan,function(v){return _auditRow(v,'沒有 accountId／@handle 可安全歸屬','若是此客戶影片，請編輯補 IG帳號');},'沒有孤兒影片')
     +'</div>';
-  $('sheet').innerHTML=html; $('modal').style.display='flex';
+  $('sheet').innerHTML=html; $('modal').classList.add('show');
 }
 
 /* ─── 列表渲染 ─── */
@@ -11051,7 +11051,7 @@ document.addEventListener('DOMContentLoaded',function(){
 <script>
 /* v239：自動防舊版快取。讓桌布捷徑／瀏覽器如果抓到舊 HTML，能自己比對線上最新版並導向。 */
 (function(){
-  var ATELIER_CURRENT_VERSION='v292';
+  var ATELIER_CURRENT_VERSION='v296';
   window.ATELIER_CURRENT_VERSION=ATELIER_CURRENT_VERSION;
   function _avNum(v){v=String(v||'');var m=v.match(/v\s*(\d+)/i);return m?parseInt(m[1],10):0;}
   function _avDetect(html){html=String(html||'');var m=html.match(/id=["']verBadge["'][^>]*>\s*(v\d+)/i)||html.match(/內部版本\s+(v\d+)/i);return m?m[1]:'';}
@@ -11698,7 +11698,7 @@ return '<div class="strat-radar-card-v265"><b>目前沒有符合樣本</b><p>可
 /* ═══════════ v267 strategy hard patch：固定版面、重綁按鈕、互動說明與策略對標雷達（index.html only） ═══════════ */
 (function(){
   'use strict';
-  var VERSION='v292';
+  var VERSION='v296';
   function H(id){return document.getElementById(id)}
   function E(s){return String(s==null?'':s).replace(/[&<>'"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]})}
   function A(){try{return (typeof accounts!=='undefined'&&Array.isArray(accounts))?accounts:(Array.isArray(window.accounts)?window.accounts:[])}catch(e){return []}}
@@ -11927,7 +11927,7 @@ window._strategyRadarV267=radarResults;
 
 <script id="v289PatchJS">
 (function(){
-  try{ window.ATELIER_CURRENT_VERSION='v292'; }catch(e){}
+  try{ window.ATELIER_CURRENT_VERSION='v296'; }catch(e){}
   try{ sessionStorage.setItem('atelierSkipAutoUpdate','1'); }catch(e){}
   try{ if(navigator.serviceWorker && navigator.serviceWorker.getRegistrations){
         navigator.serviceWorker.getRegistrations().then(function(rs){ rs.forEach(function(r){ try{r.update();}catch(e){} }); }).catch(function(){});
@@ -12344,6 +12344,301 @@ window._strategyRadarV267=radarResults;
   }
   setInterval(inject, 1100);
   if(document.readyState!=='loading') setTimeout(inject,500); else document.addEventListener('DOMContentLoaded',function(){ setTimeout(inject,500); });
+})();
+</script>
+
+<!-- ═══════════════ v293 通用關閉：右上角 ✕ + 點背景 + ESC（修「影片完整盤點/影片數核對」關不掉）═══════════════ -->
+<script>
+(function(){
+  'use strict';
+  if(window.__atelierUnivCloseV293){ return; } window.__atelierUnivCloseV293=true;
+  function modal(){ return document.getElementById('modal'); }
+  function sheet(){ return document.getElementById('sheet'); }
+  function shown(){ var m=modal(); if(!m) return false; if(m.classList.contains('show')) return true; try{ return getComputedStyle(m).display!=='none'; }catch(e){ return m.style.display==='flex'; } }
+  function closeSafe(){
+    var m=modal(); if(!m) return;
+    try{ if(typeof closeModal==='function') closeModal(); }catch(e){}
+    m.classList.remove('show'); m.style.display='';        /* 連內聯 display 一起清掉，確保關得掉 */
+    var s=sheet(); if(s) s.innerHTML='';
+  }
+  window.__atelierCloseSafe=closeSafe;
+  /* 點背景關閉 */
+  var m=modal();
+  if(m){ m.addEventListener('click', function(e){ if(e.target===m) closeSafe(); }); }
+  /* ESC 關閉 */
+  document.addEventListener('keydown', function(e){ if((e.key==='Escape'||e.keyCode===27) && shown()) closeSafe(); });
+  /* 自動補右上角 ✕ */
+  function injectX(){
+    var s=sheet(); if(!s||!s.firstElementChild) return;
+    if(!shown()) return;
+    if(s.querySelector('[data-univ-close]')) return;
+    var host=s.firstElementChild;
+    try{ if(getComputedStyle(host).position==='static') host.style.position='relative'; }catch(e){ host.style.position='relative'; }
+    var b=document.createElement('button');
+    b.setAttribute('data-univ-close','1'); b.type='button'; b.setAttribute('aria-label','關閉'); b.innerHTML='✕';
+    b.style.cssText='position:absolute;top:10px;right:12px;z-index:60;width:30px;height:30px;border-radius:50%;border:1px solid #E8E3DA;background:#fff;color:#7A1018;font-size:15px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 4px rgba(90,40,45,.12)';
+    b.onmouseover=function(){ b.style.background='#FAF3F4'; };
+    b.onmouseout=function(){ b.style.background='#fff'; };
+    b.onclick=closeSafe;
+    host.appendChild(b);
+  }
+  var s=sheet();
+  if(s && window.MutationObserver){ new MutationObserver(function(){ try{ injectX(); }catch(e){} }).observe(s,{childList:true}); }
+  setInterval(function(){ try{ injectX(); }catch(e){} }, 700);  /* 保險 */
+})();
+</script>
+
+<!-- ═══════════════ v294-D 問診鬼打牆：關掉「問診整理提示詞」回到「客戶前置問診」② 那步 ═══════════════ -->
+<script>
+(function(){
+  'use strict';
+  if(window.__atelierIntakeReturnV294){ return; } window.__atelierIntakeReturnV294=true;
+  /* 點 ② 複製問診整理提示詞時，記住要回到哪個客戶 */
+  var _oci=window.openClientIntake;
+  if(typeof _oci==='function'){
+    window.openClientIntake=function(id){
+      _oci(id);
+      try{ var b=document.getElementById('ci-prompt'); if(b){ var orig=b.onclick; b.onclick=function(){ window._ciReturnId=id; if(typeof orig==='function') orig.call(this); }; } }catch(e){}
+    };
+  }
+  /* 關閉時：若剛從問診 ② 進到提示詞預覽，關掉就回到問診本體（而不是彈到最外面） */
+  var _cm=window.closeModal;
+  if(typeof _cm==='function'){
+    window.closeModal=function(){
+      var ret=window._ciReturnId;
+      _cm();
+      if(ret){ window._ciReturnId=null; try{ if(typeof openClientIntake==='function') openClientIntake(ret); }catch(e){} }
+    };
+  }
+})();
+</script>
+
+<!-- ═══════════════ v294-A 通用「AI 助填」：填表視窗自動長出 提示詞＋智能填入 ═══════════════ -->
+<style id="wb-aifill-v294">
+.aifill-box{margin:10px 0 4px;border:1px solid var(--gold-soft,#E6CFA6);border-radius:10px;background:var(--warm,#FBF5E9);padding:10px 12px}
+.aifill-box .aif-h{font-size:12.5px;font-weight:800;color:var(--rouge,#A51820);display:flex;align-items:center;gap:6px}
+.aifill-box .aif-sub{font-size:11px;color:var(--sub,#8A7274);margin:4px 0 8px;line-height:1.6}
+.aifill-box .aif-btns{display:flex;gap:6px;flex-wrap:wrap}
+.aifill-box .aif-b{width:auto;font-size:12px;padding:6px 11px;border-radius:999px;border:1px solid #DCC8CB;background:#fff;color:#5C0F14;cursor:pointer;font-family:inherit;font-weight:700}
+.aifill-box .aif-b:hover{background:#FAF3F4}
+.aifill-box .aif-b.go{background:var(--rouge,#A51820);color:#fff;border-color:var(--rouge,#A51820);width:100%;margin-top:6px}
+.aifill-box textarea.aif-paste{width:100%;height:70px;margin-top:8px;padding:8px 10px;border:1px solid var(--border,#E8E3DA);border-radius:8px;font-family:inherit;font-size:12px;box-sizing:border-box}
+.aifill-box pre.aif-prompt{white-space:pre-wrap;font-size:12px;line-height:1.7;color:#5A4A4C;background:#fff;border:1px solid var(--border,#E8E3DA);border-radius:8px;padding:9px 11px;margin:8px 0 0}
+.aifill-box .aif-msg{font-size:11.5px;margin-top:6px;line-height:1.6}
+</style>
+<script>
+(function(){
+  'use strict';
+  if(window.__atelierAiFillV294){ return; } window.__atelierAiFillV294=true;
+  var WHITELIST=['版面快照','粉絲快照','帳號健檢','市場熱度','編輯帳號'];
+  function sheet(){ return document.getElementById('sheet'); }
+  function esc(s){ return (typeof window.esc==='function')?window.esc(s):String(s==null?'':s); }
+  function titleOf(s){ var t=s.querySelector('div[style*="font-size:18px"]'); return t?(t.textContent||'').trim():''; }
+  function fields(s){
+    var out=[], seen={};
+    [].slice.call(s.querySelectorAll('input,textarea,select')).forEach(function(el){
+      var ty=(el.type||'').toLowerCase();
+      if(ty==='hidden'||ty==='button'||ty==='submit'||ty==='date'||ty==='checkbox'||ty==='radio') return;
+      if(el.hasAttribute('data-aifill-paste')) return;
+      var lab='';
+      var fld=el.closest('.fld'); if(fld){ var l=fld.querySelector('label'); if(l) lab=(l.textContent||'').trim(); }
+      if(!lab){ var pv=el.previousElementSibling; if(pv&&pv.tagName==='LABEL') lab=(pv.textContent||'').trim(); }
+      if(!lab) lab=el.getAttribute('placeholder')||el.id||'';
+      lab=lab.replace(/\s*[（(]選填.*$/,'').replace(/\s*必填\s*$/,'').trim();
+      if(!lab) return;
+      out.push({el:el,label:lab,dupe:!!seen[lab]}); seen[lab]=(seen[lab]||0)+1;
+    });
+    return out;
+  }
+  function buildPrompt(title,fs,acct){
+    var labs=fs.map(function(f){return '- '+f.label;}).join('\n');
+    return '請幫我填寫 ATELIER 工作台的「'+title.replace(/\s*·.*$/,'').trim()+'」。\n'
+      +(acct?('這是帳號 '+acct+' 的資料，請依公開可查資訊協助。\n'):'')
+      +'以下是欄位，請逐欄用「欄位：值」格式回我，一行一欄，欄位名一字不差照抄下面的字，不確定或需要我提供的寫「待補」，不要編造：\n'+labs;
+  }
+  function parseFill(text,fs){
+    var map={}; fs.forEach(function(f){ if(!f.dupe) map[f.label]=f.el; });
+    var n=0;
+    String(text||'').split(/\n+/).forEach(function(line){
+      var m=line.match(/^\s*[-*•]?\s*(.+?)\s*[:：]\s*(.+)\s*$/); if(!m) return;
+      var k=m[1].trim().replace(/\s*[（(]選填.*$/,'').trim(), v=m[2].trim();
+      if(!v||/^待補/.test(v)) return;
+      var el=map[k]; if(!el) return;
+      el.value=v;
+      try{ el.dispatchEvent(new Event('input',{bubbles:true})); el.dispatchEvent(new Event('change',{bubbles:true})); }catch(e){}
+      n++;
+    });
+    return n;
+  }
+  function inject(){
+    var s=sheet(); if(!s||!s.firstElementChild) return;
+    var title=titleOf(s); if(!title) return;
+    if(!WHITELIST.some(function(w){return title.indexOf(w)>=0;})) return;
+    if(s.querySelector('[data-aifill]')) return;
+    var fs=fields(s); if(fs.length<1) return;
+    var acctM=title.match(/@[\w.]+/); var acct=acctM?acctM[0]:'';
+    var host=s.firstElementChild;
+    var box=document.createElement('div'); box.className='aifill-box'; box.setAttribute('data-aifill','1');
+    box.innerHTML='<div class="aif-h">⚡ AI 助填（這格不用自己一個一個查）</div>'
+      +'<div class="aif-sub">先「複製 AI 提示詞」丟給 AI，把它回的「欄位：值」整段貼回下面，按「智能填入」自動帶進欄位。</div>'
+      +'<div class="aif-btns"><button type="button" class="aif-b" data-aif-copy>複製 AI 提示詞</button><button type="button" class="aif-b" data-aif-view>查看提示詞</button></div>'
+      +'<div data-aif-promptwrap></div>'
+      +'<textarea class="aif-paste" data-aifill-paste placeholder="把 AI 回的「欄位：值」整段貼這裡"></textarea>'
+      +'<button type="button" class="aif-b go" data-aif-apply>AI 智能填入</button><div class="aif-msg" data-aif-msg></div>';
+    var titleEl=host.querySelector('div[style*="font-size:18px"]');
+    if(titleEl&&titleEl.parentNode===host){ if(titleEl.nextSibling) host.insertBefore(box,titleEl.nextSibling); else host.appendChild(box); }
+    else host.insertBefore(box, host.firstChild);
+    var prompt=buildPrompt(title,fs,acct);
+    box.querySelector('[data-aif-copy]').onclick=function(){
+      try{ if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(prompt); } else if(typeof copyVal==='function'){ copyVal(prompt,'AI 提示詞'); } if(typeof toast==='function') toast('已複製 AI 提示詞'); }catch(e){ if(typeof copyVal==='function') copyVal(prompt,'AI 提示詞'); }
+    };
+    box.querySelector('[data-aif-view]').onclick=function(){
+      var w=box.querySelector('[data-aif-promptwrap]');
+      if(w.firstChild){ w.innerHTML=''; return; }
+      var pre=document.createElement('pre'); pre.className='aif-prompt'; pre.textContent=prompt; w.appendChild(pre);
+    };
+    box.querySelector('[data-aif-apply]').onclick=function(){
+      var ta=box.querySelector('[data-aifill-paste]'); var n=parseFill(ta&&ta.value,fs);
+      var m=box.querySelector('[data-aif-msg]');
+      if(m) m.innerHTML=n?('<span style="color:#0F6E56;font-weight:700">✓ 已填入 '+n+' 欄</span>，請確認後按視窗原本的儲存鈕。'):('<span style="color:var(--rouge,#A51820)">沒對到欄位</span>——請確認 AI 是用「欄位：值」格式、欄位名與上面一致。');
+      if(typeof toast==='function'&&n) toast('已填入 '+n+' 欄');
+    };
+  }
+  if(window.MutationObserver){ var s=sheet(); if(s) new MutationObserver(function(){ try{ inject(); }catch(e){} }).observe(s,{childList:true,subtree:false}); }
+  setInterval(function(){ try{ inject(); }catch(e){} }, 700);
+})();
+</script>
+
+<!-- ═══════════════ v295 B 粉絲快照用途說明　C 問診「為什麼問」＋題目上色分層 ═══════════════ -->
+<script>
+(function(){
+  'use strict';
+  if(window.__atelierBcV295){ return; } window.__atelierBcV295=true;
+  function esc(s){ return (typeof window.esc==='function')?window.esc(s):String(s==null?'':s); }
+  function sheet(){ return document.getElementById('sheet'); }
+  function titleEl(s){ return s.querySelector('div[style*="font-size:18px"]'); }
+
+  /* ── B：粉絲快照加「用途」說明 ── */
+  function fanNote(){
+    var s=sheet(); if(!s) return; var t=titleEl(s);
+    if(!t || (t.textContent||'').indexOf('粉絲快照')<0) return;
+    if(s.querySelector('[data-fan-note]')) return;
+    var host=s.firstElementChild; var note=document.createElement('div'); note.setAttribute('data-fan-note','1');
+    note.style.cssText='margin:6px 0 12px;font-size:12px;color:#8A6520;background:#FBF5E9;border:1px solid #E6CFA6;border-radius:8px;padding:8px 10px;line-height:1.7';
+    note.innerHTML='<b>這是做什麼的：</b>每隔一段時間記一筆粉絲數，系統就能畫出這個帳號的<b>成長曲線</b>，看出哪一波內容讓粉絲跳最快、哪段停滯。建議至少記 2 筆以上才看得出趨勢。';
+    if(t.nextSibling) host.insertBefore(note,t.nextSibling); else host.appendChild(note);
+  }
+
+  /* ── C：客戶前置問診「為什麼問」＋題目上色分層 ── */
+  function enhanceIntake(){
+    var s=sheet(); if(!s) return; var t=titleEl(s);
+    if(!t || (t.textContent||'').indexOf('客戶前置問診')<0) return;
+    /* 1) 題目區塊上色 */
+    var qb=null;
+    [].slice.call(s.querySelectorAll('div[style*="white-space:pre-wrap"]')).forEach(function(d){ if(!qb && /第一段|你的客戶/.test(d.textContent||'')) qb=d; });
+    if(qb && !qb.getAttribute('data-intake-colored')){
+      var lines=(qb.textContent||'').split('\n');
+      qb.innerHTML=lines.map(function(line){
+        var tr=line.replace(/\u3000/g,' ').trim();
+        if(!tr) return '<div style="height:6px"></div>';
+        if(/^【/.test(tr)) return '<div style="font-weight:800;color:#7A1018;font-size:13px;margin-bottom:4px">'+esc(tr)+'</div>';
+        if(/^第[一二三四五六七八九十]段/.test(tr)) return '<div style="margin:15px 0 6px;font-weight:800;color:#A51820;font-size:13px;border-left:3px solid #D4A574;padding-left:9px;background:#FBF5E9;border-radius:0 6px 6px 0;padding-top:4px;padding-bottom:4px">'+esc(tr)+'</div>';
+        if(/^\d+\./.test(tr)) return '<div style="margin:9px 0 2px;font-weight:700;color:#2A1A1C;font-size:13px">'+esc(tr)+'</div>';
+        if(/^↳/.test(tr)) return '<div style="color:#8A7274;font-size:12px;padding-left:16px;line-height:1.7;border-left:2px solid #ECE5DB;margin-left:4px">'+esc(tr)+'</div>';
+        return '<div style="color:#6A5256;font-size:12px;line-height:1.7;margin:2px 0">'+esc(tr)+'</div>';
+      }).join('');
+      qb.style.whiteSpace='normal'; qb.setAttribute('data-intake-colored','1');
+    }
+    /* 2) 「為什麼問」說明（插在「① 開會問這 10 題」之前） */
+    if(s.querySelector('[data-intake-why]')) return;
+    var hdr=null;
+    [].slice.call(s.querySelectorAll('div')).forEach(function(d){ if(!hdr && d.children.length===0 && /①\s*開會問這/.test((d.textContent||'').trim())) hdr=d; });
+    var anchor=hdr||qb; if(!anchor||!anchor.parentNode) return;
+    var why=document.createElement('div'); why.setAttribute('data-intake-why','1');
+    why.style.cssText='margin:14px 0 4px;border:1px solid #E6CFA6;border-left:3px solid #A51820;border-radius:8px;background:#FBF5E9;padding:10px 12px';
+    why.innerHTML='<div style="font-size:12.5px;font-weight:800;color:#A51820;margin-bottom:5px">為什麼要做這場問診？</div>'
+      +'<div style="font-size:12px;color:#5A4A4C;line-height:1.85">你的客戶是<b>專家</b>，但觀眾要的是<b>生活語言</b>。這 10 題是「三方翻譯」——透過客戶，搞懂他真正要打中的<b>「客戶的客戶（觀眾）」</b>：他們是誰、卡在什麼、會被什麼打動，再把專業翻成觀眾看得懂、願意相信、知道下一步的內容。<br>'
+      +'<span style="color:#9C7D4A;font-weight:800">第一段</span> 挖觀眾與痛點　·　<span style="color:#9C7D4A;font-weight:800">第二段</span> 挖賣點與案例　·　<span style="color:#9C7D4A;font-weight:800">第三段</span> 定調人設與安全線。</div>';
+    anchor.parentNode.insertBefore(why, anchor);
+  }
+
+  function run(){ try{ fanNote(); }catch(e){} try{ enhanceIntake(); }catch(e){} }
+  var s=sheet();
+  if(s && window.MutationObserver){ new MutationObserver(run).observe(s,{childList:true}); }
+  setInterval(run, 700);
+})();
+</script>
+
+<!-- ═══════════════ v296 E 建檔/編輯紀錄：資料存哪＋第N次建檔時間＋編輯次數 ═══════════════ -->
+<script>
+(function(){
+  'use strict';
+  if(window.__atelierFileLogV296){ return; } window.__atelierFileLogV296=true;
+  function esc(s){ return (typeof window.esc==='function')?window.esc(s):String(s==null?'':s); }
+  function sheet(){ return document.getElementById('sheet'); }
+  function titleEl(s){ return s?s.querySelector('div[style*="font-size:18px"]'):null; }
+  function accs(){ try{ return (typeof accounts!=='undefined'&&accounts)?accounts:(window.accounts||[]); }catch(e){ return window.accounts||[]; } }
+  function fmt(ts){ if(!ts) return '—'; var d=new Date(ts); function p(n){return (n<10?'0':'')+n;} return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate())+' '+p(d.getHours())+':'+p(d.getMinutes()); }
+  function pushLog(a,type){ if(!a) return; a.fileLog=a.fileLog||[]; a.fileLog.push({ts:Date.now(),type:type}); }
+  function logInfo(a){
+    var log=(a&&a.fileLog)||[];
+    var first=log.length?fmt(log[0].ts):(a&&a.createdAt?fmt(a.createdAt):'—');
+    var last=log.length?fmt(log[log.length-1].ts):(a&&a.updatedAt?fmt(a.updatedAt):'—');
+    var rows=log.length? log.slice().reverse().map(function(e,i){ var no=log.length-i; return '<div style="display:flex;justify-content:space-between;gap:8px;font-size:11.5px;color:#6A5256;padding:3px 0;border-top:1px solid #F1ECE4"><span>第 '+no+' 次 · '+esc(e.type||'建檔')+'</span><span style="color:#8A7274">'+fmt(e.ts)+'</span></div>'; }).join('')
+      : '<div style="font-size:11.5px;color:#8A7274;padding:4px 0">尚無建檔/編輯紀錄（這次儲存後開始記錄）</div>';
+    return {count:log.length, first:first, last:last, rows:rows};
+  }
+
+  /* ── 編輯帳號：顯示建檔/編輯紀錄 + 存哪說明，並在儲存時記一筆 ── */
+  function enhanceEdit(){
+    var s=sheet(); var t=titleEl(s); if(!t || (t.textContent||'').indexOf('編輯帳號')<0) return;
+    if(s.querySelector('[data-edit-rec]')) return;
+    var a=window.__curEditAcc; if(!a) return;
+    var lb=logInfo(a); var host=s.firstElementChild;
+    var box=document.createElement('div'); box.setAttribute('data-edit-rec','1');
+    box.style.cssText='margin:6px 0 12px;font-size:12px;color:#6A5256;background:#FAF6F1;border:1px solid #EFE7DC;border-radius:8px;padding:9px 11px;line-height:1.7';
+    box.innerHTML='<div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><span><b>建檔/編輯紀錄：</b>共 '+lb.count+' 次 · 首次 '+lb.first.slice(0,10)+' · 最近 '+lb.last.slice(0,10)+'</span>'
+      +'<button type="button" data-rec-toggle style="font-size:11px;border:1px solid #DCC8CB;background:#fff;color:#5C0F14;border-radius:999px;padding:3px 10px;cursor:pointer;white-space:nowrap">展開</button></div>'
+      +'<div data-rec-list style="display:none;margin-top:6px">'+lb.rows+'</div>'
+      +'<div style="font-size:11px;color:#9C8A8E;margin-top:7px">資料存在這個帳號的帳號檔，已同步雲端（Firebase）；之後在「帳號管理 → 編輯帳號／客戶前置問診」都叫得回來。</div>';
+    if(t.nextSibling) host.insertBefore(box,t.nextSibling); else host.appendChild(box);
+    var tg=box.querySelector('[data-rec-toggle]');
+    tg.onclick=function(){ var l=box.querySelector('[data-rec-list]'); var open=l.style.display==='none'; l.style.display=open?'block':'none'; tg.textContent=open?'收合':'展開'; };
+  }
+  var _oam=window.openAccountModal;
+  if(typeof _oam==='function'){
+    window.openAccountModal=function(a){
+      window.__curEditAcc=a||null;
+      _oam(a);
+      try{
+        var btn=document.getElementById('ma-save');
+        if(btn && a){ var orig=btn.onclick; btn.onclick=function(){ try{ pushLog(a,'編輯帳號'); }catch(e){} return (typeof orig==='function')?orig.apply(this,arguments):undefined; }; }
+        enhanceEdit();
+      }catch(e){}
+    };
+  }
+
+  /* ── 問診存回：清楚說明「存哪」＋第N次建檔時間 ── */
+  var _sic=window.saveIntakeCard;
+  if(typeof _sic==='function'){
+    window.saveIntakeCard=function(id){
+      var raw=(document.getElementById('ci-paste')||{}).value; raw=(raw||'').trim();
+      _sic(id);
+      if(!raw) return;                       /* 沒貼東西＝沒存，不記錄 */
+      try{
+        var c=accs().filter(function(x){return x.id===id;})[0]; if(!c) return;
+        pushLog(c,'問診建檔'); if(typeof saveAccounts==='function') saveAccounts();
+        var m=document.getElementById('ci-msg'); if(!m) return;
+        var lb=logInfo(c);
+        var old=m.querySelector('[data-intake-rec]'); if(old) old.remove();
+        var add=document.createElement('div'); add.setAttribute('data-intake-rec','1');
+        add.style.cssText='margin-top:8px;background:#FAF6F1;border:1px solid #EFE7DC;border-radius:8px;padding:9px 11px;font-size:12px;color:#5A4A4C;line-height:1.8';
+        add.innerHTML='<b>存在哪裡：</b>已寫進「'+esc(c.handle||'這個帳號')+'」的帳號檔（profile），完整整理卡原文也一起存著，並同步到雲端（Firebase）。之後在「帳號管理 → 這個帳號 → 編輯帳號／客戶前置問診」都叫得回來。<br>'
+          +'<b>建檔紀錄：</b>這是第 '+lb.count+' 次建檔（首次 '+lb.first.slice(0,10)+'、最近 '+lb.last+'）。';
+        m.appendChild(add);
+      }catch(e){ console.warn('[intake log]',e); }
+    };
+  }
 })();
 </script>
 
