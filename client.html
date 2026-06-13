@@ -722,7 +722,7 @@ details.cat .cat-body{padding:14px 15px}
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">客戶服務台</span></span>
-    <span id="verBadge">cs-v4.27</span>
+    <span id="verBadge">cs-v4.28</span>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button type="button" id="popoutBtn" class="popout-btn" title="把客戶服務台開成獨立小視窗"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6"/><path d="M20 4l-9 9"/><path d="M14 12v7H5V10h7"/></svg>小視窗</button>
@@ -4625,7 +4625,8 @@ window.openStageInfo=function(stageName){
     var list=csDeliveries(a);
     var head='<div class="section-card" style="border-left:3px solid var(--gold);background:linear-gradient(180deg,#FFFCF7,#fff)">'
       +'<h3 style="display:flex;align-items:center;gap:6px">'+_I('boxPkg','')+'來自診斷工作台的交付包</h3>'
-      +'<div class="sc-note">這些是工作台「策略診斷」拆完公式後送過來的成果（公式＋提示詞＋推薦樣本）。確認後可一鍵填入下方交付摘要，或複製給客戶。</div>';
+      +'<div class="sc-note">這些是工作台「策略診斷」拆完公式後送過來的成果（公式＋提示詞＋推薦樣本）。確認後可一鍵填入下方交付摘要，或複製給客戶。</div>'
+      +'<div style="margin-top:8px"><button class="btn-deliver" onclick="_csComposeFeedback()">✎ 回饋給工作台</button></div>';
     if(!list.length){
       return head+'<div class="empty-deliver" style="margin-top:6px">尚未收到交付包。<br><span style="font-size:12px;color:#A88">在工作台跑完策略診斷、按「送到服務台」後，這裡就會出現。</span></div></div>';
     }
@@ -6428,6 +6429,44 @@ details.ovBlock > summary .ovx-tag.has{color:#9C7D4A}
       if(typeof toast==='function') toast(_I('check','✓')+' 已下載評分 PPTX（含雷達圖）');
     }catch(err){ console.warn('[health pptx v427]',err); if(typeof toast==='function') toast('PPTX 產生失敗：'+(err&&err.message||err)); }
     finally{ if(btn&&btn.tagName==='BUTTON'){ btn.disabled=false; btn.innerHTML=oldTxt||'下載 PPTX'; } }
+  };
+})();
+</script>
+<!-- ═══════════════ cs-v4.28 回饋給工作台：可見的撰寫視窗（補上雙向的「送出」那半邊）═══════════════ -->
+<script>
+(function(){
+  'use strict';
+  if(window.__atelierCsFeedbackV428){ return; } window.__atelierCsFeedbackV428=true;
+  function toastMsg(m){ if(typeof toast==='function') toast(m); }
+  function _h(s){ return (typeof _esc==='function')?_esc(s):String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+  window._csComposeFeedback=function(){
+    var a=(typeof curAcc==='function')?curAcc():null;
+    if(!a){ toastMsg('請先在上方選擇一位客戶'); return; }
+    var nm=(a.displayName||a.handle||'此客戶');
+    var ov=document.createElement('div'); ov.className='cs-fb-ov';
+    ov.style.cssText='position:fixed;inset:0;z-index:99999;background:rgba(58,42,44,.4);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);display:flex;align-items:center;justify-content:center;padding:18px;box-sizing:border-box';
+    ov.innerHTML='<div style="background:#fff;max-width:540px;width:100%;max-height:90vh;overflow:auto;border:1px solid #EFE7DC;border-radius:16px;padding:22px;box-shadow:0 24px 64px rgba(42,26,28,.28);font-family:inherit;color:#2A1A1C">'
+      +'<div style="font-family:\'Cormorant Garamond\',serif;letter-spacing:4px;color:#A89498;font-size:11px;text-transform:uppercase;margin-bottom:4px">ATELIER · FEEDBACK TO WORKBENCH</div>'
+      +'<div style="font-size:19px;font-weight:900;margin-bottom:2px">回饋給工作台</div>'
+      +'<div style="font-size:12.5px;color:#8A7274;margin-bottom:16px">'+_h(nm)+'（'+_h(a.handle||'')+'）· 送回診斷工作台的「回饋收件匣」，讓你或團隊在工作台看到並處理。</div>'
+      +'<div style="font-size:12px;font-weight:800;color:#6F5458;margin-bottom:5px">類型</div>'
+      +'<select id="cs_fb_type" style="width:100%;box-sizing:border-box;border:1px solid #E8E3DA;border-radius:9px;padding:9px 11px;font-family:inherit;font-size:13.5px;background:#fff;color:#2A1A1C;margin-bottom:12px"><option value="request">需求／要調整</option><option value="rating">客戶評價／滿意度</option><option value="note">備註／補充</option></select>'
+      +'<div style="font-size:12px;font-weight:800;color:#6F5458;margin-bottom:5px">內容</div>'
+      +'<textarea id="cs_fb_text" rows="4" placeholder="例：客戶希望第 2 支影片語氣再活潑一點／客戶很滿意這次的腳本方向，想多做 2 支同類型" style="width:100%;box-sizing:border-box;border:1px solid #E8E3DA;border-radius:9px;padding:9px 11px;font-family:inherit;font-size:13.5px;line-height:1.7;resize:vertical"></textarea>'
+      +'<div style="display:flex;gap:8px;justify-content:flex-end;margin-top:16px">'
+      +'<button type="button" class="cs-fb-x" style="border:1px solid #DCC8CB;background:#fff;color:#5C0F14;font-weight:700;font-size:13px;border-radius:999px;padding:8px 18px;cursor:pointer;font-family:inherit">取消</button>'
+      +'<button type="button" class="cs-fb-go" style="border:1px solid #A51820;background:#A51820;color:#fff;-webkit-text-fill-color:#fff;font-weight:800;font-size:13px;border-radius:999px;padding:8px 18px;cursor:pointer;font-family:inherit">送出回饋</button></div>'
+      +'</div>';
+    ov.addEventListener('click',function(e){ if(e.target===ov) ov.remove(); });
+    document.body.appendChild(ov);
+    ov.querySelector('.cs-fb-x').onclick=function(){ ov.remove(); };
+    ov.querySelector('.cs-fb-go').onclick=function(){
+      var t=ov.querySelector('#cs_fb_type'), x=ov.querySelector('#cs_fb_text');
+      var type=t?t.value:'request'; var note=x?x.value.trim():'';
+      if(!note){ toastMsg('請先寫一下內容'); return; }
+      if(typeof csWriteFeedback==='function'){ csWriteFeedback(type,{note:note}); } else { toastMsg('回饋函式未就緒'); }
+      ov.remove();
+    };
   };
 })();
 </script>
