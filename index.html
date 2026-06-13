@@ -8,7 +8,7 @@
 <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v306 (版本號僅留註解，不顯示於畫面)
+<!-- ATELIER 影片診斷工作台 · 內部版本 v307 (版本號僅留註解，不顯示於畫面)
 v267 更新（策略診斷硬修版：重做 Top/Bottom 固定列高、重綁單支核對窗與 AI 工具按鈕、補互動式 1–8 操作步驟與策略對標雷達；本版用最後一段 v267 override 強制接管策略診斷頁，避免舊版 v263/v265 殘留函式覆蓋。只動 index.html，不動 client.html、Firebase、CSV 與六守門提示詞。）
 v266 更新（hotfix：修正 v265 最後一段策略診斷事件代理少 catch，導致 v265 override script 無法執行、畫面徽章被前一段 v263 override 改回 v263，且策略診斷部分按鈕失效；本版補回 catch 並將顯示版本固定為 v266。只動 index.html，不動 client.html、Firebase、CSV 與六守門提示詞。）
 v265 更新（策略診斷按鈕修復、整齊 Top/Bottom、互動流程與策略對標雷達）：修正策略診斷 Top/Bottom 每支影片的按鈕高度與位置不一致；改用固定列高與事件代理，讓「快看／核對」「留在本頁定位」「改寫提示」以及單支核對窗內 AI 工具、去影片庫定位、獨立視窗核對、收起都可穩定點擊；將 1–8 操作流程改成可點擊小教學；新增策略對標雷達，從同產業、同職稱、同身份、A–E、G 階段、流量觸發、素材與高互動／高分享等面向找全庫可借鏡樣本。只動 index.html，不動 client.html、Firebase、CSV 與六守門提示詞。
@@ -1221,7 +1221,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v306</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v307</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -11051,7 +11051,7 @@ document.addEventListener('DOMContentLoaded',function(){
 <script>
 /* v239：自動防舊版快取。讓桌布捷徑／瀏覽器如果抓到舊 HTML，能自己比對線上最新版並導向。 */
 (function(){
-  var ATELIER_CURRENT_VERSION='v306';
+  var ATELIER_CURRENT_VERSION='v307';
   window.ATELIER_CURRENT_VERSION=ATELIER_CURRENT_VERSION;
   function _avNum(v){v=String(v||'');var m=v.match(/v\s*(\d+)/i);return m?parseInt(m[1],10):0;}
   function _avDetect(html){html=String(html||'');var m=html.match(/id=["']verBadge["'][^>]*>\s*(v\d+)/i)||html.match(/內部版本\s+(v\d+)/i);return m?m[1]:'';}
@@ -11698,7 +11698,7 @@ return '<div class="strat-radar-card-v265"><b>目前沒有符合樣本</b><p>可
 /* ═══════════ v267 strategy hard patch：固定版面、重綁按鈕、互動說明與策略對標雷達（index.html only） ═══════════ */
 (function(){
   'use strict';
-  var VERSION='v306';
+  var VERSION='v307';
   function H(id){return document.getElementById(id)}
   function E(s){return String(s==null?'':s).replace(/[&<>'"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]})}
   function A(){try{return (typeof accounts!=='undefined'&&Array.isArray(accounts))?accounts:(Array.isArray(window.accounts)?window.accounts:[])}catch(e){return []}}
@@ -11927,7 +11927,7 @@ window._strategyRadarV267=radarResults;
 
 <script id="v289PatchJS">
 (function(){
-  try{ window.ATELIER_CURRENT_VERSION='v306'; }catch(e){}
+  try{ window.ATELIER_CURRENT_VERSION='v307'; }catch(e){}
   try{ sessionStorage.setItem('atelierSkipAutoUpdate','1'); }catch(e){}
   try{ if(navigator.serviceWorker && navigator.serviceWorker.getRegistrations){
         navigator.serviceWorker.getRegistrations().then(function(rs){ rs.forEach(function(r){ try{r.update();}catch(e){} }); }).catch(function(){});
@@ -12930,6 +12930,143 @@ button[data-wbl-send],button[data-wbl-inbox]{padding:3px 12px !important;font-si
   }
   setInterval(group, 800);
   if(document.readyState!=='loading') setTimeout(group,500); else document.addEventListener('DOMContentLoaded',function(){ setTimeout(group,500); });
+})();
+</script>
+
+
+<!-- ===== v307 ADDON：成功庫對標 Top5「選取／全選 ＋ 一鍵複製勾選的成提案素材」 =====
+     裝飾 openSuccessMatch（原碼不動）：原函式照跑渲染 Top5 後，注入每卡 checkbox（預設全勾）
+     ＋「全選/全不選」列，並把複製鈕改成「只把勾選的 Top 對標」組成提案素材。
+     依交接書 §4：accounts 是 let、不掛 window → 用裸名取；_smScore/_smReason/_failCases 皆全域可重算。 -->
+<style>
+.smsel-bar{display:flex;align-items:center;gap:9px;border:1px solid var(--gold-soft,#E6CFA6);
+  background:var(--warm,#F4F1EC);border-radius:9px;padding:9px 12px;margin:2px 0 12px;font-size:12.5px}
+.smsel-bar label{display:flex;align-items:center;gap:7px;cursor:pointer;font-weight:800;color:var(--ink,#2b2622)}
+.smsel-bar input[type=checkbox]{width:16px;height:16px;accent-color:#A51820;cursor:pointer;flex:none}
+.smsel-count{margin-left:auto;font-size:11.5px;font-weight:800;color:var(--gold-dark,#A98A4C);
+  border:1px solid var(--gold-soft,#E6CFA6);border-radius:10px;padding:1px 9px;background:#fff;white-space:nowrap}
+.smsel-cb{display:flex;align-items:flex-start;padding-top:1px;cursor:pointer;flex:none}
+.smsel-cb input[type=checkbox]{width:16px;height:16px;accent-color:#A51820;cursor:pointer;margin-top:2px}
+</style>
+<script>
+/* v307：成功庫對標 Top5 勾選/全選/複製勾選的（裝飾器，不動原 openSuccessMatch） */
+(function(){
+  function A(id){
+    try{ if(typeof accounts!=='undefined'&&accounts){ var b=accounts.filter(function(x){return x&&x.id===id;})[0]; if(b) return b; } }catch(e){}
+    try{ if(typeof accById==='function'){ var a=accById(id); if(a) return a; } }catch(e){}
+    return null;
+  }
+  function _ident(a){ return [a.displayName,(a.jobTitle||((a.types||[])[0])||'')].filter(Boolean).join('·'); }
+  function _simLabel(s){ return s>=0.6?'高':(s>=0.35?'中':'低'); }
+
+  function _smTop(clientId){
+    var c=A(clientId); if(!c) return null;
+    var list=[]; try{ list=(typeof accounts!=='undefined'&&accounts)?accounts:[]; }catch(e){ list=[]; }
+    if(typeof _smScore!=='function') return null;
+    var cands=list.filter(function(a){ return a && a.id!==clientId; });
+    if(!cands.length) return {c:c, top:[]};
+    var scored=cands.map(function(a){ try{ return {a:a, sc:_smScore(c,a)}; }catch(e){ return {a:a, sc:{score:0}}; } })
+      .sort(function(x,y){ return (y.sc.score||0)-(x.sc.score||0); });
+    return { c:c, top:scored.slice(0,5) };
+  }
+
+  function _findCards(box){
+    // Top5 卡＝container 直屬 div 中、文字以「N. 」開頭且含「相近度」者
+    var out=[];
+    var kids=box.children;
+    for(var i=0;i<kids.length;i++){
+      var el=kids[i];
+      if(el.tagName!=='DIV') continue;
+      var t=(el.textContent||'').replace(/^\s+/,'');
+      if(/^\d+\.\s/.test(t) && t.indexOf('相近度')>=0) out.push(el);
+    }
+    return out;
+  }
+
+  function _enhance(clientId){
+    var sheet=document.getElementById('sheet'); if(!sheet) return;
+    var box=sheet.querySelector('div'); if(!box) return;
+    if(box.getAttribute('data-smsel')) return;              // 冪等
+    var cards=_findCards(box);
+    if(cards.length<2) return;                              // 0~1 張不需要勾選
+    var data=_smTop(clientId); if(!data || !data.top.length) return;
+    var c=data.c, top=data.top;
+    box.setAttribute('data-smsel','1');
+
+    // 每卡包一層 inner + 前置 checkbox
+    var boxes=[];
+    cards.forEach(function(card,idx){
+      var inner=document.createElement('div'); inner.style.flex='1'; inner.style.minWidth='0';
+      while(card.firstChild){ inner.appendChild(card.firstChild); }
+      var lbl=document.createElement('label'); lbl.className='smsel-cb';
+      var cb=document.createElement('input'); cb.type='checkbox'; cb.checked=true; cb.setAttribute('data-sm-idx',idx);
+      lbl.appendChild(cb);
+      card.style.display='flex'; card.style.gap='10px'; card.style.alignItems='flex-start';
+      card.appendChild(lbl); card.appendChild(inner);
+      boxes.push(cb);
+      cb.addEventListener('change', sync);
+    });
+
+    // 全選列（插在第一張卡前）
+    var bar=document.createElement('div'); bar.className='smsel-bar';
+    bar.innerHTML='<label><input type="checkbox" id="smsel-all" checked>全選 Top '+top.length+'（勾起來的才會放進提案素材）</label>'
+      +'<span class="smsel-count" id="smsel-cnt">已選 '+top.length+' / '+top.length+'</span>';
+    cards[0].parentNode.insertBefore(bar, cards[0]);
+    var allCb=bar.querySelector('#smsel-all'), cnt=bar.querySelector('#smsel-cnt');
+    allCb.addEventListener('change', function(){
+      boxes.forEach(function(cb){ cb.checked=allCb.checked; }); sync();
+    });
+
+    function checkedIdx(){ var r=[]; boxes.forEach(function(cb,i){ if(cb.checked) r.push(parseInt(cb.getAttribute('data-sm-idx'),10)); }); return r; }
+    function sync(){
+      var n=boxes.filter(function(cb){return cb.checked;}).length;
+      cnt.textContent='已選 '+n+' / '+top.length;
+      allCb.checked = (n===top.length);
+      allCb.indeterminate = (n>0 && n<top.length);
+      var btn=document.getElementById('sm-copy');
+      if(btn){
+        btn.innerHTML='<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#A51820" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:3px"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/></svg>複製勾選的對標成提案素材（已選 '+n+'）';
+        btn.disabled=(n===0); btn.style.opacity=(n===0)?'0.5':'';
+      }
+    }
+
+    // 覆寫複製鈕：只組勾選的 Top（避坑段沿用原行為照帶）
+    var btn=document.getElementById('sm-copy');
+    if(btn){
+      btn.onclick=function(){
+        var idxs=checkedIdx();
+        if(!idxs.length){ if(typeof toast==='function') toast('請至少勾選一個對標'); return; }
+        var lines=['【'+(c.handle||'')+' 的成功庫對標 · 已選 '+idxs.length+' 個適合對標範例】',''];
+        idxs.forEach(function(i,n){
+          var t=top[i], a=t.a;
+          lines.push((n+1)+'. '+(a.handle||'@?')+(_ident(a)?'（'+_ident(a)+'）':'')+'｜相近度 '+_simLabel(t.sc.score||0));
+          try{ if(typeof _smReason==='function') lines.push('   '+_smReason(c,a,t.sc)); }catch(e){}
+          lines.push('');
+        });
+        lines.push('（用途：新客戶 '+(c.handle||'')+' 進來時，這幾個是你勾選、最適合拿來示範與借鏡的對標帳號。）');
+        try{
+          var fails=(typeof _failCases==='function')?_failCases(c):[];
+          if(fails && fails.length){
+            lines.push(''); lines.push('【避坑對標 · 同領域失敗／低效案例】');
+            fails.forEach(function(f){ lines.push('· '+(f.a.handle||'@?')+(_ident(f.a)?'（'+_ident(f.a)+'）':'')+'：卡在 '+f.reason+' → 要避開'); });
+          }
+        }catch(e){}
+        var txt=lines.join('\n'), label='成功庫對標 已選 '+idxs.length+' 個（@'+(c.handle||'')+'）';
+        if(typeof copyPrompt==='function') copyPrompt(txt,label);
+        else if(typeof copyVal==='function') copyVal(txt,label);
+      };
+    }
+    sync();
+  }
+
+  var _o = window.openSuccessMatch;
+  if(typeof _o==='function'){
+    window.openSuccessMatch = function(clientId){
+      var r = _o.apply(this, arguments);
+      try{ _enhance(clientId); }catch(e){ try{ console.warn('[v307 smsel]', e); }catch(_){} }
+      return r;
+    };
+  }
 })();
 </script>
 
