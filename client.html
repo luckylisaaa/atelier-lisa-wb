@@ -722,7 +722,7 @@ details.cat .cat-body{padding:14px 15px}
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">客戶服務台</span></span>
-    <span id="verBadge">cs-v4.30</span>
+    <span id="verBadge">cs-v4.31</span>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button type="button" id="popoutBtn" class="popout-btn" title="把客戶服務台開成獨立小視窗"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6"/><path d="M20 4l-9 9"/><path d="M14 12v7H5V10h7"/></svg>小視窗</button>
@@ -6582,6 +6582,29 @@ details.ovBlock > summary .ovx-tag.has{color:#9C7D4A}
   if(typeof _rb==='function'){ window.renderBanner=function(flash){ var r=_rb.apply(this,arguments); try{_posline();}catch(e){} try{_pline();}catch(e){} return r; }; }
   function init(){ try{_posline();}catch(e){} try{_pline();}catch(e){} }
   if(document.readyState!=='loading') setTimeout(init,300); else document.addEventListener('DOMContentLoaded',function(){setTimeout(init,300);});
+})();
+</script>
+
+
+<!-- ═══════════ cs-v4.31 · 主「評分 PPT」鈕也輸出含雷達圖版本 ═══════════
+     既有 _csHealthPPTX（cs-v4.27，封面＋雷達頁＋十維分頁）已寫好、已接到預覽彈窗的「下載 PPTX」，
+     但主「匯出評分表 → PPT」鈕仍呼叫舊長條版 exportHealthPPTX。本版裝飾 exportHealthPPTX：
+     當這位客戶已有評分紀錄時，改用雷達版；任何問題 fail-soft 退回原長條版。原碼不動。 -->
+<script>
+/* cs-v4.31：主 PPT 鈕優先用雷達版，失敗退回長條版（裝飾器） */
+(function(){
+  var _orig = window.exportHealthPPTX;
+  if(typeof _orig!=='function') return;
+  window.exportHealthPPTX = function(){
+    try{
+      if(typeof window._csHealthPPTX==='function' && typeof curAcc==='function'){
+        var a=curAcc();
+        var entry=(typeof latestHealthEntry==='function')?latestHealthEntry(a):null;
+        if(a && entry){ return window._csHealthPPTX.apply(this, arguments); }
+      }
+    }catch(e){ try{ console.warn('[cs-v4.31 radar pptx]', e); }catch(_){} }
+    return _orig.apply(this, arguments);
+  };
 })();
 </script>
 
