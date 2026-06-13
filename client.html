@@ -722,7 +722,7 @@ details.cat .cat-body{padding:14px 15px}
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">客戶服務台</span></span>
-    <span id="verBadge">cs-v4.31</span>
+    <span id="verBadge">cs-v4.32</span>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button type="button" id="popoutBtn" class="popout-btn" title="把客戶服務台開成獨立小視窗"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6"/><path d="M20 4l-9 9"/><path d="M14 12v7H5V10h7"/></svg>小視窗</button>
@@ -6605,6 +6605,94 @@ details.ovBlock > summary .ovx-tag.has{color:#9C7D4A}
     }catch(e){ try{ console.warn('[cs-v4.31 radar pptx]', e); }catch(_){} }
     return _orig.apply(this, arguments);
   };
+})();
+</script>
+
+
+<!-- ═══════════ cs-v4.32 · 跨客戶找人（找誰來服務）→ 跳到他的進度 ═══════════
+     校準：這是「找我的哪一位客戶來服務」的人物搜尋（client-facing 工作流），不是跨帳號的庫分析搜尋
+     （那留在工作台）。banner 加「找客戶」鈕 → 自包含覆蓋層即時過濾 → 點選 pickClient + switchTo 到他當前階段。
+     沿用既有 accounts/flowStatus/DASH_FLOW/pickClient/switchTo，純注入、不動原碼。 -->
+<style>
+.cs-find-ov{position:fixed;inset:0;z-index:99998;background:rgba(58,42,44,.4);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);display:flex;align-items:flex-start;justify-content:center;padding:64px 18px 18px;box-sizing:border-box}
+.cs-find-card{background:#fff;max-width:560px;width:100%;max-height:80vh;display:flex;flex-direction:column;border:1px solid #EFE7DC;border-radius:16px;box-shadow:0 24px 64px rgba(42,26,28,.28);overflow:hidden;font-family:inherit}
+.cs-find-head{padding:16px 18px 10px}
+.cs-find-kick{font-family:'Cormorant Garamond',serif;letter-spacing:4px;color:#A89498;font-size:11px;text-transform:uppercase;margin-bottom:4px}
+.cs-find-in{width:100%;box-sizing:border-box;border:1px solid #E8E3DA;border-radius:10px;padding:10px 12px;font-family:inherit;font-size:14px;color:#2A1A1C;margin-top:8px}
+.cs-find-list{overflow:auto;padding:4px 10px 12px}
+.cs-find-row{display:flex;align-items:center;gap:10px;padding:10px 10px;border-radius:10px;cursor:pointer;border:1px solid transparent}
+.cs-find-row:hover{background:#FBF1F0;border-color:#EBD9D6}
+.cs-find-nm{flex:1;min-width:0}
+.cs-find-h{font-weight:800;color:#2A1A1C;font-size:13.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cs-find-sub{font-size:11.5px;color:#8A7274;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cs-find-st{font-size:11px;font-weight:800;border-radius:11px;padding:2px 9px;white-space:nowrap;flex:none;border:1px solid #E2D6D3;color:#8A7274;background:#fff}
+.cs-find-st.go{color:#fff;background:#A51820;border-color:#A51820}
+.cs-find-empty{padding:20px 12px;text-align:center;color:#8A7274;font-size:13px}
+.cs-banner .cs-find-btn{font-size:11px;font-weight:700;color:#fff;background:var(--rouge-soft,#B5555A);border:none;border-radius:8px;padding:5px 12px;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:4px}
+.cs-banner .cs-find-btn:hover{background:var(--rouge,#A51820)}
+</style>
+<script>
+/* cs-v4.32：跨客戶找人 → 跳到當前進度（裝飾/注入） */
+(function(){
+  var STAGES=[['stage1_initial','初診'],['stage2_filing','建檔'],['stage3_interview','問診'],['stage4_diagnosis','診斷'],['stage5_inventory','盤點'],['stage6_planning','企劃'],['stage7_delivery','交付']];
+  function _fs(a,key){ try{ if(typeof flowStatus==='function') return flowStatus(a,key); }catch(e){} var f=(a&&a.clientFlow&&a.clientFlow[key])||null; return (f&&f.status)||'not-started'; }
+  function _curIdx(a){ var ci=-1; for(var i=0;i<STAGES.length;i++){ if(_fs(a,STAGES[i][0])!=='done'){ ci=i; break; } } return ci<0?STAGES.length-1:ci; }
+  function _esc(s){ try{ if(typeof esc==='function') return esc(s); }catch(e){} return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+  function _list(){ try{ return (typeof accounts!=='undefined'&&accounts)?accounts:[]; }catch(e){ return []; } }
+
+  function open(){
+    var ov=document.createElement('div'); ov.className='cs-find-ov';
+    ov.innerHTML='<div class="cs-find-card">'
+      +'<div class="cs-find-head"><div class="cs-find-kick">ATELIER · FIND CLIENT</div>'
+      +'<input class="cs-find-in" type="text" placeholder="找客戶：打帳號／名字／產業／職稱…點一下就跳到他的進度">'
+      +'</div><div class="cs-find-list" id="csFindList"></div></div>';
+    document.body.appendChild(ov);
+    var inp=ov.querySelector('.cs-find-in'), listEl=ov.querySelector('#csFindList');
+    function render(){
+      var q=(inp.value||'').trim().toLowerCase();
+      var arr=_list().filter(function(a){
+        if(!q) return true;
+        var hay=((a.handle||'')+' '+(a.displayName||'')+' '+(a.industry||'')+' '+(a.jobTitle||'')+' '+(a.domain||'')).toLowerCase();
+        return hay.indexOf(q)>=0;
+      }).sort(function(x,y){ return (y.updatedAt||0)-(x.updatedAt||0); }).slice(0,40);
+      if(!arr.length){ listEl.innerHTML='<div class="cs-find-empty">找不到符合「'+_esc(inp.value)+'」的客戶</div>'; return; }
+      listEl.innerHTML=arr.map(function(a){
+        var ci=_curIdx(a), done=0; STAGES.forEach(function(s){ if(_fs(a,s[0])==='done')done++; });
+        var stTxt=(done>=7)?'已交付':('第 '+(ci+1)+'/7 · '+STAGES[ci][1]);
+        var sub=[a.industry,a.jobTitle].filter(Boolean).join(' · ')||(a.isClient?'我的客戶':'潛在客戶');
+        return '<div class="cs-find-row" data-id="'+_esc(a.id)+'">'
+          +'<div class="cs-find-nm"><div class="cs-find-h">'+_esc(a.handle||'@?')+' '+_esc(a.displayName||'')+'</div><div class="cs-find-sub">'+_esc(sub)+'</div></div>'
+          +'<span class="cs-find-st'+(done>=7?'':' go')+'">'+stTxt+'</span></div>';
+      }).join('');
+      listEl.querySelectorAll('.cs-find-row').forEach(function(row){
+        row.onclick=function(){
+          var id=row.getAttribute('data-id'); ov.remove();
+          try{
+            if(typeof pickClient==='function') pickClient(id);
+            var a=(typeof curAcc==='function')?curAcc():null;
+            if(a && typeof switchTo==='function'){ switchTo('stage'+(_curIdx(a)+1)); }
+          }catch(e){ try{ console.warn('[cs-v4.32 find]',e); }catch(_){} }
+        };
+      });
+    }
+    inp.addEventListener('input', render);
+    ov.addEventListener('click', function(e){ if(e.target===ov) ov.remove(); });
+    document.addEventListener('keydown', function esc(e){ if(e.key==='Escape'){ ov.remove(); document.removeEventListener('keydown',esc); } });
+    render(); setTimeout(function(){ try{ inp.focus(); }catch(e){} }, 30);
+  }
+  window._csFindClient = open;
+
+  function inject(){
+    var b=document.getElementById('csBanner'); if(!b) return;
+    if(b.querySelector('.cs-find-btn')) return;          /* 每次 render 後補一顆（innerHTML 重建會清掉）*/
+    var btn=document.createElement('button'); btn.type='button'; btn.className='cs-find-btn';
+    btn.title='搜尋我的任一客戶，一鍵跳到他的進度';
+    btn.innerHTML='<span style="font-weight:900">⌕</span> 找客戶';
+    btn.onclick=open; b.appendChild(btn);
+  }
+  var _rb=window.renderBanner;
+  if(typeof _rb==='function'){ window.renderBanner=function(flash){ var r=_rb.apply(this,arguments); try{inject();}catch(e){} return r; }; }
+  if(document.readyState!=='loading') setTimeout(inject,350); else document.addEventListener('DOMContentLoaded',function(){ setTimeout(inject,350); });
 })();
 </script>
 
