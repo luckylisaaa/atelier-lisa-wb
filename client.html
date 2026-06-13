@@ -722,7 +722,7 @@ details.cat .cat-body{padding:14px 15px}
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">客戶服務台</span></span>
-    <span id="verBadge">cs-v4.44</span>
+    <span id="verBadge">cs-v4.45</span>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button type="button" id="popoutBtn" class="popout-btn" title="把客戶服務台開成獨立小視窗"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6"/><path d="M20 4l-9 9"/><path d="M14 12v7H5V10h7"/></svg>小視窗</button>
@@ -6555,7 +6555,7 @@ details.ovBlock > summary .ovx-tag.has{color:#9C7D4A}
     if(document.getElementById('csPosline')) return;
     var b=document.getElementById('csBanner'); if(!b||!b.parentNode) return;
     var el=document.createElement('div'); el.id='csPosline'; el.className='cs-posline';
-    el.innerHTML='<b>前台 · 門市</b>｜這裡只服務你選定的這一位客戶：看進度、產出 PDF / HTML / PPT、收回饋。跨帳號的分析在工作台做。';
+    el.innerHTML='<b>前台 · 門市｜問診、企劃、交付、復盤中控台</b><br>補工作台看不到的客戶脈絡（ICP／Offer／承接窗口／成交阻力），並產出客戶版／顧問版交付、下一輪戰役、復盤。<b style="color:#A51820">服務台負責「把問題變成客戶能理解、能執行的方案」</b>。跨帳號分析在工作台做。';
     b.parentNode.insertBefore(el, b);
   }
   function _pline(){
@@ -7749,7 +7749,21 @@ details.ovBlock > summary .ovx-tag.has{color:#9C7D4A}
     L.push('本期主推Offer：');
     L.push('Hook測試方向：');
     L.push('CTA測試方向：');
-    L.push('10支任務分配：（逐支：主題＋漏斗階段＋CTA）');
+    L.push('10支任務分配：（這一段請務必「每一支影片」都用下面 13 行格式完整輸出，第 1 支到第 10 支，不可只給題目清單）');
+    L.push('  第 N 支：');
+    L.push('  題目：');
+    L.push('  對應 A–E：');
+    L.push('  對應 G 階段：');
+    L.push('  目標受眾：');
+    L.push('  觀眾情境：');
+    L.push('  痛點／誤解：');
+    L.push('  Hook：');
+    L.push('  內容骨架：');
+    L.push('  CTA 類型：');
+    L.push('  CTA 原句：');
+    L.push('  承接窗口：');
+    L.push('  預期 KPI：');
+    L.push('（10 支要對應不同漏斗階段，CTA 要對得上本期主推 Offer 與承接窗口；每支都要是一個有商業任務的短影音，不是一般題目。）');
     L.push('本期KPI：');
     L.push('復盤指標：');
     return L.join('\n');
@@ -7801,6 +7815,86 @@ details.ovBlock > summary .ovx-tag.has{color:#9C7D4A}
   function tick(){ try{ var a=curA(); var id=a?a.id:null; if(id!==_last){ _last=id; document.querySelectorAll('.cmp-card').forEach(function(e){e.remove();}); } inject(); }catch(e){} }
   setInterval(tick, 950);
   if(document.readyState!=='loading') setTimeout(tick,560); else document.addEventListener('DOMContentLoaded',function(){ setTimeout(tick,560); });
+})();
+</script>
+
+<!-- ═══════════ cs-v4.45 · ATELIER 雙向提示燈（服務台側：Stage 3／4／6／7）═══════════
+     檔尾注入、不動原碼；品牌色、無 emoji、可收合（<details>）；換客戶重建、data-* 冪等。 -->
+<style id="atlLightStyleCS">
+.atl-light{border:1px solid #E8E3DA;border-left:3px solid #A51820;border-radius:10px;background:#FDFBF8;
+  margin:10px 0;overflow:hidden;font-family:inherit}
+.atl-light>summary{list-style:none;cursor:pointer;padding:9px 12px;display:flex;align-items:center;gap:8px;
+  font-size:12.5px;font-weight:700;color:#A51820;letter-spacing:.2px;user-select:none}
+.atl-light>summary::-webkit-details-marker{display:none}
+.atl-light>summary .atl-dot{width:7px;height:7px;border-radius:50%;background:#A51820;flex:none}
+.atl-light>summary .atl-chev{margin-left:auto;width:14px;height:14px;flex:none;transition:transform .2s;color:#7A5A5E}
+.atl-light[open]>summary .atl-chev{transform:rotate(90deg)}
+.atl-light-body{padding:2px 12px 11px}
+.atl-row{display:flex;gap:8px;padding:3px 0;font-size:12px;line-height:1.55;align-items:baseline}
+.atl-k{flex:none;width:84px;color:#A51820;font-weight:600}
+.atl-v{color:#2A1A1C;flex:1}
+.atl-go{margin-top:8px;display:flex;flex-wrap:wrap;gap:7px;align-items:center}
+.atl-go button.atl-btn{font-family:inherit;font-size:11.5px;font-weight:700;border:1px solid #A51820;color:#A51820;
+  background:transparent;border-radius:7px;padding:5px 11px;cursor:pointer}
+</style>
+<script>
+/* cs-v4.45 雙向提示燈 — 服務台 Stage 3/4/6/7 */
+(function(){
+  if(window.__atlLightCS) return; window.__atlLightCS=1;
+  var CHEV='<svg class="atl-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>';
+  function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+  function curA(){ try{ if(typeof curAcc==='function') return curAcc(); }catch(e){} try{ if(window.curAcc) return window.curAcc(); }catch(e){} return null; }
+  function light(opts){
+    var d=document.createElement('details'); d.className='atl-light'; d.setAttribute('open','');
+    var rows=(opts.rows||[]).map(function(r){ return '<div class="atl-row"><span class="atl-k">'+esc(r[0])+'</span><span class="atl-v">'+esc(r[1])+'</span></div>'; }).join('');
+    d.innerHTML='<summary><span class="atl-dot"></span>'+esc(opts.title)+CHEV+'</summary><div class="atl-light-body">'+rows+'</div>';
+    if(opts.go){ var go=document.createElement('div'); go.className='atl-go'; var b=document.createElement('button'); b.type='button'; b.className='atl-btn'; b.textContent=opts.go.label; b.onclick=function(){ try{ if(typeof switchTo==='function') switchTo(opts.go.to); }catch(e){} }; go.appendChild(b); d.querySelector('.atl-light-body').appendChild(go); }
+    return d;
+  }
+  // 四盞提示燈規格
+  var SPEC={
+    'view-stage3':{flag:'atl-l3', go:{label:'下一站：Stage 4 內容診斷', to:'stage4'},
+      opts:{title:'提示燈 · Stage 3 問診（補工作台看不到的商業脈絡）',
+        rows:[['目前狀態','正在補工作台看不到的商業脈絡'],
+              ['為什麼重要','沒有 ICP、Offer、承接窗口，CTA1 只能寫漂亮文案，無法形成轉換路徑'],
+              ['建議下一步','完成行銷問診卡並儲存'],
+              ['完成後會影響','CTA1 診斷、Stage 4 內容診斷、PPT、Stage 6 戰役卡']]}},
+    'view-stage4':{flag:'atl-l4', go:{label:'下一站：Stage 6 內容戰役', to:'stage6'},
+      opts:{title:'提示燈 · Stage 4 內容診斷（把內部判斷翻成客戶語言）',
+        rows:[['目前狀態','正在把工作台數據與客戶問診整合成診斷'],
+              ['為什麼重要','這一步是把內部判斷翻譯成客戶看得懂的交付語言'],
+              ['建議下一步','產出客戶版與顧問版診斷'],
+              ['完成後會影響','客戶溝通、提案、下一批影片方向']]}},
+    'view-stage6':{flag:'atl-l6', go:{label:'下一站：Stage 7 復盤', to:'stage7'},
+      opts:{title:'提示燈 · Stage 6 內容戰役卡（下一批是一輪戰役，不是題目清單）',
+        rows:[['目前狀態','正在規劃下一批內容戰役'],
+              ['為什麼重要','下一批不能只是題目清單，而要是一輪有目標、有主軸、有 CTA、有 KPI 的行銷戰役'],
+              ['建議下一步','每支影片都補齊 A–E、G 階段、Hook、痛點、CTA、承接窗口、KPI'],
+              ['完成後會影響','下一批拍攝、腳本產出、復盤指標']]}},
+    'view-stage7':{flag:'atl-l7', go:{label:'回 Stage 6 規劃下一輪', to:'stage6'},
+      opts:{title:'提示燈 · Stage 7 復盤卡（驗證上一輪假設，回灌下一輪）',
+        rows:[['目前狀態','正在驗證上一輪內容假設'],
+              ['為什麼重要','短影音不是拍完就結束，而是要知道 Hook、CTA、Offer、受眾假設有沒有被市場驗證'],
+              ['建議下一步','填寫延續、停止、下一輪調整方向'],
+              ['完成後會影響','下一輪 Stage 6 戰役規劃，也會回到工作台成為下一輪診斷背景']]}}
+  };
+  function injectFor(vid){
+    var spec=SPEC[vid]; var host=document.getElementById(vid);
+    if(!host||!host.children.length) return;
+    if(host.querySelector('['+spec.flag+']')) return;
+    var el=light(spec.opts); el.setAttribute(spec.flag,'1');
+    host.insertBefore(el, host.firstChild);
+  }
+  var _last=null;
+  function tick(){
+    try{
+      var a=curA(); var id=a?a.id:null;
+      if(id!==_last){ _last=id; document.querySelectorAll('.atl-light').forEach(function(e){e.remove();}); }
+      Object.keys(SPEC).forEach(injectFor);
+    }catch(e){}
+  }
+  setInterval(tick, 950);
+  if(document.readyState!=='loading') setTimeout(tick,600); else document.addEventListener('DOMContentLoaded',function(){ setTimeout(tick,600); });
 })();
 </script>
 
