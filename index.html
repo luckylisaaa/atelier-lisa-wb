@@ -8,7 +8,7 @@
 <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v299 (版本號僅留註解，不顯示於畫面)
+<!-- ATELIER 影片診斷工作台 · 內部版本 v300 (版本號僅留註解，不顯示於畫面)
 v267 更新（策略診斷硬修版：重做 Top/Bottom 固定列高、重綁單支核對窗與 AI 工具按鈕、補互動式 1–8 操作步驟與策略對標雷達；本版用最後一段 v267 override 強制接管策略診斷頁，避免舊版 v263/v265 殘留函式覆蓋。只動 index.html，不動 client.html、Firebase、CSV 與六守門提示詞。）
 v266 更新（hotfix：修正 v265 最後一段策略診斷事件代理少 catch，導致 v265 override script 無法執行、畫面徽章被前一段 v263 override 改回 v263，且策略診斷部分按鈕失效；本版補回 catch 並將顯示版本固定為 v266。只動 index.html，不動 client.html、Firebase、CSV 與六守門提示詞。）
 v265 更新（策略診斷按鈕修復、整齊 Top/Bottom、互動流程與策略對標雷達）：修正策略診斷 Top/Bottom 每支影片的按鈕高度與位置不一致；改用固定列高與事件代理，讓「快看／核對」「留在本頁定位」「改寫提示」以及單支核對窗內 AI 工具、去影片庫定位、獨立視窗核對、收起都可穩定點擊；將 1–8 操作流程改成可點擊小教學；新增策略對標雷達，從同產業、同職稱、同身份、A–E、G 階段、流量觸發、素材與高互動／高分享等面向找全庫可借鏡樣本。只動 index.html，不動 client.html、Firebase、CSV 與六守門提示詞。
@@ -1221,7 +1221,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v299</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v300</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -11051,7 +11051,7 @@ document.addEventListener('DOMContentLoaded',function(){
 <script>
 /* v239：自動防舊版快取。讓桌布捷徑／瀏覽器如果抓到舊 HTML，能自己比對線上最新版並導向。 */
 (function(){
-  var ATELIER_CURRENT_VERSION='v299';
+  var ATELIER_CURRENT_VERSION='v300';
   window.ATELIER_CURRENT_VERSION=ATELIER_CURRENT_VERSION;
   function _avNum(v){v=String(v||'');var m=v.match(/v\s*(\d+)/i);return m?parseInt(m[1],10):0;}
   function _avDetect(html){html=String(html||'');var m=html.match(/id=["']verBadge["'][^>]*>\s*(v\d+)/i)||html.match(/內部版本\s+(v\d+)/i);return m?m[1]:'';}
@@ -11698,7 +11698,7 @@ return '<div class="strat-radar-card-v265"><b>目前沒有符合樣本</b><p>可
 /* ═══════════ v267 strategy hard patch：固定版面、重綁按鈕、互動說明與策略對標雷達（index.html only） ═══════════ */
 (function(){
   'use strict';
-  var VERSION='v299';
+  var VERSION='v300';
   function H(id){return document.getElementById(id)}
   function E(s){return String(s==null?'':s).replace(/[&<>'"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]})}
   function A(){try{return (typeof accounts!=='undefined'&&Array.isArray(accounts))?accounts:(Array.isArray(window.accounts)?window.accounts:[])}catch(e){return []}}
@@ -11927,7 +11927,7 @@ window._strategyRadarV267=radarResults;
 
 <script id="v289PatchJS">
 (function(){
-  try{ window.ATELIER_CURRENT_VERSION='v299'; }catch(e){}
+  try{ window.ATELIER_CURRENT_VERSION='v300'; }catch(e){}
   try{ sessionStorage.setItem('atelierSkipAutoUpdate','1'); }catch(e){}
   try{ if(navigator.serviceWorker && navigator.serviceWorker.getRegistrations){
         navigator.serviceWorker.getRegistrations().then(function(rs){ rs.forEach(function(r){ try{r.update();}catch(e){} }); }).catch(function(){});
@@ -12334,8 +12334,8 @@ window._strategyRadarV267=radarResults;
       var row=eb.parentNode; if(!row) return;
       if(row.querySelector('[data-wbl-send]')) return;
       var id=eb.getAttribute('data-acc-edit'); if(!id) return;
-      var a=A(id); if(!a) return;
-      var unread=((a.clientFeedback||[]).filter(function(f){return !f.handled;})).length;
+      var a=null; try{ a=A(id); }catch(e){}
+      var unread=0; try{ unread=((a&&a.clientFeedback||[]).filter(function(f){return !f.handled;})).length; }catch(e){}
       var send=document.createElement('button'); send.type='button'; send.setAttribute('data-wbl-send',id); send.textContent='⮕ 送服務台'; send.title='把這位客戶的公式／提示詞／診斷打包送到服務台 ⑦交付';
       send.style.cssText='border:1px solid #A51820;background:#A51820;color:#fff;-webkit-text-fill-color:#fff;font-weight:800;font-size:11.5px;border-radius:999px;padding:3px 13px;cursor:pointer;font-family:inherit;line-height:1.6;box-shadow:0 1px 4px rgba(165,24,32,.2)';
       send.onclick=function(){ _wbSendDelivery(id); };
@@ -12461,17 +12461,27 @@ window._strategyRadarV267=radarResults;
       +(acct?('這是帳號 '+acct+' 的資料，請依公開可查資訊協助。\n'):'')
       +'以下是欄位，請逐欄用「欄位：值」格式回我，一行一欄，欄位名一字不差照抄下面的字，不確定或需要我提供的寫「待補」，不要編造：\n'+labs;
   }
+  function setVal(el,v){
+    if(el.tagName==='SELECT'){
+      var opts=el.options, hit=-1, i;
+      for(i=0;i<opts.length;i++){ if((opts[i].textContent||'').trim()===v||(opts[i].value||'').trim()===v){ hit=i; break; } }
+      if(hit<0){ for(i=0;i<opts.length;i++){ var ot=(opts[i].textContent||'').trim(); if(ot && (ot.indexOf(v)>=0||v.indexOf(ot)>=0)){ hit=i; break; } } }
+      if(hit<0) return false;
+      el.selectedIndex=hit;
+    } else { el.value=v; }
+    try{ el.dispatchEvent(new Event('input',{bubbles:true})); el.dispatchEvent(new Event('change',{bubbles:true})); }catch(e){}
+    return true;
+  }
   function parseFill(text,fs){
     var map={}; fs.forEach(function(f){ if(!f.dupe) map[f.label]=f.el; });
     var n=0;
     String(text||'').split(/\n+/).forEach(function(line){
-      var m=line.match(/^\s*[-*•]?\s*(.+?)\s*[:：]\s*(.+)\s*$/); if(!m) return;
-      var k=m[1].trim().replace(/\s*[（(]選填.*$/,'').trim(), v=m[2].trim();
+      var idx=line.search(/[:：]/); if(idx<0) return;
+      var k=line.slice(0,idx).replace(/^[\s\-*•]+/,'').replace(/\s*[（(]選填.*$/,'').replace(/\s*必填\s*$/,'').trim();
+      var v=line.slice(idx+1).trim();
       if(!v||/^待補/.test(v)) return;
       var el=map[k]; if(!el) return;
-      el.value=v;
-      try{ el.dispatchEvent(new Event('input',{bubbles:true})); el.dispatchEvent(new Event('change',{bubbles:true})); }catch(e){}
-      n++;
+      if(setVal(el,v)) n++;
     });
     return n;
   }
