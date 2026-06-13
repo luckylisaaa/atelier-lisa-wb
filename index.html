@@ -8,7 +8,7 @@
 <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v310 (版本號僅留註解，不顯示於畫面)
+<!-- ATELIER 影片診斷工作台 · 內部版本 v311 (版本號僅留註解，不顯示於畫面)
 v267 更新（策略診斷硬修版：重做 Top/Bottom 固定列高、重綁單支核對窗與 AI 工具按鈕、補互動式 1–8 操作步驟與策略對標雷達；本版用最後一段 v267 override 強制接管策略診斷頁，避免舊版 v263/v265 殘留函式覆蓋。只動 index.html，不動 client.html、Firebase、CSV 與六守門提示詞。）
 v266 更新（hotfix：修正 v265 最後一段策略診斷事件代理少 catch，導致 v265 override script 無法執行、畫面徽章被前一段 v263 override 改回 v263，且策略診斷部分按鈕失效；本版補回 catch 並將顯示版本固定為 v266。只動 index.html，不動 client.html、Firebase、CSV 與六守門提示詞。）
 v265 更新（策略診斷按鈕修復、整齊 Top/Bottom、互動流程與策略對標雷達）：修正策略診斷 Top/Bottom 每支影片的按鈕高度與位置不一致；改用固定列高與事件代理，讓「快看／核對」「留在本頁定位」「改寫提示」以及單支核對窗內 AI 工具、去影片庫定位、獨立視窗核對、收起都可穩定點擊；將 1–8 操作流程改成可點擊小教學；新增策略對標雷達，從同產業、同職稱、同身份、A–E、G 階段、流量觸發、素材與高互動／高分享等面向找全庫可借鏡樣本。只動 index.html，不動 client.html、Firebase、CSV 與六守門提示詞。
@@ -1221,7 +1221,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v310</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v311</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -11051,7 +11051,7 @@ document.addEventListener('DOMContentLoaded',function(){
 <script>
 /* v239：自動防舊版快取。讓桌布捷徑／瀏覽器如果抓到舊 HTML，能自己比對線上最新版並導向。 */
 (function(){
-  var ATELIER_CURRENT_VERSION='v310';
+  var ATELIER_CURRENT_VERSION='v311';
   window.ATELIER_CURRENT_VERSION=ATELIER_CURRENT_VERSION;
   function _avNum(v){v=String(v||'');var m=v.match(/v\s*(\d+)/i);return m?parseInt(m[1],10):0;}
   function _avDetect(html){html=String(html||'');var m=html.match(/id=["']verBadge["'][^>]*>\s*(v\d+)/i)||html.match(/內部版本\s+(v\d+)/i);return m?m[1]:'';}
@@ -11698,7 +11698,7 @@ return '<div class="strat-radar-card-v265"><b>目前沒有符合樣本</b><p>可
 /* ═══════════ v267 strategy hard patch：固定版面、重綁按鈕、互動說明與策略對標雷達（index.html only） ═══════════ */
 (function(){
   'use strict';
-  var VERSION='v310';
+  var VERSION='v311';
   function H(id){return document.getElementById(id)}
   function E(s){return String(s==null?'':s).replace(/[&<>'"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]})}
   function A(){try{return (typeof accounts!=='undefined'&&Array.isArray(accounts))?accounts:(Array.isArray(window.accounts)?window.accounts:[])}catch(e){return []}}
@@ -11927,7 +11927,7 @@ window._strategyRadarV267=radarResults;
 
 <script id="v289PatchJS">
 (function(){
-  try{ window.ATELIER_CURRENT_VERSION='v310'; }catch(e){}
+  try{ window.ATELIER_CURRENT_VERSION='v311'; }catch(e){}
   try{ sessionStorage.setItem('atelierSkipAutoUpdate','1'); }catch(e){}
   try{ if(navigator.serviceWorker && navigator.serviceWorker.getRegistrations){
         navigator.serviceWorker.getRegistrations().then(function(rs){ rs.forEach(function(r){ try{r.update();}catch(e){} }); }).catch(function(){});
@@ -13255,6 +13255,140 @@ button[data-wbl-send],button[data-wbl-inbox]{padding:3px 12px !important;font-si
   }
   setInterval(function(){ try{badges();}catch(e){} }, 900);
   if(document.readyState!=='loading') setTimeout(badges,420); else document.addEventListener('DOMContentLoaded',function(){ setTimeout(badges,420); });
+})();
+</script>
+
+
+<!-- ═══════════ v311 · CTA1 行動出口公式（每支影片診斷）═══════════
+     CTA1 = 誰 × 卡點 × 下一步 × 承接窗口 × 得到什麼。每支影片卡加「CTA1 行動出口診斷」：
+     引導式問診（8 題，可填）＋一鍵產出強制輸出 CTA1 十項的 AI 提示詞（含 A–E 對應/Fit Score/
+     警告標籤/資料不足守則）。純讀既有 videos、copyPrompt、注入、不動原碼。 -->
+<style>
+.cta1-line{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:8px}
+.cta1-btn{display:inline-flex;align-items:center;gap:5px;font-size:11px;color:#fff;background:linear-gradient(180deg,#A51820,#7A1018);border:none;border-radius:8px;padding:6px 12px;cursor:pointer;font-family:inherit;font-weight:800}
+.cta1-btn:hover{filter:brightness(1.07)}
+.cta1-ov{position:fixed;inset:0;z-index:100000;background:rgba(43,38,34,.45);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);display:flex;align-items:flex-start;justify-content:center;padding:40px 16px 16px;box-sizing:border-box}
+.cta1-card{background:#FDFBF8;max-width:680px;width:100%;max-height:88vh;overflow:auto;border:1px solid #EAE0D2;border-radius:16px;box-shadow:0 24px 64px rgba(43,38,34,.3);padding:22px 24px;font-family:inherit;color:#2A1A1C}
+.cta1-kick{font-family:'Cormorant Garamond',serif;letter-spacing:4px;color:#9C7048;font-size:11px;text-transform:uppercase;margin-bottom:4px}
+.cta1-h{font-size:19px;font-weight:900;margin:0 0 2px}
+.cta1-formula{font-size:13px;color:#A51820;font-weight:800;margin:6px 0 2px}
+.cta1-pos{font-size:11.5px;color:#7A5A5E;line-height:1.6;margin-bottom:12px}
+.cta1-ctx{font-size:12px;color:#5C4A3C;background:#F4F1EC;border-radius:10px;padding:9px 12px;line-height:1.6;margin-bottom:14px}
+.cta1-q{margin-bottom:9px}
+.cta1-q label{display:block;font-size:12px;font-weight:800;color:#6B4A2E;margin-bottom:3px}
+.cta1-q .hint{font-weight:400;color:#A08C7A}
+.cta1-q textarea{width:100%;box-sizing:border-box;border:1px solid #E3DCD0;border-radius:8px;padding:7px 10px;font-family:inherit;font-size:12.5px;color:#2A1A1C;background:#fff;resize:vertical;line-height:1.5}
+.cta1-ref{margin-top:14px;border-top:1px solid #ECE3D5;padding-top:10px}
+.cta1-ref summary{font-size:12px;font-weight:800;color:#9C7048;cursor:pointer}
+.cta1-ref .body{font-size:11.5px;color:#5C4A3C;line-height:1.7;margin-top:7px}
+.cta1-ref .body b{color:#A51820}
+.cta1-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:18px;position:sticky;bottom:-1px;background:#FDFBF8;padding-top:10px}
+.cta1-x{border:1px solid #DACFBE;background:#fff;color:#6B5A38;font-weight:700;font-size:13px;border-radius:999px;padding:9px 18px;cursor:pointer;font-family:inherit}
+.cta1-go{border:1px solid #A51820;background:#A51820;color:#fff;-webkit-text-fill-color:#fff;font-weight:800;font-size:13px;border-radius:999px;padding:9px 20px;cursor:pointer;font-family:inherit}
+</style>
+<script>
+/* v311：CTA1 行動出口診斷（每支影片）。注入，不動原碼。 */
+(function(){
+  var QS=[
+    ['svc','服務項目','這支影片要推哪個服務？'],
+    ['who','目標受眾','這支影片要打誰？'],
+    ['scene','觀眾情境','他在什麼時候會需要這個內容？'],
+    ['pain','觀眾痛點','他正在怕什麼、卡什麼、誤解什麼？'],
+    ['lang','觀眾語言','一般人會怎麼講這件事？避免只用專業詞。'],
+    ['action','行動目標','收藏／留言／分享／私訊／加 LINE／填表單／預約／看下一支？'],
+    ['window','承接窗口','LINE／表單／官網／私訊／自動回覆／服務頁／PDF／檢核表'],
+    ['gain','行動後得到什麼','觀眾完成 CTA 後會得到什麼具體幫助？']
+  ];
+  function V(id){ try{ if(typeof videos!=='undefined'&&videos){ var v=videos.filter(function(x){return x&&x.id===id;})[0]; if(v)return v; } }catch(e){} return null; }
+  function E(s){ try{ if(typeof esc==='function') return esc(s); }catch(e){} return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+  function clip(t,n){ t=String(t==null?'':t).trim(); return t.length>n?t.slice(0,n)+'…':t; }
+
+  function buildPrompt(v,ans){
+    var parts=[]; ['goalLayer','goal','themeName','topic','form','trig'].forEach(function(k){ if(v[k]) parts.push(v[k]); });
+    var filled=QS.filter(function(q){return (ans[q[0]]||'').trim();});
+    var blanks=QS.filter(function(q){return !(ans[q[0]]||'').trim();});
+    var L=[];
+    L.push('你是 ATELIER 的 CTA1 行動出口顧問。CTA1 ＝ 誰 × 卡點 × 下一步 × 承接窗口 × 得到什麼。');
+    L.push('ATELIER 把專業服務的知識、服務與商業價值，翻譯成一般大眾聽得懂、有感覺、知道下一步怎麼做的短影音商業閉環。CTA1 的任務是把觀眾從「理解」帶到「行動」，再被正確的承接窗口接住。');
+    L.push('');
+    L.push('【這支影片】');
+    L.push('標題：'+(v.title||'')); if(v.hook) L.push('Hook：'+v.hook);
+    if(parts.length) L.push('分析標籤：'+parts.join('、'));
+    if(v.transcript) L.push('逐字稿（節錄）：'+clip(v.transcript,400));
+    L.push('');
+    L.push('【已知問診資料】');
+    if(filled.length) filled.forEach(function(q){ L.push('・'+q[1]+'：'+ans[q[0]].trim()); });
+    else L.push('（顧問尚未填寫問診資料）');
+    L.push('');
+    L.push('【請務必照下面格式輸出，每一項都不可省略】');
+    L.push('1. CTA 類型：');
+    L.push('2. CTA 原句（可直接放影片結尾的一句）：');
+    L.push('3. 對應受眾：');
+    L.push('4. 對應痛點：');
+    L.push('5. 承接窗口：');
+    L.push('6. 行動後得到什麼：');
+    L.push('7. 對應 A–E（A認知／B品牌／C信任／D轉化／E組織）：');
+    L.push('8. 對應 G 階段：');
+    L.push('9. 預期 KPI：');
+    L.push('10. CTA1 Fit Score（0–5，並說明原因）：');
+    L.push('11. 警告標籤（如有，從下列挑：無CTA／CTA太模糊／CTA太硬／CTA太早／CTA與目標錯配／有Hook但無承接／有痛點但無行動／有流量但無轉換／有信任但無下一步／缺LINE或表單承接／缺Lead Magnet／缺私訊關鍵字／缺觀眾行動後利益）：');
+    L.push('12. 建議改寫後的完整 CTA（一句，可直接用）：');
+    L.push('');
+    L.push('【Fit Score 標準】0=完全沒 CTA；1=有但很模糊；2=清楚但沒承接窗口；3=清楚且有基本承接；4=對齊受眾/痛點/A–E；5=完整對齊「誰×卡點×下一步×承接窗口×得到什麼」且能對應 KPI。');
+    L.push('【A–E 對應 CTA】A 認知：追蹤/收藏/看下一集/分享給需要的人；B 品牌：留言觀點/追蹤系列/收藏品牌觀點；C 信任：收藏/留言問題/領取檢核表/私訊關鍵字；D 轉化：私訊/LINE/表單/預約/初步諮詢；E 組織：下載 SOP/加入名單/進入服務流程/長期關係培育。');
+    if(blanks.length){
+      L.push('【資料不足守則】下列問診資料還沒填：'+blanks.map(function(q){return q[1];}).join('、')+'。');
+      L.push('請「不要」硬產高轉換 CTA，改為：(a) 先列出要補問客戶的問題（這支最想吸引哪種人？他們通常遇到什麼狀況才會需要這項服務？最常誤解什麼？看完後希望他們去哪裡？）；(b) 只先給低門檻 CTA（如收藏／看下一支）。');
+    }
+    return L.join('\n');
+  }
+
+  function open(id){
+    var v=V(id); if(!v){ if(typeof toast==='function') toast('找不到這支影片'); return; }
+    var ov=document.createElement('div'); ov.className='cta1-ov';
+    var qsHTML=QS.map(function(q){ return '<div class="cta1-q"><label>'+E(q[1])+' <span class="hint">'+E(q[2])+'</span></label><textarea rows="2" data-q="'+q[0]+'"></textarea></div>'; }).join('');
+    ov.innerHTML='<div class="cta1-card">'
+      +'<div class="cta1-kick">ATELIER · CTA1 EXIT FORMULA</div>'
+      +'<h3 class="cta1-h">CTA1 行動出口診斷</h3>'
+      +'<div class="cta1-formula">誰 × 卡點 × 下一步 × 承接窗口 × 得到什麼</div>'
+      +'<div class="cta1-pos">CTA1 不是影片結尾文案，而是整支短影音的商業出口設計：把觀眾從「理解」帶到「行動」，再被正確的承接窗口接住。</div>'
+      +'<div class="cta1-ctx"><b>這支：</b>'+E(clip(v.title,40))+(v.hook?('<br><b>Hook：</b>'+E(clip(v.hook,80))):'')+'</div>'
+      +'<div style="font-size:12px;font-weight:800;color:#6B4A2E;margin-bottom:8px">引導式問診（填越多，CTA 越精準；留空系統會自動列出要補問客戶的問題）</div>'
+      +qsHTML
+      +'<details class="cta1-ref"><summary>對照表：A–E 對應 CTA／Fit Score／警告標籤</summary><div class="body">'
+      +'<b>A–E 對應 CTA</b>：A 認知—追蹤/收藏/看下一集/分享；B 品牌—留言觀點/追蹤系列；C 信任—收藏/留言問題/領檢核表/私訊關鍵字；D 轉化—私訊/LINE/表單/預約/諮詢；E 組織—下載SOP/加名單/進服務流程。<br>'
+      +'<b>Fit Score</b>：0 沒CTA · 1 模糊 · 2 清楚但無承接 · 3 有基本承接 · 4 對齊受眾/痛點/A–E · 5 完整對齊五要素且對應KPI。<br>'
+      +'<b>警告標籤</b>：無CTA／太模糊／太硬／太早／與目標錯配／有Hook無承接／有痛點無行動／有流量無轉換／有信任無下一步／缺LINE表單／缺Lead Magnet／缺私訊關鍵字／缺行動後利益。'
+      +'</div></details>'
+      +'<div class="cta1-actions"><button type="button" class="cta1-x">關閉</button><button type="button" class="cta1-go">複製 CTA1 診斷提示詞</button></div>'
+      +'</div>';
+    document.body.appendChild(ov);
+    ov.addEventListener('click',function(e){ if(e.target===ov) ov.remove(); });
+    ov.querySelector('.cta1-x').onclick=function(){ ov.remove(); };
+    ov.querySelector('.cta1-go').onclick=function(){
+      var ans={}; ov.querySelectorAll('textarea[data-q]').forEach(function(t){ ans[t.getAttribute('data-q')]=t.value; });
+      var p=buildPrompt(v,ans);
+      if(typeof copyPrompt==='function') copyPrompt(p,'CTA1 診斷（'+(v.title||'')+'）');
+      else { try{ navigator.clipboard.writeText(p); if(typeof toast==='function') toast('已複製 CTA1 提示詞'); }catch(e){} }
+    };
+    document.addEventListener('keydown',function k(e){ if(e.key==='Escape'){ ov.remove(); document.removeEventListener('keydown',k); } });
+  }
+  window._wbOpenCTA1 = open;
+
+  function inject(){
+    var cards=document.querySelectorAll('.video-card'); if(!cards.length) return;
+    cards.forEach(function(card){
+      if(card.getAttribute('data-cta1')) return;
+      var id=card.getAttribute('data-vid'); if(!id){ var m=(card.id||'').match(/^video-(.+)$/); if(m)id=m[1]; }
+      if(!id) return; card.setAttribute('data-cta1','1');
+      var line=document.createElement('div'); line.className='cta1-line';
+      line.innerHTML='<button type="button" class="cta1-btn">⊕ CTA1 行動出口診斷</button><span style="font-size:10.5px;color:#9C7048">誰×卡點×下一步×承接窗口×得到什麼</span>';
+      line.querySelector('.cta1-btn').onclick=function(){ open(id); };
+      card.appendChild(line);
+    });
+  }
+  setInterval(function(){ try{inject();}catch(e){} }, 900);
+  if(document.readyState!=='loading') setTimeout(inject,440); else document.addEventListener('DOMContentLoaded',function(){ setTimeout(inject,440); });
 })();
 </script>
 
