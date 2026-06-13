@@ -722,7 +722,7 @@ details.cat .cat-body{padding:14px 15px}
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">客戶服務台</span></span>
-    <span id="verBadge">cs-v4.41</span>
+    <span id="verBadge">cs-v4.43</span>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button type="button" id="popoutBtn" class="popout-btn" title="把客戶服務台開成獨立小視窗"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6"/><path d="M20 4l-9 9"/><path d="M14 12v7H5V10h7"/></svg>小視窗</button>
@@ -7177,6 +7177,7 @@ details.ovBlock > summary .ovx-tag.has{color:#9C7D4A}
     L.push('請針對這位客戶「全部影片」做整體 CTA1 診斷（不是單支），重點是找出跨影片的 CTA 模式與問題。');
     L.push('');
     L.push('客戶：'+(a.handle||'')+' '+(a.displayName||'')+'｜'+(a.domain||a.industry||''));
+    (function(){ var mb=a.marketingBrief||{}; var seg=[]; if(mb.market)seg.push('市場位置：'+mb.market); if(mb.mem)seg.push('記憶點：'+mb.mem); if(mb.icp)seg.push('ICP：'+mb.icp); if(mb.fear)seg.push('最卡的點：'+mb.fear); if(mb.core)seg.push('核心Offer：'+mb.core); if(mb.free)seg.push('免費入口：'+mb.free); if(mb.window)seg.push('承接窗口：'+mb.window); if(seg.length){ L.push('行銷脈絡（來自行銷問診卡，請據此給對得上 Offer 與承接的 CTA）：'); seg.forEach(function(x){L.push('・'+x);}); } })();
     L.push('影片庫（'+vs.length+' 支，依觀看排序）：');
     vs.slice(0,20).forEach(function(v,i){
       var tag=[v.goal,v.form].filter(Boolean).join('·');
@@ -7376,8 +7377,12 @@ details.ovBlock > summary .ovx-tag.has{color:#9C7D4A}
         if(rd) s2.addImage({data:rd,x:4.9,y:1.9,w:5.2,h:5.2});
         s2.addText(String(total),{x:.95,y:3.0,w:3,h:1.0,fontSize:60,bold:true,color:C.primary,fontFace:CORM});
         s2.addText('/ 50',{x:1.05,y:4.05,w:2,h:.4,fontSize:18,color:C.text2,fontFace:SANS});
-        var icp=(a.profile&&(a.profile.icpAudience||a.profile.icpPersona))||a.icpAudience||'';
-        if(icp) s2.addText('ICP：'+clip(icp,40),{x:.95,y:4.7,w:3.6,h:1.4,fontSize:12,color:C.text2,fontFace:SANS,valign:'top'});
+        var mb=a.marketingBrief||{};
+        var icp=mb.icp||(a.profile&&(a.profile.icpAudience||a.profile.icpPersona))||a.icpAudience||'';
+        var yb=4.5;
+        if(mb.mem){ s2.addText('市場記憶點',{x:.95,y:yb,w:3.6,h:.2,fontSize:10,bold:true,color:C.primary,fontFace:SANS}); s2.addText(clip(mb.mem,40),{x:.95,y:yb+.22,w:3.6,h:.5,fontSize:12,color:C.text,fontFace:SANS,valign:'top'}); yb+=.7; }
+        if(icp){ s2.addText('ICP 會買的人',{x:.95,y:yb,w:3.6,h:.2,fontSize:10,bold:true,color:C.primary,fontFace:SANS}); s2.addText(clip(icp,40),{x:.95,y:yb+.22,w:3.6,h:.5,fontSize:12,color:C.text2,fontFace:SANS,valign:'top'}); yb+=.7; }
+        if(mb.core){ s2.addText('核心 Offer',{x:.95,y:yb,w:3.6,h:.2,fontSize:10,bold:true,color:C.primary,fontFace:SANS}); s2.addText(clip(mb.core,40),{x:.95,y:yb+.22,w:3.6,h:.5,fontSize:12,color:C.text2,fontFace:SANS,valign:'top'}); }
         // 3 最弱三項
         var s3=p.addSlide(); header(s3,'WHAT TO STRENGTHEN',3,T,'最該優先優化的三項','');
         if(weak.length){ var xs=[.8,4.8,8.9]; weak.forEach(function(it,i){ var x=xs[i]; s3.addText(pad2(i+1),{x:x,y:2.9,w:1.2,h:.5,fontSize:30,bold:true,color:C.primary,fontFace:CORM}); s3.addText(dimLabel(it),{x:x,y:3.5,w:3.8,h:.5,fontSize:18,bold:true,color:C.text,fontFace:SERIF,fit:'shrink'}); s3.addText('目前 '+num(it.score)+' 分',{x:x,y:4.1,w:3.8,h:.4,fontSize:13,color:C.text2,fontFace:SANS}); if(it.note) s3.addText(clip(it.note,90),{x:x,y:4.6,w:3.8,h:2,fontSize:11,color:C.text2,fontFace:SANS,valign:'top'}); }); }
@@ -7546,6 +7551,128 @@ details.ovBlock > summary .ovx-tag.has{color:#9C7D4A}
   function tick(){ try{ var a=curA(); var id=a?a.id:null; if(id!==_last){ _last=id; document.querySelectorAll('.mkb-card').forEach(function(e){e.remove();}); } inject(); }catch(e){} }
   setInterval(tick, 950);
   if(document.readyState!=='loading') setTimeout(tick,520); else document.addEventListener('DOMContentLoaded',function(){ setTimeout(tick,520); });
+})();
+</script>
+
+
+<!-- ═══════════ cs-v4.43 · 復盤卡（內容發出去後，回來修正什麼）═══════════
+     行銷層閉環最後一塊：⑦交付加「復盤卡」。本期目標vs實際結果→假設驗證→下一支延續/停止→
+     影響下一批企劃→新洞察。存 a.reviewBrief（_accPush 同步，工作台也看得到=回寫）。
+     與行銷問診卡同一套操作（填/AI補/貼回分欄/儲存）。純注入、不動原碼。 -->
+<style>
+.rvw-card{border:1px solid #EAD9D6;border-left:3px solid #A51820;background:linear-gradient(180deg,#FFFCFA,#FCF4F2);border-radius:12px;padding:14px 16px;margin:0 0 14px}
+.rvw-h{font-weight:900;color:#7A1018;font-size:15px;display:flex;align-items:center;gap:7px;margin-bottom:2px}
+.rvw-f{font-size:12px;color:#A51820;font-weight:800;margin:3px 0}
+.rvw-note{font-size:12px;color:#7A5A5E;line-height:1.6;margin-bottom:10px}
+.rvw-actions{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.rvw-btn{font-size:12px;font-weight:800;border-radius:8px;padding:7px 13px;cursor:pointer;font-family:inherit;border:1px solid #A51820;background:#A51820;color:#fff;-webkit-text-fill-color:#fff}
+.rvw-btn.ghost{background:#fff;color:#A51820;-webkit-text-fill-color:#A51820}
+.rvw-btn:hover{filter:brightness(1.06)}
+.rvw-paste{width:100%;box-sizing:border-box;border:1px dashed #D9C7C4;border-radius:9px;padding:9px 11px;font-family:inherit;font-size:12.5px;color:#2A1A1C;background:#fff;resize:vertical;min-height:60px;margin-bottom:8px}
+.rvw-sec{font-size:11px;font-weight:900;letter-spacing:.05em;color:#7A5A5E;margin:12px 0 5px;text-transform:uppercase}
+.rvw-row{margin-bottom:8px}
+.rvw-row label{display:block;font-size:12px;font-weight:800;color:#6B4A4E;margin-bottom:3px}
+.rvw-row .hint{font-weight:400;color:#A08C7A}
+.rvw-row textarea{width:100%;box-sizing:border-box;border:1px solid #E3DAD0;border-radius:8px;padding:7px 10px;font-family:inherit;font-size:12.5px;color:#2A1A1C;background:#fff;resize:vertical;line-height:1.5;min-height:42px}
+.rvw-save{display:block;width:100%;box-sizing:border-box;border:1.5px solid #7A1018;background:#A51820;color:#fff;-webkit-text-fill-color:#fff;font-weight:800;font-size:13.5px;border-radius:10px;padding:11px;cursor:pointer;font-family:inherit;margin-top:6px}
+.rvw-save:hover{filter:brightness(1.07)}
+</style>
+<script>
+/* cs-v4.43：復盤卡（注入，不動原碼） */
+(function(){
+  var SECS=[
+    ['本期目標與結果',[
+      ['goal','本期目標','曝光／信任／名單／預約／成交'],
+      ['result','實際結果','實際數據與發生了什麼'],
+      ['vs','與預期落差','高於或低於預期，為什麼']
+    ]],
+    ['假設驗證',[
+      ['proven','被驗證的假設','原本賭對了什麼'],
+      ['failed','失敗的假設','原本以為會但沒發生']
+    ]],
+    ['下一步調整',[
+      ['keep','下一支延續','這次有效、要保留的做法'],
+      ['stop','下一支停止','這次無效、要停掉的做法'],
+      ['nextPlan','對下一批企劃的影響','下一批方向要怎麼調']
+    ]],
+    ['新洞察',[
+      ['insight','新洞察','新市場洞察／新客戶問題']
+    ]]
+  ];
+  var LABELMAP={'本期目標':'goal','實際結果':'result','與預期落差':'vs','被驗證的假設':'proven','失敗的假設':'failed','下一支延續':'keep','下一支停止':'stop','對下一批企劃的影響':'nextPlan','新洞察':'insight'};
+  function curA(){ try{ if(typeof curAcc==='function') return curAcc(); }catch(e){} try{ if(window.curAcc) return window.curAcc(); }catch(e){} return null; }
+  function push(){ try{ if(typeof _accPush==='function'){ _accPush(); return; } }catch(e){} try{ if(window._accPush) window._accPush(); }catch(e){} }
+  function num(n){ n=parseInt(n); return isNaN(n)?0:n; }
+  function fmtV(v){ v=num(v); return v>=10000?(Math.round(v/1000)/10+'萬'):v.toLocaleString(); }
+  function clip(t,n){ t=String(t==null?'':t).trim(); return t.length>n?t.slice(0,n)+'…':t; }
+  function vidsOf(a){ try{ if(typeof accountVideos==='function') return accountVideos(a)||[]; }catch(e){} try{ if(typeof videos!=='undefined'&&Array.isArray(videos)) return videos.filter(function(v){return v&&(v.accountId===a.id||v.accountHandle===a.handle);}); }catch(e){} return []; }
+  function vtitle(v){ try{ if(typeof videoTitle==='function') return videoTitle(v); }catch(e){} return (v&&(v.title||v.topic||v.hook))||'未命名影片'; }
+
+  function aiPrompt(a,rb){
+    var vs=vidsOf(a).slice().sort(function(x,y){return num(y.views)-num(x.views);}).slice(0,8);
+    var mb=a.marketingBrief||{};
+    var L=['你是 ATELIER 的內容復盤顧問。請幫這位客戶做這一輪內容的復盤——重點是「結果 vs 目標、哪個假設對/錯、下一批要怎麼調」，要能回寫成下一輪企劃方向。',''];
+    L.push('客戶：'+(a.handle||'')+' '+(a.displayName||'')+'｜'+(a.domain||a.industry||''));
+    if(mb.core) L.push('核心 Offer：'+mb.core); if(mb.icp) L.push('ICP：'+mb.icp);
+    if(vs.length){ L.push('這輪影片表現（觀看排序）：'); vs.forEach(function(v,i){ L.push((i+1)+'. '+vtitle(v)+'｜觀看 '+fmtV(v.views)+(v.likes?('／讚 '+num(v.likes)):'')+(v.goal?('｜'+v.goal):'')); }); }
+    var filled=Object.keys(rb||{}).filter(function(k){return (rb[k]||'').trim();});
+    if(filled.length){ L.push('','顧問已填（請尊重、只補空白並可優化）：'); SECS.forEach(function(s){ s[1].forEach(function(f){ if((rb[f[0]]||'').trim()) L.push('・'+f[1]+'：'+rb[f[0]].trim()); }); }); }
+    L.push('','請依下面格式逐行輸出（用上面的影片數據做依據，不要寒暄）：');
+    L.push('本期目標：');
+    L.push('實際結果：');
+    L.push('與預期落差：');
+    L.push('被驗證的假設：');
+    L.push('失敗的假設：');
+    L.push('下一支延續：');
+    L.push('下一支停止：');
+    L.push('對下一批企劃的影響：');
+    L.push('新洞察：');
+    return L.join('\n');
+  }
+  function parseBack(text, fields){
+    var lines=String(text||'').split(/\r?\n/); var hit=0;
+    lines.forEach(function(ln){
+      var m=ln.split(/[:：]/); if(m.length<2) return;
+      var key=m[0].trim(); var val=m.slice(1).join('：').trim(); if(!val) return;
+      var fk=null; Object.keys(LABELMAP).forEach(function(lab){ if(key.indexOf(lab)===0) fk=LABELMAP[lab]; });
+      if(fk && fields[fk]){ fields[fk].value=val; hit++; }
+    });
+    return hit;
+  }
+  function collect(fields){ var o={}; Object.keys(fields).forEach(function(k){ var v=(fields[k].value||'').trim(); if(v) o[k]=v; }); return o; }
+
+  function build(host, a){
+    var rb=a.reviewBrief||{};
+    var box=document.createElement('div'); box.className='rvw-card'; box.setAttribute('data-rvwbrief','1');
+    var html='<div class="rvw-h">🔁 復盤卡（這輪結束，回來修正什麼）</div>'
+      +'<div class="rvw-f">結果 vs 目標 × 假設驗證 × 下一批怎麼調</div>'
+      +'<div class="rvw-note">內容發出去後做這份復盤，系統就會「越用越準」。可先按「複製 AI 復盤提示詞」（自動帶這輪影片數據）讓 AI 幫你擬，再貼回下面自動分欄。存檔後工作台也看得到，等於回寫下一批方向。</div>'
+      +'<div class="rvw-actions"><button type="button" class="rvw-btn ghost" data-act="ai">複製 AI 復盤提示詞</button></div>'
+      +'<textarea class="rvw-paste" placeholder="把 AI 回覆貼這裡 → 按下面自動分欄…"></textarea>'
+      +'<button type="button" class="rvw-btn" data-act="parse" style="margin-bottom:4px">貼回自動分欄</button>';
+    SECS.forEach(function(s){
+      html+='<div class="rvw-sec">'+s[0]+'</div>';
+      s[1].forEach(function(f){ html+='<div class="rvw-row"><label>'+f[1]+' <span class="hint">'+f[2]+'</span></label><textarea data-rv="'+f[0]+'"></textarea></div>'; });
+    });
+    html+='<button type="button" class="rvw-save">儲存復盤</button>';
+    box.innerHTML=html;
+    var fields={}; box.querySelectorAll('textarea[data-rv]').forEach(function(t){ fields[t.getAttribute('data-rv')]=t; t.value=(rb[t.getAttribute('data-rv')]||''); });
+    box.querySelector('[data-act="ai"]').onclick=function(){ var p=aiPrompt(a, collect(fields)); try{ navigator.clipboard.writeText(p); }catch(e){} if(typeof toast==='function') toast('已複製 AI 復盤提示詞'); };
+    box.querySelector('[data-act="parse"]').onclick=function(){ var ta=box.querySelector('.rvw-paste'); var n=parseBack(ta.value, fields); if(typeof toast==='function') toast(n?('已分到 '+n+' 欄，確認後請按儲存'):'沒抓到可分欄的內容，格式需為「項目：內容」'); };
+    box.querySelector('.rvw-save').onclick=function(){ a.reviewBrief=collect(fields); a.updatedAt=Date.now(); push(); if(typeof toast==='function') toast('已儲存復盤並同步'); };
+    host.insertBefore(box, host.firstChild);
+  }
+
+  function inject(){
+    var host=document.getElementById('view-stage7'); if(!host||!host.children.length) return;
+    if(host.querySelector('[data-rvwbrief]')) return;
+    var a=curA(); if(!a) return;
+    try{ build(host, a); }catch(e){}
+  }
+  var _last=null;
+  function tick(){ try{ var a=curA(); var id=a?a.id:null; if(id!==_last){ _last=id; document.querySelectorAll('.rvw-card').forEach(function(e){e.remove();}); } inject(); }catch(e){} }
+  setInterval(tick, 950);
+  if(document.readyState!=='loading') setTimeout(tick,540); else document.addEventListener('DOMContentLoaded',function(){ setTimeout(tick,540); });
 })();
 </script>
 
