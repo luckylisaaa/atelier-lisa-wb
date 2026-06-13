@@ -8,7 +8,7 @@
 <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v318 (版本號僅留註解，不顯示於畫面)
+<!-- ATELIER 影片診斷工作台 · 內部版本 v319 (版本號僅留註解，不顯示於畫面)
 v267 更新（策略診斷硬修版：重做 Top/Bottom 固定列高、重綁單支核對窗與 AI 工具按鈕、補互動式 1–8 操作步驟與策略對標雷達；本版用最後一段 v267 override 強制接管策略診斷頁，避免舊版 v263/v265 殘留函式覆蓋。只動 index.html，不動 client.html、Firebase、CSV 與六守門提示詞。）
 v266 更新（hotfix：修正 v265 最後一段策略診斷事件代理少 catch，導致 v265 override script 無法執行、畫面徽章被前一段 v263 override 改回 v263，且策略診斷部分按鈕失效；本版補回 catch 並將顯示版本固定為 v266。只動 index.html，不動 client.html、Firebase、CSV 與六守門提示詞。）
 v265 更新（策略診斷按鈕修復、整齊 Top/Bottom、互動流程與策略對標雷達）：修正策略診斷 Top/Bottom 每支影片的按鈕高度與位置不一致；改用固定列高與事件代理，讓「快看／核對」「留在本頁定位」「改寫提示」以及單支核對窗內 AI 工具、去影片庫定位、獨立視窗核對、收起都可穩定點擊；將 1–8 操作流程改成可點擊小教學；新增策略對標雷達，從同產業、同職稱、同身份、A–E、G 階段、流量觸發、素材與高互動／高分享等面向找全庫可借鏡樣本。只動 index.html，不動 client.html、Firebase、CSV 與六守門提示詞。
@@ -1221,7 +1221,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v318</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v319</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -3432,6 +3432,14 @@ $('parseBtn').onclick=async function(){
     if(m) h='@'+m[1];
     else if(!h.startsWith('@')&&!h.startsWith('http')) h='@'+h.replace(/^@*/,'');
     let acc=accounts.find(a=>(typeof normAccHandle==='function'?normAccHandle(a.handle)===normAccHandle(h):(a.handle===h||(a.handle||'').toLowerCase()===h.toLowerCase())));
+    /* v319 修「卡A 帳號版面欄位永遠空」根因：卡A 的帳號段已先由 ingestAccountCard 建出「含完整版面 profile（27 欄）的 pending 帳號」放在 window._pendingAcc（尚未進 accounts[]）。
+       這裡影片段的「自動建檔」用 accounts.find 找不到 pending，就誤判成新帳號，又建一個「只有影片段基本欄位、無版面 profile」的 pending、line 3448 window._pendingAcc=acc 把帳號段那個 27 欄好帳號整個蓋掉 → 版面欄位永遠空。
+       修法：先比對 pending 帳號的 handle，對得上就沿用它、_isPendMatch=true，跳過重建與既有帳號更新分支，只往下做 f-account 連結。 */
+    var _isPendMatch=false;
+    if(!acc && window._pendingAcc && window._pendingAccId){
+      var _nhP=function(x){return (typeof normAccHandle==='function')?normAccHandle(x):(x||'').toLowerCase().replace(/^@/,'').replace(/\/+$/,'');};
+      if(_nhP(window._pendingAcc.handle)===_nhP(h)){ acc=window._pendingAcc; _isPendMatch=true; }
+    }
     if(!acc){
       acc={id:'acc_'+Date.now()+'_'+Math.random().toString(36).slice(2,7), platform:'IG', handle:h, displayName:F['顯示名稱']||'', types:[], domain:F['領域']||F['主打主題']||'', jobTitle:(()=>{const x=(F['職稱']||F['職位']||F['職稱類別']||F['職業']||'').trim();return isHintText(x)?'':x;})(), industry:(()=>{const x=(F['產業']||F['行業']||'').trim();return isHintText(x)?'':x;})(), relatedAccounts:[], note:'(由歸類卡自動建檔)', fanSnapshots:[], profileSnapshots:[], createdAt:Date.now(), updatedAt:Date.now()};
       // 若 Gemini 有給身份分類，採用（但只限我們架構內的）
@@ -3449,7 +3457,9 @@ $('parseBtn').onclick=async function(){
       window._pendingAccId=acc.id;
       var _sel=$('f-account'); if(_sel){ var _o=document.createElement('option'); _o.value=acc.id; _o.textContent=(acc.handle||'@?')+' '+(acc.displayName||'')+'（待確認）'; _o.id='_pendingOpt'; _sel.appendChild(_o); _sel.value=acc.id; }
       got.push('+ 新帳號 '+h+(()=>{const seg=[];if((acc.types||[]).length)seg.push('身份:'+acc.types.join('、'));if(acc.jobTitle)seg.push('職稱:'+acc.jobTitle);if(acc.industry)seg.push('產業:'+acc.industry);return seg.length?'（已存到帳號→'+seg.join('・')+'）':'';})());
-    } else {
+    } else if(!_isPendMatch){
+      /* v319：_isPendMatch（卡A 帳號段已建好 pending、含完整版面 profile）時，這個既有帳號更新分支整段跳過——
+         帳號段已把職稱/產業/粉絲/版面 profile 都填好了，這裡不需再補，也不該跑「之前處理過」toast，直接落到下方 f-account 連結。 */
       // ─── 帳號重複偵測 + 變化比對（雙向第一步：粉絲數）───
       let dirty=false;
       // 卡片這次有給職稱/產業、而帳號原本空白，順手補上並回報
@@ -11060,7 +11070,7 @@ document.addEventListener('DOMContentLoaded',function(){
 <script>
 /* v239：自動防舊版快取。讓桌布捷徑／瀏覽器如果抓到舊 HTML，能自己比對線上最新版並導向。 */
 (function(){
-  var ATELIER_CURRENT_VERSION='v318';
+  var ATELIER_CURRENT_VERSION='v319';
   window.ATELIER_CURRENT_VERSION=ATELIER_CURRENT_VERSION;
   function _avNum(v){v=String(v||'');var m=v.match(/v\s*(\d+)/i);return m?parseInt(m[1],10):0;}
   function _avDetect(html){html=String(html||'');var m=html.match(/id=["']verBadge["'][^>]*>\s*(v\d+)/i)||html.match(/內部版本\s+(v\d+)/i);return m?m[1]:'';}
@@ -11707,7 +11717,7 @@ return '<div class="strat-radar-card-v265"><b>目前沒有符合樣本</b><p>可
 /* ═══════════ v267 strategy hard patch：固定版面、重綁按鈕、互動說明與策略對標雷達（index.html only） ═══════════ */
 (function(){
   'use strict';
-  var VERSION='v318';
+  var VERSION='v319';
   function H(id){return document.getElementById(id)}
   function E(s){return String(s==null?'':s).replace(/[&<>'"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]})}
   function A(){try{return (typeof accounts!=='undefined'&&Array.isArray(accounts))?accounts:(Array.isArray(window.accounts)?window.accounts:[])}catch(e){return []}}
@@ -11936,7 +11946,7 @@ window._strategyRadarV267=radarResults;
 
 <script id="v289PatchJS">
 (function(){
-  try{ window.ATELIER_CURRENT_VERSION='v318'; }catch(e){}
+  try{ window.ATELIER_CURRENT_VERSION='v319'; }catch(e){}
   try{ sessionStorage.setItem('atelierSkipAutoUpdate','1'); }catch(e){}
   try{ if(navigator.serviceWorker && navigator.serviceWorker.getRegistrations){
         navigator.serviceWorker.getRegistrations().then(function(rs){ rs.forEach(function(r){ try{r.update();}catch(e){} }); }).catch(function(){});
