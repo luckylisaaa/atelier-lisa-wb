@@ -722,7 +722,7 @@ details.cat .cat-body{padding:14px 15px}
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">客戶服務台</span></span>
-    <span id="verBadge">cs-v4.34</span>
+    <span id="verBadge">cs-v4.35</span>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button type="button" id="popoutBtn" class="popout-btn" title="把客戶服務台開成獨立小視窗"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6"/><path d="M20 4l-9 9"/><path d="M14 12v7H5V10h7"/></svg>小視窗</button>
@@ -6922,6 +6922,133 @@ details.ovBlock > summary .ovx-tag.has{color:#9C7D4A}
   }
   setInterval(function(){ try{inject();}catch(e){} }, 900);
   if(document.readyState!=='loading') setTimeout(inject,420); else document.addEventListener('DOMContentLoaded',function(){ setTimeout(inject,420); });
+})();
+</script>
+
+
+<!-- ═══════════ cs-v4.35 · ①初診「會前初步觀察」精緻交付 PPT（理鴻式，自動長出）═══════════
+     對齊使用者實際交付（理鴻 13 頁會前簡報）：封面／ATELIER／六階段系統／你已具備的（影片優點＋觀看前幾名）／
+     可優化方向（影片缺點＋最弱健檢）／內容方向（診斷或 profile）／結尾。用既有 _vidNotes(優點/缺點)、
+     accountVideos、latestHealthEntry、診斷包、pptFactory。純讀、注入、不動原碼。 -->
+<style>
+.cs-brief-btn{display:block;width:100%;box-sizing:border-box;margin:10px 0 4px;border:1.5px solid #7A1018;background:linear-gradient(180deg,#A51820,#7A1018);color:#fff;-webkit-text-fill-color:#fff;font-weight:800;font-size:13.5px;border-radius:10px;padding:11px;cursor:pointer;font-family:inherit}
+.cs-brief-btn:hover{filter:brightness(1.07)}
+.cs-brief-wrap{border:1px solid #EEDFD9;background:#FFFBF9;border-radius:12px;padding:12px 13px;margin:10px 0}
+.cs-brief-wrap .sc-note,.cs-brief-note{font-size:11.5px;color:#8A7274;line-height:1.55}
+.cs-brief-h{font-weight:900;color:#2A1A1C;font-size:13.5px;margin-bottom:3px;display:flex;align-items:center;gap:6px}
+</style>
+<script>
+/* cs-v4.35：①初診「會前初步觀察」精緻 PPT（注入，不動原碼） */
+(function(){
+  function num(n){ n=parseInt(n); return isNaN(n)?0:n; }
+  function fmtV(v){ v=num(v); return v>=10000?(Math.round(v/1000)/10+'萬'):v.toLocaleString(); }
+  function clip(t,n){ t=String(t==null?'':t).trim(); return t.length>n?t.slice(0,n)+'…':t; }
+  function vidsOf(a){ try{ if(typeof accountVideos==='function') return accountVideos(a)||[]; }catch(e){} try{ if(typeof videos!=='undefined'&&videos) return videos.filter(function(v){return v&&v.accountId===a.id;}); }catch(e){} return []; }
+  function vTitle(v){ try{ if(typeof videoTitle==='function') return videoTitle(v); }catch(e){} return (v&&(v.title||v.name))||'（未命名）'; }
+  function notesMap(a){ try{ if(typeof _vidNotes==='function') return _vidNotes(a)||{}; }catch(e){} return {}; }
+  function collect(vs,nm,key,max){ var out=[]; for(var i=0;i<vs.length&&out.length<max;i++){ var v=vs[i]; var vid=String(v.id||v.videoId||vTitle(v)); var n=nm[vid]||{}; var t=(n[key]||'').trim(); if(t) out.push(clip(t,72)); } return out; }
+
+  window._csInitialBriefPPTX = async function(){
+    if(typeof loadPptx!=='function'||typeof pptFactory!=='function'){ if(typeof toast==='function') toast('PPTX 元件未就緒'); return; }
+    var a=(typeof curAcc==='function')?curAcc():null; if(!a){ if(typeof toast==='function') toast('請先在上方選一位客戶'); return; }
+    var btn=document.activeElement, oldHTML=(btn&&btn.tagName==='BUTTON')?btn.innerHTML:'';
+    if(btn&&btn.tagName==='BUTTON'){ btn.disabled=true; btn.innerHTML='產生中…'; }
+    if(typeof toast==='function') toast('正在產生初診會前簡報…');
+    try{
+      var ok=await new Promise(function(r){ loadPptx(r); }); if(!ok) throw new Error('PPTX 載入失敗');
+      var _serif=(typeof SERIF!=='undefined')?SERIF:'Georgia, "Noto Serif TC", serif';
+      var _sans=(typeof SANS!=='undefined')?SANS:'"Noto Sans TC", system-ui, sans-serif';
+      var _corm=(typeof CORM!=='undefined')?CORM:'"Cormorant Garamond", serif';
+      var C=(typeof pptPalette==='function')?pptPalette():{bg:'#FBF7F2',text:'#2A1A1C',text2:'#5C4A3C',text3:'#8A7274',text4:'#A89498',primary:'#A51820'};
+      var name=(a.displayName||a.handle||'客戶'), handle=(a.handle||''), d=new Date().toISOString().slice(0,10);
+
+      var vs=vidsOf(a).slice().sort(function(x,y){return num(y.views)-num(x.views);});
+      var nm=notesMap(a);
+      var pros=collect(vs,nm,'pros',4), cons=collect(vs,nm,'cons',5);
+      var he=(typeof latestHealthEntry==='function')?latestHealthEntry(a):null;
+      var items=(he&&typeof normalizeHealthItems==='function')?normalizeHealthItems(he.items):[];
+      var weak=items.slice().sort(function(x,y){return (x.score||0)-(y.score||0);}).slice(0,3);
+      var dps=(a.deliveryPackages||[]); var diag=dps.length?(dps[dps.length-1].diagnosis||null):null;
+      var totalViews=vs.reduce(function(s,v){return s+num(v.views);},0);
+
+      var pptx=pptFactory(); pptx.layout='LAYOUT_WIDE'; pptx.author='ATELIER'; pptx.company='ATELIER'; pptx.subject='會前初步觀察與需求對焦';
+      function kicker(s,t){ s.addText(t,{x:.8,y:.7,w:10,h:.35,fontSize:10,color:C.text3,fontFace:_corm,charSpace:3}); }
+      function title(s,t){ s.addText(t,{x:.8,y:1.2,w:11.6,h:.95,fontSize:32,bold:true,color:C.text,fontFace:_serif,fit:'shrink'}); }
+      function brandFoot(s){ s.addText('ATELIER',{x:.8,y:7.05,w:3,h:.3,fontSize:9,color:C.text4,fontFace:_sans}); s.addText('Inspire · Create · Shine.',{x:8.5,y:7.05,w:4,h:.3,fontSize:9,color:C.text4,fontFace:_corm,align:'right'}); }
+
+      // 1 封面
+      var s1=pptx.addSlide(); s1.background={color:C.bg};
+      s1.addText('ATELIER × '+String(name).toUpperCase(),{x:.8,y:.7,w:11.5,h:.4,fontSize:11,color:C.text3,fontFace:_corm,charSpace:4});
+      s1.addText('會前初步觀察\n與需求對焦',{x:.8,y:2.0,w:11.5,h:2.1,fontSize:54,bold:true,color:C.text,fontFace:_serif,lineSpacingMultiple:1.02,fit:'shrink'});
+      s1.addText(name+(handle?('　·　'+handle):''),{x:.8,y:5.4,w:12,h:.5,fontSize:19,color:C.primary,fontFace:_serif});
+      s1.addText('Pre-meeting Brief · '+d,{x:.8,y:7.0,w:9,h:.35,fontSize:10,color:C.text3,fontFace:_corm});
+
+      // 2 ATELIER 介紹
+      var s2=pptx.addSlide(); s2.background={color:C.bg}; kicker(s2,'ABOUT'); title(s2,'ATELIER｜短影音內容營運系統');
+      s2.addText('不是接案拍片，是幫品牌建立可累積的內容資產。',{x:.8,y:2.15,w:11.5,h:.5,fontSize:15,color:C.text2,fontFace:_sans});
+      var stats=[['13 年','自媒體內容經驗'],['9 億+','YouTube 累積觀看'],['200 萬','自有頻道最高訂閱'],['百家+','精品美妝品牌合作']];
+      stats.forEach(function(st,i){ var x=.85+i*3.0; s2.addText(st[0],{x:x,y:3.3,w:2.8,h:.7,fontSize:30,bold:true,color:C.primary,fontFace:_corm}); s2.addText(st[1],{x:x,y:4.1,w:2.8,h:.5,fontSize:12,color:C.text2,fontFace:_sans}); });
+      brandFoot(s2);
+
+      // 3 六階段系統
+      var s3=pptx.addSlide(); s3.background={color:C.bg}; kicker(s3,'OUR SYSTEM'); title(s3,'六階段內容營運系統');
+      var stg=[['I','IP 與內容定位'],['II','主題方向規劃'],['III','腳本內容整理'],['IV','拍攝執行'],['V','後製整理'],['VI','主平台成品交付']];
+      stg.forEach(function(g,i){ var col=i%3, row=Math.floor(i/3); var x=.85+col*3.9, y=2.7+row*1.7;
+        s3.addText(g[0],{x:x,y:y,w:1,h:.5,fontSize:20,bold:true,color:C.primary,fontFace:_corm});
+        s3.addText(g[1],{x:x,y:y+.5,w:3.7,h:.6,fontSize:15,bold:true,color:C.text,fontFace:_sans}); });
+      brandFoot(s3);
+
+      // 4 你已具備的
+      var s4=pptx.addSlide(); s4.background={color:C.bg}; kicker(s4,'WHAT YOU ALREADY HAVE'); title(s4,'我們看到的 '+name+'・你已具備的');
+      s4.addText('穩定產出 '+vs.length+' 支　·　累積觀看 '+fmtV(totalViews),{x:.8,y:2.1,w:11,h:.4,fontSize:14,color:C.primary,fontFace:_sans});
+      var y4=2.75;
+      vs.slice(0,3).forEach(function(v){ s4.addText('▸ '+clip(vTitle(v),30),{x:.9,y:y4,w:8.3,h:.4,fontSize:14,bold:true,color:C.text,fontFace:_sans}); s4.addText('觀看 '+fmtV(v.views),{x:9.3,y:y4,w:3,h:.4,fontSize:12.5,color:C.primary,fontFace:_sans,align:'right'}); y4+=.62; });
+      if(pros.length){ y4+=.15; s4.addText('內容亮點（取自影片顧問筆記）',{x:.8,y:y4,w:11,h:.35,fontSize:12.5,bold:true,color:C.text2,fontFace:_sans}); y4+=.5; pros.forEach(function(p){ s4.addText('· '+p,{x:.95,y:y4,w:11.4,h:.45,fontSize:12.5,color:C.text2,fontFace:_sans}); y4+=.5; }); }
+      if(!vs.length&&!pros.length) s4.addText('（先在工作台輸入她的影片並做顧問筆記，這頁會自動長出）',{x:.9,y:2.8,w:11,h:.5,fontSize:14,color:C.text3,fontFace:_sans});
+      brandFoot(s4);
+
+      // 5 可優化方向
+      var s5=pptx.addSlide(); s5.background={color:C.bg}; kicker(s5,'WHAT WE OBSERVED'); title(s5,'我們看到的 '+name+'・可優化的方向');
+      var y5=2.4;
+      if(cons.length){ cons.forEach(function(cc,i){ s5.addText(String(i+1).padStart(2,'0'),{x:.85,y:y5,w:.7,h:.4,fontSize:15,bold:true,color:C.primary,fontFace:_corm}); s5.addText(cc,{x:1.6,y:y5,w:10.8,h:.5,fontSize:13.5,color:C.text,fontFace:_sans}); y5+=.62; }); }
+      if(weak.length){ y5+=.15; s5.addText('內容健康最該補的三項',{x:.85,y:y5,w:11,h:.35,fontSize:12.5,bold:true,color:C.text2,fontFace:_sans}); y5+=.5; weak.forEach(function(it){ s5.addText('· '+(it.label||'')+'（'+(it.score||0)+'/5）',{x:1.0,y:y5,w:11,h:.4,fontSize:13,color:C.text2,fontFace:_sans}); y5+=.46; }); }
+      if(!cons.length&&!weak.length) s5.addText('（先做影片顧問筆記的「缺點」與帳號健檢，這頁會自動長出）',{x:.9,y:2.5,w:11,h:.5,fontSize:14,color:C.text3,fontFace:_sans});
+      brandFoot(s5);
+
+      // 6 內容方向
+      var s6=pptx.addSlide(); s6.background={color:C.bg}; kicker(s6,'DIRECTION'); title(s6,'如果要做短影音・內容方向');
+      if(diag){ s6.addText('主攻：目標層 '+(diag.topGoal||'—')+'　·　關鍵階段 '+(diag.topStage||'—'),{x:.85,y:2.5,w:11.5,h:.5,fontSize:16,bold:true,color:C.primary,fontFace:_sans});
+        var gaps=(diag.gaps&&diag.gaps.length)?diag.gaps:[]; var gy=3.4; if(gaps.length){ s6.addText('最該補的缺口',{x:.85,y:gy,w:11,h:.35,fontSize:13,bold:true,color:C.text2,fontFace:_sans}); gy+=.5; gaps.slice(0,4).forEach(function(g){ s6.addText('▸ '+clip(g,46),{x:1.0,y:gy,w:11,h:.4,fontSize:14,color:C.text,fontFace:_sans}); gy+=.5; }); } }
+      else { var p=a.profile||{}; var pos=p.positioning;
+        if(pos&&String(pos).trim()){ s6.addText('帳號定位',{x:.85,y:2.5,w:11,h:.35,fontSize:13,bold:true,color:C.text2,fontFace:_sans}); s6.addText(clip(pos,80),{x:.85,y:3.0,w:11.5,h:.7,fontSize:15,color:C.text,fontFace:_sans}); }
+        else s6.addText('在工作台「策略診斷」跑完並「送服務台」後，這頁會帶出目標層／關鍵階段／缺口。',{x:.85,y:2.5,w:11,h:.8,fontSize:14,color:C.text3,fontFace:_sans}); }
+      brandFoot(s6);
+
+      // 7 結尾
+      var s7=pptx.addSlide(); s7.background={color:C.primary};
+      s7.addText('ATELIER',{x:.8,y:2.7,w:11,h:.6,fontSize:16,color:'#FFFFFF',fontFace:_corm,charSpace:5});
+      s7.addText('我想聽你的真實反饋。',{x:.8,y:3.4,w:11.5,h:1,fontSize:34,bold:true,color:'#FFFFFF',fontFace:_serif});
+      s7.addText('比較想知道哪裡不夠，比較不擔心哪裡很好。',{x:.8,y:4.9,w:11.5,h:.5,fontSize:15,color:'#F4D9DB',fontFace:_sans});
+
+      await pptx.writeFile({ fileName:'ATELIER_初診會前簡報_'+String(name).replace(/[\\/:*?"<>|]/g,'')+'_'+d+'.pptx' });
+      if(typeof toast==='function') toast('✓ 初診會前簡報已產生');
+    }catch(e){ try{console.warn('[cs-v4.35 initial brief]',e);}catch(_){} if(typeof toast==='function') toast('產生失敗，請看 Console'); }
+    finally{ if(btn&&btn.tagName==='BUTTON'){ btn.disabled=false; btn.innerHTML=oldHTML; } }
+  };
+
+  // 注入到 ①初診（view-stage1）頂端
+  function inject(){
+    var host=document.getElementById('view-stage1'); if(!host||!host.children.length) return;
+    if(host.querySelector('[data-cs-brief]')) return;
+    var box=document.createElement('div'); box.className='cs-brief-wrap'; box.setAttribute('data-cs-brief','1');
+    box.innerHTML='<div class="cs-brief-h">📄 初診交付物：會前初步觀察 PPT</div>'
+      +'<div class="cs-brief-note">用這位客戶的影片優點／缺點＋最弱健檢＋診斷，自動長出一份像「會前簡報」的精緻 PPT（封面／ATELIER／六階段／你已具備的／可優化方向／內容方向）。先在工作台把她的影片做好顧問筆記，內容會更完整。</div>'
+      +'<button type="button" class="cs-brief-btn">▣ 自動產生初診會前簡報 PPT</button>';
+    box.querySelector('.cs-brief-btn').onclick=window._csInitialBriefPPTX;
+    host.insertBefore(box, host.firstChild);
+  }
+  setInterval(function(){ try{inject();}catch(e){} }, 900);
+  if(document.readyState!=='loading') setTimeout(inject,440); else document.addEventListener('DOMContentLoaded',function(){ setTimeout(inject,440); });
 })();
 </script>
 
