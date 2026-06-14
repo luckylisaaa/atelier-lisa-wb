@@ -8,7 +8,7 @@
 <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v338 (版本號僅留註解，不顯示於畫面)
+<!-- ATELIER 影片診斷工作台 · 內部版本 v339 (版本號僅留註解，不顯示於畫面)
 v267 更新（策略診斷硬修版：重做 Top/Bottom 固定列高、重綁單支核對窗與 AI 工具按鈕、補互動式 1–8 操作步驟與策略對標雷達；本版用最後一段 v267 override 強制接管策略診斷頁，避免舊版 v263/v265 殘留函式覆蓋。只動 index.html，不動 client.html、Firebase、CSV 與六守門提示詞。）
 v266 更新（hotfix：修正 v265 最後一段策略診斷事件代理少 catch，導致 v265 override script 無法執行、畫面徽章被前一段 v263 override 改回 v263，且策略診斷部分按鈕失效；本版補回 catch 並將顯示版本固定為 v266。只動 index.html，不動 client.html、Firebase、CSV 與六守門提示詞。）
 v265 更新（策略診斷按鈕修復、整齊 Top/Bottom、互動流程與策略對標雷達）：修正策略診斷 Top/Bottom 每支影片的按鈕高度與位置不一致；改用固定列高與事件代理，讓「快看／核對」「留在本頁定位」「改寫提示」以及單支核對窗內 AI 工具、去影片庫定位、獨立視窗核對、收起都可穩定點擊；將 1–8 操作流程改成可點擊小教學；新增策略對標雷達，從同產業、同職稱、同身份、A–E、G 階段、流量觸發、素材與高互動／高分享等面向找全庫可借鏡樣本。只動 index.html，不動 client.html、Firebase、CSV 與六守門提示詞。
@@ -346,7 +346,7 @@ v182 更新（交辦單：讓工具變準變專業，接 v181、會動邏輯與�
 <script>
 /* ═══════════ v264：策略診斷使用說明書小窗＋Top/Bottom 標籤/按鈕視覺分層（index.html only） ═══════════ */
 (function(){
-  var VERSION='v338';
+  var VERSION='v339';
   function H(id){return document.getElementById(id)}
   function S(s){try{return (typeof esc==='function')?esc(s||''):String(s||'').replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}catch(e){return String(s||'')}}
   function N(x){try{ if(typeof parseNum==='function') return parseNum(x); }catch(e){} if(x==null)return 0; var t=String(x).replace(/,/g,'').trim(); if(!t)return 0; var m=t.match(/([0-9]+(?:\.[0-9]+)?)/); if(!m)return 0; var n=parseFloat(m[1])||0; if(/[萬万]/.test(t))n*=10000; else if(/[千kK]/.test(t))n*=1000; return n; }
@@ -467,7 +467,7 @@ v182 更新（交辦單：讓工具變準變專業，接 v181、會動邏輯與�
      v158 更新（交辦單：客戶版一頁診斷書 buildClientOnePager 全面升級五組一次到位，全 additive、維持 contenteditable、不動內部三關提示詞術語與既有資料結構）：集中改 deliver IIFE 內 OP_GLABEL→buildClientOnePager 整段（以 node --check 過的獨立區塊單次 splice）＋ #clientOnePager 列印 CSS。第一組（自動灌入＋修列印爆框）：①新增 _intakeTopics(pf) 容錯解析 profile.intakeCard 抽候選主題；現況／問題／機會沿用 _accVidStats 推導並全部白話化（去 G 代號），問題與機會欄各帶為什麼說明。②@media print 對 #opPaper 加 max-width:100%／width:100%／box-sizing:border-box／padding 縮小／border:0／margin:0，#clientOnePager 加 box-sizing，避免固定 px 寬溢出與尾頁空白。第二組（一句話定位候選＋顧問首選）：新增 _posCands(c,pf) 從定位／人設／受眾／職稱產業／問診卡衍生 3–5 候選，首選標「顧問首選」其餘「備選」各附適合情境；op-noprint radio 可即時切換 #opPosMain 主定位；備選清單 op-alt 僅在勾「列印備選」時印出。第三組（為什麼這樣判斷）：定位／受眾／問題／機會／建議方向各帶 _whyLine() 淺色斜體可編輯小字，來源為問診卡與現況數據、零代號。第四組（大綱候選池）：這一輪建議方向改為候選池＝本輪支數(dl-count)＋緩衝(10→16)，前 N 標「建議先拍」其餘標「備選」(op-alt)，每列 op-pick checkbox 可即時採用／備選互換並改標籤。第五組（雙語白話＋專業註記開關）：新增 LABEL_MAP 把 G1–G5／A–E 全翻白話、客戶面一律白話；#opShowCodes 開關預設關，開了才顯示漏斗代號（op-code，CSS show-codes 控制）；內部 buildIP／buildOutline／buildScript 術語完全未動。未動三關按鈕(#dlIP #dlOutline #dlScript)觸發與 populateDlClient／存檔結構；新區塊先單獨 node --check、全檔 node --check 全過、div 1006／details 40／CSS 開閉平衡。
      v157 更新（交辦單 C 組：人設關鍵字別被誤讀成「對人嗆聲」，併入 TONE_RULES；A／B 組 v156 已完成、本版只補 C，全 additive）：在共用常數 TONE_RULES（const D 之後、layers 之前的單行字串）尾端新增三條鐵律——⑧人設關鍵字（直率／犀利／霸氣／敢說／毒舌／高冷…）一律理解為「個人風格與視覺氣質」、不是「對觀眾說話態度」；除非 profile 明確標註要對人強勢，否則語氣預設平等親和，嚴禁把人設翻成嗆觀眾／訓觀眾／貶低觀眾。⑨標題與 Hook 一律邀請式平視句型（我也有過／我跟你講／我發現／我們一起），嚴禁指正式俯視句型（你不是＿＿你是＿＿／你打算＿＿多久／少外行了／別再裝懂了），先用自身視角承接再邀請。⑩「跩」要跩在畫面／品味／選物／剪輯節奏／觀點銳利度上，不要跩在貶低觀眾。因 TONE_RULES 已由 _toneRulesBlock 自動植入全部 7 個產提示詞按鈕（IP定位／腳本大綱／腳本／問診／借技法寫腳本／賣點翻譯／帳號體檢），C 組三條同步生效，未逐個改 builder。TONE_RULES 以 Python 字面換行符取代、assert 命中 1 次、單次寫檔、仍為單行；未動 A／B 組（_clientTranscriptBlock／updateDlVideoWarn／三關按鈕觸發）與既有資料結構；node --check 全過、div／details／CSS 開閉平衡。
      v156 更新（交辦單：客戶交付腳本「餵客戶本人逐字稿」＋全庫共用「口吻鐵律 TONE_RULES」一次到位，全 additive、不動三關按鈕觸發與既有資料結構）：A組（餵真實口吻＋料量守門）：①buildOutline／buildScript 組提示詞時，依選中客戶呼叫新全域 _clientTranscriptBlock(c)，自動帶入該客戶 videosOfAccount 前 5 支的 Hook(≤200)＋完整文案節選(≤500)＋逐字稿節選(≤800)，並加指示「新腳本必須延續他本人的說話方式、不可套用通用勵志／說教／導購／網紅口吻公式」。②新增 #dlVideoWarn 提醒(置於三關大卡之前)，依 #dlClient 選擇即時切換：若 videosOfAccount<3 顯示「目前僅 N 支已拆解、AI 看不到他真實口吻」提醒；新增 updateDlVideoWarn()，並掛 #dlClient onchange、filterDlClient 改寫尾段、deliver 分頁點擊／DOM 載入觸發。B組（全庫共用 TONE_RULES）：①在主 script 共用定義區(const D 之後、layers 之前)新增常數 TONE_RULES(7 條鐵律：可教育但姿態平等／嚴禁高姿態說教／思維高度 OK 但語言姿態高禁止／Hook 結尾禁「你不是＿＿你是＿＿」等指正句式／禁直銷雞湯焦慮明牌／主詞起步以我為主／教育型先承認自己也曾經是觀眾)。②新增全域函式 _toneRulesBlock(client)，自動串成「全庫口吻鐵律」區塊。③讓 buildIP／buildOutline／buildScript／buildClientQuestionsPrompt／buildBorrowTechniquePrompt／buildFabPrompt／buildAccountHealthPrompt 共 7 個提示詞產生器，全部自動植入 TONE_RULES(置於各自「請輸出／請產出」段落之前)。④保留逐客戶覆蓋：若 client.profile.tone／口吻／toneRule 任一有設定，會在 TONE_RULES 之後加掛「本客戶口吻覆蓋(優先級高於通則)」段，達到 Sunny 等只陳述觀點完全不教育的個案需求。未動 ACC_PROFILE_FIELDS／accProfileBlock／三關按鈕觸發／既有資料結構；node --check 全過、div 與 details 與 CSS 開閉平衡。
-     v155 更新（交辦單：客戶交付頁兩組優化一次到位，全 additive、不動三關產生提示詞邏輯與既有存檔結構）：A組（流程圖與成品預覽可點）：①HOW IT WORKS 三張階段小卡(IP定位／腳本大綱／腳本)加 cursor＋onclick＝dlGotoStage(n)，點了平滑捲動到對應大卡並金框高亮；三關大卡分別補上錨點 id＝dlStage1／dlStage2／dlStage3。②三關「成品預覽縮圖」(米色紙)加 cursor＋onclick＝showDeliverSample(n)，彈出該階段完整範例樣張(沿用米色紙#FAF6EE／金線#D7BE8C／金序號#B08A3E／深酒紅#7A1318，用既有 modal sheet)，縮圖標題加「點我放大」提示。B組（下拉 RWD 與搜尋）：③#dlClient 與新搜尋框都加 box-sizing＝border-box＋display block，寬度跟隨容器不溢出、縮放正常。④選客戶上方新增 #dlClientSearch 搜尋框，oninput＝filterDlClient()：依 handle／職稱／名稱即時篩選重建 option(值仍為帳號 id、保留當前選擇)，比照帳號管理搜尋邏輯。新增全域函式(置於 body 末 script，不在三關 IIFE 內)：dlGotoStage、dlCloseModal、filterDlClient、showDeliverSample；沿用 accounts／esc／既有 modal(#modal #sheet)。未動 buildIP／buildOutline／buildScript／buildClientOnePager／populateDlClient 與三關按鈕(#dlIP #dlOutline #dlScript)。node --check 全過、div 與 details 與 CSS 開閉平衡。
+     v155 更新（交辦單：客戶交付頁兩組優化一次到位，全 additive、不動三關產生提示詞邏輯與既有存檔結構）：A組（流程圖與成品預覽可點）：①HOW IT WORKS 三張階段小卡(IP定位／腳本大綱／腳本)加 cursor＋onclick＝dlGotoStage(n)，點了平滑捲動到對應大卡並金框高亮；三關大卡分別補上錨點 id＝dlStage1／dlStage2／dlStage3。②三關「成品預覽縮圖」(米色紙)加 cursor＋onclick＝showDeliverSample(n)，彈出該階段完整範例樣張(沿用米色紙#FAF6EE／金線#D7BE8C／金序號#9C7D4A／深酒紅#7A1318，用既有 modal sheet)，縮圖標題加「點我放大」提示。B組（下拉 RWD 與搜尋）：③#dlClient 與新搜尋框都加 box-sizing＝border-box＋display block，寬度跟隨容器不溢出、縮放正常。④選客戶上方新增 #dlClientSearch 搜尋框，oninput＝filterDlClient()：依 handle／職稱／名稱即時篩選重建 option(值仍為帳號 id、保留當前選擇)，比照帳號管理搜尋邏輯。新增全域函式(置於 body 末 script，不在三關 IIFE 內)：dlGotoStage、dlCloseModal、filterDlClient、showDeliverSample；沿用 accounts／esc／既有 modal(#modal #sheet)。未動 buildIP／buildOutline／buildScript／buildClientOnePager／populateDlClient 與三關按鈕(#dlIP #dlOutline #dlScript)。node --check 全過、div 與 details 與 CSS 開閉平衡。
      v154 更新（交辦單#1：問診存回紀錄可追溯，全 additive、不動資料結構）：①saveIntakeCard 的歸欄迴圈改為先偵測該 profile 欄原本有無非提示值(had)，saved 改存 over 旗標；②存回時除既有 intakeCard／intakeDate，另寫入 profile.intakeFields＝本次歸欄數；③確認清單：每欄若覆蓋舊值標一個金色「覆蓋」小標、標頭顯示「N 欄其中 M 欄覆蓋舊值」、底部加說明；④renderAccountCard 在看主頁那排前新增一行「<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#A51820" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:3px"><rect x="6" y="4" width="12" height="16" rx="2"/><path d="M9 4h6v2H9z"/><path d="M9 13l2 2 4-4"/></svg>上次問診更新：日期 ·（本次更新 N 欄）」(僅當 profile.intakeDate 存在時顯示)。改動函式：saveIntakeCard(歸欄迴圈、intakeFields、ovc／rows／訊息 HTML)、renderAccountCard(新增一行模板字串)。沿用 accounts／profile／isHintText／esc／saveAccounts／renderAccounts，未動存檔機制與資料結構；node --check 全過、div 與 details 開閉平衡。
      v153 更新（三個小優化一次到位：收斂卡確認清單＋帳號卡按鈕收乾淨＋問診表細拆追問）：①saveIntakeCard 改寫：存回後不再自動關視窗，改在 ci-msg 顯示「已歸到帳號檔的欄位清單(欄名＋值預覽)」＋本輪建議已備查＋下一步去交付頁的提示，讓使用者親眼看到歸類結果(saved 由字串改存 物件帶 label/val)。②renderAccountCard meta 列收乾淨：主列只留 看主頁／編輯／客戶前置問診／刪除，其餘(特點賣點／帳號體檢／客戶診斷／借技法／粉絲快照／版面快照)收進「更多分析工具」vstrat 摺疊；data-acc-* 綁定不變(querySelectorAll 仍可取用摺疊內元素)。③INTAKE_QUESTIONS 每題下新增 2-3 個 ↳ 追問(通用版、開會客戶答得空可往下追)。純版面＋字串＋既有函式內邏輯調整，未動資料結構/存檔機制；node --check 全過、div 與 details 仍開閉平衡(meta 收乾淨新增 1 div 對與 1 details 對)。
      v152 更新（帳號管理頁瘦身：仿「輸入影片」分子頁籤，帳號清單一進來就乾淨、工具收進工具箱）：view-accounts 在 page-head 下新增兩個子頁籤（showAccSub）：帳號清單＝新增帳號＋搜尋排序＋accList；工具箱＝資料備份／建檔收集盤／貼卡入庫(acc-tools-grid)＋卡片補完健檢＋九宮格速記庫＋待核對清單(checkListPanel)。以 Python 行級重排（原順序 新增→工具區→搜尋排序→補完→速記→待核對→清單 interleaved，把 搜尋排序＋accList 移到新增之後成 accsub-list，其餘工具移入 accsub-tools，皆為原封不動搬移既有平衡區塊）；新增 showAccSub(w) 比照 showInputSub 切換 display＋頁籤樣式；預設顯示帳號清單（inline display）。純版面重排＋一個切換函式，未動任何資料邏輯／既有元素 id（renderAccounts／renderCheckList／renderGridLib／bindAccountUI 全部照舊以 id 取用）；node --check 全過、div 974/974、details 39/39。
@@ -489,7 +489,7 @@ v182 更新（交辦單：讓工具變準變專業，接 v181、會動邏輯與�
      v136 更新（工作台端：日期安全網 resolveDate ＋ 匯入自檢；接續 v135 的修正規格清單工作台層）：①狀況2 工作台層：新增 resolveDate(raw,anchorStr)——先抓 /\d{4}-\d{2}-\d{2}/，抓不到則用同卡「記錄日期」當錨點把「N天前／N週前」回推成絕對日期(N天前＝錨點−N天、N週前＝−N×7天)，再不到回空字串；單張匯入(原 f-date 解析點)與批次 cardToVideo 的 date 一律改用 resolveDate(F['發布日期'],F['記錄日期'])；timeClass() 開頭也用 resolveDate 正規化，對舊卡與漏網相對日期雙保險。嚴格只增不減：原本吃得進的絕對日期行為不變，多救回相對日期。②狀況4＋5 工作台層(輕量版)：單張匯入結果訊息新增「匯入自檢」——掃 F 值偵測「待補/截圖待補/未提供/需查證」殘留欄位(排除完整文案/逐字稿/備註等長文欄)並列出、提醒補；重掃 raw 偵測「同一 KNOWN 欄位名出現兩次」(疑似貼到兩張卡或他支污染)。不擋匯入、只在既有 pm-miss 樣式加提示，不動表格/DOM 結構、零誤殺。較重項目(估/待定列內小標、內頁字卡顯示欄與 CSV、未知孤行污染偵測、帳號端顯示名稱/身份/粉絲回填)留 v137。node --check 全過、div/CSS 不變。
      v135 更新（提示詞層修正 8 狀況＋KNOWN 補欄；依「修正規格清單 v134to135」投報率順序的提示詞批次）：①狀況1 PROMPT_0／PROMPT_0A 的 07 檔內容由「5 行＋備註一句」升級成固定欄位版(創作者/帳號連結/影片連結/記錄日期/發布日期/封面文案/主題/六數字含圖示對應/備註)，定位仍為輕量封存索引。②狀況2 日期錨定：GEM 卡發布日期欄、PROMPT_C 讀文案發布日期、PROMPT_A 逐格⑦、PROMPT_0/0A 07 檔，全部改成「X天前／X週前一律用截圖日回推成絕對 YYYY-MM-DD(週前標估)、保留原顯示＋截圖日」——從源頭讓工作台既有 /\d{4}-\d{2}-\d{2}/ 解析吃得進去。③狀況3 封面vs內頁字卡：GEM 第2點＋GEM/PROMPT_C 卡新增「內頁字卡」欄、PROMPT_A 逐格②，明確封面文案＝九宮格縮圖實印字(上大字／下鉤子句)，內頁字卡另記不混入。④狀況4 PROMPT_C 加【污染自檢】(同欄位兩次／矛盾素材／逐字稿沒提到的人物場景→判他支污染整段剔除)。⑤狀況5 PROMPT_C 加【回填鐵則】(六數字讀截圖回填不可留截圖待補；顯示名稱/身份/職稱/產業/粉絲從帳號分析卡沿用；兩連結分別填)。⑥狀況6 PROMPT_C 子題型無定義清單填「候選：XXX(待定義清單複核)」。⑦狀況7 PROMPT_C 審查加「有 SRT 則總秒數＝SRT 末句結束時間、覆蓋 Gemini 推測並備註」。⑧狀況9 PROMPT_A 加「九宮格未編號封面另列清單」。⑨狀況8 KNOWN 解析白名單補「目標人群」「內頁字卡」。提示詞為單行字串常數、以 Python 字面 \n 取代、每筆 assert 命中 1 次、JS node --check 全過。工作台端較重項目(resolveDate 安全網、匯入前污染／待補警示器、估/待定小標、內頁字卡顯示欄)留 v136。
      v134 更新（智能對標推薦：讓 AI 從整個帳號庫挑誰最該對標）：版面對照頁「對標優化」卡下方新增「智能對標推薦」卡——選 1 客戶＋這輪目標(重用交付頁 6 目標)＋Top N → buildRecommendPrompt 把客戶 accProfileBlock＋目標＋庫內所有其他帳號的精簡關鍵欄位(handle/職稱/產業/定位/人設/人群/產品＋已拆解影片數)組成提示詞，要 AI 排出最該對標的 Top N＋理由＋可學什麼＋通用或專屬＋優先級，並點出不建議對標的，最後導去「對標優化」。新增 populateRecClient(掛在 renderComparePicker，隨頁面/帳號變動刷新)、recRun 綁定 buildRecommendPrompt。比照既有 buildOptimizePrompt 寫法、純讀 accounts 不連 AI。卡內含 2 步視覺引導(PICK→RANK)。div 15 平衡。
-     v133 更新（三關成品預覽縮圖＋對標優化視覺引導）：①客戶交付三關卡(IP/Outline/Script)各在效益行與按鈕之間插入一張「成品預覽 · 交給客戶會長這樣」迷你縮圖——米色紙#FAF6EE＋金線#D7BE8C＋金序號#B08A3E＋深酒紅字#7A1318的襯線假版面(IP=定位三列／大綱=四列假表格／腳本=秒數chip場景列)，純HTML+span假內容、無JS。②版面對照「對標優化」卡ph-sub之後、選客戶之前插入3步迷你流程(GATHER 你的客戶+對標／COMPARE AI比對落差／TUNE 給可照做的優化)，flex+箭頭、aico svg、品牌色，比照客戶交付流程圖樣式。div 全平衡、未動任何 JS 與既有按鈕。
+     v133 更新（三關成品預覽縮圖＋對標優化視覺引導）：①客戶交付三關卡(IP/Outline/Script)各在效益行與按鈕之間插入一張「成品預覽 · 交給客戶會長這樣」迷你縮圖——米色紙#FAF6EE＋金線#D7BE8C＋金序號#9C7D4A＋深酒紅字#7A1318的襯線假版面(IP=定位三列／大綱=四列假表格／腳本=秒數chip場景列)，純HTML+span假內容、無JS。②版面對照「對標優化」卡ph-sub之後、選客戶之前插入3步迷你流程(GATHER 你的客戶+對標／COMPARE AI比對落差／TUNE 給可照做的優化)，flex+箭頭、aico svg、品牌色，比照客戶交付流程圖樣式。div 全平衡、未動任何 JS 與既有按鈕。
      v132 更新（客戶交付頂部加三階段視覺流程圖）：在 view-deliver 的 page-head 之後、選客戶卡之前，插入一張「HOW IT WORKS」視覺引導卡——三個步驟卡(STAGE1 IP定位／rouge、STAGE2 腳本大綱／gold-dark、STAGE3 腳本／primary-deep)以 flex 橫排＋箭頭串接，每步一個 aico svg 圖示＋一句白話，末尾一行指向「產生客戶版一頁診斷書」。純 HTML/CSS、用既有品牌色變數，div 16/16 平衡，未動任何 JS 與既有三關卡；概念比照輸入頁的區塊式視覺引導。
      v131 更新（把「每步效益＋圖示」教學層鋪到操作流程每個 STEP 卡）：在「② 操作流程」分頁每張 sop-step 卡的說明文字下方、按鈕上方，加入一行「效益：…」＋check-circle 圖示，複用 v130 客戶交付三關的樣式(font-size:11.5px/gold-dark/flex+aico svg)；①建檔～⑧貼進工作台共 8 句白話效益。STEP②兩顆零打字鈕與 copyPromptA 不動、STEP⑥ toggleSubtypeEmbed/subtypeEmbed 內嵌工具不動。④逐字稿與⑧貼進工作台兩張無按鈕卡，效益行放在說明文字後(margin:8px 0 0)當卡片結尾。
      v130 更新（客戶交付加「客戶版一頁診斷書」漂亮模板產生器＋三關效益說明）：①客戶交付頁新增 dlOnePager → buildClientOnePager 就地嵌入高端編輯風一頁式診斷書(米色紙/襯線/細金線/序號01-)，客戶名/主打/日期自動帶入、其餘 contenteditable 可打字貼上、可＋新增一列、dlOnePagerPrint→window.print()＋@media print 只印 #clientOnePager。②三關各加一句「效益」＋圖示(教學樣板，之後可鋪到整條產線)。
@@ -1221,7 +1221,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v338</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v339</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -2605,11 +2605,11 @@ if('serviceWorker' in navigator){
     <div style="margin:0 0 12px;border:1px dashed var(--gold-soft);border-radius:8px;padding:8px 10px;background:#fff">
       <div style="font-size:10px;letter-spacing:1px;color:var(--gold-dark);font-weight:700;margin-bottom:6px">成品預覽 &#183; 交給客戶會長這樣 &#183; <span style="text-decoration:underline">點我放大</span></div>
       <div style="background:#FAF6EE;border:1px solid #D7BE8C;border-radius:6px;padding:10px 12px;font-family:'Noto Serif TC',serif;cursor:zoom-in" onclick="showDeliverSample(1)" title="點我放大看完整範例樣張">
-        <div style="font-size:8px;letter-spacing:2px;color:#B08A3E">IP POSITIONING</div>
+        <div style="font-size:8px;letter-spacing:2px;color:#9C7D4A">IP POSITIONING</div>
         <div style="font-size:12px;font-weight:700;color:#7A1318;margin:2px 0 8px">客戶 &#183; IP 定位一頁</div>
-        <div style="display:flex;gap:8px;align-items:center;margin-bottom:5px"><span style="color:#B08A3E;font-size:9px;font-weight:700">01</span><span style="width:52px;flex:none;font-size:9px;color:#2B2521">一句定位</span><span style="flex:1;height:7px;background:#EFE7D6;border-radius:3px"></span></div>
-        <div style="display:flex;gap:8px;align-items:center;margin-bottom:5px"><span style="color:#B08A3E;font-size:9px;font-weight:700">02</span><span style="width:52px;flex:none;font-size:9px;color:#2B2521">理想受眾</span><span style="flex:1;height:7px;background:#EFE7D6;border-radius:3px"></span></div>
-        <div style="display:flex;gap:8px;align-items:center;margin-bottom:5px"><span style="color:#B08A3E;font-size:9px;font-weight:700">03</span><span style="width:52px;flex:none;font-size:9px;color:#2B2521">落點 A&#8594;E</span><span style="flex:1;height:7px;background:#EFE7D6;border-radius:3px"></span></div>
+        <div style="display:flex;gap:8px;align-items:center;margin-bottom:5px"><span style="color:#9C7D4A;font-size:9px;font-weight:700">01</span><span style="width:52px;flex:none;font-size:9px;color:#2B2521">一句定位</span><span style="flex:1;height:7px;background:#EFE7D6;border-radius:3px"></span></div>
+        <div style="display:flex;gap:8px;align-items:center;margin-bottom:5px"><span style="color:#9C7D4A;font-size:9px;font-weight:700">02</span><span style="width:52px;flex:none;font-size:9px;color:#2B2521">理想受眾</span><span style="flex:1;height:7px;background:#EFE7D6;border-radius:3px"></span></div>
+        <div style="display:flex;gap:8px;align-items:center;margin-bottom:5px"><span style="color:#9C7D4A;font-size:9px;font-weight:700">03</span><span style="width:52px;flex:none;font-size:9px;color:#2B2521">落點 A&#8594;E</span><span style="flex:1;height:7px;background:#EFE7D6;border-radius:3px"></span></div>
       </div>
     </div>
     <button class="btn btn-go" id="dlIP" style="width:auto;padding:10px 18px" title="產生「IP定位診斷書」提示詞並複製＋預覽；貼到 AI 會輸出客戶的一頁式定位與下一步方向。">產生 IP定位診斷書 提示詞</button>
@@ -2623,7 +2623,7 @@ if('serviceWorker' in navigator){
     <div style="margin:0 0 12px;border:1px dashed var(--gold-soft);border-radius:8px;padding:8px 10px;background:#fff">
       <div style="font-size:10px;letter-spacing:1px;color:var(--gold-dark);font-weight:700;margin-bottom:6px">成品預覽 &#183; 交給客戶會長這樣 &#183; <span style="text-decoration:underline">點我放大</span></div>
       <div style="background:#FAF6EE;border:1px solid #D7BE8C;border-radius:6px;padding:10px 12px;font-family:'Noto Serif TC',serif;cursor:zoom-in" onclick="showDeliverSample(2)" title="點我放大看完整範例樣張">
-        <div style="font-size:8px;letter-spacing:2px;color:#B08A3E">SCRIPT OUTLINE</div>
+        <div style="font-size:8px;letter-spacing:2px;color:#9C7D4A">SCRIPT OUTLINE</div>
         <div style="font-size:12px;font-weight:700;color:#7A1318;margin:2px 0 8px">客戶 &#183; 腳本大綱表</div>
         <div style="display:flex;gap:5px;border-bottom:1px solid #ECE0C8;padding:3px 0"><span style="flex:2;height:6px;background:#D7BE8C;border-radius:2px"></span><span style="flex:1;height:6px;background:#D7BE8C;border-radius:2px"></span><span style="flex:2;height:6px;background:#D7BE8C;border-radius:2px"></span></div>
         <div style="display:flex;gap:5px;border-bottom:1px solid #ECE0C8;padding:3px 0"><span style="flex:2;height:6px;background:#EFE7D6;border-radius:2px"></span><span style="flex:1;height:6px;background:#EFE7D6;border-radius:2px"></span><span style="flex:2;height:6px;background:#EFE7D6;border-radius:2px"></span></div>
@@ -2642,7 +2642,7 @@ if('serviceWorker' in navigator){
     <div style="margin:0 0 12px;border:1px dashed var(--gold-soft);border-radius:8px;padding:8px 10px;background:#fff">
       <div style="font-size:10px;letter-spacing:1px;color:var(--gold-dark);font-weight:700;margin-bottom:6px">成品預覽 &#183; 交給客戶會長這樣 &#183; <span style="text-decoration:underline">點我放大</span></div>
       <div style="background:#FAF6EE;border:1px solid #D7BE8C;border-radius:6px;padding:10px 12px;font-family:'Noto Serif TC',serif;cursor:zoom-in" onclick="showDeliverSample(3)" title="點我放大看完整範例樣張">
-        <div style="font-size:8px;letter-spacing:2px;color:#B08A3E">SHOOTING SCRIPT</div>
+        <div style="font-size:8px;letter-spacing:2px;color:#9C7D4A">SHOOTING SCRIPT</div>
         <div style="font-size:12px;font-weight:700;color:#7A1318;margin:2px 0 8px">客戶 &#183; 可拍腳本</div>
         <div style="display:flex;gap:8px;align-items:center;margin-bottom:5px"><span style="flex:none;font-size:8px;color:#fff;background:#7A1318;border-radius:3px;padding:1px 5px">0-3s</span><span style="flex:1;height:7px;background:#EFE7D6;border-radius:3px"></span></div>
         <div style="display:flex;gap:8px;align-items:center;margin-bottom:5px"><span style="flex:none;font-size:8px;color:#fff;background:#7A1318;border-radius:3px;padding:1px 5px">3-8s</span><span style="flex:1;height:7px;background:#EFE7D6;border-radius:3px"></span></div>
@@ -4176,9 +4176,9 @@ function renderLibrary(){
     function pb(p,lab,cur,dis){ return '<button class="lib-pg" data-pg="'+p+'"'+(dis?' disabled':'')+' style="min-width:32px;padding:6px 9px;margin:1px;border-radius:8px;font-family:inherit;font-size:12.5px;cursor:'+(dis?'default':'pointer')+';border:1px solid '+(cur?'#A51820':'var(--gold-soft)')+';background:'+(cur?'#A51820':'#FDFBF8')+';color:'+(cur?'#FDFBF8':(dis?'#C9B7A8':'#7A1318'))+';font-weight:'+(cur?'800':'600')+'">'+lab+'</button>'; }
     var btns=pb(libPage-1,'‹',false,libPage<=1);
     var lo=Math.max(1,libPage-3), hi=Math.min(pages,libPage+3);
-    if(lo>1){ btns+=pb(1,'1',libPage===1,false); if(lo>2) btns+='<span style="color:#B08A3E;margin:0 3px">…</span>'; }
+    if(lo>1){ btns+=pb(1,'1',libPage===1,false); if(lo>2) btns+='<span style="color:#9C7D4A;margin:0 3px">…</span>'; }
     for(var p=lo;p<=hi;p++) btns+=pb(p,String(p),p===libPage,false);
-    if(hi<pages){ if(hi<pages-1) btns+='<span style="color:#B08A3E;margin:0 3px">…</span>'; btns+=pb(pages,String(pages),libPage===pages,false); }
+    if(hi<pages){ if(hi<pages-1) btns+='<span style="color:#9C7D4A;margin:0 3px">…</span>'; btns+=pb(pages,String(pages),libPage===pages,false); }
     btns+=pb(libPage+1,'›',false,libPage>=pages);
     return '<div class="lib-pager" style="display:flex;flex-wrap:wrap;justify-content:center;align-items:center;margin:12px 0">'+btns+'<span style="font-size:11px;color:#9C8A66;margin-left:8px">第 '+libPage+' / '+pages+' 頁 · 每頁 10 支影片 · 共 '+total+' 支</span></div>';
   }
@@ -5904,7 +5904,7 @@ function openSuccessMatch(clientId){
     +'<div style="font-size:12px;color:var(--gold-dark);margin-bottom:14px">從全庫自動撈出跟這個客戶最相近的 Top 5，附「為什麼像＋可借鏡什麼」</div>';
   top.forEach(function(t,i){
     var a=t.a, lab=simLabel(t.sc.score);
-    var labColor=lab==='高'?'#A51820':(lab==='中'?'#B08A3E':'#9C8A66');
+    var labColor=lab==='高'?'#A51820':(lab==='中'?'#9C7D4A':'#9C8A66');
     html+='<div style="border:1px solid var(--gold-soft);border-radius:10px;padding:11px 13px;margin-bottom:9px;background:#fff">'
       +'<div style="display:flex;align-items:baseline;gap:8px;flex-wrap:wrap"><span style="font-weight:800;color:var(--ink);font-size:14px">'+(i+1)+'. '+esc(a.handle||'@?')+'</span>'
       +(ident(a)?'<span style="font-size:12px;color:var(--gold-dark)">'+esc(ident(a))+'</span>':'')
@@ -6869,7 +6869,7 @@ function renderReconciliation(){
     rows.forEach(function(s){
       var a=s.acc;
       var hk=s.n?Math.round(s.hookN/s.n*100):0;
-      var hkCol=(hk>=50?'#2A1A1C':(hk>=25?'#B08A3E':'#C0392B'));
+      var hkCol=(hk>=50?'#2A1A1C':(hk>=25?'#9C7D4A':'#C0392B'));
       html+='<tr style="border-bottom:1px solid var(--line)">'
         +'<td style="padding:7px 10px"><b>'+esc(a.handle||'@?')+'</b>'+(a.displayName?' <span style="color:var(--sub)">'+esc(a.displayName)+'</span>':'')+(a.jobTitle?' <span style="color:var(--gold-dark);font-size:11px">'+esc(a.jobTitle)+'</span>':'')+'</td>'
         +'<td style="text-align:right;padding:7px 10px;font-weight:700">'+s.n+'</td>'
@@ -9388,10 +9388,10 @@ window.addEventListener('DOMContentLoaded', function(){
     var who=seed.who||'打給誰';
     var task=seed.task||'先被看見／建立信任／帶到諮詢';
     var g=seed.g||'';
-    var codeSpan=g?('<span class="op-code" style="color:#B08A3E;font-size:11px;margin-left:5px">（'+g+'）</span>'):'';
+    var codeSpan=g?('<span class="op-code" style="color:#9C7D4A;font-size:11px;margin-left:5px">（'+g+'）</span>'):'';
     return '<div class="op-row'+(alt?' op-alt':'')+'" style="display:grid;grid-template-columns:26px 28px 1fr;gap:0 12px;border-bottom:1px solid #EADFC6;padding:13px 0;align-items:start">'
       +'<label class="op-noprint" title="勾選＝建議先拍；取消＝備選" style="display:flex;align-items:flex-start;justify-content:center;padding-top:4px"><input type="checkbox" class="op-pick" '+(alt?'':'checked')+' style="width:15px;height:15px;accent-color:#7A1318;cursor:pointer"></label>'
-      +'<div style="font-family:'+CG+';font-size:22px;color:#B08A3E;font-weight:500">'+n+'</div>'
+      +'<div style="font-family:'+CG+';font-size:22px;color:#9C7D4A;font-weight:500">'+n+'</div>'
       +'<div>'
       +'<div style="font-size:10px;letter-spacing:.16em;margin-bottom:3px"><span class="op-tag" style="color:'+(alt?'#7A5A5E':'#7A1318')+';font-weight:600">'+(alt?'備選':'建議先拍')+'</span>'+codeSpan+'</div>'
       +'<div class="op-edit" contenteditable="true" style="font-size:15px;color:#2B2521;font-weight:500;line-height:1.5">'+esc2(topic)+'</div>'
@@ -9424,14 +9424,14 @@ window.addEventListener('DOMContentLoaded', function(){
     cands.forEach(function(cd,i){
       chooserHtml+='<label style="display:flex;gap:8px;align-items:flex-start;padding:5px 0;cursor:pointer">'
         +'<input type="radio" name="opPosPick" class="op-pospick" data-pos="'+esc2(cd.text)+'" '+(i===0?'checked':'')+' style="margin-top:3px;accent-color:#7A1318">'
-        +'<span style="font-size:12.5px;color:#3A322C;line-height:1.55">'+(i===0?'<b style="color:#7A1318">顧問首選 · </b>':'<span style="color:#7A5A5E">備選 · </span>')+(cd.style?'<span style="color:#B08A3E">【'+esc2(cd.style)+'】</span> ':'')+esc2(cd.text)+'<br><span style="font-size:11px;color:#A6906A">'+esc2(cd.why)+'</span></span></label>';
+        +'<span style="font-size:12.5px;color:#3A322C;line-height:1.55">'+(i===0?'<b style="color:#7A1318">顧問首選 · </b>':'<span style="color:#7A5A5E">備選 · </span>')+(cd.style?'<span style="color:#9C7D4A">【'+esc2(cd.style)+'】</span> ':'')+esc2(cd.text)+'<br><span style="font-size:11px;color:#A6906A">'+esc2(cd.why)+'</span></span></label>';
     });
     chooserHtml+='</div>';
     /* v163 顧問版底稿：定位候選全列（含手法與適合調性），可印 */
     var advPosHtml=(opMode==='advisor')?(
       '<div style="margin-top:10px;border:1px solid #E2D2A8;border-radius:6px;padding:10px 12px;background:#FBF8F0">'
       +'<div style="letter-spacing:.2em;font-size:10px;color:#7A5A5E;margin-bottom:6px">底稿 · 一句話定位候選全列（含手法／適合調性，顧問挑用）</div>'
-      +cands.map(function(cd,i){ return '<div style="font-size:12.5px;color:#3A322C;line-height:1.6;padding:5px 0;border-top:'+(i?'1px solid #EADFC6':'0')+'">'+(i===0?'<b style="color:#7A1318">顧問首選</b>':'<span style="color:#7A5A5E">備選</span>')+(cd.style?' <span style="color:#B08A3E">【'+esc2(cd.style)+'】</span>':'')+'　'+esc2(cd.text)+'<br><span style="font-size:11px;color:#A6906A">適合：'+esc2(cd.why)+'</span></div>'; }).join('')
+      +cands.map(function(cd,i){ return '<div style="font-size:12.5px;color:#3A322C;line-height:1.6;padding:5px 0;border-top:'+(i?'1px solid #EADFC6':'0')+'">'+(i===0?'<b style="color:#7A1318">顧問首選</b>':'<span style="color:#7A5A5E">備選</span>')+(cd.style?' <span style="color:#9C7D4A">【'+esc2(cd.style)+'】</span>':'')+'　'+esc2(cd.text)+'<br><span style="font-size:11px;color:#A6906A">適合：'+esc2(cd.why)+'</span></div>'; }).join('')
       +'</div>'
     ):'';
     var altPosHtml='<div class="op-alt" style="margin-top:10px;font-size:12.5px;color:#6E5E44;line-height:1.7"><span style="letter-spacing:.2em;font-size:10px;color:#7A5A5E">備選定位 · ALTERNATIVES</span><br>'
@@ -9608,7 +9608,7 @@ window.addEventListener('DOMContentLoaded', function(){
     svg+='<text x="13" y="'+(m+ih/2)+'" font-size="10.5" fill="#7A5A5E" transform="rotate(-90 13 '+(m+ih/2)+')" text-anchor="middle">'+esc2(AY.label)+'</text>';
     pts.forEach(function(p,i){
       var X=sx(p.x), Y=sy(p.y);
-      svg+='<circle cx="'+X.toFixed(1)+'" cy="'+Y.toFixed(1)+'" r="7" fill="#fff" stroke="#B08A3E" stroke-width="1.5"/>';
+      svg+='<circle cx="'+X.toFixed(1)+'" cy="'+Y.toFixed(1)+'" r="7" fill="#fff" stroke="#9C7D4A" stroke-width="1.5"/>';
       svg+='<text x="'+X.toFixed(1)+'" y="'+(Y+3.5).toFixed(1)+'" font-size="9" fill="#7A5B16" text-anchor="middle">'+(i+1)+'</text>';
     });
     var CX=sx(cx),CY=sy(cy);
@@ -10319,16 +10319,16 @@ function filterDlClient(){
 function showDeliverSample(stage){
   var paper='background:#FAF6EE;border:1px solid #D7BE8C;border-radius:8px;padding:18px 20px;font-family:\'Noto Serif TC\',serif;color:#2B2521';
   var en,title,body;
-  var row=function(no,label,val){ return '<div style="display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-top:1px solid #ECE0C8"><span style="color:#B08A3E;font-size:11px;font-weight:700;flex:none;width:20px">'+no+'</span><span style="flex:none;width:74px;font-size:12px;color:#7A1318;font-weight:700">'+label+'</span><span style="flex:1;font-size:12px;line-height:1.6;color:#2B2521">'+val+'</span></div>'; };
+  var row=function(no,label,val){ return '<div style="display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-top:1px solid #ECE0C8"><span style="color:#9C7D4A;font-size:11px;font-weight:700;flex:none;width:20px">'+no+'</span><span style="flex:none;width:74px;font-size:12px;color:#7A1318;font-weight:700">'+label+'</span><span style="flex:1;font-size:12px;line-height:1.6;color:#2B2521">'+val+'</span></div>'; };
   if(stage===2){
-    en='<div style="font-size:9px;letter-spacing:2px;color:#B08A3E">SCRIPT OUTLINE</div>';
+    en='<div style="font-size:9px;letter-spacing:2px;color:#9C7D4A">SCRIPT OUTLINE</div>';
     title='<div style="font-size:17px;font-weight:700;color:#7A1318;margin:3px 0 14px">客戶 · 第一輪腳本大綱表</div>';
-    var r2=function(t,g,a,h){ return '<tr><td style="padding:6px 6px;border-top:1px solid #ECE0C8;font-size:11.5px;color:#2B2521">'+t+'</td><td style="padding:6px 6px;border-top:1px solid #ECE0C8;font-size:11px;color:#B08A3E;white-space:nowrap">'+g+'</td><td style="padding:6px 6px;border-top:1px solid #ECE0C8;font-size:11px;color:#7A1318;white-space:nowrap">'+a+'</td><td style="padding:6px 6px;border-top:1px solid #ECE0C8;font-size:11px;color:#2B2521">'+h+'</td></tr>'; };
+    var r2=function(t,g,a,h){ return '<tr><td style="padding:6px 6px;border-top:1px solid #ECE0C8;font-size:11.5px;color:#2B2521">'+t+'</td><td style="padding:6px 6px;border-top:1px solid #ECE0C8;font-size:11px;color:#9C7D4A;white-space:nowrap">'+g+'</td><td style="padding:6px 6px;border-top:1px solid #ECE0C8;font-size:11px;color:#7A1318;white-space:nowrap">'+a+'</td><td style="padding:6px 6px;border-top:1px solid #ECE0C8;font-size:11px;color:#2B2521">'+h+'</td></tr>'; };
     body='<table style="width:100%;border-collapse:collapse"><thead><tr>'
-      +'<th style="text-align:left;padding:4px 6px;font-size:10px;letter-spacing:1px;color:#B08A3E">主題方向</th>'
-      +'<th style="text-align:left;padding:4px 6px;font-size:10px;letter-spacing:1px;color:#B08A3E">漏斗</th>'
-      +'<th style="text-align:left;padding:4px 6px;font-size:10px;letter-spacing:1px;color:#B08A3E">目標層</th>'
-      +'<th style="text-align:left;padding:4px 6px;font-size:10px;letter-spacing:1px;color:#B08A3E">Hook 方向</th></tr></thead><tbody>'
+      +'<th style="text-align:left;padding:4px 6px;font-size:10px;letter-spacing:1px;color:#9C7D4A">主題方向</th>'
+      +'<th style="text-align:left;padding:4px 6px;font-size:10px;letter-spacing:1px;color:#9C7D4A">漏斗</th>'
+      +'<th style="text-align:left;padding:4px 6px;font-size:10px;letter-spacing:1px;color:#9C7D4A">目標層</th>'
+      +'<th style="text-align:left;padding:4px 6px;font-size:10px;letter-spacing:1px;color:#9C7D4A">Hook 方向</th></tr></thead><tbody>'
       +r2('破除「__一定要__」的迷思','G1 打破認知','A 認知','你以為…其實…')
       +r2('還原客戶最常踩的那個雷','G1 打破認知','A 認知','99% 的人都做錯')
       +r2('一日工作幕後的專業感','G2 建立吸引','B 品牌','跟著我的一天')
@@ -10336,7 +10336,7 @@ function showDeliverSample(stage){
       +r2('這項服務在幫你解決什麼','G5 信任轉化','D 轉化','如果你也卡在…')
       +'</tbody></table>';
   } else if(stage===3){
-    en='<div style="font-size:9px;letter-spacing:2px;color:#B08A3E">SHOOTING SCRIPT</div>';
+    en='<div style="font-size:9px;letter-spacing:2px;color:#9C7D4A">SHOOTING SCRIPT</div>';
     title='<div style="font-size:17px;font-weight:700;color:#7A1318;margin:3px 0 14px">客戶 · 單支可拍腳本</div>';
     var r3=function(sec,val){ return '<div style="display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-top:1px solid #ECE0C8"><span style="flex:none;font-size:9px;color:#fff;background:#7A1318;border-radius:3px;padding:2px 6px;white-space:nowrap">'+sec+'</span><span style="flex:1;font-size:12px;line-height:1.6;color:#2B2521">'+val+'</span></div>'; };
     body=r3('0-3s','Hook：一句話戳中觀眾此刻的處境（畫面：直視鏡頭 / 大字卡）')
@@ -10345,7 +10345,7 @@ function showDeliverSample(stage){
       +r3('20-28s','賣點‧信任：為什麼有效、為什麼是你（案例 / 數據 / 資歷）')
       +r3('CTA','收尾：告訴觀眾下一步做什麼（留言關鍵字 / 私訊 / 預約）');
   } else {
-    en='<div style="font-size:9px;letter-spacing:2px;color:#B08A3E">IP POSITIONING</div>';
+    en='<div style="font-size:9px;letter-spacing:2px;color:#9C7D4A">IP POSITIONING</div>';
     title='<div style="font-size:17px;font-weight:700;color:#7A1318;margin:3px 0 14px">客戶 · IP 定位一頁</div>';
     body=row('01','一句定位','把專業講成觀眾聽得懂的一句話：「我幫 __ 在 __ 的時候，少走 __ 的冤枉路。」')
       +row('02','理想受眾','最該被這個帳號吸引的人是誰、他正卡在什麼處境')
@@ -10356,7 +10356,7 @@ function showDeliverSample(stage){
   }
   var html='<div style="padding:6px 4px 16px">'
     +'<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">'
-    +'<div style="font-size:11px;letter-spacing:1px;color:#B08A3E;font-weight:700">範例樣張 · 交給客戶會長這樣</div>'
+    +'<div style="font-size:11px;letter-spacing:1px;color:#9C7D4A;font-weight:700">範例樣張 · 交給客戶會長這樣</div>'
     +'<span onclick="dlCloseModal()" style="cursor:pointer;font-size:13px;color:#8A7274;display:inline-flex;align-items:center;gap:4px">關閉<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg></span>'
     +'</div>'
     +'<div style="'+paper+'">'+en+title+body+'</div>'
@@ -11071,7 +11071,7 @@ document.addEventListener('DOMContentLoaded',function(){
 <script>
 /* v239：自動防舊版快取。讓桌布捷徑／瀏覽器如果抓到舊 HTML，能自己比對線上最新版並導向。 */
 (function(){
-  var ATELIER_CURRENT_VERSION='v338';
+  var ATELIER_CURRENT_VERSION='v339';
   window.ATELIER_CURRENT_VERSION=ATELIER_CURRENT_VERSION;
   function _avNum(v){v=String(v||'');var m=v.match(/v\s*(\d+)/i);return m?parseInt(m[1],10):0;}
   function _avDetect(html){html=String(html||'');var m=html.match(/id=["']verBadge["'][^>]*>\s*(v\d+)/i)||html.match(/內部版本\s+(v\d+)/i);return m?m[1]:'';}
@@ -11085,7 +11085,7 @@ document.addEventListener('DOMContentLoaded',function(){
       var url=base+'?atelier_fresh_check='+Date.now();
       fetch(url,{cache:'no-store',headers:{'Cache-Control':'no-cache','Pragma':'no-cache'}}).then(function(r){return r.text();}).then(function(txt){
         var latest=_avDetect(txt);
-        /* v338 修「左上角版號開啟時閃一下（重整）」：關閉自動 location.replace 重導，改不重整＋一次性輕提示。 */
+        /* v339 修「左上角版號開啟時閃一下（重整）」：關閉自動 location.replace 重導，改不重整＋一次性輕提示。 */
         if(latest && _avNum(latest)>_avNum(current)){
           try{ sessionStorage.setItem('atelierSkipAutoUpdate','1'); }catch(e){}
           try{ if(typeof toast==='function' && !sessionStorage.getItem('atelierNewVerNoticed')){ toast('有新版本（'+latest+'）可更新：需要時按左下「重新整理」即可，畫面不會自動重整'); sessionStorage.setItem('atelierNewVerNoticed','1'); } }catch(e){}
@@ -11259,7 +11259,7 @@ document.addEventListener('DOMContentLoaded',function(){
 <script>
 /* ═══════════ v262 hotfix · Strategy consultant UX hardening (final override only) ═══════════ */
 (function(){
-  var VERSION='v338';
+  var VERSION='v339';
   function H(id){return document.getElementById(id)}
   function E(s){try{return (typeof esc==='function')?esc(s||''):String(s||'').replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}catch(e){return String(s||'')}}
   function A(){try{return (typeof accounts!=='undefined'&&accounts)?accounts:(window.accounts||[])}catch(e){return window.accounts||[]}}
@@ -11417,7 +11417,7 @@ document.addEventListener('DOMContentLoaded',function(){
 <script>
 /* ═══════════ v263：策略診斷視覺流程、收合客戶卡、精緻核對窗與提示詞預覽（final override only） ═══════════ */
 (function(){
-  var VERSION='v338';
+  var VERSION='v339';
   function H(id){return document.getElementById(id)}
   function E(s){try{return (typeof esc==='function')?esc(s||''):String(s||'').replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}catch(e){return String(s||'')}}
   function A(){try{return (typeof accounts!=='undefined'&&accounts)?accounts:(window.accounts||[])}catch(e){return window.accounts||[]}}
@@ -11546,7 +11546,7 @@ document.addEventListener('DOMContentLoaded',function(){
 <script>
 /* ═══════════ v266 hotfix：修正 v265 事件代理語法，保留 v265 策略診斷功能（index.html only） ═══════════ */
 (function(){
-  var VERSION='v338';
+  var VERSION='v339';
   function H(id){return document.getElementById(id)}
   function E(s){try{return (typeof esc==='function')?esc(s||''):String(s||'').replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}catch(e){return String(s||'')}}
   function A(){try{return (typeof accounts!=='undefined'&&accounts)?accounts:(window.accounts||[])}catch(e){return window.accounts||[]}}
@@ -11719,7 +11719,7 @@ return '<div class="strat-radar-card-v265"><b>目前沒有符合樣本</b><p>可
 /* ═══════════ v267 strategy hard patch：固定版面、重綁按鈕、互動說明與策略對標雷達（index.html only） ═══════════ */
 (function(){
   'use strict';
-  var VERSION='v338';
+  var VERSION='v339';
   function H(id){return document.getElementById(id)}
   function E(s){return String(s==null?'':s).replace(/[&<>'"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]})}
   function A(){try{return (typeof accounts!=='undefined'&&Array.isArray(accounts))?accounts:(Array.isArray(window.accounts)?window.accounts:[])}catch(e){return []}}
@@ -11948,7 +11948,7 @@ window._strategyRadarV267=radarResults;
 
 <script id="v289PatchJS">
 (function(){
-  try{ window.ATELIER_CURRENT_VERSION='v338'; }catch(e){}
+  try{ window.ATELIER_CURRENT_VERSION='v339'; }catch(e){}
   try{ sessionStorage.setItem('atelierSkipAutoUpdate','1'); }catch(e){}
   try{ if(navigator.serviceWorker && navigator.serviceWorker.getRegistrations){
         navigator.serviceWorker.getRegistrations().then(function(rs){ rs.forEach(function(r){ try{r.update();}catch(e){} }); }).catch(function(){});
@@ -13133,7 +13133,7 @@ button[data-wbl-send],button[data-wbl-inbox]{padding:3px 12px !important;font-si
     if(document.getElementById('wbPosline')) return;
     var tabs=document.querySelector('.tabs'); if(!tabs||!tabs.parentNode) return;
     var el=document.createElement('div'); el.id='wbPosline'; el.className='wb-posline';
-    el.innerHTML='<b>後台 · 工廠｜資料判斷與內容診斷中控台</b><br>看單支影片、看整體帳號策略，判斷 Hook／CTA／A–E／G 階段／行銷標籤／成功公式／商業缺口。<b style="color:#A51820">工作台負責「看出問題」</b>；給客戶看的問診與交付在服務台做。';
+    el.innerHTML='<div class="pl-kick">後台 · 工廠</div><div class="pl-role">資料判斷與內容診斷中控台 — 工作台負責「看出問題」</div><div class="pl-desc">看單支影片、看整體帳號策略，判斷 Hook／CTA／A–E／G 階段／行銷標籤／成功公式／商業缺口。給客戶看的問診與交付在服務台做。</div>';
     tabs.parentNode.insertBefore(el, tabs.nextSibling);
   }
   function badges(){
@@ -13885,14 +13885,14 @@ button[data-wbl-send],button[data-wbl-inbox]{padding:3px 12px !important;font-si
 
 
 
-<!-- ═══════════ v338 SAFE LATEST · 主流程收納與策略交接（乾淨注入版）═══════════ -->
+<!-- ═══════════ v339 SAFE LATEST · 主流程收納與策略交接（乾淨注入版）═══════════ -->
 <style id="atl326-safe-style">
 .atl326safe{border:1px solid #E8E3DA;border-left:4px solid #A51820;background:linear-gradient(180deg,#FFFCFB,#FFFFFF);border-radius:15px;padding:14px;margin:12px 0 16px;box-shadow:0 4px 18px rgba(90,40,45,.045);font-family:inherit;color:#2A1A1C}.atl326safe h3{font-family:Noto Serif TC,serif;margin:0 0 5px;font-size:15px;color:#7A1018}.atl326safe p{margin:0 0 10px;font-size:12px;color:#7A5A5E;line-height:1.75}.atl326safe-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px}.atl326safe-card{background:#fff;border:1px solid #E8E3DA;border-radius:11px;padding:8px}.atl326safe-card b{display:block;font-size:11px;color:#A51820}.atl326safe-card span{display:block;margin-top:2px;font-size:10.5px;color:#5C4248;line-height:1.45}.atl326safe-actions,.atl326safe-filter{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}.atl326safe-btn,.atl326safe-filter button{font-family:inherit;font-size:12px;font-weight:850;border-radius:9px;padding:8px 12px;cursor:pointer;border:1px solid #A51820;background:#A51820;color:#fff;-webkit-text-fill-color:#fff}.atl326safe-filter button{font-size:11.5px;border-radius:999px;background:#fff;color:#7A5A5E;-webkit-text-fill-color:#7A5A5E;border-color:#E8E3DA;padding:5px 10px}.atl326safe-filter button.on{background:#7A1018;border-color:#7A1018;color:#fff;-webkit-text-fill-color:#fff}.atl326safe-btn.ghost{background:#fff;color:#A51820;-webkit-text-fill-color:#A51820}.atl326safe-pill{display:inline-flex;margin:2px 5px 2px 0;font-size:10.5px;font-weight:850;border:1px solid #E8E3DA;background:#fff;color:#7A5A5E;border-radius:999px;padding:3px 8px}.atl326safe-pill.ok{color:#2A1A1C;background:#F3F7F4;border-color:#F4E9DE}.atl326safe-pill.hot{color:#A51820;background:#FFF8F7;border-color:#EAD9D6}.atl326safe-note{font-size:11px;color:#8A7274;line-height:1.65;margin-top:8px}body.atl326safe-filter-research .atl326safe-kind:not([data-atl326safe-kind="研究用"]){display:none!important}body.atl326safe-filter-intake .atl326safe-kind:not([data-atl326safe-kind="問診用"]){display:none!important}body.atl326safe-filter-delivery .atl326safe-kind:not([data-atl326safe-kind="交付用"]){display:none!important}@media(max-width:820px){.atl326safe-grid{grid-template-columns:1fr 1fr}.atl326safe-actions{flex-direction:column}.atl326safe-btn{width:100%}}
 </style>
 <script id="atl326-safe-module">
 (function(){
 'use strict';
-var VER='v338';
+var VER='v339';
 function $(id){return document.getElementById(id)}
 function cp(t,msg){try{if(typeof copyText==='function')return copyText(t,msg||'已複製');}catch(e){} try{navigator.clipboard.writeText(t); if(typeof toastMsg==='function')toastMsg(msg||'已複製');}catch(e){prompt('請手動複製',t)}}
 function arr(v){return Array.isArray(v)?v:[]}
@@ -13903,7 +13903,7 @@ function selectedAcc(){var ids=['stratAcc','vlibHero','accHero','cmpHero','f-acc
 function videosOf(a){if(!a)return [];try{if(typeof videosOfAccount==='function')return videosOfAccount(a.id)||[]}catch(e){}var h=norm(a.handle),id=String(a.id||'');return vids().filter(function(v){return String(v.accountId||v.clientId||'')===id||(h&&norm(v.accountHandle||v.handle||v.ig||'')===h)})}
 function formulaCount(list){return arr(list).filter(function(v){var t=[v.sellingPointFormula,v.translationFormula,v.finalSellingPoint,v.reusableSentence,v.note,v.advisorNote,v.hook,v.structure].join(' ');return /賣點|特點|轉譯|痛點|利益|公式|Hook|CTA/.test(t)}).length}
 function makeHandoff(a){var vs=videosOf(a),f=formulaCount(vs),top=vs.slice().sort(function(x,y){return Number(y.views||y.view||0)-Number(x.views||x.view||0)}).slice(0,3).map(function(v,i){return (i+1)+'. '+(v.title||v.hook||'未命名')+'｜觀看 '+(v.views||v.view||'—')}).join('\n')||'待補';return ['【工作台 → 服務台｜策略交接卡】','客戶：'+(a?((a.handle||'')+' '+(a.displayName||a.name||'')).trim():'尚未選定'),'版本：'+VER,'影片數：'+vs.length,'市場轉譯公式筆數：'+f,'公式覆蓋率：'+(vs.length?Math.round(f/vs.length*100):0)+'%','','Top 3 觀看影片：',top,'','工作台定位：市場雷達／影片解剖室／轉譯公式庫。','服務台下一步：補客戶商業原料包，進行特點→觀眾賣點轉譯，再產出 CTA 行動出口與內容戰役。','','自媒體商業閉環對位：','A 認知：市場案例與 Hook','B 品牌：定位與記憶點','C 信任：證據、案例、專業翻譯','D 轉化：CTA 行動出口與承接窗口','E 成長：交付復盤與下一輪內容戰役'].join('\n')}
-function saveHandoff(a){if(!a){alert('請先選定客戶');return}a.strategyHandoff={text:makeHandoff(a),updatedAt:new Date().toISOString(),source:'workbench-v338-safe'};try{if(typeof saveAccounts==='function')saveAccounts();else if(typeof _accFbPush==='function')_accFbPush();}catch(e){} if(typeof toastMsg==='function')toastMsg('已保存策略交接卡');}
+function saveHandoff(a){if(!a){alert('請先選定客戶');return}a.strategyHandoff={text:makeHandoff(a),updatedAt:new Date().toISOString(),source:'workbench-v339-safe'};try{if(typeof saveAccounts==='function')saveAccounts();else if(typeof _accFbPush==='function')_accFbPush();}catch(e){} if(typeof toastMsg==='function')toastMsg('已保存策略交接卡');}
 function setFilter(m){document.body.classList.remove('atl326safe-filter-research','atl326safe-filter-intake','atl326safe-filter-delivery');if(m==='research')document.body.classList.add('atl326safe-filter-research');if(m==='intake')document.body.classList.add('atl326safe-filter-intake');if(m==='delivery')document.body.classList.add('atl326safe-filter-delivery');document.querySelectorAll('.atl326safe-filter button').forEach(function(b){b.classList.toggle('on',b.getAttribute('data-filter')===m)})}
 function classify(){document.querySelectorAll('button,a').forEach(function(b){if(b.getAttribute('data-atl326safe-kind'))return;var t=(b.textContent||'').trim();if(!/提示詞|複製|Hook|CTA|行動出口|特點|賣點|轉譯|交接|戰役|問診|AI|診斷/.test(t))return;var k='交付用';if(/問診|ICP|Offer|承接|證據|原料|補/.test(t))k='問診用';if(/市場|案例|對標|Hook|拆|轉譯公式/.test(t))k='研究用';if(/交付|戰役|CTA|行動出口|客戶版|顧問版|PPT|PDF|HTML/.test(t))k='交付用';b.setAttribute('data-atl326safe-kind',k);b.classList.add('atl326safe-kind');b.title=(b.title?b.title+'｜':'')+'提示詞分類：'+k})}
 function render(){var host=$('view-strategy')||document.querySelector('.view.on');if(!host||host.querySelector('[data-atl326safe]'))return;var a=selectedAcc(),vs=videosOf(a),fc=formulaCount(vs),cov=vs.length?Math.round(fc/vs.length*100):0,hand=!!(a&&a.strategyHandoff);var div=document.createElement('div');div.className='atl326safe';div.setAttribute('data-atl326safe','1');div.innerHTML='<h3>工作台驗收層</h3><p>這是乾淨注入版：工作台只負責市場怎麼翻，最後輸出策略交接卡給服務台。</p><div class="atl326safe-grid"><div class="atl326safe-card"><b>1 市場案例</b><span>拆成功/失敗影片如何說人話。</span></div><div class="atl326safe-card"><b>2 轉譯公式</b><span>特點 → 痛點 → 賣點。</span></div><div class="atl326safe-card"><b>3 策略交接</b><span>Top/Bottom、A-E、G階段、缺口。</span></div><div class="atl326safe-card"><b>4 服務台接收</b><span>第3站讀取 strategyHandoff。</span></div></div><div><span class="atl326safe-pill '+(vs.length?'ok':'hot')+'">影片 '+vs.length+'</span><span class="atl326safe-pill '+(fc?'ok':'hot')+'">公式 '+fc+'</span><span class="atl326safe-pill '+(cov>=30?'ok':'hot')+'">覆蓋率 '+cov+'%</span><span class="atl326safe-pill '+(hand?'ok':'hot')+'">交接卡 '+(hand?'已保存':'待保存')+'</span></div><div class="atl326safe-filter"><button data-filter="all">全部提示詞</button><button data-filter="research">只看研究用</button><button data-filter="intake">只看問診用</button><button data-filter="delivery">只看交付用</button></div><div class="atl326safe-actions"><button class="atl326safe-btn" data-copy>複製策略交接卡</button><button class="atl326safe-btn ghost" data-save>保存策略交接卡</button></div><div class="atl326safe-note">下一步：保存策略交接卡 → 到服務台 cs-v4.52 第3站確認讀到。</div>';div.querySelector('[data-copy]').onclick=function(){cp(makeHandoff(a),'已複製策略交接卡')};div.querySelector('[data-save]').onclick=function(){saveHandoff(a)};div.querySelectorAll('[data-filter]').forEach(function(b){b.onclick=function(){setFilter(b.getAttribute('data-filter'))}});host.insertBefore(div,host.firstChild);}
@@ -13946,7 +13946,7 @@ setInterval(tick,1200);setTimeout(tick,300);
 
 
 <script>
-/* v338：工作台流程定位條（文件第五節）—— 核心流程 輸入→影片庫→策略診斷→客戶交付，固定每頁上方、高亮目前頁、可點跳頁，
+/* v339：工作台流程定位條（文件第五節）—— 核心流程 輸入→影片庫→策略診斷→客戶交付，固定每頁上方、高亮目前頁、可點跳頁，
    並附「這裡負責／不要在這做」。純畫面用既有 switchTo，不碰資料。整併舊影片庫導引（避免兩條疊）。冪等 data-wbflow。 */
 (function(){
   if(window.__atlWbFlow) return; window.__atlWbFlow=true;
@@ -14018,7 +14018,7 @@ setInterval(tick,1200);setTimeout(tick,300);
 })();
 </script>
 
-<!-- ═══════════ v338 階段一收尾 · 工作台同步「說明框 vs 按鈕」視覺語彙（與服務台一致；純 CSS、不碰 JS / 結構 / 資料）═══════════ -->
+<!-- ═══════════ v339 階段一收尾 · 工作台同步「說明框 vs 按鈕」視覺語彙（與服務台一致；純 CSS、不碰 JS / 結構 / 資料）═══════════ -->
 <style id="atl-wb336-vocab">
 /* 目標：讓工作台的「說明 / 教學框」用和服務台 .sc-note 同一個招牌訊號＝淡金左線，
    一眼就讀成「這是說明」；純文字小提示一律不可點；按鈕維持明顯可點。
@@ -14055,7 +14055,7 @@ button:not(:disabled),
 }
 </style>
 
-<!-- ═══════════ v338 第一批·視覺與品牌 · 按鈕 vs 說明框(規範 D3，與服務台一致)═══════════
+<!-- ═══════════ v339 第一批·視覺與品牌 · 按鈕 vs 說明框(規範 D3，與服務台一致)═══════════
      純 CSS。深酒紅文字已於原碼層收成主紅(只動 color)。延續 v336 的金左線/不可點語彙。 -->
 <style id="atl-wb337-visual">
 /* 純文字說明 / 提示維持文字游標、不可點(補齊 v336 未涵蓋者) */
@@ -14070,7 +14070,7 @@ button:not(:disabled), .btn:not(.disabled):not([disabled]), [role="button"]{
 }
 </style>
 
-<!-- ═══════════ v338 第三批·回饋收件匣可刪除(規範 D9：批次＋確認)═══════════
+<!-- ═══════════ v339 第三批·回饋收件匣可刪除(規範 D9：批次＋確認)═══════════
      工作台帳號卡「收到的客戶回饋」改寫 buildPanel：每筆可刪(✕→確認)、可勾選批次刪除、全選；
      軟刪除(f.deleted=true，走既有 save 路徑，雲端合併不會復活)；過濾已刪。純樣式於檔尾，行為改在 buildPanel。 -->
 <style id="atl-wb338-fbdel">
@@ -14084,6 +14084,31 @@ button:not(:disabled), .btn:not(.disabled):not([disabled]), [role="button"]{
 .fbx-cb{ margin-right:2px; flex:0 0 auto; }
 .fbx-del{ margin-left:auto; width:22px; height:22px; line-height:1; border:1px solid #E8DAD8; background:#fff; color:#A07478; -webkit-text-fill-color:#A07478; border-radius:6px; cursor:pointer; font-family:inherit; font-size:12px; flex:0 0 auto; }
 .fbx-del:hover{ background:#FBEAEA; color:#A51820; -webkit-text-fill-color:#A51820; border-color:#A51820; }
+</style>
+
+<!-- ═══════════ v339 第三批·排版對齊(規範 D13)═══════════
+     ① 後台定位條重排成三層(位置標籤→角色一句話→說明)。
+     ② 並排不對稱按鈕「客戶一頁總覽」與「收到的客戶回饋」統一成同款形狀/大小/間距。
+     ③ 機器驗規抓到的禁用土金 #B08A3E 已換成合規金棕 #9C7D4A。純 CSS + innerHTML 重排。 -->
+<style id="atl-wb339-align">
+.wb-posline{ display:block !important; }
+.wb-posline .pl-kick{ font-size:10.5px; font-weight:800; letter-spacing:1.5px; color:#A51820;
+  -webkit-text-fill-color:#A51820; margin-bottom:4px; }
+.wb-posline .pl-role{ font-size:13px; font-weight:700; color:#2A1A1C; -webkit-text-fill-color:#2A1A1C;
+  line-height:1.55; margin-bottom:5px; }
+.wb-posline .pl-desc{ font-size:11.5px; font-weight:400; color:#7A5A5E; -webkit-text-fill-color:#7A5A5E;
+  line-height:1.75; }
+
+/* 並排框對稱:客戶一頁總覽 / 收到的客戶回饋 統一同款 */
+.wb-ov1-pill, .fbx-pill{
+  display:inline-flex !important; align-items:center !important; gap:6px !important;
+  font-size:11.5px !important; font-weight:800 !important;
+  border:1px solid #E2D6D3 !important; background:#FBF1F0 !important;
+  color:#7A1018 !important; -webkit-text-fill-color:#7A1018 !important;
+  border-radius:13px !important; padding:4px 13px !important; margin:8px 8px 2px 0 !important;
+  min-height:28px !important; box-sizing:border-box !important;
+  white-space:nowrap !important; font-family:inherit !important; cursor:pointer !important;
+}
 </style>
 
 </body>
