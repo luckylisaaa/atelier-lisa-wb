@@ -722,7 +722,7 @@ details.cat .cat-body{padding:14px 15px}
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">客戶服務台</span></span>
-    <span id="verBadge">cs-v4.73</span>
+    <span id="verBadge">cs-v4.74</span>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button type="button" id="popoutBtn" class="popout-btn" title="把客戶服務台開成獨立小視窗"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6"/><path d="M20 4l-9 9"/><path d="M14 12v7H5V10h7"/></svg>小視窗</button>
@@ -8971,7 +8971,7 @@ button:not(:disabled), .btn:not(.disabled):not([disabled]), [role="button"]{
   if(window.__atlCs473Continuity) return; window.__atlCs473Continuity=true;
   function cleanTextNode(n){var s=n.nodeValue||''; var ns=s.replace(/cs-v4\.\d+\s*(SAFE|LATEST)?\s*[｜|·:-]?\s*/g,'').replace(/\bv\d{3}\s*[｜|·:-]?\s*/g,''); if(ns!==s)n.nodeValue=ns;}
   function cleanVersions(){
-    try{var vb=document.getElementById('verBadge'); if(vb)vb.textContent='cs-v4.73';}catch(e){}
+    try{var vb=document.getElementById('verBadge'); if(vb)vb.textContent='cs-v4.74';}catch(e){}
     try{var w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT,{acceptNode:function(n){var p=n.parentElement; if(!p||p.id==='verBadge'||/^(SCRIPT|STYLE|TEXTAREA)$/i.test(p.tagName))return NodeFilter.FILTER_REJECT; return /(cs-v4\.\d+|\bv\d{3})/.test(n.nodeValue||'')?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_REJECT;}}); var nodes=[],n; while(n=w.nextNode())nodes.push(n); nodes.forEach(cleanTextNode);}catch(e){}
   }
   function alignSelection(){
@@ -8980,6 +8980,59 @@ button:not(:disabled), .btn:not(.disabled):not([disabled]), [role="button"]{
     });
   }
   function run(){cleanVersions(); alignSelection();}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run); else run();
+  setInterval(run,1200);
+})();
+</script>
+
+
+
+<!-- ═══════════ cs-v4.74 · 操作壓版修正：總控收納＋欄位自動長高＋按鈕/狀態節制 ═══════════
+     依《系統規範總則》D2/D3/D7/D8/D13：不新增大模組，只把既有操作變成能收、能看、能輸入。 -->
+<style id="atl-cs474-ux-tighten">
+/* 服務台總控可收納：預設只留標題與一句摘要，不再佔滿第一屏。 */
+.atl452safe{position:relative!important;overflow:visible!important}
+.atl452safe h3{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:12px!important;margin-bottom:8px!important}
+.atl-safe474-summary{font-size:11.5px!important;font-weight:500!important;color:#7A5A5E!important;-webkit-text-fill-color:#7A5A5E!important;margin-left:auto!important;line-height:1.6!important}
+.atl-safe474-toggle{min-height:28px!important;border:1px solid #E8E3DA!important;background:#FDFBF8!important;color:#7A5A5E!important;-webkit-text-fill-color:#7A5A5E!important;border-radius:10px!important;padding:4px 10px!important;font-size:11.5px!important;font-weight:800!important;font-family:inherit!important;cursor:pointer!important;white-space:nowrap!important}
+.atl-safe474-toggle:hover{border-color:#D4A574!important;background:#FBF7F1!important;color:#A51820!important;-webkit-text-fill-color:#A51820!important}
+.atl452safe.atl-safe474-collapsed > :not(h3){display:none!important}
+.atl452safe.atl-safe474-collapsed{padding-bottom:12px!important}
+
+/* 橢圓按鈕收斂：主要按鈕像按鈕，狀態像狀態，不再一堆膠囊擠在一起。 */
+.atl452safe-filter button,.atl452safe-mode button,.atl452safe-btn,.atl-sel-btn,.atl-final-actions button{border-radius:10px!important;min-height:31px!important;line-height:1.35!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;white-space:nowrap!important}
+.atl452safe-pill{border-radius:6px!important;padding:2px 8px 2px 0!important;margin:3px 10px 3px 0!important;line-height:1.35!important;display:inline-flex!important;align-items:center!important}
+.atl452safe .atl452safe-grid{gap:10px!important;margin-top:10px!important}
+.atl452safe-card{padding:10px 11px!important;min-height:72px!important}
+
+/* 欄位互動：像留言框一樣，輸入時自動長高；focus 時先給足可讀空間。 */
+textarea,.atl452safe-ta,.mkb-row textarea,textarea.mkb-paste,.section-card textarea{overflow:hidden!important;resize:vertical!important;transition:min-height .16s ease, box-shadow .16s ease, border-color .16s ease!important}
+textarea:focus,.atl452safe-ta:focus,.mkb-row textarea:focus,textarea.mkb-paste:focus,.section-card textarea:focus{min-height:132px!important;border-color:#D4A574!important;box-shadow:0 0 0 3px rgba(212,165,116,.16)!important;background:#FFFCFA!important}
+input[type="text"]:focus,input:not([type]):focus{border-color:#D4A574!important;box-shadow:0 0 0 3px rgba(212,165,116,.13)!important;background:#FFFCFA!important}
+
+/* 選取列不壓內容：服務台各站選取放回正常流，按鈕不與標題/輸入框重疊。 */
+.stage-group.atl-sel-host > .atl-sel-check,.section-card.atl-sel-host > .atl-sel-check{position:static!important;float:none!important;margin:0 0 10px 0!important;width:max-content!important;border-radius:10px!important;padding:4px 9px!important;background:#FDFBF8!important;box-shadow:none!important}
+.stage-group.atl-sel-host,.section-card.atl-sel-host{padding-top:14px!important}
+.atl-selbar{border-radius:14px!important;padding:10px 14px!important;gap:10px!important}
+</style>
+<script>
+(function(){
+  if(window.__atlCs474Tighten) return; window.__atlCs474Tighten=true;
+  function qs(s,r){return (r||document).querySelector(s)}
+  function qsa(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
+  function autogrow(el){ if(!el||el.tagName!=='TEXTAREA')return; el.style.height='auto'; var h=Math.min(Math.max(el.scrollHeight+2,64),360); el.style.height=h+'px'; }
+  function wireAutogrow(root){ qsa('textarea',root||document).forEach(function(t){ if(t.__atlGrow)return; t.__atlGrow=true; ['input','change','focus'].forEach(function(ev){t.addEventListener(ev,function(){autogrow(t)})}); setTimeout(function(){autogrow(t)},60); }); }
+  function ensureSafeCollapse(){
+    var safe=qs('.atl452safe'); if(!safe||safe.dataset.cs474Collapse)return; safe.dataset.cs474Collapse='1';
+    var h=safe.querySelector('h3'); if(!h)return;
+    var summary=document.createElement('span'); summary.className='atl-safe474-summary'; summary.textContent='收起後保留入口，填寫時再展開';
+    var btn=document.createElement('button'); btn.type='button'; btn.className='atl-safe474-toggle';
+    function set(collapsed){ safe.classList.toggle('atl-safe474-collapsed',collapsed); btn.textContent=collapsed?'展開總控':'收合總控'; try{localStorage.setItem('atl.cs474.safeCollapsed',collapsed?'1':'0')}catch(e){} }
+    btn.onclick=function(e){e.stopPropagation(); set(!safe.classList.contains('atl-safe474-collapsed'));};
+    h.appendChild(summary); h.appendChild(btn); set(localStorage.getItem('atl.cs474.safeCollapsed')!=='0');
+  }
+  function cleanBadge(){ var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v4.74'; }
+  function run(){ cleanBadge(); ensureSafeCollapse(); wireAutogrow(document); }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run); else run();
   setInterval(run,1200);
 })();
