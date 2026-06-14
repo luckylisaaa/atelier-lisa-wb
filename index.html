@@ -346,7 +346,7 @@ v182 更新（交辦單：讓工具變準變專業，接 v181、會動邏輯與�
 <script>
 /* ═══════════ v264：策略診斷使用說明書小窗＋Top/Bottom 標籤/按鈕視覺分層（index.html only） ═══════════ */
 (function(){
-  var VERSION='v342';
+  var VERSION='v343';
   function H(id){return document.getElementById(id)}
   function S(s){try{return (typeof esc==='function')?esc(s||''):String(s||'').replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}catch(e){return String(s||'')}}
   function N(x){try{ if(typeof parseNum==='function') return parseNum(x); }catch(e){} if(x==null)return 0; var t=String(x).replace(/,/g,'').trim(); if(!t)return 0; var m=t.match(/([0-9]+(?:\.[0-9]+)?)/); if(!m)return 0; var n=parseFloat(m[1])||0; if(/[萬万]/.test(t))n*=10000; else if(/[千kK]/.test(t))n*=1000; return n; }
@@ -1221,7 +1221,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v342</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v343</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -11071,7 +11071,7 @@ document.addEventListener('DOMContentLoaded',function(){
 <script>
 /* v239：自動防舊版快取。讓桌布捷徑／瀏覽器如果抓到舊 HTML，能自己比對線上最新版並導向。 */
 (function(){
-  var ATELIER_CURRENT_VERSION='v342';
+  var ATELIER_CURRENT_VERSION='v343';
   window.ATELIER_CURRENT_VERSION=ATELIER_CURRENT_VERSION;
   function _avNum(v){v=String(v||'');var m=v.match(/v\s*(\d+)/i);return m?parseInt(m[1],10):0;}
   function _avDetect(html){html=String(html||'');var m=html.match(/id=["']verBadge["'][^>]*>\s*(v\d+)/i)||html.match(/內部版本\s+(v\d+)/i);return m?m[1]:'';}
@@ -11259,7 +11259,7 @@ document.addEventListener('DOMContentLoaded',function(){
 <script>
 /* ═══════════ v262 hotfix · Strategy consultant UX hardening (final override only) ═══════════ */
 (function(){
-  var VERSION='v342';
+  var VERSION='v343';
   function H(id){return document.getElementById(id)}
   function E(s){try{return (typeof esc==='function')?esc(s||''):String(s||'').replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}catch(e){return String(s||'')}}
   function A(){try{return (typeof accounts!=='undefined'&&accounts)?accounts:(window.accounts||[])}catch(e){return window.accounts||[]}}
@@ -11417,7 +11417,7 @@ document.addEventListener('DOMContentLoaded',function(){
 <script>
 /* ═══════════ v263：策略診斷視覺流程、收合客戶卡、精緻核對窗與提示詞預覽（final override only） ═══════════ */
 (function(){
-  var VERSION='v342';
+  var VERSION='v343';
   function H(id){return document.getElementById(id)}
   function E(s){try{return (typeof esc==='function')?esc(s||''):String(s||'').replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}catch(e){return String(s||'')}}
   function A(){try{return (typeof accounts!=='undefined'&&accounts)?accounts:(window.accounts||[])}catch(e){return window.accounts||[]}}
@@ -11546,7 +11546,7 @@ document.addEventListener('DOMContentLoaded',function(){
 <script>
 /* ═══════════ v266 hotfix：修正 v265 事件代理語法，保留 v265 策略診斷功能（index.html only） ═══════════ */
 (function(){
-  var VERSION='v342';
+  var VERSION='v343';
   function H(id){return document.getElementById(id)}
   function E(s){try{return (typeof esc==='function')?esc(s||''):String(s||'').replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}catch(e){return String(s||'')}}
   function A(){try{return (typeof accounts!=='undefined'&&accounts)?accounts:(window.accounts||[])}catch(e){return window.accounts||[]}}
@@ -11719,7 +11719,7 @@ return '<div class="strat-radar-card-v265"><b>目前沒有符合樣本</b><p>可
 /* ═══════════ v267 strategy hard patch：固定版面、重綁按鈕、互動說明與策略對標雷達（index.html only） ═══════════ */
 (function(){
   'use strict';
-  var VERSION='v342';
+  var VERSION='v343';
   function H(id){return document.getElementById(id)}
   function E(s){return String(s==null?'':s).replace(/[&<>'"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]})}
   function A(){try{return (typeof accounts!=='undefined'&&Array.isArray(accounts))?accounts:(Array.isArray(window.accounts)?window.accounts:[])}catch(e){return []}}
@@ -11948,7 +11948,7 @@ window._strategyRadarV267=radarResults;
 
 <script id="v289PatchJS">
 (function(){
-  try{ window.ATELIER_CURRENT_VERSION='v342'; }catch(e){}
+  try{ window.ATELIER_CURRENT_VERSION='v343'; }catch(e){}
   try{ sessionStorage.setItem('atelierSkipAutoUpdate','1'); }catch(e){}
   try{ if(navigator.serviceWorker && navigator.serviceWorker.getRegistrations){
         navigator.serviceWorker.getRegistrations().then(function(rs){ rs.forEach(function(r){ try{r.update();}catch(e){} }); }).catch(function(){});
@@ -14230,7 +14230,7 @@ button:not(:disabled), .btn:not(.disabled):not([disabled]), [role="button"]{
 
 
 
-<!-- ═══════════ v342 · 操作壓版修正：選取對齊＋儲存狀態收斂＋下一步指引 ═══════════
+<!-- ═══════════ v343 · 操作壓版修正：選取對齊＋儲存狀態收斂＋下一步指引 ═══════════
      依《系統規範總則》D3/D6/D8/D13：不新增大模組，修正 v341 真機看到的壓版、白色儲存膠囊與下一步斷點。 -->
 <style id="atl-wb342-ux-tighten">
 /* 頂部儲存狀態：不要變成右上角一大顆白泡泡，改成紅底上可讀的小狀態。 */
@@ -14268,7 +14268,7 @@ textarea:focus{min-height:126px!important;border-color:#D4A574!important;box-sha
   function toastSafe(t){try{if(typeof toast==='function')toast(String(t));else console.log(t)}catch(e){}}
   function autogrow(el){ if(!el||el.tagName!=='TEXTAREA')return; el.style.height='auto'; var h=Math.min(Math.max(el.scrollHeight+2,64),340); el.style.height=h+'px'; }
   function wireAutogrow(root){ qsa('textarea',root||document).forEach(function(t){ if(t.__atlGrow342)return; t.__atlGrow342=true; ['input','change','focus'].forEach(function(ev){t.addEventListener(ev,function(){autogrow(t)})}); setTimeout(function(){autogrow(t)},80); }); }
-  function ensureVersion(){try{var vb=qs('#verBadge'); if(vb)vb.textContent='v342'; window.ATELIER_CURRENT_VERSION='v342'; if(typeof ATELIER_CURRENT_VERSION!=='undefined')ATELIER_CURRENT_VERSION='v342';}catch(e){}}
+  function ensureVersion(){try{var vb=qs('#verBadge'); if(vb)vb.textContent='v343'; window.ATELIER_CURRENT_VERSION='v343'; if(typeof ATELIER_CURRENT_VERSION!=='undefined')ATELIER_CURRENT_VERSION='v343';}catch(e){}}
   function makeSaveReadable(){var p=qs('#atlWbSavePill'); if(!p)return; var span=p.querySelector('span'); if(span&&!span.textContent.trim())span.textContent='未儲存'; p.title=(span?span.textContent:'儲存狀態');}
   function guide(text){
     var old=qs('[data-wb342-guide]'); if(old)old.remove();
@@ -14285,6 +14285,53 @@ textarea:focus{min-height:126px!important;border-color:#D4A574!important;box-sha
   installNextGuide();
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run); else run();
   setInterval(run,1200);
+})();
+</script>
+
+
+
+<!-- ═══════════ v343 · 第二輪：逐格填寫工具列＋清單壓版＋收納/下一步補強 ═══════════
+     依《系統規範總則》D2/D4/D5/D6/D7/D9/D13/E1：不新增新流程，讓既有欄位與清單有可讀、可填、可收、可交接的出口。 -->
+<style id="atl-wb343-fieldflow">
+/* A. 選取不再吃掉 Instagram / 標題：選取改成小方塊，文字隱藏，卡片只預留小空間。 */
+#accList > .vcard.atl-sel-host{padding-right:58px!important;overflow:visible!important}#accList > .vcard > .atl-sel-check{right:14px!important;top:14px!important;width:30px!important;height:30px!important;min-height:30px!important;padding:0!important;border-radius:9px!important;background:#FDFBF8!important;border:1px solid #E8E3DA!important;box-shadow:0 2px 8px rgba(90,40,45,.05)!important}#accList > .vcard > .atl-sel-check span{display:none!important}#accList > .vcard > .atl-sel-check input{width:16px!important;height:16px!important;margin:0!important}#accList .vcard .plat,#accList .vcard [class*="plat"]{margin-right:42px!important;white-space:nowrap!important}
+/* B. 橢圓按鈕收斂：不要一排擠爆，所有行動鈕同高、可換行。 */
+#accList .vcard .btn,#accList .vcard button,#accList .vcard .fbx-pill,#accList .vcard .wb-ov1-pill,.atl-sel-btn,.fbx-mark,.fbx-to-next,.fbx-delsel{border-radius:10px!important;min-height:31px!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;line-height:1.3!important;white-space:nowrap!important;box-sizing:border-box!important;margin-top:4px!important;margin-bottom:4px!important}#accList .vcard .fbx-pill,#accList .vcard .wb-ov1-pill{padding:5px 11px!important}.atl-selbar{align-items:center!important;gap:10px!important}.atl-sel-actions{gap:7px!important;flex-wrap:wrap!important}.atl-sel-count{min-width:auto!important;padding:0 4px!important;white-space:nowrap!important}
+/* C. 右上儲存狀態永遠是頂欄小狀態，不是白色故障膠囊。 */
+.topbar #atlWbSavePill,.topbar .atl-save-pill{background:rgba(255,255,255,.13)!important;border:1px solid rgba(253,251,248,.32)!important;color:#FDFBF8!important;-webkit-text-fill-color:#FDFBF8!important;box-shadow:none!important;border-radius:10px!important;max-width:210px!important;min-height:28px!important;overflow:hidden!important;text-overflow:ellipsis!important}.topbar #atlWbSavePill *,.topbar .atl-save-pill *{color:#FDFBF8!important;-webkit-text-fill-color:#FDFBF8!important}.topbar #atlWbSavePill span,.topbar .atl-save-pill span{max-width:145px!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important;display:inline-block!important;vertical-align:bottom!important}
+/* D. 欄位工具列：任何可填欄位 focus 後在底部出現，不壓住原欄位。 */
+.atl-field-toolbar{position:fixed;left:50%;bottom:18px;z-index:9998;transform:translateX(-50%);width:min(760px,calc(100vw - 32px));display:none;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:10px 12px;border:1px solid #E8E3DA;border-radius:16px;background:rgba(253,251,248,.98);box-shadow:0 14px 44px rgba(42,26,28,.15);backdrop-filter:blur(10px)}.atl-field-toolbar.on{display:flex}.atl-field-toolbar .atl-ft-name{font-size:12px;color:#7A5A5E;line-height:1.45;min-width:160px;max-width:280px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.atl-field-toolbar .atl-ft-name b{color:#A51820;font-weight:900}.atl-field-toolbar .atl-ft-actions{display:flex;gap:7px;flex-wrap:wrap}.atl-field-toolbar button{font-family:inherit;border-radius:10px;min-height:31px;padding:6px 11px;font-size:12px;font-weight:800;cursor:pointer;line-height:1.2}.atl-field-toolbar .primary{background:#A51820;border:1px solid #A51820;color:#fff}.atl-field-toolbar .ghost{background:#fff;border:1px solid #E8E3DA;color:#7A5A5E}.atl-field-toolbar .gold{background:#FDFBF8;border:1px solid #D4A574;color:#A51820}.atl-field-active{border-color:#D4A574!important;box-shadow:0 0 0 3px rgba(212,165,116,.16)!important;background:#FFFCFA!important}
+.atl-field-modal{position:fixed;inset:0;z-index:9999;background:rgba(42,26,28,.46);display:flex;align-items:center;justify-content:center;padding:20px}.atl-field-box{width:min(760px,94vw);max-height:86vh;overflow:auto;background:#fff;border:1px solid #E8E3DA;border-radius:20px;box-shadow:0 22px 70px rgba(42,26,28,.22);padding:20px 22px;color:#2A1A1C}.atl-field-k{font-family:Cormorant Garamond,serif;letter-spacing:4px;color:#D4A574;font-size:11px;margin-bottom:5px}.atl-field-title{font-family:Noto Serif TC,serif;font-size:22px;color:#A51820;margin:0 0 8px}.atl-field-help{font-size:12.5px;line-height:1.8;color:#5C4248;background:#FDFBF8;border-left:3px solid #D4A574;border-radius:0 12px 12px 0;padding:10px 12px;margin:0 0 12px}.atl-field-box textarea{width:100%;min-height:220px;border:1px solid #E8E3DA;border-radius:12px;padding:12px 13px;font-family:inherit;font-size:14px;line-height:1.75;color:#2A1A1C;background:#FFFCFA;outline:none;resize:vertical}.atl-field-actions{display:flex;justify-content:flex-end;gap:8px;flex-wrap:wrap;margin-top:12px}.atl-field-actions button{font-family:inherit;border-radius:10px;min-height:34px;padding:8px 13px;font-size:12.5px;font-weight:800;cursor:pointer}.atl-field-actions .primary{background:#A51820;border:1px solid #A51820;color:#fff}.atl-field-actions .ghost{background:#fff;border:1px solid #E8E3DA;color:#7A5A5E}.atl-field-actions .gold{background:#FDFBF8;border:1px solid #D4A574;color:#A51820}
+textarea{overflow:hidden!important;resize:vertical!important;transition:min-height .15s ease,height .15s ease,box-shadow .15s ease!important}textarea:focus{min-height:132px!important}input[type="text"],input[type="url"],input[type="email"],input:not([type]){min-height:39px!important;line-height:1.5!important}
+/* E. 大卡收納，不再無止境往下滑。 */
+.atl-collapsible{position:relative!important}.atl-collapse-toggle{position:absolute;right:12px;top:10px;z-index:4;border:1px solid #E8E3DA!important;background:#FDFBF8!important;color:#7A5A5E!important;border-radius:10px!important;min-height:28px!important;padding:4px 10px!important;font-family:inherit!important;font-size:11.5px!important;font-weight:800!important;cursor:pointer!important}.atl-collapsible.atl-closed > :not(.atl-keep-visible):not(.atl-collapse-toggle){display:none!important}.atl-collapsible.atl-closed{min-height:58px!important;padding-top:18px!important;padding-bottom:18px!important}.atl-collapsible.atl-closed::after{content:'已收起，點右上角「展開」繼續查看';display:block;margin-top:6px;font-size:12px;color:#7A5A5E}.atl-keep-visible{padding-right:76px!important}
+.wb-next-inline{font-size:11.8px;line-height:1.75;color:#5C4248;background:#FDFBF8;border-left:3px solid #D4A574;border-radius:0 10px 10px 0;padding:8px 10px;margin:8px 0 10px}.wb-next-inline b{color:#A51820}
+@media(max-width:820px){#accList > .vcard.atl-sel-host{padding-right:16px!important;padding-top:44px!important}#accList > .vcard > .atl-sel-check{left:14px!important;right:auto!important}.atl-field-toolbar{bottom:10px}.atl-field-toolbar .atl-ft-name{max-width:100%;width:100%}.atl-collapse-toggle{position:static!important;margin:8px 0 0!important}.atl-keep-visible{padding-right:0!important}}
+</style>
+<script>
+(function(){
+  if(window.__atlWb343FieldFlow) return; window.__atlWb343FieldFlow=true;
+  function qs(s,r){return (r||document).querySelector(s)}
+  function qsa(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
+  function esc(s){return String(s==null?'':s).replace(/[&<>\"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[c]||c})}
+  function toastSafe(t){try{if(typeof toast==='function')toast(String(t));else console.log(t)}catch(e){}}
+  function copy(t,msg){try{navigator.clipboard.writeText(String(t||''));toastSafe(msg||'已複製')}catch(e){var ta=document.createElement('textarea');ta.value=String(t||'');ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();toastSafe(msg||'已複製')}}
+  function labelOf(el){var lab=''; try{ if(el.id){var l=qs('label[for="'+CSS.escape(el.id)+'"]'); if(l)lab=l.textContent;} }catch(e){} if(!lab){var p=el.closest('label,.fld,.row,.form-card,.manual-card,.card,.vcard'); if(p){var clone=p.cloneNode(true); qsa('input,textarea,select,button',clone).forEach(function(n){n.remove()}); lab=clone.textContent;}} if(!lab)lab=el.getAttribute('aria-label')||el.getAttribute('placeholder')||el.name||el.id||'這個欄位'; return String(lab).replace(/提示詞|AI 智能填入|AI智能填入|展開編輯|預覽|儲存|查看/g,'').replace(/\s+/g,' ').trim().slice(0,46)||'這個欄位';}
+  function val(el){return el.value!=null?el.value:el.textContent}
+  function setVal(el,v){if(el.value!=null){el.value=v;el.dispatchEvent(new Event('input',{bubbles:true}));el.dispatchEvent(new Event('change',{bubbles:true}));}else{el.textContent=v}}
+  function genPrompt(el){var name=labelOf(el);return '請幫我填寫 ATELIER 影片診斷工作台的「'+name+'」欄位。\n\n要求：\n1. 用繁體中文，具體、可執行、可直接貼回系統。\n2. 請把內容整理成顧問能判斷下一步的形式。\n3. 如果資料不足，請用「待補：需要補充什麼」標示。\n4. 只輸出欄位內容，不要加開場白。\n\n目前欄位已有內容：\n'+(val(el)||'（目前空白）');}
+  function openModal(kind,el){var name=labelOf(el), current=val(el)||''; var ov=document.createElement('div'); ov.className='atl-field-modal'; var title=kind==='prompt'?'提示詞檢視 / 編輯':kind==='fill'?'AI 智能填入':'展開編輯'; var help=kind==='prompt'?'先看提示詞，可以改完再複製給 AI。AI 回覆後回來按「AI 智能填入」貼回。':kind==='fill'?'把 AI 回覆貼在下面，確認後會寫回目前欄位。':'完整編輯框：可以看完整內容、修改後存回原欄位。'; var body=kind==='prompt'?genPrompt(el):current; ov.innerHTML='<div class="atl-field-box"><div class="atl-field-k">ATELIER · FIELD FLOW</div><h3 class="atl-field-title">'+esc(title)+'</h3><div class="atl-field-help"><b>目前欄位：</b>'+esc(name)+'<br>'+esc(help)+'</div><textarea>'+esc(body)+'</textarea><div class="atl-field-actions"><button type="button" class="ghost" data-close>取消</button><button type="button" class="gold" data-copy>複製內容</button>'+(kind==='prompt'?'<button type="button" class="primary" data-close>完成</button>':'<button type="button" class="primary" data-apply>寫回欄位</button>')+'</div></div>'; document.body.appendChild(ov); var ta=qs('textarea',ov); setTimeout(function(){ta.focus(); ta.style.height='auto'; ta.style.height=Math.min(ta.scrollHeight+4,420)+'px';},60); ov.addEventListener('click',function(e){if(e.target===ov||e.target.hasAttribute('data-close'))ov.remove(); if(e.target.hasAttribute('data-copy'))copy(ta.value,'已複製內容'); if(e.target.hasAttribute('data-apply')){setVal(el,ta.value); ov.remove(); toastSafe('已寫回欄位，記得儲存');}}); ta.addEventListener('input',function(){this.style.height='auto';this.style.height=Math.min(this.scrollHeight+4,520)+'px';});}
+  function toolbar(){var bar=qs('#atlFieldToolbar'); if(bar)return bar; bar=document.createElement('div'); bar.id='atlFieldToolbar'; bar.className='atl-field-toolbar'; bar.innerHTML='<div class="atl-ft-name">目前欄位：<b></b></div><div class="atl-ft-actions"><button type="button" class="gold" data-act="prompt">提示詞</button><button type="button" class="primary" data-act="fill">AI 智能填入</button><button type="button" class="ghost" data-act="edit">展開編輯</button><button type="button" class="ghost" data-act="done">定案 / 收起</button></div>'; document.body.appendChild(bar); return bar;}
+  var active=null; function show(el){active=el;qsa('.atl-field-active').forEach(function(n){n.classList.remove('atl-field-active')});el.classList.add('atl-field-active');var b=toolbar();qs('b',b).textContent=labelOf(el);b.classList.add('on')}
+  function hideSoon(){setTimeout(function(){var b=qs('#atlFieldToolbar'); if(b&&!document.activeElement.closest('.atl-field-toolbar')&&document.activeElement!==active)b.classList.remove('on')},220)}
+  function grow(el){if(!el||el.tagName!=='TEXTAREA')return;el.style.height='auto';el.style.height=Math.min(Math.max(el.scrollHeight+2,62),360)+'px'}
+  function wire(root){qsa('textarea,input[type="text"],input[type="url"],input[type="email"],input:not([type])',root||document).forEach(function(el){if(el.__atl343)return;if(el.closest('.atl-field-modal'))return;el.__atl343=true;el.addEventListener('focus',function(){show(el);grow(el)});el.addEventListener('input',function(){grow(el)});el.addEventListener('blur',hideSoon);grow(el);});}
+  document.addEventListener('click',function(e){var b=e.target.closest('#atlFieldToolbar button'); if(!b||!active)return; var a=b.getAttribute('data-act'); if(a==='prompt')openModal('prompt',active); if(a==='fill')openModal('fill',active); if(a==='edit')openModal('edit',active); if(a==='done'){var bar=qs('#atlFieldToolbar'); if(bar)bar.classList.remove('on'); if(active)active.classList.remove('atl-field-active'); toastSafe('此欄位可視為定案，請記得儲存');}},true);
+  function addCollapse(root){qsa('.card,.manual-card,.form-card,.paste-card,.sumcard,.v262-section,.strat-section-v263',root||document).forEach(function(card){if(card.__atlCollapse343||card.closest('#accList,.modal,.atl-field-modal'))return; card.__atlCollapse343=true; card.classList.add('atl-collapsible'); var h=qs('h2,h3,h4,.stitle,.title',card)||card.firstElementChild; if(h)h.classList.add('atl-keep-visible'); var btn=document.createElement('button'); btn.type='button'; btn.className='atl-collapse-toggle'; btn.textContent='收合'; btn.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();var closed=card.classList.toggle('atl-closed');btn.textContent=closed?'展開':'收合';}); card.insertBefore(btn,card.firstChild);});}
+  function addNextInline(){qsa('.fbx-panel,.wbfb341-card').forEach(function(p){if(p.__atlNext343)return;p.__atlNext343=true;var n=document.createElement('div');n.className='wb-next-inline';n.innerHTML='<b>下一步：</b>複製後請貼到服務台 ③ 問診、④ 診斷、⑦ 交付備註；如果只是測試資料，就標記已處理或刪除。';p.insertBefore(n,p.firstChild);});}
+  function boot(){try{var vb=qs('#verBadge'); if(vb)vb.textContent='v343'; window.ATELIER_CURRENT_VERSION='v343'; if(typeof ATELIER_CURRENT_VERSION!=='undefined')ATELIER_CURRENT_VERSION='v343';}catch(e){} wire(document); addCollapse(document); addNextInline();}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot); else boot();
+  try{new MutationObserver(function(ms){var hit=false; ms.forEach(function(m){if(m.addedNodes&&m.addedNodes.length)hit=true}); if(hit){clearTimeout(window.__atl343Timer); window.__atl343Timer=setTimeout(boot,180);}}).observe(document.body,{childList:true,subtree:true});}catch(e){}
 })();
 </script>
 

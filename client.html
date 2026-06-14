@@ -722,7 +722,7 @@ details.cat .cat-body{padding:14px 15px}
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">客戶服務台</span></span>
-    <span id="verBadge">cs-v4.74</span>
+    <span id="verBadge">cs-v4.75</span>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button type="button" id="popoutBtn" class="popout-btn" title="把客戶服務台開成獨立小視窗"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6"/><path d="M20 4l-9 9"/><path d="M14 12v7H5V10h7"/></svg>小視窗</button>
@@ -8971,7 +8971,7 @@ button:not(:disabled), .btn:not(.disabled):not([disabled]), [role="button"]{
   if(window.__atlCs473Continuity) return; window.__atlCs473Continuity=true;
   function cleanTextNode(n){var s=n.nodeValue||''; var ns=s.replace(/cs-v4\.\d+\s*(SAFE|LATEST)?\s*[｜|·:-]?\s*/g,'').replace(/\bv\d{3}\s*[｜|·:-]?\s*/g,''); if(ns!==s)n.nodeValue=ns;}
   function cleanVersions(){
-    try{var vb=document.getElementById('verBadge'); if(vb)vb.textContent='cs-v4.74';}catch(e){}
+    try{var vb=document.getElementById('verBadge'); if(vb)vb.textContent='cs-v4.75';}catch(e){}
     try{var w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT,{acceptNode:function(n){var p=n.parentElement; if(!p||p.id==='verBadge'||/^(SCRIPT|STYLE|TEXTAREA)$/i.test(p.tagName))return NodeFilter.FILTER_REJECT; return /(cs-v4\.\d+|\bv\d{3})/.test(n.nodeValue||'')?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_REJECT;}}); var nodes=[],n; while(n=w.nextNode())nodes.push(n); nodes.forEach(cleanTextNode);}catch(e){}
   }
   function alignSelection(){
@@ -8987,7 +8987,7 @@ button:not(:disabled), .btn:not(.disabled):not([disabled]), [role="button"]{
 
 
 
-<!-- ═══════════ cs-v4.74 · 操作壓版修正：總控收納＋欄位自動長高＋按鈕/狀態節制 ═══════════
+<!-- ═══════════ cs-v4.75 · 操作壓版修正：總控收納＋欄位自動長高＋按鈕/狀態節制 ═══════════
      依《系統規範總則》D2/D3/D7/D8/D13：不新增大模組，只把既有操作變成能收、能看、能輸入。 -->
 <style id="atl-cs474-ux-tighten">
 /* 服務台總控可收納：預設只留標題與一句摘要，不再佔滿第一屏。 */
@@ -9031,10 +9031,70 @@ input[type="text"]:focus,input:not([type]):focus{border-color:#D4A574!important;
     btn.onclick=function(e){e.stopPropagation(); set(!safe.classList.contains('atl-safe474-collapsed'));};
     h.appendChild(summary); h.appendChild(btn); set(localStorage.getItem('atl.cs474.safeCollapsed')!=='0');
   }
-  function cleanBadge(){ var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v4.74'; }
+  function cleanBadge(){ var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v4.75'; }
   function run(){ cleanBadge(); ensureSafeCollapse(); wireAutogrow(document); }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run); else run();
   setInterval(run,1200);
+})();
+</script>
+
+
+
+<!-- ═══════════ cs-v4.75 · 第二輪：逐格填寫工具列＋全區塊收納＋出口提示 ═══════════
+     依《系統規範總則》D2/D4/D5/D6/D7/D13：不新增新流程，補齊既有欄位的可看、可填、可展開、可收尾。 -->
+<style id="atl-cs475-fieldflow">
+/* A. 共用欄位工具列：任何可填欄位 focus 後才出現，不壓在欄位上。 */
+.atl-field-toolbar{position:fixed;left:50%;bottom:18px;z-index:9998;transform:translateX(-50%);width:min(760px,calc(100vw - 32px));display:none;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:10px 12px;border:1px solid #E8E3DA;border-radius:16px;background:rgba(253,251,248,.98);box-shadow:0 14px 44px rgba(42,26,28,.15);backdrop-filter:blur(10px)}
+.atl-field-toolbar.on{display:flex}.atl-field-toolbar .atl-ft-name{font-size:12px;color:#7A5A5E;line-height:1.45;min-width:160px;max-width:280px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.atl-field-toolbar .atl-ft-name b{color:#A51820;font-weight:900}.atl-field-toolbar .atl-ft-actions{display:flex;gap:7px;flex-wrap:wrap}.atl-field-toolbar button{font-family:inherit;border-radius:10px;min-height:31px;padding:6px 11px;font-size:12px;font-weight:800;cursor:pointer;line-height:1.2}.atl-field-toolbar .primary{background:#A51820;border:1px solid #A51820;color:#fff}.atl-field-toolbar .ghost{background:#fff;border:1px solid #E8E3DA;color:#7A5A5E}.atl-field-toolbar .gold{background:#FDFBF8;border:1px solid #D4A574;color:#A51820}
+.atl-field-active{border-color:#D4A574!important;box-shadow:0 0 0 3px rgba(212,165,116,.16)!important;background:#FFFCFA!important}
+.atl-field-modal{position:fixed;inset:0;z-index:9999;background:rgba(42,26,28,.46);display:flex;align-items:center;justify-content:center;padding:20px}.atl-field-box{width:min(760px,94vw);max-height:86vh;overflow:auto;background:#fff;border:1px solid #E8E3DA;border-radius:20px;box-shadow:0 22px 70px rgba(42,26,28,.22);padding:20px 22px;color:#2A1A1C}.atl-field-k{font-family:Cormorant Garamond,serif;letter-spacing:4px;color:#D4A574;font-size:11px;margin-bottom:5px}.atl-field-title{font-family:Noto Serif TC,serif;font-size:22px;color:#A51820;margin:0 0 8px}.atl-field-help{font-size:12.5px;line-height:1.8;color:#5C4248;background:#FDFBF8;border-left:3px solid #D4A574;border-radius:0 12px 12px 0;padding:10px 12px;margin:0 0 12px}.atl-field-box textarea{width:100%;min-height:220px;border:1px solid #E8E3DA;border-radius:12px;padding:12px 13px;font-family:inherit;font-size:14px;line-height:1.75;color:#2A1A1C;background:#FFFCFA;outline:none;resize:vertical}.atl-field-actions{display:flex;justify-content:flex-end;gap:8px;flex-wrap:wrap;margin-top:12px}.atl-field-actions button{font-family:inherit;border-radius:10px;min-height:34px;padding:8px 13px;font-size:12.5px;font-weight:800;cursor:pointer}.atl-field-actions .primary{background:#A51820;border:1px solid #A51820;color:#fff}.atl-field-actions .ghost{background:#fff;border:1px solid #E8E3DA;color:#7A5A5E}.atl-field-actions .gold{background:#FDFBF8;border:1px solid #D4A574;color:#A51820}
+/* B. 收納按鈕：一律小顆、右上角，不像主要 CTA。 */
+.atl-collapsible{position:relative!important}.atl-collapse-toggle{position:absolute;right:14px;top:12px;z-index:4;border:1px solid #E8E3DA!important;background:#FDFBF8!important;color:#7A5A5E!important;border-radius:10px!important;min-height:28px!important;padding:4px 10px!important;font-family:inherit!important;font-size:11.5px!important;font-weight:800!important;cursor:pointer!important;box-shadow:none!important}.atl-collapsible.atl-closed > :not(.atl-keep-visible):not(.atl-collapse-toggle){display:none!important}.atl-collapsible.atl-closed{min-height:58px!important;padding-top:18px!important;padding-bottom:18px!important}.atl-collapsible.atl-closed::after{content:'已收起，點右上角「展開」繼續編輯';display:block;margin-top:6px;font-size:12px;color:#7A5A5E}.atl-keep-visible{padding-right:76px!important}
+/* C. 狀態標籤不要像按鈕；真按鈕高度統一。 */
+.atl452safe-pill,.cpb-missing,.flow-dot,.atl-sel-count{cursor:default!important;box-shadow:none!important}.atl452safe-pill,.flow-dot{border-radius:8px!important}.btn,.btn-go,.btn-ghost,.btn-gold,.mini-btn,.preview-modal-btn,.btn-deliver,.btn-deliver-2,.atl-sel-btn{min-height:32px!important;border-radius:10px!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;line-height:1.3!important;white-space:nowrap!important;box-sizing:border-box!important}.btn-row,.atl-sel-actions{gap:8px!important;align-items:center!important;flex-wrap:wrap!important}
+/* D. 文字輸入不再一排撐到底；長內容自動變高。 */
+textarea{overflow:hidden!important;resize:vertical!important;transition:min-height .15s ease,height .15s ease,box-shadow .15s ease!important}textarea:focus{min-height:132px!important}.fld input[type="text"],.fld input:not([type]),input[type="text"],input[type="url"],input[type="email"]{min-height:40px!important;line-height:1.5!important}.fld{gap:7px!important}
+@media(max-width:720px){.atl-field-toolbar{bottom:10px}.atl-field-toolbar .atl-ft-name{max-width:100%;width:100%}.atl-collapse-toggle{position:static!important;margin:8px 0 0!important}.atl-keep-visible{padding-right:0!important}}
+</style>
+<script>
+(function(){
+  if(window.__atlCs475FieldFlow) return; window.__atlCs475FieldFlow=true;
+  function qs(s,r){return (r||document).querySelector(s)}
+  function qsa(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
+  function esc(s){return String(s==null?'':s).replace(/[&<>\"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[c]||c})}
+  function toastSafe(t){try{if(typeof toast==='function')toast(String(t));else console.log(t)}catch(e){}}
+  function copy(t,msg){try{navigator.clipboard.writeText(String(t||''));toastSafe(msg||'已複製')}catch(e){var ta=document.createElement('textarea');ta.value=String(t||'');ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();toastSafe(msg||'已複製')}}
+  function labelOf(el){
+    var lab=''; try{ if(el.id){var l=qs('label[for="'+CSS.escape(el.id)+'"]'); if(l)lab=l.textContent;} }catch(e){}
+    if(!lab){var p=el.closest('label,.fld,.row,.preview-field,.section-card,.atl452safe-mini'); if(p){var clone=p.cloneNode(true); qsa('input,textarea,select,button',clone).forEach(function(n){n.remove()}); lab=clone.textContent;}}
+    if(!lab) lab=el.getAttribute('aria-label')||el.getAttribute('placeholder')||el.name||el.id||'這個欄位';
+    lab=String(lab).replace(/提示詞|AI 智能填入|AI智能填入|展開編輯|預覽|儲存|查看/g,'').replace(/\s+/g,' ').trim();
+    return lab.slice(0,46)||'這個欄位';
+  }
+  function val(el){return el.value!=null?el.value:el.textContent}
+  function setVal(el,v){if(el.value!=null){el.value=v; el.dispatchEvent(new Event('input',{bubbles:true})); el.dispatchEvent(new Event('change',{bubbles:true}));}else{el.textContent=v}}
+  function genPrompt(el){var name=labelOf(el); return '請幫我填寫 ATELIER 客戶服務台的「'+name+'」欄位。\n\n要求：\n1. 用繁體中文，白話、具體、可直接貼回系統。\n2. 不要寫空泛形容詞，要寫出對客戶服務、內容診斷或交付有幫助的資訊。\n3. 如果資料不足，請用「待補：需要補充什麼」標示。\n4. 請只輸出這個欄位要貼回去的內容，不要加開場白。\n\n目前欄位已有內容：\n'+(val(el)||'（目前空白）');}
+  function openModal(kind,el){
+    var name=labelOf(el), current=val(el)||''; var ov=document.createElement('div'); ov.className='atl-field-modal';
+    var title=kind==='prompt'?'提示詞檢視 / 編輯':kind==='fill'?'AI 智能填入':'展開編輯';
+    var help=kind==='prompt'?'先看提示詞，可以改完再複製給 AI。AI 回覆後，回到這個欄位按「AI 智能填入」貼回。':kind==='fill'?'把 AI 回覆貼在下面，確認後會寫回目前欄位。':'這是完整編輯框。你可以在這裡看完整內容、修改，然後存回原欄位。';
+    var body=kind==='prompt'?genPrompt(el):current;
+    ov.innerHTML='<div class="atl-field-box"><div class="atl-field-k">ATELIER · FIELD FLOW</div><h3 class="atl-field-title">'+esc(title)+'</h3><div class="atl-field-help"><b>目前欄位：</b>'+esc(name)+'<br>'+esc(help)+'</div><textarea>'+esc(body)+'</textarea><div class="atl-field-actions"><button type="button" class="ghost" data-close>取消</button><button type="button" class="gold" data-copy>複製內容</button>'+(kind==='prompt'?'<button type="button" class="primary" data-close>完成</button>':'<button type="button" class="primary" data-apply>寫回欄位</button>')+'</div></div>';
+    document.body.appendChild(ov); var ta=qs('textarea',ov); setTimeout(function(){ta.focus(); ta.style.height='auto'; ta.style.height=Math.min(ta.scrollHeight+4,420)+'px';},60);
+    ov.addEventListener('click',function(e){if(e.target===ov||e.target.hasAttribute('data-close'))ov.remove(); if(e.target.hasAttribute('data-copy'))copy(ta.value,'已複製內容'); if(e.target.hasAttribute('data-apply')){setVal(el,ta.value); ov.remove(); toastSafe('已寫回欄位，記得儲存');}});
+    ta.addEventListener('input',function(){this.style.height='auto'; this.style.height=Math.min(this.scrollHeight+4,520)+'px';});
+  }
+  function makeToolbar(){var bar=qs('#atlFieldToolbar'); if(bar)return bar; bar=document.createElement('div'); bar.id='atlFieldToolbar'; bar.className='atl-field-toolbar'; bar.innerHTML='<div class="atl-ft-name">目前欄位：<b></b></div><div class="atl-ft-actions"><button type="button" class="gold" data-act="prompt">提示詞</button><button type="button" class="primary" data-act="fill">AI 智能填入</button><button type="button" class="ghost" data-act="edit">展開編輯</button><button type="button" class="ghost" data-act="done">定案 / 收起</button></div>'; document.body.appendChild(bar); return bar;}
+  var active=null;
+  function show(el){active=el; qsa('.atl-field-active').forEach(function(n){n.classList.remove('atl-field-active')}); el.classList.add('atl-field-active'); var bar=makeToolbar(); qs('b',bar).textContent=labelOf(el); bar.classList.add('on');}
+  function hideSoon(){setTimeout(function(){var bar=qs('#atlFieldToolbar'); if(bar && !document.activeElement.closest('.atl-field-toolbar') && document.activeElement!==active) bar.classList.remove('on');},220)}
+  function autogrow(el){if(!el||el.tagName!=='TEXTAREA')return; el.style.height='auto'; el.style.height=Math.min(Math.max(el.scrollHeight+2,62),360)+'px'}
+  function wire(root){qsa('textarea,input[type="text"],input[type="url"],input[type="email"],input:not([type])',root||document).forEach(function(el){if(el.__atl475)return; if(el.closest('.atl-field-modal,.atl-final-modal'))return; el.__atl475=true; el.addEventListener('focus',function(){show(el); autogrow(el)}); el.addEventListener('input',function(){autogrow(el)}); el.addEventListener('blur',hideSoon); autogrow(el);});}
+  document.addEventListener('click',function(e){var b=e.target.closest('#atlFieldToolbar button'); if(!b||!active)return; var a=b.getAttribute('data-act'); if(a==='prompt')openModal('prompt',active); if(a==='fill')openModal('fill',active); if(a==='edit')openModal('edit',active); if(a==='done'){var bar=qs('#atlFieldToolbar'); if(bar)bar.classList.remove('on'); if(active)active.classList.remove('atl-field-active'); toastSafe('此欄位可視為定案，請記得儲存');}},true);
+  function addCollapse(root){qsa('.section-card,.deliverable-card,.atl452safe-card',root||document).forEach(function(card){if(card.__atlCollapse475||card.closest('.preview-modal,.atl-field-modal'))return; card.__atlCollapse475=true; card.classList.add('atl-collapsible'); var h=qs('h2,h3,h4,.stitle,.section-title',card)||card.firstElementChild; if(h)h.classList.add('atl-keep-visible'); var btn=document.createElement('button'); btn.type='button'; btn.className='atl-collapse-toggle'; btn.textContent='收合'; btn.addEventListener('click',function(e){e.preventDefault(); e.stopPropagation(); var closed=card.classList.toggle('atl-closed'); btn.textContent=closed?'展開':'收合';}); card.insertBefore(btn,card.firstChild);});}
+  function boot(){try{var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v4.75';}catch(e){} wire(document); addCollapse(document);}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot); else boot();
+  try{new MutationObserver(function(ms){var hit=false; ms.forEach(function(m){if(m.addedNodes&&m.addedNodes.length)hit=true}); if(hit){clearTimeout(window.__atl475Timer); window.__atl475Timer=setTimeout(boot,180);}}).observe(document.body,{childList:true,subtree:true});}catch(e){}
 })();
 </script>
 
