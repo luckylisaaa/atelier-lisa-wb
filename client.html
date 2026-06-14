@@ -722,7 +722,7 @@ details.cat .cat-body{padding:14px 15px}
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">客戶服務台</span></span>
-    <span id="verBadge">cs-v4.77</span>
+    <span id="verBadge">cs-v4.78</span>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button type="button" id="popoutBtn" class="popout-btn" title="把客戶服務台開成獨立小視窗"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6"/><path d="M20 4l-9 9"/><path d="M14 12v7H5V10h7"/></svg>小視窗</button>
@@ -8971,7 +8971,7 @@ button:not(:disabled), .btn:not(.disabled):not([disabled]), [role="button"]{
   if(window.__atlCs473Continuity) return; window.__atlCs473Continuity=true;
   function cleanTextNode(n){var s=n.nodeValue||''; var ns=s.replace(/cs-v4\.\d+\s*(SAFE|LATEST)?\s*[｜|·:-]?\s*/g,'').replace(/\bv\d{3}\s*[｜|·:-]?\s*/g,''); if(ns!==s)n.nodeValue=ns;}
   function cleanVersions(){
-    try{var vb=document.getElementById('verBadge'); if(vb)vb.textContent='cs-v4.77';}catch(e){}
+    try{var vb=document.getElementById('verBadge'); if(vb)vb.textContent='cs-v4.78';}catch(e){}
     try{var w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT,{acceptNode:function(n){var p=n.parentElement; if(!p||p.id==='verBadge'||/^(SCRIPT|STYLE|TEXTAREA)$/i.test(p.tagName))return NodeFilter.FILTER_REJECT; return /(cs-v4\.\d+|\bv\d{3})/.test(n.nodeValue||'')?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_REJECT;}}); var nodes=[],n; while(n=w.nextNode())nodes.push(n); nodes.forEach(cleanTextNode);}catch(e){}
   }
   function alignSelection(){
@@ -9098,11 +9098,105 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
 })();
 </script>
 
+
+<style id="atl478-final-export-css">
+  .atl-final-float{position:fixed;right:22px;bottom:84px;z-index:99990;background:#A51820;color:#fff;border:1px solid rgba(255,255,255,.72);box-shadow:0 8px 28px rgba(42,26,28,.18);border-radius:999px;padding:11px 18px;font-size:13px;font-weight:800;letter-spacing:.5px;cursor:pointer;font-family:inherit}
+  .atl-final-float:hover{background:#7A1018;transform:translateY(1px)}
+  .atl-final-card{background:#fff;border:1px solid #E8E3DA;border-left:3px solid #A51820;border-radius:14px;padding:16px 18px;margin:16px 0;box-shadow:0 8px 22px rgba(42,26,28,.05)}
+  .atl-final-card h3{font-family:Noto Serif TC,serif;font-size:18px;color:#2A1A1C;margin:0 0 6px;letter-spacing:.8px}
+  .atl-final-card p{font-size:12.5px;color:#7A5A5E;line-height:1.8;margin:0 0 12px}
+  .atl-final-card .atl-final-actions{display:flex;flex-wrap:wrap;gap:8px}
+  .atl-final-card button,.atl-final-modal button{border:1px solid #E3CED0;background:#fff;color:#A51820;border-radius:999px;padding:8px 14px;font-size:12.5px;font-weight:800;cursor:pointer;font-family:inherit}
+  .atl-final-card button.primary,.atl-final-modal button.primary{background:#A51820;color:#fff;border-color:#A51820}
+  .atl-final-modal{position:fixed;inset:0;z-index:100020;background:rgba(42,26,28,.42);display:none;align-items:center;justify-content:center;padding:18px}
+  .atl-final-modal.show{display:flex}
+  .atl-final-sheet{width:min(980px,100%);max-height:90vh;overflow:auto;background:#FDFBF8;border-radius:22px;padding:24px;box-shadow:0 24px 60px rgba(42,26,28,.25)}
+  .atl-final-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:16px}
+  .atl-final-kicker{font-family:Cormorant Garamond,serif;letter-spacing:5px;color:#A89498;font-size:11px;text-transform:uppercase;margin-bottom:6px}
+  .atl-final-title{font-family:Noto Serif TC,serif;font-size:24px;color:#2A1A1C;font-weight:900;margin:0}
+  .atl-final-sub{font-size:12.5px;color:#7A5A5E;line-height:1.8;margin-top:6px}
+  .atl-final-close{font-size:18px;border-radius:50%!important;width:36px;height:36px;padding:0!important;line-height:1}
+  .atl-final-tools{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:12px;border:1px solid #E8E3DA;background:#fff;border-radius:14px;margin-bottom:14px}
+  .atl-final-count{margin-left:auto;color:#A51820;font-size:12.5px;font-weight:800}
+  .atl-final-grid{display:grid;grid-template-columns:1fr;gap:10px}
+  .atl-final-item{display:grid;grid-template-columns:24px 110px 1fr;gap:10px;align-items:flex-start;background:#fff;border:1px solid #E8E3DA;border-radius:13px;padding:12px}
+  .atl-final-item input{width:18px;height:18px;accent-color:#A51820;margin-top:3px}
+  .atl-final-stage{font-size:11.5px;color:#A51820;font-weight:900;background:#FBF0EF;border:1px solid #EAD9D6;border-radius:999px;padding:3px 8px;display:inline-block;text-align:center}
+  .atl-final-item h4{font-size:14px;color:#2A1A1C;margin:0 0 4px;font-weight:900}
+  .atl-final-item p{font-size:12.5px;color:#5C4248;line-height:1.75;margin:0;white-space:pre-wrap}
+  .atl-final-plan{border:1px solid #E8E3DA;background:#fff;border-radius:14px;padding:14px;margin:14px 0}
+  .atl-final-plan h4{font-size:13px;color:#A51820;margin:0 0 8px;font-weight:900}
+  .atl-final-plan ol{margin:0;padding-left:20px;color:#5C4248;font-size:12.5px;line-height:1.9}
+  .atl-final-bottom{position:sticky;bottom:-24px;background:linear-gradient(180deg,rgba(253,251,248,.75),#FDFBF8 38%);padding:14px 0 0;margin-top:10px;display:flex;justify-content:flex-end;flex-wrap:wrap;gap:8px}
+  @media(max-width:640px){.atl-final-item{grid-template-columns:24px 1fr}.atl-final-stage{grid-column:2}.atl-final-count{width:100%;margin-left:0}.atl-final-float{right:14px;bottom:78px}}
+</style>
+<script id="atl478-final-export-js">
+(function(){
+  if(window.__atl478FinalExport)return; window.__atl478FinalExport=true;
+  var VERSION='cs-v4.78';
+  function esc(s){return (s==null?'':String(s)).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+  function qsa(sel,root){return Array.prototype.slice.call((root||document).querySelectorAll(sel))}
+  function text(el){return (el&&el.innerText||el&&el.textContent||'').replace(/\s+/g,' ').trim()}
+  function stageLabel(id){return ({'view-stage1':'① 初診','view-stage2':'② 建檔','view-stage3':'③ 問診','view-stage4':'④ 診斷','view-stage5':'⑤ 盤點','view-stage6':'⑥ 企劃','view-stage7':'⑦ 交付','view-dashboard':'儀表板','view-select':'選擇客戶'})[id]||'服務台'}
+  function toast(msg){try{ if(window.toast) window.toast(msg); else alert(msg); }catch(e){alert(msg)}}
+  function setVersion(){var b=document.getElementById('verBadge'); if(b)b.textContent=VERSION}
+  function val(el){return (el.value||el.innerText||'').replace(/\s+/g,' ').trim()}
+  function currentClientName(){
+    var s=text(document.querySelector('.cs-banner .who'))||text(document.querySelector('.who'));
+    if(s) return s.replace(/^目前服務[:：]?/,'').trim();
+    var t=text(document.querySelector('.cli-card.cur .cc-handle'))||text(document.querySelector('.cur .cc-handle'));
+    return t||'ATELIER 客戶';
+  }
+  function collectItems(){
+    var out=[], seen={};
+    qsa('.view').forEach(function(v){
+      if(!/^view-stage[1-7]$/.test(v.id))return;
+      var st=stageLabel(v.id);
+      qsa('textarea,input[type="text"],input:not([type]),.ver-body,.mini-output,.deliver-card,.section-card',v).forEach(function(el,idx){
+        if(el.closest && el.closest('.atl-final-modal'))return;
+        var body=val(el);
+        if(!body || body.length<8)return;
+        var title='';
+        try{var fld=el.closest('.fld,.section-card,details,.cat,.deliver-card'); title=text(fld&&fld.querySelector('label,h3,summary,.m-title'))||('內容 '+(idx+1));}catch(e){title='內容 '+(idx+1)}
+        body=body.slice(0,900);
+        var key=st+'|'+title+'|'+body.slice(0,80);
+        if(seen[key])return; seen[key]=1;
+        out.push({id:'atlFinal_'+out.length,stage:st,title:title,body:body});
+      });
+    });
+    if(!out.length){out=[{id:'atlFinal_0',stage:'① 初診',title:'尚未偵測到可匯出內容',body:'請先於各站填入資料後，再回到最終匯出選取。'}];}
+    return out.slice(0,60);
+  }
+  function modalHTML(items){
+    return '<div class="atl-final-modal" id="atlFinalModal" role="dialog" aria-modal="true"><div class="atl-final-sheet">'
+      +'<div class="atl-final-head"><div><div class="atl-final-kicker">ATELIER · FINAL EXPORT</div><h2 class="atl-final-title">選取最終匯出檔案</h2><div class="atl-final-sub">先勾選要交付的內容，再看建議頁清單，最後下載 HTML 或 PPTX。這裡不會直接開盲盒。</div></div><button class="atl-final-close" data-atl-final-close>×</button></div>'
+      +'<div class="atl-final-tools"><button data-atl-final-all>全選</button><button data-atl-final-none>取消全選</button><button data-atl-final-refresh>重新整理內容</button><span class="atl-final-count" id="atlFinalCount">已選 0 項</span></div>'
+      +'<div class="atl-final-grid" id="atlFinalList">'+items.map(function(it,i){return '<label class="atl-final-item"><input type="checkbox" data-atl-final-check="'+i+'" checked><span class="atl-final-stage">'+esc(it.stage)+'</span><span><h4>'+esc(it.title)+'</h4><p>'+esc(it.body)+'</p></span></label>'}).join('')+'</div>'
+      +'<div class="atl-final-plan"><h4>建議頁清單</h4><ol id="atlFinalPlan"></ol></div>'
+      +'<div class="atl-final-bottom"><button data-atl-final-copy>複製勾選內容</button><button data-atl-final-html>下載 HTML</button><button class="primary" data-atl-final-ppt>下載 PPTX</button></div>'
+      +'</div></div>';
+  }
+  function selected(){var items=window.__atl478FinalItems||[];return qsa('[data-atl-final-check]').filter(function(c){return c.checked}).map(function(c){return items[Number(c.getAttribute('data-atl-final-check'))]}).filter(Boolean)}
+  function updatePlan(){var sel=selected();var c=document.getElementById('atlFinalCount'); if(c)c.textContent='已選 '+sel.length+' 項';var plan=document.getElementById('atlFinalPlan'); if(!plan)return;var pages=['封面｜ATELIER × '+currentClientName(),'目錄｜本次勾選內容總覽'];var groups={}; sel.forEach(function(it){groups[it.stage]=(groups[it.stage]||0)+1});Object.keys(groups).forEach(function(k){pages.push(k+'｜'+groups[k]+' 項重點摘要')});pages.push('下一步｜建議執行與交付確認');plan.innerHTML=pages.map(function(p){return '<li>'+esc(p)+'</li>'}).join('')}
+  function openFinal(){window.__atl478FinalItems=collectItems();var old=document.getElementById('atlFinalModal'); if(old)old.remove();document.body.insertAdjacentHTML('beforeend',modalHTML(window.__atl478FinalItems));var m=document.getElementById('atlFinalModal'); m.classList.add('show');qsa('[data-atl-final-check]').forEach(function(c){c.addEventListener('change',updatePlan)});qsa('[data-atl-final-close]').forEach(function(b){b.addEventListener('click',function(){m.remove()})});qsa('[data-atl-final-all]').forEach(function(b){b.addEventListener('click',function(){qsa('[data-atl-final-check]').forEach(function(c){c.checked=true});updatePlan()})});qsa('[data-atl-final-none]').forEach(function(b){b.addEventListener('click',function(){qsa('[data-atl-final-check]').forEach(function(c){c.checked=false});updatePlan()})});qsa('[data-atl-final-refresh]').forEach(function(b){b.addEventListener('click',openFinal)});qsa('[data-atl-final-copy]').forEach(function(b){b.addEventListener('click',copySelected)});qsa('[data-atl-final-html]').forEach(function(b){b.addEventListener('click',downloadHTML)});qsa('[data-atl-final-ppt]').forEach(function(b){b.addEventListener('click',downloadPPT)});updatePlan()}
+  function selectedText(){var sel=selected();return 'ATELIER 最終匯出｜'+currentClientName()+'\n\n'+sel.map(function(it,i){return (i+1)+'. ['+it.stage+'] '+it.title+'\n'+it.body}).join('\n\n')}
+  function copySelected(){var s=selectedText();try{navigator.clipboard.writeText(s).then(function(){toast('已複製勾選內容')},function(){throw 0})}catch(e){var ta=document.createElement('textarea');ta.value=s;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();toast('已複製勾選內容')}}
+  function safeFile(s){return String(s||'ATELIER').replace(/[\\/:*?"<>|]/g,'_').slice(0,50)}
+  function downloadHTML(){var sel=selected(), name=currentClientName();var html='<!DOCTYPE html><html lang="zh-Hant"><head><meta charset="UTF-8"><title>ATELIER 最終交付｜'+esc(name)+'</title><style>body{font-family:Noto Sans TC,Arial,sans-serif;background:#FDFBF8;color:#2A1A1C;line-height:1.8;padding:48px;max-width:960px;margin:auto}h1{font-family:Noto Serif TC,serif;color:#A51820}section{border-top:1px solid #E8E3DA;padding:24px 0}small{color:#8A7274}.stage{color:#A51820;font-weight:700}</style></head><body><small>ATELIER · FINAL DELIVERY</small><h1>ATELIER 最終交付｜'+esc(name)+'</h1>'+sel.map(function(it){return '<section><div class="stage">'+esc(it.stage)+'</div><h2>'+esc(it.title)+'</h2><p>'+esc(it.body).replace(/\n/g,'<br>')+'</p></section>'}).join('')+'</body></html>';var blob=new Blob([html],{type:'text/html;charset=utf-8'}); var a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='ATELIER_最終交付_'+safeFile(name)+'.html'; a.click(); setTimeout(function(){URL.revokeObjectURL(a.href)},500); toast('已下載 HTML')}
+  function loadPptxLib(){return new Promise(function(resolve){if(window.pptxgen||window.PptxGenJS)return resolve(true);var s=document.createElement('script'); s.src='https://cdn.jsdelivr.net/npm/pptxgenjs@3.12.0/dist/pptxgen.bundle.js';s.onload=function(){resolve(!!(window.pptxgen||window.PptxGenJS))}; s.onerror=function(){resolve(false)}; document.head.appendChild(s)})}
+  function clip(s,n){s=String(s||''); return s.length>n?s.slice(0,n-1)+'…':s}
+  async function downloadPPT(){var ok=await loadPptxLib(); if(!ok){toast('PPTX 函式庫載入失敗，請先確認網路');return}var P=window.pptxgen||window.PptxGenJS; var pptx=new P(); var name=currentClientName(); var sel=selected();pptx.layout='LAYOUT_WIDE'; pptx.author='ATELIER'; pptx.subject='Final Delivery';pptx.theme={headFontFace:'Noto Serif TC',bodyFontFace:'Noto Sans TC',lang:'zh-TW'};function footer(slide,no){slide.addText('ATELIER',{x:.75,y:7.03,w:2,h:.2,fontSize:9,color:'C4B5B8',fontFace:'Cormorant Garamond'});slide.addText(String(no).padStart(2,'0'),{x:12,y:7.03,w:.55,h:.2,fontSize:9,color:'C4B5B8',fontFace:'Cormorant Garamond',align:'right'})}var slide=pptx.addSlide(); slide.background={color:'FDF7F6'}; slide.addText('ATELIER · FINAL DELIVERY',{x:.8,y:1.1,w:7,h:.3,fontSize:12,color:'A89498',fontFace:'Cormorant Garamond',charSpace:4}); slide.addText('ATELIER × '+name,{x:.8,y:2.35,w:11.7,h:.8,fontSize:42,bold:true,color:'2A1A1C',fontFace:'Noto Serif TC',fit:'shrink'}); slide.addText('最終交付選取檔案',{x:.8,y:3.45,w:6,h:.36,fontSize:20,color:'A51820',fontFace:'Noto Sans TC'}); footer(slide,1);var groups={}; sel.forEach(function(it){(groups[it.stage]=groups[it.stage]||[]).push(it)});var page=2; Object.keys(groups).forEach(function(st){var arr=groups[st], chunks=[]; for(var i=0;i<arr.length;i+=3)chunks.push(arr.slice(i,i+3));chunks.forEach(function(chunk){var s=pptx.addSlide(); s.background={color:'FDFBF8'}; s.addText('FINAL DELIVERY',{x:.8,y:.58,w:4,h:.25,fontSize:11,color:'A89498',fontFace:'Cormorant Garamond',charSpace:4}); s.addText(st,{x:.8,y:1.08,w:5,h:.45,fontSize:28,bold:true,color:'A51820',fontFace:'Noto Serif TC'});chunk.forEach(function(it,j){var y=2.05+j*1.55; s.addText(it.title,{x:.9,y:y,w:11.4,h:.28,fontSize:15,bold:true,color:'2A1A1C',fontFace:'Noto Sans TC',fit:'shrink'}); s.addText(clip(it.body,160),{x:.9,y:y+.38,w:11.4,h:.85,fontSize:10.5,color:'5C4248',fontFace:'Noto Sans TC',fit:'shrink',valign:'top'});});footer(s,page++)})});var end=pptx.addSlide(); end.background={color:'FEFAFA'}; end.addText('NEXT STEP',{x:.8,y:1.2,w:4,h:.3,fontSize:12,color:'A89498',fontFace:'Cormorant Garamond',charSpace:4}); end.addText('下一步確認',{x:.8,y:2.35,w:8,h:.6,fontSize:40,bold:true,color:'2A1A1C',fontFace:'Noto Serif TC'}); end.addText('確認交付內容、補齊缺口，並將下一輪內容戰役回寫到服務台。',{x:.8,y:3.35,w:9.5,h:.5,fontSize:16,color:'A51820',fontFace:'Noto Sans TC'}); footer(end,page);await pptx.writeFile({fileName:'ATELIER_最終交付_'+safeFile(name)+'.pptx'}); toast('已下載 PPTX')}
+  function injectCard(){setVersion();if(!document.getElementById('atlFinalFloat')){var fb=document.createElement('button'); fb.id='atlFinalFloat'; fb.className='atl-final-float'; fb.type='button'; fb.textContent='最終匯出'; fb.addEventListener('click',openFinal); document.body.appendChild(fb)}var v=document.getElementById('view-stage7');if(v && !document.getElementById('atlFinalCard')){var card=document.createElement('div'); card.id='atlFinalCard'; card.className='atl-final-card';card.innerHTML='<h3>選取最終匯出檔案</h3><p>把 ① 初診到 ⑦ 交付的內容先勾選，再看建議頁清單，最後輸出 HTML 或 PPTX。</p><div class="atl-final-actions"><button type="button" class="primary">開啟選取匯出</button><button type="button">快速複製目前勾選</button></div>';var bs=card.querySelectorAll('button'); bs[0].addEventListener('click',openFinal); bs[1].addEventListener('click',function(){openFinal(); setTimeout(copySelected,120)});v.insertBefore(card,v.firstChild)}}
+  function boot(){injectCard(); setInterval(injectCard,1200); try{new MutationObserver(function(){clearTimeout(window.__atl478FinalTimer); window.__atl478FinalTimer=setTimeout(injectCard,120)}).observe(document.body,{childList:true,subtree:true});}catch(e){}}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();
+})();
+</script>
+
 </body>
 </html>
 
 
-<!-- ATELIER cs-v4.77 · 總控預設收合＋點欄位即展開（addon only） -->
+<!-- ATELIER cs-v4.78 · 總控預設收合＋點欄位即展開（addon only） -->
 <style id="atl-cs477-final-touch">
 .atl452safe{overflow:visible!important}
 .atl452safe>h3{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:10px!important;flex-wrap:wrap!important}
@@ -9132,7 +9226,7 @@ input.atl477-open-field:not([type="checkbox"]):not([type="radio"]):not([type="bu
 <script id="atl-cs477-final-touch">
 (function(){
   if(window.__atlCs477FinalTouch) return; window.__atlCs477FinalTouch=true;
-  var VERSION='cs-v4.77';
+  var VERSION='cs-v4.78';
   function qs(s,r){return (r||document).querySelector(s)}
   function qsa(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
   function setVersion(){try{var b=qs('#verBadge'); if(b)b.textContent=VERSION; window.ATELIER_CLIENT_VERSION=VERSION;}catch(e){}}
