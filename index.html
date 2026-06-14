@@ -8,7 +8,7 @@
 <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v329 (版本號僅留註解，不顯示於畫面)
+<!-- ATELIER 影片診斷工作台 · 內部版本 v331 (版本號僅留註解，不顯示於畫面)
 v267 更新（策略診斷硬修版：重做 Top/Bottom 固定列高、重綁單支核對窗與 AI 工具按鈕、補互動式 1–8 操作步驟與策略對標雷達；本版用最後一段 v267 override 強制接管策略診斷頁，避免舊版 v263/v265 殘留函式覆蓋。只動 index.html，不動 client.html、Firebase、CSV 與六守門提示詞。）
 v266 更新（hotfix：修正 v265 最後一段策略診斷事件代理少 catch，導致 v265 override script 無法執行、畫面徽章被前一段 v263 override 改回 v263，且策略診斷部分按鈕失效；本版補回 catch 並將顯示版本固定為 v266。只動 index.html，不動 client.html、Firebase、CSV 與六守門提示詞。）
 v265 更新（策略診斷按鈕修復、整齊 Top/Bottom、互動流程與策略對標雷達）：修正策略診斷 Top/Bottom 每支影片的按鈕高度與位置不一致；改用固定列高與事件代理，讓「快看／核對」「留在本頁定位」「改寫提示」以及單支核對窗內 AI 工具、去影片庫定位、獨立視窗核對、收起都可穩定點擊；將 1–8 操作流程改成可點擊小教學；新增策略對標雷達，從同產業、同職稱、同身份、A–E、G 階段、流量觸發、素材與高互動／高分享等面向找全庫可借鏡樣本。只動 index.html，不動 client.html、Firebase、CSV 與六守門提示詞。
@@ -346,7 +346,7 @@ v182 更新（交辦單：讓工具變準變專業，接 v181、會動邏輯與�
 <script>
 /* ═══════════ v264：策略診斷使用說明書小窗＋Top/Bottom 標籤/按鈕視覺分層（index.html only） ═══════════ */
 (function(){
-  var VERSION='v329';
+  var VERSION='v331';
   function H(id){return document.getElementById(id)}
   function S(s){try{return (typeof esc==='function')?esc(s||''):String(s||'').replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}catch(e){return String(s||'')}}
   function N(x){try{ if(typeof parseNum==='function') return parseNum(x); }catch(e){} if(x==null)return 0; var t=String(x).replace(/,/g,'').trim(); if(!t)return 0; var m=t.match(/([0-9]+(?:\.[0-9]+)?)/); if(!m)return 0; var n=parseFloat(m[1])||0; if(/[萬万]/.test(t))n*=10000; else if(/[千kK]/.test(t))n*=1000; return n; }
@@ -1221,7 +1221,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v329</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v331</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -2809,7 +2809,7 @@ if('serviceWorker' in navigator){
 <div class="view" id="view-strategy">
   <div class="page-head">
     <div class="ph-en">STRATEGY DIAGNOSIS · 內容優化</div>
-    <div class="ph-title">32 支影片內容優化診斷</div>
+    <div class="ph-title" id="stratPhTitle">影片內容優化診斷</div>
     <div class="ph-sub">把影片庫資料變成客戶服務台可用的內容診斷：數據快照、Top/Bottom、G 階段分布、A–E 商業閉環與下一步提問。</div>
   </div>
   <div style="border:1px solid var(--gold-soft);border-radius:12px;background:#fff;padding:14px 16px;margin-bottom:14px">
@@ -2842,7 +2842,7 @@ if('serviceWorker' in navigator){
   <div id="strategyBox"></div>
   <div id="strategyActionBox"></div>
   <div class="hint" style="margin-top:14px;background:#FFFDFC">
-    <b>策略頁定位：</b>這裡不是最終交付檔，而是「32 支影片策略雷達」。先用影片庫資料看 Top / Bottom、G 階段、A–E 商業閉環缺口；再把提示詞帶到客戶服務台 Stage 4 補問客戶資料，最後才輸出 PDF / HTML / PPT。<br>
+    <b>策略頁定位：</b>這裡不是最終交付檔，而是「影片策略雷達」。先用影片庫資料看 Top / Bottom、G 階段、A–E 商業閉環缺口；再把提示詞帶到客戶服務台 Stage 4 補問客戶資料，最後才輸出 PDF / HTML / PPT。<br>
     <b>使用順序：</b>① 選客戶 → ② 看策略快照 → ③ 找出缺口 → ④ 開客戶服務台補問 → ⑤ 用商業閉環地圖校準下一批影片。
   </div>
   <div class="hint"><b>使用方式：</b>先選客戶，例如 @kl.legal。這頁只讀影片庫，不會改資料。它會先把 32 支影片整理成策略快照，再複製給客戶服務台「內容診斷」階段使用，最後可輸出 PDF / HTML / PPT 交付物。</div>
@@ -10928,6 +10928,7 @@ document.addEventListener('DOMContentLoaded',function(){
   }
   window.renderStrategyDiagnosis=function(){
     populateStrategyAcc(); var box=H('strategyBox'); if(!box) return; var p=currentPack(), a=p.a, vs=p.vs;
+    try{var _pt=H('stratPhTitle'); if(_pt)_pt.textContent=a?(vs.length+' 支影片內容優化診斷'):'選擇客戶後開始 · 影片內容優化診斷';}catch(_e){}
     if(!a){ box.innerHTML='<div class="empty" style="text-align:center;color:var(--sub);padding:28px 12px;border:1px dashed var(--gold-soft);border-radius:12px;background:#fff">先選一個客戶帳號，系統會讀取這個帳號底下的影片做策略診斷。</div>'; return; }
     var scored=vs.map(function(v){return {v:v,s:score(v)}}); var withViews=scored.filter(function(x){return x.s.views>0});
     var totalViews=scored.reduce(function(a,x){return a+x.s.views},0), totalEng=scored.reduce(function(a,x){return a+x.s.eng},0), totalShares=scored.reduce(function(a,x){return a+x.s.shares},0);
@@ -10954,7 +10955,7 @@ document.addEventListener('DOMContentLoaded',function(){
   window.copyStrategyPrompt=function(){
     var p=currentPack(), a=p.a, vs=p.vs; if(!a){ if(typeof toast==='function')toast('先選客戶'); return; }
     var lines=[]; vs.forEach(function(v){ var s=score(v); lines.push('- '+(v.title||'(未命名)')+'｜'+stageLetter(v)+'｜'+goalLetter(v)+'｜觀看 '+s.views+'｜讚 '+s.likes+'｜留言 '+s.comments+'｜分享 '+s.shares+'｜互動率 '+(s.engRate*100).toFixed(2)+'%｜Hook：'+(v.hook||'無')); });
-    var prompt='我是 ATELIER 短影音內容營運顧問。以下是客戶 '+accountName(a)+' 的影片庫資料，請幫我產出「Stage 4 內容診斷」：把 32 支影片整理成內容定位、Top/Bottom、G 階段分布、A–E 商業閉環缺口、需要問客戶補充的資料，以及下一批 10 支影片建議。\n\n'
+    var prompt='我是 ATELIER 短影音內容營運顧問。以下是客戶 '+accountName(a)+' 的影片庫資料，請幫我產出「Stage 4 內容診斷」：把 '+vs.length+' 支影片整理成內容定位、Top/Bottom、G 階段分布、A–E 商業閉環缺口、需要問客戶補充的資料，以及下一批 10 支影片建議。\n\n'
       +'【客戶資料】\n@'+(a.handle||'')+'｜'+(a.displayName||a.name||'')+'｜'+(a.jobTitle||'')+'｜'+(a.industry||'')+'\n\n'
       +'【影片清單】\n'+(lines.join('\n')||'目前沒有影片')+'\n\n'
       +'【請輸出】\n1. 目前內容定位\n2. 表現最好的 5 支與原因\n3. 低表現 5 支可能問題\n4. G1-G5 內容結構缺口\n5. A-E 商業閉環缺口\n6. 需要向客戶補問的 8 個問題\n7. 下一批 10 支影片題目與各自目標層。';
@@ -11070,7 +11071,7 @@ document.addEventListener('DOMContentLoaded',function(){
 <script>
 /* v239：自動防舊版快取。讓桌布捷徑／瀏覽器如果抓到舊 HTML，能自己比對線上最新版並導向。 */
 (function(){
-  var ATELIER_CURRENT_VERSION='v329';
+  var ATELIER_CURRENT_VERSION='v331';
   window.ATELIER_CURRENT_VERSION=ATELIER_CURRENT_VERSION;
   function _avNum(v){v=String(v||'');var m=v.match(/v\s*(\d+)/i);return m?parseInt(m[1],10):0;}
   function _avDetect(html){html=String(html||'');var m=html.match(/id=["']verBadge["'][^>]*>\s*(v\d+)/i)||html.match(/內部版本\s+(v\d+)/i);return m?m[1]:'';}
@@ -11084,7 +11085,7 @@ document.addEventListener('DOMContentLoaded',function(){
       var url=base+'?atelier_fresh_check='+Date.now();
       fetch(url,{cache:'no-store',headers:{'Cache-Control':'no-cache','Pragma':'no-cache'}}).then(function(r){return r.text();}).then(function(txt){
         var latest=_avDetect(txt);
-        /* v329 修「左上角版號開啟時閃一下（重整）」：關閉自動 location.replace 重導，改不重整＋一次性輕提示。 */
+        /* v331 修「左上角版號開啟時閃一下（重整）」：關閉自動 location.replace 重導，改不重整＋一次性輕提示。 */
         if(latest && _avNum(latest)>_avNum(current)){
           try{ sessionStorage.setItem('atelierSkipAutoUpdate','1'); }catch(e){}
           try{ if(typeof toast==='function' && !sessionStorage.getItem('atelierNewVerNoticed')){ toast('有新版本（'+latest+'）可更新：需要時按左下「重新整理」即可，畫面不會自動重整'); sessionStorage.setItem('atelierNewVerNoticed','1'); } }catch(e){}
@@ -11258,7 +11259,7 @@ document.addEventListener('DOMContentLoaded',function(){
 <script>
 /* ═══════════ v262 hotfix · Strategy consultant UX hardening (final override only) ═══════════ */
 (function(){
-  var VERSION='v329';
+  var VERSION='v331';
   function H(id){return document.getElementById(id)}
   function E(s){try{return (typeof esc==='function')?esc(s||''):String(s||'').replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}catch(e){return String(s||'')}}
   function A(){try{return (typeof accounts!=='undefined'&&accounts)?accounts:(window.accounts||[])}catch(e){return window.accounts||[]}}
@@ -11416,7 +11417,7 @@ document.addEventListener('DOMContentLoaded',function(){
 <script>
 /* ═══════════ v263：策略診斷視覺流程、收合客戶卡、精緻核對窗與提示詞預覽（final override only） ═══════════ */
 (function(){
-  var VERSION='v329';
+  var VERSION='v331';
   function H(id){return document.getElementById(id)}
   function E(s){try{return (typeof esc==='function')?esc(s||''):String(s||'').replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}catch(e){return String(s||'')}}
   function A(){try{return (typeof accounts!=='undefined'&&accounts)?accounts:(window.accounts||[])}catch(e){return window.accounts||[]}}
@@ -11545,7 +11546,7 @@ document.addEventListener('DOMContentLoaded',function(){
 <script>
 /* ═══════════ v266 hotfix：修正 v265 事件代理語法，保留 v265 策略診斷功能（index.html only） ═══════════ */
 (function(){
-  var VERSION='v329';
+  var VERSION='v331';
   function H(id){return document.getElementById(id)}
   function E(s){try{return (typeof esc==='function')?esc(s||''):String(s||'').replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}catch(e){return String(s||'')}}
   function A(){try{return (typeof accounts!=='undefined'&&accounts)?accounts:(window.accounts||[])}catch(e){return window.accounts||[]}}
@@ -11718,7 +11719,7 @@ return '<div class="strat-radar-card-v265"><b>目前沒有符合樣本</b><p>可
 /* ═══════════ v267 strategy hard patch：固定版面、重綁按鈕、互動說明與策略對標雷達（index.html only） ═══════════ */
 (function(){
   'use strict';
-  var VERSION='v329';
+  var VERSION='v331';
   function H(id){return document.getElementById(id)}
   function E(s){return String(s==null?'':s).replace(/[&<>'"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]})}
   function A(){try{return (typeof accounts!=='undefined'&&Array.isArray(accounts))?accounts:(Array.isArray(window.accounts)?window.accounts:[])}catch(e){return []}}
@@ -11947,7 +11948,7 @@ window._strategyRadarV267=radarResults;
 
 <script id="v289PatchJS">
 (function(){
-  try{ window.ATELIER_CURRENT_VERSION='v329'; }catch(e){}
+  try{ window.ATELIER_CURRENT_VERSION='v331'; }catch(e){}
   try{ sessionStorage.setItem('atelierSkipAutoUpdate','1'); }catch(e){}
   try{ if(navigator.serviceWorker && navigator.serviceWorker.getRegistrations){
         navigator.serviceWorker.getRegistrations().then(function(rs){ rs.forEach(function(r){ try{r.update();}catch(e){} }); }).catch(function(){});
@@ -13279,8 +13280,8 @@ button[data-wbl-send],button[data-wbl-inbox]{padding:3px 12px !important;font-si
 </script>
 
 
-<!-- ═══════════ v311 · CTA 行動出口 行動出口公式（每支影片診斷）═══════════
-     CTA 行動出口 = 誰 × 卡點 × 下一步 × 承接窗口 × 得到什麼。每支影片卡加「CTA 行動出口 行動出口診斷」：
+<!-- ═══════════ v311 · CTA 行動出口公式（每支影片診斷）═══════════
+     CTA 行動出口 = 誰 × 卡點 × 下一步 × 承接窗口 × 得到什麼。每支影片卡加「CTA 行動出口診斷」：
      引導式問診（8 題，可填）＋一鍵產出強制輸出 CTA 行動出口 十項的 AI 提示詞（含 A–E 對應/Fit Score/
      警告標籤/資料不足守則）。純讀既有 videos、copyPrompt、注入、不動原碼。 -->
 <style>
@@ -13307,7 +13308,7 @@ button[data-wbl-send],button[data-wbl-inbox]{padding:3px 12px !important;font-si
 .cta1-go{border:1px solid #A51820;background:#A51820;color:#fff;-webkit-text-fill-color:#fff;font-weight:800;font-size:13px;border-radius:999px;padding:9px 20px;cursor:pointer;font-family:inherit}
 </style>
 <script>
-/* v311：CTA 行動出口 行動出口診斷（每支影片）。注入，不動原碼。 */
+/* v311：CTA 行動出口診斷（每支影片）。注入，不動原碼。 */
 (function(){
   var QS=[
     ['svc','服務項目','這支影片要推哪個服務？'],
@@ -13328,7 +13329,7 @@ button[data-wbl-send],button[data-wbl-inbox]{padding:3px 12px !important;font-si
     var filled=QS.filter(function(q){return (ans[q[0]]||'').trim();});
     var blanks=QS.filter(function(q){return !(ans[q[0]]||'').trim();});
     var L=[];
-    L.push('你是 ATELIER 的 CTA 行動出口 行動出口顧問。CTA 行動出口 ＝ 誰 × 卡點 × 下一步 × 承接窗口 × 得到什麼。');
+    L.push('你是 ATELIER 的 CTA 行動出口顧問。CTA 行動出口 ＝ 誰 × 卡點 × 下一步 × 承接窗口 × 得到什麼。');
     L.push('ATELIER 把專業服務的知識、服務與商業價值，翻譯成一般大眾聽得懂、有感覺、知道下一步怎麼做的短影音商業閉環。CTA 行動出口 的任務是把觀眾從「理解」帶到「行動」，再被正確的承接窗口接住。');
     L.push('');
     L.push('【這支影片】');
@@ -13371,11 +13372,12 @@ button[data-wbl-send],button[data-wbl-inbox]{padding:3px 12px !important;font-si
     var qsHTML=QS.map(function(q){ return '<div class="cta1-q"><label>'+E(q[1])+' <span class="hint">'+E(q[2])+'</span></label><textarea rows="2" data-q="'+q[0]+'"></textarea></div>'; }).join('');
     ov.innerHTML='<div class="cta1-card">'
       +'<div class="cta1-kick">ATELIER · CTA 行動出口 EXIT FORMULA</div>'
-      +'<h3 class="cta1-h">CTA 行動出口 行動出口診斷</h3>'
+      +'<h3 class="cta1-h">CTA 行動出口診斷</h3>'
       +'<div class="cta1-formula">誰 × 卡點 × 下一步 × 承接窗口 × 得到什麼</div>'
       +'<div class="cta1-pos">CTA 行動出口 不是影片結尾文案，而是整支短影音的商業出口設計：把觀眾從「理解」帶到「行動」，再被正確的承接窗口接住。</div>'
       +'<div class="cta1-ctx"><b>這支：</b>'+E(clip(v.title,40))+(v.hook?('<br><b>Hook：</b>'+E(clip(v.hook,80))):'')+'</div>'
       +'<div style="font-size:12px;font-weight:800;color:#7A5A5E;margin-bottom:8px">引導式問診（填越多，CTA 越精準；留空系統會自動列出要補問客戶的問題）</div>'
+      +'<div class="cta1-topfill" style="border:1px solid var(--gold-soft);border-radius:10px;background:var(--warm);padding:10px;margin-bottom:10px">'+'<div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:6px">'+'<button type="button" class="cta1-copytop" style="font-size:12px;font-weight:700;border:1px solid var(--rouge);background:#fff;color:var(--rouge);border-radius:999px;padding:6px 12px;cursor:pointer;font-family:inherit">複製問診提示詞給 AI</button>'+'<span style="font-size:11.5px;color:#7A5A5E">複製提示詞→貼到 AI→把回覆貼回下面自動填入</span></div>'+'<textarea class="cta1-paste" placeholder="把 AI 回覆整段貼這裡（最好含「服務項目：」「目標受眾：」等標題），按下面自動分配到各欄。" style="width:100%;box-sizing:border-box;height:64px;padding:7px 9px;border:1px solid var(--gold-soft);border-radius:8px;font-family:inherit;font-size:12px"></textarea>'+'<div style="margin-top:6px"><button type="button" class="cta1-fill" style="font-size:12px;font-weight:800;border:1px solid var(--rouge);background:var(--rouge);color:#fff;-webkit-text-fill-color:#fff;border-radius:999px;padding:7px 14px;cursor:pointer;font-family:inherit">AI 回覆自動填入各欄</button>'+'<span class="cta1-fillmsg" style="font-size:11.5px;margin-left:8px"></span></div></div>'
       +qsHTML
       +'<details class="cta1-ref"><summary>對照表：A–E 對應 CTA／Fit Score／警告標籤</summary><div class="body">'
       +'<b>A–E 對應 CTA</b>：A 認知—追蹤/收藏/看下一集/分享；B 品牌—留言觀點/追蹤系列；C 信任—收藏/留言問題/領檢核表/私訊關鍵字；D 轉化—私訊/LINE/表單/預約/諮詢；E 組織—下載SOP/加名單/進服務流程。<br>'
@@ -13387,6 +13389,8 @@ button[data-wbl-send],button[data-wbl-inbox]{padding:3px 12px !important;font-si
     document.body.appendChild(ov);
     ov.addEventListener('click',function(e){ if(e.target===ov) ov.remove(); });
     ov.querySelector('.cta1-x').onclick=function(){ ov.remove(); };
+    var _ct=ov.querySelector('.cta1-copytop'); if(_ct)_ct.onclick=function(){ var p2='我在做一支短影音的 CTA 行動出口診斷，請依下面 8 個問題各給一段精簡回答，格式用「標題：內容」一行一題：\n'+QS.map(function(q){return q[1]+'：（'+q[2]+'）';}).join('\n')+'\n\n影片：'+(v.title||'')+(v.hook?('\nHook：'+v.hook):''); if(typeof copyPrompt==='function')copyPrompt(p2,'問診提示詞'); else{try{navigator.clipboard.writeText(p2); if(typeof toast==='function')toast('已複製問診提示詞');}catch(e){}} };
+    var _fl=ov.querySelector('.cta1-fill'); if(_fl)_fl.onclick=function(){ var raw=(ov.querySelector('.cta1-paste')||{}).value||''; var msg=ov.querySelector('.cta1-fillmsg'); if(!raw.trim()){ if(msg){msg.textContent='請先貼上 AI 回覆'; msg.style.color='#A51820';} return; } var lines=raw.split(/\r?\n/); var cur=null,buf={}; lines.forEach(function(ln){ var hit=null; var mm=ln.match(/^[\s*\u2022\-\d.、]*([^：:]{1,12})[：:]/); if(mm){ var key=mm[1].trim(); for(var i=0;i<QS.length;i++){ if(QS[i][1]===key||QS[i][1].indexOf(key)>=0||key.indexOf(QS[i][1])>=0){ hit=QS[i][0]; break; } } } if(hit){ cur=hit; var after=ln.replace(/^[^：:]*[：:]/,'').trim(); buf[cur]=(buf[cur]?buf[cur]+'\n':'')+after; } else if(cur){ buf[cur]=(buf[cur]?buf[cur]+'\n':'')+ln; } }); var n=0; Object.keys(buf).forEach(function(k){ var t=ov.querySelector('textarea[data-q="'+k+'"]'); if(t){ t.value=(buf[k]||'').trim(); t.dispatchEvent(new Event('input',{bubbles:true})); n++; } }); if(msg){ msg.textContent=n?('已自動填入 '+n+' 欄，可手動修改'):'沒對到欄位標題，請確認格式或手動填'; msg.style.color=n?'#2A1A1C':'#A51820'; } };
     ov.querySelector('.cta1-go').onclick=function(){
       var ans={}; ov.querySelectorAll('textarea[data-q]').forEach(function(t){ ans[t.getAttribute('data-q')]=t.value; });
       var p=buildPrompt(v,ans);
@@ -13404,7 +13408,7 @@ button[data-wbl-send],button[data-wbl-inbox]{padding:3px 12px !important;font-si
       var id=card.getAttribute('data-vid'); if(!id){ var m=(card.id||'').match(/^video-(.+)$/); if(m)id=m[1]; }
       if(!id) return; card.setAttribute('data-cta1','1');
       var line=document.createElement('div'); line.className='cta1-line';
-      line.innerHTML='<button type="button" class="cta1-btn">⊕ CTA 行動出口 行動出口診斷</button><span style="font-size:10.5px;color:#A51820">誰×卡點×下一步×承接窗口×得到什麼</span>';
+      line.innerHTML='<button type="button" class="cta1-btn">⊕ CTA 行動出口診斷</button><span style="font-size:10.5px;color:#A51820">誰×卡點×下一步×承接窗口×得到什麼</span>';
       line.querySelector('.cta1-btn').onclick=function(){ open(id); };
       card.appendChild(line);
     });
@@ -13648,6 +13652,7 @@ button[data-wbl-send],button[data-wbl-inbox]{padding:3px 12px !important;font-si
       +'<div class="mkt-kick">ATELIER · MARKETING TAGS</div>'
       +'<h3 class="mkt-h">影片行銷標籤</h3>'
       +'<div class="mkt-ctx">'+E((v.title||'這支影片').slice(0,40))+'　·　點選符合的標籤即可（可複選、可不選），存檔後會餵進這位客戶的 CTA 行動出口 與分析。</div>'
+      +'<div class="mkt-toptip" style="border:1px solid var(--gold-soft);border-radius:10px;background:var(--warm);padding:9px 10px;margin:8px 0">'+'<div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:6px"><button type="button" class="mkt-copyprompt" style="font-size:12px;font-weight:700;border:1px solid var(--rouge);background:#fff;color:var(--rouge);border-radius:999px;padding:6px 12px;cursor:pointer;font-family:inherit">複製提示詞給 AI（建議標籤）</button>'+'<span style="font-size:11.5px;color:#7A5A5E">貼到 AI→它建議每維度選哪些→把回覆貼回下面自動勾選</span></div>'+'<textarea class="mkt-paste" placeholder="把 AI 的標籤建議整段貼這裡，按下面自動勾選對得上的標籤。" style="width:100%;box-sizing:border-box;height:54px;padding:6px 8px;border:1px solid var(--gold-soft);border-radius:8px;font-family:inherit;font-size:12px"></textarea>'+'<div style="margin-top:6px"><button type="button" class="mkt-apply" style="font-size:12px;font-weight:800;border:1px solid var(--rouge);background:var(--rouge);color:#fff;-webkit-text-fill-color:#fff;border-radius:999px;padding:6px 12px;cursor:pointer;font-family:inherit">AI 建議自動勾選</button>'+'<span class="mkt-applymsg" style="font-size:11.5px;margin-left:8px"></span></div></div>'
       +body
       +'<div class="mkt-actions"><button type="button" class="mkt-x">關閉</button><button type="button" class="mkt-save">儲存標籤</button></div>'
       +'</div>';
@@ -13655,6 +13660,8 @@ button[data-wbl-send],button[data-wbl-inbox]{padding:3px 12px !important;font-si
     ov.addEventListener('click',function(e){ if(e.target===ov) ov.remove(); });
     ov.querySelectorAll('.mkt-chip').forEach(function(ch){ ch.onclick=function(){ var dim=ch.getAttribute('data-dim'), opt=ch.getAttribute('data-opt'); var arr=sel[dim]; var i=arr.indexOf(opt); if(i>=0){ arr.splice(i,1); ch.classList.remove('on'); } else { arr.push(opt); ch.classList.add('on'); } }; });
     ov.querySelector('.mkt-x').onclick=function(){ ov.remove(); };
+    var _mcp=ov.querySelector('.mkt-copyprompt'); if(_mcp)_mcp.onclick=function(){ var p='我在替一支短影音貼行銷標籤，請依影片內容，從下面 9 個維度各建議該選哪些標籤（只回標籤名，用「維度：標籤、標籤」格式，一行一維度）：\n'+DIMS.map(function(d){return d[1]+'：'+d[2].join('／');}).join('\n')+'\n\n影片：'+(v.title||'')+(v.hook?('\nHook：'+v.hook):''); if(typeof copyPrompt==='function')copyPrompt(p,'行銷標籤建議提示詞'); else{try{navigator.clipboard.writeText(p); if(typeof toast==='function')toast('已複製提示詞');}catch(e){}} };
+    var _ap=ov.querySelector('.mkt-apply'); if(_ap)_ap.onclick=function(){ var raw=(ov.querySelector('.mkt-paste')||{}).value||''; var msg=ov.querySelector('.mkt-applymsg'); if(!raw.trim()){ if(msg){msg.textContent='請先貼上 AI 建議'; msg.style.color='#A51820';} return; } var n=0; DIMS.forEach(function(d){ d[2].forEach(function(opt){ if(raw.indexOf(opt)>=0){ if(sel[d[0]].indexOf(opt)<0){ sel[d[0]].push(opt); n++; } var ch=ov.querySelector('.mkt-chip[data-dim="'+d[0]+'"][data-opt="'+opt+'"]'); if(ch)ch.classList.add('on'); } }); }); if(msg){ msg.textContent=n?('已自動勾選 '+n+' 個標籤，可再手動增減'):'沒對到標籤，請確認 AI 回覆或手動選'; msg.style.color=n?'#2A1A1C':'#A51820'; } };
     ov.querySelector('.mkt-save').onclick=function(){
       var out={}; var any=false; DIMS.forEach(function(d){ if(sel[d[0]].length){ out[d[0]]=sel[d[0]]; any=true; } });
       v.mktTags=out; v.updatedAt=Date.now();
@@ -13795,9 +13802,9 @@ button[data-wbl-send],button[data-wbl-inbox]{padding:3px 12px !important;font-si
       var v=vById(id); if(!v) return;
       if(cta1Done(v)&&mktDone(v)) return; // 兩項都做了就不打擾
       var el=window._atlLight({slim:true, open:false, title:'提示燈 · 這支尚未完成商業出口判斷',
-        rows:[['目前狀態','這支影片尚未完成商業出口判斷'+(mktDone(v)?'':'（行銷標籤未填）')+(cta1Done(v)?'':'（CTA 行動出口 行動出口未做）')],
+        rows:[['目前狀態','這支影片尚未完成商業出口判斷'+(mktDone(v)?'':'（行銷標籤未填）')+(cta1Done(v)?'':'（CTA 行動出口未做）')],
               ['為什麼重要','如果不知道觀眾看完後去哪裡，流量可能無法轉成私訊、名單或預約'],
-              ['建議下一步','先做 CTA 行動出口 行動出口診斷，再補行銷標籤'],
+              ['建議下一步','先做 CTA 行動出口診斷，再補行銷標籤'],
               ['完成後會影響','單支改寫、案例價值、策略診斷、下一批戰役']]});
       // 插到卡片底部
       try{ card.appendChild(el); }catch(e){}
@@ -13870,14 +13877,14 @@ button[data-wbl-send],button[data-wbl-inbox]{padding:3px 12px !important;font-si
 
 
 
-<!-- ═══════════ v329 SAFE LATEST · 主流程收納與策略交接（乾淨注入版）═══════════ -->
+<!-- ═══════════ v331 SAFE LATEST · 主流程收納與策略交接（乾淨注入版）═══════════ -->
 <style id="atl326-safe-style">
 .atl326safe{border:1px solid #E8E3DA;border-left:4px solid #A51820;background:linear-gradient(180deg,#FFFCFB,#FFFFFF);border-radius:15px;padding:14px;margin:12px 0 16px;box-shadow:0 4px 18px rgba(90,40,45,.045);font-family:inherit;color:#2A1A1C}.atl326safe h3{font-family:Noto Serif TC,serif;margin:0 0 5px;font-size:15px;color:#7A1018}.atl326safe p{margin:0 0 10px;font-size:12px;color:#7A5A5E;line-height:1.75}.atl326safe-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px}.atl326safe-card{background:#fff;border:1px solid #E8E3DA;border-radius:11px;padding:8px}.atl326safe-card b{display:block;font-size:11px;color:#A51820}.atl326safe-card span{display:block;margin-top:2px;font-size:10.5px;color:#5C4248;line-height:1.45}.atl326safe-actions,.atl326safe-filter{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}.atl326safe-btn,.atl326safe-filter button{font-family:inherit;font-size:12px;font-weight:850;border-radius:9px;padding:8px 12px;cursor:pointer;border:1px solid #A51820;background:#A51820;color:#fff;-webkit-text-fill-color:#fff}.atl326safe-filter button{font-size:11.5px;border-radius:999px;background:#fff;color:#7A5A5E;-webkit-text-fill-color:#7A5A5E;border-color:#E8E3DA;padding:5px 10px}.atl326safe-filter button.on{background:#7A1018;border-color:#7A1018;color:#fff;-webkit-text-fill-color:#fff}.atl326safe-btn.ghost{background:#fff;color:#A51820;-webkit-text-fill-color:#A51820}.atl326safe-pill{display:inline-flex;margin:2px 5px 2px 0;font-size:10.5px;font-weight:850;border:1px solid #E8E3DA;background:#fff;color:#7A5A5E;border-radius:999px;padding:3px 8px}.atl326safe-pill.ok{color:#2A1A1C;background:#F3F7F4;border-color:#F4E9DE}.atl326safe-pill.hot{color:#A51820;background:#FFF8F7;border-color:#EAD9D6}.atl326safe-note{font-size:11px;color:#8A7274;line-height:1.65;margin-top:8px}body.atl326safe-filter-research .atl326safe-kind:not([data-atl326safe-kind="研究用"]){display:none!important}body.atl326safe-filter-intake .atl326safe-kind:not([data-atl326safe-kind="問診用"]){display:none!important}body.atl326safe-filter-delivery .atl326safe-kind:not([data-atl326safe-kind="交付用"]){display:none!important}@media(max-width:820px){.atl326safe-grid{grid-template-columns:1fr 1fr}.atl326safe-actions{flex-direction:column}.atl326safe-btn{width:100%}}
 </style>
 <script id="atl326-safe-module">
 (function(){
 'use strict';
-var VER='v329';
+var VER='v331';
 function $(id){return document.getElementById(id)}
 function cp(t,msg){try{if(typeof copyText==='function')return copyText(t,msg||'已複製');}catch(e){} try{navigator.clipboard.writeText(t); if(typeof toastMsg==='function')toastMsg(msg||'已複製');}catch(e){prompt('請手動複製',t)}}
 function arr(v){return Array.isArray(v)?v:[]}
@@ -13888,10 +13895,10 @@ function selectedAcc(){var ids=['stratAcc','vlibHero','accHero','cmpHero','f-acc
 function videosOf(a){if(!a)return [];try{if(typeof videosOfAccount==='function')return videosOfAccount(a.id)||[]}catch(e){}var h=norm(a.handle),id=String(a.id||'');return vids().filter(function(v){return String(v.accountId||v.clientId||'')===id||(h&&norm(v.accountHandle||v.handle||v.ig||'')===h)})}
 function formulaCount(list){return arr(list).filter(function(v){var t=[v.sellingPointFormula,v.translationFormula,v.finalSellingPoint,v.reusableSentence,v.note,v.advisorNote,v.hook,v.structure].join(' ');return /賣點|特點|轉譯|痛點|利益|公式|Hook|CTA/.test(t)}).length}
 function makeHandoff(a){var vs=videosOf(a),f=formulaCount(vs),top=vs.slice().sort(function(x,y){return Number(y.views||y.view||0)-Number(x.views||x.view||0)}).slice(0,3).map(function(v,i){return (i+1)+'. '+(v.title||v.hook||'未命名')+'｜觀看 '+(v.views||v.view||'—')}).join('\n')||'待補';return ['【工作台 → 服務台｜策略交接卡】','客戶：'+(a?((a.handle||'')+' '+(a.displayName||a.name||'')).trim():'尚未選定'),'版本：'+VER,'影片數：'+vs.length,'市場轉譯公式筆數：'+f,'公式覆蓋率：'+(vs.length?Math.round(f/vs.length*100):0)+'%','','Top 3 觀看影片：',top,'','工作台定位：市場雷達／影片解剖室／轉譯公式庫。','服務台下一步：補客戶商業原料包，進行特點→觀眾賣點轉譯，再產出 CTA 行動出口與內容戰役。','','自媒體商業閉環對位：','A 認知：市場案例與 Hook','B 品牌：定位與記憶點','C 信任：證據、案例、專業翻譯','D 轉化：CTA 行動出口與承接窗口','E 成長：交付復盤與下一輪內容戰役'].join('\n')}
-function saveHandoff(a){if(!a){alert('請先選定客戶');return}a.strategyHandoff={text:makeHandoff(a),updatedAt:new Date().toISOString(),source:'workbench-v329-safe'};try{if(typeof saveAccounts==='function')saveAccounts();else if(typeof _accFbPush==='function')_accFbPush();}catch(e){} if(typeof toastMsg==='function')toastMsg('已保存策略交接卡');}
+function saveHandoff(a){if(!a){alert('請先選定客戶');return}a.strategyHandoff={text:makeHandoff(a),updatedAt:new Date().toISOString(),source:'workbench-v331-safe'};try{if(typeof saveAccounts==='function')saveAccounts();else if(typeof _accFbPush==='function')_accFbPush();}catch(e){} if(typeof toastMsg==='function')toastMsg('已保存策略交接卡');}
 function setFilter(m){document.body.classList.remove('atl326safe-filter-research','atl326safe-filter-intake','atl326safe-filter-delivery');if(m==='research')document.body.classList.add('atl326safe-filter-research');if(m==='intake')document.body.classList.add('atl326safe-filter-intake');if(m==='delivery')document.body.classList.add('atl326safe-filter-delivery');document.querySelectorAll('.atl326safe-filter button').forEach(function(b){b.classList.toggle('on',b.getAttribute('data-filter')===m)})}
 function classify(){document.querySelectorAll('button,a').forEach(function(b){if(b.getAttribute('data-atl326safe-kind'))return;var t=(b.textContent||'').trim();if(!/提示詞|複製|Hook|CTA|行動出口|特點|賣點|轉譯|交接|戰役|問診|AI|診斷/.test(t))return;var k='交付用';if(/問診|ICP|Offer|承接|證據|原料|補/.test(t))k='問診用';if(/市場|案例|對標|Hook|拆|轉譯公式/.test(t))k='研究用';if(/交付|戰役|CTA|行動出口|客戶版|顧問版|PPT|PDF|HTML/.test(t))k='交付用';b.setAttribute('data-atl326safe-kind',k);b.classList.add('atl326safe-kind');b.title=(b.title?b.title+'｜':'')+'提示詞分類：'+k})}
-function render(){var host=$('view-strategy')||document.querySelector('.view.on');if(!host||host.querySelector('[data-atl326safe]'))return;var a=selectedAcc(),vs=videosOf(a),fc=formulaCount(vs),cov=vs.length?Math.round(fc/vs.length*100):0,hand=!!(a&&a.strategyHandoff);var div=document.createElement('div');div.className='atl326safe';div.setAttribute('data-atl326safe','1');div.innerHTML='<h3>v329 SAFE｜工作台驗收層</h3><p>這是乾淨注入版：工作台只負責市場怎麼翻，最後輸出策略交接卡給服務台。</p><div class="atl326safe-grid"><div class="atl326safe-card"><b>1 市場案例</b><span>拆成功/失敗影片如何說人話。</span></div><div class="atl326safe-card"><b>2 轉譯公式</b><span>特點 → 痛點 → 賣點。</span></div><div class="atl326safe-card"><b>3 策略交接</b><span>Top/Bottom、A-E、G階段、缺口。</span></div><div class="atl326safe-card"><b>4 服務台接收</b><span>第3站讀取 strategyHandoff。</span></div></div><div><span class="atl326safe-pill '+(vs.length?'ok':'hot')+'">影片 '+vs.length+'</span><span class="atl326safe-pill '+(fc?'ok':'hot')+'">公式 '+fc+'</span><span class="atl326safe-pill '+(cov>=30?'ok':'hot')+'">覆蓋率 '+cov+'%</span><span class="atl326safe-pill '+(hand?'ok':'hot')+'">交接卡 '+(hand?'已保存':'待保存')+'</span></div><div class="atl326safe-filter"><button data-filter="all">全部提示詞</button><button data-filter="research">只看研究用</button><button data-filter="intake">只看問診用</button><button data-filter="delivery">只看交付用</button></div><div class="atl326safe-actions"><button class="atl326safe-btn" data-copy>複製策略交接卡</button><button class="atl326safe-btn ghost" data-save>保存策略交接卡</button></div><div class="atl326safe-note">下一步：保存策略交接卡 → 到服務台 cs-v4.52 第3站確認讀到。</div>';div.querySelector('[data-copy]').onclick=function(){cp(makeHandoff(a),'已複製策略交接卡')};div.querySelector('[data-save]').onclick=function(){saveHandoff(a)};div.querySelectorAll('[data-filter]').forEach(function(b){b.onclick=function(){setFilter(b.getAttribute('data-filter'))}});host.insertBefore(div,host.firstChild);}
+function render(){var host=$('view-strategy')||document.querySelector('.view.on');if(!host||host.querySelector('[data-atl326safe]'))return;var a=selectedAcc(),vs=videosOf(a),fc=formulaCount(vs),cov=vs.length?Math.round(fc/vs.length*100):0,hand=!!(a&&a.strategyHandoff);var div=document.createElement('div');div.className='atl326safe';div.setAttribute('data-atl326safe','1');div.innerHTML='<h3>v331 SAFE｜工作台驗收層</h3><p>這是乾淨注入版：工作台只負責市場怎麼翻，最後輸出策略交接卡給服務台。</p><div class="atl326safe-grid"><div class="atl326safe-card"><b>1 市場案例</b><span>拆成功/失敗影片如何說人話。</span></div><div class="atl326safe-card"><b>2 轉譯公式</b><span>特點 → 痛點 → 賣點。</span></div><div class="atl326safe-card"><b>3 策略交接</b><span>Top/Bottom、A-E、G階段、缺口。</span></div><div class="atl326safe-card"><b>4 服務台接收</b><span>第3站讀取 strategyHandoff。</span></div></div><div><span class="atl326safe-pill '+(vs.length?'ok':'hot')+'">影片 '+vs.length+'</span><span class="atl326safe-pill '+(fc?'ok':'hot')+'">公式 '+fc+'</span><span class="atl326safe-pill '+(cov>=30?'ok':'hot')+'">覆蓋率 '+cov+'%</span><span class="atl326safe-pill '+(hand?'ok':'hot')+'">交接卡 '+(hand?'已保存':'待保存')+'</span></div><div class="atl326safe-filter"><button data-filter="all">全部提示詞</button><button data-filter="research">只看研究用</button><button data-filter="intake">只看問診用</button><button data-filter="delivery">只看交付用</button></div><div class="atl326safe-actions"><button class="atl326safe-btn" data-copy>複製策略交接卡</button><button class="atl326safe-btn ghost" data-save>保存策略交接卡</button></div><div class="atl326safe-note">下一步：保存策略交接卡 → 到服務台 cs-v4.52 第3站確認讀到。</div>';div.querySelector('[data-copy]').onclick=function(){cp(makeHandoff(a),'已複製策略交接卡')};div.querySelector('[data-save]').onclick=function(){saveHandoff(a)};div.querySelectorAll('[data-filter]').forEach(function(b){b.onclick=function(){setFilter(b.getAttribute('data-filter'))}});host.insertBefore(div,host.firstChild);}
 function tick(){try{classify();render()}catch(e){console.warn('[atl326 safe]',e)}}
 setInterval(tick,1200);setTimeout(tick,300);
 })();
@@ -13917,10 +13924,10 @@ setInterval(tick,1200);setTimeout(tick,300);
       grow(ta);
     }); }catch(e){}
   }
-  var _t; function schedule(){ clearTimeout(_t); _t=setTimeout(function(){growAll(document);},80); }
+  var _t,_pending=[]; function schedule(){ clearTimeout(_t); _t=setTimeout(function(){ var nodes=_pending.splice(0); nodes.forEach(function(n){ if(n.nodeType===1){ if(n.tagName==='TEXTAREA'){ if(!n.dataset.autogrow){n.dataset.autogrow='1';n.addEventListener('input',function(){grow(n);});} grow(n);} else if(n.querySelectorAll){ growAll(n);} } }); },90); }
   function boot(){
     growAll(document);
-    try{ var mo=new MutationObserver(function(muts){ var need=false; muts.forEach(function(m){ if(m.addedNodes&&m.addedNodes.length) need=true; }); if(need) schedule(); }); mo.observe(document.body,{childList:true,subtree:true}); }catch(e){}
+    try{ var mo=new MutationObserver(function(muts){ var got=false; muts.forEach(function(m){ if(m.addedNodes){ for(var i=0;i<m.addedNodes.length;i++){ _pending.push(m.addedNodes[i]); got=true; } } }); if(got) schedule(); }); mo.observe(document.body,{childList:true,subtree:true}); }catch(e){}
     window.addEventListener('resize',schedule);
   }
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',boot); else boot();
@@ -13929,7 +13936,7 @@ setInterval(tick,1200);setTimeout(tick,300);
 </script>
 
 <script>
-/* v329：§八 影片庫定位導引——明確告訴使用者「這裡是單支影片，Top/Bottom 去策略診斷」，並給一鍵前往。純畫面、不碰資料。冪等 data-wbloc。 */
+/* v331：§八 影片庫定位導引——明確告訴使用者「這裡是單支影片，Top/Bottom 去策略診斷」，並給一鍵前往。純畫面、不碰資料。冪等 data-wbloc。 */
 (function(){
   if(window.__atlWbLoc) return; window.__atlWbLoc=true;
   function inject(){
@@ -13945,7 +13952,7 @@ setInterval(tick,1200);setTimeout(tick,300);
     return true;
   }
   function boot(){ inject(); [400,1200,2600].forEach(function(ms){setTimeout(inject,ms);});
-    try{ new MutationObserver(function(){inject();}).observe(document.body,{childList:true,subtree:true}); }catch(e){} }
+    try{ var _lt; new MutationObserver(function(){ clearTimeout(_lt); _lt=setTimeout(inject,150); }).observe(document.body,{childList:true,subtree:true}); }catch(e){} }
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',boot); else boot();
 })();
 </script>
