@@ -8,7 +8,7 @@
 <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<!-- ATELIER 影片診斷工作台 · 內部版本 v340 (版本號僅留註解，不顯示於畫面)
+<!-- ATELIER 影片診斷工作台 · 內部版本 v341 (版本號僅留註解，不顯示於畫面)
 v267 更新（策略診斷硬修版：重做 Top/Bottom 固定列高、重綁單支核對窗與 AI 工具按鈕、補互動式 1–8 操作步驟與策略對標雷達；本版用最後一段 v267 override 強制接管策略診斷頁，避免舊版 v263/v265 殘留函式覆蓋。只動 index.html，不動 client.html、Firebase、CSV 與六守門提示詞。）
 v266 更新（hotfix：修正 v265 最後一段策略診斷事件代理少 catch，導致 v265 override script 無法執行、畫面徽章被前一段 v263 override 改回 v263，且策略診斷部分按鈕失效；本版補回 catch 並將顯示版本固定為 v266。只動 index.html，不動 client.html、Firebase、CSV 與六守門提示詞。）
 v265 更新（策略診斷按鈕修復、整齊 Top/Bottom、互動流程與策略對標雷達）：修正策略診斷 Top/Bottom 每支影片的按鈕高度與位置不一致；改用固定列高與事件代理，讓「快看／核對」「留在本頁定位」「改寫提示」以及單支核對窗內 AI 工具、去影片庫定位、獨立視窗核對、收起都可穩定點擊；將 1–8 操作流程改成可點擊小教學；新增策略對標雷達，從同產業、同職稱、同身份、A–E、G 階段、流量觸發、素材與高互動／高分享等面向找全庫可借鏡樣本。只動 index.html，不動 client.html、Firebase、CSV 與六守門提示詞。
@@ -346,7 +346,7 @@ v182 更新（交辦單：讓工具變準變專業，接 v181、會動邏輯與�
 <script>
 /* ═══════════ v264：策略診斷使用說明書小窗＋Top/Bottom 標籤/按鈕視覺分層（index.html only） ═══════════ */
 (function(){
-  var VERSION='v340';
+  var VERSION='v341';
   function H(id){return document.getElementById(id)}
   function S(s){try{return (typeof esc==='function')?esc(s||''):String(s||'').replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}catch(e){return String(s||'')}}
   function N(x){try{ if(typeof parseNum==='function') return parseNum(x); }catch(e){} if(x==null)return 0; var t=String(x).replace(/,/g,'').trim(); if(!t)return 0; var m=t.match(/([0-9]+(?:\.[0-9]+)?)/); if(!m)return 0; var n=parseFloat(m[1])||0; if(/[萬万]/.test(t))n*=10000; else if(/[千kK]/.test(t))n*=1000; return n; }
@@ -1221,7 +1221,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v340</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v341</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -11071,7 +11071,7 @@ document.addEventListener('DOMContentLoaded',function(){
 <script>
 /* v239：自動防舊版快取。讓桌布捷徑／瀏覽器如果抓到舊 HTML，能自己比對線上最新版並導向。 */
 (function(){
-  var ATELIER_CURRENT_VERSION='v340';
+  var ATELIER_CURRENT_VERSION='v341';
   window.ATELIER_CURRENT_VERSION=ATELIER_CURRENT_VERSION;
   function _avNum(v){v=String(v||'');var m=v.match(/v\s*(\d+)/i);return m?parseInt(m[1],10):0;}
   function _avDetect(html){html=String(html||'');var m=html.match(/id=["']verBadge["'][^>]*>\s*(v\d+)/i)||html.match(/內部版本\s+(v\d+)/i);return m?m[1]:'';}
@@ -11259,7 +11259,7 @@ document.addEventListener('DOMContentLoaded',function(){
 <script>
 /* ═══════════ v262 hotfix · Strategy consultant UX hardening (final override only) ═══════════ */
 (function(){
-  var VERSION='v340';
+  var VERSION='v341';
   function H(id){return document.getElementById(id)}
   function E(s){try{return (typeof esc==='function')?esc(s||''):String(s||'').replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}catch(e){return String(s||'')}}
   function A(){try{return (typeof accounts!=='undefined'&&accounts)?accounts:(window.accounts||[])}catch(e){return window.accounts||[]}}
@@ -11417,7 +11417,7 @@ document.addEventListener('DOMContentLoaded',function(){
 <script>
 /* ═══════════ v263：策略診斷視覺流程、收合客戶卡、精緻核對窗與提示詞預覽（final override only） ═══════════ */
 (function(){
-  var VERSION='v340';
+  var VERSION='v341';
   function H(id){return document.getElementById(id)}
   function E(s){try{return (typeof esc==='function')?esc(s||''):String(s||'').replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}catch(e){return String(s||'')}}
   function A(){try{return (typeof accounts!=='undefined'&&accounts)?accounts:(window.accounts||[])}catch(e){return window.accounts||[]}}
@@ -11546,7 +11546,7 @@ document.addEventListener('DOMContentLoaded',function(){
 <script>
 /* ═══════════ v266 hotfix：修正 v265 事件代理語法，保留 v265 策略診斷功能（index.html only） ═══════════ */
 (function(){
-  var VERSION='v340';
+  var VERSION='v341';
   function H(id){return document.getElementById(id)}
   function E(s){try{return (typeof esc==='function')?esc(s||''):String(s||'').replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}catch(e){return String(s||'')}}
   function A(){try{return (typeof accounts!=='undefined'&&accounts)?accounts:(window.accounts||[])}catch(e){return window.accounts||[]}}
@@ -11719,7 +11719,7 @@ return '<div class="strat-radar-card-v265"><b>目前沒有符合樣本</b><p>可
 /* ═══════════ v267 strategy hard patch：固定版面、重綁按鈕、互動說明與策略對標雷達（index.html only） ═══════════ */
 (function(){
   'use strict';
-  var VERSION='v340';
+  var VERSION='v341';
   function H(id){return document.getElementById(id)}
   function E(s){return String(s==null?'':s).replace(/[&<>'"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]})}
   function A(){try{return (typeof accounts!=='undefined'&&Array.isArray(accounts))?accounts:(Array.isArray(window.accounts)?window.accounts:[])}catch(e){return []}}
@@ -11948,7 +11948,7 @@ window._strategyRadarV267=radarResults;
 
 <script id="v289PatchJS">
 (function(){
-  try{ window.ATELIER_CURRENT_VERSION='v340'; }catch(e){}
+  try{ window.ATELIER_CURRENT_VERSION='v341'; }catch(e){}
   try{ sessionStorage.setItem('atelierSkipAutoUpdate','1'); }catch(e){}
   try{ if(navigator.serviceWorker && navigator.serviceWorker.getRegistrations){
         navigator.serviceWorker.getRegistrations().then(function(rs){ rs.forEach(function(r){ try{r.update();}catch(e){} }); }).catch(function(){});
@@ -14148,5 +14148,85 @@ button:not(:disabled), .btn:not(.disabled):not([disabled]), [role="button"]{
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot); else boot(); setInterval(boot,1800);
 })();
 </script>
+
+
+<!-- ═══════════ v341 · 連貫性小修：選取不壓卡片、回饋可收放/刪除/轉下一步 ═══════════
+     依《系統規範總則》D3/D6/D9/D13：不新增大功能，只把 v340 已有選取與回饋收件匣修成不遮擋、有前因後果、有安全刪除。 -->
+<style id="atl-wb341-continuity">
+/* 影片庫本身已有原生選取，關掉 v340 額外加的右上選取膠囊，避免壓到發布狀態與卡片內容。 */
+#libList > .atl-selbar[data-atl-select="wb-videos"],
+#libList > .vcard > .atl-sel-check{display:none!important}
+#libList > .vcard.atl-sel-picked{outline:none!important;box-shadow:0 1px 8px rgba(90,40,45,.04)!important}
+
+/* 帳號管理的選取改成進入正常排版流，不再卡在 Instagram / 狀態標籤上。 */
+#accList > .vcard.atl-sel-host{padding-top:14px!important}
+#accList > .vcard > .atl-sel-check{position:static!important;float:right!important;margin:0 0 8px 12px!important;box-shadow:none!important;background:#FFFCFA!important;z-index:1!important}
+#accList > .vcard:after{content:"";display:block;clear:both}
+
+/* 帳號卡上方膠囊與按鈕統一高度，避免一顆上一顆下。 */
+#accList .vcard button,
+#accList .vcard .fbx-pill,
+#accList .vcard .wb-ov1-pill,
+#accList .vcard [role="button"]{min-height:30px!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;vertical-align:middle!important;line-height:1.35!important;margin:6px 6px 2px 0!important;box-sizing:border-box!important}
+#accList .vcard .fbx-pill{cursor:pointer!important}
+
+/* 回饋收件匣：不要一展開就變成長卷軸，每筆內容可在卡內閱讀。 */
+.fbx-panel{max-height:46vh!important;overflow:auto!important;padding:10px 12px!important}
+.fbx-panel[data-v341] .fbx-nextnote,
+.fbx-nextnote{font-size:11.5px;color:#7A5A5E;line-height:1.75;background:#FBF7F1;border-left:3px solid #D4A574;border-radius:0 9px 9px 0;padding:8px 11px;margin:8px 0 10px;cursor:default}
+.fbx-body{max-height:150px;overflow:auto;background:#FFFCFA;border:1px solid #F2EDE5;border-radius:9px;padding:9px 10px;margin-top:6px}
+.fbx-item{padding:10px 0!important}
+.fbx-top{align-items:center!important;gap:7px!important}
+.fbx-del,.fbx-mark,.fbx-to-next{min-height:28px!important;border-radius:8px!important;font-size:11.5px!important;font-weight:800!important;font-family:inherit!important;cursor:pointer!important;line-height:1.35!important}
+.fbx-to-next{border:1px solid #E8E3DA;background:#fff;color:#7A5A5E;-webkit-text-fill-color:#7A5A5E;padding:4px 10px;margin:6px 6px 0 0}
+.fbx-to-next:hover{border-color:#A51820;color:#A51820;-webkit-text-fill-color:#A51820;background:#FBF0EF}
+
+/* 獨立回饋彈窗：每筆是可收放卡，不再變成看不完的一長頁。 */
+.wbfb341-ov{position:fixed;inset:0;z-index:9900;background:rgba(42,26,28,.52);backdrop-filter:blur(4px);display:flex;justify-content:center;align-items:center;padding:22px}
+.wbfb341-card{width:min(760px,94vw);max-height:86vh;overflow:auto;background:#fff;border:1px solid #E8E3DA;border-radius:18px;box-shadow:0 22px 70px rgba(42,26,28,.22);padding:20px 22px;color:#2A1A1C}
+.wbfb341-k{font-family:Cormorant Garamond,serif;letter-spacing:4px;color:#D4A574;font-size:11px;text-transform:uppercase;margin-bottom:4px}
+.wbfb341-title{font-family:Noto Serif TC,serif;font-size:22px;font-weight:900;color:#2A1A1C;margin:0 0 3px}
+.wbfb341-sub{font-size:12.5px;color:#7A5A5E;line-height:1.7;margin-bottom:12px}
+.wbfb341-flow{font-size:12px;color:#7A5A5E;line-height:1.75;background:#FBF7F1;border-left:3px solid #D4A574;border-radius:0 10px 10px 0;padding:9px 12px;margin-bottom:12px;cursor:default}
+.wbfb341-item{border:1px solid #E8E3DA;border-radius:12px;background:#FFFCFA;margin:10px 0;overflow:hidden}
+.wbfb341-item summary{list-style:none;display:flex;align-items:center;gap:9px;cursor:pointer;padding:11px 13px;background:#FDFBF8;color:#2A1A1C;font-size:12.5px;font-weight:800}
+.wbfb341-item summary::-webkit-details-marker{display:none}
+.wbfb341-type{font-size:10.5px;font-weight:900;color:#A51820;background:#FBF0EF;border:1px solid #E8DAD8;border-radius:7px;padding:2px 8px;white-space:nowrap}
+.wbfb341-date{font-size:11px;color:#8A7274;margin-left:auto;white-space:nowrap}
+.wbfb341-body{padding:12px 14px;font-size:13px;line-height:1.8;color:#2A1A1C;white-space:pre-wrap;max-height:220px;overflow:auto;background:#fff}
+.wbfb341-actions{display:flex;gap:8px;flex-wrap:wrap;padding:0 14px 13px;background:#fff}
+.wbfb341-actions button,.wbfb341-close{font-family:inherit;min-height:32px;border-radius:9px;padding:6px 12px;font-size:12px;font-weight:800;cursor:pointer;border:1px solid #E8E3DA;background:#fff;color:#7A5A5E;-webkit-text-fill-color:#7A5A5E}
+.wbfb341-actions .primary{background:#A51820;border-color:#A51820;color:#fff;-webkit-text-fill-color:#fff}
+.wbfb341-actions .danger{color:#A51820;-webkit-text-fill-color:#A51820;background:#fff;border-color:#E8DAD8}
+.wbfb341-done{color:#A51820;-webkit-text-fill-color:#A51820;font-weight:900;font-size:11px}
+.wbfb341-foot{display:flex;justify-content:flex-end;margin-top:12px;border-top:1px solid #F2EDE5;padding-top:12px}
+</style>
+<script>
+(function(){
+  if(window.__atlWb341Continuity) return; window.__atlWb341Continuity=true;
+  function arr(){try{if(typeof accounts!=='undefined'&&Array.isArray(accounts))return accounts;}catch(e){} return Array.isArray(window.accounts)?window.accounts:[];}
+  function acc(id){return arr().find(function(a){return String(a.id)===String(id)||String(a.handle)===String(id);});}
+  function esc(s){return String(s==null?'':s).replace(/[&<>\"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[c]||c;});}
+  function txt(f){var p=f&&f.payload||{}; var s=f.note||f.text||f.content||p.content||p.text||p.note||p.message||p.comment||p.detail||''; if(!s){s=Object.keys(p).map(function(k){var v=p[k]; return typeof v==='string'?v:'';}).filter(Boolean).join('　');} return String(s||'（無文字內容）');}
+  function typ(t){return t==='note'?'備註':(t==='rating'?'評分':(t==='request'?'需求':'回饋'));}
+  function date(ts){try{var d=new Date(ts||Date.now()); return d.getFullYear()+'/'+(d.getMonth()+1)+'/'+d.getDate()+' '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');}catch(e){return '';}}
+  function save(){try{if(typeof saveAccounts==='function')saveAccounts();}catch(e){} try{if(typeof _accFbPush==='function')_accFbPush();}catch(e){} try{if(typeof renderAccounts==='function')renderAccounts();}catch(e){}}
+  function copy(t,msg){try{if(typeof copyText==='function')return copyText(t,msg||'已複製'); if(typeof copyVal==='function')return copyVal(t,msg||'已複製'); navigator.clipboard.writeText(t); if(typeof toast==='function')toast(msg||'已複製');}catch(e){var ta=document.createElement('textarea');ta.value=t;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);try{toast(msg||'已複製');}catch(_){}}}
+  function nextText(a,f){return '工作台回饋下一步\n客戶：'+(a.displayName||a.handle||'')+' '+(a.handle||'')+'\n類型：'+typ(f.type)+'\n時間：'+date(f.createdAt)+'\n\n原文：\n'+txt(f)+'\n\n建議處理：\n1. 若只是測試或已確認，標記已處理，這件事結束。\n2. 若要進服務台，貼到對應站別的問診／診斷／交付備註。\n3. 若是錯誤或測試資料，使用刪除，系統會以軟刪除隱藏。';}
+  window._wbOpenFeedback=function(id){
+    var a=acc(id); if(!a){try{toast('找不到此帳號');}catch(e){} return;}
+    var fb=(a.clientFeedback||[]).filter(function(f){return !f.deleted;}).slice().sort(function(x,y){return (y.createdAt||0)-(x.createdAt||0);});
+    var ov=document.createElement('div'); ov.className='wbfb341-ov'; ov.setAttribute('data-wbfb341','1');
+    var list=fb.length?fb.map(function(f,i){var body=esc(txt(f)); var fid=esc(f.id||String(i)); return '<details class="wbfb341-item" '+(i===0&&!f.handled?'open':'')+' data-fid="'+fid+'"><summary><span class="wbfb341-type">'+typ(f.type)+'</span><span>'+(f.handled?'<span class="wbfb341-done">已處理</span>':'待處理')+'</span><span class="wbfb341-date">'+esc(date(f.createdAt))+'</span></summary><div class="wbfb341-body">'+body+'</div><div class="wbfb341-actions"><button type="button" class="primary" data-fb-handle="'+fid+'">標記已處理</button><button type="button" data-fb-copy="'+fid+'">複製成下一步</button><button type="button" class="danger" data-fb-del="'+fid+'">刪除這筆</button></div></details>';}).join(''):'<div class="wbfb341-flow">目前沒有未刪除的客戶回饋。</div>';
+    ov.innerHTML='<div class="wbfb341-card"><div class="wbfb341-k">ATELIER · FEEDBACK INBOX</div><h3 class="wbfb341-title">回饋收件匣</h3><div class="wbfb341-sub">'+esc(a.displayName||a.handle||'此帳號')+'（'+esc(a.handle||'')+'）· 來自服務台的需求 / 回饋</div><div class="wbfb341-flow">處理邏輯：標記已處理＝這件事到此結束；複製成下一步＝貼回服務台問診 / 診斷 / 交付備註；刪除＝移除測試或錯誤資料，採軟刪除避免雲端復活。</div>'+list+'<div class="wbfb341-foot"><button type="button" class="wbfb341-close">關閉</button></div></div>';
+    document.body.appendChild(ov);
+    function close(){ov.remove();}
+    ov.addEventListener('click',function(e){if(e.target===ov)close(); var b=e.target.closest('button'); if(!b)return; if(b.classList.contains('wbfb341-close'))return close(); var fid=b.getAttribute('data-fb-handle')||b.getAttribute('data-fb-del')||b.getAttribute('data-fb-copy'); var f=fb.find(function(x,ix){return String(x.id||ix)===String(fid);}); if(!f)return; if(b.hasAttribute('data-fb-handle')){f.handled=true; save(); close(); setTimeout(function(){window._wbOpenFeedback(id);},120);} else if(b.hasAttribute('data-fb-copy')){copy(nextText(a,f),'已複製成下一步');} else if(b.hasAttribute('data-fb-del')){if(!confirm('確認要刪除這筆回饋嗎？'))return; f.deleted=true; save(); close(); setTimeout(function(){window._wbOpenFeedback(id);},120);}});
+  };
+  function decorateInline(){document.querySelectorAll('.fbx-panel:not([data-v341])').forEach(function(p){p.setAttribute('data-v341','1'); var bar=p.querySelector('.fbx-bar'); if(bar&&!p.querySelector('.fbx-nextnote')){var n=document.createElement('div'); n.className='fbx-nextnote'; n.textContent='處理邏輯：標記已處理＝這件事結束；要沿用內容就先複製，再貼到服務台問診／診斷／交付備註；測試資料用刪除。'; bar.insertAdjacentElement('afterend',n);} p.querySelectorAll('.fbx-item').forEach(function(it){ if(!it.querySelector('.fbx-to-next')){var body=it.querySelector('.fbx-body'); var b=document.createElement('button'); b.type='button'; b.className='fbx-to-next'; b.textContent='複製成下一步'; b.onclick=function(){copy((body?body.textContent:'').trim(),'已複製回饋內容');}; it.appendChild(b);}});});}
+  setInterval(function(){try{decorateInline();}catch(e){}},900);
+})();
+</script>
+
 </body>
 </html>

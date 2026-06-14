@@ -722,7 +722,7 @@ details.cat .cat-body{padding:14px 15px}
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">客戶服務台</span></span>
-    <span id="verBadge">cs-v4.72</span>
+    <span id="verBadge">cs-v4.73</span>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button type="button" id="popoutBtn" class="popout-btn" title="把客戶服務台開成獨立小視窗"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6"/><path d="M20 4l-9 9"/><path d="M14 12v7H5V10h7"/></svg>小視窗</button>
@@ -8927,7 +8927,7 @@ button:not(:disabled), .btn:not(.disabled):not([disabled]), [role="button"]{
       p++; s=pptx.addSlide(); addCorner(s,C,p,pages,'NEXT ACTION','確認交付與下一輪行動','資料來源：ATELIER 交付流程'); s.addText('建議先確認三件事',{x:.8,y:2.15,w:8,h:.36,fontSize:20,bold:true,color:C.hero,fontFace:'Noto Serif TC'}); s.addText('1. 哪些內容直接進客戶版交付\n2. 哪些內容保留在顧問版作戰計畫\n3. 下一輪要補拍、補問或補資料的優先順序',{x:1.0,y:3.0,w:10.2,h:2.0,fontSize:18,color:C.text,fontFace:'Noto Sans TC',breakLine:false,fit:'shrink'}); pptx.writeFile({fileName:'ATELIER_最終交付總覽_'+String(nm).replace(/[\\/:*?"<>|]/g,'_')+'.pptx'});}catch(e){console.error(e);toastSafe('PPT 產生失敗，請先確認瀏覽器可載入 PPT 元件');}}; if(window.pptxgen||window.PptxGenJS||typeof pptFactory==='function')runner(); else if(typeof loadPptx==='function')loadPptx(function(ok){if(ok)runner();else toastSafe('PPT 元件載入失敗')}); else toastSafe('找不到 PPT 元件');}
   function openFinal(){var a=cur(); if(!a){toastSafe('請先選擇一位客戶');return;} var md=qs('#modal'), sh=qs('#sheet'); if(!md||!sh)return; var html='<div class="atl-final-modal"><div class="atl-final-head"><div><div class="atl-final-kicker">ATELIER · FINAL DELIVERY</div><div class="atl-final-title">最終交付總覽</div><div class="atl-final-sub">先勾選哪幾站、哪些項目要進最終輸出；下方會先產生建議頁清單，再輸出 HTML / PPT。</div></div><button type="button" class="atl-final-close" data-final-close>×</button></div><div id="atlFinalRec" class="atl-recbox"></div>';
     STAGES.forEach(function(st){var items=stageItems(a,st[0]); html+='<details class="atl-stage-detail" open><summary><input type="checkbox" data-final-stage-all checked data-stage-name="'+esc(st[1])+'"><span>'+esc(st[1])+'</span><small style="margin-left:auto;color:#7A5A5E">'+items.length+' 項</small></summary><div class="atl-stage-body">'; if(!items.length) html+='<div class="atl-final-sub">這站目前沒有可讀取的已填內容。</div>'; items.forEach(function(it,i){var v=String(it.value||''); html+='<label class="atl-final-item"><input type="checkbox" data-final-item checked data-stage="'+esc(st[1])+'" data-label="'+esc(it.label)+'" data-value="'+esc(v)+'"><span class="atl-final-label">'+esc(it.label)+'</span><span class="atl-final-text">'+esc(v.slice(0,900))+(v.length>900?'…':'')+'</span></label>';}); html+='</div></details>';});
-    html+='<div class="atl-final-toolbar"><span class="atl-final-note" id="atlFinalCount">已勾選 0 項</span><button type="button" class="ghost" data-final-rec>更新建議頁清單</button><button type="button" class="ghost" data-final-copy>複製勾選內容</button><button type="button" class="ghost" data-final-html>下載 HTML</button><button type="button" class="primary" data-final-ppt>產生最終 PPT</button></div></div>'; sh.innerHTML=html; md.classList.add('show'); md.onclick=function(e){if(e.target===md)(typeof closeModal==='function'&&closeModal())}; renderRec();}
+    html+='<div class="atl-final-toolbar"><span class="atl-final-note" id="atlFinalCount">已勾選 0 項</span><button type="button" class="ghost" data-final-rec>更新建議頁清單</button><button type="button" class="ghost" data-final-copy>複製勾選內容</button><button type="button" class="ghost" data-final-html>下載 HTML</button><button type="button" class="primary" data-final-ppt>產生最終 PPT</button></div></div>'; sh.innerHTML=html; md.classList.add('show'); md.onclick=function(e){if(e.target===md)closeModal&&closeModal()}; renderRec();}
   window.openFinalDeliveryOverview=openFinal;
   document.addEventListener('click',function(e){var t=e.target&&e.target.closest&&e.target.closest('[data-final-open],[data-final-close],[data-final-rec],[data-final-copy],[data-final-html],[data-final-ppt]'); if(!t)return; if(t.hasAttribute('data-final-open'))openFinal(); else if(t.hasAttribute('data-final-close')){try{closeModal()}catch(_e){var md=qs('#modal'); if(md)md.classList.remove('show')}} else if(t.hasAttribute('data-final-rec'))renderRec(); else if(t.hasAttribute('data-final-copy'))copySafe(selectedText(),'已複製最終交付內容'); else if(t.hasAttribute('data-final-html'))downloadHtml(); else if(t.hasAttribute('data-final-ppt'))dlPpt();});
   document.addEventListener('change',function(e){var t=e.target; if(!t)return; if(t.hasAttribute('data-final-stage-all')){var det=t.closest('.atl-stage-detail'); if(det)qsa('input[data-final-item]',det).forEach(function(x){x.checked=t.checked}); renderRec();} else if(t.hasAttribute('data-final-item'))renderRec();});
@@ -8937,5 +8937,53 @@ button:not(:disabled), .btn:not(.disabled):not([disabled]), [role="button"]{
   setInterval(boot,1800);
 })();
 </script>
+
+
+<!-- ═══════════ cs-v4.73 · 連貫性小修：選取不遮擋、版號清理、區塊操作對齊 ═══════════
+     依《系統規範總則》D1/D3/D13：不新增大功能，只把既有選取與總控顯示修成清楚、不壓欄位。 -->
+<style id="atl-cs473-continuity">
+/* 選取膠囊進入正常排版流，不再壓在標題、提示詞、輸入框或其他按鈕上。 */
+.section-card.atl-sel-host > .atl-sel-check,
+.stage-group.atl-sel-host > .atl-sel-check{position:static!important;float:right!important;margin:0 0 10px 12px!important;box-shadow:none!important;background:#FFFCFA!important;z-index:1!important}
+.section-card.atl-sel-host:after,
+.stage-group.atl-sel-host:after{content:"";display:block;clear:both}
+.section-card.atl-sel-host{padding-top:14px!important}
+
+/* 選取列與真按鈕統一高度、間距，不與原本功能列互相卡住。 */
+.atl-selbar{margin:12px 0 14px!important;align-items:center!important;clear:both!important}
+.atl-sel-actions{align-items:center!important}
+.atl-sel-btn{min-height:30px!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;line-height:1.35!important}
+
+/* 所有區塊標題右側操作鈕保持同一高度；說明框維持不可點感。 */
+.section-card h3 button,
+.section-card .atl-collapse-tog,
+.section-card .preview-btn,
+.section-card .advpv-btn{min-height:30px!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;vertical-align:middle!important;line-height:1.35!important}
+.hint,.sc-note,.atl-final-sub{cursor:default!important}
+
+/* SAFE / 總控區塊減少壓迫感：狀態與操作分開，避免紅色滿版。 */
+.atl452safe .atl452safe-mode{gap:8px!important;flex-wrap:wrap!important}
+.atl452safe button{min-height:32px!important;line-height:1.35!important}
+.atl452safe-mini label{gap:8px!important}
+</style>
+<script>
+(function(){
+  if(window.__atlCs473Continuity) return; window.__atlCs473Continuity=true;
+  function cleanTextNode(n){var s=n.nodeValue||''; var ns=s.replace(/cs-v4\.\d+\s*(SAFE|LATEST)?\s*[｜|·:-]?\s*/g,'').replace(/\bv\d{3}\s*[｜|·:-]?\s*/g,''); if(ns!==s)n.nodeValue=ns;}
+  function cleanVersions(){
+    try{var vb=document.getElementById('verBadge'); if(vb)vb.textContent='cs-v4.73';}catch(e){}
+    try{var w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT,{acceptNode:function(n){var p=n.parentElement; if(!p||p.id==='verBadge'||/^(SCRIPT|STYLE|TEXTAREA)$/i.test(p.tagName))return NodeFilter.FILTER_REJECT; return /(cs-v4\.\d+|\bv\d{3})/.test(n.nodeValue||'')?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_REJECT;}}); var nodes=[],n; while(n=w.nextNode())nodes.push(n); nodes.forEach(cleanTextNode);}catch(e){}
+  }
+  function alignSelection(){
+    document.querySelectorAll('.section-card>.atl-sel-check,.stage-group>.atl-sel-check').forEach(function(lab){
+      var host=lab.parentElement; if(!host)return; if(host.firstElementChild!==lab){host.insertBefore(lab,host.firstElementChild);} lab.style.position='static'; lab.style.float='right';
+    });
+  }
+  function run(){cleanVersions(); alignSelection();}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run); else run();
+  setInterval(run,1200);
+})();
+</script>
+
 </body>
 </html>
