@@ -722,7 +722,7 @@ details.cat .cat-body{padding:14px 15px}
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">客戶服務台</span></span>
-    <span id="verBadge">cs-v4.67</span>
+    <span id="verBadge">cs-v4.68</span>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button type="button" id="popoutBtn" class="popout-btn" title="把客戶服務台開成獨立小視窗"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6"/><path d="M20 4l-9 9"/><path d="M14 12v7H5V10h7"/></svg>小視窗</button>
@@ -7522,8 +7522,8 @@ details.ovBlock > summary .ovx-tag.has{color:#9C7D4A}
     var box=document.createElement('div'); box.className='mkb-card'; box.setAttribute('data-mktbrief','1');
     var html='<div class="mkb-h">行銷問診卡</div>'
       +'<div class="mkb-f">誰會買 × 賣什麼 × 看完去哪 × 憑什麼信</div>'
-      +'<div class="mkb-note">問出影片看不到的商業資訊。填越多，後面 CTA 行動出口 與各階段 PPT 越準。可先按「複製 AI 問診提示詞」讓 AI 幫你擬，再貼回下面自動分欄。</div>'
-      +'<div class="mkb-actions"><button type="button" class="mkb-btn ghost" data-act="ai">複製 AI 問診提示詞</button></div>'
+      +'<div class="mkb-note">問出影片看不到的商業資訊。填越多，後面 CTA 行動出口 與各階段 PPT 越準。可先按「查看 / 複製 AI 問診提示詞」打開來看、編輯再複製，讓 AI 幫你擬，再貼回下面自動分欄。</div>'
+      +'<div class="mkb-actions"><button type="button" class="mkb-btn ghost" data-act="ai">查看 / 複製 AI 問診提示詞</button></div>'
       +'<textarea class="mkb-paste" placeholder="把 AI 回覆貼這裡 → 按下面自動分欄…"></textarea>'
       +'<button type="button" class="mkb-btn" data-act="parse" style="margin-bottom:4px">貼回自動分欄</button>';
     SECS.forEach(function(s){
@@ -7534,7 +7534,7 @@ details.ovBlock > summary .ovx-tag.has{color:#9C7D4A}
     box.innerHTML=html;
     // 取欄位 map
     var fields={}; box.querySelectorAll('textarea[data-mk]').forEach(function(t){ fields[t.getAttribute('data-mk')]=t; t.value=(mb[t.getAttribute('data-mk')]||''); });
-    box.querySelector('[data-act="ai"]').onclick=function(){ var p=aiPrompt(a, collect(fields)); try{ navigator.clipboard.writeText(p); }catch(e){} if(typeof toast==='function') toast('已複製 AI 問診提示詞'); };
+    box.querySelector('[data-act="ai"]').onclick=function(){ var p=aiPrompt(a, collect(fields)); if(window.atlPromptView){ window.atlPromptView(p,'行銷問診 · AI 提示詞'); } else { try{ navigator.clipboard.writeText(p); }catch(e){} if(typeof toast==='function') toast('已複製 AI 問診提示詞'); } };
     box.querySelector('[data-act="parse"]').onclick=function(){ var ta=box.querySelector('.mkb-paste'); var n=parseBack(ta.value, fields); if(typeof toast==='function') toast(n?('已分到 '+n+' 欄，確認後請按儲存'):'沒抓到可分欄的內容，確認格式是「項目：內容」'); };
     box.querySelector('.mkb-save').onclick=function(){ a.marketingBrief=collect(fields); a.updatedAt=Date.now(); push(); if(typeof toast==='function') toast('已儲存行銷問診並同步'); };
     host.insertBefore(box, host.firstChild);
@@ -7900,7 +7900,7 @@ details.ovBlock > summary .ovx-tag.has{color:#9C7D4A}
 
 
 
-<!-- ═══════════ cs-v4.67 SAFE LATEST · 六站流程與交付包（乾淨注入版）═══════════ -->
+<!-- ═══════════ cs-v4.68 SAFE LATEST · 六站流程與交付包（乾淨注入版）═══════════ -->
 <style id="atl452-safe-style">
 .atl452safe{border:1px solid #E8E3DA;border-left:4px solid #A51820;background:linear-gradient(180deg,#FFFCFB,#FFFFFF);border-radius:15px;padding:14px;margin:12px 0 16px;box-shadow:0 4px 18px rgba(90,40,45,.045);font-family:inherit;color:#2A1A1C}.atl452safe h3{font-family:Noto Serif TC,serif;margin:0 0 5px;font-size:15px;color:#7A1018}.atl452safe p{margin:0 0 10px;font-size:12px;color:#7A5A5E;line-height:1.75}.atl452safe-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px}.atl452safe-card{background:#fff;border:1px solid #E8E3DA;border-radius:11px;padding:8px}.atl452safe-card b{display:block;font-size:11px;color:#A51820}.atl452safe-card span{display:block;margin-top:2px;font-size:10.5px;color:#5C4248;line-height:1.45}.atl452safe-actions,.atl452safe-filter,.atl452safe-mode{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}.atl452safe-btn,.atl452safe-filter button,.atl452safe-mode button{font-family:inherit;font-size:12px;font-weight:850;border-radius:9px;padding:8px 12px;cursor:pointer;border:1px solid #A51820;background:#A51820;color:#fff;-webkit-text-fill-color:#fff}.atl452safe-filter button,.atl452safe-mode button{font-size:11.5px;border-radius:999px;background:#fff;color:#7A5A5E;-webkit-text-fill-color:#7A5A5E;border-color:#E8E3DA;padding:5px 10px}.atl452safe-filter button.on,.atl452safe-mode button.on{background:#7A1018;border-color:#7A1018;color:#fff;-webkit-text-fill-color:#fff}.atl452safe-btn.ghost{background:#fff;color:#A51820;-webkit-text-fill-color:#A51820}.atl452safe-pill{display:inline-flex;margin:2px 5px 2px 0;font-size:10.5px;font-weight:850;border:1px solid #E8E3DA;background:#fff;color:#7A5A5E;border-radius:999px;padding:3px 8px}.atl452safe-pill.ok{color:#2A1A1C;background:#F3F7F4;border-color:#F4E9DE}.atl452safe-pill.hot{color:#A51820;background:#FFF8F7;border-color:#EAD9D6}.atl452safe-ta{width:100%;box-sizing:border-box;border:1px solid #E8E3DA;border-radius:10px;padding:9px 11px;font-family:inherit;font-size:13px;line-height:1.6;min-height:64px;resize:vertical;background:#fff;color:#2A1A1C}.atl452safe-mini{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.atl452safe-mini label{display:block;font-size:11px;font-weight:800;color:#7A1018;margin-bottom:3px}.atl452safe-note{font-size:11px;color:#8A7274;line-height:1.65;margin-top:8px}body.atl452safe-filter-research .atl452safe-kind:not([data-atl452safe-kind="研究用"]){display:none!important}body.atl452safe-filter-intake .atl452safe-kind:not([data-atl452safe-kind="問診用"]){display:none!important}body.atl452safe-filter-delivery .atl452safe-kind:not([data-atl452safe-kind="交付用"]){display:none!important}body.atl452safe-mode-quick [data-atl452safe-level="standard"],body.atl452safe-mode-quick [data-atl452safe-level="deep"]{display:none!important}body.atl452safe-mode-standard [data-atl452safe-level="deep"]{display:none!important}@media(max-width:820px){.atl452safe-grid,.atl452safe-mini{grid-template-columns:1fr}.atl452safe-actions{flex-direction:column}.atl452safe-btn{width:100%}}
 </style>
@@ -8049,7 +8049,7 @@ setInterval(tick,1200);setTimeout(tick,300);
 </script>
 
 <style>
-/* cs-v4.67：§七 狀態卡 vs 操作按鈕區分——SAFE 狀態卡/狀態膠囊明確「不可點」（無 hover、預設游標、淺底）。純樣式、不改結構。 */
+/* cs-v4.68：§七 狀態卡 vs 操作按鈕區分——SAFE 狀態卡/狀態膠囊明確「不可點」（無 hover、預設游標、淺底）。純樣式、不改結構。 */
 .atl452safe-card{cursor:default!important}
 .atl452safe-card::before{content:"狀態 · ";font-size:10px;letter-spacing:1px;color:var(--ink-soft,#7A5A5E);opacity:.8}
 .atl452safe-pill{cursor:default!important}
@@ -8058,7 +8058,7 @@ setInterval(tick,1200);setTimeout(tick,300);
 </style>
 
 <script>
-/* cs-v4.67：客戶賣點庫（多筆賣點卡）—— 安全 addon。
+/* cs-v4.68：客戶賣點庫（多筆賣點卡）—— 安全 addon。
    資料存於 account.sellingPointCards（新欄位，不動既有 sellingPointBrief），存檔走既有 window._accPush()。
    功能：新增賣點卡／已建立 N 筆／摘要卡（編輯·複製·加入內容戰役·加入交付包·刪除）／從目前 SAFE 欄位帶入。冪等 data-spcards。 */
 (function(){
@@ -8212,7 +8212,7 @@ setInterval(tick,1200);setTimeout(tick,300);
 </script>
 
 <script>
-/* cs-v4.67：內容戰役 × 賣點庫 —— 把賣點卡分配到 10 支影片（安全 addon）。
+/* cs-v4.68：內容戰役 × 賣點庫 —— 把賣點卡分配到 10 支影片（安全 addon）。
    讀 account.sellingPointCards（賣點庫），分配存於新欄位 account.campaignAssignments（不動 campaignBrief），存檔走 _accPush。
    每支影片顯示：對應賣點卡＋該卡的 A–E／G 階段／Hook／CTA。冪等 data-cmpassign。 */
 (function(){
@@ -8287,7 +8287,7 @@ setInterval(tick,1200);setTimeout(tick,300);
 </script>
 
 <script>
-/* cs-v4.67：交付前資料盤點（唯讀）—— 文件第十節「交付包顯示用了哪些資料」。
+/* cs-v4.68：交付前資料盤點（唯讀）—— 文件第十節「交付包顯示用了哪些資料」。
    只讀 account 既有欄位顯示：策略交接卡／商業原料／賣點卡 N 筆／戰役分配 N 支／工作台交付包，並列出缺哪些。
    不寫任何資料、不碰存檔。掛在 Stage 7「來自診斷工作台的交付包」區前面。冪等 data-delivinv。 */
 (function(){
@@ -8356,7 +8356,7 @@ setInterval(tick,1200);setTimeout(tick,300);
 </script>
 
 <script>
-/* cs-v4.67：流程定位條（文件第五節）—— 七站麵包屑，固定在每一站最上方，高亮目前站、可點任一站跳過去。
+/* cs-v4.68：流程定位條（文件第五節）—— 七站麵包屑，固定在每一站最上方，高亮目前站、可點任一站跳過去。
    純畫面＋用既有 window.switchTo 導覽，不碰資料。冪等 data-stagebar。 */
 (function(){
   if(window.__atlStageBar) return; window.__atlStageBar=true;
@@ -8429,7 +8429,7 @@ setInterval(tick,1200);setTimeout(tick,300);
 </script>
 
 <style>
-/* cs-v4.67 階段一·視覺舒適（純 CSS、不碰 JS）：說明框 vs 按鈕分清楚＋門市條重排＋減紅密度 */
+/* cs-v4.68 階段一·視覺舒適（純 CSS、不碰 JS）：說明框 vs 按鈕分清楚＋門市條重排＋減紅密度 */
 
 /* ① 說明/教學框：淡底＋左線＋圓角，一眼看出是「說明」不是按鈕 */
 .sc-note{
@@ -8463,7 +8463,7 @@ setInterval(tick,1200);setTimeout(tick,300);
 .sc-note, .hint{ cursor:default !important; }
 </style>
 
-<!-- ═══════════ cs-v4.67 階段一收尾 · 總控減紅 + 狀態卡更像「狀態」（純 CSS、不碰 JS / 不碰結構 / 不碰資料）═══════════ -->
+<!-- ═══════════ cs-v4.68 階段一收尾 · 總控減紅 + 狀態卡更像「狀態」（純 CSS、不碰 JS / 不碰結構 / 不碰資料）═══════════ -->
 <style id="atl-cs465-comfort">
 /* ── ① 總控 SAFE 區「再降紅字密度」───────────────────────────────
    原本紅點太多會累：標題紅 + 4 張卡編號紅 + 6 個欄位標籤紅 + 待補藥丸紅。
@@ -8528,7 +8528,7 @@ setInterval(tick,1200);setTimeout(tick,300);
 .atl452safe-card:hover, .atl452safe-pill:hover{ filter:none !important; box-shadow:none !important; transform:none !important; }
 </style>
 
-<!-- ═══════════ cs-v4.67 階段二·R1 · 展開編輯不再「欄位 N」盲猜 ═══════════
+<!-- ═══════════ cs-v4.68 階段二·R1 · 展開編輯不再「欄位 N」盲猜 ═══════════
      包住既有 window._csOpenSectionEditor：開好編輯視窗後，把任何顯示成「欄位 N」或空白的標籤，
      用該欄位真正的線索（data-adv/data-k 對照、aria-label、鄰近標題、placeholder、name/id…）換成看得懂的名字。
      只改「顯示的標籤文字」（textContent，無 HTML/SVG＝無外露風險）；不碰資料、不碰哪些欄位可編輯、不碰寫回流程。冪等。 -->
@@ -8610,7 +8610,7 @@ setInterval(tick,1200);setTimeout(tick,300);
 })();
 </script>
 
-<!-- ═══════════ cs-v4.67 第一批·視覺與品牌 · 按鈕 vs 說明框(規範 D3)＋ 視覺舒適(D11)═══════════
+<!-- ═══════════ cs-v4.68 第一批·視覺與品牌 · 按鈕 vs 說明框(規範 D3)＋ 視覺舒適(D11)═══════════
      純 CSS、不碰 JS / 結構 / 資料。深酒紅文字已於原碼層收成主紅(只動 color，背景不動)。 -->
 <style id="atl-cs467-visual">
 /* ① 說明/教學框:有底色的框補上與服務台一致的「淡金左線」招牌(=這是說明，不是按鈕) */
@@ -8631,6 +8631,116 @@ button:not(:disabled), .btn:not(.disabled):not([disabled]), [role="button"]{
 /* ④ D11 門市定位條:比例再舒服一點(沿用 cs-v4.64 .cs-posline，微調內距/行高) */
 .cs-posline{ padding:12px 16px !important; line-height:1.8 !important; }
 </style>
+
+<!-- ═══════════ cs-v4.68 第二批·填空體驗(規範 D4 / D5 / D6 / D7)═══════════
+     D4 三件套順序(純 CSS order)、D7 點欄位就放大(focus)、D5 提示詞可編輯(統一檢視器+問診卡)、
+     D6 顧問分析補「目的＋展示版」出口。檔尾注入、冪等;服務台 toast 用 innerHTML(可含 SVG，本檔未用 SVG)。 -->
+<style id="atl-cs468-fillux">
+/* ── D4 三件套順序:① 查看提示詞 → ② AI 智能填入 → ③ 展開編輯(.sf-bar 為 flex，純排序、不動 DOM) */
+.sf-bar{ display:flex !important; flex-wrap:wrap; gap:6px; align-items:center; }
+.sf-bar [data-cs-prompt]{ order:1 !important; }   /* ① 提示詞 */
+.sf-bar [data-sf-btn]{ order:2 !important; }       /* ② AI 智能填入 */
+.sf-bar [data-cs-expand]{ order:3 !important; }    /* ③ 展開編輯 */
+
+/* ── D7 點欄位就放大:聚焦時自動長高、給舒服的編輯空間(搭配既有 autogrow，不擠成一排) */
+.section-card textarea:focus, .vc-adv-grid textarea:focus, .cse-field textarea:focus,
+.atl452safe-ta:focus, .mkb-row textarea:focus, textarea.mkb-paste:focus{
+  min-height:150px !important;
+  transition:min-height .15s ease;
+}
+.vc-adv-grid textarea:focus{ min-height:190px !important; }
+
+/* ── D6 顧問分析展示版:按鈕 + 覆蓋層 */
+.advpv-btn{ font-size:12px;font-weight:800;border:1px solid #DCC8CB;background:#fff;color:#A51820;
+  -webkit-text-fill-color:#A51820;border-radius:999px;padding:7px 15px;cursor:pointer;font-family:inherit;margin-left:8px }
+.advpv-btn:hover{ background:#FAF3F4;border-color:#A51820 }
+.advpv-ov{ position:fixed;inset:0;z-index:100002;background:rgba(43,26,28,.46);backdrop-filter:blur(3px);
+  -webkit-backdrop-filter:blur(3px);display:flex;align-items:center;justify-content:center;padding:24px 16px;box-sizing:border-box }
+.advpv-card{ background:#FDFBF8;width:100%;max-width:640px;max-height:86vh;overflow:auto;border:1px solid #EADBD8;
+  border-radius:16px;box-shadow:0 24px 64px rgba(43,26,28,.32);padding:22px 24px;box-sizing:border-box;font-family:inherit }
+.advpv-copy{ border:1px solid #A51820;background:#A51820;color:#fff;-webkit-text-fill-color:#fff;font-weight:800;
+  font-size:13px;border-radius:999px;padding:9px 18px;cursor:pointer;font-family:inherit }
+.advpv-x{ border:1px solid #DDD0CB;background:#fff;color:#6B4A4E;font-weight:700;font-size:13px;
+  border-radius:999px;padding:9px 18px;cursor:pointer;font-family:inherit }
+</style>
+<script>
+(function(){
+  'use strict';
+  if(window.__atlFillUXv468){ return; } window.__atlFillUXv468=true;
+  function _esc(s){ return (typeof esc==='function')?esc(s):String(s==null?'':s).replace(/[&<>]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;'}[c];}); }
+
+  /* ── D5：統一「查看提示詞」檢視器改成「可編輯再複製」 ── */
+  var _origPrompt=window._csOpenSectionPrompt;
+  if(typeof _origPrompt==='function'){
+    window._csOpenSectionPrompt=function(){
+      var r=_origPrompt.apply(this,arguments);
+      try{
+        var box=document.getElementById('cssp-box');
+        if(box && box.tagName!=='TEXTAREA'){
+          var txt=box.textContent;
+          var ta=document.createElement('textarea'); ta.id='cssp-box'; ta.value=txt;
+          ta.setAttribute('style','width:100%;box-sizing:border-box;font-size:13px;line-height:1.85;color:#3A2A2C;background:#FAF6F1;border:1px solid #EFE7DC;border-radius:10px;padding:14px 16px;min-height:260px;resize:vertical;font-family:inherit');
+          box.parentNode.replaceChild(ta,box);
+          var sh=document.getElementById('sheet');
+          var cbtn=sh&&sh.querySelector('.preview-actions .preview-modal-btn');
+          if(cbtn){ cbtn.textContent='複製提示詞'; cbtn.onclick=function(){ (window._csCopyText||function(){})(ta.value); if(typeof toast==='function') toast('已複製提示詞'); }; }
+          var sub=sh&&sh.querySelector('.preview-sub');
+          if(sub){ sub.innerHTML=sub.innerHTML+'<br><b style="color:#A51820">可直接在下面編輯這份提示詞，再按「複製提示詞」貼到 AI。</b>'; }
+        }
+      }catch(e){}
+      return r;
+    };
+  }
+
+  /* ── D6：顧問分析「目的 ＋ 展示版」出口 ── */
+  var ADV={pros:'優點（要保留）',cons:'缺點',improve:'如何改進缺點',keep:'如何延續優點'};
+  function advPreview(grid){
+    var data={}; grid.querySelectorAll('textarea[data-adv]').forEach(function(t){ data[t.getAttribute('data-adv')]=t.value; });
+    var rows=['pros','cons','improve','keep'].map(function(k){
+      var v=(data[k]||'').trim();
+      return '<div style="margin:0 0 16px"><div style="font-size:12px;font-weight:800;color:#A51820;letter-spacing:.5px;margin-bottom:4px">'+ADV[k]+'</div>'
+        +'<div style="font-size:14px;line-height:1.75;color:#2A1A1C;white-space:pre-wrap">'+(v?_esc(v):'<span style="color:#B0A0A2">（尚未填寫）</span>')+'</div></div>';
+    }).join('');
+    var ov=document.createElement('div'); ov.className='advpv-ov';
+    ov.innerHTML='<div class="advpv-card">'
+      +'<div style="font-family:Cormorant Garamond,serif;letter-spacing:3px;color:#A51820;font-size:11px;text-transform:uppercase">ATELIER · 單支診斷展示版</div>'
+      +'<h3 style="font-family:Noto Serif TC,serif;font-size:20px;color:#7A1018;margin:4px 0 10px">這支影片的顧問診斷</h3>'
+      +'<div style="font-size:12px;color:#7A5A5E;line-height:1.7;background:#FBF7F1;border-left:3px solid #E0CBA8;border-radius:0 8px 8px 0;padding:10px 13px;margin-bottom:18px">目的：把這支影片「為什麼有效 / 哪裡該改」變成可以直接交給客戶看的單支診斷——不是為了填而填，是讓客戶看懂、能執行。</div>'
+      +rows
+      +'<div style="display:flex;gap:9px;justify-content:flex-end;margin-top:6px"><button type="button" class="advpv-copy">複製文字</button><button type="button" class="advpv-x">關閉</button></div>'
+      +'</div>';
+    document.body.appendChild(ov);
+    ov.addEventListener('click',function(e){ if(e.target===ov) ov.remove(); });
+    ov.querySelector('.advpv-x').onclick=function(){ ov.remove(); };
+    ov.querySelector('.advpv-copy').onclick=function(){
+      var txt=['pros','cons','improve','keep'].map(function(k){return ADV[k]+'：\n'+(data[k]||'');}).join('\n\n');
+      try{ navigator.clipboard.writeText(txt); }catch(e){}
+      if(typeof toast==='function') toast('已複製單支診斷');
+    };
+  }
+  function injectAdvExit(){
+    document.querySelectorAll('.vc-adv-save').forEach(function(saveBtn){
+      var box=saveBtn.parentElement; if(!box) return;
+      var grid=box.querySelector('.vc-adv-grid'); if(!grid) return;
+      // 目的提示(教學框語氣，只加一次)
+      if(!grid.parentNode.querySelector('[data-adv-purpose]')){
+        var note=document.createElement('div'); note.setAttribute('data-adv-purpose','1');
+        note.style.cssText='font-size:11.5px;color:#7A5A5E;line-height:1.65;background:#FBF7F1;border-left:3px solid #E0CBA8;border-radius:0 8px 8px 0;padding:8px 11px;margin:0 0 10px';
+        note.textContent='目的：把這支影片的優劣與改法，變成可以直接交給客戶的「單支診斷」。填完按「預覽展示版」看成品。';
+        grid.parentNode.insertBefore(note, grid);
+      }
+      // 展示版出口鈕(只加一次)
+      if(!box.querySelector('[data-adv-preview]')){
+        var b=document.createElement('button'); b.type='button'; b.className='advpv-btn'; b.setAttribute('data-adv-preview','1');
+        b.textContent='預覽展示版'; b.onclick=function(){ advPreview(grid); };
+        saveBtn.insertAdjacentElement('afterend', b);
+      }
+    });
+  }
+  function boot(){ try{ injectAdvExit(); }catch(e){} setInterval(function(){ try{ injectAdvExit(); }catch(e){} }, 1000); }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',boot); else boot();
+})();
+</script>
 
 </body>
 </html>
