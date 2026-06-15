@@ -349,7 +349,7 @@ v182 更新（交辦單：讓工具變準變專業，接 v181、會動邏輯與�
 <script>
 /* ═══════════ v264：策略診斷使用說明書小窗＋Top/Bottom 標籤/按鈕視覺分層（index.html only） ═══════════ */
 (function(){
-  var VERSION='v361';
+  var VERSION='v363';
   function H(id){return document.getElementById(id)}
   function S(s){try{return (typeof esc==='function')?esc(s||''):String(s||'').replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}catch(e){return String(s||'')}}
   function N(x){try{ if(typeof parseNum==='function') return parseNum(x); }catch(e){} if(x==null)return 0; var t=String(x).replace(/,/g,'').trim(); if(!t)return 0; var m=t.match(/([0-9]+(?:\.[0-9]+)?)/); if(!m)return 0; var n=parseFloat(m[1])||0; if(/[萬万]/.test(t))n*=10000; else if(/[千kK]/.test(t))n*=1000; return n; }
@@ -1224,7 +1224,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v361</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v363</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -11074,7 +11074,7 @@ document.addEventListener('DOMContentLoaded',function(){
 <script>
 /* v239：自動防舊版快取。讓桌布捷徑／瀏覽器如果抓到舊 HTML，能自己比對線上最新版並導向。 */
 (function(){
-  var ATELIER_CURRENT_VERSION='v361';
+  var ATELIER_CURRENT_VERSION='v363';
   window.ATELIER_CURRENT_VERSION=ATELIER_CURRENT_VERSION;
   function _avNum(v){v=String(v||'');var m=v.match(/v\s*(\d+)/i);return m?parseInt(m[1],10):0;}
   function _avDetect(html){html=String(html||'');var m=html.match(/id=["']verBadge["'][^>]*>\s*(v\d+)/i)||html.match(/內部版本\s+(v\d+)/i);return m?m[1]:'';}
@@ -11262,7 +11262,7 @@ document.addEventListener('DOMContentLoaded',function(){
 <script>
 /* ═══════════ v262 hotfix · Strategy consultant UX hardening (final override only) ═══════════ */
 (function(){
-  var VERSION='v361';
+  var VERSION='v363';
   function H(id){return document.getElementById(id)}
   function E(s){try{return (typeof esc==='function')?esc(s||''):String(s||'').replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}catch(e){return String(s||'')}}
   function A(){try{return (typeof accounts!=='undefined'&&accounts)?accounts:(window.accounts||[])}catch(e){return window.accounts||[]}}
@@ -11420,7 +11420,7 @@ document.addEventListener('DOMContentLoaded',function(){
 <script>
 /* ═══════════ v263：策略診斷視覺流程、收合客戶卡、精緻核對窗與提示詞預覽（final override only） ═══════════ */
 (function(){
-  var VERSION='v361';
+  var VERSION='v363';
   function H(id){return document.getElementById(id)}
   function E(s){try{return (typeof esc==='function')?esc(s||''):String(s||'').replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}catch(e){return String(s||'')}}
   function A(){try{return (typeof accounts!=='undefined'&&accounts)?accounts:(window.accounts||[])}catch(e){return window.accounts||[]}}
@@ -11549,7 +11549,7 @@ document.addEventListener('DOMContentLoaded',function(){
 <script>
 /* ═══════════ v266 hotfix：修正 v265 事件代理語法，保留 v265 策略診斷功能（index.html only） ═══════════ */
 (function(){
-  var VERSION='v361';
+  var VERSION='v363';
   function H(id){return document.getElementById(id)}
   function E(s){try{return (typeof esc==='function')?esc(s||''):String(s||'').replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}catch(e){return String(s||'')}}
   function A(){try{return (typeof accounts!=='undefined'&&accounts)?accounts:(window.accounts||[])}catch(e){return window.accounts||[]}}
@@ -11722,7 +11722,7 @@ return '<div class="strat-radar-card-v265"><b>目前沒有符合樣本</b><p>可
 /* ═══════════ v267 strategy hard patch：固定版面、重綁按鈕、互動說明與策略對標雷達（index.html only） ═══════════ */
 (function(){
   'use strict';
-  var VERSION='v361';
+  var VERSION='v363';
   function H(id){return document.getElementById(id)}
   function E(s){return String(s==null?'':s).replace(/[&<>'"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]})}
   function A(){try{return (typeof accounts!=='undefined'&&Array.isArray(accounts))?accounts:(Array.isArray(window.accounts)?window.accounts:[])}catch(e){return []}}
@@ -11951,7 +11951,7 @@ window._strategyRadarV267=radarResults;
 
 <script id="v289PatchJS">
 (function(){
-  try{ window.ATELIER_CURRENT_VERSION='v361'; }catch(e){}
+  try{ window.ATELIER_CURRENT_VERSION='v363'; }catch(e){}
   try{ sessionStorage.setItem('atelierSkipAutoUpdate','1'); }catch(e){}
   try{ if(navigator.serviceWorker && navigator.serviceWorker.getRegistrations){
         navigator.serviceWorker.getRegistrations().then(function(rs){ rs.forEach(function(r){ try{r.update();}catch(e){} }); }).catch(function(){});
@@ -14271,7 +14271,7 @@ textarea:focus{min-height:126px!important;border-color:#D4A574!important;box-sha
   function toastSafe(t){try{if(typeof toast==='function')toast(String(t));else console.log(t)}catch(e){}}
   function autogrow(el){ if(!el||el.tagName!=='TEXTAREA')return; el.style.height='auto'; var h=Math.min(Math.max(el.scrollHeight+2,64),340); el.style.height=h+'px'; }
   function wireAutogrow(root){ qsa('textarea',root||document).forEach(function(t){ if(t.__atlGrow342)return; t.__atlGrow342=true; ['input','change','focus'].forEach(function(ev){t.addEventListener(ev,function(){autogrow(t)})}); setTimeout(function(){autogrow(t)},80); }); }
-  function ensureVersion(){try{var vb=qs('#verBadge'); if(vb)vb.textContent='v361'; window.ATELIER_CURRENT_VERSION='v361'; if(typeof ATELIER_CURRENT_VERSION!=='undefined')ATELIER_CURRENT_VERSION='v361';}catch(e){}}
+  function ensureVersion(){try{var vb=qs('#verBadge'); if(vb)vb.textContent='v363'; window.ATELIER_CURRENT_VERSION='v363'; if(typeof ATELIER_CURRENT_VERSION!=='undefined')ATELIER_CURRENT_VERSION='v363';}catch(e){}}
   function makeSaveReadable(){var p=qs('#atlWbSavePill'); if(!p)return; var span=p.querySelector('span'); if(span&&!span.textContent.trim())span.textContent='未儲存'; p.title=(span?span.textContent:'儲存狀態');}
   function guide(text){
     var old=qs('[data-wb342-guide]'); if(old)old.remove();
@@ -14332,7 +14332,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
   document.addEventListener('click',function(e){var b=e.target.closest('#atlFieldToolbar button'); if(!b||!active)return; var a=b.getAttribute('data-act'); if(a==='prompt')openModal('prompt',active); if(a==='fill')openModal('fill',active); if(a==='edit')openModal('edit',active); if(a==='done'){var bar=qs('#atlFieldToolbar'); if(bar)bar.classList.remove('on'); if(active)active.classList.remove('atl-field-active'); toastSafe('此欄位可視為定案，請記得儲存');}},true);
   function addCollapse(root){qsa('.card,.manual-card,.form-card,.paste-card,.sumcard,.v262-section,.strat-section-v263',root||document).forEach(function(card){if(card.__atlCollapse343||card.closest('#accList,.modal,.atl-field-modal'))return; card.__atlCollapse343=true; card.classList.add('atl-collapsible'); var h=qs('h2,h3,h4,.stitle,.title',card)||card.firstElementChild; if(h)h.classList.add('atl-keep-visible'); var btn=document.createElement('button'); btn.type='button'; btn.className='atl-collapse-toggle'; btn.textContent='收合'; btn.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();var closed=card.classList.toggle('atl-closed');btn.textContent=closed?'展開':'收合';}); card.insertBefore(btn,card.firstChild);});}
   function addNextInline(){qsa('.fbx-panel,.wbfb341-card').forEach(function(p){if(p.__atlNext343)return;p.__atlNext343=true;var n=document.createElement('div');n.className='wb-next-inline';n.innerHTML='<b>下一步：</b>複製後請貼到服務台 ③ 問診、④ 診斷、⑦ 交付備註；如果只是測試資料，就標記已處理或刪除。';p.insertBefore(n,p.firstChild);});}
-  function boot(){try{var vb=qs('#verBadge'); if(vb)vb.textContent='v361'; window.ATELIER_CURRENT_VERSION='v361'; if(typeof ATELIER_CURRENT_VERSION!=='undefined')ATELIER_CURRENT_VERSION='v361';}catch(e){} wire(document); addCollapse(document); addNextInline();}
+  function boot(){try{var vb=qs('#verBadge'); if(vb)vb.textContent='v363'; window.ATELIER_CURRENT_VERSION='v363'; if(typeof ATELIER_CURRENT_VERSION!=='undefined')ATELIER_CURRENT_VERSION='v363';}catch(e){} wire(document); addCollapse(document); addNextInline();}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot); else boot();
   try{new MutationObserver(function(ms){var hit=false; ms.forEach(function(m){if(m.addedNodes&&m.addedNodes.length)hit=true}); if(hit){clearTimeout(window.__atl343Timer); window.__atl343Timer=setTimeout(boot,180);}}).observe(document.body,{childList:true,subtree:true});}catch(e){}
 })();
@@ -14351,7 +14351,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
 <script>
 (function(){
   if(window.__atlWb348) return; window.__atlWb348=true;
-  var V='v361';
+  var V='v363';
   function lock(){ var vb=document.getElementById('verBadge'); if(vb && (vb.textContent||'').trim()!==V) vb.textContent=V; }
   function calmPill(){ var p=document.getElementById('atlWbSavePill'); if(!p) return; var sp=p.querySelector('span');
     if(sp && /尚未儲存/.test(sp.textContent)) sp.textContent='就緒（自動儲存）'; }
@@ -14603,7 +14603,7 @@ input.atl345-open-field:not([type="checkbox"]):not([type="radio"]):not([type="bu
 <script id="atl-v345-final-touch">
 (function(){
   if(window.__atlV345FinalTouch) return; window.__atlV345FinalTouch=true;
-  var VERSION='v361';
+  var VERSION='v363';
   function qs(s,r){return (r||document).querySelector(s)}
   function qsa(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
   function setVersion(){try{var b=qs('#verBadge'); if(b)b.textContent=VERSION; window.ATELIER_CURRENT_VERSION=VERSION;}catch(e){}}
@@ -14695,6 +14695,178 @@ input.atl345-open-field:not([type="checkbox"]):not([type="radio"]):not([type="bu
     mask.querySelectorAll('[data-wbcopy]').forEach(function(b){ b.addEventListener('click',function(){ var k=b.getAttribute('data-wbcopy'); copy(mask.querySelector('[data-wbp="'+k+'"]').value, msg, '✓ 已複製（你編輯後的版本），貼到 AI。'); }); });
     mask.querySelector('[data-wbact="fill"]').addEventListener('click',function(){ var v=paste.value||''; if(!v.trim()){ msg.textContent='✗ 上面還沒貼東西。'; return; } field.value=v; try{ field.dispatchEvent(new Event('input',{bubbles:true})); field.dispatchEvent(new Event('change',{bubbles:true})); }catch(e){} msg.textContent='✓ 已填入「'+label+'」並觸發儲存。'; });
     document.body.appendChild(mask);
+  }
+  ready();
+})();
+</script>
+
+<!-- ATELIER v362 · CTA 診斷存回「這支影片」閉環（item 3；不動 cta1 原碼，存新欄位 v.ctaDiag，原句 ctaText 保留） -->
+<style id="atl-wb362-ctadiag">
+.atl-ctadiag{ margin-top:16px; border:1px solid #E6D9C9; border-radius:12px; background:#FBF6F2; padding:13px 14px; }
+.atl-ctadiag-h{ font-family:Noto Serif TC,serif; font-size:14px; font-weight:700; color:#A51820; -webkit-text-fill-color:#A51820; display:flex; align-items:center; gap:7px; }
+.atl-ctadiag-h .atl-ctadiag-kick{ font-family:Cormorant Garamond,serif; font-size:10px; letter-spacing:2px; color:#D4A574; -webkit-text-fill-color:#D4A574; font-weight:700; }
+.atl-ctadiag-note{ font-size:11.5px; color:#7A5A5E; -webkit-text-fill-color:#7A5A5E; line-height:1.7; margin:6px 0 9px; }
+.atl-ctadiag-ta{ width:100%; box-sizing:border-box; min-height:96px; padding:10px 11px; border:1px solid #D9C2C4; border-radius:9px; font-family:inherit; font-size:12.5px; line-height:1.7; resize:vertical; }
+.atl-ctadiag-row{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-top:9px; }
+.atl-ctadiag-save{ border:1px solid #A51820; background:#A51820; color:#fff; -webkit-text-fill-color:#fff; border-radius:999px; padding:8px 16px; font-size:12.5px; font-weight:800; cursor:pointer; font-family:inherit; }
+.atl-ctadiag-save:hover{ background:#7A1018; }
+.atl-ctadiag-state{ font-size:11.5px; color:#7A5A5E; -webkit-text-fill-color:#7A5A5E; line-height:1.5; }
+</style>
+<script>
+(function(){
+  if(window.__atlCtaDiagWB) return; window.__atlCtaDiagWB=true;
+
+  function vidIdFromCard(card){ if(!card) return null; var id=card.getAttribute('data-vid'); if(!id){ var m=(card.id||'').match(/^video-(.+)$/); if(m) id=m[1]; } return id||null; }
+  // 記住「最後打開的影片 id」：卡片鈕點擊 + 全域 open 包一層，雙保險
+  document.addEventListener('click',function(e){ try{ var btn=e.target&&e.target.closest&&e.target.closest('.cta1-btn'); if(btn){ var card=btn.closest('.video-card'); var id=vidIdFromCard(card); if(id) window.__lastCtaVid=id; } }catch(err){} },true);
+  try{ if(typeof window._wbOpenCTA1==='function'){ var _o=window._wbOpenCTA1; window._wbOpenCTA1=function(id){ if(id) window.__lastCtaVid=id; return _o.apply(this,arguments); }; } }catch(e){}
+
+  function findVideo(id){ try{ if(typeof videos!=='undefined'&&videos){ return videos.filter(function(x){return x&&x.id===id;})[0]||null; } }catch(e){} return null; }
+  function relAgo(ts){ if(!ts) return ''; var s=Math.floor((Date.now()-ts)/1000); if(s<60) return '剛剛'; if(s<3600) return Math.floor(s/60)+' 分鐘前'; if(s<86400) return Math.floor(s/3600)+' 小時前'; return Math.floor(s/86400)+' 天前'; }
+
+  function stateText(v){ if(v && v.ctaDiagN) return '已儲存第 '+v.ctaDiagN+' 次 · '+relAgo(v.ctaDiagAt); return '尚未儲存（這支還沒存過 CTA 診斷）'; }
+
+  function injectSaver(ov){
+    if(!ov || ov.__atlDiagDone) return; ov.__atlDiagDone=true;
+    var card=ov.querySelector('.cta1-card'); var actions=ov.querySelector('.cta1-actions');
+    if(!card || !actions) return;
+    var id=window.__lastCtaVid; var v=findVideo(id);
+    var box=document.createElement('div'); box.className='atl-ctadiag';
+    box.innerHTML='<div class="atl-ctadiag-h"><span class="atl-ctadiag-kick">SAVE BACK</span>存回這支影片 · CTA 診斷</div>'
+      +'<div class="atl-ctadiag-note">把 AI 跑出的完整 CTA 診斷（CTA 類型／原句／受眾／痛點／承接窗口／得到什麼／A–E／Fit Score／警告／改寫…）貼這裡再按儲存，會存回這支影片的「CTA 診斷」欄位（<b>不會動到你原本的「CTA 原句」</b>）。下次打開這支影片會自動帶出來。</div>'
+      +'<textarea class="atl-ctadiag-ta" placeholder="貼 AI 跑出的完整 CTA 診斷整段…"></textarea>'
+      +'<div class="atl-ctadiag-row"><button type="button" class="atl-ctadiag-save">儲存 CTA 診斷回這支影片</button><span class="atl-ctadiag-state"></span></div>';
+    var ta=box.querySelector('.atl-ctadiag-ta');
+    var state=box.querySelector('.atl-ctadiag-state');
+    if(v && v.ctaDiag) ta.value=v.ctaDiag;
+    state.textContent=stateText(v);
+    box.querySelector('.atl-ctadiag-save').addEventListener('click',function(){
+      var cur=findVideo(window.__lastCtaVid)||v;
+      if(!cur){ state.textContent='找不到這支影片，無法儲存。'; return; }
+      var val=(ta.value||'').trim();
+      if(!val){ state.textContent='上面還沒貼診斷內容。'; return; }
+      cur.ctaDiag=val;                       // 新欄位，不碰 ctaText
+      cur.ctaDiagN=(cur.ctaDiagN||0)+1;
+      cur.ctaDiagAt=Date.now();
+      try{ if(typeof saveVideos==='function') saveVideos(); }catch(e){}
+      state.textContent=stateText(cur);
+      try{ if(typeof toast==='function') toast('已存 CTA 診斷回《'+(cur.title||'這支影片')+'》（第 '+cur.ctaDiagN+' 次）'); }catch(e){}
+    });
+    // 注入到動作列(關閉/複製)之前，落在可捲動區、不擋 sticky footer
+    card.insertBefore(box, actions);
+  }
+
+  // 監看模態出現（卡片鈕或任何途徑打開都接得到）
+  try{
+    new MutationObserver(function(muts){
+      muts.forEach(function(m){
+        Array.prototype.forEach.call(m.addedNodes||[],function(n){
+          if(n.nodeType!==1) return;
+          if(n.classList && n.classList.contains('cta1-ov')) injectSaver(n);
+          else if(n.querySelector){ var ov=n.querySelector('.cta1-ov'); if(ov) injectSaver(ov); }
+        });
+      });
+    }).observe(document.body,{childList:true,subtree:true});
+  }catch(e){}
+})();
+</script>
+
+<!-- ATELIER v363 · 工作台「統一 AI 鈕」：把原本兩顆大浮鈕(AI查/優化 + 放大編輯)合成一顆小「✦AI」貼著欄位右上，
+     點開一個面板含 4 功能(複製提示詞/貼回填入/優化/放大編輯)，面板底部固定不壓輸入框。對應規格 §六 + §四。 -->
+<style id="atl-wb363-unifiedai">
+/* 隱藏原本兩顆大浮鈕，改用統一小鈕 */
+.atl-wbai-chip, .atl-bigedit-chip{ display:none !important; }
+.atl-uai-chip{ position:fixed; z-index:100042; border:1px solid #A51820; background:#FDFBF8; color:#A51820;
+  -webkit-text-fill-color:#A51820; border-radius:999px; padding:4px 11px; font-size:11.5px; font-weight:800;
+  cursor:pointer; font-family:inherit; box-shadow:0 4px 12px rgba(90,40,45,.22); display:none; white-space:nowrap; line-height:1.2; }
+.atl-uai-chip:hover{ background:#A51820; color:#fff; -webkit-text-fill-color:#fff; }
+.atl-uai-mask{ position:fixed; inset:0; z-index:100080; background:rgba(42,26,28,.45); display:flex; align-items:center; justify-content:center; padding:24px; }
+.atl-uai-sheet{ background:#FDFBF8; width:600px; max-width:94vw; max-height:90vh; border-radius:16px;
+  box-shadow:0 24px 60px rgba(42,26,28,.3); font-family:Noto Sans TC,Arial,sans-serif; box-sizing:border-box; display:flex; flex-direction:column; }
+.atl-uai-head{ padding:20px 22px 10px; border-bottom:1px solid #EFE7DC; }
+.atl-uai-head .k{ font-family:Cormorant Garamond,serif; font-size:11px; letter-spacing:3px; color:#D4A574; -webkit-text-fill-color:#D4A574; font-weight:700; }
+.atl-uai-head h3{ font-family:Noto Serif TC,serif; font-size:18px; color:#2A1A1C; margin:3px 0 0; }
+.atl-uai-body{ padding:14px 22px 8px; overflow:auto; flex:1 1 auto; }
+.atl-uai-note{ font-size:11.5px; color:#7A5A5E; -webkit-text-fill-color:#7A5A5E; line-height:1.7; background:#FBF6F2; border-left:3px solid #D4A574; border-radius:0 8px 8px 0; padding:8px 11px; margin-bottom:12px; }
+.atl-uai-step{ font-size:13px; font-weight:800; color:#A51820; -webkit-text-fill-color:#A51820; margin:14px 0 6px; }
+.atl-uai-ta{ width:100%; box-sizing:border-box; min-height:90px; border:1px solid #D9C2C4; border-radius:9px; padding:10px 11px; font-size:13px; font-family:inherit; line-height:1.7; resize:vertical; }
+.atl-uai-row{ display:flex; gap:8px; flex-wrap:wrap; margin-top:6px; }
+.atl-uai-b{ border:1px solid #A51820; background:#A51820; color:#fff; -webkit-text-fill-color:#fff; border-radius:999px; padding:7px 14px; font-size:12.5px; font-weight:800; cursor:pointer; font-family:inherit; }
+.atl-uai-b.ghost{ background:#fff; color:#A51820; -webkit-text-fill-color:#A51820; border-color:#D9B8BB; }
+.atl-uai-msg{ font-size:12px; color:#7A1518; -webkit-text-fill-color:#7A1518; margin-top:8px; min-height:16px; line-height:1.6; }
+.atl-uai-foot{ flex:0 0 auto; display:flex; justify-content:flex-end; gap:8px; padding:12px 22px 16px; border-top:1px solid #EFE7DC; background:#FDFBF8; border-radius:0 0 16px 16px; }
+.atl-uai-x{ border:1px solid #E5DAD2; background:#fff; color:#7A5A5E; -webkit-text-fill-color:#7A5A5E; border-radius:999px; padding:8px 18px; font-size:13px; font-weight:800; cursor:pointer; font-family:inherit; }
+</style>
+<script>
+(function(){
+  if(window.__atlUnifiedAIWB) return; window.__atlUnifiedAIWB=true;
+  function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+  function isEditable(el){ if(!el) return false; if(el.tagName==='TEXTAREA') return true; if(el.tagName==='INPUT'){ var ty=(el.type||'text').toLowerCase(); if(!/^(text|url|email|tel)$/.test(ty)) return false; if(/搜尋|search|貼上|貼回/i.test(el.placeholder||'')) return false; return true; } return false; }
+  function labelFor(el){ try{ var prev=el.previousElementSibling; while(prev){ var tx=(prev.textContent||'').trim(); if(tx && tx.length<24 && !prev.querySelector('input,textarea')) return tx; prev=prev.previousElementSibling; } var p=el.parentNode; if(p){ var lb=p.querySelector('label,strong'); if(lb){ var t=(lb.textContent||'').trim(); if(t) return t.slice(0,24); } } }catch(e){} return '這一格'; }
+  function contextName(){ try{ var t=document.querySelector('#f-title'); if(t && (t.value||'').trim()) return '這支影片《'+t.value.trim()+'》'; var q=document.querySelector('#f-account-quick'); if(q && (q.value||'').trim()) return q.value.trim()+' 這個帳號'; }catch(e){} return '這支影片／這個項目'; }
+  function copy(txt,msg){ try{ navigator.clipboard.writeText(txt); if(msg) msg.textContent='✓ 已複製（你編輯後的版本），貼到 ChatGPT／Claude／Gemini。'; }catch(e){ if(msg) msg.textContent='（複製失敗，請手動選取複製）'; } }
+
+  var cur=null;
+  var chip=document.createElement('button'); chip.type='button'; chip.className='atl-uai-chip'; chip.textContent='✦ AI';
+  function ready(){ if(document.body && !chip.parentNode) document.body.appendChild(chip); }
+  function place(){ if(!cur||!cur.getBoundingClientRect) return; var r=cur.getBoundingClientRect();
+    var rightGap=Math.max(8, window.innerWidth - r.right);
+    chip.style.left='auto'; chip.style.transform='none'; chip.style.right=rightGap+'px'; chip.style.top=Math.max(6, r.top-34)+'px'; chip.style.bottom='auto'; }
+  document.addEventListener('focusin',function(e){ if(e.target&&e.target.closest&&e.target.closest('.atl-uai-mask')) return; if(isEditable(e.target)){ cur=e.target; ready(); chip.style.display='block'; setTimeout(place,0); setTimeout(place,40); } },true);
+  document.addEventListener('focusout',function(){ setTimeout(function(){ var a=document.activeElement; if(!isEditable(a) && a!==chip && !(a&&a.closest&&a.closest('.atl-uai-mask'))){ chip.style.display='none'; } },160); },true);
+  window.addEventListener('scroll',place,true); window.addEventListener('resize',place); setInterval(function(){ if(cur&&chip.style.display!=='none') place(); },280);
+  chip.addEventListener('mousedown',function(e){ e.preventDefault(); });
+  chip.addEventListener('click',function(){ if(cur) openSheet(cur); });
+
+  function openSheet(field){
+    var label=labelFor(field), ctx=contextName();
+    var anaP='請幫我分析／拆解 '+ctx+' 的「'+label+'」這一欄。\n只針對這一欄、根據已知的影片資訊與公開可查到的內容判斷，不要憑記憶或印象猜測、也不要編造。\n請回傳可以直接貼回欄位的精簡內容，不要多餘的解釋或前後綴。';
+    var optP='請把下面這個「'+label+'」欄位的內容，潤飾得更清楚、精準、專業（保留原意，不要新增沒有根據的事實）。\n參考脈絡：'+ctx+'。\n\n目前內容：\n'+(field.value||'（目前是空的）');
+    var mask=document.createElement('div'); mask.className='atl-uai-mask';
+    mask.innerHTML='<div class="atl-uai-sheet">'
+      +'<div class="atl-uai-head"><div class="k">FIELD AI</div><h3>'+esc(label)+'</h3></div>'
+      +'<div class="atl-uai-body">'
+      +'<div class="atl-uai-note">這一格的 AI 工具都在這裡。提示詞都會自動帶上目前脈絡（'+esc(ctx)+'）與欄位名，且可展開、預覽、編輯後再複製。</div>'
+      +'<div class="atl-uai-step">① 複製「查／分析」提示詞</div>'
+      +'<div class="atl-uai-row"><button class="atl-uai-b ghost" data-tog="ana" type="button">展開／編輯提示詞 ▾</button></div>'
+      +'<textarea class="atl-uai-ta" data-p="ana" style="display:none"></textarea>'
+      +'<div class="atl-uai-row" data-pr="ana" style="display:none"><button class="atl-uai-b" data-copy="ana" type="button">複製這段提示詞</button></div>'
+      +'<div class="atl-uai-step">② 貼回 AI 回覆 → 填入此欄</div>'
+      +'<textarea class="atl-uai-ta" data-paste="1" placeholder="把 AI 回覆貼這裡…"></textarea>'
+      +'<div class="atl-uai-row"><button class="atl-uai-b ghost" data-act="fill" type="button">填入此欄</button></div>'
+      +'<div class="atl-uai-step">③ 優化這一欄</div>'
+      +'<div class="atl-uai-row"><button class="atl-uai-b ghost" data-tog="opt" type="button">展開／編輯提示詞 ▾</button></div>'
+      +'<textarea class="atl-uai-ta" data-p="opt" style="display:none"></textarea>'
+      +'<div class="atl-uai-row" data-pr="opt" style="display:none"><button class="atl-uai-b" data-copy="opt" type="button">複製這段提示詞</button></div>'
+      +'<div class="atl-uai-step">④ 放大編輯這一格</div>'
+      +'<div class="atl-uai-row"><button class="atl-uai-b ghost" data-act="big" type="button">打開大編輯框</button></div>'
+      +'<div class="atl-uai-msg"></div>'
+      +'</div>'
+      +'<div class="atl-uai-foot"><button class="atl-uai-x" type="button">關閉</button></div>'
+      +'</div>';
+    mask.querySelector('[data-p="ana"]').value=anaP;
+    mask.querySelector('[data-p="opt"]').value=optP;
+    var paste=mask.querySelector('[data-paste="1"]'); var msg=mask.querySelector('.atl-uai-msg');
+    function close(){ if(mask.parentNode) mask.parentNode.removeChild(mask); }
+    mask.querySelector('.atl-uai-x').addEventListener('click',close);
+    mask.addEventListener('click',function(e){ if(e.target===mask) close(); });
+    mask.querySelectorAll('[data-tog]').forEach(function(b){ b.addEventListener('click',function(){ var k=b.getAttribute('data-tog'); var t=mask.querySelector('[data-p="'+k+'"]'); var row=mask.querySelector('[data-pr="'+k+'"]'); var open=(t.style.display==='none'); t.style.display=open?'block':'none'; row.style.display=open?'flex':'none'; b.textContent=open?'收合提示詞 ▴':'展開／編輯提示詞 ▾'; }); });
+    mask.querySelectorAll('[data-copy]').forEach(function(b){ b.addEventListener('click',function(){ copy(mask.querySelector('[data-p="'+b.getAttribute('data-copy')+'"]').value, msg); }); });
+    mask.querySelector('[data-act="fill"]').addEventListener('click',function(){ var v=paste.value||''; if(!v.trim()){ msg.textContent='✗ 上面還沒貼東西。'; return; } field.value=v; try{ field.dispatchEvent(new Event('input',{bubbles:true})); field.dispatchEvent(new Event('change',{bubbles:true})); }catch(e){} msg.textContent='✓ 已填入「'+label+'」並觸發儲存。'; });
+    mask.querySelector('[data-act="big"]').addEventListener('click',function(){ openBig(field,label); });
+    document.body.appendChild(mask);
+  }
+  function openBig(field,label){
+    var m=document.createElement('div'); m.className='atl-uai-mask';
+    m.innerHTML='<div class="atl-uai-sheet"><div class="atl-uai-head"><div class="k">BIG EDIT</div><h3>放大編輯 · '+esc(label)+'</h3></div>'
+      +'<div class="atl-uai-body"><textarea class="atl-uai-ta" data-big="1" style="min-height:300px"></textarea></div>'
+      +'<div class="atl-uai-foot"><button class="atl-uai-x" data-c="1" type="button">取消</button><button class="atl-uai-b" data-s="1" type="button">儲存到此格</button></div></div>';
+    var ta=m.querySelector('[data-big="1"]'); ta.value=field.value||'';
+    function close(){ if(m.parentNode) m.parentNode.removeChild(m); }
+    m.querySelector('[data-c="1"]').addEventListener('click',close);
+    m.querySelector('[data-s="1"]').addEventListener('click',function(){ field.value=ta.value; try{ field.dispatchEvent(new Event('input',{bubbles:true})); field.dispatchEvent(new Event('change',{bubbles:true})); }catch(e){} close(); });
+    m.addEventListener('click',function(e){ if(e.target===m) close(); });
+    document.body.appendChild(m); try{ ta.focus(); }catch(e){}
   }
   ready();
 })();
