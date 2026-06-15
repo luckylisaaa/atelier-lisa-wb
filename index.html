@@ -349,7 +349,7 @@ v182 更新（交辦單：讓工具變準變專業，接 v181、會動邏輯與�
 <script>
 /* ═══════════ v264：策略診斷使用說明書小窗＋Top/Bottom 標籤/按鈕視覺分層（index.html only） ═══════════ */
 (function(){
-  var VERSION='v370';
+  var VERSION='v371';
   function H(id){return document.getElementById(id)}
   function S(s){try{return (typeof esc==='function')?esc(s||''):String(s||'').replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}catch(e){return String(s||'')}}
   function N(x){try{ if(typeof parseNum==='function') return parseNum(x); }catch(e){} if(x==null)return 0; var t=String(x).replace(/,/g,'').trim(); if(!t)return 0; var m=t.match(/([0-9]+(?:\.[0-9]+)?)/); if(!m)return 0; var n=parseFloat(m[1])||0; if(/[萬万]/.test(t))n*=10000; else if(/[千kK]/.test(t))n*=1000; return n; }
@@ -1224,7 +1224,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v370</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v371</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -11074,7 +11074,7 @@ document.addEventListener('DOMContentLoaded',function(){
 <script>
 /* v239：自動防舊版快取。讓桌布捷徑／瀏覽器如果抓到舊 HTML，能自己比對線上最新版並導向。 */
 (function(){
-  var ATELIER_CURRENT_VERSION='v370';
+  var ATELIER_CURRENT_VERSION='v371';
   window.ATELIER_CURRENT_VERSION=ATELIER_CURRENT_VERSION;
   function _avNum(v){v=String(v||'');var m=v.match(/v\s*(\d+)/i);return m?parseInt(m[1],10):0;}
   function _avDetect(html){html=String(html||'');var m=html.match(/id=["']verBadge["'][^>]*>\s*(v\d+)/i)||html.match(/內部版本\s+(v\d+)/i);return m?m[1]:'';}
@@ -11262,7 +11262,7 @@ document.addEventListener('DOMContentLoaded',function(){
 <script>
 /* ═══════════ v262 hotfix · Strategy consultant UX hardening (final override only) ═══════════ */
 (function(){
-  var VERSION='v370';
+  var VERSION='v371';
   function H(id){return document.getElementById(id)}
   function E(s){try{return (typeof esc==='function')?esc(s||''):String(s||'').replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}catch(e){return String(s||'')}}
   function A(){try{return (typeof accounts!=='undefined'&&accounts)?accounts:(window.accounts||[])}catch(e){return window.accounts||[]}}
@@ -11420,7 +11420,7 @@ document.addEventListener('DOMContentLoaded',function(){
 <script>
 /* ═══════════ v263：策略診斷視覺流程、收合客戶卡、精緻核對窗與提示詞預覽（final override only） ═══════════ */
 (function(){
-  var VERSION='v370';
+  var VERSION='v371';
   function H(id){return document.getElementById(id)}
   function E(s){try{return (typeof esc==='function')?esc(s||''):String(s||'').replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}catch(e){return String(s||'')}}
   function A(){try{return (typeof accounts!=='undefined'&&accounts)?accounts:(window.accounts||[])}catch(e){return window.accounts||[]}}
@@ -11549,7 +11549,7 @@ document.addEventListener('DOMContentLoaded',function(){
 <script>
 /* ═══════════ v266 hotfix：修正 v265 事件代理語法，保留 v265 策略診斷功能（index.html only） ═══════════ */
 (function(){
-  var VERSION='v370';
+  var VERSION='v371';
   function H(id){return document.getElementById(id)}
   function E(s){try{return (typeof esc==='function')?esc(s||''):String(s||'').replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}catch(e){return String(s||'')}}
   function A(){try{return (typeof accounts!=='undefined'&&accounts)?accounts:(window.accounts||[])}catch(e){return window.accounts||[]}}
@@ -11722,7 +11722,7 @@ return '<div class="strat-radar-card-v265"><b>目前沒有符合樣本</b><p>可
 /* ═══════════ v267 strategy hard patch：固定版面、重綁按鈕、互動說明與策略對標雷達（index.html only） ═══════════ */
 (function(){
   'use strict';
-  var VERSION='v370';
+  var VERSION='v371';
   function H(id){return document.getElementById(id)}
   function E(s){return String(s==null?'':s).replace(/[&<>'"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]})}
   function A(){try{return (typeof accounts!=='undefined'&&Array.isArray(accounts))?accounts:(Array.isArray(window.accounts)?window.accounts:[])}catch(e){return []}}
@@ -11951,7 +11951,7 @@ window._strategyRadarV267=radarResults;
 
 <script id="v289PatchJS">
 (function(){
-  try{ window.ATELIER_CURRENT_VERSION='v370'; }catch(e){}
+  try{ window.ATELIER_CURRENT_VERSION='v371'; }catch(e){}
   try{ sessionStorage.setItem('atelierSkipAutoUpdate','1'); }catch(e){}
   try{ if(navigator.serviceWorker && navigator.serviceWorker.getRegistrations){
         navigator.serviceWorker.getRegistrations().then(function(rs){ rs.forEach(function(r){ try{r.update();}catch(e){} }); }).catch(function(){});
@@ -14271,7 +14271,7 @@ textarea:focus{min-height:126px!important;border-color:#D4A574!important;box-sha
   function toastSafe(t){try{if(typeof toast==='function')toast(String(t));else console.log(t)}catch(e){}}
   function autogrow(el){ if(!el||el.tagName!=='TEXTAREA')return; el.style.height='auto'; var h=Math.min(Math.max(el.scrollHeight+2,64),340); el.style.height=h+'px'; }
   function wireAutogrow(root){ qsa('textarea',root||document).forEach(function(t){ if(t.__atlGrow342)return; t.__atlGrow342=true; ['input','change','focus'].forEach(function(ev){t.addEventListener(ev,function(){autogrow(t)})}); setTimeout(function(){autogrow(t)},80); }); }
-  function ensureVersion(){try{var vb=qs('#verBadge'); if(vb)vb.textContent='v370'; window.ATELIER_CURRENT_VERSION='v370'; if(typeof ATELIER_CURRENT_VERSION!=='undefined')ATELIER_CURRENT_VERSION='v370';}catch(e){}}
+  function ensureVersion(){try{var vb=qs('#verBadge'); if(vb)vb.textContent='v371'; window.ATELIER_CURRENT_VERSION='v371'; if(typeof ATELIER_CURRENT_VERSION!=='undefined')ATELIER_CURRENT_VERSION='v371';}catch(e){}}
   function makeSaveReadable(){var p=qs('#atlWbSavePill'); if(!p)return; var span=p.querySelector('span'); if(span&&!span.textContent.trim())span.textContent='未儲存'; p.title=(span?span.textContent:'儲存狀態');}
   function guide(text){
     var old=qs('[data-wb342-guide]'); if(old)old.remove();
@@ -14332,7 +14332,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
   document.addEventListener('click',function(e){var b=e.target.closest('#atlFieldToolbar button'); if(!b||!active)return; var a=b.getAttribute('data-act'); if(a==='prompt')openModal('prompt',active); if(a==='fill')openModal('fill',active); if(a==='edit')openModal('edit',active); if(a==='done'){var bar=qs('#atlFieldToolbar'); if(bar)bar.classList.remove('on'); if(active)active.classList.remove('atl-field-active'); toastSafe('此欄位可視為定案，請記得儲存');}},true);
   function addCollapse(root){qsa('.card,.manual-card,.form-card,.paste-card,.sumcard,.v262-section,.strat-section-v263',root||document).forEach(function(card){if(card.__atlCollapse343||card.closest('#accList,.modal,.atl-field-modal'))return; card.__atlCollapse343=true; card.classList.add('atl-collapsible'); var h=qs('h2,h3,h4,.stitle,.title',card)||card.firstElementChild; if(h)h.classList.add('atl-keep-visible'); var btn=document.createElement('button'); btn.type='button'; btn.className='atl-collapse-toggle'; btn.textContent='收合'; btn.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();var closed=card.classList.toggle('atl-closed');btn.textContent=closed?'展開':'收合';}); card.insertBefore(btn,card.firstChild);});}
   function addNextInline(){qsa('.fbx-panel,.wbfb341-card').forEach(function(p){if(p.__atlNext343)return;p.__atlNext343=true;var n=document.createElement('div');n.className='wb-next-inline';n.innerHTML='<b>下一步：</b>複製後請貼到服務台 ③ 問診、④ 診斷、⑦ 交付備註；如果只是測試資料，就標記已處理或刪除。';p.insertBefore(n,p.firstChild);});}
-  function boot(){try{var vb=qs('#verBadge'); if(vb)vb.textContent='v370'; window.ATELIER_CURRENT_VERSION='v370'; if(typeof ATELIER_CURRENT_VERSION!=='undefined')ATELIER_CURRENT_VERSION='v370';}catch(e){} wire(document); addCollapse(document); addNextInline();}
+  function boot(){try{var vb=qs('#verBadge'); if(vb)vb.textContent='v371'; window.ATELIER_CURRENT_VERSION='v371'; if(typeof ATELIER_CURRENT_VERSION!=='undefined')ATELIER_CURRENT_VERSION='v371';}catch(e){} wire(document); addCollapse(document); addNextInline();}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot); else boot();
   try{new MutationObserver(function(ms){var hit=false; ms.forEach(function(m){if(m.addedNodes&&m.addedNodes.length)hit=true}); if(hit){clearTimeout(window.__atl343Timer); window.__atl343Timer=setTimeout(boot,180);}}).observe(document.body,{childList:true,subtree:true});}catch(e){}
 })();
@@ -14351,7 +14351,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
 <script>
 (function(){
   if(window.__atlWb348) return; window.__atlWb348=true;
-  var V='v370';
+  var V='v371';
   function lock(){ var vb=document.getElementById('verBadge'); if(vb && (vb.textContent||'').trim()!==V) vb.textContent=V; }
   function calmPill(){ var p=document.getElementById('atlWbSavePill'); if(!p) return; var sp=p.querySelector('span');
     if(sp && /尚未儲存/.test(sp.textContent)) sp.textContent='就緒（自動儲存）'; }
@@ -14536,10 +14536,16 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
     var cliList=mask.querySelector('.atl-app-cliplist');
     function allAccts(){ try{ if(typeof accounts!=='undefined'&&accounts) return accounts.slice(); }catch(e){} return []; }
     function renderCli(kw){
-      kw=(kw||'').trim().toLowerCase();
+      kw=(kw||'').trim().toLowerCase().replace(/^@/,'');
+      function blob(a){ return [a.displayName,a.handle,a.name,a.industry,a.jobTitle,a.domain,a.platform].filter(Boolean).join(' ').toLowerCase(); }
+      function head(a){ return ((a.displayName||a.handle||'')+'').toLowerCase().replace(/^@/,''); }
+      function hnd(a){ return ((a.handle||'')+'').toLowerCase().replace(/^@/,''); }
       var arr=allAccts().filter(function(a){return a&&(a.displayName||a.handle);});
-      arr.sort(function(x,y){ var a=(x.displayName||x.handle||'').toLowerCase(), b=(y.displayName||y.handle||'').toLowerCase(); return a<b?-1:a>b?1:0; });
-      if(kw){ arr=arr.filter(function(a){ return ((a.displayName||'')+' '+(a.handle||'')+' '+(a.industry||'')).toLowerCase().indexOf(kw)>=0; }); }
+      if(kw){ arr=arr.filter(function(a){ return blob(a).indexOf(kw)>=0; }); }
+      arr.sort(function(x,y){
+        if(kw){ var xs=(head(x).indexOf(kw)===0||hnd(x).indexOf(kw)===0)?0:1, ys=(head(y).indexOf(kw)===0||hnd(y).indexOf(kw)===0)?0:1; if(xs!==ys) return xs-ys; }
+        var a=(x.displayName||x.handle||'').toLowerCase(), b=(y.displayName||y.handle||'').toLowerCase(); return a<b?-1:a>b?1:0;
+      });
       if(!arr.length){ cliList.innerHTML='<div class="atl-app-clinone">找不到符合的客戶</div>'; cliList.style.display='block'; return; }
       cliList.innerHTML=arr.slice(0,40).map(function(a){ var nm=esc(a.displayName||a.handle||''); var sub=[a.handle&&a.handle!==a.displayName?esc(a.handle):'', a.industry?esc(a.industry):''].filter(Boolean).join(' · '); return '<div class="atl-app-cliitem" data-nm="'+nm+'">'+(a.star?'★ ':'')+nm+(sub?'<span class="s">'+sub+'</span>':'')+'</div>'; }).join('');
       cliList.style.display='block';
@@ -14603,7 +14609,7 @@ input.atl345-open-field:not([type="checkbox"]):not([type="radio"]):not([type="bu
 <script id="atl-v345-final-touch">
 (function(){
   if(window.__atlV345FinalTouch) return; window.__atlV345FinalTouch=true;
-  var VERSION='v370';
+  var VERSION='v371';
   function qs(s,r){return (r||document).querySelector(s)}
   function qsa(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
   function setVersion(){try{var b=qs('#verBadge'); if(b)b.textContent=VERSION; window.ATELIER_CURRENT_VERSION=VERSION;}catch(e){}}
@@ -15165,3 +15171,30 @@ input.atl345-open-field:not([type="checkbox"]):not([type="radio"]):not([type="bu
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',build); else build();
   setTimeout(build,1000);
 })();
+</script>
+
+<!-- ATELIER v371 · 靈感套用器啟動把手(.atl-app-fab)可上下拖動(縮放避開遮擋);存位置;拖動時不誤開套用器。純前端、可逆。 -->
+<script>
+(function(){
+  if(window.__atlAppDrag) return; window.__atlAppDrag=true;
+  function init(){
+    var fab=document.querySelector('.atl-app-fab'); if(!fab) return false;
+    if(fab.__drag) return true; fab.__drag=1;
+    fab.style.cursor='grab'; fab.title='可上下拖動';
+    try{ var sv=localStorage.getItem('atl_appFabTop'); if(sv){ fab.style.top=parseInt(sv)+'px'; fab.style.bottom='auto'; fab.style.transform='none'; } }catch(e){}
+    var sy=0, st=0, moved=false, on=false;
+    function down(e){ on=true; moved=false; var p=e.touches?e.touches[0]:e; sy=p.clientY; st=fab.getBoundingClientRect().top;
+      document.addEventListener('mousemove',mv,true); document.addEventListener('mouseup',up,true);
+      document.addEventListener('touchmove',mv,{passive:false,capture:true}); document.addEventListener('touchend',up,true); }
+    function mv(e){ if(!on) return; var p=e.touches?e.touches[0]:e; var dy=p.clientY-sy; if(Math.abs(dy)>4) moved=true;
+      if(moved){ if(e.cancelable) e.preventDefault(); var nt=Math.max(8, Math.min((window.innerHeight||800)-60, st+dy)); fab.style.top=nt+'px'; fab.style.bottom='auto'; fab.style.transform='none'; } }
+    function up(){ on=false; document.removeEventListener('mousemove',mv,true); document.removeEventListener('mouseup',up,true);
+      document.removeEventListener('touchmove',mv,true); document.removeEventListener('touchend',up,true);
+      if(moved){ try{ localStorage.setItem('atl_appFabTop', parseInt(fab.style.top)||0); }catch(e){} } }
+    fab.addEventListener('mousedown',down,true); fab.addEventListener('touchstart',down,{passive:true,capture:true});
+    fab.addEventListener('click',function(e){ if(moved){ e.preventDefault(); e.stopPropagation(); moved=false; } }, true);
+    return true;
+  }
+  if(!init()){ var n=0,iv=setInterval(function(){ if(init()||++n>=25) clearInterval(iv); },400); }
+})();
+</script>
