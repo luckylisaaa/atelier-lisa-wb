@@ -725,7 +725,7 @@ details.cat .cat-body{padding:14px 15px}
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">客戶服務台</span></span>
-    <span id="verBadge">cs-v5.30</span>
+    <span id="verBadge">cs-v5.37</span>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button type="button" id="popoutBtn" class="popout-btn" title="把客戶服務台開成獨立小視窗"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6"/><path d="M20 4l-9 9"/><path d="M14 12v7H5V10h7"/></svg>小視窗</button>
@@ -8974,7 +8974,7 @@ button:not(:disabled), .btn:not(.disabled):not([disabled]), [role="button"]{
   if(window.__atlCs473Continuity) return; window.__atlCs473Continuity=true;
   function cleanTextNode(n){var s=n.nodeValue||''; var ns=s.replace(/cs-v4\.\d+\s*(SAFE|LATEST)?\s*[｜|·:-]?\s*/g,'').replace(/\bv\d{3}\s*[｜|·:-]?\s*/g,''); if(ns!==s)n.nodeValue=ns;}
   function cleanVersions(){
-    try{var vb=document.getElementById('verBadge'); if(vb)vb.textContent='cs-v5.30';}catch(e){}
+    try{var vb=document.getElementById('verBadge'); if(vb)vb.textContent='cs-v5.37';}catch(e){}
     try{var w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT,{acceptNode:function(n){var p=n.parentElement; if(!p||p.id==='verBadge'||/^(SCRIPT|STYLE|TEXTAREA)$/i.test(p.tagName))return NodeFilter.FILTER_REJECT; return /(cs-v4\.\d+|\bv\d{3})/.test(n.nodeValue||'')?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_REJECT;}}); var nodes=[],n; while(n=w.nextNode())nodes.push(n); nodes.forEach(cleanTextNode);}catch(e){}
   }
   function alignSelection(){
@@ -9034,7 +9034,7 @@ input[type="text"]:focus,input:not([type]):focus{border-color:#D4A574!important;
     btn.onclick=function(e){e.stopPropagation(); set(!safe.classList.contains('atl-safe474-collapsed'));};
     h.appendChild(summary); h.appendChild(btn); set(localStorage.getItem('atl.cs474.safeCollapsed')!=='0');
   }
-  function cleanBadge(){ var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v5.30'; }
+  function cleanBadge(){ var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v5.37'; }
   function run(){ cleanBadge(); ensureSafeCollapse(); wireAutogrow(document); }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run); else run();
   setInterval(run,1200);
@@ -9095,7 +9095,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
   function wire(root){qsa('textarea,input[type="text"],input[type="url"],input[type="email"],input:not([type])',root||document).forEach(function(el){if(el.__atl475)return; if(el.closest('.atl-field-modal,.atl-final-modal'))return; el.__atl475=true; el.addEventListener('focus',function(){show(el); autogrow(el)}); el.addEventListener('input',function(){autogrow(el)}); el.addEventListener('blur',hideSoon); autogrow(el);});}
   document.addEventListener('click',function(e){var b=e.target.closest('#atlFieldToolbar button'); if(!b||!active)return; var a=b.getAttribute('data-act'); if(a==='prompt')openModal('prompt',active); if(a==='fill')openModal('fill',active); if(a==='edit')openModal('edit',active); if(a==='done'){var bar=qs('#atlFieldToolbar'); if(bar)bar.classList.remove('on'); if(active)active.classList.remove('atl-field-active'); toastSafe('此欄位可視為定案，請記得儲存');}},true);
   function addCollapse(root){qsa('.section-card,.deliverable-card,.atl452safe-card',root||document).forEach(function(card){if(card.__atlCollapse475||card.closest('.preview-modal,.atl-field-modal'))return; card.__atlCollapse475=true; card.classList.add('atl-collapsible'); var h=qs('h2,h3,h4,.stitle,.section-title',card)||card.firstElementChild; if(h)h.classList.add('atl-keep-visible'); var btn=document.createElement('button'); btn.type='button'; btn.className='atl-collapse-toggle'; btn.textContent='收合'; btn.addEventListener('click',function(e){e.preventDefault(); e.stopPropagation(); var closed=card.classList.toggle('atl-closed'); btn.textContent=closed?'展開':'收合';}); card.insertBefore(btn,card.firstChild);});}
-  function boot(){try{var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v5.30';}catch(e){} wire(document); addCollapse(document);}
+  function boot(){try{var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v5.37';}catch(e){} wire(document); addCollapse(document);}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot); else boot();
   try{new MutationObserver(function(ms){var hit=false; ms.forEach(function(m){if(m.addedNodes&&m.addedNodes.length)hit=true}); if(hit){clearTimeout(window.__atl475Timer); window.__atl475Timer=setTimeout(boot,180);}}).observe(document.body,{childList:true,subtree:true});}catch(e){}
 })();
@@ -9136,7 +9136,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
 <script id="atl478-final-export-js">
 (function(){
   if(window.__atl478FinalExport)return; window.__atl478FinalExport=true;
-  var VERSION='cs-v5.30';
+  var VERSION='cs-v5.37';
   function esc(s){return (s==null?'':String(s)).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
   function qsa(sel,root){return Array.prototype.slice.call((root||document).querySelectorAll(sel))}
   function text(el){return (el&&el.innerText||el&&el.textContent||'').replace(/\s+/g,' ').trim()}
@@ -9256,7 +9256,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
 <script>
 (function(){
   if(window.__atlCs480) return; window.__atlCs480=true;
-  var V='cs-v5.30';
+  var V='cs-v5.37';
   function lock(){ var vb=document.getElementById('verBadge'); if(vb && (vb.textContent||'').trim()!==V) vb.textContent=V; }
   function unify(){
     var safe=document.querySelector('.atl452safe'); if(!safe) return;
@@ -10203,7 +10203,7 @@ input.atl477-open-field:not([type="checkbox"]):not([type="radio"]):not([type="bu
 <script id="atl-cs477-final-touch">
 (function(){
   if(window.__atlCs477FinalTouch) return; window.__atlCs477FinalTouch=true;
-  var VERSION='cs-v5.30';
+  var VERSION='cs-v5.37';
   function qs(s,r){return (r||document).querySelector(s)}
   function qsa(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
   function setVersion(){try{var b=qs('#verBadge'); if(b)b.textContent=VERSION; window.ATELIER_CLIENT_VERSION=VERSION;}catch(e){}}
@@ -11054,19 +11054,6 @@ body.atl-hide-final #atlFinalFloat{ display:none !important; }
 #view-stage1.atl-acc .atl-acc-row .atl-acc-caret{ font-size:12px; color:#B89B6A; -webkit-text-fill-color:#B89B6A; transition:transform .15s; }
 /* ③④ 隱藏 目前位置 卡 / 初診項目選取 卡（由 JS 標記） */
 .atl-hide528{ display:none !important; }
-/* ★ 16 來源(單行input)也納入 accordion：收合只剩標題+狀態+箭頭；展開長出大 textarea */
-#view-stage1 .chk-row.atl-acc-row .cbody{ position:relative; }
-#view-stage1 .chk-row.atl-acc-row:not(.atl-open) input[type=text]{ display:none !important; }
-#view-stage1 .chk-row.atl-acc-row:not(.atl-open) .atl-acc-bigbox{ display:none !important; }
-#view-stage1 .chk-row.atl-acc-row.atl-open input[type=text]{ display:none !important; }
-#view-stage1 .chk-row.atl-acc-row.atl-open .atl-acc-bigbox{
-  display:block !important; width:100% !important; box-sizing:border-box !important;
-  min-height:172px !important; resize:vertical !important; margin-top:10px !important;
-  padding:13px 15px !important; line-height:1.75 !important; font-size:14px !important;
-  border:1.5px solid #D4A574 !important; border-radius:11px !important; background:#fff !important;
-  box-shadow:inset 0 1px 4px rgba(122,90,94,.07) !important; font-family:inherit !important; }
-#view-stage1 .chk-row.atl-acc-row .atl-acc-bigbox{ display:none; }
-#view-stage1 .chk-row.atl-acc-row .clab{ cursor:pointer; }
 </style>
 <script>
 (function(){
@@ -11100,36 +11087,7 @@ body.atl-hide-final #atlFinalFloat{ display:none !important; }
     });
   }
 
-  // ★ 讓「單行 input」的來源列也有 accordion：展開長出大 textarea(雙向同步,不動存檔)
-  function inputRowify(){
-    var v=document.getElementById('view-stage1'); if(!v) return;
-    v.querySelectorAll('.chk-row').forEach(function(row){
-      if(row.dataset.acc) return;                       // 已被(textarea版)接管就跳過
-      var inp=row.querySelector('input[type=text]'); if(!inp) return;
-      if(row.querySelector('textarea')) return;          // 有 textarea 的交給原 accordion
-      row.dataset.acc='1'; row.classList.add('atl-acc-row');
-      var cbody=inp.parentNode;
-      var meta=document.createElement('span'); meta.className='atl-acc-meta';
-      meta.innerHTML='<span class="atl-acc-stat"></span><span class="atl-acc-sum"></span><button type="button" class="atl-acc-edit">編輯</button><span class="atl-acc-caret">▾</span>';
-      var big=document.createElement('textarea'); big.className='atl-acc-bigbox'; big.placeholder=inp.getAttribute('placeholder')||'';
-      cbody.insertBefore(meta, inp); cbody.appendChild(big);
-      function sync(){ var val=(inp.value||'').trim(); var st=meta.querySelector('.atl-acc-stat'), sm=meta.querySelector('.atl-acc-sum');
-        if(st){ st.textContent=val?'已填':'待填'; st.className='atl-acc-stat '+(val?'done':'todo'); }
-        if(sm){ var one=val.replace(/\s+/g,' '); sm.textContent=val?('· '+one.slice(0,40)+(one.length>40?'…':'')):''; }
-        var ed=meta.querySelector('.atl-acc-edit'); if(ed) ed.textContent=row.classList.contains('atl-open')?'收合':'編輯'; }
-      function toggle(e){ if(e&&e.target&&e.target.closest('input[type=checkbox],a')) return;
-        var open=row.classList.toggle('atl-open');
-        if(open){ big.value=inp.value; setTimeout(function(){ try{big.focus();}catch(_){}} ,30); }
-        sync(); }
-      meta.addEventListener('click',toggle);
-      var lab=row.querySelector('.clab'); if(lab) lab.addEventListener('click',function(e){ if(e.target.closest('input,a,button'))return; toggle(e); });
-      big.addEventListener('input',function(){ inp.value=big.value; try{ inp.dispatchEvent(new Event('input',{bubbles:true})); }catch(_){}; sync(); });
-      inp.addEventListener('input',sync);
-      sync();
-    });
-  }
-
-  function run(){ declutter(); arrowify(); inputRowify(); }
+  function run(){ declutter(); arrowify(); }
   // ★ 修 regression：切到非初診頁(如⑦交付)時，移除「初診頁隱藏匯出浮鈕」標記，讓最終匯出浮鈕出現。
   //   只在「換頁」時觸發(觀察 view 的 class，不看 subtree)，不會造成跳針。
   function fixHideFinal(){
@@ -11146,56 +11104,6 @@ body.atl-hide-final #atlFinalFloat{ display:none !important; }
   if(v0){ var mo=new MutationObserver(function(){ clearTimeout(window.__atl528T); window.__atl528T=setTimeout(run,120); }); mo.observe(v0,{childList:true}); }
   setTimeout(run,600); setTimeout(run,1600);
   (function(){var t=0,iv=setInterval(function(){run(); if(++t>=8)clearInterval(iv);},800);})();
-})();
-</script>
-
-<!-- ATELIER cs-v5.29 · 把填寫欄位變回「簡單、一直看得到、跟著內容自己長高(像聊天輸入框)」。
-     移除我先前亂加的收合/編輯/箭頭；ABCD群組預設全開；整合重複鈕(展開編輯/查看提示詞)。可逆、不動存檔。 -->
-<style id="atl-cs529">
-/* 1) 移除 accordion 收合：欄位一律看得到，不再有 編輯/狀態/箭頭 */
-#view-stage1 .atl-acc-meta{ display:none !important; }
-#view-stage1.atl-acc .atl-acc-row textarea{ display:block !important; }
-#view-stage1 .chk-row.atl-acc-row input[type=text]{ display:none !important; }   /* 原單行input只負責存檔 */
-#view-stage1 .chk-row.atl-acc-row .atl-acc-bigbox{ display:block !important; }
-#view-stage1 .atl-acc-row, #view-stage1 .atl-acc-row.atl-open{ background:transparent !important; box-shadow:none !important; padding:6px 2px !important; margin:2px 0 !important; }
-/* 2) ABCD 群組預設全開：欄位直接看得到 */
-#view-stage1 .atl-srcgrp .atl-srcgrp-rows{ display:block !important; }
-/* 3) ★全站填寫框：跟著內容自己長高、字永遠看得到、不截斷、不縮回(高度由JS依內容設定) */
-#view-stage1 textarea, #view-stage1 .atl-acc-bigbox{
-  display:block !important; width:100% !important; box-sizing:border-box !important;
-  min-height:48px !important; resize:none !important; overflow-y:hidden;
-  line-height:1.7 !important; padding:11px 14px !important; margin-top:8px !important;
-  border:1px solid #E7DCCB !important; border-radius:10px !important; background:#fff !important;
-  font-family:inherit !important; font-size:14px !important; color:#2A1A1C !important; -webkit-text-fill-color:#2A1A1C !important; }
-#view-stage1 textarea:focus, #view-stage1 .atl-acc-bigbox:focus{
-  border-color:#D4A574 !important; box-shadow:0 0 0 3px rgba(212,165,116,.14) !important; outline:none !important; }
-/* 4) 整合重複鈕：移除「展開編輯」(欄位本來就看得到) + 「查看提示詞」(內容已在 AI 智能填入 modal 裡) */
-#view-stage1 [data-cs-expand], #view-stage1 .btn-cs-expand{ display:none !important; }
-#view-stage1 [data-cs-prompt]{ display:none !important; }
-</style>
-<script>
-(function(){
-  if(window.__atl529) return; window.__atl529=true;
-  function maxH(){ return Math.round((window.innerHeight||800)*0.8); }
-  function grow(ta){ if(!ta||ta.tagName!=='TEXTAREA') return; try{
-    ta.style.height='auto'; var h=ta.scrollHeight, m=maxH();
-    ta.style.height=Math.min(h,m)+'px'; ta.style.overflowY=(h>m?'auto':'hidden');
-  }catch(e){} }
-  function syncBig(){ document.querySelectorAll('#view-stage1 .chk-row.atl-acc-row').forEach(function(row){
-    var inp=row.querySelector('input[type=text]'), big=row.querySelector('.atl-acc-bigbox');
-    if(inp&&big){ if(document.activeElement!==big && big.value!==inp.value) big.value=inp.value; grow(big); }
-  }); }
-  function openGroups(){ document.querySelectorAll('#view-stage1 .atl-srcgrp').forEach(function(g){ g.classList.add('open'); }); }
-  function growAll(){ document.querySelectorAll('#view-stage1 textarea').forEach(grow); }
-  function run(){ openGroups(); syncBig(); growAll(); }
-  // 打字 / 點進欄位 → 跟著長高
-  document.addEventListener('input', function(e){ var t=e.target; if(t&&t.tagName==='TEXTAREA'&&t.closest&&t.closest('#view-stage1')) grow(t); }, true);
-  document.addEventListener('focusin', function(e){ var t=e.target; if(t&&t.tagName==='TEXTAREA'&&t.closest&&t.closest('#view-stage1')) grow(t); }, true);
-  var v0=document.getElementById('view-stage1');
-  if(v0){ var mo=new MutationObserver(function(){ clearTimeout(window.__atl529T); window.__atl529T=setTimeout(run,160); }); mo.observe(v0,{childList:true,subtree:true}); }
-  setTimeout(run,500); setTimeout(run,1300);
-  (function(){var t=0,iv=setInterval(function(){run(); if(++t>=8)clearInterval(iv);},800);})();
-  window.addEventListener('resize',function(){ clearTimeout(window.__atl529R); window.__atl529R=setTimeout(growAll,200); });
 })();
 </script>
 
@@ -11254,5 +11162,398 @@ body.atl-hide-final #atlFinalFloat{ display:none !important; }
   if(v0){ var mo=new MutationObserver(function(){ clearTimeout(window.__atl530T); window.__atl530T=setTimeout(run,150); }); mo.observe(v0,{childList:true,subtree:true}); }
   setTimeout(run,500); setTimeout(run,1300);
   (function(){var t=0,iv=setInterval(function(){run(); if(++t>=8)clearInterval(iv);},800);})();
+})();
+</script>
+
+<!-- ATELIER cs-v5.33 · 完成「欄位看得到＋跟著內容長高(像聊天框)」：
+     16來源單行input→同id的textarea(存檔不變、長高)；進階5欄一律看得到＋長高;兩邊一致。可逆、純前端。 -->
+<style id="atl-cs533">
+/* 來源 + 進階 欄位：一律看得到、跟著內容長高、字不截斷 */
+#view-stage1 .chk-row .cbody textarea,
+#view-stage1 .fld textarea,
+#view-stage1.atl-acc .atl-acc-row textarea{
+  display:block !important; width:100% !important; box-sizing:border-box !important;
+  margin-top:7px !important; min-height:46px !important; resize:none !important; overflow-y:hidden;
+  line-height:1.7 !important; padding:10px 13px !important;
+  border:1px solid #E7DCCB !important; border-radius:9px !important; background:#fff !important;
+  font-family:inherit !important; font-size:13.5px !important; color:#2A1A1C !important; -webkit-text-fill-color:#2A1A1C !important; }
+#view-stage1 .chk-row .cbody textarea:focus,
+#view-stage1 .fld textarea:focus{ border-color:#D4A574 !important; box-shadow:0 0 0 3px rgba(212,165,116,.14) !important; outline:none !important; }
+/* 進階欄位:拿掉 accordion 收合相關(編輯/箭頭),讓它跟來源一樣直接看得到 */
+#view-stage1 .atl-acc-meta{ display:none !important; }
+</style>
+<script>
+(function(){
+  if(window.__atl533) return; window.__atl533=true;
+  function maxH(){ return Math.round((window.innerHeight||800)*0.7); }
+  function grow(ta){ if(!ta||ta.tagName!=='TEXTAREA') return; try{
+    ta.style.height='auto'; var h=ta.scrollHeight, m=maxH();
+    ta.style.height=Math.min(h,m)+'px'; ta.style.overflowY=(h>m?'auto':'hidden');
+  }catch(e){} }
+  // 16來源:單行 input → 同 id 的 textarea(存檔不變)
+  function convert(){
+    var v=document.getElementById('view-stage1'); if(!v) return;
+    v.querySelectorAll('.chk-row .cbody input[type=text]').forEach(function(inp){
+      var ta=document.createElement('textarea');
+      ta.id=inp.id; ta.value=inp.value!=null?inp.value:'';
+      var ph=inp.getAttribute('placeholder'); if(ph) ta.setAttribute('placeholder',ph);
+      if(inp.className) ta.className=inp.className;
+      if(inp.name) ta.name=inp.name;
+      ta.setAttribute('data-from-input','1');
+      inp.parentNode.replaceChild(ta, inp);
+      ta.addEventListener('input',function(){ grow(ta); });
+      grow(ta);
+    });
+  }
+  function growAll(){ document.querySelectorAll('#view-stage1 textarea').forEach(grow); }
+  function run(){ convert(); growAll(); }
+  document.addEventListener('input', function(e){ var t=e.target; if(t&&t.tagName==='TEXTAREA'&&t.closest&&t.closest('#view-stage1')) grow(t); }, true);
+  var v0=document.getElementById('view-stage1');
+  if(v0){ var mo=new MutationObserver(function(){ clearTimeout(window.__atl533T); window.__atl533T=setTimeout(run,150); }); mo.observe(v0,{childList:true,subtree:true}); }
+  setTimeout(run,400); setTimeout(run,1200);
+  (function(){var t=0,iv=setInterval(function(){run(); if(++t>=8)clearInterval(iv);},800);})();
+  window.addEventListener('resize',function(){ clearTimeout(window.__atl533R); window.__atl533R=setTimeout(growAll,200); });
+})();
+</script>
+
+<!-- ATELIER cs-v5.34 · P1 雙層資料流(服務台側)：同步工作台資料鏡像庫 + 瀏覽/搜尋 + 本次服務包(加入/刪除/標記)。
+     全部用 localStorage、唯讀既有 accounts/videos、不碰 Firebase、不動既有功能。可逆。規格 §一/§二/§四。 -->
+<style id="atl-p1-css">
+.atl-db-fab{ position:fixed; left:18px; bottom:74px; z-index:99980; background:#5C0F14; color:#fff; border:1px solid rgba(255,255,255,.6);
+  box-shadow:0 8px 24px rgba(42,26,28,.22); border-radius:999px; padding:10px 16px; font-size:12.5px; font-weight:800; cursor:pointer; font-family:inherit; letter-spacing:.4px; }
+.atl-db-fab:hover{ background:#73121A; }
+.atl-db-fab .n{ background:#D4A574; color:#3A2410; -webkit-text-fill-color:#3A2410; border-radius:999px; padding:0 7px; margin-left:6px; font-size:11px; }
+.atl-db-modal{ position:fixed; inset:0; z-index:100040; background:rgba(42,26,28,.45); display:none; align-items:center; justify-content:center; padding:18px; }
+.atl-db-modal.show{ display:flex; }
+.atl-db-sheet{ width:min(1040px,100%); height:88vh; display:flex; flex-direction:column; background:#FDFBF8; border-radius:20px; box-shadow:0 24px 60px rgba(42,26,28,.28); overflow:hidden; }
+.atl-db-head{ padding:16px 20px; border-bottom:1px solid #ECE3D6; display:flex; align-items:center; gap:14px; flex-wrap:wrap; }
+.atl-db-title{ font-family:'Noto Serif TC',serif; font-size:19px; color:#2A1A1C; font-weight:800; margin:0; }
+.atl-db-sync{ background:#A51820; color:#fff; -webkit-text-fill-color:#fff; border:none; border-radius:999px; padding:8px 15px; font-size:12.5px; font-weight:800; cursor:pointer; font-family:inherit; }
+.atl-db-sync:hover{ background:#7A1018; }
+.atl-db-meta{ font-size:11.5px; color:#7A5A5E; -webkit-text-fill-color:#7A5A5E; line-height:1.6; }
+.atl-db-x{ margin-left:auto; border:1px solid #E3CED0; background:#fff; color:#7A5A5E; -webkit-text-fill-color:#7A5A5E; border-radius:50%; width:34px; height:34px; cursor:pointer; font-size:17px; }
+.atl-db-tabs{ display:flex; gap:6px; flex-wrap:wrap; padding:12px 20px 0; }
+.atl-db-tab{ border:1px solid #E7DCCB; background:#fff; color:#7A5A5E; -webkit-text-fill-color:#7A5A5E; border-radius:999px; padding:6px 13px; font-size:12px; font-weight:700; cursor:pointer; font-family:inherit; }
+.atl-db-tab.on{ background:#5C0F14; color:#fff; -webkit-text-fill-color:#fff; border-color:#5C0F14; }
+.atl-db-tab .c{ opacity:.7; margin-left:4px; font-size:11px; }
+.atl-db-search{ padding:10px 20px; }
+.atl-db-search input{ width:100%; box-sizing:border-box; border:1px solid #E7DCCB; border-radius:10px; padding:9px 13px; font-size:13px; font-family:inherit; background:#fff; }
+.atl-db-list{ flex:1; overflow:auto; padding:4px 20px 20px; }
+.atl-db-item{ border:1px solid #EBE2D4; border-radius:12px; padding:12px 14px; margin-bottom:9px; background:#fff; }
+.atl-db-item h4{ margin:0 0 4px; font-size:14px; color:#2A1A1C; font-weight:800; }
+.atl-db-item .sub{ font-size:11.5px; color:#9A8A8C; -webkit-text-fill-color:#9A8A8C; line-height:1.6; }
+.atl-db-item .tags{ margin-top:6px; display:flex; gap:5px; flex-wrap:wrap; }
+.atl-db-item .tag{ font-size:10.5px; background:#F5ECDC; color:#8A6A24; -webkit-text-fill-color:#8A6A24; border-radius:5px; padding:1px 7px; font-weight:700; }
+.atl-db-add{ float:right; background:#fff; color:#A51820; -webkit-text-fill-color:#A51820; border:1px solid #D9B7B7; border-radius:999px; padding:5px 12px; font-size:12px; font-weight:800; cursor:pointer; font-family:inherit; }
+.atl-db-add:hover{ background:#A51820; color:#fff; -webkit-text-fill-color:#fff; }
+.atl-db-add.in{ background:#EAdfce; color:#7A5A5E; -webkit-text-fill-color:#7A5A5E; border-color:#E0D2BC; }
+.atl-db-empty{ text-align:center; color:#B3A39A; -webkit-text-fill-color:#B3A39A; font-size:13px; padding:40px 0; }
+/* 本次服務包分組 */
+.atl-pkg-grp{ font-size:11px; letter-spacing:1px; color:#A51820; -webkit-text-fill-color:#A51820; font-weight:800; margin:14px 0 6px; }
+.atl-pkg-rm{ background:#fff; border:1px solid #E2D6D3; color:#7A5A5E; -webkit-text-fill-color:#7A5A5E; border-radius:7px; padding:3px 9px; font-size:11px; cursor:pointer; font-family:inherit; margin-left:6px; }
+.atl-pkg-mark{ background:#fff; border:1px solid #C8A24A; color:#8A6A24; -webkit-text-fill-color:#8A6A24; border-radius:7px; padding:3px 9px; font-size:11px; cursor:pointer; font-family:inherit; float:right; }
+.atl-pkg-mark.adopted{ background:#5C0F14; color:#fff; -webkit-text-fill-color:#fff; border-color:#5C0F14; }
+</style>
+<script>
+(function(){
+  if(window.__atlP1) return; window.__atlP1=true;
+  var LS=window.localStorage;
+  function esc(x){ try{ return (typeof window.esc==='function')?window.esc(x):String(x==null?'':x).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }catch(e){ return String(x==null?'':x); } }
+  function jget(k,d){ try{ var v=LS.getItem(k); return v?JSON.parse(v):d; }catch(e){ return d; } }
+  function jset(k,v){ try{ LS.setItem(k,JSON.stringify(v)); return true; }catch(e){ return false; } }
+  function accs(){ try{ return (typeof accounts!=='undefined'&&accounts)?accounts:[]; }catch(e){ return []; } }
+  function vids(){ try{ return (typeof videos!=='undefined'&&videos)?videos:[]; }catch(e){ return []; } }
+  function curId(){ try{ return (typeof currentClientId!=='undefined')?currentClientId:null; }catch(e){ return null; } }
+
+  // ===== 鏡像庫 =====
+  function buildMirror(){
+    var A=accs(), V=vids();
+    var hooks={}, ctas={}, notes=[];
+    V.forEach(function(v){
+      if(v && v.hook && String(v.hook).trim()){ var h=String(v.hook).trim(); hooks[h]=hooks[h]||{text:h,from:v.title||'',views:v.views||0}; }
+      if(v && v.ctaText && String(v.ctaText).trim()){ var c=String(v.ctaText).trim(); ctas[c]=ctas[c]||{text:c,from:v.title||''}; }
+      if(v && v.note && String(v.note).trim()){ notes.push({text:String(v.note).trim(), from:v.title||v.accountHandle||''}); }
+    });
+    var cases=V.slice().sort(function(a,b){ return (b.views||0)-(a.views||0); }).slice(0,40);
+    var m={
+      lastSync: Date.now(),
+      counts:{ accounts:A.length, videos:V.length, cases:cases.length, hooks:Object.keys(hooks).length, ctas:Object.keys(ctas).length },
+      accounts: A.map(function(a){ return {id:a.id,handle:a.handle,displayName:a.displayName,industry:a.industry,isClient:a.isClient}; }),
+      videos: V.map(function(v){ return {id:v.id,title:v.title,accountHandle:v.accountHandle,views:v.views,hook:v.hook,ctaText:v.ctaText,stage:v.stage,goal:v.goal,themeName:v.themeName,mktTags:v.mktTags,matName:v.matName,why:v.why}; }),
+      cases: cases.map(function(v){ return {id:v.id,title:v.title,accountHandle:v.accountHandle,views:v.views,hook:v.hook,why:v.why,goal:v.goal,stage:v.stage}; }),
+      hooks: Object.keys(hooks).map(function(k){return hooks[k];}),
+      ctas: Object.keys(ctas).map(function(k){return ctas[k];}),
+      notes: notes
+    };
+    jset('atl_wbMirror', m);
+    return m;
+  }
+  function getMirror(){ return jget('atl_wbMirror', null); }
+
+  // ===== 本次服務包(存在「帳號物件」上 → 跟帳號同步到 Firestore、和工作台共享；localStorage 當離線快取) =====
+  function curAccObj(){ try{ return (typeof curAcc==='function')?curAcc():null; }catch(e){ return null; } }
+  function persistAcc(){ try{ if(typeof _accPush==='function'){ _accPush(); return; } }catch(e){} try{ if(typeof saveAccounts==='function') saveAccounts(); }catch(e){} }
+  function pkgKey(){ return 'atl_svcPkg_'+(curId()||'none'); }
+  function getPkg(){
+    var a=curAccObj();
+    if(a){
+      if(!a.currentServicePackage){ var old=jget(pkgKey(),null); a.currentServicePackage = old || {accountId:a.id, items:[], createdAt:Date.now(), updatedAt:Date.now()}; }
+      return a.currentServicePackage;
+    }
+    return jget(pkgKey(), {accountId:curId(), items:[], createdAt:Date.now(), updatedAt:Date.now()});
+  }
+  function savePkg(p){ p.updatedAt=Date.now(); var a=curAccObj();
+    if(a){ a.currentServicePackage=p; persistAcc(); }
+    jset(pkgKey(), p); refreshFab(); }
+  function pkgAdd(item){ var p=getPkg(); if(p.items.some(function(i){return i.uid===item.uid;})) return false; p.items.push(item); savePkg(p); return true; }
+  function pkgRemove(uid){ var p=getPkg(); p.items=p.items.filter(function(i){return i.uid!==uid;}); savePkg(p); }
+  function pkgHas(uid){ return getPkg().items.some(function(i){return i.uid===uid;}); }
+  function pkgToggleAdopt(uid){ var p=getPkg(); p.items.forEach(function(i){ if(i.uid===uid) i.adopted=!i.adopted; }); savePkg(p); }
+
+  var TYPE_LABELS={ mainClient:'主要客戶現況', refCase:'參考案例', hook:'可複製 Hook', cta:'可複製 CTA', structure:'可複製內容結構', term:'專業名詞候選', scene:'生活場景候選', selling:'白話賣點候選', question:'待補問診問題', account:'帳號', note:'顧問註解' };
+
+  // ===== UI =====
+  var TAB='videos';
+  function fmtTime(t){ if(!t) return '尚未同步'; var d=new Date(t); function p(n){return (n<10?'0':'')+n;} return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate())+' '+p(d.getHours())+':'+p(d.getMinutes()); }
+
+  function renderList(){
+    var m=getMirror(); var list=document.getElementById('atlDbList'); if(!list) return;
+    var q=(document.getElementById('atlDbSearch').value||'').trim().toLowerCase();
+    if(TAB==='pkg'){ renderPkg(list); return; }
+    if(!m){ list.innerHTML='<div class="atl-db-empty">尚未同步。點右上角「⟳ 同步工作台資料庫」把工作台目前的影片／帳號／案例同步進來。</div>'; return; }
+    var rows=[];
+    function match(txt){ return !q || (txt||'').toLowerCase().indexOf(q)>=0; }
+    if(TAB==='videos'){ rows=m.videos.filter(function(v){return match([v.title,v.accountHandle,v.hook,v.themeName,v.mktTags].join(' '));}).map(function(v){
+        return card('refCase','video_'+v.id, v.title||'(未命名影片)', (v.accountHandle||'')+' · 觀看 '+(v.views||0), [v.stage,v.goal,v.themeName].filter(Boolean), v); }); }
+    else if(TAB==='accounts'){ rows=m.accounts.filter(function(a){return match([a.displayName,a.handle,a.industry].join(' '));}).map(function(a){
+        return card('account','acc_'+a.id, a.displayName||a.handle||'(帳號)', (a.handle||'')+' · '+(a.industry||''), [a.isClient?'客戶':'潛在'], a); }); }
+    else if(TAB==='cases'){ rows=m.cases.filter(function(v){return match([v.title,v.accountHandle,v.why].join(' '));}).map(function(v){
+        return card('refCase','case_'+v.id, v.title||'(案例)', (v.accountHandle||'')+' · 觀看 '+(v.views||0), [v.goal,v.stage].filter(Boolean), v); }); }
+    else if(TAB==='hooks'){ rows=m.hooks.filter(function(h){return match(h.text);}).map(function(h,i){
+        return card('hook','hook_'+i, h.text, '來源：'+(h.from||'—'), [], h); }); }
+    else if(TAB==='ctas'){ rows=m.ctas.filter(function(c){return match(c.text);}).map(function(c,i){
+        return card('cta','cta_'+i, c.text, '來源：'+(c.from||'—'), [], c); }); }
+    list.innerHTML = rows.length? rows.join('') : '<div class="atl-db-empty">沒有符合的結果。</div>';
+  }
+  function card(type,uid,title,sub,tags,data){
+    var inPkg=pkgHas(uid);
+    var t=(tags||[]).filter(Boolean).map(function(x){return '<span class="tag">'+esc(x)+'</span>';}).join('');
+    window.__atlDbData=window.__atlDbData||{}; window.__atlDbData[uid]={uid:uid,type:type,title:title,sub:sub,data:data};
+    return '<div class="atl-db-item"><button class="atl-db-add'+(inPkg?' in':'')+'" data-add="'+esc(uid)+'">'+(inPkg?'✓ 已加入':'＋ 加入服務包')+'</button>'
+      +'<h4>'+esc(title)+'</h4><div class="sub">'+esc(sub)+'</div>'+(t?'<div class="tags">'+t+'</div>':'')+'</div>';
+  }
+  function renderPkg(list){
+    var p=getPkg();
+    if(!p.items.length){ list.innerHTML='<div class="atl-db-empty">本次服務包是空的。到其他分頁把可借鏡的影片／案例／Hook／CTA「＋加入服務包」。</div>'; return; }
+    var groups={}; p.items.forEach(function(i){ (groups[i.type]=groups[i.type]||[]).push(i); });
+    var html='';
+    Object.keys(groups).forEach(function(type){
+      html+='<div class="atl-pkg-grp">'+esc(TYPE_LABELS[type]||type)+'（'+groups[type].length+'）</div>';
+      groups[type].forEach(function(i){
+        html+='<div class="atl-db-item"><button class="atl-pkg-mark'+(i.adopted?' adopted':'')+'" data-adopt="'+esc(i.uid)+'">'+(i.adopted?'✓ 採用':'標記採用')+'</button>'
+          +'<h4>'+esc(i.title)+'</h4><div class="sub">'+esc(i.sub||'')+'</div>'
+          +'<button class="atl-pkg-rm" data-rm="'+esc(i.uid)+'">刪除</button></div>';
+      });
+    });
+    list.innerHTML=html;
+  }
+
+  function openModal(){ var mo=document.getElementById('atlDbModal'); if(mo){ mo.classList.add('show'); renderTabs(); renderList(); } }
+  function closeModal(){ var mo=document.getElementById('atlDbModal'); if(mo) mo.classList.remove('show'); }
+  function renderTabs(){
+    var m=getMirror(); var c=m?m.counts:{};
+    var defs=[['videos','全部影片',c.videos],['accounts','全部帳號',c.accounts],['cases','成功案例',c.cases],['hooks','Hook 公式',c.hooks],['ctas','CTA 公式',c.ctas],['pkg','本次服務包',getPkg().items.length]];
+    var tabs=document.getElementById('atlDbTabs'); if(!tabs) return;
+    tabs.innerHTML=defs.map(function(d){ return '<button class="atl-db-tab'+(TAB===d[0]?' on':'')+'" data-tab="'+d[0]+'">'+d[1]+(d[2]!=null?'<span class="c">'+d[2]+'</span>':'')+'</button>'; }).join('');
+    var meta=document.getElementById('atlDbMeta'); if(meta) meta.innerHTML = m? ('最後同步：'+fmtTime(m.lastSync)+' ｜ 帳號 '+m.counts.accounts+' ｜ 影片 '+m.counts.videos+' ｜ 案例 '+m.counts.cases) : '尚未同步任何工作台資料';
+  }
+  function refreshFab(){ var n=document.getElementById('atlDbFabN'); if(n) n.textContent=getPkg().items.length; }
+
+  function build(){
+    if(document.getElementById('atlDbFab')) return;
+    var fab=document.createElement('button'); fab.id='atlDbFab'; fab.className='atl-db-fab';
+    fab.innerHTML='🗄 工作台資料庫 · 服務包<span class="n" id="atlDbFabN">0</span>';
+    fab.addEventListener('click',openModal); document.body.appendChild(fab); refreshFab();
+
+    var mo=document.createElement('div'); mo.id='atlDbModal'; mo.className='atl-db-modal';
+    mo.innerHTML='<div class="atl-db-sheet">'
+      +'<div class="atl-db-head"><h3 class="atl-db-title">工作台資料鏡像庫</h3>'
+      +'<button class="atl-db-sync" id="atlDbSync">⟳ 同步工作台資料庫</button>'
+      +'<div class="atl-db-meta" id="atlDbMeta"></div>'
+      +'<button class="atl-db-x" id="atlDbX">×</button></div>'
+      +'<div class="atl-db-tabs" id="atlDbTabs"></div>'
+      +'<div class="atl-db-search"><input id="atlDbSearch" placeholder="搜尋關鍵字、標籤、帳號、案例、Hook、CTA…"></div>'
+      +'<div class="atl-db-list" id="atlDbList"></div></div>';
+    document.body.appendChild(mo);
+    mo.addEventListener('click',function(e){
+      if(e.target===mo || e.target.id==='atlDbX') return closeModal();
+      var t=e.target.closest('[data-tab]'); if(t){ TAB=t.getAttribute('data-tab'); renderTabs(); renderList(); return; }
+      if(e.target.id==='atlDbSync'){ buildMirror(); renderTabs(); renderList(); try{ if(window.toastSafe) toastSafe('已同步工作台資料庫'); }catch(_){}; return; }
+      var add=e.target.closest('[data-add]'); if(add){ var uid=add.getAttribute('data-add'); var d=(window.__atlDbData||{})[uid];
+        if(d){ if(pkgHas(uid)){ pkgRemove(uid); } else { pkgAdd({uid:uid,type:d.type,title:d.title,sub:d.sub,data:d.data,adopted:false}); } renderTabs(); renderList(); refreshFab(); } return; }
+      var rm=e.target.closest('[data-rm]'); if(rm){ pkgRemove(rm.getAttribute('data-rm')); renderTabs(); renderList(); return; }
+      var ad=e.target.closest('[data-adopt]'); if(ad){ pkgToggleAdopt(ad.getAttribute('data-adopt')); renderList(); return; }
+    });
+    document.getElementById('atlDbSearch').addEventListener('input',renderList);
+  }
+  // 對外 API(P3/P4/P5 要用)
+  window.atlData={ getMirror:getMirror, buildMirror:buildMirror, getPkg:getPkg, savePkg:savePkg, pkgAdd:pkgAdd, pkgRemove:pkgRemove, TYPE_LABELS:TYPE_LABELS };
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',build); else build();
+  setTimeout(build,800);
+})();
+</script>
+
+<!-- ATELIER cs-v5.36 · P3 Stage 3.5「專業內容轉譯卡」：注入 view-stage4 頂部(問診後、診斷前)。
+     優先讀 本次服務包 + Stage3問診 + 鏡像庫相近案例；來源依據/參考案例/Hook/CTA 自動帶入；資料不足顯示「待補」；
+     存在 a.translationCard35(相容新欄位、不碰 clientFlow)。觀察器只盯 #view-stage4 childList(不盯 class)。規格 §五。 -->
+<style id="atl-p3-css">
+.atl-p3-card{ border:1px solid #E7C9A8; border-radius:16px; background:linear-gradient(180deg,#FFFDF9,#FDF6EC); padding:18px 18px 16px; margin:0 0 18px; box-shadow:0 6px 20px rgba(165,24,32,.06); }
+.atl-p3-head{ display:flex; align-items:center; gap:10px; margin-bottom:6px; }
+.atl-p3-badge{ background:#5C0F14; color:#fff; -webkit-text-fill-color:#fff; font-size:11px; font-weight:800; border-radius:7px; padding:3px 9px; letter-spacing:.5px; }
+.atl-p3-head h3{ margin:0; font-family:'Noto Serif TC',serif; font-size:18px; color:#2A1A1C; font-weight:800; }
+.atl-p3-note{ font-size:12px; color:#7A5A5E; -webkit-text-fill-color:#7A5A5E; line-height:1.7; margin-bottom:10px; }
+.atl-p3-src{ font-size:12px; color:#5C0F14; -webkit-text-fill-color:#5C0F14; background:#fff; border:1px dashed #E0C49C; border-radius:10px; padding:9px 12px; margin-bottom:14px; }
+.atl-p3-src b{ color:#A51820; -webkit-text-fill-color:#A51820; }
+.atl-p3-refresh{ float:right; background:#fff; border:1px solid #D9B7B7; color:#A51820; -webkit-text-fill-color:#A51820; border-radius:999px; padding:3px 10px; font-size:11px; font-weight:800; cursor:pointer; font-family:inherit; }
+.atl-p3-fld{ margin-bottom:11px; }
+.atl-p3-fld label{ display:block; font-size:12.5px; font-weight:800; color:#2A1A1C; margin-bottom:5px; }
+.atl-p3-fld textarea{ width:100%; box-sizing:border-box; min-height:46px; resize:none; overflow-y:hidden; line-height:1.7;
+  border:1px solid #E7DCCB; border-radius:9px; padding:10px 12px; font-size:13.5px; font-family:inherit; color:#2A1A1C; -webkit-text-fill-color:#2A1A1C; background:#fff; }
+.atl-p3-fld textarea::placeholder{ color:#C2A98C; -webkit-text-fill-color:#C2A98C; }
+.atl-p3-fld textarea:focus{ border-color:#D4A574; box-shadow:0 0 0 3px rgba(212,165,116,.14); outline:none; }
+.atl-p3-fld.auto textarea{ background:#FBF6EE; }
+.atl-p3-fld.auto label::after{ content:' · 自動帶入'; color:#A57A2A; -webkit-text-fill-color:#A57A2A; font-size:10.5px; font-weight:700; }
+.atl-p3-acts{ text-align:right; margin-top:6px; }
+.atl-p3-save{ background:#A51820; color:#fff; -webkit-text-fill-color:#fff; border:none; border-radius:999px; padding:9px 20px; font-size:13.5px; font-weight:800; cursor:pointer; font-family:inherit; }
+.atl-p3-save:hover{ background:#7A1018; }
+</style>
+<script>
+(function(){
+  if(window.__atlP3) return; window.__atlP3=true;
+  function esc(x){ try{ return (typeof window.esc==='function')?window.esc(x):String(x==null?'':x).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }catch(e){ return String(x==null?'':x); } }
+  function curAccObj(){ try{ return (typeof curAcc==='function')?curAcc():null; }catch(e){ return null; } }
+  function persistAcc(){ try{ if(typeof _accPush==='function'){ _accPush(); return; } }catch(e){} try{ if(typeof saveAccounts==='function') saveAccounts(); }catch(e){} }
+  function getPkg(){ try{ return (window.atlData&&window.atlData.getPkg)?window.atlData.getPkg():{items:[]}; }catch(e){ return {items:[]}; } }
+  function getMirror(){ try{ return (window.atlData&&window.atlData.getMirror)?window.atlData.getMirror():null; }catch(e){ return null; } }
+  function stage3Data(){ var a=curAccObj(); try{ return a.clientFlow.stage3_interview.data||null; }catch(e){ return null; } }
+  function toast(m){ try{ if(window.toastMsg) toastMsg(m); }catch(e){} }
+
+  // 12 欄位：[key, 標題, placeholder, 是否自動帶入]
+  var FIELDS=[
+    ['term','專業名詞／服務項目','把客戶的專業語言列出來，準備翻成白話',false],
+    ['srcBasis','工作台來源依據','尚未從服務包帶入（先在工作台或鏡像庫加入服務包）',true],
+    ['refCase','參考案例來源','尚未從服務包帶入參考案例',true],
+    ['scene','觀眾生活場景','待補：需要客戶提供什麼（觀眾平常在什麼情境會遇到這件事？）',false],
+    ['fear','觀眾正在怕什麼','待補：需要客戶提供什麼（觀眾最擔心、最痛的是什麼？）',false],
+    ['voice','觀眾會怎麼說這個問題','待補：需要客戶提供什麼（用觀眾自己的話，不是專業術語）',false],
+    ['selling','白話賣點','待補：需要客戶提供什麼（一句話讓觀眾懂為什麼選他）',false],
+    ['hook','可用 Hook','可從服務包的 Hook 借鏡，或寫下開場鉤子',true],
+    ['angle','內容故事／案例切角','待補：需要客戶提供什麼（用哪個故事／案例切入最有感？）',false],
+    ['trust','信任證據','待補：需要客戶提供什麼（數據、案例、證照、見證…）',false],
+    ['cta','CTA 行動出口','可從服務包的 CTA 借鏡，或寫下這支要的行動',true],
+    ['todo','待補資料','還缺哪些「只有客戶能提供」的資料？列出來下次問診補。',false]
+  ];
+  function pkgByType(t){ return getPkg().items.filter(function(i){return i.type===t;}); }
+  function lines(arr){ return arr.map(function(i){return '· '+(i.title||'')+(i.sub?'（'+i.sub+'）':'');}).join('\n'); }
+  function autoSrcBasis(){ return lines(getPkg().items.filter(function(i){return i.addedFrom==='workbench'||i.type==='refCase'||i.type==='account'||i.type==='mainClient';})); }
+  function autoRefCase(){ return lines(pkgByType('refCase')); }
+  function autoHooks(){ var a=pkgByType('hook'); return a.length?lines(a):''; }
+  function autoCtas(){ var a=pkgByType('cta'); return a.length?lines(a):''; }
+  function similarCases(){ var m=getMirror(), a=curAccObj(); if(!m||!a) return []; var cs=m.cases||[]; return cs.slice(0,6); }
+
+  function grow(t){ try{ t.style.height='auto'; t.style.height=Math.min(t.scrollHeight, Math.round((window.innerHeight||800)*0.6))+'px'; }catch(e){} }
+  function load(){ var a=curAccObj(); return (a&&a.translationCard35)||{}; }
+  function save(){ var a=curAccObj(); if(!a){ toast('請先選擇客戶'); return; } var c=a.translationCard35=a.translationCard35||{};
+    FIELDS.forEach(function(f){ var el=document.getElementById('atlP3-'+f[0]); if(el) c[f[0]]=el.value; });
+    c.updatedAt=Date.now(); persistAcc(); toast('已儲存 Stage 3.5 轉譯卡'); }
+  function fillAuto(force){
+    function setIf(id,val){ var el=document.getElementById('atlP3-'+id); if(el&&val&&(force||!el.value.trim())){ el.value=val; grow(el); } }
+    setIf('srcBasis',autoSrcBasis()); setIf('refCase',autoRefCase()); setIf('hook',autoHooks()); setIf('cta',autoCtas());
+  }
+  function srcHtml(){ var pkg=getPkg(); return '本次服務包：<b>'+pkg.items.length+'</b> 項　｜　Stage 3 問診：<b>'+(stage3Data()?'已有':'尚無')+'</b>　｜　鏡像庫相近案例：<b>'+similarCases().length+'</b>'
+    +'<button class="atl-p3-refresh" id="atlP3Refresh">⟳ 重新讀取</button>'; }
+  function updateSrc(){ var el=document.getElementById('atlP3Src'); if(el) el.innerHTML=srcHtml(); wireRefresh(); }
+  function wireRefresh(){ var r=document.getElementById('atlP3Refresh'); if(r&&!r.__w){ r.__w=1; r.addEventListener('click',function(){ fillAuto(true); updateSrc(); toast('已重新讀取服務包'); }); } }
+
+  function build(){
+    var v=document.getElementById('view-stage4'); if(!v) return;
+    if(v.querySelector('#atlP3Card')){ updateSrc(); fillAuto(false); return; }
+    var saved=load();
+    var html='<div id="atlP3Card" class="atl-p3-card">'
+      +'<div class="atl-p3-head"><span class="atl-p3-badge">Stage 3.5</span><h3>專業內容轉譯卡</h3></div>'
+      +'<div class="atl-p3-note">把客戶的「專業」翻成觀眾聽得懂、會行動的內容。本卡優先讀：本次服務包＋Stage 3 問診＋鏡像庫相近案例。AI 不憑空猜，資料不足的欄位請保留「待補」，下次問診補齊。</div>'
+      +'<div class="atl-p3-src" id="atlP3Src">'+srcHtml()+'</div>';
+    FIELDS.forEach(function(f){
+      html+='<div class="atl-p3-fld'+(f[3]?' auto':'')+'"><label>'+esc(f[1])+'</label>'
+        +'<textarea id="atlP3-'+f[0]+'" placeholder="'+esc(f[2])+'">'+esc(saved[f[0]]||'')+'</textarea></div>';
+    });
+    html+='<div class="atl-p3-acts"><button class="atl-p3-save" id="atlP3Save">儲存轉譯卡</button></div></div>';
+    var wrap=document.createElement('div'); wrap.innerHTML=html;
+    v.insertBefore(wrap.firstChild, v.firstChild);
+    var sv=document.getElementById('atlP3Save'); if(sv) sv.addEventListener('click',save);
+    wireRefresh();
+    v.querySelectorAll('#atlP3Card textarea').forEach(function(t){ t.addEventListener('input',function(){grow(t);}); grow(t); });
+    fillAuto(false);
+  }
+
+  function tryBuild(){ try{ build(); }catch(e){} }
+  // 只盯 #view-stage4 的 childList(內容重渲染時補注入)，不盯 class、不盯整個 body 屬性 → 避免跳針
+  function attach(){ var v=document.getElementById('view-stage4'); if(v && !v.__atlP3mo){ v.__atlP3mo=1;
+    try{ var mo=new MutationObserver(function(){ clearTimeout(window.__atlP3T); window.__atlP3T=setTimeout(tryBuild,200); }); mo.observe(v,{childList:true}); }catch(e){} } }
+  setTimeout(function(){ attach(); tryBuild(); },900);
+  setTimeout(function(){ attach(); tryBuild(); },2200);
+  // 換頁/切客戶時也補一次(輕量輪詢幾次就停)
+  (function(){ var n=0,iv=setInterval(function(){ attach(); tryBuild(); if(++n>=6) clearInterval(iv); },1500); })();
+  window.atlP3={ build:tryBuild, save:save };
+})();
+</script>
+
+<!-- ATELIER cs-v5.37 · P4：各站 AI 提示詞優先吃資料。包住中央 copyPrompt，在提示詞最前面插入「資料包脈絡」
+     (本次服務包＋Stage 3.5 轉譯卡＋鏡像庫相近案例＋借鏡聲明)。有資料才插、純前綴、不改任何既有提示詞內容。規格 §六。 -->
+<script>
+(function(){
+  if(window.__atlP4) return; window.__atlP4=true;
+  function curAccObj(){ try{ return (typeof curAcc==='function')?curAcc():null; }catch(e){ return null; } }
+  function getPkg(){ try{ return (window.atlData&&window.atlData.getPkg)?window.atlData.getPkg():{items:[]}; }catch(e){ return {items:[]}; } }
+  function getMirror(){ try{ return (window.atlData&&window.atlData.getMirror)?window.atlData.getMirror():null; }catch(e){ return null; } }
+  function TL(){ try{ return (window.atlData&&window.atlData.TYPE_LABELS)||{}; }catch(e){ return {}; } }
+
+  function ctx(){
+    var pkg=getPkg(), a=curAccObj(), card=(a&&a.translationCard35)||{}, mirror=getMirror();
+    var parts=[];
+    if(pkg && pkg.items && pkg.items.length){
+      var byType={}; pkg.items.forEach(function(i){ (byType[i.type]=byType[i.type]||[]).push(i); });
+      var L=TL();
+      var lines=Object.keys(byType).map(function(t){ return '・'+(L[t]||t)+'：'+byType[t].map(function(i){return i.title;}).join('；'); });
+      parts.push('【本次服務包（顧問已挑選，請優先參考）】\n'+lines.join('\n'));
+    }
+    var cf=[['term','專業名詞/服務項目'],['scene','觀眾生活場景'],['fear','觀眾正在怕什麼'],['voice','觀眾會怎麼說這個問題'],['selling','白話賣點'],['hook','可用Hook'],['angle','內容故事/切角'],['trust','信任證據'],['cta','CTA行動出口'],['todo','待補資料']];
+    var cl=cf.filter(function(f){return card[f[0]]&&String(card[f[0]]).trim();}).map(function(f){return '・'+f[1]+'：'+String(card[f[0]]).replace(/\n/g,' ');});
+    if(cl.length) parts.push('【Stage 3.5 專業內容轉譯卡（顧問已填）】\n'+cl.join('\n'));
+    if(mirror && mirror.cases && mirror.cases.length){
+      var cs=mirror.cases.slice(0,5).map(function(c){return '・'+(c.title||'')+'（'+(c.accountHandle||'')+'｜觀看'+(c.views||0)+'）';});
+      parts.push('【鏡像庫相近案例（可借鏡）】\n'+cs.join('\n'));
+    }
+    if(!parts.length) return '';
+    var hasRef = !!(pkg && pkg.items && pkg.items.some(function(i){return i.type==='refCase';}));
+    var foot = hasRef
+      ? '※ 重要：這些參考案例可以借鏡的「不是內容本身」，而是 Hook 結構、痛點切角、生活場景、信任證據或 CTA 路徑。資料不足處請標「待補：需要客戶提供什麼」，不要憑空編造。'
+      : '※ 重要：資料不足處請標「待補：需要客戶提供什麼」，不要憑空編造。';
+    return '==== 資料包脈絡（ATELIER 自動帶入，AI 請優先讀取）====\n'+parts.join('\n\n')+'\n'+foot+'\n==== 以下是本次任務的提示詞 ====\n';
+  }
+  window.atlPromptContext = ctx;
+
+  function wrap(){
+    if(typeof window.copyPrompt!=='function' || window.copyPrompt.__atlWrapped) return false;
+    var orig=window.copyPrompt;
+    var w=function(text,label){
+      try{ var c=ctx(); if(c && typeof text==='string') text = c + '\n' + text; }catch(e){}
+      return orig.call(this, text, label);
+    };
+    w.__atlWrapped=true; w.__orig=orig; window.copyPrompt=w;
+    return true;
+  }
+  // copyPrompt 可能於腳本後段才定義；重試直到包到
+  if(!wrap()){ var n=0, iv=setInterval(function(){ if(wrap()||++n>=20) clearInterval(iv); },300); }
 })();
 </script>
