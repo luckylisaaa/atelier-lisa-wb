@@ -349,7 +349,7 @@ v182 更新（交辦單：讓工具變準變專業，接 v181、會動邏輯與�
 <script>
 /* ═══════════ v264：策略診斷使用說明書小窗＋Top/Bottom 標籤/按鈕視覺分層（index.html only） ═══════════ */
 (function(){
-  var VERSION='v366';
+  var VERSION='v367';
   function H(id){return document.getElementById(id)}
   function S(s){try{return (typeof esc==='function')?esc(s||''):String(s||'').replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}catch(e){return String(s||'')}}
   function N(x){try{ if(typeof parseNum==='function') return parseNum(x); }catch(e){} if(x==null)return 0; var t=String(x).replace(/,/g,'').trim(); if(!t)return 0; var m=t.match(/([0-9]+(?:\.[0-9]+)?)/); if(!m)return 0; var n=parseFloat(m[1])||0; if(/[萬万]/.test(t))n*=10000; else if(/[千kK]/.test(t))n*=1000; return n; }
@@ -1224,7 +1224,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v366</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v367</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -11074,7 +11074,7 @@ document.addEventListener('DOMContentLoaded',function(){
 <script>
 /* v239：自動防舊版快取。讓桌布捷徑／瀏覽器如果抓到舊 HTML，能自己比對線上最新版並導向。 */
 (function(){
-  var ATELIER_CURRENT_VERSION='v366';
+  var ATELIER_CURRENT_VERSION='v367';
   window.ATELIER_CURRENT_VERSION=ATELIER_CURRENT_VERSION;
   function _avNum(v){v=String(v||'');var m=v.match(/v\s*(\d+)/i);return m?parseInt(m[1],10):0;}
   function _avDetect(html){html=String(html||'');var m=html.match(/id=["']verBadge["'][^>]*>\s*(v\d+)/i)||html.match(/內部版本\s+(v\d+)/i);return m?m[1]:'';}
@@ -11262,7 +11262,7 @@ document.addEventListener('DOMContentLoaded',function(){
 <script>
 /* ═══════════ v262 hotfix · Strategy consultant UX hardening (final override only) ═══════════ */
 (function(){
-  var VERSION='v366';
+  var VERSION='v367';
   function H(id){return document.getElementById(id)}
   function E(s){try{return (typeof esc==='function')?esc(s||''):String(s||'').replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}catch(e){return String(s||'')}}
   function A(){try{return (typeof accounts!=='undefined'&&accounts)?accounts:(window.accounts||[])}catch(e){return window.accounts||[]}}
@@ -11420,7 +11420,7 @@ document.addEventListener('DOMContentLoaded',function(){
 <script>
 /* ═══════════ v263：策略診斷視覺流程、收合客戶卡、精緻核對窗與提示詞預覽（final override only） ═══════════ */
 (function(){
-  var VERSION='v366';
+  var VERSION='v367';
   function H(id){return document.getElementById(id)}
   function E(s){try{return (typeof esc==='function')?esc(s||''):String(s||'').replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}catch(e){return String(s||'')}}
   function A(){try{return (typeof accounts!=='undefined'&&accounts)?accounts:(window.accounts||[])}catch(e){return window.accounts||[]}}
@@ -11549,7 +11549,7 @@ document.addEventListener('DOMContentLoaded',function(){
 <script>
 /* ═══════════ v266 hotfix：修正 v265 事件代理語法，保留 v265 策略診斷功能（index.html only） ═══════════ */
 (function(){
-  var VERSION='v366';
+  var VERSION='v367';
   function H(id){return document.getElementById(id)}
   function E(s){try{return (typeof esc==='function')?esc(s||''):String(s||'').replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}catch(e){return String(s||'')}}
   function A(){try{return (typeof accounts!=='undefined'&&accounts)?accounts:(window.accounts||[])}catch(e){return window.accounts||[]}}
@@ -11722,7 +11722,7 @@ return '<div class="strat-radar-card-v265"><b>目前沒有符合樣本</b><p>可
 /* ═══════════ v267 strategy hard patch：固定版面、重綁按鈕、互動說明與策略對標雷達（index.html only） ═══════════ */
 (function(){
   'use strict';
-  var VERSION='v366';
+  var VERSION='v367';
   function H(id){return document.getElementById(id)}
   function E(s){return String(s==null?'':s).replace(/[&<>'"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]})}
   function A(){try{return (typeof accounts!=='undefined'&&Array.isArray(accounts))?accounts:(Array.isArray(window.accounts)?window.accounts:[])}catch(e){return []}}
@@ -11951,7 +11951,7 @@ window._strategyRadarV267=radarResults;
 
 <script id="v289PatchJS">
 (function(){
-  try{ window.ATELIER_CURRENT_VERSION='v366'; }catch(e){}
+  try{ window.ATELIER_CURRENT_VERSION='v367'; }catch(e){}
   try{ sessionStorage.setItem('atelierSkipAutoUpdate','1'); }catch(e){}
   try{ if(navigator.serviceWorker && navigator.serviceWorker.getRegistrations){
         navigator.serviceWorker.getRegistrations().then(function(rs){ rs.forEach(function(r){ try{r.update();}catch(e){} }); }).catch(function(){});
@@ -14271,7 +14271,7 @@ textarea:focus{min-height:126px!important;border-color:#D4A574!important;box-sha
   function toastSafe(t){try{if(typeof toast==='function')toast(String(t));else console.log(t)}catch(e){}}
   function autogrow(el){ if(!el||el.tagName!=='TEXTAREA')return; el.style.height='auto'; var h=Math.min(Math.max(el.scrollHeight+2,64),340); el.style.height=h+'px'; }
   function wireAutogrow(root){ qsa('textarea',root||document).forEach(function(t){ if(t.__atlGrow342)return; t.__atlGrow342=true; ['input','change','focus'].forEach(function(ev){t.addEventListener(ev,function(){autogrow(t)})}); setTimeout(function(){autogrow(t)},80); }); }
-  function ensureVersion(){try{var vb=qs('#verBadge'); if(vb)vb.textContent='v366'; window.ATELIER_CURRENT_VERSION='v366'; if(typeof ATELIER_CURRENT_VERSION!=='undefined')ATELIER_CURRENT_VERSION='v366';}catch(e){}}
+  function ensureVersion(){try{var vb=qs('#verBadge'); if(vb)vb.textContent='v367'; window.ATELIER_CURRENT_VERSION='v367'; if(typeof ATELIER_CURRENT_VERSION!=='undefined')ATELIER_CURRENT_VERSION='v367';}catch(e){}}
   function makeSaveReadable(){var p=qs('#atlWbSavePill'); if(!p)return; var span=p.querySelector('span'); if(span&&!span.textContent.trim())span.textContent='未儲存'; p.title=(span?span.textContent:'儲存狀態');}
   function guide(text){
     var old=qs('[data-wb342-guide]'); if(old)old.remove();
@@ -14332,7 +14332,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
   document.addEventListener('click',function(e){var b=e.target.closest('#atlFieldToolbar button'); if(!b||!active)return; var a=b.getAttribute('data-act'); if(a==='prompt')openModal('prompt',active); if(a==='fill')openModal('fill',active); if(a==='edit')openModal('edit',active); if(a==='done'){var bar=qs('#atlFieldToolbar'); if(bar)bar.classList.remove('on'); if(active)active.classList.remove('atl-field-active'); toastSafe('此欄位可視為定案，請記得儲存');}},true);
   function addCollapse(root){qsa('.card,.manual-card,.form-card,.paste-card,.sumcard,.v262-section,.strat-section-v263',root||document).forEach(function(card){if(card.__atlCollapse343||card.closest('#accList,.modal,.atl-field-modal'))return; card.__atlCollapse343=true; card.classList.add('atl-collapsible'); var h=qs('h2,h3,h4,.stitle,.title',card)||card.firstElementChild; if(h)h.classList.add('atl-keep-visible'); var btn=document.createElement('button'); btn.type='button'; btn.className='atl-collapse-toggle'; btn.textContent='收合'; btn.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();var closed=card.classList.toggle('atl-closed');btn.textContent=closed?'展開':'收合';}); card.insertBefore(btn,card.firstChild);});}
   function addNextInline(){qsa('.fbx-panel,.wbfb341-card').forEach(function(p){if(p.__atlNext343)return;p.__atlNext343=true;var n=document.createElement('div');n.className='wb-next-inline';n.innerHTML='<b>下一步：</b>複製後請貼到服務台 ③ 問診、④ 診斷、⑦ 交付備註；如果只是測試資料，就標記已處理或刪除。';p.insertBefore(n,p.firstChild);});}
-  function boot(){try{var vb=qs('#verBadge'); if(vb)vb.textContent='v366'; window.ATELIER_CURRENT_VERSION='v366'; if(typeof ATELIER_CURRENT_VERSION!=='undefined')ATELIER_CURRENT_VERSION='v366';}catch(e){} wire(document); addCollapse(document); addNextInline();}
+  function boot(){try{var vb=qs('#verBadge'); if(vb)vb.textContent='v367'; window.ATELIER_CURRENT_VERSION='v367'; if(typeof ATELIER_CURRENT_VERSION!=='undefined')ATELIER_CURRENT_VERSION='v367';}catch(e){} wire(document); addCollapse(document); addNextInline();}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot); else boot();
   try{new MutationObserver(function(ms){var hit=false; ms.forEach(function(m){if(m.addedNodes&&m.addedNodes.length)hit=true}); if(hit){clearTimeout(window.__atl343Timer); window.__atl343Timer=setTimeout(boot,180);}}).observe(document.body,{childList:true,subtree:true});}catch(e){}
 })();
@@ -14351,7 +14351,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
 <script>
 (function(){
   if(window.__atlWb348) return; window.__atlWb348=true;
-  var V='v366';
+  var V='v367';
   function lock(){ var vb=document.getElementById('verBadge'); if(vb && (vb.textContent||'').trim()!==V) vb.textContent=V; }
   function calmPill(){ var p=document.getElementById('atlWbSavePill'); if(!p) return; var sp=p.querySelector('span');
     if(sp && /尚未儲存/.test(sp.textContent)) sp.textContent='就緒（自動儲存）'; }
@@ -14603,7 +14603,7 @@ input.atl345-open-field:not([type="checkbox"]):not([type="radio"]):not([type="bu
 <script id="atl-v345-final-touch">
 (function(){
   if(window.__atlV345FinalTouch) return; window.__atlV345FinalTouch=true;
-  var VERSION='v366';
+  var VERSION='v367';
   function qs(s,r){return (r||document).querySelector(s)}
   function qsa(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
   function setVersion(){try{var b=qs('#verBadge'); if(b)b.textContent=VERSION; window.ATELIER_CURRENT_VERSION=VERSION;}catch(e){}}
@@ -14943,4 +14943,21 @@ input.atl345-open-field:not([type="checkbox"]):not([type="radio"]):not([type="bu
 }
 /* 套用器最後一塊輸入與 footer 之間留呼吸距離 */
 .atl-app-out{ margin-bottom:6px !important; }
+</style>
+
+<!-- ATELIER · §十 危險動作按鈕統一：刪除/清空類(.danger/.fbx-delsel/.spc-del/.cmpas-rm)改成白底霧灰、紅字hover，
+     明確區隔於主要按鈕(紅實心)。純 CSS、可逆。兩 App 共用。 -->
+<style id="atl-danger-unify">
+.danger, .fbx-delsel, .spc-del, .cmpas-rm{
+  background:#fff !important;
+  color:#9A8A8C !important; -webkit-text-fill-color:#9A8A8C !important;
+  border:1px solid #E2D6D3 !important;
+  box-shadow:none !important;
+  font-weight:700 !important;
+}
+.danger:hover, .fbx-delsel:hover, .spc-del:hover, .cmpas-rm:hover{
+  color:#A51820 !important; -webkit-text-fill-color:#A51820 !important;
+  border-color:#A51820 !important;
+  background:#FBF1F0 !important;
+}
 </style>
