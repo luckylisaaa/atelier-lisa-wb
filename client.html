@@ -725,7 +725,7 @@ details.cat .cat-body{padding:14px 15px}
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">客戶服務台</span></span>
-    <span id="verBadge">cs-v5.37</span>
+    <span id="verBadge">cs-v5.38</span>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button type="button" id="popoutBtn" class="popout-btn" title="把客戶服務台開成獨立小視窗"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6"/><path d="M20 4l-9 9"/><path d="M14 12v7H5V10h7"/></svg>小視窗</button>
@@ -8974,7 +8974,7 @@ button:not(:disabled), .btn:not(.disabled):not([disabled]), [role="button"]{
   if(window.__atlCs473Continuity) return; window.__atlCs473Continuity=true;
   function cleanTextNode(n){var s=n.nodeValue||''; var ns=s.replace(/cs-v4\.\d+\s*(SAFE|LATEST)?\s*[｜|·:-]?\s*/g,'').replace(/\bv\d{3}\s*[｜|·:-]?\s*/g,''); if(ns!==s)n.nodeValue=ns;}
   function cleanVersions(){
-    try{var vb=document.getElementById('verBadge'); if(vb)vb.textContent='cs-v5.37';}catch(e){}
+    try{var vb=document.getElementById('verBadge'); if(vb)vb.textContent='cs-v5.38';}catch(e){}
     try{var w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT,{acceptNode:function(n){var p=n.parentElement; if(!p||p.id==='verBadge'||/^(SCRIPT|STYLE|TEXTAREA)$/i.test(p.tagName))return NodeFilter.FILTER_REJECT; return /(cs-v4\.\d+|\bv\d{3})/.test(n.nodeValue||'')?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_REJECT;}}); var nodes=[],n; while(n=w.nextNode())nodes.push(n); nodes.forEach(cleanTextNode);}catch(e){}
   }
   function alignSelection(){
@@ -9034,7 +9034,7 @@ input[type="text"]:focus,input:not([type]):focus{border-color:#D4A574!important;
     btn.onclick=function(e){e.stopPropagation(); set(!safe.classList.contains('atl-safe474-collapsed'));};
     h.appendChild(summary); h.appendChild(btn); set(localStorage.getItem('atl.cs474.safeCollapsed')!=='0');
   }
-  function cleanBadge(){ var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v5.37'; }
+  function cleanBadge(){ var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v5.38'; }
   function run(){ cleanBadge(); ensureSafeCollapse(); wireAutogrow(document); }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run); else run();
   setInterval(run,1200);
@@ -9095,7 +9095,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
   function wire(root){qsa('textarea,input[type="text"],input[type="url"],input[type="email"],input:not([type])',root||document).forEach(function(el){if(el.__atl475)return; if(el.closest('.atl-field-modal,.atl-final-modal'))return; el.__atl475=true; el.addEventListener('focus',function(){show(el); autogrow(el)}); el.addEventListener('input',function(){autogrow(el)}); el.addEventListener('blur',hideSoon); autogrow(el);});}
   document.addEventListener('click',function(e){var b=e.target.closest('#atlFieldToolbar button'); if(!b||!active)return; var a=b.getAttribute('data-act'); if(a==='prompt')openModal('prompt',active); if(a==='fill')openModal('fill',active); if(a==='edit')openModal('edit',active); if(a==='done'){var bar=qs('#atlFieldToolbar'); if(bar)bar.classList.remove('on'); if(active)active.classList.remove('atl-field-active'); toastSafe('此欄位可視為定案，請記得儲存');}},true);
   function addCollapse(root){qsa('.section-card,.deliverable-card,.atl452safe-card',root||document).forEach(function(card){if(card.__atlCollapse475||card.closest('.preview-modal,.atl-field-modal'))return; card.__atlCollapse475=true; card.classList.add('atl-collapsible'); var h=qs('h2,h3,h4,.stitle,.section-title',card)||card.firstElementChild; if(h)h.classList.add('atl-keep-visible'); var btn=document.createElement('button'); btn.type='button'; btn.className='atl-collapse-toggle'; btn.textContent='收合'; btn.addEventListener('click',function(e){e.preventDefault(); e.stopPropagation(); var closed=card.classList.toggle('atl-closed'); btn.textContent=closed?'展開':'收合';}); card.insertBefore(btn,card.firstChild);});}
-  function boot(){try{var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v5.37';}catch(e){} wire(document); addCollapse(document);}
+  function boot(){try{var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v5.38';}catch(e){} wire(document); addCollapse(document);}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot); else boot();
   try{new MutationObserver(function(ms){var hit=false; ms.forEach(function(m){if(m.addedNodes&&m.addedNodes.length)hit=true}); if(hit){clearTimeout(window.__atl475Timer); window.__atl475Timer=setTimeout(boot,180);}}).observe(document.body,{childList:true,subtree:true});}catch(e){}
 })();
@@ -9136,7 +9136,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
 <script id="atl478-final-export-js">
 (function(){
   if(window.__atl478FinalExport)return; window.__atl478FinalExport=true;
-  var VERSION='cs-v5.37';
+  var VERSION='cs-v5.38';
   function esc(s){return (s==null?'':String(s)).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
   function qsa(sel,root){return Array.prototype.slice.call((root||document).querySelectorAll(sel))}
   function text(el){return (el&&el.innerText||el&&el.textContent||'').replace(/\s+/g,' ').trim()}
@@ -9256,7 +9256,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
 <script>
 (function(){
   if(window.__atlCs480) return; window.__atlCs480=true;
-  var V='cs-v5.37';
+  var V='cs-v5.38';
   function lock(){ var vb=document.getElementById('verBadge'); if(vb && (vb.textContent||'').trim()!==V) vb.textContent=V; }
   function unify(){
     var safe=document.querySelector('.atl452safe'); if(!safe) return;
@@ -10203,7 +10203,7 @@ input.atl477-open-field:not([type="checkbox"]):not([type="radio"]):not([type="bu
 <script id="atl-cs477-final-touch">
 (function(){
   if(window.__atlCs477FinalTouch) return; window.__atlCs477FinalTouch=true;
-  var VERSION='cs-v5.37';
+  var VERSION='cs-v5.38';
   function qs(s,r){return (r||document).querySelector(s)}
   function qsa(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
   function setVersion(){try{var b=qs('#verBadge'); if(b)b.textContent=VERSION; window.ATELIER_CLIENT_VERSION=VERSION;}catch(e){}}
@@ -11555,5 +11555,95 @@ body.atl-hide-final #atlFinalFloat{ display:none !important; }
   }
   // copyPrompt 可能於腳本後段才定義；重試直到包到
   if(!wrap()){ var n=0, iv=setInterval(function(){ if(wrap()||++n>=20) clearInterval(iv); },300); }
+})();
+</script>
+
+<!-- ATELIER cs-v5.38 · P5(服務台側)「回寫工作台」：交付頁(view-stage7)注入回寫卡，把最終結論整理成 a.serviceInsights
+     (ICP/Offer/主推服務/承接窗口/CTA策略/內容戰役/採用案例/KPI/復盤洞察)，跟帳號同步→工作台讀得到。
+     不碰既有 reviewBrief/復盤卡，用全新 serviceInsights 欄位。規格 §七。 -->
+<style id="atl-p5-css">
+.atl-p5-card{ border:1px solid #C9A8A0; border-radius:16px; background:linear-gradient(180deg,#FFFBF9,#FBF1EE); padding:18px; margin:0 0 18px; box-shadow:0 6px 20px rgba(92,15,20,.07); }
+.atl-p5-head{ display:flex; align-items:center; gap:10px; margin-bottom:6px; }
+.atl-p5-badge{ background:#5C0F14; color:#fff; -webkit-text-fill-color:#fff; font-size:11px; font-weight:800; border-radius:7px; padding:3px 9px; letter-spacing:.5px; }
+.atl-p5-head h3{ margin:0; font-family:'Noto Serif TC',serif; font-size:18px; color:#2A1A1C; font-weight:800; }
+.atl-p5-note{ font-size:12px; color:#7A5A5E; -webkit-text-fill-color:#7A5A5E; line-height:1.7; margin-bottom:12px; }
+.atl-p5-fld{ margin-bottom:11px; }
+.atl-p5-fld label{ display:block; font-size:12.5px; font-weight:800; color:#2A1A1C; margin-bottom:5px; }
+.atl-p5-fld textarea{ width:100%; box-sizing:border-box; min-height:44px; resize:none; overflow-y:hidden; line-height:1.7;
+  border:1px solid #E7DCCB; border-radius:9px; padding:10px 12px; font-size:13.5px; font-family:inherit; color:#2A1A1C; -webkit-text-fill-color:#2A1A1C; background:#fff; }
+.atl-p5-fld textarea:focus{ border-color:#D4A574; box-shadow:0 0 0 3px rgba(212,165,116,.14); outline:none; }
+.atl-p5-fld.auto textarea{ background:#FBF3F1; }
+.atl-p5-fld.auto label::after{ content:' · 自動帶入'; color:#A5572A; -webkit-text-fill-color:#A5572A; font-size:10.5px; font-weight:700; }
+.atl-p5-acts{ display:flex; align-items:center; gap:12px; justify-content:flex-end; margin-top:8px; }
+.atl-p5-stamp{ font-size:11px; color:#9A8A8C; -webkit-text-fill-color:#9A8A8C; margin-right:auto; }
+.atl-p5-save{ background:#5C0F14; color:#fff; -webkit-text-fill-color:#fff; border:none; border-radius:999px; padding:10px 22px; font-size:13.5px; font-weight:800; cursor:pointer; font-family:inherit; }
+.atl-p5-save:hover{ background:#73121A; }
+</style>
+<script>
+(function(){
+  if(window.__atlP5) return; window.__atlP5=true;
+  function esc(x){ try{ return (typeof window.esc==='function')?window.esc(x):String(x==null?'':x).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }catch(e){ return String(x==null?'':x); } }
+  function curAccObj(){ try{ return (typeof curAcc==='function')?curAcc():null; }catch(e){ return null; } }
+  function persistAcc(){ try{ if(typeof _accPush==='function'){ _accPush(); return; } }catch(e){} try{ if(typeof saveAccounts==='function') saveAccounts(); }catch(e){} }
+  function getPkg(){ try{ return (window.atlData&&window.atlData.getPkg)?window.atlData.getPkg():{items:[]}; }catch(e){ return {items:[]}; } }
+  function toast(m){ try{ if(window.toastMsg) toastMsg(m); }catch(e){} }
+
+  // 9 欄位：[key,標題,placeholder,自動?]
+  var F=[
+    ['icp','最終 ICP（理想客戶輪廓）','這次鎖定的理想客戶是誰？',false],
+    ['offer','最終 Offer','這次主打的方案/承諾是什麼？',false],
+    ['mainService','主推服務','要把流量導向哪個服務？',false],
+    ['window','承接窗口','客戶來了之後從哪裡接（私訊/表單/預約…）？',false],
+    ['ctaStrategy','本期 CTA 策略','這期的行動出口策略',true],
+    ['campaign','本期內容戰役','這期要打的內容主軸/系列',false],
+    ['adoptedCases','採用的參考案例','（自動帶入服務包裡的參考案例）',true],
+    ['kpi','下一輪追蹤 KPI','下一輪要看哪些數字驗證？',false],
+    ['insight','復盤洞察','這輪學到什麼？下一輪延續或調整什麼？',true]
+  ];
+  function adoptedCasesText(){ var items=getPkg().items.filter(function(i){return i.type==='refCase';}); return items.map(function(i){return '· '+(i.title||'')+(i.adopted?'（已採用）':'')+(i.sub?'｜'+i.sub:'');}).join('\n'); }
+  function ctaHint(){ var a=curAccObj(); try{ return (a.translationCard35&&a.translationCard35.cta)||''; }catch(e){ return ''; } }
+  function insightHint(){ var a=curAccObj(); try{ return (a.reviewBrief&&(a.reviewBrief.insight||a.reviewBrief.result))||''; }catch(e){ return ''; } }
+  function grow(t){ try{ t.style.height='auto'; t.style.height=Math.min(t.scrollHeight, Math.round((window.innerHeight||800)*0.6))+'px'; }catch(e){} }
+  function load(){ var a=curAccObj(); return (a&&a.serviceInsights)||{}; }
+
+  function writeBack(){
+    var a=curAccObj(); if(!a){ toast('請先選擇客戶'); return; }
+    var si=a.serviceInsights=a.serviceInsights||{};
+    F.forEach(function(f){ var el=document.getElementById('atlP5-'+f[0]); if(el) si[f[0]]=el.value; });
+    si.round=(si.round||0)+1; si.updatedAt=Date.now();
+    persistAcc();
+    toast('已回寫工作台（第 '+si.round+' 輪結論）');
+    var st=document.getElementById('atlP5Stamp'); if(st) st.textContent='已回寫：第 '+si.round+' 輪 · 工作台策略頁可讀到';
+  }
+
+  function build(){
+    var v=document.getElementById('view-stage7'); if(!v) return;
+    if(v.querySelector('#atlP5Card')) return;
+    var saved=load();
+    var html='<div id="atlP5Card" class="atl-p5-card">'
+      +'<div class="atl-p5-head"><span class="atl-p5-badge">回寫工作台</span><h3>本輪服務結論</h3></div>'
+      +'<div class="atl-p5-note">完成問診／轉譯／CTA／戰役／復盤後，在這裡整理「最終結論」，按下方「回寫工作台」→ 工作台下次打開這位客戶的策略頁就會看到上一輪結論。（存在相容欄位，不影響既有復盤卡。）</div>';
+    F.forEach(function(f){
+      var val=saved[f[0]]||'';
+      html+='<div class="atl-p5-fld'+(f[3]?' auto':'')+'"><label>'+esc(f[1])+'</label>'
+        +'<textarea id="atlP5-'+f[0]+'" placeholder="'+esc(f[2])+'">'+esc(val)+'</textarea></div>';
+    });
+    html+='<div class="atl-p5-acts"><span class="atl-p5-stamp" id="atlP5Stamp">'+(saved.updatedAt?('已回寫：第 '+(saved.round||1)+' 輪'):'尚未回寫')+'</span>'
+      +'<button class="atl-p5-save" id="atlP5Save">↩ 回寫工作台</button></div></div>';
+    var wrap=document.createElement('div'); wrap.innerHTML=html;
+    v.insertBefore(wrap.firstChild, v.firstChild);
+    var sv=document.getElementById('atlP5Save'); if(sv) sv.addEventListener('click',writeBack);
+    // 自動帶入(只填空白)
+    function setIf(id,val){ var el=document.getElementById('atlP5-'+id); if(el&&val&&!el.value.trim()){ el.value=val; } }
+    setIf('adoptedCases',adoptedCasesText()); setIf('ctaStrategy',ctaHint()); setIf('insight',insightHint());
+    v.querySelectorAll('#atlP5Card textarea').forEach(function(t){ t.addEventListener('input',function(){grow(t);}); grow(t); });
+  }
+  function tryBuild(){ try{ build(); }catch(e){} }
+  function attach(){ var v=document.getElementById('view-stage7'); if(v && !v.__atlP5mo){ v.__atlP5mo=1;
+    try{ var mo=new MutationObserver(function(){ clearTimeout(window.__atlP5T); window.__atlP5T=setTimeout(tryBuild,200); }); mo.observe(v,{childList:true}); }catch(e){} } }
+  setTimeout(function(){ attach(); tryBuild(); },900);
+  setTimeout(function(){ attach(); tryBuild(); },2200);
+  (function(){ var n=0,iv=setInterval(function(){ attach(); tryBuild(); if(++n>=6) clearInterval(iv); },1500); })();
+  window.atlP5={ build:tryBuild, writeBack:writeBack };
 })();
 </script>
