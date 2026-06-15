@@ -349,7 +349,7 @@ v182 更新（交辦單：讓工具變準變專業，接 v181、會動邏輯與�
 <script>
 /* ═══════════ v264：策略診斷使用說明書小窗＋Top/Bottom 標籤/按鈕視覺分層（index.html only） ═══════════ */
 (function(){
-  var VERSION='v358';
+  var VERSION='v359';
   function H(id){return document.getElementById(id)}
   function S(s){try{return (typeof esc==='function')?esc(s||''):String(s||'').replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}catch(e){return String(s||'')}}
   function N(x){try{ if(typeof parseNum==='function') return parseNum(x); }catch(e){} if(x==null)return 0; var t=String(x).replace(/,/g,'').trim(); if(!t)return 0; var m=t.match(/([0-9]+(?:\.[0-9]+)?)/); if(!m)return 0; var n=parseFloat(m[1])||0; if(/[萬万]/.test(t))n*=10000; else if(/[千kK]/.test(t))n*=1000; return n; }
@@ -1224,7 +1224,7 @@ if('serviceWorker' in navigator){
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">影片診斷工作台</span></span>
-    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v358</span>
+    <span id="verBadge" style="margin-left:8px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold-dark);border:1px solid var(--gold-soft);border-radius:6px;padding:2px 7px;background:var(--warm);white-space:nowrap">v359</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <button type="button" id="reloadBtn" title="重新整理（抓最新版）" style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap">↻ 重新整理</button>
@@ -11074,7 +11074,7 @@ document.addEventListener('DOMContentLoaded',function(){
 <script>
 /* v239：自動防舊版快取。讓桌布捷徑／瀏覽器如果抓到舊 HTML，能自己比對線上最新版並導向。 */
 (function(){
-  var ATELIER_CURRENT_VERSION='v358';
+  var ATELIER_CURRENT_VERSION='v359';
   window.ATELIER_CURRENT_VERSION=ATELIER_CURRENT_VERSION;
   function _avNum(v){v=String(v||'');var m=v.match(/v\s*(\d+)/i);return m?parseInt(m[1],10):0;}
   function _avDetect(html){html=String(html||'');var m=html.match(/id=["']verBadge["'][^>]*>\s*(v\d+)/i)||html.match(/內部版本\s+(v\d+)/i);return m?m[1]:'';}
@@ -11262,7 +11262,7 @@ document.addEventListener('DOMContentLoaded',function(){
 <script>
 /* ═══════════ v262 hotfix · Strategy consultant UX hardening (final override only) ═══════════ */
 (function(){
-  var VERSION='v358';
+  var VERSION='v359';
   function H(id){return document.getElementById(id)}
   function E(s){try{return (typeof esc==='function')?esc(s||''):String(s||'').replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}catch(e){return String(s||'')}}
   function A(){try{return (typeof accounts!=='undefined'&&accounts)?accounts:(window.accounts||[])}catch(e){return window.accounts||[]}}
@@ -11420,7 +11420,7 @@ document.addEventListener('DOMContentLoaded',function(){
 <script>
 /* ═══════════ v263：策略診斷視覺流程、收合客戶卡、精緻核對窗與提示詞預覽（final override only） ═══════════ */
 (function(){
-  var VERSION='v358';
+  var VERSION='v359';
   function H(id){return document.getElementById(id)}
   function E(s){try{return (typeof esc==='function')?esc(s||''):String(s||'').replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}catch(e){return String(s||'')}}
   function A(){try{return (typeof accounts!=='undefined'&&accounts)?accounts:(window.accounts||[])}catch(e){return window.accounts||[]}}
@@ -11549,7 +11549,7 @@ document.addEventListener('DOMContentLoaded',function(){
 <script>
 /* ═══════════ v266 hotfix：修正 v265 事件代理語法，保留 v265 策略診斷功能（index.html only） ═══════════ */
 (function(){
-  var VERSION='v358';
+  var VERSION='v359';
   function H(id){return document.getElementById(id)}
   function E(s){try{return (typeof esc==='function')?esc(s||''):String(s||'').replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}catch(e){return String(s||'')}}
   function A(){try{return (typeof accounts!=='undefined'&&accounts)?accounts:(window.accounts||[])}catch(e){return window.accounts||[]}}
@@ -11722,7 +11722,7 @@ return '<div class="strat-radar-card-v265"><b>目前沒有符合樣本</b><p>可
 /* ═══════════ v267 strategy hard patch：固定版面、重綁按鈕、互動說明與策略對標雷達（index.html only） ═══════════ */
 (function(){
   'use strict';
-  var VERSION='v358';
+  var VERSION='v359';
   function H(id){return document.getElementById(id)}
   function E(s){return String(s==null?'':s).replace(/[&<>'"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]})}
   function A(){try{return (typeof accounts!=='undefined'&&Array.isArray(accounts))?accounts:(Array.isArray(window.accounts)?window.accounts:[])}catch(e){return []}}
@@ -11951,7 +11951,7 @@ window._strategyRadarV267=radarResults;
 
 <script id="v289PatchJS">
 (function(){
-  try{ window.ATELIER_CURRENT_VERSION='v358'; }catch(e){}
+  try{ window.ATELIER_CURRENT_VERSION='v359'; }catch(e){}
   try{ sessionStorage.setItem('atelierSkipAutoUpdate','1'); }catch(e){}
   try{ if(navigator.serviceWorker && navigator.serviceWorker.getRegistrations){
         navigator.serviceWorker.getRegistrations().then(function(rs){ rs.forEach(function(r){ try{r.update();}catch(e){} }); }).catch(function(){});
@@ -14271,7 +14271,7 @@ textarea:focus{min-height:126px!important;border-color:#D4A574!important;box-sha
   function toastSafe(t){try{if(typeof toast==='function')toast(String(t));else console.log(t)}catch(e){}}
   function autogrow(el){ if(!el||el.tagName!=='TEXTAREA')return; el.style.height='auto'; var h=Math.min(Math.max(el.scrollHeight+2,64),340); el.style.height=h+'px'; }
   function wireAutogrow(root){ qsa('textarea',root||document).forEach(function(t){ if(t.__atlGrow342)return; t.__atlGrow342=true; ['input','change','focus'].forEach(function(ev){t.addEventListener(ev,function(){autogrow(t)})}); setTimeout(function(){autogrow(t)},80); }); }
-  function ensureVersion(){try{var vb=qs('#verBadge'); if(vb)vb.textContent='v358'; window.ATELIER_CURRENT_VERSION='v358'; if(typeof ATELIER_CURRENT_VERSION!=='undefined')ATELIER_CURRENT_VERSION='v358';}catch(e){}}
+  function ensureVersion(){try{var vb=qs('#verBadge'); if(vb)vb.textContent='v359'; window.ATELIER_CURRENT_VERSION='v359'; if(typeof ATELIER_CURRENT_VERSION!=='undefined')ATELIER_CURRENT_VERSION='v359';}catch(e){}}
   function makeSaveReadable(){var p=qs('#atlWbSavePill'); if(!p)return; var span=p.querySelector('span'); if(span&&!span.textContent.trim())span.textContent='未儲存'; p.title=(span?span.textContent:'儲存狀態');}
   function guide(text){
     var old=qs('[data-wb342-guide]'); if(old)old.remove();
@@ -14332,7 +14332,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
   document.addEventListener('click',function(e){var b=e.target.closest('#atlFieldToolbar button'); if(!b||!active)return; var a=b.getAttribute('data-act'); if(a==='prompt')openModal('prompt',active); if(a==='fill')openModal('fill',active); if(a==='edit')openModal('edit',active); if(a==='done'){var bar=qs('#atlFieldToolbar'); if(bar)bar.classList.remove('on'); if(active)active.classList.remove('atl-field-active'); toastSafe('此欄位可視為定案，請記得儲存');}},true);
   function addCollapse(root){qsa('.card,.manual-card,.form-card,.paste-card,.sumcard,.v262-section,.strat-section-v263',root||document).forEach(function(card){if(card.__atlCollapse343||card.closest('#accList,.modal,.atl-field-modal'))return; card.__atlCollapse343=true; card.classList.add('atl-collapsible'); var h=qs('h2,h3,h4,.stitle,.title',card)||card.firstElementChild; if(h)h.classList.add('atl-keep-visible'); var btn=document.createElement('button'); btn.type='button'; btn.className='atl-collapse-toggle'; btn.textContent='收合'; btn.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();var closed=card.classList.toggle('atl-closed');btn.textContent=closed?'展開':'收合';}); card.insertBefore(btn,card.firstChild);});}
   function addNextInline(){qsa('.fbx-panel,.wbfb341-card').forEach(function(p){if(p.__atlNext343)return;p.__atlNext343=true;var n=document.createElement('div');n.className='wb-next-inline';n.innerHTML='<b>下一步：</b>複製後請貼到服務台 ③ 問診、④ 診斷、⑦ 交付備註；如果只是測試資料，就標記已處理或刪除。';p.insertBefore(n,p.firstChild);});}
-  function boot(){try{var vb=qs('#verBadge'); if(vb)vb.textContent='v358'; window.ATELIER_CURRENT_VERSION='v358'; if(typeof ATELIER_CURRENT_VERSION!=='undefined')ATELIER_CURRENT_VERSION='v358';}catch(e){} wire(document); addCollapse(document); addNextInline();}
+  function boot(){try{var vb=qs('#verBadge'); if(vb)vb.textContent='v359'; window.ATELIER_CURRENT_VERSION='v359'; if(typeof ATELIER_CURRENT_VERSION!=='undefined')ATELIER_CURRENT_VERSION='v359';}catch(e){} wire(document); addCollapse(document); addNextInline();}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot); else boot();
   try{new MutationObserver(function(ms){var hit=false; ms.forEach(function(m){if(m.addedNodes&&m.addedNodes.length)hit=true}); if(hit){clearTimeout(window.__atl343Timer); window.__atl343Timer=setTimeout(boot,180);}}).observe(document.body,{childList:true,subtree:true});}catch(e){}
 })();
@@ -14351,7 +14351,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
 <script>
 (function(){
   if(window.__atlWb348) return; window.__atlWb348=true;
-  var V='v358';
+  var V='v359';
   function lock(){ var vb=document.getElementById('verBadge'); if(vb && (vb.textContent||'').trim()!==V) vb.textContent=V; }
   function calmPill(){ var p=document.getElementById('atlWbSavePill'); if(!p) return; var sp=p.querySelector('span');
     if(sp && /尚未儲存/.test(sp.textContent)) sp.textContent='就緒（自動儲存）'; }
@@ -14388,7 +14388,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
 .atl-closed .atl-collapse-toggle::before{ content:"\25B8  "; }
 </style>
 
-<!-- v358 · 帳號卡勾選框收斂:先前有 4 條打架的定位規則,這裡用最高優先一條收斂,
+<!-- v359 · 帳號卡勾選框收斂:先前有 4 條打架的定位規則,這裡用最高優先一條收斂,
      確保卡片為定位基準、勾選框乾淨置於右上、不與平台標籤打架。純 CSS。 -->
 <style id="atl-wb352-checkfix">
 #accList > .vcard{ position:relative !important; }
@@ -14407,7 +14407,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
 </style>
 
 <style id="atl-wb353-btnspace">
-/* v358 · 帳號卡三顆注入按鈕(fbx-pill/wb-pline/wb-ov1-pill 各自由不同 addon 塞入)間距統一、不重疊 */
+/* v359 · 帳號卡三顆注入按鈕(fbx-pill/wb-pline/wb-ov1-pill 各自由不同 addon 塞入)間距統一、不重疊 */
 .fbx-pill, .wb-pline, .wb-ov1-pill{
   margin:0 8px 8px 0 !important;
   vertical-align:middle !important;
@@ -14418,12 +14418,12 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
 .wb-ov1-pill{ margin-top:2px !important; }
 </style>
 <style id="atl-wb354-pvtop">
-/* v358 · AI 提示詞視窗(atlPromptView, data-atl-pv)原 z-index 9900，會被 CTA 模態(100000)等蓋住→卡住/回不去。
+/* v359 · AI 提示詞視窗(atlPromptView, data-atl-pv)原 z-index 9900，會被 CTA 模態(100000)等蓋住→卡住/回不去。
    統一拉到所有模態之上，凡有填空/AI三件套呼叫提示詞都會浮在最上層、關掉就回到原本對話框。 */
 [data-atl-pv]{ z-index:100060 !important; }
 </style>
 <style id="atl-wb358-bigedit">
-/* v358 · 長欄位放大編輯（工作台版，移植自服務台 cs-v5.05；不動原 input） */
+/* v359 · 長欄位放大編輯（工作台版，移植自服務台 cs-v5.05；不動原 input） */
 .atl-bigedit-chip{ position:fixed; left:50%; transform:translateX(-50%); bottom:16px; z-index:100040; border:1px solid #A51820; background:#A51820; color:#fff; -webkit-text-fill-color:#fff; border-radius:999px; padding:7px 16px; font-size:12.5px; font-weight:800; cursor:pointer; font-family:inherit; box-shadow:0 6px 18px rgba(90,40,45,.28); display:none; }
 .atl-bigedit-mask{ position:fixed; inset:0; z-index:100075; background:rgba(42,26,28,.45); display:flex; align-items:center; justify-content:center; padding:24px; }
 .atl-bigedit-sheet{ background:#FDFBF8; width:620px; max-width:94vw; border-radius:16px; box-shadow:0 24px 60px rgba(42,26,28,.3); padding:22px 22px 20px; font-family:Noto Sans TC,Arial,sans-serif; box-sizing:border-box; }
@@ -14467,6 +14467,90 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
 })();
 </script>
 
+<style id="atl-wb359-applicator">
+/* v359 · 靈感／案例套用器：貼別人成功的東西→AI 拆底層邏輯→翻成這個客戶能用的內容策略→存成策略模板 */
+.atl-app-fab{ position:fixed; right:0; top:50%; transform:translateY(-50%); z-index:99500; border:1px solid #A51820; border-right:none; background:#A51820; color:#fff; -webkit-text-fill-color:#fff; border-radius:12px 0 0 12px; padding:12px 10px; font-size:12.5px; font-weight:800; cursor:pointer; font-family:inherit; writing-mode:vertical-rl; letter-spacing:2px; box-shadow:-4px 4px 16px rgba(90,40,45,.22); }
+.atl-app-fab:hover{ background:#8E1118; }
+.atl-app-mask{ position:fixed; inset:0; z-index:100078; background:rgba(42,26,28,.48); display:flex; align-items:center; justify-content:center; padding:24px; }
+.atl-app-sheet{ background:#FDFBF8; width:680px; max-width:95vw; max-height:90vh; overflow-y:auto; border-radius:16px; box-shadow:0 24px 60px rgba(42,26,28,.32); padding:26px; font-family:Noto Sans TC,Arial,sans-serif; box-sizing:border-box; }
+.atl-app-sheet .k{ font-family:Cormorant Garamond,serif; font-size:11px; letter-spacing:3px; color:#D4A574; font-weight:700; }
+.atl-app-sheet h3{ font-family:Noto Serif TC,serif; font-size:20px; color:#2A1A1C; margin:3px 0 6px; }
+.atl-app-note{ color:#7A5A5E; font-size:12.5px; line-height:1.7; margin-bottom:12px; }
+.atl-app-lab{ font-weight:800; color:#A51820; -webkit-text-fill-color:#A51820; font-size:13px; margin:13px 0 6px; }
+.atl-app-types{ display:flex; gap:7px; flex-wrap:wrap; }
+.atl-app-types button{ border:1px solid #E5DAD2; background:#fff; color:#7A5A5E; -webkit-text-fill-color:#7A5A5E; border-radius:999px; padding:5px 13px; font-size:12px; font-weight:800; cursor:pointer; font-family:inherit; }
+.atl-app-types button.on{ border-color:#A51820; background:#A51820; color:#fff; -webkit-text-fill-color:#fff; }
+.atl-app-sheet input[type=text]{ width:100%; border:1px solid #D9C2C4; border-radius:9px; padding:9px 11px; font-size:13.5px; font-family:inherit; box-sizing:border-box; }
+.atl-app-sheet textarea{ width:100%; min-height:120px; border:1px solid #D9C2C4; border-radius:10px; padding:11px; font-size:13.5px; font-family:inherit; line-height:1.7; resize:vertical; box-sizing:border-box; }
+.atl-app-b{ border-radius:999px; padding:8px 16px; font-size:12.5px; font-weight:800; cursor:pointer; font-family:inherit; border:1px solid #A51820; background:#A51820; color:#fff; -webkit-text-fill-color:#fff; }
+.atl-app-b.ghost{ background:#fff; color:#A51820; -webkit-text-fill-color:#A51820; border-color:#D9B8BB; }
+.atl-app-x{ border:1px solid #E5DAD2; background:#fff; color:#7A5A5E; -webkit-text-fill-color:#7A5A5E; border-radius:999px; padding:8px 16px; font-size:12.5px; font-weight:800; cursor:pointer; font-family:inherit; }
+.atl-app-row{ display:flex; gap:8px; flex-wrap:wrap; margin-top:8px; }
+.atl-app-msg{ font-size:12px; color:#7A1518; -webkit-text-fill-color:#7A1518; margin-top:8px; min-height:16px; line-height:1.6; }
+.atl-app-hr{ border:none; border-top:1px solid #EFE3DA; margin:18px 0; }
+.atl-app-foot{ display:flex; justify-content:flex-end; margin-top:16px; }
+</style>
+<script>
+(function(){
+  if(window.__atlApplicator359) return; window.__atlApplicator359=true;
+  function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+  function copy(t,msg,ok){ try{ navigator.clipboard.writeText(t); if(msg) msg.textContent=ok||'✓ 已複製，貼到 ChatGPT／Claude／Gemini。'; }catch(e){ if(msg) msg.textContent='（複製失敗，請手動選取複製）'; } }
+  function guessClient(){ try{ if(typeof accounts!=='undefined'&&accounts&&accounts.length){ var a=accounts.find(function(x){return x&&x.star;})||accounts[0]; return (a&&(a.displayName||a.handle))||''; } }catch(e){} return ''; }
+  function buildPrompt(type, client, ref){
+    return '你是 ATELIER 的資深內容策略顧問。我要把一個「別人成功的東西」的底層邏輯，套用到我的客戶身上。\n\n'+
+      '【參考來源（'+type+'）】\n'+ref+'\n\n'+
+      '【要套用到的客戶】\n'+(client||'（見下方我描述的客戶）')+'\n\n'+
+      '請依序輸出：\n'+
+      '1. 底層邏輯拆解：這個參考為什麼有效？抽出 3–5 個「可遷移的核心原理」——不是表面做法，是底層的人性／結構／心理機制。\n'+
+      '2. 可套用性判斷：哪些原理可以直接套到我的客戶、哪些要改寫、哪些不適用，並說明原因。\n'+
+      '3. 翻譯成這個客戶的內容策略：\n   • 可用的 Hook 方向（3 個）\n   • 可用的主題／題材（3–5 個）\n   • 可用的 CTA 行動出口\n   • 一支示範腳本骨架（開場 Hook → 中段 → 結尾 CTA）\n   • 品牌語氣建議（怎麼講才像這個客戶、不像在抄）\n'+
+      '4. 幫這個「策略模板」取一個名字，並用一句話說明它的用途與適用情境。\n\n'+
+      '要求：不要照抄參考，而是萃取底層邏輯，再翻譯成這個客戶能用、且符合他身分與專業的版本。';
+  }
+  function buildTemplateHTML(client, content){
+    var date=new Date().toLocaleDateString('zh-TW');
+    return '<!doctype html><html lang="zh-TW"><head><meta charset="utf-8"><title>'+esc(client||'客戶')+' · 策略模板</title>'+
+      '<style>body{font-family:"Noto Sans TC",Arial,sans-serif;color:#2A1A1C;max-width:780px;margin:40px auto;padding:0 24px;line-height:1.9;background:#FDFBF8}'+
+      '.k{font-family:"Cormorant Garamond",serif;letter-spacing:4px;color:#D4A574;font-size:13px}'+
+      'h1{font-family:"Noto Serif TC",serif;font-size:25px;color:#A51820;margin:6px 0 2px}.meta{color:#7A5A5E;font-size:13px;margin-bottom:22px;border-bottom:1px solid #EFE3DA;padding-bottom:14px}'+
+      '.body{white-space:pre-wrap;font-size:15px}</style></head><body>'+
+      '<div class="k">ATELIER · STRATEGY TEMPLATE</div><h1>'+esc(client||'客戶')+' · 可用策略模板</h1>'+
+      '<div class="meta">由「靈感／案例套用器」產生 ｜ '+date+'</div><div class="body">'+esc(content)+'</div></body></html>';
+  }
+  function openModal(){
+    var type='成功案例';
+    var mask=document.createElement('div'); mask.className='atl-app-mask';
+    mask.innerHTML='<div class="atl-app-sheet"><div class="k">STRATEGY APPLICATOR</div><h3>靈感／案例套用器</h3>'+
+      '<div class="atl-app-note">貼入一個「別人成功的東西」（成功案例／心理學概念／爆款影片／名人觀點），AI 會拆出底層邏輯，再翻譯成「這個客戶」能用的內容策略。這是萃取邏輯、不是照抄。</div>'+
+      '<div class="atl-app-lab">參考類型</div><div class="atl-app-types"><button data-t="成功案例" class="on">成功案例</button><button data-t="心理學概念">心理學概念</button><button data-t="爆款影片">爆款影片</button><button data-t="名人觀點">名人觀點</button><button data-t="其他參考">其他</button></div>'+
+      '<div class="atl-app-lab">套用到哪個客戶</div><input type="text" class="atl-app-client" placeholder="例如：理鴻法律事務所">'+
+      '<div class="atl-app-lab">貼入參考內容</div><textarea class="atl-app-ref" placeholder="把成功案例／心理學概念／爆款影片的內容或描述貼這裡…"></textarea>'+
+      '<div class="atl-app-row"><button class="atl-app-b" data-act="gen" type="button">產生「套用提示詞」（複製給 AI）</button></div>'+
+      '<hr class="atl-app-hr">'+
+      '<div class="atl-app-lab">貼回 AI 產出的策略模板</div><textarea class="atl-app-out" placeholder="把 AI 產出的策略貼回這裡，存成此客戶的策略模板…"></textarea>'+
+      '<div class="atl-app-row"><button class="atl-app-b ghost" data-act="copyout" type="button">複製模板</button><button class="atl-app-b" data-act="dl" type="button">下載成模板 HTML</button></div>'+
+      '<div class="atl-app-msg"></div>'+
+      '<div class="atl-app-foot"><button class="atl-app-x" type="button">關閉</button></div></div>';
+    var clientI=mask.querySelector('.atl-app-client'); clientI.value=guessClient();
+    var refI=mask.querySelector('.atl-app-ref'); var outI=mask.querySelector('.atl-app-out'); var msg=mask.querySelector('.atl-app-msg');
+    mask.querySelectorAll('.atl-app-types button').forEach(function(b){ b.addEventListener('click',function(){ type=b.getAttribute('data-t'); mask.querySelectorAll('.atl-app-types button').forEach(function(x){x.classList.remove('on');}); b.classList.add('on'); }); });
+    function close(){ if(mask.parentNode) mask.parentNode.removeChild(mask); }
+    mask.querySelector('.atl-app-x').addEventListener('click',close);
+    mask.addEventListener('click',function(e){ if(e.target===mask) close(); });
+    mask.querySelectorAll('[data-act]').forEach(function(b){ b.addEventListener('click',function(){
+      var act=b.getAttribute('data-act');
+      if(act==='gen'){ if(!(refI.value||'').trim()){ msg.textContent='✗ 請先貼入參考內容。'; return; } copy(buildPrompt(type, clientI.value.trim(), refI.value), msg, '✓ 已複製套用提示詞，貼到 AI，再把產出貼回下面。'); }
+      else if(act==='copyout'){ if(!(outI.value||'').trim()){ msg.textContent='✗ 下面還沒有 AI 產出。'; return; } copy(outI.value, msg, '✓ 已複製策略模板。'); }
+      else if(act==='dl'){ if(!(outI.value||'').trim()){ msg.textContent='✗ 下面還沒有 AI 產出可下載。'; return; } var html=buildTemplateHTML(clientI.value.trim(), outI.value); window.__atlLastTemplate=html; try{ var blob=new Blob([html],{type:'text/html;charset=utf-8'}); var url=URL.createObjectURL(blob); var a=document.createElement('a'); a.href=url; a.download='ATELIER_策略模板_'+(clientI.value.trim()||'客戶').replace(/\s/g,'')+'.html'; document.body.appendChild(a); a.click(); setTimeout(function(){try{URL.revokeObjectURL(url);}catch(e){} a.remove();},500); msg.textContent='✓ 已下載策略模板 HTML。'; }catch(e){ msg.textContent='（下載失敗）'; } }
+    }); });
+    document.body.appendChild(mask);
+  }
+  function boot(){ if(!document.body) return; if(document.querySelector('.atl-app-fab')) return; var fab=document.createElement('button'); fab.type='button'; fab.className='atl-app-fab'; fab.textContent='✦ 靈感套用器'; fab.addEventListener('click',openModal); document.body.appendChild(fab); }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',boot); else boot();
+  setTimeout(boot,1200);
+})();
+</script>
+
 </body>
 </html>
 
@@ -14487,7 +14571,7 @@ input.atl345-open-field:not([type="checkbox"]):not([type="radio"]):not([type="bu
 <script id="atl-v345-final-touch">
 (function(){
   if(window.__atlV345FinalTouch) return; window.__atlV345FinalTouch=true;
-  var VERSION='v358';
+  var VERSION='v359';
   function qs(s,r){return (r||document).querySelector(s)}
   function qsa(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
   function setVersion(){try{var b=qs('#verBadge'); if(b)b.textContent=VERSION; window.ATELIER_CURRENT_VERSION=VERSION;}catch(e){}}
