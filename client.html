@@ -725,7 +725,7 @@ details.cat .cat-body{padding:14px 15px}
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">客戶服務台</span></span>
-    <span id="verBadge">cs-v5.96</span>
+    <span id="verBadge">cs-v5.97</span>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button type="button" id="popoutBtn" class="popout-btn" title="把客戶服務台開成獨立小視窗"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6"/><path d="M20 4l-9 9"/><path d="M14 12v7H5V10h7"/></svg>小視窗</button>
@@ -9054,7 +9054,7 @@ button:not(:disabled), .btn:not(.disabled):not([disabled]), [role="button"]{
   if(window.__atlCs473Continuity) return; window.__atlCs473Continuity=true;
   function cleanTextNode(n){var s=n.nodeValue||''; var ns=s.replace(/cs-v4\.\d+\s*(SAFE|LATEST)?\s*[｜|·:-]?\s*/g,'').replace(/\bv\d{3}\s*[｜|·:-]?\s*/g,''); if(ns!==s)n.nodeValue=ns;}
   function cleanVersions(){
-    try{var vb=document.getElementById('verBadge'); if(vb)vb.textContent='cs-v5.96';}catch(e){}
+    try{var vb=document.getElementById('verBadge'); if(vb)vb.textContent='cs-v5.97';}catch(e){}
     try{var w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT,{acceptNode:function(n){var p=n.parentElement; if(!p||p.id==='verBadge'||/^(SCRIPT|STYLE|TEXTAREA)$/i.test(p.tagName))return NodeFilter.FILTER_REJECT; return /(cs-v4\.\d+|\bv\d{3})/.test(n.nodeValue||'')?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_REJECT;}}); var nodes=[],n; while(n=w.nextNode())nodes.push(n); nodes.forEach(cleanTextNode);}catch(e){}
   }
   function alignSelection(){
@@ -9114,7 +9114,7 @@ input[type="text"]:focus,input:not([type]):focus{border-color:#D4A574!important;
     btn.onclick=function(e){e.stopPropagation(); set(!safe.classList.contains('atl-safe474-collapsed'));};
     h.appendChild(summary); h.appendChild(btn); set(localStorage.getItem('atl.cs474.safeCollapsed')!=='0');
   }
-  function cleanBadge(){ var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v5.96'; }
+  function cleanBadge(){ var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v5.97'; }
   function run(){ cleanBadge(); ensureSafeCollapse(); wireAutogrow(document); }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run); else run();
   setInterval(run,1200);
@@ -9175,7 +9175,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
   function wire(root){qsa('textarea,input[type="text"],input[type="url"],input[type="email"],input:not([type])',root||document).forEach(function(el){if(el.__atl475)return; if(el.closest('.atl-field-modal,.atl-final-modal'))return; el.__atl475=true; el.addEventListener('focus',function(){show(el); autogrow(el)}); el.addEventListener('input',function(){autogrow(el)}); el.addEventListener('blur',hideSoon); autogrow(el);});}
   document.addEventListener('click',function(e){var b=e.target.closest('#atlFieldToolbar button'); if(!b||!active)return; var a=b.getAttribute('data-act'); if(a==='prompt')openModal('prompt',active); if(a==='fill')openModal('fill',active); if(a==='edit')openModal('edit',active); if(a==='done'){var bar=qs('#atlFieldToolbar'); if(bar)bar.classList.remove('on'); if(active)active.classList.remove('atl-field-active'); toastSafe('此欄位可視為定案，請記得儲存');}},true);
   function addCollapse(root){qsa('.section-card,.deliverable-card,.atl452safe-card',root||document).forEach(function(card){if(card.__atlCollapse475||card.closest('.preview-modal,.atl-field-modal'))return; card.__atlCollapse475=true; card.classList.add('atl-collapsible'); var h=qs('h2,h3,h4,.stitle,.section-title',card)||card.firstElementChild; if(h)h.classList.add('atl-keep-visible'); var btn=document.createElement('button'); btn.type='button'; btn.className='atl-collapse-toggle'; btn.textContent='收合'; btn.addEventListener('click',function(e){e.preventDefault(); e.stopPropagation(); var closed=card.classList.toggle('atl-closed'); btn.textContent=closed?'展開':'收合';}); card.insertBefore(btn,card.firstChild);});}
-  function boot(){try{var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v5.96';}catch(e){} wire(document); addCollapse(document);}
+  function boot(){try{var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v5.97';}catch(e){} wire(document); addCollapse(document);}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot); else boot();
   try{new MutationObserver(function(ms){var hit=false; ms.forEach(function(m){if(m.addedNodes&&m.addedNodes.length)hit=true}); if(hit){clearTimeout(window.__atl475Timer); window.__atl475Timer=setTimeout(boot,180);}}).observe(document.body,{childList:true,subtree:true});}catch(e){}
 })();
@@ -9216,7 +9216,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
 <script id="atl478-final-export-js">
 (function(){
   if(window.__atl478FinalExport)return; window.__atl478FinalExport=true;
-  var VERSION='cs-v5.96';
+  var VERSION='cs-v5.97';
   function esc(s){return (s==null?'':String(s)).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
   function qsa(sel,root){return Array.prototype.slice.call((root||document).querySelectorAll(sel))}
   function text(el){return (el&&el.innerText||el&&el.textContent||'').replace(/\s+/g,' ').trim()}
@@ -9336,7 +9336,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
 <script>
 (function(){
   if(window.__atlCs480) return; window.__atlCs480=true;
-  var V='cs-v5.96';
+  var V='cs-v5.97';
   function lock(){ var vb=document.getElementById('verBadge'); if(vb && (vb.textContent||'').trim()!==V) vb.textContent=V; }
   function unify(){
     var safe=document.querySelector('.atl452safe'); if(!safe) return;
@@ -10283,7 +10283,7 @@ input.atl477-open-field:not([type="checkbox"]):not([type="radio"]):not([type="bu
 <script id="atl-cs477-final-touch">
 (function(){
   if(window.__atlCs477FinalTouch) return; window.__atlCs477FinalTouch=true;
-  var VERSION='cs-v5.96';
+  var VERSION='cs-v5.97';
   function qs(s,r){return (r||document).querySelector(s)}
   function qsa(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
   function setVersion(){try{var b=qs('#verBadge'); if(b)b.textContent=VERSION; window.ATELIER_CLIENT_VERSION=VERSION;}catch(e){}}
@@ -10571,7 +10571,7 @@ input.atl477-open-field:not([type="checkbox"]):not([type="radio"]):not([type="bu
   function place(){ if(!cur||!cur.getBoundingClientRect) return; var r=cur.getBoundingClientRect();
     var rightGap=Math.max(8, window.innerWidth - r.right);
     chip.style.left='auto'; chip.style.transform='none'; chip.style.right=rightGap+'px'; chip.style.top=Math.max(6, r.top-34)+'px'; chip.style.bottom='auto'; }
-  document.addEventListener('focusin',function(e){ if(e.target&&e.target.closest&&e.target.closest('.atl-uai-mask')) return; if(isEditable(e.target)){ cur=e.target; ready(); chip.style.display='block'; setTimeout(place,0); setTimeout(place,40); } },true);
+  document.addEventListener('focusin',function(e){ if(e.target&&e.target.closest&&e.target.closest('.atl-uai-mask')) return; if(e.target&&(e.target.id==='s1resultC'||e.target.id==='s1resultA')){ chip.style.display='none'; return; } if(isEditable(e.target)){ cur=e.target; ready(); chip.style.display='block'; setTimeout(place,0); setTimeout(place,40); } },true);
   document.addEventListener('focusout',function(){ setTimeout(function(){ var a=document.activeElement; if(!isEditable(a) && a!==chip && !(a&&a.closest&&a.closest('.atl-uai-mask'))){ chip.style.display='none'; } },160); },true);
   window.addEventListener('scroll',place,true); window.addEventListener('resize',place); setInterval(function(){ if(cur&&chip.style.display!=='none') place(); },280);
   chip.addEventListener('mousedown',function(e){ e.preventDefault(); });
@@ -11425,9 +11425,9 @@ body.atl-hide-final #atlFinalFloat{ display:none !important; }
     m=m||{videos:[],accounts:[],cases:[],hooks:[],ctas:[]};
     var rows=[];
     function match(txt){ return !q || (txt||'').toLowerCase().indexOf(q)>=0; }
-    if(TAB==='videos'){ rows=vids().filter(function(v){return v&&match([v.title,v.accountHandle,v.hook,v.themeName,v.mktTags,v.matName,v.ctaText].join(' '));}).map(richVideoCard); }
+    if(TAB==='videos'){ rows=vids().filter(function(v){ if(!v) return false; var _a=accOf(v); return match([v.title,v.accountHandle,(_a&&_a.displayName),(_a&&_a.industry),v.hook,v.themeName,v.mktTags,v.matName,v.ctaText].join(' '));}).map(richVideoCard); }
     else if(TAB==='accounts'){ rows=accs().filter(function(a){return a&&match([a.displayName,a.handle,a.industry,a.jobTitle].join(' '));}).map(richAccountCard); }
-    else if(TAB==='cases'){ rows=vids().filter(function(v){return v;}).sort(function(a,b){return (b.views||0)-(a.views||0);}).slice(0,40).filter(function(v){return match([v.title,v.accountHandle,v.why,v.hook].join(' '));}).map(richVideoCard); }
+    else if(TAB==='cases'){ rows=vids().filter(function(v){return v;}).sort(function(a,b){return (b.views||0)-(a.views||0);}).slice(0,40).filter(function(v){ var _a=accOf(v); return match([v.title,v.accountHandle,(_a&&_a.displayName),v.why,v.hook].join(' '));}).map(richVideoCard); }
     else if(TAB==='hooks'){ rows=m.hooks.filter(function(h){return match(h.text);}).map(function(h,i){
         return card('hook','hook_'+i, h.text, '來源：'+(h.from||'—'), [], h); }); }
     else if(TAB==='ctas'){ rows=m.ctas.filter(function(c){return match(c.text);}).map(function(c,i){
@@ -11544,7 +11544,8 @@ body.atl-hide-final #atlFinalFloat{ display:none !important; }
       +'<div class="atl-db-meta" id="atlDbMeta"></div>'
       +'<button class="atl-db-x" id="atlDbX">×</button></div>'
       +'<div class="atl-db-tabs" id="atlDbTabs"></div>'
-      +'<div class="atl-db-search"><input id="atlDbSearch" placeholder="搜尋關鍵字、標籤、帳號、案例、Hook、CTA…"></div>'
+      +'<div class="atl-db-search"><input id="atlDbSearch" placeholder="搜尋關鍵字、標籤、帳號（中文名也可）、案例、Hook、CTA…"></div>'
+      +'<div class="atl-db-actions"><button class="atl-db-act" id="atlDbSelAll" type="button">＋ 全部加入服務包（目前清單）</button><button class="atl-db-act" id="atlDbClrSearch" type="button">清除搜尋</button><button class="atl-db-act danger" id="atlDbClrPkg" type="button">清空整個服務包</button></div>'
       +'<div class="atl-db-intro"><b>工作台資料鏡像庫</b>＝工作台所有素材的唯讀鏡像（影片／帳號／成功案例／可複製的 Hook・CTA・結構）。用法：上面分頁或搜尋找素材 →〈＋加入服務包〉→ 到「本次服務包」分頁標記採用 → 採用的會自動帶進診斷頁。要新增或編輯素材，請回工作台。</div>'
       +'<div class="atl-db-list" id="atlDbList"></div></div>';
     document.body.appendChild(mo);
@@ -11552,6 +11553,9 @@ body.atl-hide-final #atlFinalFloat{ display:none !important; }
       if(e.target===mo || e.target.id==='atlDbX') return closeModal();
       var t=e.target.closest('[data-tab]'); if(t){ TAB=t.getAttribute('data-tab'); renderTabs(); renderList(); return; }
       if(e.target.id==='atlDbSync'){ buildMirror(); renderTabs(); renderList(); try{ if(window.toastSafe) toastSafe('已同步工作台資料庫'); }catch(_){}; return; }
+      if(e.target.id==='atlDbSelAll'){ var _n=0; document.querySelectorAll('#atlDbList [data-add]').forEach(function(b){ var u=b.getAttribute('data-add'); var dd=(window.__atlDbData||{})[u]; if(dd && !pkgHas(u)){ pkgAdd({uid:u,type:dd.type,title:dd.title,sub:dd.sub,data:dd.data,adopted:false}); _n++; } }); renderTabs(); renderList(); refreshFab(); try{ if(window.toastSafe) toastSafe('已加入 '+_n+' 項到服務包'); }catch(_){}; return; }
+      if(e.target.id==='atlDbClrSearch'){ var _s=document.getElementById('atlDbSearch'); if(_s) _s.value=''; renderList(); return; }
+      if(e.target.id==='atlDbClrPkg'){ if(window.confirm('確定清空整個「本次服務包」？此動作無法復原。')){ var _p=getPkg(); _p.items=[]; savePkg(_p); renderTabs(); renderList(); refreshFab(); try{ if(window.toastSafe) toastSafe('已清空服務包'); }catch(_){}; } return; }
       var add=e.target.closest('[data-add]'); if(add){ var uid=add.getAttribute('data-add'); var d=(window.__atlDbData||{})[uid];
         if(d){ if(pkgHas(uid)){ pkgRemove(uid); } else { pkgAdd({uid:uid,type:d.type,title:d.title,sub:d.sub,data:d.data,adopted:false}); } renderTabs(); renderList(); refreshFab(); } return; }
       var rm=e.target.closest('[data-rm]'); if(rm){ pkgRemove(rm.getAttribute('data-rm')); renderTabs(); renderList(); return; }
@@ -11730,11 +11734,12 @@ body.atl-hide-final #atlFinalFloat{ display:none !important; }
         }
       }catch(e){}
     }catch(e){}
-    if(pkg && pkg.items && pkg.items.length){
-      var byType={}; pkg.items.forEach(function(i){ (byType[i.type]=byType[i.type]||[]).push(i); });
+    var _adoptedPkg=(pkg&&pkg.items)?pkg.items.filter(function(i){return i&&i.adopted;}):[];
+    if(_adoptedPkg.length){
+      var byType={}; _adoptedPkg.forEach(function(i){ (byType[i.type]=byType[i.type]||[]).push(i); });
       var L=TL();
       var lines=Object.keys(byType).map(function(t){ return '・'+(L[t]||t)+'：'+byType[t].map(function(i){return i.title;}).join('；'); });
-      parts.push('【本次服務包（顧問已挑選，請優先參考）】\n'+lines.join('\n'));
+      parts.push('【本次服務包（顧問已標記採用，請優先參考）】\n'+lines.join('\n'));
     }
     var cf=[['term','專業名詞/服務項目'],['scene','觀眾生活場景'],['fear','觀眾正在怕什麼'],['voice','觀眾會怎麼說這個問題'],['selling','白話賣點'],['hook','可用Hook'],['angle','內容故事/切角'],['trust','信任證據'],['cta','CTA行動出口'],['todo','待補資料']];
     var cl=cf.filter(function(f){return card[f[0]]&&String(card[f[0]]).trim();}).map(function(f){return '・'+f[1]+'：'+String(card[f[0]]).replace(/\n/g,' ');});
@@ -13710,3 +13715,13 @@ details.cs-context[open] > summary::after{ content:'\25BE' !important; }
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',boot); else boot();
 })();
 </script>
+
+<!-- ATELIER cs-v5.97 · 清排隊：(1)鏡像庫工具列「全部加入服務包/清除搜尋/清空服務包」 (2)影片搜尋也比對帳號中文名（理鴻）
+  (3)標記採用當閘門＝只有採用的才進提示詞 (4)客戶版/顧問版不再彈多餘浮動 ✦AI。本區只放工具列樣式，其餘為前面的最小修改。 -->
+<style id="atl-cs597-css">
+.atl-db-actions{ display:flex; flex-wrap:wrap; gap:8px; padding:2px 0 10px; }
+.atl-db-act{ font-size:12px; font-weight:700; padding:6px 13px; border:1px solid #C9A57A; border-radius:999px; background:#FFFDFB; color:#8A5A2B; -webkit-text-fill-color:#8A5A2B; cursor:pointer; font-family:inherit; }
+.atl-db-act:hover{ border-color:#A51820; color:#A51820; -webkit-text-fill-color:#A51820; }
+.atl-db-act.danger{ color:#A51820; -webkit-text-fill-color:#A51820; border-color:#E2B6B0; }
+.atl-db-act.danger:hover{ background:#FBF1F0; }
+</style>
