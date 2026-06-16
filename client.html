@@ -725,7 +725,7 @@ details.cat .cat-body{padding:14px 15px}
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">客戶服務台</span></span>
-    <span id="verBadge">cs-v5.79</span>
+    <span id="verBadge">cs-v5.80</span>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button type="button" id="popoutBtn" class="popout-btn" title="把客戶服務台開成獨立小視窗"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6"/><path d="M20 4l-9 9"/><path d="M14 12v7H5V10h7"/></svg>小視窗</button>
@@ -899,7 +899,7 @@ function copyPrompt(text,label){
     md.classList.add('show');
     function _close(){ md.classList.remove('show'); sh.innerHTML=''; document.removeEventListener('keydown',_key); md.onclick=null; }
     function _key(e){ if(e.key==='Escape') _close(); }
-    var ed=$('pp-edit'), ls=$('pp-lockstate'); if(ed){ ed.__atlGrow=true; ed.dataset.autogrow='1'; }
+    var ed=$('pp-edit'), ls=$('pp-lockstate'); if(ed){ ed.__atlGrow=true; ed.dataset.autogrow='1'; ed.addEventListener('wheel',function(e){ var top=this.scrollTop<=0&&e.deltaY<0, bot=(this.scrollTop+this.clientHeight>=this.scrollHeight-1)&&e.deltaY>0; this.scrollTop+=e.deltaY; if(!top&&!bot) e.preventDefault(); },{passive:false}); }
     var el=$('pp-editlock'); if(el) el.onclick=function(){ if(ed.readOnly){ ed.readOnly=false; ed.style.opacity='1'; el.innerHTML=ICN.lockOn+'唯讀'; if(ls) ls.innerHTML=ICN.edit+'編輯中'; } else { ed.readOnly=true; ed.style.opacity='.85'; el.innerHTML=ICN.edit+'編輯'; if(ls) ls.innerHTML=ICN.lockOn+'唯讀中'; } };
     var ra=$('pp-resetall'); if(ra) ra.onclick=function(){ if(ed) ed.value=text; toast('已還原成原版'); };
     var cp=$('pp-copy'); if(cp) cp.onclick=function(){ copyVal((ed?ed.value:text),label); };
@@ -1595,7 +1595,7 @@ function renderStage1(){
   
   var pasteHTML = '<div class="section-card"><h3>把 AI 的分析貼回這裡（客戶版＋顧問版）</h3>'
     +'<div class="sc-note">這一步要做的：把上面產生的提示詞丟給 AI，AI 會回你一段初診分析，再把它貼回下面兩個框。<br><br>「客戶版」＝可以直接給客戶看的乾淨版（只留對外能說的重點，不放內部判斷）。<br>「顧問版」＝你們內部留底用（保留判斷理由、風險、策略）。<br><br>把 AI 回覆中對客戶說的部分貼到「客戶版」、內部判斷的部分貼到「顧問版」；兩個框各自獨立、各自可清除重貼。</div>'
-    +'<div class="s1feed"><div class="s1feed-title">'+ICN.spark+' 要放進 AI 分析的資料（勾選，按「AI 產生這版」時自動帶入，AI 只根據這些分析、不重新搜尋）</div>'
+    +'<div class="s1feed"><div class="s1feed-title"><span>'+ICN.spark+' 要放進 AI 分析的資料（勾選後按各版「AI 產生這版」帶入）</span><button type="button" class="btn-sf s1feed-ai" onclick="genS1FeedTriage()">'+ICN.spark+' AI 幫我判斷要留哪些</button></div>'
     +'<div class="s1feed-row">'
     +'<label class="s1agg-chk"><input type="checkbox" id="s1feed-basic" checked><span>帳號基本</span></label>'
     +'<label class="s1agg-chk"><input type="checkbox" id="s1feed-sources" checked><span>16 來源備註</span></label>'
@@ -1628,7 +1628,15 @@ function renderStage1(){
     +'<div class="s1agg-sep"></div>'
     +'<div class="s1agg-row"><label class="s1agg-chk"><input type="checkbox" id="s1incSources" checked><span>附 16 來源摘要</span></label>'
     +'<label class="s1agg-chk"><input type="checkbox" id="s1incPkg" checked><span>附本次服務包</span></label>'
-    +'<label class="s1agg-chk"><input type="checkbox" id="s1incFw" checked><span>附 5 個進階判斷</span></label></div></div>'
+    +'<label class="s1agg-chk"><input type="checkbox" id="s1incFw" checked><span>附 5 個進階判斷</span></label></div>'
+    +'<details class="s1agg-detail"><summary>展開看會放進交付物的細項　＋　AI 幫我挑要放哪版</summary><div class="s1agg-detail-body">'
+    +'<div><b>客戶版／顧問版</b>：見 ②產生 兩個框的內容。</div>'
+    +'<div><b>16 來源</b>：'+CHECK_SOURCES.map(function(s,i){return (i+1)+'.'+s[1];}).join('、')+'</div>'
+    +'<div><b>5 進階判斷</b>：'+STAGE1_FRAMEWORKS.map(function(fw,i){return (i+1)+'.'+fw[1];}).join('、')+'</div>'
+    +'<div><b>影片數據</b>：'+vidCountOf(a)+' 支</div>'
+    +'<div><b>本次服務包</b>：'+(((a.currentServicePackage&&a.currentServicePackage.items)||[]).length)+' 項</div>'
+    +'<button type="button" class="btn-sf" style="margin-top:11px" onclick="genS1FeedTriage()">'+ICN.spark+' AI 幫我判斷哪些留、放客戶版還是顧問版</button>'
+    +'</div></details></div>'
     +'<div class="export-spec"><b>輸出邏輯：</b>輸出版本會決定內容範圍：客戶版＝只保留可對外說明的重點；顧問版＝保留內部判斷與策略；完整包＝同時輸出兩版。排版目前統一採 ATELIER 設計版，避免不同格式造成內容落差。</div>'
     +'<div class="btn-row"><button class="btn btn-gold" onclick="exportStage1HTML()">下載設計版 HTML</button><button class="btn btn-gold" onclick="exportStage1PDF()">列印 / 另存 PDF</button><button class="btn btn-gold" onclick="exportStage1PPTX()">下載會前簡報 PPT</button><button class="btn btn-ghost" onclick="copyStage1OutputSpec()">複製三格式規格</button></div>'
     +'<div class="print-hint">列印 / 另存 PDF 會跳出列印視窗，請在目的地選擇「另存為 PDF」。</div>'
@@ -9019,7 +9027,7 @@ button:not(:disabled), .btn:not(.disabled):not([disabled]), [role="button"]{
   if(window.__atlCs473Continuity) return; window.__atlCs473Continuity=true;
   function cleanTextNode(n){var s=n.nodeValue||''; var ns=s.replace(/cs-v4\.\d+\s*(SAFE|LATEST)?\s*[｜|·:-]?\s*/g,'').replace(/\bv\d{3}\s*[｜|·:-]?\s*/g,''); if(ns!==s)n.nodeValue=ns;}
   function cleanVersions(){
-    try{var vb=document.getElementById('verBadge'); if(vb)vb.textContent='cs-v5.79';}catch(e){}
+    try{var vb=document.getElementById('verBadge'); if(vb)vb.textContent='cs-v5.80';}catch(e){}
     try{var w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT,{acceptNode:function(n){var p=n.parentElement; if(!p||p.id==='verBadge'||/^(SCRIPT|STYLE|TEXTAREA)$/i.test(p.tagName))return NodeFilter.FILTER_REJECT; return /(cs-v4\.\d+|\bv\d{3})/.test(n.nodeValue||'')?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_REJECT;}}); var nodes=[],n; while(n=w.nextNode())nodes.push(n); nodes.forEach(cleanTextNode);}catch(e){}
   }
   function alignSelection(){
@@ -9079,7 +9087,7 @@ input[type="text"]:focus,input:not([type]):focus{border-color:#D4A574!important;
     btn.onclick=function(e){e.stopPropagation(); set(!safe.classList.contains('atl-safe474-collapsed'));};
     h.appendChild(summary); h.appendChild(btn); set(localStorage.getItem('atl.cs474.safeCollapsed')!=='0');
   }
-  function cleanBadge(){ var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v5.79'; }
+  function cleanBadge(){ var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v5.80'; }
   function run(){ cleanBadge(); ensureSafeCollapse(); wireAutogrow(document); }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run); else run();
   setInterval(run,1200);
@@ -9140,7 +9148,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
   function wire(root){qsa('textarea,input[type="text"],input[type="url"],input[type="email"],input:not([type])',root||document).forEach(function(el){if(el.__atl475)return; if(el.closest('.atl-field-modal,.atl-final-modal'))return; el.__atl475=true; el.addEventListener('focus',function(){show(el); autogrow(el)}); el.addEventListener('input',function(){autogrow(el)}); el.addEventListener('blur',hideSoon); autogrow(el);});}
   document.addEventListener('click',function(e){var b=e.target.closest('#atlFieldToolbar button'); if(!b||!active)return; var a=b.getAttribute('data-act'); if(a==='prompt')openModal('prompt',active); if(a==='fill')openModal('fill',active); if(a==='edit')openModal('edit',active); if(a==='done'){var bar=qs('#atlFieldToolbar'); if(bar)bar.classList.remove('on'); if(active)active.classList.remove('atl-field-active'); toastSafe('此欄位可視為定案，請記得儲存');}},true);
   function addCollapse(root){qsa('.section-card,.deliverable-card,.atl452safe-card',root||document).forEach(function(card){if(card.__atlCollapse475||card.closest('.preview-modal,.atl-field-modal'))return; card.__atlCollapse475=true; card.classList.add('atl-collapsible'); var h=qs('h2,h3,h4,.stitle,.section-title',card)||card.firstElementChild; if(h)h.classList.add('atl-keep-visible'); var btn=document.createElement('button'); btn.type='button'; btn.className='atl-collapse-toggle'; btn.textContent='收合'; btn.addEventListener('click',function(e){e.preventDefault(); e.stopPropagation(); var closed=card.classList.toggle('atl-closed'); btn.textContent=closed?'展開':'收合';}); card.insertBefore(btn,card.firstChild);});}
-  function boot(){try{var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v5.79';}catch(e){} wire(document); addCollapse(document);}
+  function boot(){try{var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v5.80';}catch(e){} wire(document); addCollapse(document);}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot); else boot();
   try{new MutationObserver(function(ms){var hit=false; ms.forEach(function(m){if(m.addedNodes&&m.addedNodes.length)hit=true}); if(hit){clearTimeout(window.__atl475Timer); window.__atl475Timer=setTimeout(boot,180);}}).observe(document.body,{childList:true,subtree:true});}catch(e){}
 })();
@@ -9181,7 +9189,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
 <script id="atl478-final-export-js">
 (function(){
   if(window.__atl478FinalExport)return; window.__atl478FinalExport=true;
-  var VERSION='cs-v5.79';
+  var VERSION='cs-v5.80';
   function esc(s){return (s==null?'':String(s)).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
   function qsa(sel,root){return Array.prototype.slice.call((root||document).querySelectorAll(sel))}
   function text(el){return (el&&el.innerText||el&&el.textContent||'').replace(/\s+/g,' ').trim()}
@@ -9301,7 +9309,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
 <script>
 (function(){
   if(window.__atlCs480) return; window.__atlCs480=true;
-  var V='cs-v5.79';
+  var V='cs-v5.80';
   function lock(){ var vb=document.getElementById('verBadge'); if(vb && (vb.textContent||'').trim()!==V) vb.textContent=V; }
   function unify(){
     var safe=document.querySelector('.atl452safe'); if(!safe) return;
@@ -10248,7 +10256,7 @@ input.atl477-open-field:not([type="checkbox"]):not([type="radio"]):not([type="bu
 <script id="atl-cs477-final-touch">
 (function(){
   if(window.__atlCs477FinalTouch) return; window.__atlCs477FinalTouch=true;
-  var VERSION='cs-v5.79';
+  var VERSION='cs-v5.80';
   function qs(s,r){return (r||document).querySelector(s)}
   function qsa(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
   function setVersion(){try{var b=qs('#verBadge'); if(b)b.textContent=VERSION; window.ATELIER_CLIENT_VERSION=VERSION;}catch(e){}}
@@ -12800,3 +12808,63 @@ details.cs-context[open] > summary::after{ content:'\25BE' !important; }
 /* ② 隱藏「初診交付物：會前初步觀察 PPT」卡(②產生不該有,PPT 出口在④總和) */
 .cs-brief-wrap, [data-cs-brief]{ display:none !important; }
 </style>
+
+<!-- ATELIER cs-v5.80 · ①文字框真正加高(用高權重打敗 #view-stage1 .fld textarea 的 56px 鎖死);
+  ②雙圈改細線+拉開間距=清楚兩圈(不再像四圈);③勾選區+④總和 各加「AI 幫我判斷」逐項列出讓 AI 決定留哪些/放哪版。純前端、可逆。 -->
+<style id="atl-cs580-css">
+/* ① 客戶版/顧問版文字框真正加高(權重要高過 #view-stage1 .fld textarea) */
+#view-stage1 #s1resultC, #view-stage1 #s1resultA{ min-height:230px !important; max-height:600px !important; height:auto !important; line-height:1.85 !important; padding:14px 15px !important; box-sizing:border-box; }
+#view-stage1 #s1resultC:focus, #view-stage1 #s1resultA:focus{ min-height:300px !important; }
+/* ② 雙圈=清楚的兩圈:細外圈 + 細內圈 + 明顯間距,i 置中 */
+.stage-info-btn, .s1tab .s1tab-info{
+  box-shadow:none !important; position:relative !important;
+  width:22px !important; height:22px !important; min-width:22px !important; max-width:22px !important; min-height:22px !important; max-height:22px !important;
+  border:1px solid #C9A57A !important;
+}
+.stage-info-btn::before, .s1tab .s1tab-info::before{
+  content:'' !important; position:absolute !important; inset:3.5px !important;
+  border-radius:50% !important; border:1px solid #D8BF94 !important; background:transparent !important; box-shadow:none !important; pointer-events:none !important;
+}
+.stage-info-btn:hover, .s1tab .s1tab-info:hover{ box-shadow:none !important; border-color:#A51820 !important; }
+.stage-info-btn:hover::before, .s1tab .s1tab-info:hover::before{ border-color:#E0A8AC !important; }
+/* ③ 勾選區標題列改 flex(左字右按鈕);AI 按鈕 */
+.s1feed-title{ display:flex !important; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; }
+.s1feed-ai{ flex:0 0 auto; }
+/* ④總和 三角形展開細項 */
+.s1agg-detail{ margin-top:12px; border-top:1px dashed #E8DCC9; padding-top:10px; }
+.s1agg-detail summary{ cursor:pointer; font-weight:800; color:#5C0F14; -webkit-text-fill-color:#5C0F14; font-size:12.5px; list-style:none; display:flex; align-items:center; gap:7px; }
+.s1agg-detail summary::-webkit-details-marker{ display:none; }
+.s1agg-detail summary::before{ content:'\25B8'; color:#A51820; font-size:11px; }
+.s1agg-detail[open] summary::before{ content:'\25BE'; }
+.s1agg-detail-body{ margin-top:10px; font-size:12.5px; color:#2A1A1C; -webkit-text-fill-color:#2A1A1C; line-height:1.85; }
+.s1agg-detail-body b{ color:#5C0F14; -webkit-text-fill-color:#5C0F14; }
+</style>
+<script>
+(function(){
+  if(window.__atlTriage580) return; window.__atlTriage580=true;
+  function _safe(fn,def){ try{ return fn(); }catch(e){ return def; } }
+  /* 勾選區/④總和 共用:把所有已收集資料逐項攤開,請 AI 判斷哪些留、放客戶版還是顧問版 */
+  window.genS1FeedTriage=function(){
+    var a=(typeof curAcc==='function')?curAcc():null;
+    if(!a){ if(typeof toast==='function') toast((window.ICN?ICN.warn:'')+' 尚未選定客戶'); return; }
+    var parts=[];
+    var sLines=_safe(function(){ var src=readStage1Sources(); return CHECK_SOURCES.map(function(s,i){ var v=src[s[0]]||{}; return (i+1)+'. '+s[1]+'：'+(v.note? v.note : (v.checked?'（已勾選，無備註）':'（未填）')); }); },[]);
+    parts.push('【16 個資料來源（逐項）】\n'+(sLines.length?sLines.join('\n'):'（無）'));
+    var fLines=_safe(function(){ return STAGE1_FRAMEWORKS.map(function(fw,i){ var el=document.getElementById('s1fw-'+fw[0]); var v=el?el.value.trim():''; return (i+1)+'. '+fw[1]+'：'+(v||'（未填）'); }); },[]);
+    parts.push('【5 個進階判斷（逐項）】\n'+(fLines.length?fLines.join('\n'):'（無）'));
+    parts.push('【帳號基本】\n品牌/帳號：'+(a.handle||'')+'｜顯示名稱：'+(a.displayName||'')+'｜產業：'+(a.industry||'')+'｜職稱：'+(a.jobTitle||''));
+    parts.push('【影片數據】\n影片數：'+_safe(function(){return vidCountOf(a);},0)+' 支；近期：'+_safe(function(){return relatedVideosSummary(a);},'尚無'));
+    parts.push('【經營趨勢】\n粉絲：'+(_safe(function(){return fanLatest(a);},null)||'未紀錄')+'；健康：'+_safe(function(){return healthHistorySummary(a);},'尚無歷史評分'));
+    var pk=_safe(function(){ return ((a.currentServicePackage&&a.currentServicePackage.items)||[]).map(function(i){return '・'+(i.title||i.uid||'')+(i.adopted?'（已採用）':'');}).join('\n'); },'');
+    if(pk) parts.push('【本次服務包】\n'+pk);
+    var p='我在做客戶「公開資料初診」。以下是我已收集到的所有原始資料，逐項列出。\n'
+      +'請你幫我做「資料分流判斷」（只根據以下資料，不要自行上網搜尋或臆測）：\n'
+      +'1. 逐項判斷：每一項『值得留用』還是『太弱可略過』。\n'
+      +'2. 留用的，哪些適合放【客戶版】（可對外、正向），哪些只適合放【顧問版】（內部判斷／風險）。\n'
+      +'3. 還缺哪些關鍵資料，需要會前跟客戶補。\n'
+      +'請用表格或清單，一項一行回覆。\n\n'
+      +parts.join('\n\n');
+    if(typeof copyPrompt==='function') copyPrompt(p,'資料分流判斷（AI 幫我決定留哪些、放客戶版還是顧問版）');
+  };
+})();
+</script>
