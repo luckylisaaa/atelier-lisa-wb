@@ -725,7 +725,7 @@ details.cat .cat-body{padding:14px 15px}
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">客戶服務台</span></span>
-    <span id="verBadge">cs-v5.86</span>
+    <span id="verBadge">cs-v5.87</span>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button type="button" id="popoutBtn" class="popout-btn" title="把客戶服務台開成獨立小視窗"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6"/><path d="M20 4l-9 9"/><path d="M14 12v7H5V10h7"/></svg>小視窗</button>
@@ -9048,7 +9048,7 @@ button:not(:disabled), .btn:not(.disabled):not([disabled]), [role="button"]{
   if(window.__atlCs473Continuity) return; window.__atlCs473Continuity=true;
   function cleanTextNode(n){var s=n.nodeValue||''; var ns=s.replace(/cs-v4\.\d+\s*(SAFE|LATEST)?\s*[｜|·:-]?\s*/g,'').replace(/\bv\d{3}\s*[｜|·:-]?\s*/g,''); if(ns!==s)n.nodeValue=ns;}
   function cleanVersions(){
-    try{var vb=document.getElementById('verBadge'); if(vb)vb.textContent='cs-v5.86';}catch(e){}
+    try{var vb=document.getElementById('verBadge'); if(vb)vb.textContent='cs-v5.87';}catch(e){}
     try{var w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT,{acceptNode:function(n){var p=n.parentElement; if(!p||p.id==='verBadge'||/^(SCRIPT|STYLE|TEXTAREA)$/i.test(p.tagName))return NodeFilter.FILTER_REJECT; return /(cs-v4\.\d+|\bv\d{3})/.test(n.nodeValue||'')?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_REJECT;}}); var nodes=[],n; while(n=w.nextNode())nodes.push(n); nodes.forEach(cleanTextNode);}catch(e){}
   }
   function alignSelection(){
@@ -9108,7 +9108,7 @@ input[type="text"]:focus,input:not([type]):focus{border-color:#D4A574!important;
     btn.onclick=function(e){e.stopPropagation(); set(!safe.classList.contains('atl-safe474-collapsed'));};
     h.appendChild(summary); h.appendChild(btn); set(localStorage.getItem('atl.cs474.safeCollapsed')!=='0');
   }
-  function cleanBadge(){ var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v5.86'; }
+  function cleanBadge(){ var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v5.87'; }
   function run(){ cleanBadge(); ensureSafeCollapse(); wireAutogrow(document); }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run); else run();
   setInterval(run,1200);
@@ -9169,7 +9169,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
   function wire(root){qsa('textarea,input[type="text"],input[type="url"],input[type="email"],input:not([type])',root||document).forEach(function(el){if(el.__atl475)return; if(el.closest('.atl-field-modal,.atl-final-modal'))return; el.__atl475=true; el.addEventListener('focus',function(){show(el); autogrow(el)}); el.addEventListener('input',function(){autogrow(el)}); el.addEventListener('blur',hideSoon); autogrow(el);});}
   document.addEventListener('click',function(e){var b=e.target.closest('#atlFieldToolbar button'); if(!b||!active)return; var a=b.getAttribute('data-act'); if(a==='prompt')openModal('prompt',active); if(a==='fill')openModal('fill',active); if(a==='edit')openModal('edit',active); if(a==='done'){var bar=qs('#atlFieldToolbar'); if(bar)bar.classList.remove('on'); if(active)active.classList.remove('atl-field-active'); toastSafe('此欄位可視為定案，請記得儲存');}},true);
   function addCollapse(root){qsa('.section-card,.deliverable-card,.atl452safe-card',root||document).forEach(function(card){if(card.__atlCollapse475||card.closest('.preview-modal,.atl-field-modal'))return; card.__atlCollapse475=true; card.classList.add('atl-collapsible'); var h=qs('h2,h3,h4,.stitle,.section-title',card)||card.firstElementChild; if(h)h.classList.add('atl-keep-visible'); var btn=document.createElement('button'); btn.type='button'; btn.className='atl-collapse-toggle'; btn.textContent='收合'; btn.addEventListener('click',function(e){e.preventDefault(); e.stopPropagation(); var closed=card.classList.toggle('atl-closed'); btn.textContent=closed?'展開':'收合';}); card.insertBefore(btn,card.firstChild);});}
-  function boot(){try{var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v5.86';}catch(e){} wire(document); addCollapse(document);}
+  function boot(){try{var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v5.87';}catch(e){} wire(document); addCollapse(document);}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot); else boot();
   try{new MutationObserver(function(ms){var hit=false; ms.forEach(function(m){if(m.addedNodes&&m.addedNodes.length)hit=true}); if(hit){clearTimeout(window.__atl475Timer); window.__atl475Timer=setTimeout(boot,180);}}).observe(document.body,{childList:true,subtree:true});}catch(e){}
 })();
@@ -9210,7 +9210,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
 <script id="atl478-final-export-js">
 (function(){
   if(window.__atl478FinalExport)return; window.__atl478FinalExport=true;
-  var VERSION='cs-v5.86';
+  var VERSION='cs-v5.87';
   function esc(s){return (s==null?'':String(s)).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
   function qsa(sel,root){return Array.prototype.slice.call((root||document).querySelectorAll(sel))}
   function text(el){return (el&&el.innerText||el&&el.textContent||'').replace(/\s+/g,' ').trim()}
@@ -9330,7 +9330,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
 <script>
 (function(){
   if(window.__atlCs480) return; window.__atlCs480=true;
-  var V='cs-v5.86';
+  var V='cs-v5.87';
   function lock(){ var vb=document.getElementById('verBadge'); if(vb && (vb.textContent||'').trim()!==V) vb.textContent=V; }
   function unify(){
     var safe=document.querySelector('.atl452safe'); if(!safe) return;
@@ -10277,7 +10277,7 @@ input.atl477-open-field:not([type="checkbox"]):not([type="radio"]):not([type="bu
 <script id="atl-cs477-final-touch">
 (function(){
   if(window.__atlCs477FinalTouch) return; window.__atlCs477FinalTouch=true;
-  var VERSION='cs-v5.86';
+  var VERSION='cs-v5.87';
   function qs(s,r){return (r||document).querySelector(s)}
   function qsa(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
   function setVersion(){try{var b=qs('#verBadge'); if(b)b.textContent=VERSION; window.ATELIER_CLIENT_VERSION=VERSION;}catch(e){}}
@@ -13049,3 +13049,198 @@ details.cs-context[open] > summary::after{ content:'\25BE' !important; }
 .s1wb-guide{ border-left:3px solid #C9A57A !important; }
 .s1wb-guide h3{ color:#5C0F14 !important; -webkit-text-fill-color:#5C0F14 !important; }
 </style>
+
+<!-- ATELIER cs-v5.87 · ②產生／④總和「AI 三件套打勾版」：
+  ① 複製打勾提示詞（atlPromptView 可看可改）→ ② 把 AI 回覆貼回一個框，系統自動幫對應項目打勾／取消
+  → ③ 顯示「AI 為什麼這樣勾」（保留判斷理由＋還缺什麼）。
+  重排：勾選項目在前、AI 智能在後，旁邊放乾淨單圈 ⓘ。
+  不弄壞 genS1FeedTriage（只把它搬位、onclick 不動）。純前端、addon、可逆、冪等。 -->
+<style id="atl-cs587-css">
+.atl-cktri{ margin-top:14px; border-top:1px dashed #E8DCC9; padding-top:13px; }
+.atl-cktri-head{ display:flex; align-items:center; gap:8px; margin-bottom:7px; }
+.atl-cktri-t{ font-size:12.5px; font-weight:800; color:#5C0F14; -webkit-text-fill-color:#5C0F14; letter-spacing:.3px; }
+.atl-cktri-note{ font-size:11.5px; line-height:1.7; color:#7A5A5E; -webkit-text-fill-color:#7A5A5E;
+  background:#FBF7F2; border-left:3px solid #C9A57A; border-radius:0 8px 8px 0; padding:8px 11px; margin-bottom:11px; cursor:default; }
+.atl-cktri-note b{ color:#5C0F14; -webkit-text-fill-color:#5C0F14; font-weight:800; }
+.atl-cktri-row{ display:flex; flex-wrap:wrap; gap:9px; align-items:center; margin:9px 0; }
+.atl-cktri-step{ font-size:11px; font-weight:800; color:#A51820; -webkit-text-fill-color:#A51820;
+  border:1px solid #E2CFB6; border-radius:7px; padding:2px 7px; background:#FFFDFB; margin-right:5px; }
+.atl-cktri textarea.atl-cktri-paste{ width:100%; box-sizing:border-box; min-height:62px; resize:none;
+  padding:9px 11px; border:1px solid var(--gold-soft,#D4A574); border-radius:9px;
+  font-size:13px; font-family:inherit; line-height:1.6; color:#2A1A1C; background:#FFFDFB; }
+.atl-cktri-why{ margin-top:11px; border:1px solid #E2CFB6; border-left:3px solid #A51820; border-radius:0 9px 9px 0;
+  background:#FBF7F2; padding:10px 12px; cursor:default; }
+.atl-cktri-why-t{ font-size:12px; font-weight:800; color:#5C0F14; -webkit-text-fill-color:#5C0F14; margin-bottom:6px; }
+.atl-cktri-why-body{ font-size:12px; line-height:1.8; color:#5A4448; -webkit-text-fill-color:#5A4448; white-space:pre-wrap; }
+.atl-cktri .atl-infodot{ flex:0 0 20px; }
+.atl-cktri-mask{ position:fixed; inset:0; background:rgba(42,26,28,.42); z-index:100060; display:flex; align-items:center; justify-content:center; padding:24px; }
+.atl-cktri-modal{ max-width:480px; width:100%; background:#FDFBF8; border:1px solid #E8DCC9; border-radius:14px; box-shadow:0 18px 50px rgba(42,26,28,.28); padding:22px 22px 18px; }
+.atl-cktri-modal h4{ margin:0 0 10px; font-size:15px; color:#5C0F14; -webkit-text-fill-color:#5C0F14; font-weight:800; }
+.atl-cktri-modal p{ margin:0 0 9px; font-size:12.5px; line-height:1.8; color:#5A4448; -webkit-text-fill-color:#5A4448; }
+.atl-cktri-modal p b{ color:#5C0F14; -webkit-text-fill-color:#5C0F14; }
+.atl-cktri-modal .x{ float:right; cursor:pointer; border:none; background:none; font-size:18px; color:#7A5A5E; line-height:1; }
+</style>
+<script>
+(function(){
+  if(window.__atlCkTri587) return; window.__atlCkTri587=true;
+
+  function _t(m){ try{ if(window.toast) return toast(m); }catch(e){} }
+  function _norm(s){ return (s||'').replace(/[\s　・•\-\/／、,，;；·:：｜|()（）]/g,'').toLowerCase(); }
+  function afterSep(ln){ return ln.replace(/^[^：:｜|]*[：:｜|]/,'').trim(); }
+
+  /* 從一個資料範圍蒐集所有可勾選項目：{label, el} */
+  function collectItems(dataScope){
+    var out=[]; var seen={};
+    var cbs=dataScope.querySelectorAll('input[type="checkbox"][id]');
+    for(var i=0;i<cbs.length;i++){
+      var cb=cbs[i]; if(seen[cb.id]) continue; if(cb.closest('.atl-cktri')) continue;
+      var lab=cb.closest('label'); var sp=lab?lab.querySelector('span'):null;
+      var text=sp?sp.textContent.trim():(lab?lab.textContent.trim():cb.id);
+      if(!text) continue; seen[cb.id]=1;
+      out.push({label:text, el:cb});
+    }
+    return out;
+  }
+
+  /* 一個項目的 label 是否出現在某段文字裡（容許 AI 縮寫） */
+  function hitIn(txt,label){
+    var T=_norm(txt); if(!T) return false;
+    var cands=[label].concat(label.split(/[／/、,，·（(]/));
+    for(var i=0;i<cands.length;i++){ var c=_norm(cands[i]); if(c.length>=2 && T.indexOf(c)>=0) return true; }
+    return false;
+  }
+
+  /* 把 AI 回覆切成 保留／移除／補充／理由 四段 */
+  function parseReply(raw){
+    var lines=(raw||'').split(/\r?\n/); var sect=null; var keep='',rem='',add='',why='';
+    lines.forEach(function(ln){
+      var h=ln.match(/^[\s>*\-・•\d.]*([^：:｜|]{0,10})\s*[：:｜|]/);
+      var head=h? h[1].replace(/\s/g,'') : '';
+      if(/^(保留|要留|留用|留下|建議保留)/.test(head)){ sect='keep'; keep+=' '+afterSep(ln); return; }
+      if(/^(移除|拿掉|可略|略過|刪去|不留|去掉|建議移除)/.test(head)){ sect='rem'; rem+=' '+afterSep(ln); return; }
+      if(/^(建議補充|還缺|缺少|缺漏|補充|待補)/.test(head)){ sect='add'; add+=' '+afterSep(ln); return; }
+      if(/^(理由|原因|說明)/.test(head)){ sect='why'; why+=' '+afterSep(ln)+'\n'; return; }
+      if(sect==='keep') keep+=' '+ln;
+      else if(sect==='rem') rem+=' '+ln;
+      else if(sect==='add') add+=' '+ln;
+      else if(sect==='why') why+=ln+'\n';
+    });
+    return {keep:keep, rem:rem, add:add.trim(), why:why.trim()};
+  }
+
+  function buildPrompt(items,scopeName){
+    var a=(typeof curAcc==='function')?curAcc():null;
+    var head='客戶：'+((a&&(a.handle||a.displayName))||'（未選定）')+(a&&a.industry?('｜產業：'+a.industry):'');
+    var list=items.map(function(it,i){ return (i+1)+'. '+it.label+'　[目前：'+(it.el.checked?'已勾選':'未勾')+']'; }).join('\n');
+    return '我正在做客戶「公開資料初診」的【'+scopeName+'】這一步，要決定「哪些資料項目要放進'+
+      (scopeName.indexOf('總和')>=0?'交付物':'AI 分析')+'」。\n'+head+'\n\n'+
+      '下面是可勾選的項目清單（目前預設全部勾選）。請你幫我逐項判斷『該留』還是『可拿掉』，並指出我『還少了什麼』。\n\n'+
+      '【可勾選項目】\n'+list+'\n\n'+
+      '請務必只用下面這個固定格式回覆，項目名稱要跟我清單上的一字不差，方便我貼回系統自動打勾：\n\n'+
+      '保留：項目A、項目B、項目C\n'+
+      '移除：項目D、項目E\n'+
+      '建議補充：（你覺得我還少了、但清單裡沒有的東西，條列）\n\n'+
+      '理由：\n- 項目A｜一句話為什麼留\n- 項目D｜一句話為什麼拿掉';
+  }
+
+  function showInfo(){
+    var mask=document.createElement('div'); mask.className='atl-cktri-mask';
+    mask.innerHTML='<div class="atl-cktri-modal"><button class="x" type="button">×</button>'
+      +'<h4>AI 幫我決定要勾哪些 — 怎麼用</h4>'
+      +'<p><b>第一排是你要勾的項目</b>，一眼就能看到目前勾了哪些。下面這一區是 AI 協助，<b>選用</b>，你想自己勾也完全可以。</p>'
+      +'<p><b>① 複製打勾提示詞</b>：把目前項目清單丟給你的 AI，請它判斷每一項該留或拿掉、還缺什麼。</p>'
+      +'<p><b>② 把 AI 回覆貼回</b>：貼進框後按「貼回，自動幫我打勾」，系統會依 AI 的「保留／移除」自動幫你打勾或取消，沒被提到的維持原樣。</p>'
+      +'<p><b>③ AI 為什麼這樣勾</b>：會把 AI 的判斷理由與「還缺什麼」列在下方，方便你核對後再決定。</p></div>';
+    document.body.appendChild(mask);
+    function close(){ if(mask.parentNode) mask.parentNode.removeChild(mask); }
+    mask.addEventListener('click',function(e){ if(e.target===mask) close(); });
+    mask.querySelector('.x').onclick=close;
+  }
+
+  /* dataScope=蒐集/打勾的範圍, mountEl=UI 掛在哪, opts={scopeName, relocateBtn} */
+  function mountUI(dataScope, mountEl, opts){
+    if(dataScope.__atlCkTri) return; dataScope.__atlCkTri=1; mountEl.__atlCkTri=1;
+
+    var box=document.createElement('div'); box.className='atl-cktri'; box.setAttribute('data-atl-cktri','1');
+
+    var head=document.createElement('div'); head.className='atl-cktri-head';
+    var t=document.createElement('span'); t.className='atl-cktri-t'; t.textContent='AI 幫我決定要勾哪些';
+    var info=document.createElement('button'); info.type='button'; info.className='atl-infodot'; info.textContent='i'; info.title='這是什麼'; info.onclick=showInfo;
+    head.appendChild(t); head.appendChild(info); box.appendChild(head);
+
+    var note=document.createElement('div'); note.className='atl-cktri-note';
+    note.innerHTML='流程：<b>①</b> 複製提示詞丟給 AI　→　<b>②</b> AI 回你「該留哪些、少了什麼」　→　<b>③</b> 貼回下面，系統<b>自動幫你打勾／取消</b>，並列出 AI 的理由。';
+    box.appendChild(note);
+
+    var row1=document.createElement('div'); row1.className='atl-cktri-row';
+    if(opts.relocateBtn){ var moved=opts.relocateBtn(); if(moved) row1.appendChild(moved); }
+    var bPrompt=document.createElement('button'); bPrompt.type='button'; bPrompt.className='btn-sf';
+    bPrompt.innerHTML='<span class="atl-cktri-step">①</span>複製打勾提示詞';
+    bPrompt.onclick=function(){ var items=collectItems(dataScope); var p=buildPrompt(items,opts.scopeName);
+      if(window.atlPromptView) window.atlPromptView(p,opts.scopeName+'：AI 打勾提示詞');
+      else { try{ navigator.clipboard.writeText(p); }catch(e){} _t('已複製打勾提示詞'); } };
+    row1.appendChild(bPrompt); box.appendChild(row1);
+
+    var ta=document.createElement('textarea'); ta.className='atl-cktri-paste'; ta.setAttribute('data-autogrow','1');
+    ta.placeholder='把 AI 回覆整段貼進來（含「保留：…／移除：…」），再按下面自動打勾…';
+    box.appendChild(ta);
+
+    var row2=document.createElement('div'); row2.className='atl-cktri-row';
+    var bApply=document.createElement('button'); bApply.type='button'; bApply.className='btn-sf';
+    bApply.innerHTML='<span class="atl-cktri-step">②</span>貼回，自動幫我打勾';
+    row2.appendChild(bApply); box.appendChild(row2);
+
+    var why=document.createElement('div'); why.className='atl-cktri-why'; why.style.display='none';
+    var whyT=document.createElement('div'); whyT.className='atl-cktri-why-t'; whyT.textContent='③ AI 為什麼這樣勾';
+    var whyB=document.createElement('div'); whyB.className='atl-cktri-why-body';
+    why.appendChild(whyT); why.appendChild(whyB); box.appendChild(why);
+
+    bApply.onclick=function(){
+      var raw=ta.value||''; if(!raw.trim()){ _t((window.ICN?ICN.warn:'')+' 請先貼上 AI 回覆'); return; }
+      var items=collectItems(dataScope); var r=parseReply(raw); var nChk=0,nUn=0;
+      if(_norm(r.keep)||_norm(r.rem)){
+        items.forEach(function(it){
+          if(hitIn(r.rem,it.label)){ if(it.el.checked){ it.el.checked=false; nUn++; } it.el.dispatchEvent(new Event('change',{bubbles:true})); }
+          else if(hitIn(r.keep,it.label)){ if(!it.el.checked){ it.el.checked=true; nChk++; } it.el.dispatchEvent(new Event('change',{bubbles:true})); }
+        });
+      }
+      var body=r.why||''; if(r.add) body+=(body?'\n\n':'')+'還缺（建議補充）：\n'+r.add; if(!body) body=raw.trim();
+      whyB.textContent=body; why.style.display='block';
+      if(_norm(r.keep)||_norm(r.rem)) _t((window.ICN?ICN.check:'')+' 已依 AI 建議：勾選 '+nChk+' 項、取消 '+nUn+' 項，理由列在下方');
+      else _t((window.ICN?ICN.warn:'')+' 沒讀到「保留／移除」格式，已先把 AI 回覆放到下方，可自行勾選或請 AI 照固定格式重給');
+    };
+
+    mountEl.appendChild(box);
+  }
+
+  function scan(){
+    /* ②產生：資料範圍與掛載點都用 .s1feed；把 .s1feed-ai（genS1FeedTriage）搬進第一排 */
+    document.querySelectorAll('.s1feed').forEach(function(feed){
+      if(feed.__atlCkTri) return;
+      if(!feed.querySelector('input[type="checkbox"]')) return;
+      mountUI(feed, feed, {
+        scopeName:'②產生',
+        relocateBtn:function(){ return feed.querySelector('.s1feed-title .s1feed-ai')||null; }
+      });
+    });
+    /* ④總和：資料範圍用整個 .s1agg（top-level s1inc* 在 details 外），UI 掛在 .s1agg-detail-body 內 */
+    document.querySelectorAll('.s1agg-detail-body').forEach(function(body){
+      if(body.__atlCkTri) return;
+      var agg=body.closest('.s1agg'); if(!agg) return;
+      if(!agg.querySelector('input[type="checkbox"]')) return;
+      mountUI(agg, body, {
+        scopeName:'④總和',
+        relocateBtn:function(){ return body.querySelector('.btn-sf[onclick*="genS1FeedTriage"]')||null; }
+      });
+    });
+  }
+
+  function boot(){
+    scan();
+    try{ new MutationObserver(function(ms){ var n=false; ms.forEach(function(m){ if(m.addedNodes&&m.addedNodes.length) n=true; }); if(n){ clearTimeout(window.__atlCkTriT); window.__atlCkTriT=setTimeout(scan,150); } }).observe(document.body,{childList:true,subtree:true}); }catch(e){}
+    [400,1200,2600].forEach(function(ms){ setTimeout(scan,ms); });
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',boot); else boot();
+})();
+</script>
+
