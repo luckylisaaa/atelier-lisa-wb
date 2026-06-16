@@ -725,7 +725,7 @@ details.cat .cat-body{padding:14px 15px}
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">客戶服務台</span></span>
-    <span id="verBadge">cs-v5.44</span>
+    <span id="verBadge">cs-v5.45</span>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button type="button" id="popoutBtn" class="popout-btn" title="把客戶服務台開成獨立小視窗"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6"/><path d="M20 4l-9 9"/><path d="M14 12v7H5V10h7"/></svg>小視窗</button>
@@ -2501,7 +2501,7 @@ function saveHealthChoose(){
   if(typeof _heFlushActive==='function') _heFlushActive();
   var _cmapC=(window._heVer&&window._heVer.client)||{};
   var items=_readHealthItemsDOM(); var total=0; HEALTH_ITEMS.forEach(function(it){ total+=(_cmapC[it[0]]||0); });
-  if(total===0){ toast(ICN.warn+' 客戶版 10 項都還沒給分（0/50），先把客戶版點好分數或用 AI 智能填入再存'); return; }
+  if(total===0){ toast(ICN.warn+' 客戶版 10 項都還沒給分（0/50），先把客戶版點好分數或用 AI 智能再存'); return; }
   var hist=healthHistoryOf(a); var hasHist=hist.length>0; var last=hasHist?hist[hist.length-1]:null;
   var old=document.getElementById('saveChooseOverlay'); if(old) old.remove();
   var box=document.createElement('div'); box.id='saveChooseOverlay';
@@ -3369,14 +3369,14 @@ function injectSectionFillButtons(v){
     var h=card.querySelector('h2,h3'); if(!h) return;
     var bar=document.createElement('div'); bar.className='sf-bar';
     var b=document.createElement('button'); b.type='button'; b.className='btn-sf'; b.setAttribute('data-sf-btn','1');
-    b.innerHTML=ICN.prompt+' AI 智能填入';
+    b.innerHTML=ICN.prompt+' AI 智能';
     b.onclick=function(){ openSectionFill(b); };
     bar.appendChild(b);
     h.insertAdjacentElement('afterend', bar);
   });
 }
 function _sfFields(card){ return readSectionFields(card,true).filter(function(f){return f.editable&&f.src;}); }
-function _sfTitle(card){ var h=card.querySelector('h2,h3,.m-title'); return h?(h.innerText||'').replace('AI 智能填入','').trim():'這個區塊'; }
+function _sfTitle(card){ var h=card.querySelector('h2,h3,.m-title'); return h?(h.innerText||'').replace('AI 智能','').trim():'這個區塊'; }
 function openSectionFill(btn){
   var card=btn&&btn.closest?btn.closest('.section-card'):null; if(!card){ toast(ICN.warn+' 找不到區塊'); return; }
   window._sfCard=card;
@@ -3385,7 +3385,7 @@ function openSectionFill(btn){
   var title=_sfTitle(card);
   var body=fields.map(function(f){ return '<div class="sf-fld"><label>'+esc(f.label)+'</label><textarea class="sf-in" data-src="'+esc(f.src)+'" oninput="_sfMissing()">'+esc(f.value)+'</textarea></div>'; }).join('');
   var ov=document.createElement('div'); ov.className='hcmp-overlay';
-  ov.innerHTML='<div class="hcmp-paper" data-sectfill="1" style="max-width:620px"><div class="hcmp-head"><div class="hcmp-title">AI 智能填入 · '+esc(title)+'</div><button class="hnote-tab" onclick="closeHealthCompare(this)">取消</button></div>'
+  ov.innerHTML='<div class="hcmp-paper" data-sectfill="1" style="max-width:620px"><div class="hcmp-head"><div class="hcmp-title">AI 智能 · '+esc(title)+'</div><button class="hnote-tab" onclick="closeHealthCompare(this)">取消</button></div>'
     +'<div class="sc-note" style="margin-bottom:10px">① 產生提示詞給 AI 擬 → ② 貼回一鍵匯入 → ③ 審核/補 → 套用回表單。</div>'
     +'<div class="cl-step">① 產生填入提示詞</div><button class="btn btn-gold" style="margin:0 0 12px" onclick="buildSectionFillPrompt()">'+ICN.prompt+' 產生提示詞（給 AI 擬這一段）</button>'
     +'<div class="cl-step">② 貼回 AI 回覆 → 一鍵匯入</div><textarea id="sf-import" placeholder="把 AI 回覆貼這裡…" style="width:100%;min-height:72px;padding:10px;border:1px solid #E8E3DA;border-radius:9px;font-family:inherit;margin-bottom:8px"></textarea><button class="btn btn-go" style="margin:0 0 14px" onclick="importSectionFill()">'+ICN.check+' 一鍵匯入到下面</button>'
@@ -6063,7 +6063,7 @@ details.cs-context::before{ content:""; display:block; height:1px; background:li
       +'<button class="preview-modal-btn" onclick="closeModal()">關閉</button></div>'
       +'<div class="preview-paper"><div class="preview-kicker">ATELIER · AI PROMPT</div>'
       +'<h2>'+_esc(r.title)+' · AI 提示詞</h2><div class="preview-gold-line"></div>'
-      +'<div class="preview-sub">這就是「AI 智能填入」會送給 AI 的提示詞，已帶入這位客戶。複製貼到 AI，再把回覆貼回「AI 智能填入」即可一鍵匯入。</div>'
+      +'<div class="preview-sub">這就是「AI 智能」會送給 AI 的提示詞，已帶入這位客戶。複製貼到 AI，再把回覆貼回「AI 智能」即可一鍵匯入。</div>'
       +'<div id="cssp-box" style="white-space:pre-wrap;font-size:13px;line-height:1.85;color:#3A2A2C;background:#FAF6F1;border:1px solid #EFE7DC;border-radius:10px;padding:14px 16px">'+_esc(r.p)+'</div>'
       +'</div></div>';
     md.classList.add('show'); md.onclick=function(e){ if(e.target===md) closeModal(); };
@@ -7928,7 +7928,7 @@ setInterval(tick,1200);setTimeout(tick,300);
 </script>
 
 <script>
-/* v328 / cs-v4.54：欄位 textarea 自動撐高 —— 手動編輯或 AI 智能填入後，整欄內容都看得到，不必在小框裡捲動。
+/* v328 / cs-v4.54：欄位 textarea 自動撐高 —— 手動編輯或 AI 智能後，整欄內容都看得到，不必在小框裡捲動。
    涵蓋動態渲染的欄位（MutationObserver，含服務台 SAFE 模組／各環節欄位）；冪等（data-autogrow）；過高才出現捲軸（上限 80vh）。 */
 (function(){
   if(window.__atlAutoGrow) return; window.__atlAutoGrow=true;
@@ -8639,10 +8639,10 @@ button:not(:disabled), .btn:not(.disabled):not([disabled]), [role="button"]{
      D4 三件套順序(純 CSS order)、D7 點欄位就放大(focus)、D5 提示詞可編輯(統一檢視器+問診卡)、
      D6 顧問分析補「目的＋展示版」出口。檔尾注入、冪等;服務台 toast 用 innerHTML(可含 SVG，本檔未用 SVG)。 -->
 <style id="atl-cs468-fillux">
-/* ── D4 三件套順序:① 查看提示詞 → ② AI 智能填入 → ③ 展開編輯(.sf-bar 為 flex，純排序、不動 DOM) */
+/* ── D4 三件套順序:① 查看提示詞 → ② AI 智能 → ③ 展開編輯(.sf-bar 為 flex，純排序、不動 DOM) */
 .sf-bar{ display:flex !important; flex-wrap:wrap; gap:6px; align-items:center; }
 .sf-bar [data-cs-prompt]{ order:1 !important; }   /* ① 提示詞 */
-.sf-bar [data-sf-btn]{ order:2 !important; }       /* ② AI 智能填入 */
+.sf-bar [data-sf-btn]{ order:2 !important; }       /* ② AI 智能 */
 .sf-bar [data-cs-expand]{ order:3 !important; }    /* ③ 展開編輯 */
 
 /* ── D7 點欄位就放大:聚焦時自動長高、給舒服的編輯空間(搭配既有 autogrow，不擠成一排) */
@@ -8974,7 +8974,7 @@ button:not(:disabled), .btn:not(.disabled):not([disabled]), [role="button"]{
   if(window.__atlCs473Continuity) return; window.__atlCs473Continuity=true;
   function cleanTextNode(n){var s=n.nodeValue||''; var ns=s.replace(/cs-v4\.\d+\s*(SAFE|LATEST)?\s*[｜|·:-]?\s*/g,'').replace(/\bv\d{3}\s*[｜|·:-]?\s*/g,''); if(ns!==s)n.nodeValue=ns;}
   function cleanVersions(){
-    try{var vb=document.getElementById('verBadge'); if(vb)vb.textContent='cs-v5.44';}catch(e){}
+    try{var vb=document.getElementById('verBadge'); if(vb)vb.textContent='cs-v5.45';}catch(e){}
     try{var w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT,{acceptNode:function(n){var p=n.parentElement; if(!p||p.id==='verBadge'||/^(SCRIPT|STYLE|TEXTAREA)$/i.test(p.tagName))return NodeFilter.FILTER_REJECT; return /(cs-v4\.\d+|\bv\d{3})/.test(n.nodeValue||'')?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_REJECT;}}); var nodes=[],n; while(n=w.nextNode())nodes.push(n); nodes.forEach(cleanTextNode);}catch(e){}
   }
   function alignSelection(){
@@ -9034,7 +9034,7 @@ input[type="text"]:focus,input:not([type]):focus{border-color:#D4A574!important;
     btn.onclick=function(e){e.stopPropagation(); set(!safe.classList.contains('atl-safe474-collapsed'));};
     h.appendChild(summary); h.appendChild(btn); set(localStorage.getItem('atl.cs474.safeCollapsed')!=='0');
   }
-  function cleanBadge(){ var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v5.44'; }
+  function cleanBadge(){ var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v5.45'; }
   function run(){ cleanBadge(); ensureSafeCollapse(); wireAutogrow(document); }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run); else run();
   setInterval(run,1200);
@@ -9071,7 +9071,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
     var lab=''; try{ if(el.id){var l=qs('label[for="'+CSS.escape(el.id)+'"]'); if(l)lab=l.textContent;} }catch(e){}
     if(!lab){var p=el.closest('label,.fld,.row,.preview-field,.section-card,.atl452safe-mini'); if(p){var clone=p.cloneNode(true); qsa('input,textarea,select,button',clone).forEach(function(n){n.remove()}); lab=clone.textContent;}}
     if(!lab) lab=el.getAttribute('aria-label')||el.getAttribute('placeholder')||el.name||el.id||'這個欄位';
-    lab=String(lab).replace(/提示詞|AI 智能填入|AI智能填入|展開編輯|預覽|儲存|查看/g,'').replace(/\s+/g,' ').trim();
+    lab=String(lab).replace(/提示詞|AI 智能|AI 智能|展開編輯|預覽|儲存|查看/g,'').replace(/\s+/g,' ').trim();
     return lab.slice(0,46)||'這個欄位';
   }
   function val(el){return el.value!=null?el.value:el.textContent}
@@ -9079,15 +9079,15 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
   function genPrompt(el){var name=labelOf(el); return '請幫我填寫 ATELIER 客戶服務台的「'+name+'」欄位。\n\n要求：\n1. 用繁體中文，白話、具體、可直接貼回系統。\n2. 不要寫空泛形容詞，要寫出對客戶服務、內容診斷或交付有幫助的資訊。\n3. 如果資料不足，請用「待補：需要補充什麼」標示。\n4. 請只輸出這個欄位要貼回去的內容，不要加開場白。\n\n目前欄位已有內容：\n'+(val(el)||'（目前空白）');}
   function openModal(kind,el){
     var name=labelOf(el), current=val(el)||''; var ov=document.createElement('div'); ov.className='atl-field-modal';
-    var title=kind==='prompt'?'提示詞檢視 / 編輯':kind==='fill'?'AI 智能填入':'展開編輯';
-    var help=kind==='prompt'?'先看提示詞，可以改完再複製給 AI。AI 回覆後，回到這個欄位按「AI 智能填入」貼回。':kind==='fill'?'把 AI 回覆貼在下面，確認後會寫回目前欄位。':'這是完整編輯框。你可以在這裡看完整內容、修改，然後存回原欄位。';
+    var title=kind==='prompt'?'提示詞檢視 / 編輯':kind==='fill'?'AI 智能':'展開編輯';
+    var help=kind==='prompt'?'先看提示詞，可以改完再複製給 AI。AI 回覆後，回到這個欄位按「AI 智能」貼回。':kind==='fill'?'把 AI 回覆貼在下面，確認後會寫回目前欄位。':'這是完整編輯框。你可以在這裡看完整內容、修改，然後存回原欄位。';
     var body=kind==='prompt'?genPrompt(el):current;
     ov.innerHTML='<div class="atl-field-box"><div class="atl-field-k">ATELIER · FIELD FLOW</div><h3 class="atl-field-title">'+esc(title)+'</h3><div class="atl-field-help"><b>目前欄位：</b>'+esc(name)+'<br>'+esc(help)+'</div><textarea>'+esc(body)+'</textarea><div class="atl-field-actions"><button type="button" class="ghost" data-close>取消</button><button type="button" class="gold" data-copy>複製內容</button>'+(kind==='prompt'?'<button type="button" class="primary" data-close>完成</button>':'<button type="button" class="primary" data-apply>寫回欄位</button>')+'</div></div>';
     document.body.appendChild(ov); var ta=qs('textarea',ov); setTimeout(function(){ta.focus(); ta.style.height='auto'; ta.style.height=Math.min(ta.scrollHeight+4,420)+'px';},60);
     ov.addEventListener('click',function(e){if(e.target===ov||e.target.hasAttribute('data-close'))ov.remove(); if(e.target.hasAttribute('data-copy'))copy(ta.value,'已複製內容'); if(e.target.hasAttribute('data-apply')){setVal(el,ta.value); ov.remove(); toastSafe('已寫回欄位，記得儲存');}});
     ta.addEventListener('input',function(){this.style.height='auto'; this.style.height=Math.min(this.scrollHeight+4,520)+'px';});
   }
-  function makeToolbar(){var bar=qs('#atlFieldToolbar'); if(bar)return bar; bar=document.createElement('div'); bar.id='atlFieldToolbar'; bar.className='atl-field-toolbar'; bar.innerHTML='<div class="atl-ft-name">目前欄位：<b></b></div><div class="atl-ft-actions"><button type="button" class="gold" data-act="prompt">提示詞</button><button type="button" class="primary" data-act="fill">AI 智能填入</button><button type="button" class="ghost" data-act="edit">展開編輯</button><button type="button" class="ghost" data-act="done">定案 / 收起</button></div>'; document.body.appendChild(bar); return bar;}
+  function makeToolbar(){var bar=qs('#atlFieldToolbar'); if(bar)return bar; bar=document.createElement('div'); bar.id='atlFieldToolbar'; bar.className='atl-field-toolbar'; bar.innerHTML='<div class="atl-ft-name">目前欄位：<b></b></div><div class="atl-ft-actions"><button type="button" class="gold" data-act="prompt">提示詞</button><button type="button" class="primary" data-act="fill">AI 智能</button><button type="button" class="ghost" data-act="edit">展開編輯</button><button type="button" class="ghost" data-act="done">定案 / 收起</button></div>'; document.body.appendChild(bar); return bar;}
   var active=null;
   function show(el){active=el; qsa('.atl-field-active').forEach(function(n){n.classList.remove('atl-field-active')}); el.classList.add('atl-field-active'); var bar=makeToolbar(); qs('b',bar).textContent=labelOf(el); bar.classList.add('on');}
   function hideSoon(){setTimeout(function(){var bar=qs('#atlFieldToolbar'); if(bar && !document.activeElement.closest('.atl-field-toolbar') && document.activeElement!==active) bar.classList.remove('on');},220)}
@@ -9095,7 +9095,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
   function wire(root){qsa('textarea,input[type="text"],input[type="url"],input[type="email"],input:not([type])',root||document).forEach(function(el){if(el.__atl475)return; if(el.closest('.atl-field-modal,.atl-final-modal'))return; el.__atl475=true; el.addEventListener('focus',function(){show(el); autogrow(el)}); el.addEventListener('input',function(){autogrow(el)}); el.addEventListener('blur',hideSoon); autogrow(el);});}
   document.addEventListener('click',function(e){var b=e.target.closest('#atlFieldToolbar button'); if(!b||!active)return; var a=b.getAttribute('data-act'); if(a==='prompt')openModal('prompt',active); if(a==='fill')openModal('fill',active); if(a==='edit')openModal('edit',active); if(a==='done'){var bar=qs('#atlFieldToolbar'); if(bar)bar.classList.remove('on'); if(active)active.classList.remove('atl-field-active'); toastSafe('此欄位可視為定案，請記得儲存');}},true);
   function addCollapse(root){qsa('.section-card,.deliverable-card,.atl452safe-card',root||document).forEach(function(card){if(card.__atlCollapse475||card.closest('.preview-modal,.atl-field-modal'))return; card.__atlCollapse475=true; card.classList.add('atl-collapsible'); var h=qs('h2,h3,h4,.stitle,.section-title',card)||card.firstElementChild; if(h)h.classList.add('atl-keep-visible'); var btn=document.createElement('button'); btn.type='button'; btn.className='atl-collapse-toggle'; btn.textContent='收合'; btn.addEventListener('click',function(e){e.preventDefault(); e.stopPropagation(); var closed=card.classList.toggle('atl-closed'); btn.textContent=closed?'展開':'收合';}); card.insertBefore(btn,card.firstChild);});}
-  function boot(){try{var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v5.44';}catch(e){} wire(document); addCollapse(document);}
+  function boot(){try{var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v5.45';}catch(e){} wire(document); addCollapse(document);}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot); else boot();
   try{new MutationObserver(function(ms){var hit=false; ms.forEach(function(m){if(m.addedNodes&&m.addedNodes.length)hit=true}); if(hit){clearTimeout(window.__atl475Timer); window.__atl475Timer=setTimeout(boot,180);}}).observe(document.body,{childList:true,subtree:true});}catch(e){}
 })();
@@ -9136,7 +9136,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
 <script id="atl478-final-export-js">
 (function(){
   if(window.__atl478FinalExport)return; window.__atl478FinalExport=true;
-  var VERSION='cs-v5.44';
+  var VERSION='cs-v5.45';
   function esc(s){return (s==null?'':String(s)).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
   function qsa(sel,root){return Array.prototype.slice.call((root||document).querySelectorAll(sel))}
   function text(el){return (el&&el.innerText||el&&el.textContent||'').replace(/\s+/g,' ').trim()}
@@ -9256,7 +9256,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
 <script>
 (function(){
   if(window.__atlCs480) return; window.__atlCs480=true;
-  var V='cs-v5.44';
+  var V='cs-v5.45';
   function lock(){ var vb=document.getElementById('verBadge'); if(vb && (vb.textContent||'').trim()!==V) vb.textContent=V; }
   function unify(){
     var safe=document.querySelector('.atl452safe'); if(!safe) return;
@@ -10203,7 +10203,7 @@ input.atl477-open-field:not([type="checkbox"]):not([type="radio"]):not([type="bu
 <script id="atl-cs477-final-touch">
 (function(){
   if(window.__atlCs477FinalTouch) return; window.__atlCs477FinalTouch=true;
-  var VERSION='cs-v5.44';
+  var VERSION='cs-v5.45';
   function qs(s,r){return (r||document).querySelector(s)}
   function qsa(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
   function setVersion(){try{var b=qs('#verBadge'); if(b)b.textContent=VERSION; window.ATELIER_CLIENT_VERSION=VERSION;}catch(e){}}
@@ -11024,7 +11024,7 @@ body.atl-hide-final #atlFinalFloat{ display:none !important; }
 })();
 </script>
 
-<!-- ATELIER cs-v5.26 · §十五 降紅(第三優先)：卡片「AI智能填入」(.btn-sf)紅實心→紅描邊白底(不再大塊紅、仍可辨識AI)；
+<!-- ATELIER cs-v5.26 · §十五 降紅(第三優先)：卡片「AI 智能」(.btn-sf)紅實心→紅描邊白底(不再大塊紅、仍可辨識AI)；
      「查看提示詞」([data-cs-prompt])→灰工具鈕。紅留給真正主要行動(儲存/下一步/匯入)。純 CSS、可逆。 -->
 <style id="atl-cs526-dered">
 .btn-sf{ background:#fff !important; color:#A51820 !important; -webkit-text-fill-color:#A51820 !important;
@@ -11405,7 +11405,7 @@ body.atl-hide-final #atlFinalFloat{ display:none !important; }
   function build(){
     if(document.getElementById('atlDbFab')) return;
     var fab=document.createElement('button'); fab.id='atlDbFab'; fab.className='atl-db-fab';
-    fab.innerHTML='🗄 工作台資料庫 · 服務包<span class="n" id="atlDbFabN">0</span>';
+    fab.innerHTML='工作台資料庫 · 服務包<span class="n" id="atlDbFabN">0</span>';
     fab.addEventListener('click',openModal); document.body.appendChild(fab); refreshFab();
 
     var mo=document.createElement('div'); mo.id='atlDbModal'; mo.className='atl-db-modal';
@@ -11795,7 +11795,7 @@ body.atl-hide-final #atlFinalFloat{ display:none !important; }
     fab.addEventListener('click',function(e){ if(moved){ e.preventDefault(); e.stopPropagation(); moved=false; } },true);
   }
   // B. 初診頁:智能下一步 + 閉環 → 併進同一張卡
-  function mergeStatus(){
+  function mergeStatus(){ return; /* cs-v5.45 停用:不再新增重複86%/併卡,保留原本 OVERALL PROGRESS 卡 */
     var v=document.getElementById('view-stage1'); if(!v) return;
     var na=v.querySelector('.next-action-card'); if(!na) return;
     var lens=v.querySelector('.atl-lenschip-wrap');
@@ -11824,7 +11824,7 @@ body.atl-hide-final #atlFinalFloat{ display:none !important; }
   if(window.__atl544) return; window.__atl544=true;
   function pct(){ try{ var a=(typeof curAcc==='function')?curAcc():null; if(!a||typeof window.computeClientProgress!=='function') return null;
     var r=window.computeClientProgress(a); return (r&&typeof r.percent==='number')?Math.round(r.percent):null; }catch(e){ return null; } }
-  function inject(){
+  function inject(){ return; /* cs-v5.45 停用重複86% */
     var box=document.getElementById('atlStatusMerged'); if(!box) return;
     var p=pct(); if(p==null) return;
     var html='<div class="atl-sm-pcttop"><span class="atl-sm-pctlabel">本客戶完成度</span><span class="atl-sm-pctnum">'+p+'%</span></div>'
@@ -11835,5 +11835,40 @@ body.atl-hide-final #atlFinalFloat{ display:none !important; }
     head.setAttribute('data-p', String(p));
   }
   setTimeout(inject,800); setTimeout(inject,1800); setInterval(inject,2000);
+})();
+</script>
+
+<!-- ATELIER cs-v5.45 · 初診頁來源框/進階框回 Image 1:廢掉手風琴收合→框一律顯示(緊湊)、focus 在原地變長、blur 復原、右上沿用既有「✦ AI」浮動鈕。純前端、可逆。 -->
+<style id="atl-cs545-css">
+/* 1) 廢掉手風琴把框藏起來(這就是「開盲盒」的根因) */
+#view-stage1 .atl-acc-row:not(.atl-open) textarea,
+#view-stage1 .atl-acc .atl-acc-row:not(.atl-open) textarea{ display:block !important; }
+/* 2) 收掉手風琴 編輯/▾/狀態 那排(框已常駐,不需要) */
+#view-stage1 .atl-acc-meta{ display:none !important; }
+/* 3) 中和手風琴 open 態,改由 focus 控制 */
+#view-stage1 .atl-acc-row.atl-open{ background:transparent !important; box-shadow:none !important; padding:7px 4px !important; }
+/* 4) 靜止態:框看得到、緊湊(像 Image 1 其他欄) */
+#view-stage1 .atl-acc-row textarea,
+#view-stage1 .chk-row .cbody textarea,
+#view-stage1 .fld textarea{
+  display:block !important; width:100% !important; box-sizing:border-box !important;
+  min-height:42px !important; max-height:60px !important; height:auto !important;
+  margin-top:6px !important; overflow-y:auto !important; resize:none !important;
+  line-height:1.6 !important; white-space:pre-wrap !important; word-break:break-word !important;
+  background:#fff !important; transition:min-height .15s, max-height .15s, box-shadow .15s;
+}
+/* 5) focus:在原地變長(不彈窗) */
+#view-stage1 textarea.atl45foc,
+#view-stage1 .atl-acc-row.atl-open textarea.atl45foc{
+  min-height:132px !important; max-height:340px !important;
+  background:#FFFDF9 !important; box-shadow:0 0 0 2px rgba(165,24,32,.13) !important;
+}
+</style>
+<script>
+(function(){
+  if(window.__atl545) return; window.__atl545=true;
+  function inV1(t){ return t && t.tagName==='TEXTAREA' && t.closest && t.closest('#view-stage1'); }
+  document.addEventListener('focusin', function(e){ if(inV1(e.target)) e.target.classList.add('atl45foc'); }, true);
+  document.addEventListener('focusout', function(e){ if(inV1(e.target)){ e.target.classList.remove('atl45foc'); try{ e.target.style.height=''; }catch(_){} } }, true);
 })();
 </script>
