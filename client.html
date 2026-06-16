@@ -725,7 +725,7 @@ details.cat .cat-body{padding:14px 15px}
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">客戶服務台</span></span>
-    <span id="verBadge">cs-v5.62</span>
+    <span id="verBadge">cs-v5.63</span>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button type="button" id="popoutBtn" class="popout-btn" title="把客戶服務台開成獨立小視窗"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6"/><path d="M20 4l-9 9"/><path d="M14 12v7H5V10h7"/></svg>小視窗</button>
@@ -8988,7 +8988,7 @@ button:not(:disabled), .btn:not(.disabled):not([disabled]), [role="button"]{
   if(window.__atlCs473Continuity) return; window.__atlCs473Continuity=true;
   function cleanTextNode(n){var s=n.nodeValue||''; var ns=s.replace(/cs-v4\.\d+\s*(SAFE|LATEST)?\s*[｜|·:-]?\s*/g,'').replace(/\bv\d{3}\s*[｜|·:-]?\s*/g,''); if(ns!==s)n.nodeValue=ns;}
   function cleanVersions(){
-    try{var vb=document.getElementById('verBadge'); if(vb)vb.textContent='cs-v5.62';}catch(e){}
+    try{var vb=document.getElementById('verBadge'); if(vb)vb.textContent='cs-v5.63';}catch(e){}
     try{var w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT,{acceptNode:function(n){var p=n.parentElement; if(!p||p.id==='verBadge'||/^(SCRIPT|STYLE|TEXTAREA)$/i.test(p.tagName))return NodeFilter.FILTER_REJECT; return /(cs-v4\.\d+|\bv\d{3})/.test(n.nodeValue||'')?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_REJECT;}}); var nodes=[],n; while(n=w.nextNode())nodes.push(n); nodes.forEach(cleanTextNode);}catch(e){}
   }
   function alignSelection(){
@@ -9048,7 +9048,7 @@ input[type="text"]:focus,input:not([type]):focus{border-color:#D4A574!important;
     btn.onclick=function(e){e.stopPropagation(); set(!safe.classList.contains('atl-safe474-collapsed'));};
     h.appendChild(summary); h.appendChild(btn); set(localStorage.getItem('atl.cs474.safeCollapsed')!=='0');
   }
-  function cleanBadge(){ var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v5.62'; }
+  function cleanBadge(){ var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v5.63'; }
   function run(){ cleanBadge(); ensureSafeCollapse(); wireAutogrow(document); }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run); else run();
   setInterval(run,1200);
@@ -9109,7 +9109,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
   function wire(root){qsa('textarea,input[type="text"],input[type="url"],input[type="email"],input:not([type])',root||document).forEach(function(el){if(el.__atl475)return; if(el.closest('.atl-field-modal,.atl-final-modal'))return; el.__atl475=true; el.addEventListener('focus',function(){show(el); autogrow(el)}); el.addEventListener('input',function(){autogrow(el)}); el.addEventListener('blur',hideSoon); autogrow(el);});}
   document.addEventListener('click',function(e){var b=e.target.closest('#atlFieldToolbar button'); if(!b||!active)return; var a=b.getAttribute('data-act'); if(a==='prompt')openModal('prompt',active); if(a==='fill')openModal('fill',active); if(a==='edit')openModal('edit',active); if(a==='done'){var bar=qs('#atlFieldToolbar'); if(bar)bar.classList.remove('on'); if(active)active.classList.remove('atl-field-active'); toastSafe('此欄位可視為定案，請記得儲存');}},true);
   function addCollapse(root){qsa('.section-card,.deliverable-card,.atl452safe-card',root||document).forEach(function(card){if(card.__atlCollapse475||card.closest('.preview-modal,.atl-field-modal'))return; card.__atlCollapse475=true; card.classList.add('atl-collapsible'); var h=qs('h2,h3,h4,.stitle,.section-title',card)||card.firstElementChild; if(h)h.classList.add('atl-keep-visible'); var btn=document.createElement('button'); btn.type='button'; btn.className='atl-collapse-toggle'; btn.textContent='收合'; btn.addEventListener('click',function(e){e.preventDefault(); e.stopPropagation(); var closed=card.classList.toggle('atl-closed'); btn.textContent=closed?'展開':'收合';}); card.insertBefore(btn,card.firstChild);});}
-  function boot(){try{var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v5.62';}catch(e){} wire(document); addCollapse(document);}
+  function boot(){try{var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v5.63';}catch(e){} wire(document); addCollapse(document);}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot); else boot();
   try{new MutationObserver(function(ms){var hit=false; ms.forEach(function(m){if(m.addedNodes&&m.addedNodes.length)hit=true}); if(hit){clearTimeout(window.__atl475Timer); window.__atl475Timer=setTimeout(boot,180);}}).observe(document.body,{childList:true,subtree:true});}catch(e){}
 })();
@@ -9150,7 +9150,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
 <script id="atl478-final-export-js">
 (function(){
   if(window.__atl478FinalExport)return; window.__atl478FinalExport=true;
-  var VERSION='cs-v5.62';
+  var VERSION='cs-v5.63';
   function esc(s){return (s==null?'':String(s)).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
   function qsa(sel,root){return Array.prototype.slice.call((root||document).querySelectorAll(sel))}
   function text(el){return (el&&el.innerText||el&&el.textContent||'').replace(/\s+/g,' ').trim()}
@@ -9270,7 +9270,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
 <script>
 (function(){
   if(window.__atlCs480) return; window.__atlCs480=true;
-  var V='cs-v5.62';
+  var V='cs-v5.63';
   function lock(){ var vb=document.getElementById('verBadge'); if(vb && (vb.textContent||'').trim()!==V) vb.textContent=V; }
   function unify(){
     var safe=document.querySelector('.atl452safe'); if(!safe) return;
@@ -10217,7 +10217,7 @@ input.atl477-open-field:not([type="checkbox"]):not([type="radio"]):not([type="bu
 <script id="atl-cs477-final-touch">
 (function(){
   if(window.__atlCs477FinalTouch) return; window.__atlCs477FinalTouch=true;
-  var VERSION='cs-v5.62';
+  var VERSION='cs-v5.63';
   function qs(s,r){return (r||document).querySelector(s)}
   function qsa(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
   function setVersion(){try{var b=qs('#verBadge'); if(b)b.textContent=VERSION; window.ATELIER_CLIENT_VERSION=VERSION;}catch(e){}}
@@ -12299,5 +12299,60 @@ body.atl-hide-final #atlFinalFloat{ display:none !important; }
   scan();
   [300,900,2000].forEach(function(ms){ setTimeout(scan,ms); });
   try{ new MutationObserver(function(){ clearTimeout(window.__atlCC562T); window.__atlCC562T=setTimeout(scan,150); }).observe(document.body,{childList:true,subtree:true}); }catch(e){}
+})();
+</script>
+
+<!-- ATELIER cs-v5.63 · 全站卡片標準化(整體性架構):
+  ① 任何要填的卡,全站一律只留「AI 智能」(藏掉 查看提示詞/展開編輯);
+  ② 任何 .section-card 都有乾淨的三角形收放(掃目前這一頁、記住收合狀態、重畫也不掉);
+  ③ 同一張卡只留一顆收合鈕(把其他機制重複的鈕藏掉);
+  (框點了變高=autogrow 全站本來就有;旁邊小ⓘ說明=既有機制。)
+  純前端、可逆。 -->
+<style id="atl-cs563-css">
+/* ① 全站:每張卡只留 AI 智能 */
+[data-cs-prompt], [data-cs-expand]{ display:none !important; }
+/* ② 乾淨三角形收合 */
+.section-card.atl-std562 > h3{ display:flex; align-items:center; gap:7px; flex-wrap:wrap; }
+.atl-std-tog{ display:inline-flex; align-items:center; justify-content:center; min-width:20px; height:20px;
+  margin-left:4px; border:none; background:transparent; color:#A51820; -webkit-text-fill-color:#A51820;
+  font-size:13px; line-height:1; cursor:pointer; font-family:inherit; padding:0; }
+.atl-std-tog:hover{ color:#7A1018; -webkit-text-fill-color:#7A1018; }
+.section-card.atl-std562.atl-std-closed > *:not(h3){ display:none !important; }
+/* ③ 同卡只留一顆:藏掉其他機制重複的收合鈕 */
+.section-card.atl-std562 .atl-collapse-tog,
+.section-card.atl-std562 .atl-collapse-toggle,
+.section-card.atl-std562 .atl-s1coll-chev,
+.section-card.atl-std562 .atl-cc562-tog{ display:none !important; }
+</style>
+<script>
+(function(){
+  if(window.__atlStd562) return; window.__atlStd562=true;
+  var state={};                       // 記住每張卡收合狀態(標題當key),重畫後沿用
+  function h3of(card){ return card.querySelector(':scope > h3') || card.querySelector('h3'); }
+  function keyOf(h){ return (h.textContent||'').replace(/[\s▸▾iⓘ]/g,'').slice(0,40); }
+  function add(card){
+    var h=h3of(card); if(!h) return;
+    if(h.querySelector(':scope > .atl-std-tog')) return;   // 已加過
+    card.classList.add('atl-std562');
+    var key=keyOf(h);
+    var closed=!!state[key];
+    card.classList.toggle('atl-std-closed', closed);
+    var tog=document.createElement('button'); tog.type='button'; tog.className='atl-std-tog';
+    tog.setAttribute('aria-label','收合 / 展開');
+    tog.textContent=closed?'\u25B8':'\u25BE';
+    tog.onclick=function(e){ e.stopPropagation();
+      var c=card.classList.toggle('atl-std-closed'); state[key]=c; tog.textContent=c?'\u25B8':'\u25BE';
+    };
+    h.appendChild(tog);
+  }
+  function scan(){
+    var v=document.querySelector('.view.on'); if(!v) return;
+    var cards=v.querySelectorAll('.section-card');
+    for(var i=0;i<cards.length;i++){ try{ add(cards[i]); }catch(e){} }
+  }
+  scan();
+  [150,500,1100,2200].forEach(function(ms){ setTimeout(scan,ms); });
+  try{ new MutationObserver(function(){ clearTimeout(window.__atlStd562T); window.__atlStd562T=setTimeout(scan,180); }).observe(document.body,{childList:true,subtree:true}); }catch(e){}
+  try{ setInterval(scan,1600); }catch(e){}
 })();
 </script>
