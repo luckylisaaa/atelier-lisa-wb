@@ -725,7 +725,7 @@ details.cat .cat-body{padding:14px 15px}
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">客戶服務台</span></span>
-    <span id="verBadge">cs-v5.100</span>
+    <span id="verBadge">cs-v5.101</span>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button type="button" id="popoutBtn" class="popout-btn" title="把客戶服務台開成獨立小視窗"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6"/><path d="M20 4l-9 9"/><path d="M14 12v7H5V10h7"/></svg>小視窗</button>
@@ -9056,7 +9056,7 @@ button:not(:disabled), .btn:not(.disabled):not([disabled]), [role="button"]{
   if(window.__atlCs473Continuity) return; window.__atlCs473Continuity=true;
   function cleanTextNode(n){var s=n.nodeValue||''; var ns=s.replace(/cs-v4\.\d+\s*(SAFE|LATEST)?\s*[｜|·:-]?\s*/g,'').replace(/\bv\d{3}\s*[｜|·:-]?\s*/g,''); if(ns!==s)n.nodeValue=ns;}
   function cleanVersions(){
-    try{var vb=document.getElementById('verBadge'); if(vb)vb.textContent='cs-v5.100';}catch(e){}
+    try{var vb=document.getElementById('verBadge'); if(vb)vb.textContent='cs-v5.101';}catch(e){}
     try{var w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT,{acceptNode:function(n){var p=n.parentElement; if(!p||p.id==='verBadge'||/^(SCRIPT|STYLE|TEXTAREA)$/i.test(p.tagName))return NodeFilter.FILTER_REJECT; return /(cs-v4\.\d+|\bv\d{3})/.test(n.nodeValue||'')?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_REJECT;}}); var nodes=[],n; while(n=w.nextNode())nodes.push(n); nodes.forEach(cleanTextNode);}catch(e){}
   }
   function alignSelection(){
@@ -9116,7 +9116,7 @@ input[type="text"]:focus,input:not([type]):focus{border-color:#D4A574!important;
     btn.onclick=function(e){e.stopPropagation(); set(!safe.classList.contains('atl-safe474-collapsed'));};
     h.appendChild(summary); h.appendChild(btn); set(localStorage.getItem('atl.cs474.safeCollapsed')!=='0');
   }
-  function cleanBadge(){ var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v5.100'; }
+  function cleanBadge(){ var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v5.101'; }
   function run(){ cleanBadge(); ensureSafeCollapse(); wireAutogrow(document); }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run); else run();
   setInterval(run,1200);
@@ -9177,7 +9177,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
   function wire(root){qsa('textarea,input[type="text"],input[type="url"],input[type="email"],input:not([type])',root||document).forEach(function(el){if(el.__atl475)return; if(el.closest('.atl-field-modal,.atl-final-modal'))return; el.__atl475=true; el.addEventListener('focus',function(){show(el); autogrow(el)}); el.addEventListener('input',function(){autogrow(el)}); el.addEventListener('blur',hideSoon); autogrow(el);});}
   document.addEventListener('click',function(e){var b=e.target.closest('#atlFieldToolbar button'); if(!b||!active)return; var a=b.getAttribute('data-act'); if(a==='prompt')openModal('prompt',active); if(a==='fill')openModal('fill',active); if(a==='edit')openModal('edit',active); if(a==='done'){var bar=qs('#atlFieldToolbar'); if(bar)bar.classList.remove('on'); if(active)active.classList.remove('atl-field-active'); toastSafe('此欄位可視為定案，請記得儲存');}},true);
   function addCollapse(root){qsa('.section-card,.deliverable-card,.atl452safe-card',root||document).forEach(function(card){if(card.__atlCollapse475||card.closest('.preview-modal,.atl-field-modal'))return; card.__atlCollapse475=true; card.classList.add('atl-collapsible'); var h=qs('h2,h3,h4,.stitle,.section-title',card)||card.firstElementChild; if(h)h.classList.add('atl-keep-visible'); var btn=document.createElement('button'); btn.type='button'; btn.className='atl-collapse-toggle'; btn.textContent='收合'; btn.addEventListener('click',function(e){e.preventDefault(); e.stopPropagation(); var closed=card.classList.toggle('atl-closed'); btn.textContent=closed?'展開':'收合';}); card.insertBefore(btn,card.firstChild);});}
-  function boot(){try{var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v5.100';}catch(e){} wire(document); addCollapse(document);}
+  function boot(){try{var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v5.101';}catch(e){} wire(document); addCollapse(document);}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot); else boot();
   try{new MutationObserver(function(ms){var hit=false; ms.forEach(function(m){if(m.addedNodes&&m.addedNodes.length)hit=true}); if(hit){clearTimeout(window.__atl475Timer); window.__atl475Timer=setTimeout(boot,180);}}).observe(document.body,{childList:true,subtree:true});}catch(e){}
 })();
@@ -9218,7 +9218,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
 <script id="atl478-final-export-js">
 (function(){
   if(window.__atl478FinalExport)return; window.__atl478FinalExport=true;
-  var VERSION='cs-v5.100';
+  var VERSION='cs-v5.101';
   function esc(s){return (s==null?'':String(s)).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
   function qsa(sel,root){return Array.prototype.slice.call((root||document).querySelectorAll(sel))}
   function text(el){return (el&&el.innerText||el&&el.textContent||'').replace(/\s+/g,' ').trim()}
@@ -9338,7 +9338,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
 <script>
 (function(){
   if(window.__atlCs480) return; window.__atlCs480=true;
-  var V='cs-v5.100';
+  var V='cs-v5.101';
   function lock(){ var vb=document.getElementById('verBadge'); if(vb && (vb.textContent||'').trim()!==V) vb.textContent=V; }
   function unify(){
     var safe=document.querySelector('.atl452safe'); if(!safe) return;
@@ -10285,7 +10285,7 @@ input.atl477-open-field:not([type="checkbox"]):not([type="radio"]):not([type="bu
 <script id="atl-cs477-final-touch">
 (function(){
   if(window.__atlCs477FinalTouch) return; window.__atlCs477FinalTouch=true;
-  var VERSION='cs-v5.100';
+  var VERSION='cs-v5.101';
   function qs(s,r){return (r||document).querySelector(s)}
   function qsa(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
   function setVersion(){try{var b=qs('#verBadge'); if(b)b.textContent=VERSION; window.ATELIER_CLIENT_VERSION=VERSION;}catch(e){}}
@@ -13846,26 +13846,56 @@ details.cs-context[open] > summary::after{ content:'\25BE' !important; }
     return pages;
   }
 
+  function splitBody(body){
+    var raw=(body||'').split(/\r?\n/), lead=[], bullets=[];
+    raw.forEach(function(l){ l=(l||'').trim(); if(!l) return;
+      var m=l.match(/^([・•‧·*]|[-－—]|（?\d+[\.\．、)）])\s*(.+)$/);
+      if(m){ bullets.push(m[2].trim()); }
+      else if(bullets.length){ bullets[bullets.length-1]+=' '+l; }
+      else { lead.push(l); }
+    });
+    return { lead:lead.join(' '), bullets:bullets };
+  }
   function buildDeckHTML(pages, name){
-    var cover='<section class="slide cover"><div class="sk">ATELIER · PRE-MEETING BRIEF</div><h1>'+esc(name)+'</h1><div class="ln"></div><div class="ct">會前初步觀察與需求對焦</div></section>';
+    var cover='<section class="slide cover"><div class="sk">ATELIER · PRE-MEETING BRIEF</div>'
+      +'<h1>'+esc(name)+'</h1><div class="ln"></div>'
+      +'<div class="ct">會前初步觀察與需求對焦</div>'
+      +'<div class="csub">Pre-meeting Brief · Inspire · Create · Shine.</div>'
+      +'<div class="ft"><span>ATELIER</span><span class="pg">01 / '+pad2(pages.length+1)+'</span></div></section>';
     var slides=pages.map(function(pg,i){
-      var sideLab=pg.side==='advisor'?'ADVISOR · CONFIDENTIAL':pg.side==='client'?'CLIENT VERSION':'BRIEF';
-      return '<section class="slide"><div class="sk">'+esc(sideLab)+' · '+pad2(i+1)+' / '+pad2(pages.length)+'</div>'
+      var adv=pg.side==='advisor';
+      var sideLab=adv?'ADVISOR VERSION':pg.side==='client'?'CLIENT VERSION':'PRE-MEETING BRIEF';
+      var sb=splitBody(pg.body);
+      var bodyHTML='';
+      if(sb.lead) bodyHTML+='<p class="ld">'+esc(sb.lead)+'</p>';
+      if(sb.bullets.length) bodyHTML+='<ul class="bl">'+sb.bullets.map(function(b){return '<li>'+esc(b)+'</li>';}).join('')+'</ul>';
+      if(!bodyHTML) bodyHTML='<p class="ld">'+esc(pg.body).replace(/\n/g,'<br>')+'</p>';
+      return '<section class="slide'+(adv?' adv':'')+'">'
+        +'<div class="sk">'+esc(sideLab)+(adv?'<span class="tag">CONFIDENTIAL</span>':'')+'</div>'
         +'<h2>'+esc(pg.title)+'</h2><div class="ln"></div>'
-        +'<div class="bd">'+esc(pg.body).replace(/\n/g,'<br>')+'</div>'
-        +(pg.narr?'<div class="nr">講者口白：'+esc(pg.narr)+'</div>':'')+'</section>';
+        +'<div class="bd">'+bodyHTML+(pg.narr?'<div class="nr">講者口白：'+esc(pg.narr)+'</div>':'')+'</div>'
+        +'<div class="ft"><span>ATELIER</span><span class="pg">'+pad2(i+2)+' / '+pad2(pages.length+1)+'</span></div>'
+        +'</section>';
     }).join('');
     return '<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><title>ATELIER × '+esc(name)+'｜會前簡報</title>'
-      +'<style>@page{size:1280px 720px;margin:0}*{box-sizing:border-box}body{margin:0;font-family:"Noto Sans TC",sans-serif;background:#EDE7DF;color:#2A1A1C}'
-      +'.slide{width:1280px;height:720px;margin:0 auto;background:#FDFBF8;padding:74px 88px;page-break-after:always;position:relative;display:flex;flex-direction:column}'
-      +'.sk{font-family:"Cormorant Garamond",serif;letter-spacing:.18em;font-size:14px;color:#A89498}'
-      +'h1{font-family:"Noto Serif TC",serif;font-size:60px;color:#2A1A1C;margin:46px 0 0}'
-      +'h2{font-family:"Noto Serif TC",serif;font-size:38px;color:#2A1A1C;margin:14px 0 0}'
-      +'.ln{width:120px;height:3px;background:#A51820;margin:20px 0 26px}'
-      +'.ct{font-size:26px;color:#A51820;margin-top:22px}'
-      +'.bd{font-size:21px;line-height:1.85;color:#5A4448;flex:1}'
-      +'.nr{margin-top:18px;font-size:14px;color:#8A7274;border-top:1px dashed #E2CFB6;padding-top:10px}'
-      +'.cover{justify-content:center}.cover h1{margin-top:0}'
+      +'<style>@page{size:1280px 720px;margin:0}*{box-sizing:border-box}body{margin:0;font-family:"Noto Sans TC","Microsoft JhengHei",sans-serif;background:#E7E1D8;color:#2A1A1C}'
+      +'.slide{width:1280px;height:720px;margin:0 auto;background:#FDFBF8;padding:72px 92px 96px;page-break-after:always;position:relative;display:flex;flex-direction:column;overflow:hidden}'
+      +'.slide.adv{border-left:5px solid #5C0F14}'
+      +'.sk{font-family:"Cormorant Garamond",serif;letter-spacing:.2em;font-size:14px;color:#A89498}'
+      +'.tag{display:inline-block;margin-left:11px;font-family:"Noto Sans TC",sans-serif;letter-spacing:.1em;font-size:10.5px;color:#5C0F14;border:1px solid #E2B6B0;border-radius:4px;padding:1px 7px;vertical-align:middle}'
+      +'h1{font-family:"Noto Serif TC","Microsoft JhengHei",serif;font-weight:900;font-size:62px;color:#2A1A1C;margin:44px 0 0;line-height:1.12}'
+      +'h2{font-family:"Noto Serif TC","Microsoft JhengHei",serif;font-weight:900;font-size:40px;color:#2A1A1C;margin:16px 0 0;line-height:1.2}'
+      +'.ln{width:128px;height:3px;background:#A51820;margin:22px 0 28px}'
+      +'.ct{font-size:27px;color:#A51820;margin-top:24px}'
+      +'.csub{margin-top:18px;font-family:"Cormorant Garamond",serif;letter-spacing:.08em;font-size:16px;color:#A89498}'
+      +'.bd{flex:1;min-height:0}'
+      +'.ld{font-size:22px;line-height:1.82;color:#5A4448;margin:0 0 20px}'
+      +'.bl{list-style:none;padding:0;margin:0}'
+      +'.bl li{position:relative;padding:0 0 0 30px;margin:0 0 15px;font-size:19.5px;line-height:1.72;color:#5A4448}'
+      +'.bl li:before{content:"";position:absolute;left:3px;top:13px;width:8px;height:8px;border-radius:50%;background:#D4A574}'
+      +'.nr{margin-top:20px;font-size:14px;color:#8A7274;border-top:1px dashed #E2CFB6;padding-top:11px}'
+      +'.ft{position:absolute;left:92px;right:92px;bottom:44px;display:flex;justify-content:space-between;align-items:center;font-family:"Cormorant Garamond",serif;letter-spacing:.18em;font-size:12px;color:#B2A4A7}'
+      +'.cover{justify-content:center}.cover h1{margin-top:0;font-size:66px}'
       +'@media screen{body{padding:24px 0}.slide{box-shadow:0 8px 30px rgba(42,26,28,.12);margin-bottom:24px}}'
       +'</style></head><body>'+cover+slides+'</body></html>';
   }
@@ -13896,7 +13926,15 @@ details.cs-context[open] > summary::after{ content:'\25BE' !important; }
         var kick=pg.side==='advisor'?'ADVISOR · CONFIDENTIAL':pg.side==='client'?'CLIENT VERSION':'BRIEF';
         if(window.addPptHeader){ try{ addPptHeader(sl,kick,i+2,total,pg.title,''); }catch(e){ sl.addText(pg.title,{x:.8,y:.9,w:11.5,h:.8,fontSize:28,bold:true,color:C.text,fontFace:'Noto Serif TC,Microsoft JhengHei,serif'}); } }
         else { sl.addText(kick,{x:.8,y:.6,w:9,h:.24,fontSize:12,color:C.text3,fontFace:'Cormorant Garamond',charSpace:4}); sl.addText(pg.title,{x:.8,y:1.0,w:11.5,h:.8,fontSize:28,bold:true,color:C.text,fontFace:'Noto Serif TC,Microsoft JhengHei,serif'}); }
-        sl.addText(pg.body||'',{x:.9,y:2.35,w:11.4,h:4.3,fontSize:16,color:C.text2,fontFace:'Noto Sans TC,Microsoft JhengHei,sans-serif',valign:'top',fit:'shrink',breakLine:false});
+        var _bf='Noto Sans TC,Microsoft JhengHei,sans-serif'; var sb=splitBody(pg.body);
+        if(sb.bullets.length){
+          if(sb.lead) sl.addText(sb.lead,{x:.9,y:2.3,w:11.4,h:1.05,fontSize:16,color:C.text2,fontFace:_bf,valign:'top',fit:'shrink'});
+          var _by=sb.lead?3.45:2.4;
+          var _arr=sb.bullets.map(function(b){ return { text:b, options:{ bullet:{ indent:16 }, fontSize:15.5, color:C.text2, fontFace:_bf, paraSpaceAfter:8 } }; });
+          sl.addText(_arr,{x:1.0,y:_by,w:11.3,h:(6.8-_by),valign:'top',fit:'shrink'});
+        } else {
+          sl.addText(pg.body||'',{x:.9,y:2.35,w:11.4,h:4.3,fontSize:16,color:C.text2,fontFace:_bf,valign:'top',fit:'shrink',breakLine:false});
+        }
         if(pg.narr){ sl.addText('講者口白：'+pg.narr,{x:.9,y:6.82,w:11.4,h:.4,fontSize:11,italic:true,color:C.text3,fontFace:'Noto Sans TC,Microsoft JhengHei,sans-serif',fit:'shrink'}); }
         if(window.addPptFooter){ try{ addPptFooter(sl); }catch(e){} }
       });
