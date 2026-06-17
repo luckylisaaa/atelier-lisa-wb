@@ -725,7 +725,7 @@ details.cat .cat-body{padding:14px 15px}
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">客戶服務台</span></span>
-    <span id="verBadge">cs-v6.06</span>
+    <span id="verBadge">cs-v6.07</span>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button type="button" id="popoutBtn" class="popout-btn" title="把客戶服務台開成獨立小視窗"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6"/><path d="M20 4l-9 9"/><path d="M14 12v7H5V10h7"/></svg>小視窗</button>
@@ -9082,7 +9082,7 @@ button:not(:disabled), .btn:not(.disabled):not([disabled]), [role="button"]{
   if(window.__atlCs473Continuity) return; window.__atlCs473Continuity=true;
   function cleanTextNode(n){var s=n.nodeValue||''; var ns=s.replace(/cs-v4\.\d+\s*(SAFE|LATEST)?\s*[｜|·:-]?\s*/g,'').replace(/\bv\d{3}\s*[｜|·:-]?\s*/g,''); if(ns!==s)n.nodeValue=ns;}
   function cleanVersions(){
-    try{var vb=document.getElementById('verBadge'); if(vb)vb.textContent='cs-v6.06';}catch(e){}
+    try{var vb=document.getElementById('verBadge'); if(vb)vb.textContent='cs-v6.07';}catch(e){}
     try{var w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT,{acceptNode:function(n){var p=n.parentElement; if(!p||p.id==='verBadge'||/^(SCRIPT|STYLE|TEXTAREA)$/i.test(p.tagName))return NodeFilter.FILTER_REJECT; return /(cs-v4\.\d+|\bv\d{3})/.test(n.nodeValue||'')?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_REJECT;}}); var nodes=[],n; while(n=w.nextNode())nodes.push(n); nodes.forEach(cleanTextNode);}catch(e){}
   }
   function alignSelection(){
@@ -9142,7 +9142,7 @@ input[type="text"]:focus,input:not([type]):focus{border-color:#D4A574!important;
     btn.onclick=function(e){e.stopPropagation(); set(!safe.classList.contains('atl-safe474-collapsed'));};
     h.appendChild(summary); h.appendChild(btn); set(localStorage.getItem('atl.cs474.safeCollapsed')!=='0');
   }
-  function cleanBadge(){ var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v6.06'; }
+  function cleanBadge(){ var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v6.07'; }
   function run(){ cleanBadge(); ensureSafeCollapse(); wireAutogrow(document); }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run); else run();
   setInterval(run,1200);
@@ -9203,7 +9203,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
   function wire(root){qsa('textarea,input[type="text"],input[type="url"],input[type="email"],input:not([type])',root||document).forEach(function(el){if(el.__atl475)return; if(el.closest('.atl-field-modal,.atl-final-modal'))return; el.__atl475=true; el.addEventListener('focus',function(){show(el); autogrow(el)}); el.addEventListener('input',function(){autogrow(el)}); el.addEventListener('blur',hideSoon); autogrow(el);});}
   document.addEventListener('click',function(e){var b=e.target.closest('#atlFieldToolbar button'); if(!b||!active)return; var a=b.getAttribute('data-act'); if(a==='prompt')openModal('prompt',active); if(a==='fill')openModal('fill',active); if(a==='edit')openModal('edit',active); if(a==='done'){var bar=qs('#atlFieldToolbar'); if(bar)bar.classList.remove('on'); if(active)active.classList.remove('atl-field-active'); toastSafe('此欄位可視為定案，請記得儲存');}},true);
   function addCollapse(root){qsa('.section-card,.deliverable-card,.atl452safe-card',root||document).forEach(function(card){if(card.__atlCollapse475||card.closest('.preview-modal,.atl-field-modal'))return; card.__atlCollapse475=true; card.classList.add('atl-collapsible'); var h=qs('h2,h3,h4,.stitle,.section-title',card)||card.firstElementChild; if(h)h.classList.add('atl-keep-visible'); var btn=document.createElement('button'); btn.type='button'; btn.className='atl-collapse-toggle'; btn.textContent='收合'; btn.addEventListener('click',function(e){e.preventDefault(); e.stopPropagation(); var closed=card.classList.toggle('atl-closed'); btn.textContent=closed?'展開':'收合';}); card.insertBefore(btn,card.firstChild);});}
-  function boot(){try{var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v6.06';}catch(e){} wire(document); addCollapse(document);}
+  function boot(){try{var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v6.07';}catch(e){} wire(document); addCollapse(document);}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot); else boot();
   try{new MutationObserver(function(ms){var hit=false; ms.forEach(function(m){if(m.addedNodes&&m.addedNodes.length)hit=true}); if(hit){clearTimeout(window.__atl475Timer); window.__atl475Timer=setTimeout(boot,180);}}).observe(document.body,{childList:true,subtree:true});}catch(e){}
 })();
@@ -9244,7 +9244,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
 <script id="atl478-final-export-js">
 (function(){
   if(window.__atl478FinalExport)return; window.__atl478FinalExport=true;
-  var VERSION='cs-v6.06';
+  var VERSION='cs-v6.07';
   function esc(s){return (s==null?'':String(s)).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
   function qsa(sel,root){return Array.prototype.slice.call((root||document).querySelectorAll(sel))}
   function text(el){return (el&&el.innerText||el&&el.textContent||'').replace(/\s+/g,' ').trim()}
@@ -9364,7 +9364,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
 <script>
 (function(){
   if(window.__atlCs480) return; window.__atlCs480=true;
-  var V='cs-v6.06';
+  var V='cs-v6.07';
   function lock(){ var vb=document.getElementById('verBadge'); if(vb && (vb.textContent||'').trim()!==V) vb.textContent=V; }
   function unify(){
     var safe=document.querySelector('.atl452safe'); if(!safe) return;
@@ -10312,7 +10312,7 @@ input.atl477-open-field:not([type="checkbox"]):not([type="radio"]):not([type="bu
 <script id="atl-cs477-final-touch">
 (function(){
   if(window.__atlCs477FinalTouch) return; window.__atlCs477FinalTouch=true;
-  var VERSION='cs-v6.06';
+  var VERSION='cs-v6.07';
   function qs(s,r){return (r||document).querySelector(s)}
   function qsa(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
   function setVersion(){try{var b=qs('#verBadge'); if(b)b.textContent=VERSION; window.ATELIER_CLIENT_VERSION=VERSION;}catch(e){}}
@@ -14254,5 +14254,73 @@ textarea.p2-ta{ width:100%; box-sizing:border-box; min-height:40px; resize:verti
     mask.addEventListener('click',function(e){ if(e.target===mask||e.target.classList.contains('s2info-x')) mask.remove(); });
     document.body.appendChild(mask);
   };
+})();
+</script>
+
+<!-- ════════════ cs-v6.07 · 建檔 86% 卡下方接一排：智能下一步＋把「客戶現況／閉環視角／服務台總控」收成箭頭下拉（預設收起，點開才顯示）════════════ -->
+<style id="atl-cs607-css">
+.atl-s2float-hide{ display:none !important; }
+.atl-s2actrow{ background:linear-gradient(180deg,#FBF6F0,#F7F1E9); border:1px solid #E8E3DA; border-top:0;
+  border-radius:0 0 10px 10px; margin:-18px 0 18px; padding:11px 18px 12px; display:flex; flex-wrap:wrap; gap:10px 12px; align-items:center; }
+.atl-s2actrow .cpb-nexttag{ font-size:11px; font-weight:800; color:#A51820; -webkit-text-fill-color:#A51820; margin-right:7px; }
+.atl-s2actrow .cpb-next-btn{ border:1px solid #A51820; background:#A51820; color:#fff; -webkit-text-fill-color:#fff;
+  border-radius:999px; padding:4px 14px; font-size:12px; font-weight:700; cursor:pointer; font-family:inherit; }
+.atl-s2actrow .cpb-next-btn:hover{ background:#8E1419; }
+.atl-s2actrow .sp{ flex:1 1 auto; }
+.atl-s2actrow .cpb-more-btn{ border:1px solid #DCC8CB; background:#fff; color:#7A5A5E; -webkit-text-fill-color:#7A5A5E;
+  border-radius:999px; padding:4px 13px; font-size:12px; font-weight:700; cursor:pointer; font-family:inherit; }
+.atl-s2actrow .cpb-more-btn:hover{ background:#FBF1F0; border-color:#A51820; color:#A51820; -webkit-text-fill-color:#A51820; }
+</style>
+<script id="atl-cs607-js">
+(function(){
+  if(window.__atl607) return; window.__atl607=true;
+  window.__atl607open={ctx:false,lens:false,master:false};
+  function findFloat(v,kw){
+    if(kw==='ctx') return v.querySelector('.cs-ctx');
+    if(kw==='lens') return v.querySelector('.cs-lens');
+    if(kw==='master') return v.querySelector('.atl452safe');
+    return null;
+  }
+  function masterBar(v){
+    var kids=[].slice.call(v.children);
+    for(var i=0;i<kids.length;i++){ var c=kids[i]; if(c.classList&&c.classList.contains('atl-s2actrow')) continue;
+      var t=(c.textContent||'').replace(/\s+/g,'');
+      if(/服務台總控/.test(t) && /(點此展開|到這站要做的內容)/.test(t) && t.length<170) return c; }
+    return null;
+  }
+  function applyFloat(v,kw){
+    var open=window.__atl607open[kw];
+    var el=findFloat(v,kw), bar=(kw==='master')?masterBar(v):null;
+    [el,bar].forEach(function(x){ if(!x) return; if(open) x.classList.remove('atl-s2float-hide'); else x.classList.add('atl-s2float-hide'); });
+    if(kw==='ctx' && el && open){ var body=el.querySelector('.cs-ctx-body'), tog=el.querySelector('.cs-ctx-tog');
+      if(body&&body.style.display==='none'&&tog){ try{tog.click();}catch(e){} } }
+  }
+  window.__atlS2Float=function(kw,btn){
+    window.__atl607open[kw]=!window.__atl607open[kw];
+    var v=document.getElementById('view-stage2'); if(v) applyFloat(v,kw);
+    if(btn){ var lbl=btn.getAttribute('data-lbl')||''; btn.innerHTML=lbl+' '+(window.__atl607open[kw]?'\u25B4':'\u25BE'); }
+  };
+  function inject(){
+    var v=document.getElementById('view-stage2'); if(!v) return;
+    var bar=v.querySelector('.client-progress-bar'); if(!bar) return;
+    window.__atl605CtxCollapsed=true; /* 由本模組接管客戶現況顯示，避免與 cs605 打架 */
+    applyFloat(v,'ctx'); applyFloat(v,'lens'); applyFloat(v,'master'); /* 每輪確保狀態（浮動卡被重畫也收回） */
+    var ex=bar.nextElementSibling;
+    if(ex && ex.classList && ex.classList.contains('atl-s2actrow')) return;
+    var a=(typeof curAcc==='function')?curAcc():null; if(!a) return;
+    var html='<div class="atl-s2actrow">';
+    if(typeof nextActionFor==='function'){ var na=nextActionFor(a);
+      if(na){ html+='<span class="cpb-next-unit"><span class="cpb-nexttag">'+((typeof ICN!=='undefined'&&ICN.bulb)?ICN.bulb:'')+' 智能下一步</span><button type="button" class="cpb-next-btn" onclick="'+na.act+'">'+(typeof esc==='function'?esc(na.btn):na.btn)+' \u2192</button></span>'; } }
+    html+='<span class="sp"></span>'
+      +'<button type="button" class="cpb-more-btn" data-lbl="客戶現況" onclick="window.__atlS2Float(\'ctx\',this)">客戶現況 \u25BE</button>'
+      +'<button type="button" class="cpb-more-btn" data-lbl="閉環視角・地圖" onclick="window.__atlS2Float(\'lens\',this)">閉環視角・地圖 \u25BE</button>'
+      +'<button type="button" class="cpb-more-btn" data-lbl="服務台總控" onclick="window.__atlS2Float(\'master\',this)">服務台總控 \u25BE</button>'
+      +'</div>';
+    bar.insertAdjacentHTML('afterend', html);
+  }
+  function boot(){ inject(); setInterval(inject,900);
+    try{ new MutationObserver(function(){ clearTimeout(window.__atl607T); window.__atl607T=setTimeout(inject,160); }).observe(document.body,{childList:true,subtree:true}); }catch(e){}
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',boot); else boot();
 })();
 </script>
