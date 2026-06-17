@@ -725,7 +725,7 @@ details.cat .cat-body{padding:14px 15px}
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">客戶服務台</span></span>
-    <span id="verBadge">cs-v6.03</span>
+    <span id="verBadge">cs-v6.04</span>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button type="button" id="popoutBtn" class="popout-btn" title="把客戶服務台開成獨立小視窗"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6"/><path d="M20 4l-9 9"/><path d="M14 12v7H5V10h7"/></svg>小視窗</button>
@@ -1909,39 +1909,50 @@ function renderStage2(){
       var cp=a.clientProfile||{};
       var prefilled=(cp[fd[0]]==null||cp[fd[0]]==='')&&fd[2]&&v;
       return '<div class="fld"><label>'+esc(fd[1])+(prefilled?'<span class="pre">已從帳號檔帶入</span>':'')+'</label>'
-        +'<input type="text" id="p2-'+fd[0]+'" value="'+esc(v)+'"></div>';
+        +'<textarea class="p2-ta" id="p2-'+fd[0]+'" rows="1" placeholder="（可留空；或用上面「AI 智能」一次填好）">'+esc(v)+'</textarea></div>';
     }).join('');
-    return '<details class="cat"><summary>'+esc(cat[1])+'<span class="cat-summary" id="catsum-'+cat[0]+'">'+c.filled+'/'+c.total+' 格</span></summary><div class="cat-body">'+body+'</div></details>';
+    var done=c.filled>=c.total;
+    return '<details class="cat"'+(done?'':' open')+'><summary>'+esc(cat[1])+'<span class="cat-summary" id="catsum-'+cat[0]+'">'+c.filled+'/'+c.total+' 格</span></summary><div class="cat-body">'+body+'</div></details>';
   }).join('');
   box.innerHTML=
     '<div class="page-head"><div class="ph-en">STAGE ② · CLIENT FILING</div><h2 class="ph-title">客戶資料建檔</h2></div>'
     +stageHead('把客戶變成工作台裡可被分析、可被比對的完整資料物件。帳號管理裡若已有 ICP／版面解析，會自動帶入、不必重填。','stage2_filing')
-    +'<div class="section-card ai-fill"><h3>'+ICN.spark+'用 AI 一次填好（建議先做這步）</h3>'
-    +'<div class="sc-note">不用一格一格打字。按下產生提示詞 → 丟到 ChatGPT／Claude／Gemini，它會幫你查公開資料、把 8 大類欄位填成一張「建檔卡」→ 你把卡貼回下面 → 一鍵填入整張表單，再逐格檢查、修正，最後按「儲存客戶資料」。<br><br>查不到、或想更準時，改用「產生訪談提示詞」：AI 會先給你一份問當事人的訪談題，你訪談完把回答貼回 AI，它再整理成同一張「建檔卡」貼回下面。</div>'
-    +'<div class="fld"><label>（選填）任何你已經知道、想讓 AI 一起參考的資料</label><textarea id="s2extra" placeholder="例如：客戶官網連結、主力服務、之前聊到的重點…（沒有也可以留空）"></textarea></div>'
-    +'<button class="btn btn-gold" onclick="buildStage2FillPrompt()">'+ICN.prompt+'<span class="btn-2l"><span>產生建檔提示詞</span><span class="btn-sub">AI 查公開資料一次填好</span></span></button>'+'<button class="btn btn-go" style="margin-top:8px" onclick="buildStage2InterviewPrompt()">'+ICN.prompt+'<span class="btn-2l"><span>產生訪談提示詞</span><span class="btn-sub">問當事人 → AI 整理成建檔卡</span></span></button>'
+    +'<div class="s2-steps"><div class="s2-step"><span class="n">1</span><div class="t"><b>用 AI 一次填好</b><i>產生提示詞 → 丟 AI → 貼回建檔卡</i></div></div>'
+    +'<div class="s2-arr">→</div><div class="s2-step"><span class="n">2</span><div class="t"><b>逐格檢查、修正</b><i>8 大類，缺的補、不對的改</i></div></div>'
+    +'<div class="s2-arr">→</div><div class="s2-step"><span class="n">3</span><div class="t"><b>儲存建檔</b><i>存回這位客戶並同步</i></div></div></div>'
+    +'<div class="section-card ai-fill"><h3>'+ICN.spark+'步驟 1 · 用 AI 一次填好（建議先做）</h3>'
+    +'<div class="sc-note">不用一格一格打字：按「產生建檔提示詞」→ 丟到 ChatGPT／Claude／Gemini → 它把 8 大類填成一張「建檔卡」→ 貼回下面、一鍵填入。查不到時改用「產生訪談提示詞」，先問當事人再整理。</div>'
+    +'<div class="fld"><label>（選填）想讓 AI 一起參考的資料</label><textarea id="s2extra" placeholder="例如：客戶官網連結、主力服務、之前聊到的重點…（沒有也可以留空）"></textarea></div>'
+    +'<button class="btn btn-gold" onclick="buildStage2FillPrompt()">'+ICN.prompt+'<span class="btn-2l"><span>產生建檔提示詞</span><span class="btn-sub">AI 查公開資料一次填好</span></span></button><button class="btn btn-go" style="margin-top:8px" onclick="buildStage2InterviewPrompt()">'+ICN.prompt+'<span class="btn-2l"><span>產生訪談提示詞</span><span class="btn-sub">問當事人 → AI 整理成建檔卡</span></span></button>'
     +'<div class="fld" style="margin-top:12px"><label>把 AI 填好的「建檔卡」貼回這裡</label><textarea class="paste-box" id="s2card" placeholder="貼回 ===ATELIER 客戶建檔卡=== 那整段…"></textarea></div>'
     +'<button class="btn btn-go" onclick="parseStage2Card()">解析並填入下面表單</button>'
     +'<div id="s2parseMsg" style="font-size:12px;margin-top:8px;line-height:1.7"></div></div>'
-    +'<div class="section-card"><h3>完整度總覽</h3><div class="sc-note">綠＝80% 以上、黃＝40–80%、紅＝低於 40%（會跟著你填的字即時更新）。</div><div class="comp-squares" id="p2squares"></div>'
-    +'<div id="p2missBox" style="margin-top:8px"></div></div>'
-    +'<div class="section-card" id="p2section"><h3>8 大類資料</h3><div class="sc-note">解析卡會把值填進這裡；你可以逐格檢查、修改。填完按下方「儲存」即建檔並同步。</div>'+cats+'</div>'
+    +'<div class="section-card"><h3>步驟 2 · 完整度總覽</h3><div class="sc-note">一眼看每一類填了幾格、還缺哪些欄位（會跟著你填的字即時更新）。</div><div id="p2squares" class="s2-comp"></div></div>'
+    +'<div class="section-card" id="p2section"><h3>8 大類資料 <button type="button" class="btn-sf s2-ai-inline" onclick="buildStage2FillPrompt()" title="用 AI 一次把 8 大類填好">'+ICN.spark+'AI 智能填入</button></h3><div class="sc-note">每一格都可逐格檢查、修改，輸入框會隨內容自動長高。填完按下方「儲存」即建檔並同步。</div>'+cats+'</div>'
+    +'<div class="section-card"><h3>'+(ICN.barChart||ICN.spark)+'本階段 PPT 輸出</h3><div class="sc-note">勾選要放進簡報的類別，一鍵產出「客戶建檔總覽」簡報——封面（ATELIER × 客戶）＋每類一頁。可選 PPT／HTML／PDF。</div>'
+    +'<div class="s2-ppt-cats">'+PROFILE_CATS.map(function(cat){ return '<label class="s2-ppt-cat"><input type="checkbox" class="s2-ppt-ck" value="'+cat[0]+'" checked><span>'+esc(cat[1])+'</span></label>'; }).join('')+'</div>'
+    +'<div class="btn-row"><button class="btn btn-gold" onclick="atlStage2Deck(\'pptx\',this)">產生簡報 PPT</button><button class="btn btn-gold" onclick="atlStage2Deck(\'html\',this)">產生簡報 HTML</button><button class="btn btn-gold" onclick="atlStage2Deck(\'pdf\',this)">列印 / 另存 PDF</button></div></div>'
     +'<button class="btn btn-go" onclick="saveStage2()">儲存客戶資料（建檔）</button>'
     +'<button class="btn btn-ghost" style="margin-top:8px" onclick="copyStage2Missing()">複製「不夠完整的欄位」清單（去問客戶）</button>';
   recomputeStage2();
-  var sec=$('p2section'); if(sec) sec.querySelectorAll('input').forEach(function(el){ el.addEventListener('input',recomputeStage2); });
+  var sec=$('p2section'); if(sec) sec.querySelectorAll('input, textarea').forEach(function(el){ el.addEventListener('input',recomputeStage2); });
+  try{ if(window.__atlAutoGrow&&window.__atlAutoGrow.growAll) window.__atlAutoGrow.growAll(box); }catch(e){}
 }
 /* 重算完整度方塊＋各類「X/Y 格」＋缺漏清單（全部讀目前畫面上的值，解析填入後也會更新） */
 function recomputeStage2(){
   var a=curAcc(); if(!a) return;
   var sq=$('p2squares');
   if(sq){ sq.innerHTML=PROFILE_CATS.map(function(cat){
-    var c=catCompleteness(a,cat); var cls=c.pct>80?'hi':c.pct>=40?'mid':'lo';
-    var num=cat[1].replace(/[^❶-❽]/g,'')||cat[1].slice(0,1);
+    var c=catCompleteness(a,cat);
     var ss=$('catsum-'+cat[0]); if(ss) ss.textContent=c.filled+'/'+c.total+' 格';
-    return '<div class="comp-sq '+cls+'"><div class="cs-i">'+num+'</div><div class="cs-p">'+c.pct+'%</div></div>';
+    var done=c.filled>=c.total;
+    var miss=[]; cat[2].forEach(function(fd){ var v=fieldVal(a,fd); if(!v||!String(v).trim()) miss.push(fd[1]); });
+    return '<div class="s2-comp-row '+(done?'done':(c.filled?'part':'empty'))+'">'
+      +'<span class="cn">'+esc(cat[1])+'</span>'
+      +'<span class="cc">'+c.filled+'/'+c.total+'</span>'
+      +'<span class="cm">'+(done?((ICN.check||'')+' 已填齊'):('缺：'+esc(miss.join('、'))))+'</span>'
+      +'</div>';
   }).join(''); }
-  renderStage2Missing();
 }
 function buildStage2FillPrompt(){
   var a=curAcc(); if(!a){ toast(ICN.warn+' 尚未選定客戶'); return; }
@@ -9056,7 +9067,7 @@ button:not(:disabled), .btn:not(.disabled):not([disabled]), [role="button"]{
   if(window.__atlCs473Continuity) return; window.__atlCs473Continuity=true;
   function cleanTextNode(n){var s=n.nodeValue||''; var ns=s.replace(/cs-v4\.\d+\s*(SAFE|LATEST)?\s*[｜|·:-]?\s*/g,'').replace(/\bv\d{3}\s*[｜|·:-]?\s*/g,''); if(ns!==s)n.nodeValue=ns;}
   function cleanVersions(){
-    try{var vb=document.getElementById('verBadge'); if(vb)vb.textContent='cs-v6.03';}catch(e){}
+    try{var vb=document.getElementById('verBadge'); if(vb)vb.textContent='cs-v6.04';}catch(e){}
     try{var w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT,{acceptNode:function(n){var p=n.parentElement; if(!p||p.id==='verBadge'||/^(SCRIPT|STYLE|TEXTAREA)$/i.test(p.tagName))return NodeFilter.FILTER_REJECT; return /(cs-v4\.\d+|\bv\d{3})/.test(n.nodeValue||'')?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_REJECT;}}); var nodes=[],n; while(n=w.nextNode())nodes.push(n); nodes.forEach(cleanTextNode);}catch(e){}
   }
   function alignSelection(){
@@ -9116,7 +9127,7 @@ input[type="text"]:focus,input:not([type]):focus{border-color:#D4A574!important;
     btn.onclick=function(e){e.stopPropagation(); set(!safe.classList.contains('atl-safe474-collapsed'));};
     h.appendChild(summary); h.appendChild(btn); set(localStorage.getItem('atl.cs474.safeCollapsed')!=='0');
   }
-  function cleanBadge(){ var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v6.03'; }
+  function cleanBadge(){ var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v6.04'; }
   function run(){ cleanBadge(); ensureSafeCollapse(); wireAutogrow(document); }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run); else run();
   setInterval(run,1200);
@@ -9177,7 +9188,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
   function wire(root){qsa('textarea,input[type="text"],input[type="url"],input[type="email"],input:not([type])',root||document).forEach(function(el){if(el.__atl475)return; if(el.closest('.atl-field-modal,.atl-final-modal'))return; el.__atl475=true; el.addEventListener('focus',function(){show(el); autogrow(el)}); el.addEventListener('input',function(){autogrow(el)}); el.addEventListener('blur',hideSoon); autogrow(el);});}
   document.addEventListener('click',function(e){var b=e.target.closest('#atlFieldToolbar button'); if(!b||!active)return; var a=b.getAttribute('data-act'); if(a==='prompt')openModal('prompt',active); if(a==='fill')openModal('fill',active); if(a==='edit')openModal('edit',active); if(a==='done'){var bar=qs('#atlFieldToolbar'); if(bar)bar.classList.remove('on'); if(active)active.classList.remove('atl-field-active'); toastSafe('此欄位可視為定案，請記得儲存');}},true);
   function addCollapse(root){qsa('.section-card,.deliverable-card,.atl452safe-card',root||document).forEach(function(card){if(card.__atlCollapse475||card.closest('.preview-modal,.atl-field-modal'))return; card.__atlCollapse475=true; card.classList.add('atl-collapsible'); var h=qs('h2,h3,h4,.stitle,.section-title',card)||card.firstElementChild; if(h)h.classList.add('atl-keep-visible'); var btn=document.createElement('button'); btn.type='button'; btn.className='atl-collapse-toggle'; btn.textContent='收合'; btn.addEventListener('click',function(e){e.preventDefault(); e.stopPropagation(); var closed=card.classList.toggle('atl-closed'); btn.textContent=closed?'展開':'收合';}); card.insertBefore(btn,card.firstChild);});}
-  function boot(){try{var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v6.03';}catch(e){} wire(document); addCollapse(document);}
+  function boot(){try{var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v6.04';}catch(e){} wire(document); addCollapse(document);}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot); else boot();
   try{new MutationObserver(function(ms){var hit=false; ms.forEach(function(m){if(m.addedNodes&&m.addedNodes.length)hit=true}); if(hit){clearTimeout(window.__atl475Timer); window.__atl475Timer=setTimeout(boot,180);}}).observe(document.body,{childList:true,subtree:true});}catch(e){}
 })();
@@ -9218,7 +9229,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
 <script id="atl478-final-export-js">
 (function(){
   if(window.__atl478FinalExport)return; window.__atl478FinalExport=true;
-  var VERSION='cs-v6.03';
+  var VERSION='cs-v6.04';
   function esc(s){return (s==null?'':String(s)).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
   function qsa(sel,root){return Array.prototype.slice.call((root||document).querySelectorAll(sel))}
   function text(el){return (el&&el.innerText||el&&el.textContent||'').replace(/\s+/g,' ').trim()}
@@ -9338,7 +9349,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
 <script>
 (function(){
   if(window.__atlCs480) return; window.__atlCs480=true;
-  var V='cs-v6.03';
+  var V='cs-v6.04';
   function lock(){ var vb=document.getElementById('verBadge'); if(vb && (vb.textContent||'').trim()!==V) vb.textContent=V; }
   function unify(){
     var safe=document.querySelector('.atl452safe'); if(!safe) return;
@@ -10286,7 +10297,7 @@ input.atl477-open-field:not([type="checkbox"]):not([type="radio"]):not([type="bu
 <script id="atl-cs477-final-touch">
 (function(){
   if(window.__atlCs477FinalTouch) return; window.__atlCs477FinalTouch=true;
-  var VERSION='cs-v6.03';
+  var VERSION='cs-v6.04';
   function qs(s,r){return (r||document).querySelector(s)}
   function qsa(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
   function setVersion(){try{var b=qs('#verBadge'); if(b)b.textContent=VERSION; window.ATELIER_CLIENT_VERSION=VERSION;}catch(e){}}
@@ -13955,6 +13966,7 @@ details.cs-context[open] > summary::after{ content:'\25BE' !important; }
     else { if(window.toast) toast('找不到 PPT 元件'); if(btn){btn.disabled=false;btn.textContent=btn.__o;} }
   }
 
+  window.atlDeck={ html:genHTML, pdf:genPDF, pptx:genPPTX, build:buildDeckHTML };
   function inject(){
     var wrap=document.querySelector('div[data-atl-pptline]'); if(!wrap || wrap.__atlStep4) return; wrap.__atlStep4=1;
     var hd=_hd();
@@ -14065,5 +14077,50 @@ details.cs-context[open] > summary::after{ content:'\25BE' !important; }
     if(!window.__atlXHIv) window.__atlXHIv=setInterval(function(){ inject(); refresh(); },1500);
   }
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',boot); else boot();
+})();
+</script>
+
+<!-- ════════════ cs-v6.04 · ②建檔 重做成初診乾淨版：步驟流/完整度/長高輸入框/本階段PPT 樣式＋產檔接線 ════════════ -->
+<style id="atl-cs604-css">
+.s2-steps{ display:flex; align-items:stretch; gap:8px; flex-wrap:wrap; margin:2px 0 22px; }
+.s2-step{ flex:1; min-width:150px; display:flex; gap:10px; align-items:flex-start; background:#FFFDFB; border:1px solid #ECE3D6; border-radius:12px; padding:12px 14px; }
+.s2-step .n{ flex:0 0 auto; width:26px; height:26px; border-radius:50%; background:#A51820; color:#fff; -webkit-text-fill-color:#fff; font-family:'Cormorant Garamond',serif; font-size:15px; font-weight:700; display:flex; align-items:center; justify-content:center; }
+.s2-step .t b{ display:block; font-size:13.5px; color:#2A1A1C; -webkit-text-fill-color:#2A1A1C; }
+.s2-step .t i{ display:block; font-style:normal; font-size:11px; color:#7A5A5E; -webkit-text-fill-color:#7A5A5E; margin-top:2px; line-height:1.55; }
+.s2-arr{ align-self:center; color:#C9A57A; -webkit-text-fill-color:#C9A57A; font-size:16px; }
+@media(max-width:640px){ .s2-arr{display:none} }
+.s2-comp{ display:flex; flex-direction:column; gap:7px; }
+.s2-comp-row{ display:grid; grid-template-columns:auto 52px 1fr; align-items:center; gap:10px; padding:9px 12px; border:1px solid #ECE3D6; border-radius:10px; background:#FFFDFB; font-size:12.5px; }
+.s2-comp-row .cn{ font-weight:800; color:#2A1A1C; -webkit-text-fill-color:#2A1A1C; }
+.s2-comp-row .cc{ font-family:'Cormorant Garamond',serif; font-weight:700; color:#8A5A2B; -webkit-text-fill-color:#8A5A2B; }
+.s2-comp-row .cm{ color:#7A5A5E; -webkit-text-fill-color:#7A5A5E; font-size:11.5px; line-height:1.55; }
+.s2-comp-row.done{ border-color:#E6CFC6; background:#FCF5F3; }
+.s2-comp-row.done .cm{ color:#A51820; -webkit-text-fill-color:#A51820; font-weight:700; }
+.s2-comp-row.done .cc{ color:#A51820; -webkit-text-fill-color:#A51820; }
+.s2-comp-row.empty .cc{ color:#B79; }
+textarea.p2-ta{ width:100%; box-sizing:border-box; min-height:40px; resize:vertical; padding:8px 11px; border:1px solid var(--gold-soft,#D4A574); border-radius:9px; font-size:13.5px; font-family:inherit; line-height:1.55; color:#2A1A1C; -webkit-text-fill-color:#2A1A1C; background:#FFFDFB; }
+.s2-ai-inline{ margin-left:auto; font-size:11.5px !important; padding:4px 12px !important; }
+.s2-ppt-cats{ display:flex; flex-wrap:wrap; gap:8px; margin:4px 0 12px; }
+.s2-ppt-cat{ display:inline-flex; align-items:center; gap:6px; font-size:12px; border:1px solid #ECE3D6; border-radius:999px; padding:5px 12px; background:#FFFDFB; cursor:pointer; }
+.s2-ppt-cat input{ accent-color:#A51820; }
+</style>
+<script id="atl-cs604-js">
+(function(){
+  if(window.__atlStage2Deck) return; window.__atlStage2Deck=true;
+  window.atlStage2Deck=function(format, btn){
+    try{
+      var a=(typeof curAcc==='function')?curAcc():null; if(!a){ if(window.toast) toast((window.ICN?ICN.warn:'')+' 尚未選定客戶'); return; }
+      if(typeof PROFILE_CATS==='undefined'){ if(window.toast) toast('找不到建檔欄位'); return; }
+      var checked={}; document.querySelectorAll('.s2-ppt-ck:checked').forEach(function(c){ checked[c.value]=1; });
+      var pages=[];
+      PROFILE_CATS.forEach(function(cat){ if(!checked[cat[0]]) return;
+        var lines=cat[2].map(function(fd){ var v=(typeof fieldVal==='function')?fieldVal(a,fd):''; v=(v||'').toString().trim(); return v?('・'+fd[1]+'：'+v):null; }).filter(Boolean);
+        pages.push({ title:cat[1].replace(/^[❶-❽]\s*/,''), body:lines.length?lines.join('\n'):'（這一類目前還沒填）', narr:'', side:'client' });
+      });
+      if(!pages.length){ if(window.toast) toast((window.ICN?ICN.warn:'')+' 請至少勾選一個類別'); return; }
+      var d=window.atlDeck; if(!d){ if(window.toast) toast('簡報元件尚未載入，請稍等一下再按'); return; }
+      if(format==='pptx') d.pptx(pages, btn); else if(format==='pdf') d.pdf(pages); else d.html(pages);
+    }catch(e){ console.error(e); if(window.toast) toast('產生簡報失敗'); }
+  };
 })();
 </script>
