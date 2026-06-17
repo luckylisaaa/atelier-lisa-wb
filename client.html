@@ -725,7 +725,7 @@ details.cat .cat-body{padding:14px 15px}
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">客戶服務台</span></span>
-    <span id="verBadge">cs-v5.98</span>
+    <span id="verBadge">cs-v5.99</span>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button type="button" id="popoutBtn" class="popout-btn" title="把客戶服務台開成獨立小視窗"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6"/><path d="M20 4l-9 9"/><path d="M14 12v7H5V10h7"/></svg>小視窗</button>
@@ -9056,7 +9056,7 @@ button:not(:disabled), .btn:not(.disabled):not([disabled]), [role="button"]{
   if(window.__atlCs473Continuity) return; window.__atlCs473Continuity=true;
   function cleanTextNode(n){var s=n.nodeValue||''; var ns=s.replace(/cs-v4\.\d+\s*(SAFE|LATEST)?\s*[｜|·:-]?\s*/g,'').replace(/\bv\d{3}\s*[｜|·:-]?\s*/g,''); if(ns!==s)n.nodeValue=ns;}
   function cleanVersions(){
-    try{var vb=document.getElementById('verBadge'); if(vb)vb.textContent='cs-v5.98';}catch(e){}
+    try{var vb=document.getElementById('verBadge'); if(vb)vb.textContent='cs-v5.99';}catch(e){}
     try{var w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT,{acceptNode:function(n){var p=n.parentElement; if(!p||p.id==='verBadge'||/^(SCRIPT|STYLE|TEXTAREA)$/i.test(p.tagName))return NodeFilter.FILTER_REJECT; return /(cs-v4\.\d+|\bv\d{3})/.test(n.nodeValue||'')?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_REJECT;}}); var nodes=[],n; while(n=w.nextNode())nodes.push(n); nodes.forEach(cleanTextNode);}catch(e){}
   }
   function alignSelection(){
@@ -9116,7 +9116,7 @@ input[type="text"]:focus,input:not([type]):focus{border-color:#D4A574!important;
     btn.onclick=function(e){e.stopPropagation(); set(!safe.classList.contains('atl-safe474-collapsed'));};
     h.appendChild(summary); h.appendChild(btn); set(localStorage.getItem('atl.cs474.safeCollapsed')!=='0');
   }
-  function cleanBadge(){ var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v5.98'; }
+  function cleanBadge(){ var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v5.99'; }
   function run(){ cleanBadge(); ensureSafeCollapse(); wireAutogrow(document); }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run); else run();
   setInterval(run,1200);
@@ -9177,7 +9177,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
   function wire(root){qsa('textarea,input[type="text"],input[type="url"],input[type="email"],input:not([type])',root||document).forEach(function(el){if(el.__atl475)return; if(el.closest('.atl-field-modal,.atl-final-modal'))return; el.__atl475=true; el.addEventListener('focus',function(){show(el); autogrow(el)}); el.addEventListener('input',function(){autogrow(el)}); el.addEventListener('blur',hideSoon); autogrow(el);});}
   document.addEventListener('click',function(e){var b=e.target.closest('#atlFieldToolbar button'); if(!b||!active)return; var a=b.getAttribute('data-act'); if(a==='prompt')openModal('prompt',active); if(a==='fill')openModal('fill',active); if(a==='edit')openModal('edit',active); if(a==='done'){var bar=qs('#atlFieldToolbar'); if(bar)bar.classList.remove('on'); if(active)active.classList.remove('atl-field-active'); toastSafe('此欄位可視為定案，請記得儲存');}},true);
   function addCollapse(root){qsa('.section-card,.deliverable-card,.atl452safe-card',root||document).forEach(function(card){if(card.__atlCollapse475||card.closest('.preview-modal,.atl-field-modal'))return; card.__atlCollapse475=true; card.classList.add('atl-collapsible'); var h=qs('h2,h3,h4,.stitle,.section-title',card)||card.firstElementChild; if(h)h.classList.add('atl-keep-visible'); var btn=document.createElement('button'); btn.type='button'; btn.className='atl-collapse-toggle'; btn.textContent='收合'; btn.addEventListener('click',function(e){e.preventDefault(); e.stopPropagation(); var closed=card.classList.toggle('atl-closed'); btn.textContent=closed?'展開':'收合';}); card.insertBefore(btn,card.firstChild);});}
-  function boot(){try{var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v5.98';}catch(e){} wire(document); addCollapse(document);}
+  function boot(){try{var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v5.99';}catch(e){} wire(document); addCollapse(document);}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot); else boot();
   try{new MutationObserver(function(ms){var hit=false; ms.forEach(function(m){if(m.addedNodes&&m.addedNodes.length)hit=true}); if(hit){clearTimeout(window.__atl475Timer); window.__atl475Timer=setTimeout(boot,180);}}).observe(document.body,{childList:true,subtree:true});}catch(e){}
 })();
@@ -9218,7 +9218,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
 <script id="atl478-final-export-js">
 (function(){
   if(window.__atl478FinalExport)return; window.__atl478FinalExport=true;
-  var VERSION='cs-v5.98';
+  var VERSION='cs-v5.99';
   function esc(s){return (s==null?'':String(s)).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
   function qsa(sel,root){return Array.prototype.slice.call((root||document).querySelectorAll(sel))}
   function text(el){return (el&&el.innerText||el&&el.textContent||'').replace(/\s+/g,' ').trim()}
@@ -9338,7 +9338,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
 <script>
 (function(){
   if(window.__atlCs480) return; window.__atlCs480=true;
-  var V='cs-v5.98';
+  var V='cs-v5.99';
   function lock(){ var vb=document.getElementById('verBadge'); if(vb && (vb.textContent||'').trim()!==V) vb.textContent=V; }
   function unify(){
     var safe=document.querySelector('.atl452safe'); if(!safe) return;
@@ -10285,7 +10285,7 @@ input.atl477-open-field:not([type="checkbox"]):not([type="radio"]):not([type="bu
 <script id="atl-cs477-final-touch">
 (function(){
   if(window.__atlCs477FinalTouch) return; window.__atlCs477FinalTouch=true;
-  var VERSION='cs-v5.98';
+  var VERSION='cs-v5.99';
   function qs(s,r){return (r||document).querySelector(s)}
   function qsa(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
   function setVersion(){try{var b=qs('#verBadge'); if(b)b.textContent=VERSION; window.ATELIER_CLIENT_VERSION=VERSION;}catch(e){}}
@@ -13387,6 +13387,56 @@ details.cs-context[open] > summary::after{ content:'\25BE' !important; }
       snapshot(); _t((window.ICN?ICN.check:'')+' 已套用：取消 '+removed.length+'、補勾 '+added.length+' 項');
     };
 
+    /* cs-v5.99 · 打勾區版本歷史：可「儲存此版」並回顧/還原每一版（含貼回內容＋勾選） */
+    function _ckHK(){ return 'atlckhist:'+_key(); }
+    function _ckHLoad(){ try{ var r=localStorage.getItem(_ckHK()); return r?JSON.parse(r):[]; }catch(e){ return []; } }
+    function _ckHSave(arr){ try{ localStorage.setItem(_ckHK(), JSON.stringify(arr)); }catch(e){} }
+    function _ckKept(){ return collectItems(dataScope).filter(function(it){return it.el.checked;}); }
+    function _ckSnap(){ var checks={}; collectItems(dataScope).forEach(function(it){ checks[it.id]=it.el.checked; });
+      return { t:Date.now(), paste:(ta&&ta.value)||'', why:whBody?whBody.innerHTML:'', whyShown:!!(why&&why.style.display!=='none'),
+        summary:summary?summary.innerHTML:'', summaryShown:!!(summary&&summary.style.display!=='none'), checks:checks,
+        kept:_ckKept().map(function(it){return it.label;}) }; }
+    function _ckApply(o){ if(!o) return; if(typeof o.paste==='string') ta.value=o.paste;
+      if(o.summary!=null){ summary.innerHTML=o.summary; summary.style.display=o.summaryShown?'block':'none'; }
+      if(o.why!=null){ whBody.innerHTML=o.why; why.style.display=o.whyShown?'block':'none'; }
+      collectItems(dataScope).forEach(function(it){ if(o.checks&&o.checks.hasOwnProperty(it.id)){ it.el.checked=o.checks[it.id]; it.el.dispatchEvent(new Event('change',{bubbles:true})); } });
+      snapshot(); }
+    function _ckFmt(t){ try{ return new Date(t).toLocaleString('zh-TW',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'}); }catch(e){ return ''+t; } }
+    function _ckBtn(ghost){ return 'font-size:11.5px;padding:5px 12px;border-radius:8px;cursor:pointer;border:1px solid '+(ghost?'#E2CFB6;background:#FFFDFB;color:#7A5A5E;-webkit-text-fill-color:#7A5A5E':'#A51820;background:#A51820;color:#fff;-webkit-text-fill-color:#fff')+';'; }
+    var vhRow=document.createElement('div'); vhRow.className='atl-cktri-row'; vhRow.style.marginTop='9px';
+    var bVSave=document.createElement('button'); bVSave.type='button'; bVSave.className='atl-cktri-mini'; bVSave.textContent='儲存此版';
+    var bVHist=document.createElement('button'); bVHist.type='button'; bVHist.className='atl-cktri-mini';
+    function _ckHistLabel(){ var n=_ckHLoad().length; bVHist.textContent='版本歷史'+(n?'（'+n+'）':''); }
+    bVSave.onclick=function(){ var arr=_ckHLoad(); var snap=_ckSnap();
+      if(arr.length && JSON.stringify(arr[arr.length-1].checks)===JSON.stringify(snap.checks) && arr[arr.length-1].paste===snap.paste){ _t('和最後一版一樣，沒有新增'); return; }
+      arr.push(snap); if(arr.length>20) arr=arr.slice(-20); _ckHSave(arr); _ckHistLabel(); _t((window.ICN?ICN.check:'')+' 已存為第 '+arr.length+' 版'); };
+    function _ckOpenHist(){
+      var arr=_ckHLoad();
+      var ov=document.createElement('div'); ov.className='atl-ckhist-ov';
+      ov.style.cssText='position:fixed;inset:0;background:rgba(42,26,28,.5);z-index:99999;display:flex;align-items:center;justify-content:center;padding:20px;';
+      var card='<div style="background:#FDFBF8;max-width:560px;width:100%;max-height:82vh;overflow:auto;border-radius:14px;padding:18px 18px 16px;position:relative;box-shadow:0 14px 50px rgba(42,26,28,.3)">'
+        +'<button class="x" style="position:absolute;top:12px;right:14px;background:none;border:none;font-size:18px;color:#7A5A5E;-webkit-text-fill-color:#7A5A5E;cursor:pointer;line-height:1">×</button>'
+        +'<div style="font-family:\'Noto Serif TC\',serif;font-size:17px;font-weight:900;color:#A51820;-webkit-text-fill-color:#A51820">'+_esc(opts.scopeName)+'：打勾版本歷史</div>'
+        +'<div style="font-size:12px;color:#7A5A5E;-webkit-text-fill-color:#7A5A5E;margin:5px 0 12px">每按一次「儲存此版」就留一版。可<b>還原</b>回目前的勾選與貼回內容，或<b>刪除</b>。</div>';
+      if(!arr.length){ card+='<div style="font-size:12.5px;color:#7A5A5E;-webkit-text-fill-color:#7A5A5E;padding:8px 0">還沒有任何儲存版本——在上面按「儲存此版」就會留底。</div>'; }
+      arr.slice().reverse().forEach(function(o,ri){ var idx=arr.length-1-ri;
+        var keptTxt=(o.kept&&o.kept.length)?o.kept.join('、'):'（沒有勾選任何項目）';
+        card+='<div style="border:1px solid #E8DCC9;border-radius:10px;padding:10px 12px;margin-bottom:9px;background:#FFFDFB">'
+          +'<div style="font-size:12px;font-weight:800;color:#2A1A1C;-webkit-text-fill-color:#2A1A1C">第 '+(idx+1)+' 版 · '+_ckFmt(o.t)+'　<span style="color:#8A5A2B;-webkit-text-fill-color:#8A5A2B">保留 '+((o.kept&&o.kept.length)||0)+' 項</span></div>'
+          +'<div style="font-size:11.5px;line-height:1.7;color:#5A4448;-webkit-text-fill-color:#5A4448;margin:5px 0 8px;max-height:64px;overflow:auto">'+_esc(keptTxt)+'</div>'
+          +'<div style="display:flex;gap:8px"><button class="rs" data-i="'+idx+'" style="'+_ckBtn()+'">還原這版</button><button class="dl" data-i="'+idx+'" style="'+_ckBtn(1)+'">刪除</button></div>'
+          +'</div>';
+      });
+      card+='</div>'; ov.innerHTML=card;
+      ov.querySelector('.x').onclick=function(){ ov.remove(); };
+      ov.onclick=function(e){ if(e.target===ov) ov.remove(); };
+      ov.querySelectorAll('.rs').forEach(function(b){ b.onclick=function(){ var a2=_ckHLoad(); _ckApply(a2[+b.getAttribute('data-i')]); ov.remove(); if(!box.classList.contains('open')) box.classList.add('open'); _t('已還原該版的勾選與貼回內容'); }; });
+      ov.querySelectorAll('.dl').forEach(function(b){ b.onclick=function(){ var a2=_ckHLoad(); a2.splice(+b.getAttribute('data-i'),1); _ckHSave(a2); _ckHistLabel(); ov.remove(); _ckOpenHist(); }; });
+      document.body.appendChild(ov);
+    }
+    bVHist.onclick=function(){ _ckOpenHist(); };
+    vhRow.appendChild(bVSave); vhRow.appendChild(bVHist); body.appendChild(vhRow); _ckHistLabel();
+
     mountEl.appendChild(box);
 
     // 重繪／重新整理後還原上次狀態（依分頁＋客戶分開；記憶體沒有就讀 localStorage）
@@ -13727,3 +13777,167 @@ details.cs-context[open] > summary::after{ content:'\25BE' !important; }
 .atl-db-act.danger{ color:#A51820; -webkit-text-fill-color:#A51820; border-color:#E2B6B0; }
 .atl-db-act.danger:hover{ background:#FBF1F0; }
 </style>
+
+<!-- ════════════ cs-v5.99 · 三項：①打勾區版本歷史(在 cs590 內)　②③交付選版　③PPT 第4步出檔 ════════════
+  本區為附加模組（addon），冪等、不改既有流程：
+  (B) ③交付預覽加「看哪一版」下拉：讀 atlhist 歷史，切著看每一版（過去版本都保留；display-only 不動資料）。
+  (C) ④總和 PPT 三步加「第4步」：把 AI 寫的每頁內容貼回 → 直接產出 PPT／HTML／PDF 檔（重用全域 pptx 元件）。 -->
+<script id="atl-cs599-js">
+/* (B) ③交付：版本下拉，切看每一版 */
+(function(){
+  if(window.__atlDelVerPick) return; window.__atlDelVerPick=true;
+  function _hd(){ var a=(typeof curAcc==='function')?(curAcc()||{}):{}; return a.handle||a.displayName||'_'; }
+  function loadHist(side){ try{ var r=localStorage.getItem('atlhist:'+_hd()+'|'+side); return r?JSON.parse(r):[]; }catch(e){ return []; } }
+  function esc(s){ return (s||'').replace(/[&<>]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;'}[c];}); }
+  function fmt(t){ try{ return new Date(t).toLocaleString('zh-TW',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'}); }catch(e){ return ''+t; } }
+  function inject(){
+    document.querySelectorAll('.ver-pane').forEach(function(pane){
+      var side=pane.getAttribute('data-verpane'); if(side!=='client'&&side!=='advisor') return;
+      if(pane.__atlVerPick) return;
+      var paper=pane.querySelector('.deliver-paper'); var bodyEl=pane.querySelector('.dp-body'); if(!paper||!bodyEl) return;
+      var hist=loadHist(side); if(!hist.length){ return; } /* 沒有儲存過版本就不顯示，保持乾淨 */
+      pane.__atlVerPick=1;
+      var curHTML=bodyEl.innerHTML;
+      var bar=document.createElement('div');
+      bar.style.cssText='display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:0 0 10px;font-size:12px;color:#7A5A5E;-webkit-text-fill-color:#7A5A5E;';
+      var lab=document.createElement('span'); lab.textContent='看哪一版：'; lab.style.fontWeight='700';
+      var sel=document.createElement('select');
+      sel.style.cssText='font-family:inherit;font-size:12px;padding:5px 9px;border:1px solid #C9A57A;border-radius:8px;background:#FFFDFB;color:#5C0F14;-webkit-text-fill-color:#5C0F14;cursor:pointer;max-width:300px;';
+      var o='<option value="cur">目前最新版</option>';
+      for(var i=hist.length-1;i>=0;i--){ o+='<option value="'+i+'">第 '+(i+1)+' 版 · '+fmt(hist[i].t)+'</option>'; }
+      sel.innerHTML=o;
+      sel.onchange=function(){ if(sel.value==='cur'){ bodyEl.innerHTML=curHTML; return; } var h2=loadHist(side); var h=h2[+sel.value]; if(h) bodyEl.innerHTML=esc(h.text).replace(/\n/g,'<br>'); };
+      bar.appendChild(lab); bar.appendChild(sel); paper.parentNode.insertBefore(bar, paper);
+    });
+  }
+  function boot(){ inject();
+    try{ new MutationObserver(function(){ clearTimeout(window.__atlDVT); window.__atlDVT=setTimeout(inject,200); }).observe(document.body,{childList:true,subtree:true}); }catch(e){}
+    if(!window.__atlDVIv) window.__atlDVIv=setInterval(inject,1400);
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',boot); else boot();
+})();
+
+/* (C) ④總和 PPT：第4步 — 每頁內容 → 直接出檔（PPT／HTML／PDF） */
+(function(){
+  if(window.__atlPptStep4) return; window.__atlPptStep4=true;
+  function _hd(){ var a=(typeof curAcc==='function')?(curAcc()||{}):{}; return a.handle||a.displayName||'_'; }
+  function clientName(){ var a=(typeof curAcc==='function')?(curAcc()||{}):{}; return a.displayName||a.handle||'CLIENT'; }
+  function esc(s){ return (s||'').replace(/[&<>]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;'}[c];}); }
+  function gbtn(t){ var b=document.createElement('button'); b.type='button'; b.className='btn btn-ghost'; b.style.fontSize='12px'; b.textContent=t; return b; }
+  function pad2(n){ n=''+n; return n.length<2?('0'+n):n; }
+
+  function parseContent(text){
+    var blocks=(text||'').split(/\r?\n\s*\r?\n+/), pages=[];
+    blocks.forEach(function(blk){ blk=(blk||'').trim(); if(!blk) return;
+      var lines=blk.split(/\r?\n/); var first=lines[0]||'';
+      var isPage=/第\s*\d+\s*頁/.test(first) || /[｜|]/.test(first);
+      if(!isPage && pages.length){ pages[pages.length-1].body+='\n'+blk; return; }
+      var parts=first.split(/｜|\|/).map(function(s){return s.trim();}).filter(function(s){return s!=='';});
+      var title='', body='', narr='';
+      if(parts.length>=2){ title=parts[1].replace(/^第\s*\d+\s*頁\s*$/,'')||parts[0]; }
+      else { title=first.replace(/^第\s*\d+\s*頁\s*[｜|]?\s*/,'').trim(); }
+      if(parts.length>=3) body=parts[2];
+      if(parts.length>=4) narr=parts[3];
+      var rest=lines.slice(1).join('\n').trim(); if(rest) body=(body?body+'\n':'')+rest;
+      var side=/顧問版|內部/.test(blk)?'advisor':(/客戶版|對外/.test(blk)?'client':'');
+      if(!title) title='第 '+(pages.length+1)+' 頁';
+      pages.push({title:title, body:body||'', narr:narr||'', side:side});
+    });
+    return pages;
+  }
+
+  function buildDeckHTML(pages, name){
+    var cover='<section class="slide cover"><div class="sk">ATELIER · PRE-MEETING BRIEF</div><h1>'+esc(name)+'</h1><div class="ln"></div><div class="ct">會前初步觀察與需求對焦</div></section>';
+    var slides=pages.map(function(pg,i){
+      var sideLab=pg.side==='advisor'?'ADVISOR · CONFIDENTIAL':pg.side==='client'?'CLIENT VERSION':'BRIEF';
+      return '<section class="slide"><div class="sk">'+esc(sideLab)+' · '+pad2(i+1)+' / '+pad2(pages.length)+'</div>'
+        +'<h2>'+esc(pg.title)+'</h2><div class="ln"></div>'
+        +'<div class="bd">'+esc(pg.body).replace(/\n/g,'<br>')+'</div>'
+        +(pg.narr?'<div class="nr">講者口白：'+esc(pg.narr)+'</div>':'')+'</section>';
+    }).join('');
+    return '<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><title>ATELIER × '+esc(name)+'｜會前簡報</title>'
+      +'<style>@page{size:1280px 720px;margin:0}*{box-sizing:border-box}body{margin:0;font-family:"Noto Sans TC",sans-serif;background:#EDE7DF;color:#2A1A1C}'
+      +'.slide{width:1280px;height:720px;margin:0 auto;background:#FDFBF8;padding:74px 88px;page-break-after:always;position:relative;display:flex;flex-direction:column}'
+      +'.sk{font-family:"Cormorant Garamond",serif;letter-spacing:.18em;font-size:14px;color:#A89498}'
+      +'h1{font-family:"Noto Serif TC",serif;font-size:60px;color:#2A1A1C;margin:46px 0 0}'
+      +'h2{font-family:"Noto Serif TC",serif;font-size:38px;color:#2A1A1C;margin:14px 0 0}'
+      +'.ln{width:120px;height:3px;background:#A51820;margin:20px 0 26px}'
+      +'.ct{font-size:26px;color:#A51820;margin-top:22px}'
+      +'.bd{font-size:21px;line-height:1.85;color:#5A4448;flex:1}'
+      +'.nr{margin-top:18px;font-size:14px;color:#8A7274;border-top:1px dashed #E2CFB6;padding-top:10px}'
+      +'.cover{justify-content:center}.cover h1{margin-top:0}'
+      +'@media screen{body{padding:24px 0}.slide{box-shadow:0 8px 30px rgba(42,26,28,.12);margin-bottom:24px}}'
+      +'</style></head><body>'+cover+slides+'</body></html>';
+  }
+
+  function genHTML(pages){ var name=clientName(); var doc=buildDeckHTML(pages,name);
+    if(window.downloadBlob) window.downloadBlob(doc,'text/html;charset=utf-8','ATELIER_'+(window.safeFileName?safeFileName(name):name)+'_會前簡報.html');
+    else { var w=window.open('','_blank'); if(w){ w.document.write(doc); w.document.close(); } }
+    if(window.toast) toast((window.ICN?ICN.check:'')+' 已下載簡報 HTML（'+pages.length+' 頁）');
+  }
+  function genPDF(pages){ var doc=buildDeckHTML(pages,clientName()); var w=window.open('','atelier_deck_pdf','width=1280,height=820,scrollbars=yes');
+    if(!w){ if(window.toast) toast((window.ICN?ICN.warn:'')+' 瀏覽器擋住彈出視窗，請允許後再試'); return; }
+    w.document.open(); w.document.write(doc+'<scr'+'ipt>setTimeout(function(){window.print()},700)<\/scr'+'ipt>'); w.document.close();
+    if(window.toast) toast('已開列印視窗，請選「另存為 PDF」');
+  }
+  function genPPTX(pages, btn){
+    var name=clientName();
+    function build(){ try{
+      var pptx=(window.pptFactory?pptFactory():new (window.pptxgen||window.PptxGenJS)());
+      var C=(window.pptPalette?pptPalette():{primary:'A51820',text:'2A1A1C',text2:'8A7274',text3:'A89498',bg:'FDFBF8',gold:'D4A574'});
+      pptx.layout='LAYOUT_WIDE'; pptx.author='ATELIER'; pptx.company='ATELIER'; pptx.subject='會前初步觀察與需求對焦';
+      pptx.theme={headFontFace:'Noto Serif TC,Microsoft JhengHei,serif',bodyFontFace:'Noto Sans TC,Microsoft JhengHei,sans-serif',lang:'zh-TW'};
+      var total=pages.length+1;
+      var s=pptx.addSlide(); s.background={color:C.bg};
+      s.addText('ATELIER · PRE-MEETING BRIEF',{x:.8,y:1.2,w:9,h:.3,fontSize:13,color:C.text3,fontFace:'Cormorant Garamond',charSpace:5});
+      s.addText(String(name),{x:.8,y:2.2,w:11.6,h:1.0,fontSize:50,bold:true,color:C.text,fontFace:'Noto Serif TC,Microsoft JhengHei,serif',fit:'shrink'});
+      s.addText('會前初步觀察與需求對焦',{x:.8,y:3.9,w:8,h:.4,fontSize:22,color:C.primary,fontFace:'Noto Sans TC,Microsoft JhengHei,sans-serif'});
+      pages.forEach(function(pg,i){ var sl=pptx.addSlide(); sl.background={color:C.bg};
+        var kick=pg.side==='advisor'?'ADVISOR · CONFIDENTIAL':pg.side==='client'?'CLIENT VERSION':'BRIEF';
+        if(window.addPptHeader){ try{ addPptHeader(sl,kick,i+2,total,pg.title,''); }catch(e){ sl.addText(pg.title,{x:.8,y:.9,w:11.5,h:.8,fontSize:28,bold:true,color:C.text,fontFace:'Noto Serif TC,Microsoft JhengHei,serif'}); } }
+        else { sl.addText(kick,{x:.8,y:.6,w:9,h:.24,fontSize:12,color:C.text3,fontFace:'Cormorant Garamond',charSpace:4}); sl.addText(pg.title,{x:.8,y:1.0,w:11.5,h:.8,fontSize:28,bold:true,color:C.text,fontFace:'Noto Serif TC,Microsoft JhengHei,serif'}); }
+        sl.addText(pg.body||'',{x:.9,y:2.35,w:11.4,h:4.3,fontSize:16,color:C.text2,fontFace:'Noto Sans TC,Microsoft JhengHei,sans-serif',valign:'top',fit:'shrink',breakLine:false});
+        if(pg.narr){ sl.addText('講者口白：'+pg.narr,{x:.9,y:6.82,w:11.4,h:.4,fontSize:11,italic:true,color:C.text3,fontFace:'Noto Sans TC,Microsoft JhengHei,sans-serif',fit:'shrink'}); }
+        if(window.addPptFooter){ try{ addPptFooter(sl); }catch(e){} }
+      });
+      var fn='ATELIER_'+(window.safeFileName?safeFileName(name):name)+'_會前簡報.pptx';
+      var pr=pptx.writeFile({fileName:fn}); if(pr&&pr.then) pr.then(function(){ if(window.toast) toast((window.ICN?ICN.check:'')+' 已下載簡報 PPT（'+pages.length+' 頁）'); });
+    }catch(e){ console.error(e); if(window.toast) toast('PPT 產生失敗，請確認瀏覽器可載入 PPT 元件'); }
+      finally { if(btn){ btn.disabled=false; btn.textContent=btn.__o||'產生簡報 PPT'; } } }
+    if(btn){ btn.__o=btn.textContent; btn.disabled=true; btn.textContent='產生中…'; }
+    if(window.pptxgen||window.PptxGenJS) build();
+    else if(window.loadPptx) loadPptx(function(ok){ if(ok) build(); else { if(window.toast) toast('PPT 元件載入失敗'); if(btn){btn.disabled=false;btn.textContent=btn.__o;} } });
+    else { if(window.toast) toast('找不到 PPT 元件'); if(btn){btn.disabled=false;btn.textContent=btn.__o;} }
+  }
+
+  function inject(){
+    var wrap=document.querySelector('div[data-atl-pptline]'); if(!wrap || wrap.__atlStep4) return; wrap.__atlStep4=1;
+    var hd=_hd();
+    var sec=document.createElement('div'); sec.style.cssText='margin-top:14px;border-top:1px dashed #E2CFB6;padding-top:12px;';
+    var lab=document.createElement('div'); lab.style.cssText='font-size:11.5px;font-weight:800;color:#5C0F14;-webkit-text-fill-color:#5C0F14;margin:0 0 4px;';
+    lab.textContent='第4步 · 把 AI 寫好的「每頁內容」貼回這裡 → 一鍵出檔';
+    var hint=document.createElement('div'); hint.style.cssText='font-size:11px;line-height:1.7;color:#5A4448;-webkit-text-fill-color:#5A4448;margin:0 0 8px;';
+    hint.innerHTML='把第3步 AI 回的每頁完整內容整段貼進來，下面三顆鈕會直接用<b>這些頁</b>產出簡報檔。<br>（最下面那三顆紅鈕是「自動版」：直接用客戶版／顧問版排版產檔，不照這份頁清單。）';
+    var ta=document.createElement('textarea');
+    ta.placeholder='把 AI 回的「第N頁｜標題｜內容｜口白」整段貼進來…';
+    ta.style.cssText='width:100%;min-height:130px;max-height:34vh;overflow-y:auto;box-sizing:border-box;border:1px solid #E2CFB6;border-radius:8px;padding:8px 10px;font-size:12px;line-height:1.6;color:#2A1A1C;-webkit-text-fill-color:#2A1A1C;background:#FFFDFB;resize:vertical;font-family:inherit;';
+    try{ var sv=localStorage.getItem('atlpptpages:'+hd); if(sv) ta.value=sv; }catch(e){}
+    ta.addEventListener('input',function(){ try{ localStorage.setItem('atlpptpages:'+hd, ta.value); }catch(e){} });
+    var info=document.createElement('div'); info.style.cssText='font-size:11px;color:#7A5A5E;-webkit-text-fill-color:#7A5A5E;margin:6px 0 2px;';
+    var btnRow=document.createElement('div'); btnRow.style.cssText='display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;';
+    function pagesNow(){ return parseContent(ta.value); }
+    var bChk=gbtn('整理頁數'); bChk.onclick=function(){ var p=pagesNow(); info.textContent=p.length?('讀到 '+p.length+' 頁，可以出檔了。'):'還沒讀到頁——確認有貼上「第N頁｜…」的每頁內容。'; };
+    var bP=gbtn('產生簡報 PPT'); bP.style.borderColor='#A51820'; bP.style.color='#A51820'; bP.style.webkitTextFillColor='#A51820'; bP.onclick=function(){ var p=pagesNow(); if(!p.length){ if(window.toast) toast((window.ICN?ICN.warn:'')+' 還沒讀到每頁內容'); return; } genPPTX(p,bP); };
+    var bH=gbtn('產生簡報 HTML'); bH.onclick=function(){ var p=pagesNow(); if(!p.length){ if(window.toast) toast((window.ICN?ICN.warn:'')+' 還沒讀到每頁內容'); return; } genHTML(p); };
+    var bD=gbtn('列印 / 另存 PDF'); bD.onclick=function(){ var p=pagesNow(); if(!p.length){ if(window.toast) toast((window.ICN?ICN.warn:'')+' 還沒讀到每頁內容'); return; } genPDF(p); };
+    btnRow.appendChild(bChk); btnRow.appendChild(bP); btnRow.appendChild(bH); btnRow.appendChild(bD);
+    sec.appendChild(lab); sec.appendChild(hint); sec.appendChild(ta); sec.appendChild(info); sec.appendChild(btnRow);
+    wrap.appendChild(sec);
+  }
+  function boot(){ inject();
+    try{ new MutationObserver(function(){ clearTimeout(window.__atlS4T); window.__atlS4T=setTimeout(inject,200); }).observe(document.body,{childList:true,subtree:true}); }catch(e){}
+    if(!window.__atlS4Iv) window.__atlS4Iv=setInterval(inject,1400);
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',boot); else boot();
+})();
+</script>
