@@ -725,7 +725,7 @@ details.cat .cat-body{padding:14px 15px}
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">客戶服務台</span></span>
-    <span id="verBadge">cs-v6.10</span>
+    <span id="verBadge">cs-v6.11</span>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button type="button" id="popoutBtn" class="popout-btn" title="把客戶服務台開成獨立小視窗"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6"/><path d="M20 4l-9 9"/><path d="M14 12v7H5V10h7"/></svg>小視窗</button>
@@ -1926,7 +1926,7 @@ function renderStage2(){
   }).join('')+'</div>';
   var paneFill='<div class="s1tab-pane s2pane active" data-s2pane="fill">'
     +'<div class="section-card" id="p2section"><h3>8 大類資料 <button type="button" class="stage-info-btn" onclick="openS2Info(\'cats\')" title="這 8 大類在收什麼，以及怎麼逐格檢查修改">'+ICN.info+'</button></h3>'
-    +'<div class="s2-aibar"><button type="button" class="btn-sf s2-ai-inline" onclick="toggleS2AIbox(this)">'+ICN.spark+'AI 智能</button><span class="s2-aihint">每一格都可逐格檢查、修改，輸入框會隨內容自動長高</span></div>'
+    +'<div class="s2-aibar"><button type="button" class="btn-sf s2-ai-inline" onclick="toggleS2AIbox(this)">'+ICN.prompt+'AI 智能</button><span class="s2-aihint">每一格都可逐格檢查、修改，輸入框會隨內容自動長高</span></div>'
     +'<div id="s2aiBox" class="s2-ai-box" style="display:none">'+aiBox+'</div>'
     +'<div id="p2squares" class="s2-comp s2-comp-mini"></div>'
     +cats+'</div>'
@@ -1936,6 +1936,7 @@ function renderStage2(){
     +'</div>'
     +'<div class="s2-savebar2">'
       +'<button class="btn btn-ghost" onclick="copyStage2Missing()">複製「不夠完整的欄位」清單（去問客戶）</button>'
+      +'<button type="button" class="btn btn-ghost s2-hist-btn" onclick="window.__atlS2VerHist&&window.__atlS2VerHist()">版本歷史</button>'
       +'<button type="button" class="btn btn-ghost s2-clear-btn" onclick="window.__atlS2ClearToggle&&window.__atlS2ClearToggle()">清除填寫框</button>'
     +'</div>'
     +'<div id="s2clearPanel" class="s2-clear-panel" style="display:none"></div></div>';
@@ -1951,11 +1952,11 @@ function renderStage2(){
     +'<div class="btn-row"><button class="btn btn-gold" onclick="atlStage2Deck(\'pptx\',this)">產生簡報 PPT</button><button class="btn btn-gold" onclick="atlStage2Deck(\'html\',this)">產生簡報 HTML</button><button class="btn btn-gold" onclick="atlStage2Deck(\'pdf\',this)">列印 / 另存 PDF</button></div></div></div>';
   box.innerHTML=
     '<div class="s2-topflow">'
-    +'<span class="s2-tf-item active" data-s2step="fill" role="button" tabindex="0" onclick="switchS2Tab(\'fill\')"><span class="s2-tf-n">1</span><span class="s2-tf-t"><b>蒐集整理</b><i>收成建檔卡</i></span></span>'
+    +'<button type="button" class="s2-tf-item clk active" data-s2step="fill" onclick="switchS2Tab(\'fill\')"><span class="s2-tf-n">1</span><span class="s2-tf-lab">蒐集整理</span></button>'
     +'<span class="s2-tf-line"></span>'
-    +'<span class="s2-tf-item" data-s2step="review" role="button" tabindex="0" onclick="switchS2Tab(\'review\')"><span class="s2-tf-n">2</span><span class="s2-tf-t"><b>確認補齊</b><i>逐格檢查</i></span></span>'
+    +'<button type="button" class="s2-tf-item clk" data-s2step="review" onclick="switchS2Tab(\'review\')"><span class="s2-tf-n">2</span><span class="s2-tf-lab">確認補齊</span></button>'
     +'<span class="s2-tf-line"></span>'
-    +'<span class="s2-tf-item" data-s2step="sum" role="button" tabindex="0" onclick="switchS2Tab(\'sum\')"><span class="s2-tf-n">3</span><span class="s2-tf-t"><b>建檔入庫</b><i>存回客戶</i></span></span>'
+    +'<button type="button" class="s2-tf-item clk" data-s2step="sum" onclick="switchS2Tab(\'sum\')"><span class="s2-tf-n">3</span><span class="s2-tf-lab">建檔入庫</span></button>'
     +'</div>'
     +'<div class="page-head"><div class="ph-en">STAGE ② · CLIENT FILING</div><h2 class="ph-title">客戶資料建檔 <button type="button" class="stage-info-btn" onclick="openS2Info(\'fill\')" title="這一站在做什麼">'+ICN.info+'</button></h2></div>'
     +tabNav+paneFill+paneReview+paneSum;
@@ -1975,7 +1976,7 @@ function recomputeStage2(){
       var done=c.filled>=c.total; var cls=done?'done':(c.filled?'part':'empty');
       var num=(cat[1].match(/[❶-❽]/)||[cat[1].slice(0,1)])[0];
       var nm=cat[1].replace(/^[❶-❽]\s*/,'');
-      return '<span class="s2-pill '+cls+'" role="button" tabindex="0" data-pi="'+pi+'" data-cat="'+cat[0]+'" title="'+esc(nm)+'：'+c.filled+'/'+c.total+'格（點我跳到這一類）"><span class="pn">'+num+'</span>'+(done?(ICN.check||'✓'):(c.filled+'/'+c.total))+'</span>';
+      return '<span class="s2-pill '+cls+'" role="button" tabindex="0" data-pi="'+pi+'" data-cat="'+cat[0]+'" title="'+esc(nm)+'：'+c.filled+'/'+c.total+'格（點我跳到這一類）"><span class="pn">'+num+'</span><span class="s2-pill-nm">'+esc(nm)+'</span><span class="s2-pill-st">'+(done?(ICN.check||'✓'):(c.filled+'/'+c.total))+'</span></span>';
     }).join('');
   }
 }
@@ -9092,7 +9093,7 @@ button:not(:disabled), .btn:not(.disabled):not([disabled]), [role="button"]{
   if(window.__atlCs473Continuity) return; window.__atlCs473Continuity=true;
   function cleanTextNode(n){var s=n.nodeValue||''; var ns=s.replace(/cs-v4\.\d+\s*(SAFE|LATEST)?\s*[｜|·:-]?\s*/g,'').replace(/\bv\d{3}\s*[｜|·:-]?\s*/g,''); if(ns!==s)n.nodeValue=ns;}
   function cleanVersions(){
-    try{var vb=document.getElementById('verBadge'); if(vb)vb.textContent='cs-v6.10';}catch(e){}
+    try{var vb=document.getElementById('verBadge'); if(vb)vb.textContent='cs-v6.11';}catch(e){}
     try{var w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT,{acceptNode:function(n){var p=n.parentElement; if(!p||p.id==='verBadge'||/^(SCRIPT|STYLE|TEXTAREA)$/i.test(p.tagName))return NodeFilter.FILTER_REJECT; return /(cs-v4\.\d+|\bv\d{3})/.test(n.nodeValue||'')?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_REJECT;}}); var nodes=[],n; while(n=w.nextNode())nodes.push(n); nodes.forEach(cleanTextNode);}catch(e){}
   }
   function alignSelection(){
@@ -9152,7 +9153,7 @@ input[type="text"]:focus,input:not([type]):focus{border-color:#D4A574!important;
     btn.onclick=function(e){e.stopPropagation(); set(!safe.classList.contains('atl-safe474-collapsed'));};
     h.appendChild(summary); h.appendChild(btn); set(localStorage.getItem('atl.cs474.safeCollapsed')!=='0');
   }
-  function cleanBadge(){ var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v6.10'; }
+  function cleanBadge(){ var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v6.11'; }
   function run(){ cleanBadge(); ensureSafeCollapse(); wireAutogrow(document); }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run); else run();
   setInterval(run,1200);
@@ -9213,7 +9214,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
   function wire(root){qsa('textarea,input[type="text"],input[type="url"],input[type="email"],input:not([type])',root||document).forEach(function(el){if(el.__atl475)return; if(el.closest('.atl-field-modal,.atl-final-modal'))return; el.__atl475=true; el.addEventListener('focus',function(){show(el); autogrow(el)}); el.addEventListener('input',function(){autogrow(el)}); el.addEventListener('blur',hideSoon); autogrow(el);});}
   document.addEventListener('click',function(e){var b=e.target.closest('#atlFieldToolbar button'); if(!b||!active)return; var a=b.getAttribute('data-act'); if(a==='prompt')openModal('prompt',active); if(a==='fill')openModal('fill',active); if(a==='edit')openModal('edit',active); if(a==='done'){var bar=qs('#atlFieldToolbar'); if(bar)bar.classList.remove('on'); if(active)active.classList.remove('atl-field-active'); toastSafe('此欄位可視為定案，請記得儲存');}},true);
   function addCollapse(root){qsa('.section-card,.deliverable-card,.atl452safe-card',root||document).forEach(function(card){if(card.__atlCollapse475||card.closest('.preview-modal,.atl-field-modal'))return; card.__atlCollapse475=true; card.classList.add('atl-collapsible'); var h=qs('h2,h3,h4,.stitle,.section-title',card)||card.firstElementChild; if(h)h.classList.add('atl-keep-visible'); var btn=document.createElement('button'); btn.type='button'; btn.className='atl-collapse-toggle'; btn.textContent='收合'; btn.addEventListener('click',function(e){e.preventDefault(); e.stopPropagation(); var closed=card.classList.toggle('atl-closed'); btn.textContent=closed?'展開':'收合';}); card.insertBefore(btn,card.firstChild);});}
-  function boot(){try{var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v6.10';}catch(e){} wire(document); addCollapse(document);}
+  function boot(){try{var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v6.11';}catch(e){} wire(document); addCollapse(document);}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot); else boot();
   try{new MutationObserver(function(ms){var hit=false; ms.forEach(function(m){if(m.addedNodes&&m.addedNodes.length)hit=true}); if(hit){clearTimeout(window.__atl475Timer); window.__atl475Timer=setTimeout(boot,180);}}).observe(document.body,{childList:true,subtree:true});}catch(e){}
 })();
@@ -9254,7 +9255,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
 <script id="atl478-final-export-js">
 (function(){
   if(window.__atl478FinalExport)return; window.__atl478FinalExport=true;
-  var VERSION='cs-v6.10';
+  var VERSION='cs-v6.11';
   function esc(s){return (s==null?'':String(s)).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
   function qsa(sel,root){return Array.prototype.slice.call((root||document).querySelectorAll(sel))}
   function text(el){return (el&&el.innerText||el&&el.textContent||'').replace(/\s+/g,' ').trim()}
@@ -9374,7 +9375,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
 <script>
 (function(){
   if(window.__atlCs480) return; window.__atlCs480=true;
-  var V='cs-v6.10';
+  var V='cs-v6.11';
   function lock(){ var vb=document.getElementById('verBadge'); if(vb && (vb.textContent||'').trim()!==V) vb.textContent=V; }
   function unify(){
     var safe=document.querySelector('.atl452safe'); if(!safe) return;
@@ -10322,7 +10323,7 @@ input.atl477-open-field:not([type="checkbox"]):not([type="radio"]):not([type="bu
 <script id="atl-cs477-final-touch">
 (function(){
   if(window.__atlCs477FinalTouch) return; window.__atlCs477FinalTouch=true;
-  var VERSION='cs-v6.10';
+  var VERSION='cs-v6.11';
   function qs(s,r){return (r||document).querySelector(s)}
   function qsa(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
   function setVersion(){try{var b=qs('#verBadge'); if(b)b.textContent=VERSION; window.ATELIER_CLIENT_VERSION=VERSION;}catch(e){}}
@@ -14284,7 +14285,7 @@ textarea.p2-ta{ width:100%; box-sizing:border-box; min-height:40px; resize:verti
 <script id="atl-cs607-js">
 (function(){
   if(window.__atl607) return; window.__atl607=true;
-  window.__atl607open={ctx:false,lens:false,master:false}; /* cs-v6.10：預設收合，要自己點才打開（比照初診） */
+  window.__atl607open={ctx:false,lens:false,master:false}; /* cs-v6.11：預設收合，要自己點才打開（比照初診） */
   function findFloat(v,kw){
     if(kw==='ctx') return v.querySelector('.cs-ctx');
     if(kw==='lens') return v.querySelector('.cs-lens');
@@ -14302,7 +14303,15 @@ textarea.p2-ta{ width:100%; box-sizing:border-box; min-height:40px; resize:verti
     var open=window.__atl607open[kw];
     var el=findFloat(v,kw);
     var actrow=v.querySelector('.atl-s2actrow');
-    if(kw==='master'){ var bar=masterBar(v); if(bar) bar.classList.add('atl-s2float-hide'); } /* 收合條永遠收，改用面板呈現 */
+    if(kw==='master'){
+      window.__atlTkOpen=open; /* cs-v6.11：驅動 cs-v5.09，避免它把面板收回；粉紅薄條另用 CSS 隱藏 */
+      if(el){
+        if(open){ el.classList.remove('atl-tk-collapsed','atl-s2float-hide'); el.classList.add('atl-s2drop');
+          if(actrow && actrow.nextSibling!==el){ try{ actrow.parentNode.insertBefore(el, actrow.nextSibling); }catch(e){} } }
+        else { el.classList.add('atl-s2float-hide'); }
+      }
+      return;
+    }
     if(!el) return;
     if(open){
       el.classList.add('atl-s2drop'); el.classList.remove('atl-s2float-hide');
@@ -14320,7 +14329,7 @@ textarea.p2-ta{ width:100%; box-sizing:border-box; min-height:40px; resize:verti
     var bar=v.querySelector('.client-progress-bar'); if(!bar) return;
     window.__atl605CtxCollapsed=true; /* 由本模組接管客戶現況顯示，避免與 cs605 打架 */
     applyFloat(v,'ctx'); applyFloat(v,'lens'); applyFloat(v,'master'); /* 每輪確保狀態（浮動卡被重畫也收回） */
-    if(v.querySelector('.atl-s2actrow')) return; /* cs-v6.10：只要已存在動作列就不再加（避免展開搬動 DOM 造成重複兩排） */
+    if(v.querySelector('.atl-s2actrow')) return; /* cs-v6.11：只要已存在動作列就不再加（避免展開搬動 DOM 造成重複兩排） */
     var a=(typeof curAcc==='function')?curAcc():null; if(!a) return;
     var html='<div class="atl-s2actrow">';
     if(typeof nextActionFor==='function'){ var na=nextActionFor(a);
@@ -14370,30 +14379,37 @@ textarea.p2-ta{ width:100%; box-sizing:border-box; min-height:40px; resize:verti
 #view-stage2 #p2section > h3 .s2-ai-inline{ margin-left:auto; }
 </style>
 
-<!-- ════════════ cs-v6.10 · ②建檔收尾：頂部流程只亮當前可點跳頁、AI智能移到8大類下方、底部清除（清一類/清全部）、建檔版本歷史（含日期）＋瀏覽可選版本 ════════════ -->
+<!-- ════════════ cs-v6.11 · ②建檔收尾：頂部流程只亮當前可點跳頁、AI智能移到8大類下方、底部清除（清一類/清全部）、建檔版本歷史（含日期）＋瀏覽可選版本 ════════════ -->
 <style id="atl-cs609-css">
-/* ── (1) 頂部 1-2-3 流程：比照初診——只亮目前那步「紅圈＋紅字＋淡紅框」，其餘淡圈淡字（不那麼黑）、可點擊跳分頁 ── */
-#view-stage2 .s2-topflow .s2-tf-item{ cursor:pointer; border:1px solid transparent; border-radius:12px; padding:4px 11px; transition:background .15s,border-color .15s; user-select:none; }
-#view-stage2 .s2-topflow .s2-tf-item:hover{ background:#FBF3F1; }
-#view-stage2 .s2-topflow .s2-tf-item .s2-tf-n{ background:#ECE2D5; color:#B49A86; -webkit-text-fill-color:#B49A86; box-shadow:none; }
-#view-stage2 .s2-topflow .s2-tf-item .s2-tf-t b{ color:#A98E90; -webkit-text-fill-color:#A98E90; font-weight:700; }
-#view-stage2 .s2-topflow .s2-tf-item .s2-tf-t i{ font-size:9.5px; color:#BBA3A4; -webkit-text-fill-color:#BBA3A4; }
-/* 目前所在那一步：整個轉紅（紅圈、紅字、淡紅框） */
-#view-stage2 .s2-topflow .s2-tf-item.active{ background:#FCF3F2; border-color:#E6BFC2; }
-#view-stage2 .s2-topflow .s2-tf-item.active .s2-tf-n{ background:#A51820; color:#fff; -webkit-text-fill-color:#fff; }
-#view-stage2 .s2-topflow .s2-tf-item.active .s2-tf-t b{ color:#A51820; -webkit-text-fill-color:#A51820; }
-#view-stage2 .s2-topflow .s2-tf-item.active .s2-tf-t i{ color:#B6707A; -webkit-text-fill-color:#B6707A; }
+/* ── (1) 頂部 1-2-3 流程：完全比照初診（.afl-*）——圈圈白底＋金邊、數字淡金；目前那步紅圈＋紅字；整個 step 無外框；可點擊 ── */
+#view-stage2 .s2-topflow{ display:flex; align-items:center; justify-content:center; flex-wrap:wrap; gap:0; margin:12px auto 18px; max-width:680px; }
+#view-stage2 .s2-topflow .s2-tf-item{ display:inline-flex; align-items:center; gap:8px; background:transparent !important; border:none !important; padding:3px 2px; font-family:inherit; cursor:pointer; line-height:1; box-shadow:none !important; }
+#view-stage2 .s2-topflow .s2-tf-n{ width:23px; height:23px; border-radius:50%; border:1.5px solid #E2CFB6; background:#fff; color:#B0896C; -webkit-text-fill-color:#B0896C; display:inline-flex; align-items:center; justify-content:center; font-size:11.5px; font-weight:700; line-height:1; transition:all .18s ease; flex:0 0 auto; box-shadow:none; }
+#view-stage2 .s2-topflow .s2-tf-lab{ font-size:12.5px; color:#6B5A5C; -webkit-text-fill-color:#6B5A5C; letter-spacing:.2px; white-space:nowrap; line-height:1; transition:color .18s ease; }
+#view-stage2 .s2-topflow .s2-tf-line{ width:26px; height:1px; background:linear-gradient(90deg,#E6D8C6,#EFE6D7); margin:0 11px; flex:0 0 auto; }
+#view-stage2 .s2-topflow .s2-tf-item:hover .s2-tf-n{ border-color:#A51820; color:#A51820; -webkit-text-fill-color:#A51820; }
+#view-stage2 .s2-topflow .s2-tf-item:hover .s2-tf-lab{ color:#A51820; -webkit-text-fill-color:#A51820; }
+#view-stage2 .s2-topflow .s2-tf-item.active .s2-tf-n{ background:#A51820; border-color:#A51820; color:#fff; -webkit-text-fill-color:#fff; box-shadow:0 2px 8px rgba(165,24,32,.22); }
+#view-stage2 .s2-topflow .s2-tf-item.active .s2-tf-lab{ color:#A51820; -webkit-text-fill-color:#A51820; font-weight:700; }
+@media(max-width:640px){ #view-stage2 .s2-topflow .s2-tf-lab{ font-size:11.5px; } #view-stage2 .s2-topflow .s2-tf-line{ width:14px; margin:0 6px; } }
 
-/* ── (2) AI 智能：比照初診放在「8 大類資料」標題正下方；旁邊小灰字放「逐格檢查」說明 ── */
-#view-stage2 .s2-aibar{ display:flex; align-items:center; flex-wrap:wrap; gap:10px; margin:10px 0 4px; }
-#view-stage2 .s2-aibar .s2-ai-inline{ font-size:12.5px; }
+/* ── (2) AI 智能：比照初診放在「8 大類資料」標題正下方、靠左；旁邊小灰字放「逐格檢查」說明 ── */
+#view-stage2 .s2-aibar{ display:flex; align-items:center; justify-content:flex-start; flex-wrap:wrap; gap:10px; margin:10px 0 4px; text-align:left; }
+#view-stage2 .s2-aibar .s2-ai-inline{ font-size:12.5px; margin:0 !important; }
 #view-stage2 .s2-aihint{ font-size:11.5px; color:#9A7A7C; -webkit-text-fill-color:#9A7A7C; line-height:1.5; }
 
-/* ── 完整度 1-8 藥丸：做成可點按鈕，點了跳到對應那一類 ── */
-#view-stage2 .s2-comp-pills .s2-pill{ cursor:pointer; transition:border-color .12s,background .12s,transform .05s; }
+/* ── (5) 完整度藥丸：含類別名稱（一排取代兩排）、可點跳類；隱藏原本另一排類別文字列 ── */
+#view-stage2 .atl-comp-legend{ display:none !important; }
+#view-stage2 .s2-comp-pills{ gap:8px; }
+#view-stage2 .s2-comp-pills .s2-pill{ cursor:pointer; padding:5px 12px 5px 5px; transition:border-color .12s,background .12s,transform .05s; }
+#view-stage2 .s2-comp-pills .s2-pill .s2-pill-nm{ font-size:11.5px; font-weight:700; }
+#view-stage2 .s2-comp-pills .s2-pill .s2-pill-st{ font-size:10.5px; opacity:.9; margin-left:1px; }
 #view-stage2 .s2-comp-pills .s2-pill:hover{ border-color:#A51820; }
 #view-stage2 .s2-comp-pills .s2-pill:active{ transform:translateY(1px); }
 #view-stage2 .s2-comp-pills .s2-pill.s2-pill-flash{ box-shadow:0 0 0 3px rgba(165,24,32,.16); }
+
+/* ── (3) 服務台總控：建檔頁不要那條粉紅薄條，改用上方「服務台總控」下拉直接展開整張表 ── */
+#view-stage2 .atl-tk-bar{ display:none !important; }
 
 /* ── (F) 建檔填寫框 autogrow 修復：鎖 border-box、關掉高度動畫，避免越點越高／卡住 ── */
 #view-stage2 textarea{ box-sizing:border-box !important; transition:none !important; }
@@ -14442,11 +14458,14 @@ textarea.p2-ta{ width:100%; box-sizing:border-box; min-height:40px; resize:verti
   function acc(){ try{ return (typeof curAcc==='function')?curAcc():null; }catch(e){ return null; } }
   function stripNum(s){ return (s||'').replace(/^[❶-❽]\s*/,''); }
 
-  /* ── (1) 頂部流程跟著分頁亮 ── */
+  /* ── (1) 頂部流程跟著分頁亮，並捲到該分頁內容（比照初診點了會往下跳）── */
   var _origSwitch=window.switchS2Tab;
   window.switchS2Tab=function(name){
     if(typeof _origSwitch==='function') _origSwitch.apply(this,arguments);
-    try{ var v=V(); if(v) [].forEach.call(v.querySelectorAll('.s2-topflow .s2-tf-item'),function(it){ it.classList.toggle('active', it.getAttribute('data-s2step')===name); }); }catch(e){}
+    try{ var v=V(); if(v){
+      [].forEach.call(v.querySelectorAll('.s2-topflow .s2-tf-item'),function(it){ it.classList.toggle('active', it.getAttribute('data-s2step')===name); });
+      setTimeout(function(){ try{ var pane=v.querySelector('.s2pane[data-s2pane="'+name+'"]'); var tgt=pane&&(pane.querySelector('.section-card')||pane); if(tgt&&tgt.scrollIntoView) tgt.scrollIntoView({behavior:'smooth',block:'start'}); }catch(e){} },90);
+    } }catch(e){}
   };
 
   /* ── (E) 完整度 1-8 藥丸：點擊跳到對應那一類（展開＋捲到該類）── */
@@ -14523,6 +14542,42 @@ textarea.p2-ta{ width:100%; box-sizing:border-box; min-height:40px; resize:verti
   function saveHist(a,arr){ try{ localStorage.setItem(hKey(a),JSON.stringify(arr)); }catch(e){} }
   function fmtTime(t){ try{ return new Date(t).toLocaleString('zh-TW',{year:'numeric',month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'}); }catch(e){ return ''+t; } }
   function fmtDate(d){ if(!d) return ''; try{ return new Date(d+'T00:00:00').toLocaleDateString('zh-TW',{year:'numeric',month:'numeric',day:'numeric'}); }catch(e){ return d; } }
+
+  /* ── 版本歷史彈窗（比照初診的「版本歷史(N)」→ 列表可看/刪）── */
+  window.__atlS2VerHist=function(){
+    var a=acc(); if(!a){ try{ if(window.toast) toast(((window.ICN&&ICN.warn)||'')+' 尚未選定客戶'); }catch(e){} return; }
+    var old=document.querySelector('.atl-cktri-mask.s2vh'); if(old) old.remove();
+    var mask=document.createElement('div'); mask.className='atl-cktri-mask s2vh';
+    var box=document.createElement('div'); box.className='atl-cktri-modal'; mask.appendChild(box);
+    function close(){ if(mask.parentNode) mask.parentNode.removeChild(mask); }
+    function render(){
+      var arr=loadHist(a);
+      var h='<button class="x" type="button">×</button><h4>建檔版本歷史</h4>'
+        +'<p>每次按「儲存客戶資料」就會留一版（可附建檔日期）。點<b>查看這版</b>會到「瀏覽」用唯讀方式呈現，<b>刪除</b>可移除不要的版本。</p>';
+      if(!arr.length){ h+='<div class="atl-vh-empty">還沒有版本——先在「建檔」填好、（可選）填建檔日期，按「儲存客戶資料（建檔）」就會收一版進來。</div>'; }
+      else{
+        h+='<div class="atl-vh-list">';
+        for(var i=arr.length-1;i>=0;i--){ var v=arr[i]; var filled=Object.keys(v.data||{}).length;
+          h+='<div class="atl-vh-item" data-t="'+v.t+'"><div class="atl-vh-meta"><span class="atl-vh-time">'
+            +(v.date?('建檔日 '+E(fmtDate(v.date))+'　·　'):'')+'存於 '+E(fmtTime(v.t))+'</span></div>'
+            +'<div style="font-size:11.5px;color:#7A5A5E;margin-top:3px">已填 '+filled+' 格</div>'
+            +'<div class="atl-vh-acts"><button class="atl-vh-mini" data-act="view" data-t="'+v.t+'">查看這版</button>'
+            +'<button class="atl-vh-mini danger" data-act="del" data-t="'+v.t+'">刪除</button></div></div>';
+        }
+        h+='</div>';
+      }
+      box.innerHTML=h;
+      box.querySelector('.x').onclick=close;
+      box.querySelectorAll('.atl-vh-mini').forEach(function(b){
+        b.onclick=function(){ var t=b.getAttribute('data-t'); var act=b.getAttribute('data-act');
+          if(act==='view'){ window.__atlS2VerSel=t; try{ if(window.switchS2Tab) window.switchS2Tab('review'); }catch(e){} try{ if(window.renderS2Review) renderS2Review(); }catch(e){} close(); }
+          else if(act==='del'){ if(window.confirm('確定刪除這個建檔版本？此動作無法復原。')){ var arr2=loadHist(a).filter(function(x){ return String(x.t)!==String(t); }); saveHist(a,arr2); if(String(window.__atlS2VerSel)===String(t)) window.__atlS2VerSel='__cur__'; render(); } }
+        };
+      });
+    }
+    mask.addEventListener('click',function(e){ if(e.target===mask) close(); });
+    document.body.appendChild(mask); render();
+  };
 
   /* 包裝儲存：先把這次內容＋（選填）建檔日期收進版本歷史，再走原本儲存 */
   var _origSave=window.saveStage2;
