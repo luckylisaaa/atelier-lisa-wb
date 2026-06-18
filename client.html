@@ -725,7 +725,7 @@ details.cat .cat-body{padding:14px 15px}
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">客戶服務台</span></span>
-    <span id="verBadge">cs-v6.43</span>
+    <span id="verBadge">cs-v6.44</span>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button type="button" id="popoutBtn" class="popout-btn" title="把客戶服務台開成獨立小視窗"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6"/><path d="M20 4l-9 9"/><path d="M14 12v7H5V10h7"/></svg>小視窗</button>
@@ -9160,7 +9160,7 @@ button:not(:disabled), .btn:not(.disabled):not([disabled]), [role="button"]{
   if(window.__atlCs473Continuity) return; window.__atlCs473Continuity=true;
   function cleanTextNode(n){var s=n.nodeValue||''; var ns=s.replace(/cs-v4\.\d+\s*(SAFE|LATEST)?\s*[｜|·:-]?\s*/g,'').replace(/\bv\d{3}\s*[｜|·:-]?\s*/g,''); if(ns!==s)n.nodeValue=ns;}
   function cleanVersions(){
-    try{var vb=document.getElementById('verBadge'); if(vb)vb.textContent='cs-v6.43';}catch(e){}
+    try{var vb=document.getElementById('verBadge'); if(vb)vb.textContent='cs-v6.44';}catch(e){}
     try{var w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT,{acceptNode:function(n){var p=n.parentElement; if(!p||p.id==='verBadge'||/^(SCRIPT|STYLE|TEXTAREA)$/i.test(p.tagName))return NodeFilter.FILTER_REJECT; return /(cs-v4\.\d+|\bv\d{3})/.test(n.nodeValue||'')?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_REJECT;}}); var nodes=[],n; while(n=w.nextNode())nodes.push(n); nodes.forEach(cleanTextNode);}catch(e){}
   }
   function alignSelection(){
@@ -9220,7 +9220,7 @@ input[type="text"]:focus,input:not([type]):focus{border-color:#D4A574!important;
     btn.onclick=function(e){e.stopPropagation(); set(!safe.classList.contains('atl-safe474-collapsed'));};
     h.appendChild(summary); h.appendChild(btn); set(localStorage.getItem('atl.cs474.safeCollapsed')!=='0');
   }
-  function cleanBadge(){ var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v6.43'; }
+  function cleanBadge(){ var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v6.44'; }
   function run(){ cleanBadge(); ensureSafeCollapse(); wireAutogrow(document); }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run); else run();
   setInterval(run,1200);
@@ -9281,7 +9281,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
   function wire(root){qsa('textarea,input[type="text"],input[type="url"],input[type="email"],input:not([type])',root||document).forEach(function(el){if(el.__atl475)return; if(el.closest('.atl-field-modal,.atl-final-modal'))return; el.__atl475=true; el.addEventListener('focus',function(){show(el); autogrow(el)}); el.addEventListener('input',function(){autogrow(el)}); el.addEventListener('blur',hideSoon); autogrow(el);});}
   document.addEventListener('click',function(e){var b=e.target.closest('#atlFieldToolbar button'); if(!b||!active)return; var a=b.getAttribute('data-act'); if(a==='prompt')openModal('prompt',active); if(a==='fill')openModal('fill',active); if(a==='edit')openModal('edit',active); if(a==='done'){var bar=qs('#atlFieldToolbar'); if(bar)bar.classList.remove('on'); if(active)active.classList.remove('atl-field-active'); toastSafe('此欄位可視為定案，請記得儲存');}},true);
   function addCollapse(root){qsa('.section-card,.deliverable-card,.atl452safe-card',root||document).forEach(function(card){if(card.__atlCollapse475||card.closest('.preview-modal,.atl-field-modal'))return; card.__atlCollapse475=true; card.classList.add('atl-collapsible'); var h=qs('h2,h3,h4,.stitle,.section-title',card)||card.firstElementChild; if(h)h.classList.add('atl-keep-visible'); var btn=document.createElement('button'); btn.type='button'; btn.className='atl-collapse-toggle'; btn.textContent='收合'; btn.addEventListener('click',function(e){e.preventDefault(); e.stopPropagation(); var closed=card.classList.toggle('atl-closed'); btn.textContent=closed?'展開':'收合';}); card.insertBefore(btn,card.firstChild);});}
-  function boot(){try{var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v6.43';}catch(e){} wire(document); addCollapse(document);}
+  function boot(){try{var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v6.44';}catch(e){} wire(document); addCollapse(document);}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot); else boot();
   try{new MutationObserver(function(ms){var hit=false; ms.forEach(function(m){if(m.addedNodes&&m.addedNodes.length)hit=true}); if(hit){clearTimeout(window.__atl475Timer); window.__atl475Timer=setTimeout(boot,180);}}).observe(document.body,{childList:true,subtree:true});}catch(e){}
 })();
@@ -9322,7 +9322,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
 <script id="atl478-final-export-js">
 (function(){
   if(window.__atl478FinalExport)return; window.__atl478FinalExport=true;
-  var VERSION='cs-v6.43';
+  var VERSION='cs-v6.44';
   function esc(s){return (s==null?'':String(s)).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
   function qsa(sel,root){return Array.prototype.slice.call((root||document).querySelectorAll(sel))}
   function text(el){return (el&&el.innerText||el&&el.textContent||'').replace(/\s+/g,' ').trim()}
@@ -9442,7 +9442,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
 <script>
 (function(){
   if(window.__atlCs480) return; window.__atlCs480=true;
-  var V='cs-v6.43';
+  var V='cs-v6.44';
   function lock(){ var vb=document.getElementById('verBadge'); if(vb && (vb.textContent||'').trim()!==V) vb.textContent=V; }
   function unify(){
     var safe=document.querySelector('.atl452safe'); if(!safe) return;
@@ -10390,7 +10390,7 @@ input.atl477-open-field:not([type="checkbox"]):not([type="radio"]):not([type="bu
 <script id="atl-cs477-final-touch">
 (function(){
   if(window.__atlCs477FinalTouch) return; window.__atlCs477FinalTouch=true;
-  var VERSION='cs-v6.43';
+  var VERSION='cs-v6.44';
   function qs(s,r){return (r||document).querySelector(s)}
   function qsa(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
   function setVersion(){try{var b=qs('#verBadge'); if(b)b.textContent=VERSION; window.ATELIER_CLIENT_VERSION=VERSION;}catch(e){}}
@@ -10611,24 +10611,25 @@ input.atl477-open-field:not([type="checkbox"]):not([type="radio"]):not([type="bu
       /* cs-v5.51:把「這階段狀態 + 智能下一步 + 產生解決方案」畫進這張卡(這段才是畫面實際在用的) */
       /* cs-v5.54:刪掉跟「流程已走完」重複的狀態列;智能下一步縮成一排(提示進ⓘ、按鈕變小),跟閉環箭頭並排 */
       var _extra='';
-      if(currentStageKey && currentStageKey!=='stage2'){   /* cs-v6.33:stage2 已有 cs607 那排，這裡不重畫(修「建檔多一條」) */
+      if(currentStageKey){   /* cs-v6.44:②建檔也走卡內 cpb-extra(路線A);toggle 用 __atlCpbTg 分派到 cs607 的 __atlS2Float */
         _extra+='<div class="cpb-actrow">';
         if(typeof nextActionFor==='function'){ var _na=nextActionFor(a);
           if(_na){ _extra+='<span class="cpb-next-unit"><span class="cpb-nexttag">'+((typeof ICN!=='undefined'&&ICN.bulb)?ICN.bulb:'')+' 智能下一步</span>'
             +'<span class="atl-infohold"><button type="button" class="atl-infodot" onclick="event.stopPropagation();var p=this.nextElementSibling;p.style.display=(p.style.display===\'block\')?\'none\':\'block\'">i</button><span class="atl-infopop">'+esc2(_na.hint)+'</span></span>'
             +'<button type="button" class="cpb-next-btn sm" onclick="'+_na.act+'">'+esc2(_na.btn)+'</button></span>'; } }
-        var _lv=view; var _lo=_lv&&_lv.classList.contains('atl-loop-open');
-        var _mo=_lv&&_lv.classList.contains('atl-master-open');
-        var _co=_lv&&_lv.classList.contains('atl-ctx-open');
-        var _isExt=/^stage[3-7]$/.test(currentStageKey);
+        var _lv=view; var _o2=(currentStageKey==='stage2')?((window.__atl607open)||{}):null;
+        var _lo=_o2?_o2.lens:(_lv&&_lv.classList.contains('atl-loop-open'));
+        var _mo=_o2?_o2.master:(_lv&&_lv.classList.contains('atl-master-open'));
+        var _co=_o2?_o2.ctx:(_lv&&_lv.classList.contains('atl-ctx-open'));
+        var _isExt=/^stage[2-7]$/.test(currentStageKey);
         var _hasLens=!!(_lv&&_lv.querySelector('.cs-lens'));
         var _hasMaster=!!(_lv&&_lv.querySelector('.atl452safe'));
         var _hasCtx=!!(_isExt&&_lv&&_lv.querySelector('.cs-ctx'));   /* cs-v6.32:③~⑦ 把「客戶現況」也收進這張歸檔卡 */
         if(_hasLens||_hasMaster||_hasCtx){
           _extra+='<span class="cpb-toggles">'
-            +(_hasCtx?'<button type="button" class="cpb-more-btn" onclick="window.__atlToggleCtx&&window.__atlToggleCtx(this)">客戶現況 '+(_co?'\u25B4':'\u25BE')+'</button>':'')
-            +(_hasLens?'<button type="button" class="cpb-more-btn" onclick="window.__atlToggleLoop&&window.__atlToggleLoop(this)">閉環視角・地圖 '+(_lo?'\u25B4':'\u25BE')+'</button>':'')
-            +(_hasMaster?'<span class="cpb-tg-pair"><button type="button" class="cpb-more-btn" onclick="window.__atlToggleMaster&&window.__atlToggleMaster(this)">服務台總控 '+(_mo?'\u25B4':'\u25BE')+'</button>'
+            +(_hasCtx?'<button type="button" class="cpb-more-btn" data-lbl="客戶現況" onclick="window.__atlCpbTg&&window.__atlCpbTg(\'ctx\',this)">客戶現況 '+(_co?'\u25B4':'\u25BE')+'</button>':'')
+            +(_hasLens?'<button type="button" class="cpb-more-btn" data-lbl="閉環視角・地圖" onclick="window.__atlCpbTg&&window.__atlCpbTg(\'lens\',this)">閉環視角・地圖 '+(_lo?'\u25B4':'\u25BE')+'</button>':'')
+            +(_hasMaster?'<span class="cpb-tg-pair"><button type="button" class="cpb-more-btn" data-lbl="服務台總控" onclick="window.__atlCpbTg&&window.__atlCpbTg(\'master\',this)">服務台總控 '+(_mo?'\u25B4':'\u25BE')+'</button>'
               +'<span class="atl-infohold"><button type="button" class="atl-infodot" onclick="event.stopPropagation();var p=this.nextElementSibling;p.style.display=(p.style.display===\'block\')?\'none\':\'block\'">i</button><span class="atl-infopop">服務台總控：把這位客戶的原料變成「賣點 → CTA 行動出口 → 內容戰役 → 交付包」的工作區。平常收起,需要時點開。</span></span></span>':'')
             +'</span>';
         }
@@ -16863,21 +16864,9 @@ textarea.p2-ta{ width:100%; box-sizing:border-box; min-height:40px; resize:verti
 /* (2) 步驟導覽列圈內數字:改用繼承字體,與初診 .afl-dot 一致(不再是 Cormorant 襯線) */
 #view-stage2 .s2-topflow .s2-tf-n{ font-family:inherit !important; }
 
-/* (1) 歸檔卡 + 動作列 → 一張卡 + 中間虛線(比照其他站 .cpb-extra) */
-#view-stage2 .client-progress-bar:has(+ .atl-s2actrow){
-  border-bottom:none !important;
-  border-bottom-left-radius:0 !important;
-  border-bottom-right-radius:0 !important;
-  margin-bottom:0 !important;
-}
-#view-stage2 .atl-s2actrow{
-  background:linear-gradient(180deg,#FFFCFB,#FAF6F1) !important;  /* 跟卡片同一底色,不再是偏米的另一個框 */
-  border:1px solid #E8E3DA !important;        /* 左右下三邊接住卡片,收成同一個框 */
-  border-top:1px dashed #ECE0CC !important;   /* 中間那條虛線分隔(就是其他站的那條) */
-  border-radius:0 0 10px 10px !important;
-  margin:0 0 18px !important;                 /* 與卡片無縫貼合(原本 -18px 上拉造成兩框重疊感) */
-  padding:12px 18px 13px !important;
-}
+/* (1) cs-v6.44 路線A:動作列改畫進卡內 .cpb-extra(同問診);cs607 的 .atl-s2actrow 整塊隱藏,
+   但保留在 DOM 當作「面板向下展開」的定位錨(cs607 的 applyFloat 會把展開面板插在它後面＝卡片正下方)。*/
+#view-stage2 .atl-s2actrow{ display:none !important; }
 </style>
 
 <!-- ════════════ cs-v6.42 · 全站歸檔卡對齊「問診(最完整版)」:
@@ -16929,3 +16918,20 @@ textarea.p2-ta{ width:100%; box-sizing:border-box; min-height:40px; resize:verti
   background:linear-gradient(90deg,#E6D8C6,#EFE6D7) !important;
 }
 </style>
+
+<!-- ════════════ cs-v6.44 · ②建檔歸檔卡 路線A:動作列改畫進卡內(與問診同結構=卡內 .cpb-extra + .cpb-actrow + 服務台總控ⓘ)。
+  渲染器解除 stage2 排除、_isExt 含 stage2(讓客戶現況 toggle 顯示)、toggle 狀態讀 cs607 的 __atl607open。
+  cs641 已把 cs607 的 .atl-s2actrow 整塊隱藏,但保留在 DOM 當「向下展開」定位錨(applyFloat 插在它後面=卡片正下方)。
+  本分派器:stage2 → cs607 已驗證的 __atlS2Float(面板開合行為與舊版完全相同);其餘站 → __atlToggle*。
+  ⇒ 風險壓最低:沒重寫展開邏輯,只把按鈕從卡外搬進卡內。純前端、addon。 ════════════ -->
+<script id="atl-cs644-js">
+(function(){
+  if(window.__atlCpbTg) return;
+  window.__atlCpbTg=function(kind,btn){
+    var v=document.querySelector('.view.on');
+    if(v && v.id==='view-stage2' && typeof window.__atlS2Float==='function'){ return window.__atlS2Float(kind,btn); }
+    var f={ctx:window.__atlToggleCtx,lens:window.__atlToggleLoop,master:window.__atlToggleMaster}[kind];
+    if(typeof f==='function') return f(btn);
+  };
+})();
+</script>
