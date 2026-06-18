@@ -725,7 +725,7 @@ details.cat .cat-body{padding:14px 15px}
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">客戶服務台</span></span>
-    <span id="verBadge">cs-v6.48</span>
+    <span id="verBadge">cs-v6.49</span>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button type="button" id="popoutBtn" class="popout-btn" title="把客戶服務台開成獨立小視窗"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6"/><path d="M20 4l-9 9"/><path d="M14 12v7H5V10h7"/></svg>小視窗</button>
@@ -2799,7 +2799,7 @@ function readSectionFields(card, includeEmpty){
     var crow=el.closest('.chk-row');
     /* cs-v5.48:.chk-row 的勾選框只記狀態,不另開一個欄位(避免同一個來源標題重複出現)。 */
     if(crow && el.type==='checkbox'){ _rowChk.set(crow, el.checked); return; }
-    /* cs-v6.48:.chk-row 內的「標記」下拉(s1srctag,未標/給客戶/缺)是 metadata,不是欄位內容→跳過,避免變成「欄位N 已勾選」的空欄。 */
+    /* cs-v6.49:.chk-row 內的「標記」下拉(s1srctag,未標/給客戶/缺)是 metadata,不是欄位內容→跳過,避免變成「欄位N 已勾選」的空欄。 */
     if(crow && el.tagName==='SELECT'){ return; }
     var label=''; var wrap=el.closest('.fld,.chk-row,.health-note-card,div'); var lab=wrap?(wrap.querySelector('.clab-t')||wrap.querySelector('label,.clab,.m-title')||null):null;
     if(lab) label=(lab.innerText||'').trim(); if(!label&&el.placeholder) label=el.placeholder.slice(0,28); if(!label) label='欄位 '+(idx+1);
@@ -2810,7 +2810,7 @@ function readSectionFields(card, includeEmpty){
   if(!out.length){ sectionText(card).split('\n').map(function(x){return x.trim();}).filter(Boolean).slice(0,18).forEach(function(line,i){ out.push({label:i===0?'SECTION NOTE':'內容',value:line}); }); }
   return out;
 }
-function _pvMark(f){ if(f&&f.checked===true) return ' <span style="display:inline-block;font-size:11px;font-weight:700;color:#5C0F14;background:#F3E3E0;border-radius:5px;padding:1px 7px;margin-left:6px">\u2713 \u5df2\u52fe\u9078</span>'; if(f&&f.checked===false) return ' <span style="display:inline-block;font-size:11px;color:#B3A39A;margin-left:6px">\u672a\u52fe\u9078</span>'; return ''; }
+function _pvMark(f){ if(f&&f.checked===true) return ' <span style="display:inline-block;font-size:11px;font-weight:700;color:#5C0F14;background:#F3E3E0;border-radius:5px;padding:1px 7px;margin-left:6px">\u2713 \u5df2\u52fe\u9078</span>'; if(f&&f.checked===false) return ' <span style="display:inline-block;font-size:11px;color:#B3A39A;margin-left:6px">\u672a\u52fe\u9078</span>'; if(f&&f.checked==null&&f.value&&String(f.value).trim()) return ' <span style="display:inline-block;font-size:11px;font-weight:700;color:#5C0F14;background:#F3E3E0;border-radius:5px;padding:1px 7px;margin-left:6px">\u2713 \u5df2\u586b</span>'; return ''; }
 function previewFieldsHTML(fields){
   if(!fields||!fields.length) return '<div class="preview-field"><div class="pk">EMPTY</div><div class="pl">目前沒有已填入內容</div><div class="pv">這個區塊尚未偵測到可預覽的欄位內容。</div></div>';
   return fields.map(function(f,i){var pv=(f.value&&String(f.value).trim())?esc(f.value):(f.checked?'<span style="color:#B3A39A">（已勾選，未填備註）</span>':esc(f.value));return '<div class="preview-field"><div class="pk">FIELD '+String(i+1).padStart(2,'0')+'</div><div class="pl">'+esc(f.label)+_pvMark(f)+'</div><div class="pv">'+pv+'</div></div>';}).join('');
@@ -9162,7 +9162,7 @@ button:not(:disabled), .btn:not(.disabled):not([disabled]), [role="button"]{
   if(window.__atlCs473Continuity) return; window.__atlCs473Continuity=true;
   function cleanTextNode(n){var s=n.nodeValue||''; var ns=s.replace(/cs-v4\.\d+\s*(SAFE|LATEST)?\s*[｜|·:-]?\s*/g,'').replace(/\bv\d{3}\s*[｜|·:-]?\s*/g,''); if(ns!==s)n.nodeValue=ns;}
   function cleanVersions(){
-    try{var vb=document.getElementById('verBadge'); if(vb)vb.textContent='cs-v6.48';}catch(e){}
+    try{var vb=document.getElementById('verBadge'); if(vb)vb.textContent='cs-v6.49';}catch(e){}
     try{var w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT,{acceptNode:function(n){var p=n.parentElement; if(!p||p.id==='verBadge'||/^(SCRIPT|STYLE|TEXTAREA)$/i.test(p.tagName))return NodeFilter.FILTER_REJECT; return /(cs-v4\.\d+|\bv\d{3})/.test(n.nodeValue||'')?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_REJECT;}}); var nodes=[],n; while(n=w.nextNode())nodes.push(n); nodes.forEach(cleanTextNode);}catch(e){}
   }
   function alignSelection(){
@@ -9222,7 +9222,7 @@ input[type="text"]:focus,input:not([type]):focus{border-color:#D4A574!important;
     btn.onclick=function(e){e.stopPropagation(); set(!safe.classList.contains('atl-safe474-collapsed'));};
     h.appendChild(summary); h.appendChild(btn); set(localStorage.getItem('atl.cs474.safeCollapsed')!=='0');
   }
-  function cleanBadge(){ var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v6.48'; }
+  function cleanBadge(){ var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v6.49'; }
   function run(){ cleanBadge(); ensureSafeCollapse(); wireAutogrow(document); }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run); else run();
   setInterval(run,1200);
@@ -9283,7 +9283,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
   function wire(root){qsa('textarea,input[type="text"],input[type="url"],input[type="email"],input:not([type])',root||document).forEach(function(el){if(el.__atl475)return; if(el.closest('.atl-field-modal,.atl-final-modal'))return; el.__atl475=true; el.addEventListener('focus',function(){show(el); autogrow(el)}); el.addEventListener('input',function(){autogrow(el)}); el.addEventListener('blur',hideSoon); autogrow(el);});}
   document.addEventListener('click',function(e){var b=e.target.closest('#atlFieldToolbar button'); if(!b||!active)return; var a=b.getAttribute('data-act'); if(a==='prompt')openModal('prompt',active); if(a==='fill')openModal('fill',active); if(a==='edit')openModal('edit',active); if(a==='done'){var bar=qs('#atlFieldToolbar'); if(bar)bar.classList.remove('on'); if(active)active.classList.remove('atl-field-active'); toastSafe('此欄位可視為定案，請記得儲存');}},true);
   function addCollapse(root){qsa('.section-card,.deliverable-card,.atl452safe-card',root||document).forEach(function(card){if(card.__atlCollapse475||card.closest('.preview-modal,.atl-field-modal'))return; card.__atlCollapse475=true; card.classList.add('atl-collapsible'); var h=qs('h2,h3,h4,.stitle,.section-title',card)||card.firstElementChild; if(h)h.classList.add('atl-keep-visible'); var btn=document.createElement('button'); btn.type='button'; btn.className='atl-collapse-toggle'; btn.textContent='收合'; btn.addEventListener('click',function(e){e.preventDefault(); e.stopPropagation(); var closed=card.classList.toggle('atl-closed'); btn.textContent=closed?'展開':'收合';}); card.insertBefore(btn,card.firstChild);});}
-  function boot(){try{var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v6.48';}catch(e){} wire(document); addCollapse(document);}
+  function boot(){try{var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v6.49';}catch(e){} wire(document); addCollapse(document);}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot); else boot();
   try{new MutationObserver(function(ms){var hit=false; ms.forEach(function(m){if(m.addedNodes&&m.addedNodes.length)hit=true}); if(hit){clearTimeout(window.__atl475Timer); window.__atl475Timer=setTimeout(boot,180);}}).observe(document.body,{childList:true,subtree:true});}catch(e){}
 })();
@@ -9324,7 +9324,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
 <script id="atl478-final-export-js">
 (function(){
   if(window.__atl478FinalExport)return; window.__atl478FinalExport=true;
-  var VERSION='cs-v6.48';
+  var VERSION='cs-v6.49';
   function esc(s){return (s==null?'':String(s)).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
   function qsa(sel,root){return Array.prototype.slice.call((root||document).querySelectorAll(sel))}
   function text(el){return (el&&el.innerText||el&&el.textContent||'').replace(/\s+/g,' ').trim()}
@@ -9444,7 +9444,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
 <script>
 (function(){
   if(window.__atlCs480) return; window.__atlCs480=true;
-  var V='cs-v6.48';
+  var V='cs-v6.49';
   function lock(){ var vb=document.getElementById('verBadge'); if(vb && (vb.textContent||'').trim()!==V) vb.textContent=V; }
   function unify(){
     var safe=document.querySelector('.atl452safe'); if(!safe) return;
@@ -10392,7 +10392,7 @@ input.atl477-open-field:not([type="checkbox"]):not([type="radio"]):not([type="bu
 <script id="atl-cs477-final-touch">
 (function(){
   if(window.__atlCs477FinalTouch) return; window.__atlCs477FinalTouch=true;
-  var VERSION='cs-v6.48';
+  var VERSION='cs-v6.49';
   function qs(s,r){return (r||document).querySelector(s)}
   function qsa(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
   function setVersion(){try{var b=qs('#verBadge'); if(b)b.textContent=VERSION; window.ATELIER_CLIENT_VERSION=VERSION;}catch(e){}}
@@ -17057,4 +17057,29 @@ textarea.p2-ta{ width:100%; box-sizing:border-box; min-height:40px; resize:verti
 
 /* ── C. 單圈 stage-info-btn 比照初診 atl-infodot(17px) ── */
 .section-card > h3 .stage-info-btn{ width:17px !important; height:17px !important; font-size:11px !important; margin-left:7px !important; border:1px solid #E2CFB6 !important; color:#8A7274 !important; vertical-align:middle !important; }
+</style>
+
+<!-- ════════════ cs-v6.49 · 承「比照初診」四件:
+  ①藥丸:一排不換行、字再小、不要省略號(…)→ 9顆全名都看得到(flex:0 0 auto+overflow:visible+text-overflow:clip)。
+  ②單圈:8大類等 .stage-info-btn 嚴格比照初診 .atl-infodot 真規格 = 白底+金框 #D4A574+紅斜體 i #A51820(上一版色用錯)。
+  ③進階初診判斷:純文字欄沒有勾選框,改在預覽顯示粉紅「✓ 已填」標記(_pvMark 對 checked==null 且有值者;見上方 str_replace)→ 跟16個的「已勾選」視覺一致。
+  ④預覽上方動作橫桿:滑動卡頓→改為不透明實底+提高層級+底部淡陰影遮住下方內容,釘在頂端不晃。 ════════════ -->
+<style id="atl-cs649-css">
+/* ① 藥丸:一排、字小、不省略 */
+#view-stage2 .s2-comp-pills{ flex-wrap:nowrap !important; overflow:visible !important; gap:4px !important; justify-content:flex-start !important; }
+#view-stage2 .s2-comp-pills .s2-pill{ flex:0 0 auto !important; min-width:0 !important; padding:3px 7px 3px 3px !important; gap:3px !important; }
+#view-stage2 .s2-comp-pills .s2-pill .pn{ width:14px !important; height:14px !important; font-size:8.5px !important; flex:0 0 auto !important; }
+#view-stage2 .s2-comp-pills .s2-pill .s2-pill-nm{ font-size:9px !important; white-space:nowrap !important; overflow:visible !important; text-overflow:clip !important; min-width:0 !important; }
+#view-stage2 .s2-comp-pills .s2-pill .s2-pill-st{ font-size:8px !important; }
+
+/* ② 單圈嚴格比照初診 atl-infodot:白底/金框/紅斜體 i */
+.section-card > h3 .stage-info-btn{ width:17px !important; height:17px !important; margin-left:7px !important; padding:0 !important; border-radius:50% !important;
+  border:1px solid #D4A574 !important; background:#fff !important; color:#A51820 !important; -webkit-text-fill-color:#A51820 !important;
+  font-size:11px !important; font-weight:800 !important; font-style:italic !important; font-family:Georgia,serif !important; line-height:1 !important; vertical-align:middle !important; }
+.section-card > h3 .stage-info-btn:hover{ background:#A51820 !important; color:#fff !important; -webkit-text-fill-color:#fff !important; }
+.section-card > h3 .stage-info-btn svg{ stroke:#A51820 !important; }
+
+/* ④ 預覽上方動作橫桿:釘頂、不透明、不晃 */
+.preview-wrap{ padding-top:0 !important; }
+.preview-wrap .preview-actions{ position:sticky !important; top:0 !important; z-index:6 !important; background:var(--bg) !important; padding:14px 4px 10px !important; margin:0 !important; box-shadow:0 8px 10px -8px rgba(42,26,28,.16) !important; }
 </style>
