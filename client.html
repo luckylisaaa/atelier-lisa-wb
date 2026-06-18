@@ -159,9 +159,20 @@ details.cat>summary{cursor:pointer;padding:12px 15px;font-size:14px;font-weight:
 details.cat>summary::-webkit-details-marker{display:none}
 details.cat[open]>summary{border-bottom:1px solid var(--line)}
 details.cat .cat-body{padding:14px 15px}
+/* cs-v6.67:8大類逐類管理 */
+.s2cat-tools{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:0 0 14px;padding-bottom:12px;border-bottom:1px solid #EDE0D4}
+.s2cat-tools .s2ct-hint{font-size:11.5px;color:#8A7274;margin-right:auto}
+.s2cat-tools .btn{font-size:12px;padding:5px 13px}
+.cat-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:12px;padding-top:10px;border-top:1px dashed #E8DACE}
+.cat-actions .btn{font-size:12px;padding:5px 12px}
+.s2cat-sel{width:16px;height:16px;accent-color:var(--rouge);margin-right:8px;vertical-align:middle;cursor:pointer}
+details.cat summary .cat-name{vertical-align:middle}
 
 /* 客戶版／顧問版分頁 */
 .ver-switch{display:flex;gap:8px;margin-bottom:12px}
+.ver-switch-4{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.ver-switch-4 .ver-btn{font-size:12.5px;padding:8px 5px;white-space:nowrap}
+@media(max-width:480px){.ver-switch-4 .ver-btn{font-size:11px;padding:7px 3px}}
 .ver-btn{flex:1;text-align:center;background:#fff;border:1px solid var(--border);border-radius:9px;padding:9px 6px;font-size:13px;font-weight:700;color:var(--sub);cursor:pointer;transition:.15s}
 .ver-btn.on{background:var(--primary);color:#fff;-webkit-text-fill-color:#fff;border-color:var(--primary)}
 .ver-body{background:var(--warm);border:1px solid var(--border);border-radius:10px;padding:14px;font-size:13px;line-height:1.85;color:var(--ink);white-space:pre-wrap;max-height:440px;overflow-y:auto}
@@ -312,7 +323,9 @@ details.cat .cat-body{padding:14px 15px}
 .btn-ghost:hover{background:#FAE8EA !important;border-color:var(--rouge) !important}
 
 /* 交付預覽 - 客戶版 / 顧問版切換 tab */
-.ver-toggle{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:18px 0 22px}
+.ver-toggle{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:18px 0 22px}
+.ver-toggle .ver-tab{font-size:12.5px;padding:8px 6px;white-space:nowrap}
+@media(max-width:480px){.ver-toggle .ver-tab{font-size:11px;padding:7px 3px}}
 .ver-tab{background:#FFFCFB;border:1px solid #EAD9D6;border-radius:10px;padding:14px 20px;font-family:inherit;font-size:14px;font-weight:600;letter-spacing:1.5px;color:var(--sub);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;transition:all .2s ease}
 .ver-tab:hover{background:#FAE8EA;color:var(--rouge);border-color:#E5C5C0}
 .ver-tab.is-on{background:var(--rouge);color:#fff;border-color:var(--rouge);box-shadow:0 2px 8px rgba(165,24,32,.2)}
@@ -725,7 +738,7 @@ details.cat .cat-body{padding:14px 15px}
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">客戶服務台</span></span>
-    <span id="verBadge">cs-v6.63</span>
+    <span id="verBadge">cs-v6.67</span>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button type="button" id="popoutBtn" class="popout-btn" title="把客戶服務台開成獨立小視窗"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6"/><path d="M20 4l-9 9"/><path d="M14 12v7H5V10h7"/></svg>小視窗</button>
@@ -1143,12 +1156,13 @@ function _readStage1ToData(a){
   if(!$('s1c-web')) return false;
   var sources={}; CHECK_SOURCES.forEach(function(s){ var cb=$('s1c-'+s[0]),nt=$('s1n-'+s[0]),tg=$('s1tag-'+s[0]); if(!cb&&!nt) return; sources[s[0]]={checked:cb?cb.checked:false, note:nt?nt.value.trim():'', tag:tg?tg.value:''}; });
   var frameworks={}; STAGE1_FRAMEWORKS.forEach(function(fw){ var ta=$('s1fw-'+fw[0]); if(ta&&ta.value.trim()) frameworks[fw[0]]=ta.value.trim(); });
+  var fwChecked={}; STAGE1_FRAMEWORKS.forEach(function(fw){ var cb=$('s1fwc-'+fw[0]); if(cb) fwChecked[fw[0]]=cb.checked; }); /* cs-v6.67:進階勾選狀態存進客戶資料(比照16個) */
   var resultC=($('s1resultC')||{value:''}).value.trim();
   var resultA=($('s1resultA')||{value:''}).value.trim();
   var f=ensureFlow(a); var existed=f.stage1_initial||{};
   var done=(resultC||resultA)?'done':existed.status;
   f.stage1_initial={status:existed.status==='done'?'done':(done||'in-progress'), updatedAt:Date.now(),
-    data:{sources:sources, frameworks:frameworks, resultClient:resultC, resultAdvisor:resultA, /* 留著舊欄位以相容 */ result:(existed.data&&existed.data.result)||''}};
+    data:{sources:sources, frameworks:frameworks, fwChecked:fwChecked, resultClient:resultC, resultAdvisor:resultA, /* 留著舊欄位以相容 */ result:(existed.data&&existed.data.result)||''}};
   return true;
 }
 function _readStage2ToData(a){
@@ -1493,15 +1507,17 @@ function splitVersions(text){
 }
 function verBlock(prefix,parsed){
   var hasC=!!(parsed&&parsed.client), hasA=!!(parsed&&parsed.advisor);
-  var isS3=(prefix==='s3'); /* cs-v6.63:問診⑤交付比照初診③交付,加「問診記錄」分頁(只 s3) */
-  return '<div class="ver-switch">'
+  var isS3=(prefix==='s3'); /* cs-v6.67:問診⑤交付分頁;cs-v6.67:擴成4分頁 行銷問診/深入問答/客戶版/顧問版(1×4) */
+  return '<div class="ver-switch'+(isS3?' ver-switch-4':'')+'">'
+    +(isS3?'<button class="ver-btn" id="'+prefix+'-mbtn" onclick="verSwitch(\''+prefix+'\',\'mkb\')">行銷問診</button>':'')
+    +(isS3?'<button class="ver-btn" id="'+prefix+'-rbtn" onclick="verSwitch(\''+prefix+'\',\'record\')">深入問答</button>':'')
     +'<button class="ver-btn on" id="'+prefix+'-cbtn" onclick="verSwitch(\''+prefix+'\',\'client\')">客戶版'+(hasC?' '+ICN.check:'')+'</button>'
     +'<button class="ver-btn" id="'+prefix+'-abtn" onclick="verSwitch(\''+prefix+'\',\'advisor\')">顧問版'+(hasA?' '+ICN.check:'')+'</button>'
-    +(isS3?'<button class="ver-btn" id="'+prefix+'-rbtn" onclick="verSwitch(\''+prefix+'\',\'record\')">問診記錄</button>':'')
     +'</div>'
+    +(isS3?'<div class="ver-body" id="'+prefix+'-mbody" style="display:none;color:#8A7274">切到「行銷問診」時載入…</div>':'')
+    +(isS3?'<div class="ver-body" id="'+prefix+'-rbody" style="display:none;color:#8A7274">切到「深入問答」時載入…</div>':'')
     +'<div class="ver-body'+(hasC?'':' empty')+'" id="'+prefix+'-cbody">'+(hasC?esc(parsed.client):'尚未貼入客戶版內容 — 請到上面「客戶版」框貼入並儲存。')+'</div>'
     +'<div class="ver-body'+(hasA?'':' empty')+'" id="'+prefix+'-abody" style="display:none">'+(hasA?esc(parsed.advisor):'尚未貼入顧問版內容 — 請到上面「顧問版」框貼入並儲存。')+'</div>'
-    +(isS3?'<div class="ver-body" id="'+prefix+'-rbody" style="display:none;color:#8A7274">切到「問診記錄」時載入…</div>':'')
     +'<div class="btn-row">'
     +'<button class="btn btn-ghost" onclick="copyVal(_verText(\''+prefix+'\',\'client\'),\'客戶版\')">複製客戶版</button>'
     +'<button class="btn btn-ghost" onclick="copyVal(_verText(\''+prefix+'\',\'advisor\'),\'顧問版\')">複製顧問版</button></div>'
@@ -1510,14 +1526,24 @@ function verBlock(prefix,parsed){
 window._verCache={};
 function _verText(prefix,which){ var c=window._verCache[prefix]||{}; return which==='client'?(c.client||''):(c.advisor||''); }
 function verSwitch(prefix,which){
-  var cb=$(prefix+'-cbtn'),ab=$(prefix+'-abtn'),rb=$(prefix+'-rbtn');
-  var cbody=$(prefix+'-cbody'),abody=$(prefix+'-abody'),rbody=$(prefix+'-rbody');
+  var cb=$(prefix+'-cbtn'),ab=$(prefix+'-abtn'),rb=$(prefix+'-rbtn'),mb=$(prefix+'-mbtn');
+  var cbody=$(prefix+'-cbody'),abody=$(prefix+'-abody'),rbody=$(prefix+'-rbody'),mbody=$(prefix+'-mbody');
   if(!cb) return;
   function set(btn,body,on){ if(btn)btn.classList.toggle('on',on); if(body)body.style.display=on?'block':'none'; }
-  set(cb,cbody,which==='client'); set(ab,abody,which==='advisor'); set(rb,rbody,which==='record');
-  if(which==='record' && window.fillS3RecordPane) window.fillS3RecordPane(prefix+'-rbody'); /* cs-v6.63 */
+  set(cb,cbody,which==='client'); set(ab,abody,which==='advisor'); set(rb,rbody,which==='record'); set(mb,mbody,which==='mkb');
+  if(which==='record' && window.fillS3RecordPane) window.fillS3RecordPane(prefix+'-rbody'); /* cs-v6.67 */
+  if(which==='mkb' && window.fillS3MkbPane) window.fillS3MkbPane(prefix+'-mbody'); /* cs-v6.67 */
 }
-/* cs-v6.63:問診⑤交付「問診記錄」分頁——切到時即時讀 10 題問答(q3-*),交付前核對客戶答了什麼。 */
+/* cs-v6.67:問診⑤交付「行銷問診」分頁——切到時讀行銷問診卡(脈絡 marketingBrief),交付前核對商業脈絡。 */
+window.fillS3MkbPane=function(paneId){
+  var pane=document.getElementById(paneId||'s3-mbody'); if(!pane) return;
+  var a=(typeof curAcc==='function')?curAcc():null; var mb=(a&&a.marketingBrief)||{};
+  var MBL=[['market','市場位置'],['mem','市場記憶點'],['icp','理想成交客戶'],['fear','最怕的損失'],['decide','決策標準'],['free','免費入口'],['low','低門檻入口'],['core','核心服務'],['window','承接窗口'],['keyword','私訊關鍵字'],['proof','可信證據']];
+  var filled=MBL.filter(function(f){return ((mb[f[0]]||'')+'').trim();}).length;
+  var body=MBL.map(function(f,i){ var v=((mb[f[0]]||'')+'').trim(); return '<div class="preview-field"><div class="pk">'+String(i+1).padStart(2,'0')+'</div><div class="pl">'+esc(f[1])+'</div><div class="pv">'+(v?esc(v):'<span style="color:#C9B8AE">（未填）</span>')+'</div></div>'; }).join('');
+  pane.innerHTML='<div style="font-size:12px;color:#8A7274;margin:2px 0 16px">行銷問診卡（脈絡）'+MBL.length+' 欄 · 已填 '+filled+' 欄　|　交付前核對商業脈絡</div>'+body;
+};
+/* cs-v6.67:問診⑤交付「問診記錄」分頁——切到時即時讀 10 題問答(q3-*),交付前核對客戶答了什麼。 */
 window.fillS3RecordPane=function(paneId){
   var pane=document.getElementById(paneId||'s3-rbody'); if(!pane) return;
   var rows=[];
@@ -1554,6 +1580,7 @@ function renderStage1(){
   }
   var savedSrc=st.sources||{};
   var savedFw=st.frameworks||{};
+  var savedFwChk=st.fwChecked||{}; /* cs-v6.67:進階勾選狀態 */
   var rows=CHECK_SOURCES.map(function(s){
     var v=savedSrc[s[0]]||{checked:false,note:''};
     return '<div class="chk-row"><span class="cb"><input type="checkbox" id="s1c-'+s[0]+'" '+(v.checked?'checked':'')+'></span>'
@@ -1561,10 +1588,14 @@ function renderStage1(){
       +'<select id="s1tag-'+s[0]+'" class="s1srctag" onchange="this.setAttribute(\'data-v\',this.value);_flushAutoSave&&_flushAutoSave();" data-v="'+esc(v.tag||'')+'"><option value=""'+(!v.tag?' selected':'')+'>未標</option><option value="give"'+(v.tag==='give'?' selected':'')+'>給客戶</option><option value="miss"'+(v.tag==='miss'?' selected':'')+'>缺</option></select></div>'
       +'<input type="text" id="s1n-'+s[0]+'" value="'+esc(v.note||'')+'" placeholder="貼連結或簡短備註…"></div></div>';
   }).join('');
+  /* cs-v6.67:進階 5 框改用跟 16 個一模一樣的 .chk-row > .cb 結構(勾選框同款 18px、會存檔);不再用注入的歪勾選框 */
   var fwRows=STAGE1_FRAMEWORKS.map(function(fw){
     var v=savedFw[fw[0]]||'';
-    return '<div class="fld"><label>'+esc(fw[1])+'<span class="pre" style="background:transparent;border:0;color:var(--sub);font-weight:500">'+esc(fw[2])+'</span></label>'
-      +'<textarea id="s1fw-'+fw[0]+'" placeholder="會看完公開資料後寫下你的判斷…">'+esc(v)+'</textarea></div>';
+    var chk=!!savedFwChk[fw[0]];
+    return '<div class="chk-row atl-fwchk"><span class="cb"><input type="checkbox" id="s1fwc-'+fw[0]+'" '+(chk?'checked':'')+'></span>'
+      +'<div class="cbody"><div class="clab"><span class="clab-t">'+esc(fw[1])+'</span></div>'
+      +'<div class="pre" style="background:transparent;border:0;color:var(--sub);font-weight:500;font-size:12px;margin:1px 0 6px">'+esc(fw[2])+'</div>'
+      +'<textarea id="s1fw-'+fw[0]+'" placeholder="會看完公開資料後寫下你的判斷…">'+esc(v)+'</textarea></div></div>';
   }).join('');
   var parsedC=st.resultClient||'', parsedA=st.resultAdvisor||'';
   window._verCache.s1={client:parsedC, advisor:parsedA, split:!!(parsedC||parsedA)};
@@ -1619,9 +1650,9 @@ function renderStage1(){
     +'<div class="ai-fill-hint">'+ICN.gear+' 已套用 ATELIER 七維診斷框架</div>'
     +'</div>';
   
-  var pasteHTML = '<div class="section-card"><h3>把 AI 的分析貼回這裡（客戶版＋顧問版）</h3>'
+  var pasteHTML = '<div class="section-card" id="s1producecard"><h3>把 AI 的分析貼回這裡（客戶版＋顧問版）</h3>'
     +'<div class="sc-note">這一步要做的：把上面產生的提示詞丟給 AI，AI 會回你一段初診分析，再把它貼回下面兩個框。<br><br>「客戶版」＝可以直接給客戶看的乾淨版（只留對外能說的重點，不放內部判斷）。<br>「顧問版」＝你們內部留底用（保留判斷理由、風險、策略）。<br><br>把 AI 回覆中對客戶說的部分貼到「客戶版」、內部判斷的部分貼到「顧問版」；兩個框各自獨立、各自可清除重貼。</div>'
-    +'<div style="margin:2px 0 16px"><button type="button" class="atl-merged-prev" onclick="openS1MergedPreview()">\uD83D\uDD0D 合併預覽：16 核對清單 ＋ 進階（看哪些勾了、填了什麼）</button></div>'
+    +'<div style="margin:2px 0 16px;font-size:12px;color:#8A7274">想先看哪些會納入客戶版／顧問版？點這張卡右上角的「🔍 預覽」,會把 16 核對清單＋進階一次列出,並標出下方有沒有勾選。</div>'
     +'<div class="s1feed"><div class="s1feed-title"><span>'+ICN.spark+' 要放進 AI 分析的資料（勾選後按各版「AI 產生這版」帶入）</span><button type="button" class="btn-sf s1feed-ai" onclick="genS1FeedTriage()">'+ICN.spark+' AI 幫我判斷要留哪些</button></div>'
     +'<div class="s1feed-row">'
     +'<label class="s1agg-chk"><input type="checkbox" id="s1feed-basic" checked><span>帳號基本</span></label>'
@@ -1928,7 +1959,7 @@ function renderStage2(){
         +'<textarea class="p2-ta" id="p2-'+fd[0]+'" rows="1" placeholder="（可留空；或用上方「AI 智能」一次填好）">'+esc(v)+'</textarea></div>';
     }).join('');
     var done=c.filled>=c.total;
-    return '<details class="cat" data-cat="'+cat[0]+'"'+(done?'':' open')+'><summary>'+esc(cat[1])+'<span class="cat-summary" id="catsum-'+cat[0]+'">'+c.filled+'/'+c.total+' 格</span></summary><div class="cat-body">'+body+'</div></details>';
+    return '<details class="cat" data-cat="'+cat[0]+'"'+(done?'':' open')+'><summary><input type="checkbox" class="s2cat-sel" id="s2sel-'+cat[0]+'" onclick="event.stopPropagation()" title="選取這一類"><span class="cat-name">'+esc(cat[1])+'</span><span class="cat-summary" id="catsum-'+cat[0]+'">'+c.filled+'/'+c.total+' 格</span></summary><div class="cat-body">'+body+'<div class="cat-actions"><button type="button" class="btn btn-ghost" onclick="s2SaveCat(\''+cat[0]+'\')">儲存此類</button><button type="button" class="btn btn-ghost" onclick="s2ClearCat(\''+cat[0]+'\')">清除此類</button></div></div></details>';
   }).join('');
   var aiBox='<div class="sc-note">按「產生建檔提示詞」→ 丟 ChatGPT／Claude／Gemini → 它把 8 大類填成一張「建檔卡」→ 貼回下面一鍵填入。查不到時改用「訪談提示詞」，先問當事人再整理。</div>'
     +'<div class="fld"><label>（選填）想讓 AI 一起參考的資料</label><textarea id="s2extra" placeholder="例如：客戶官網連結、主力服務、之前聊到的重點…（沒有也可留空）"></textarea></div>'
@@ -1945,8 +1976,8 @@ function renderStage2(){
     return '<button type="button" class="s1tab'+(i===0?' active':'')+'" data-s2tab="'+t[0]+'" onclick="switchS2Tab(\''+t[0]+'\')"><span class="s1tab-num">'+(i+1)+'</span><span class="s1tab-label">'+t[1]+'</span><span class="s1tab-info" onclick="event.stopPropagation();openS2Info(\''+t[0]+'\')" title="這一頁的用意與概念">'+'\u24D8'+'</span></button>';
   }).join('')+'</div>';
   var paneFill='<div class="s1tab-pane s2pane active" data-s2pane="fill">'
-    +'<div class="section-card" id="p2section"><h3>8 大類資料 <button type="button" class="stage-info-btn" onclick="openS2Info(\'cats\')" title="這 8 大類在收什麼，以及怎麼逐格檢查修改">'+ICN.info+'</button></h3>'
-    +'<div class="s2-aibar"><button type="button" class="btn-sf s2-ai-inline" onclick="toggleS2AIbox(this)">'+ICN.prompt+'AI 智能</button><button type="button" class="s2-aitip-btn" onclick="window.__atlS2HintPop&&window.__atlS2HintPop(this)" title="這是什麼">'+ICN.info+'</button></div>'
+    +'<div class="section-card" id="p2section"><h3>8 大類資料 <button type="button" class="atl-infodot" onclick="openS2Info(\'cats\')" title="這 8 大類在收什麼，以及怎麼逐格檢查修改">i</button></h3>'
+    +'<div class="s2-aibar"><button type="button" class="btn-sf s2-ai-inline" onclick="toggleS2AIbox(this)">'+ICN.prompt+'AI 智能</button><button type="button" class="s2-aitip-btn" onclick="window.__atlS2HintPop&&window.__atlS2HintPop(this)" title="這是什麼">'+ICN.info+'</button><button type="button" class="btn btn-ghost s2-selall-btn" style="margin-left:auto;font-size:12px;padding:5px 13px" onclick="s2SelectAllCats(this)" title="全選/全不選下面 8 大類的選取框">全選</button></div>'
     +'<div id="s2aiBox" class="s2-ai-box" style="display:none">'+aiBox+'</div>'
     +'<div id="p2squares" class="s2-comp s2-comp-mini"></div>'
     +cats+'</div>'
@@ -2032,6 +2063,29 @@ function recomputeStage2(){
     }).join('');
   }
 }
+/* cs-v6.67:8大類逐類管理(選取／儲存此類／清除此類)+外層全選,讓使用者一類一類做、不會一次砍光全部 */
+function _s2cat(catId){ var hit=null; (typeof PROFILE_CATS!=='undefined'?PROFILE_CATS:[]).forEach(function(c){ if(c[0]===catId)hit=c; }); return hit; }
+function _s2catNm(cat){ return cat?cat[1].replace(/^[❶-❽]\s*/,''):'這一類'; }
+window.s2SelectAllCats=function(btn){
+  var box=document.getElementById('p2section'); if(!box) return;
+  var cbs=[].slice.call(box.querySelectorAll('.s2cat-sel')); if(!cbs.length) return;
+  var allOn=cbs.every(function(c){return c.checked;});
+  cbs.forEach(function(c){ c.checked=!allOn; });
+  if(btn) btn.textContent=allOn?'全選':'全不選';
+};
+window.s2SaveCat=function(catId){
+  try{ _flushAutoSave&&_flushAutoSave(); }catch(e){}
+  try{ toast((ICN.check||'✓')+' 已儲存「'+_s2catNm(_s2cat(catId))+'」這一類'); }catch(e){}
+};
+window.s2ClearCat=function(catId){
+  var cat=_s2cat(catId); if(!cat) return; var nm=_s2catNm(cat);
+  if(!window.confirm('要清除「'+nm+'」這一類的所有欄位嗎？\n只清這一類,其他類完全不受影響。')) return;
+  cat[2].forEach(function(fd){ var el=document.getElementById('p2-'+fd[0]); if(el) el.value=''; });
+  try{ _flushAutoSave&&_flushAutoSave(); }catch(e){}
+  try{ recomputeStage2&&recomputeStage2(); }catch(e){}
+  try{ var ss=document.getElementById('catsum-'+catId); if(ss) ss.textContent='0/'+cat[2].length+' 格'; }catch(e){}
+  try{ toast((ICN.check||'✓')+' 已清除「'+nm+'」'); }catch(e){}
+};
 function buildStage2FillPrompt(){
   var a=curAcc(); if(!a){ toast(ICN.warn+' 尚未選定客戶'); return; }
   var f=ensureFlow(a);
@@ -2213,7 +2267,7 @@ function renderStage3(){
   box.innerHTML=
     '<div class="page-head"><div class="ph-en">STAGE ③ · DEEP INTERVIEW</div><h2 class="ph-title">深度問診 <button type="button" class="stage-info-btn" onclick="openStageInfo(\'stage3\')" title="這一站在做什麼">'+ICN.info+'</button></h2></div>'
     +stageHead('挖出客戶自己沒說清楚的價值，把專業語言翻成市場語言。','stage3_interview')
-    /* cs-v6.63:問診比照初診加分頁(準備/問診/產生/交付),卡片內容不動,只包進 .s1tab-pane */
+    /* cs-v6.67:問診比照初診加分頁(準備/問診/產生/交付),卡片內容不動,只包進 .s1tab-pane */
     +'<div class="s1tabs">'
     +  '<button class="s1tab active" data-s1tab="prep" onclick="switchS3Tab(\'prep\')"><span class="s1tab-num">1</span><span class="s1tab-label">準備</span><span class="s1tab-info" onclick="event.stopPropagation();openS3TabInfo(\'prep\')" title="這步在做什麼">'+ICN.info+'</span></button>'
     +  '<button class="s1tab" data-s1tab="record" onclick="switchS3Tab(\'record\')"><span class="s1tab-num">2</span><span class="s1tab-label">問診</span><span class="s1tab-info" onclick="event.stopPropagation();openS3TabInfo(\'record\')" title="這步在做什麼">'+ICN.info+'</span></button>'
@@ -2250,7 +2304,7 @@ function renderStage3(){
     +'<div class="section-card"><h3>⑤ 交付物《深度問診整理書》</h3>'+verBlock('s3',{client:parsedC3,advisor:parsedA3,split:!!(parsedC3||parsedA3)})+'</div>'
     +'</div>';
 }
-/* cs-v6.63:問診分頁切換——只在 #view-stage3 範圍內作用,不影響初診的 s1tabs */
+/* cs-v6.67:問診分頁切換——只在 #view-stage3 範圍內作用,不影響初診的 s1tabs */
 window.switchS3Tab=function(name){
   var root=document.getElementById('view-stage3'); if(!root) return;
   root.querySelectorAll('.s1tab').forEach(function(t){ t.classList.toggle('active', t.getAttribute('data-s1tab')===name); });
@@ -2846,9 +2900,9 @@ function readSectionFields(card, includeEmpty){
   card.querySelectorAll('input,textarea,select').forEach(function(el,idx){
     if(el.type==='hidden'||el.type==='button'||el.type==='submit') return;
     var crow=el.closest('.chk-row,.atl-selrow');
-    /* cs-v5.48:.chk-row 的勾選框只記狀態,不另開一個欄位(避免同一個來源標題重複出現)。cs-v6.63:進階的 .atl-selrow 同理。 */
+    /* cs-v5.48:.chk-row 的勾選框只記狀態,不另開一個欄位(避免同一個來源標題重複出現)。cs-v6.67:進階的 .atl-selrow 同理。 */
     if(crow && el.type==='checkbox'){ _rowChk.set(crow, el.checked); return; }
-    /* cs-v6.63:.chk-row 內的「標記」下拉(s1srctag,未標/給客戶/缺)是 metadata,不是欄位內容→跳過,避免變成「欄位N 已勾選」的空欄。 */
+    /* cs-v6.67:.chk-row 內的「標記」下拉(s1srctag,未標/給客戶/缺)是 metadata,不是欄位內容→跳過,避免變成「欄位N 已勾選」的空欄。 */
     if(crow && el.tagName==='SELECT'){ return; }
     var label=''; var wrap=el.closest('.fld,.chk-row,.health-note-card,div'); var lab=wrap?(wrap.querySelector('.clab-t')||wrap.querySelector('label,.clab,.m-title')||null):null;
     if(lab) label=(lab.innerText||'').trim(); if(!label&&el.placeholder) label=el.placeholder.slice(0,28); if(!label) label='欄位 '+(idx+1);
@@ -2888,7 +2942,7 @@ function openReadingPreview(title,subtitle,fields,copyLabel,editable){
   function key(e){ if(e.key==='Escape'){ closeModal(); document.removeEventListener('keydown',key); } } document.addEventListener('keydown',key);
   md.onclick=function(e){ if(e.target===md){ closeModal(); document.removeEventListener('keydown',key); } };
 }
-function openSectionPreview(btn){ var card=btn.closest('.section-card'); if(!card) return; if(card.id==='p2section' && typeof openS2GroupedPreview==='function'){ openS2GroupedPreview(); return; } /* cs-v6.63:8大類走分類預覽 */ var h=card.querySelector('h3'); var title='區塊預覽'; if(h){ var c=h.cloneNode(true); c.querySelectorAll('button,.atl-infohold,.atl-infodot,.section-preview-btn,.atl-std-tog,.s1tab-info,.atl-cc562-tog').forEach(function(x){x.remove();}); title=((c.innerText||c.textContent||'').replace(/\s*預覽\s*$/,'').replace(/[⊞▸▾ⓘ]/g,'').trim())||'區塊預覽'; } openReadingPreview(title,'可直接在這裡修改，按「套用修改」寫回表單，再到下方匯出',readSectionFields(card,true),'區塊預覽',true); }
+function openSectionPreview(btn){ var card=btn.closest('.section-card'); if(!card) return; if(card.id==='p2section' && typeof openS2GroupedPreview==='function'){ openS2GroupedPreview(); return; } if(card.id==='s1producecard' && typeof openS1MergedPreview==='function'){ openS1MergedPreview(); return; } /* cs-v6.67:8大類分類預覽;cs-v6.67:②產生合併預覽 */ var h=card.querySelector('h3'); var title='區塊預覽'; if(h){ var c=h.cloneNode(true); c.querySelectorAll('button,.atl-infohold,.atl-infodot,.section-preview-btn,.atl-std-tog,.s1tab-info,.atl-cc562-tog').forEach(function(x){x.remove();}); title=((c.innerText||c.textContent||'').replace(/\s*預覽\s*$/,'').replace(/[⊞▸▾ⓘ]/g,'').trim())||'區塊預覽'; } openReadingPreview(title,'可直接在這裡修改，按「套用修改」寫回表單，再到下方匯出',readSectionFields(card,true),'區塊預覽',true); }
 /* cs-v6.44:②建檔 8大類「分類預覽」——依 PROFILE_CATS 分組,每類一個標頭(填N/總格)+底下該類填好的欄位,解決「欄位平攤看不出哪欄屬哪類」。沿用 preview-paper 規格K視覺。 */
 function openS2GroupedPreview(){
   var sh=$('sheet'),md=$('modal'); if(!sh||!md) return;
@@ -2897,7 +2951,8 @@ function openS2GroupedPreview(){
   var inner=PROFILE_CATS.map(function(cat){
     var rows=cat[2].map(function(fd){ var el=document.getElementById('p2-'+fd[0]); var val=el?(el.value||'').trim():''; totN++; if(val)totF++; return {label:fd[1],value:val}; });
     var filled=rows.filter(function(r){return r.value;});
-    var body=filled.length?filled.map(function(r,i){ return '<div class="preview-field"><div class="pk">FIELD '+String(i+1).padStart(2,'0')+'</div><div class="pl">'+esc(r.label)+'</div><div class="pv">'+esc(r.value)+'</div></div>'; }).join(''):'<div style="color:#C9B8AE;font-size:13px;padding:2px 0 4px">（這一類還沒填）</div>';
+    /* cs-v6.67:未填的欄位也列出標題、標「未填寫」,讓使用者一眼看到還缺什麼 */
+    var body=rows.map(function(r,i){ var has=r.value&&String(r.value).trim(); var pv=has?esc(r.value):'<span style="color:#C9B8AE;font-style:italic">未填寫</span>'; return '<div class="preview-field"><div class="pk">FIELD '+String(i+1).padStart(2,'0')+'</div><div class="pl">'+esc(r.label)+(has?'':' <span style="display:inline-block;font-size:11px;color:#B3A39A;margin-left:6px">· 未填寫</span>')+'</div><div class="pv">'+pv+'</div></div>'; }).join('');
     return '<div style="font-family:Cormorant Garamond,serif;font-size:13px;letter-spacing:3px;color:#A51820;text-transform:uppercase;margin:30px 0 12px;border-bottom:1px solid #E8D9CF;padding-bottom:6px">'+esc(cat[1])+'　<span style="color:#B3938A">'+filled.length+'／'+cat[2].length+' 格</span></div>'+body;
   }).join('');
   sh.innerHTML='<div class="preview-wrap"><div class="preview-actions"><button class="preview-modal-btn" onclick="closeModal()">關閉</button></div><div class="preview-paper"><div class="preview-kicker">ATELIER · 建檔 8 大類</div><h2>客戶資料建檔　分類總覽</h2><div class="preview-gold-line"></div><div class="preview-sub">依 8 大類分組,每一類看得到填了幾格與內容,一眼分清哪欄屬哪類。目前共填 '+totF+'／'+totN+' 格。</div>'+inner+'</div></div>';
@@ -2905,25 +2960,25 @@ function openS2GroupedPreview(){
   function key(e){ if(e.key==='Escape'){ closeModal(); document.removeEventListener('keydown',key); } } document.addEventListener('keydown',key);
   md.onclick=function(e){ if(e.target===md){ closeModal(); document.removeEventListener('keydown',key); } };
 }
-/* cs-v6.63:②產生 合併預覽——把①蒐集的「16 核對清單(含勾選狀態+內容)＋進階 5 個」分兩組整合成一張(沿用 preview-paper 規格K視覺),產客戶版/顧問版前先看清楚哪些勾了、填了什麼。不動現有客戶版/顧問版。 */
+/* cs-v6.67:②產生 合併預覽——把①蒐集的「16 核對清單(含勾選狀態+內容)＋進階 5 個」分兩組整合成一張(沿用 preview-paper 規格K視覺),產客戶版/顧問版前先看清楚哪些勾了、填了什麼。不動現有客戶版/顧問版。 */
 function openS1MergedPreview(){
-  var v=document.getElementById('view-stage1')||document;
-  var chkCard=null,fwCard=null;
-  [].slice.call(v.querySelectorAll('.section-card')).forEach(function(c){ var h=c.querySelector('h3'); if(!h)return; var t=h.textContent||''; if(t.indexOf('資料來源核對清單')>=0&&!chkCard)chkCard=c; if(t.indexOf('進階初診判斷')>=0&&!fwCard)fwCard=c; });
-  var chkFields=chkCard?readSectionFields(chkCard,true):[];
-  var fwFields=fwCard?readSectionFields(fwCard,true):[];
-  function grp(title,sub,fields){
-    if(!fields.length) return '';
-    var on=fields.filter(function(f){return f.checked===true;}).length;
-    var body=fields.map(function(f,i){ var pv=(f.value&&String(f.value).trim())?esc(f.value):(f.checked?'<span style="color:#B3A39A">（已勾選，未填備註）</span>':'<span style="color:#C9B8AE">（未填）</span>'); return '<div class="preview-field"><div class="pk">FIELD '+String(i+1).padStart(2,'0')+'</div><div class="pl">'+esc(f.label)+_pvMark(f)+'</div><div class="pv">'+pv+'</div></div>'; }).join('');
-    return '<div style="font-family:Cormorant Garamond,serif;font-size:13px;letter-spacing:3px;color:#A51820;text-transform:uppercase;margin:30px 0 4px;border-bottom:1px solid #E8D9CF;padding-bottom:6px">'+esc(title)+'　<span style="font-family:inherit;color:#B3938A">勾選 '+on+'／'+fields.length+'</span></div><div style="font-size:11px;font-style:italic;color:#8A7274;margin:6px 0 16px">'+esc(sub)+'</div>'+body;
-  }
   var sh=$('sheet'),md=$('modal'); if(!sh||!md) return;
-  var totOn=chkFields.filter(function(f){return f.checked===true;}).length+fwFields.filter(function(f){return f.checked===true;}).length;
-  var inner=grp('資料來源核對清單（'+chkFields.length+'）','打勾＝這個來源要納入這次分析；下面是它查到的內容。',chkFields)
-           +grp('進階初診判斷（'+fwFields.length+'）','打勾＝這個前置判斷要納入；沒勾的不會進客戶版／顧問版。',fwFields);
-  if(!inner) inner='<p style="color:#8A7274;padding:14px 0;font-size:13px">①蒐集還沒有內容,先去填寫／勾選再回來預覽。</p>';
-  sh.innerHTML='<div class="preview-wrap"><div class="preview-actions"><button class="preview-modal-btn" onclick="closeModal()">關閉</button></div><div class="preview-paper"><div class="preview-kicker">ATELIER · 產出前合併核對</div><h2>核對清單 ＋ 進階　一覽</h2><div class="preview-gold-line"></div><div class="preview-sub">產出客戶版／顧問版前,先在這裡一次看清楚:哪些被勾選、各自填了什麼。目前共勾選 '+totOn+' 項。</div>'+inner+'</div></div>';
+  /* cs-v6.67:勾選狀態取自②產生下方的選取(s1fsrc / s1ffw)=會不會納入客戶版/顧問版;內容來自①蒐集(s1n 備註 / s1fw 進階) */
+  function rowsFrom(list, contentPfx, selPfx){
+    return (list||[]).map(function(it){ var c=document.getElementById(contentPfx+it[0]); var s=document.getElementById(selPfx+it[0]); return {name:it[1], value:c?(c.value||'').trim():'', checked:s?!!s.checked:false}; });
+  }
+  var srcItems=rowsFrom((typeof CHECK_SOURCES!=='undefined'?CHECK_SOURCES:[]), 's1n-', 's1fsrc-');
+  var fwItems=rowsFrom((typeof STAGE1_FRAMEWORKS!=='undefined'?STAGE1_FRAMEWORKS:[]), 's1fw-', 's1ffw-');
+  function mark(on){ return on?'<span style="display:inline-block;font-size:11px;font-weight:700;color:#5C0F14;background:#F3E3E0;border-radius:5px;padding:1px 7px;margin-left:6px">\u2713 已勾選（會納入）</span>':'<span style="display:inline-block;font-size:11px;color:#B3A39A;margin-left:6px">未勾選（不納入）</span>'; }
+  function grp(title,sub,items){
+    var on=items.filter(function(it){return it.checked;}).length;
+    var body=items.map(function(it,i){ var has=it.value&&it.value.trim(); var pv=has?esc(it.value):'<span style="color:#C9B8AE">（未填內容）</span>'; return '<div class="preview-field" style="'+(it.checked?'':'opacity:.72')+'"><div class="pk">FIELD '+String(i+1).padStart(2,'0')+'</div><div class="pl">'+esc(it.name)+mark(it.checked)+'</div><div class="pv">'+pv+'</div></div>'; }).join('');
+    return '<div style="font-family:Cormorant Garamond,serif;font-size:13px;letter-spacing:3px;color:#A51820;text-transform:uppercase;margin:30px 0 4px;border-bottom:1px solid #E8D9CF;padding-bottom:6px">'+esc(title)+'　<span style="font-family:inherit;color:#B3938A">納入 '+on+'／'+items.length+'</span></div><div style="font-size:11px;font-style:italic;color:#8A7274;margin:6px 0 16px">'+esc(sub)+'</div>'+body;
+  }
+  var totOn=srcItems.filter(function(x){return x.checked;}).length+fwItems.filter(function(x){return x.checked;}).length;
+  var inner=grp('資料來源核對清單（'+srcItems.length+'）','✓＝②產生下方有勾選→會納入這次客戶版／顧問版;未勾選的仍顯示內容,但不納入。',srcItems)
+           +grp('進階初診判斷（'+fwItems.length+'）','✓＝會納入;未勾選的不納入,但內容照樣看得到。',fwItems);
+  sh.innerHTML='<div class="preview-wrap"><div class="preview-actions"><button class="preview-modal-btn" onclick="closeModal()">關閉</button></div><div class="preview-paper"><div class="preview-kicker">ATELIER · 產出前合併核對</div><h2>核對清單 ＋ 進階　一覽</h2><div class="preview-gold-line"></div><div class="preview-sub">這裡看的是「會不會納入客戶版／顧問版」——勾選狀態取自②產生下方的選取。目前共納入 '+totOn+' 項。</div>'+inner+'</div></div>';
   md.classList.add('show');
   function key(e){ if(e.key==='Escape'){ closeModal(); document.removeEventListener('keydown',key); } } document.addEventListener('keydown',key);
   md.onclick=function(e){ if(e.target===md){ closeModal(); document.removeEventListener('keydown',key); } };
@@ -3956,7 +4011,7 @@ window.addEventListener('DOMContentLoaded', function(){
     var conf=STAGE_EXT[stageId], box=$('view-'+stageId), a=curAcc(); if(!conf||!box) return;
     if(!a){ box.innerHTML=needClientHTML(conf.no+' '+conf.title); return; }
     var rec=flowData(a,conf), d=rec.data||{};
-    window._verCache[stageId]={client:d.resultClient||'',advisor:d.resultAdvisor||''}; /* cs-v6.63:給交付物預覽 verBlock 用 */
+    window._verCache[stageId]={client:d.resultClient||'',advisor:d.resultAdvisor||''}; /* cs-v6.67:給交付物預覽 verBlock 用 */
     box.innerHTML='<div class="page-head"><div class="ph-en">'+conf.en+'</div><h2 class="ph-title">'+conf.title+' <button type="button" class="stage-info-btn" onclick="openStageInfo(\''+stageId+'\')" title="查看此階段的底層邏輯">'+ICN.info+'</button></h2></div>'
       +stageHead(conf.purpose,conf.key)
       +'<div class="section-card ai-fill"><h3>'+ICN.spark+'AI 輔助產出</h3><div class="sc-note">先按提示詞，把已收集的①～③資料帶給 AI；AI 產出後，把重點貼回下方欄位，這一階段就會成為後續提案與交付的依據。</div>'
@@ -4597,10 +4652,10 @@ window.renderS1VersionToggleHTML=function(v){
     +'<div class="dp-body">'+(hasA?esc(a).replace(/\n/g,'<br>'):'<div class="dp-empty">尚未填入顧問版內容</div>')+'</div>'
     +'</div>';
   return '<div class="ver-toggle">'
-    +'<button class="ver-tab '+(defaultTab==='client'?'is-on':'')+'" data-vertab="client" onclick="switchDeliverView(\'client\')">客戶版 '+(hasC?'<span class="vt-check">'+ICN.check+'</span>':'')+'</button>'
-    +'<button class="ver-tab '+(defaultTab==='advisor'?'is-on':'')+'" data-vertab="advisor" onclick="switchDeliverView(\'advisor\')">顧問版 '+(hasA?'<span class="vt-check">'+ICN.check+'</span>':'')+'</button>'
     +'<button class="ver-tab" data-vertab="checklist" onclick="switchDeliverView(\'checklist\')">核對清單</button>'
     +'<button class="ver-tab" data-vertab="frameworks" onclick="switchDeliverView(\'frameworks\')">進階判斷</button>'
+    +'<button class="ver-tab '+(defaultTab==='client'?'is-on':'')+'" data-vertab="client" onclick="switchDeliverView(\'client\')">客戶版 '+(hasC?'<span class="vt-check">'+ICN.check+'</span>':'')+'</button>'
+    +'<button class="ver-tab '+(defaultTab==='advisor'?'is-on':'')+'" data-vertab="advisor" onclick="switchDeliverView(\'advisor\')">顧問版 '+(hasA?'<span class="vt-check">'+ICN.check+'</span>':'')+'</button>'
     +'</div>'
     +'<div class="ver-pane" data-verpane="client" '+(defaultTab==='client'?'':'style="display:none"')+'>'+clientHTML+'</div>'
     +'<div class="ver-pane" data-verpane="advisor" '+(defaultTab==='advisor'?'':'style="display:none"')+'>'+advisorHTML+'</div>'
@@ -4610,11 +4665,11 @@ window.renderS1VersionToggleHTML=function(v){
 window.switchDeliverView=function(name){
   document.querySelectorAll('.ver-tab').forEach(function(t){ t.classList.toggle('is-on', t.getAttribute('data-vertab')===name); });
   document.querySelectorAll('.ver-pane').forEach(function(p){ p.style.display = p.getAttribute('data-verpane')===name?'block':'none'; });
-  /* cs-v6.63:核對清單／進階 兩個分頁,切到時才即時讀①蒐集內容(含勾選狀態) */
+  /* cs-v6.67:核對清單／進階 兩個分頁,切到時才即時讀①蒐集內容(含勾選狀態) */
   if(name==='checklist') window.fillDeliverPane&&window.fillDeliverPane('資料來源核對清單','dlvChkPane');
   if(name==='frameworks') window.fillDeliverPane&&window.fillDeliverPane('進階初診判斷','dlvFwPane');
 };
-/* cs-v6.63:交付前核對——把①蒐集某張卡的內容(編號+名稱+勾選狀態+填寫內容)渲染進交付頁的分頁 */
+/* cs-v6.67:交付前核對——把①蒐集某張卡的內容(編號+名稱+勾選狀態+填寫內容)渲染進交付頁的分頁 */
 window.fillDeliverPane=function(cardKey, paneId){
   var pane=document.getElementById(paneId); if(!pane) return;
   var v=document.getElementById('view-stage1')||document, card=null;
@@ -9270,7 +9325,7 @@ button:not(:disabled), .btn:not(.disabled):not([disabled]), [role="button"]{
   if(window.__atlCs473Continuity) return; window.__atlCs473Continuity=true;
   function cleanTextNode(n){var s=n.nodeValue||''; var ns=s.replace(/cs-v4\.\d+\s*(SAFE|LATEST)?\s*[｜|·:-]?\s*/g,'').replace(/\bv\d{3}\s*[｜|·:-]?\s*/g,''); if(ns!==s)n.nodeValue=ns;}
   function cleanVersions(){
-    try{var vb=document.getElementById('verBadge'); if(vb)vb.textContent='cs-v6.63';}catch(e){}
+    try{var vb=document.getElementById('verBadge'); if(vb)vb.textContent='cs-v6.67';}catch(e){}
     try{var w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT,{acceptNode:function(n){var p=n.parentElement; if(!p||p.id==='verBadge'||/^(SCRIPT|STYLE|TEXTAREA)$/i.test(p.tagName))return NodeFilter.FILTER_REJECT; return /(cs-v4\.\d+|\bv\d{3})/.test(n.nodeValue||'')?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_REJECT;}}); var nodes=[],n; while(n=w.nextNode())nodes.push(n); nodes.forEach(cleanTextNode);}catch(e){}
   }
   function alignSelection(){
@@ -9330,7 +9385,7 @@ input[type="text"]:focus,input:not([type]):focus{border-color:#D4A574!important;
     btn.onclick=function(e){e.stopPropagation(); set(!safe.classList.contains('atl-safe474-collapsed'));};
     h.appendChild(summary); h.appendChild(btn); set(localStorage.getItem('atl.cs474.safeCollapsed')!=='0');
   }
-  function cleanBadge(){ var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v6.63'; }
+  function cleanBadge(){ var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v6.67'; }
   function run(){ cleanBadge(); ensureSafeCollapse(); wireAutogrow(document); }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run); else run();
   setInterval(run,1200);
@@ -9391,7 +9446,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
   function wire(root){qsa('textarea,input[type="text"],input[type="url"],input[type="email"],input:not([type])',root||document).forEach(function(el){if(el.__atl475)return; if(el.closest('.atl-field-modal,.atl-final-modal'))return; el.__atl475=true; el.addEventListener('focus',function(){show(el); autogrow(el)}); el.addEventListener('input',function(){autogrow(el)}); el.addEventListener('blur',hideSoon); autogrow(el);});}
   document.addEventListener('click',function(e){var b=e.target.closest('#atlFieldToolbar button'); if(!b||!active)return; var a=b.getAttribute('data-act'); if(a==='prompt')openModal('prompt',active); if(a==='fill')openModal('fill',active); if(a==='edit')openModal('edit',active); if(a==='done'){var bar=qs('#atlFieldToolbar'); if(bar)bar.classList.remove('on'); if(active)active.classList.remove('atl-field-active'); toastSafe('此欄位可視為定案，請記得儲存');}},true);
   function addCollapse(root){qsa('.section-card,.deliverable-card,.atl452safe-card',root||document).forEach(function(card){if(card.__atlCollapse475||card.closest('.preview-modal,.atl-field-modal'))return; card.__atlCollapse475=true; card.classList.add('atl-collapsible'); var h=qs('h2,h3,h4,.stitle,.section-title',card)||card.firstElementChild; if(h)h.classList.add('atl-keep-visible'); var btn=document.createElement('button'); btn.type='button'; btn.className='atl-collapse-toggle'; btn.textContent='收合'; btn.addEventListener('click',function(e){e.preventDefault(); e.stopPropagation(); var closed=card.classList.toggle('atl-closed'); btn.textContent=closed?'展開':'收合';}); card.insertBefore(btn,card.firstChild);});}
-  function boot(){try{var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v6.63';}catch(e){} wire(document); addCollapse(document);}
+  function boot(){try{var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v6.67';}catch(e){} wire(document); addCollapse(document);}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot); else boot();
   try{new MutationObserver(function(ms){var hit=false; ms.forEach(function(m){if(m.addedNodes&&m.addedNodes.length)hit=true}); if(hit){clearTimeout(window.__atl475Timer); window.__atl475Timer=setTimeout(boot,180);}}).observe(document.body,{childList:true,subtree:true});}catch(e){}
 })();
@@ -9432,7 +9487,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
 <script id="atl478-final-export-js">
 (function(){
   if(window.__atl478FinalExport)return; window.__atl478FinalExport=true;
-  var VERSION='cs-v6.63';
+  var VERSION='cs-v6.67';
   function esc(s){return (s==null?'':String(s)).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
   function qsa(sel,root){return Array.prototype.slice.call((root||document).querySelectorAll(sel))}
   function text(el){return (el&&el.innerText||el&&el.textContent||'').replace(/\s+/g,' ').trim()}
@@ -9552,7 +9607,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
 <script>
 (function(){
   if(window.__atlCs480) return; window.__atlCs480=true;
-  var V='cs-v6.63';
+  var V='cs-v6.67';
   function lock(){ var vb=document.getElementById('verBadge'); if(vb && (vb.textContent||'').trim()!==V) vb.textContent=V; }
   function unify(){
     var safe=document.querySelector('.atl452safe'); if(!safe) return;
@@ -10500,7 +10555,7 @@ input.atl477-open-field:not([type="checkbox"]):not([type="radio"]):not([type="bu
 <script id="atl-cs477-final-touch">
 (function(){
   if(window.__atlCs477FinalTouch) return; window.__atlCs477FinalTouch=true;
-  var VERSION='cs-v6.63';
+  var VERSION='cs-v6.67';
   function qs(s,r){return (r||document).querySelector(s)}
   function qsa(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
   function setVersion(){try{var b=qs('#verBadge'); if(b)b.textContent=VERSION; window.ATELIER_CLIENT_VERSION=VERSION;}catch(e){}}
@@ -17357,7 +17412,7 @@ textarea.p2-ta{ width:100%; box-sizing:border-box; min-height:40px; resize:verti
       var ta=fld.querySelector('textarea,input[type="text"]'); if(!ta) return;
       fld.classList.add('atl-selrow');
       var cb=document.createElement('input'); cb.type='checkbox'; cb.className='fw-selbox'; cb.id='fwsel-'+(ta.id||('fw'+Math.random().toString(36).slice(2,7)));
-      try{ if(localStorage.getItem('atlfwsel:'+cb.id)==='1') cb.checked=true; }catch(e){}  /* cs-v6.63:勾選狀態存檔→重繪也救得回 */
+      try{ if(localStorage.getItem('atlfwsel:'+cb.id)==='1') cb.checked=true; }catch(e){}  /* cs-v6.67:勾選狀態存檔→重繪也救得回 */
       var lb=fld.querySelector('label'); if(lb){ lb.insertBefore(cb, lb.firstChild); } else { fld.insertBefore(cb, fld.firstChild); }
     });
   }
@@ -17386,14 +17441,14 @@ textarea.p2-ta{ width:100%; box-sizing:border-box; min-height:40px; resize:verti
 
 <!-- ════════════ cs-v6.54 · ①AI智能回最左、全選靠最右(同排兩端);②進階初診判斷5個框各補一個選取勾選框+全選(讓進階也能勾選、之後進②產生/③交付);readSectionFields 認 .atl-selrow(見上方)。 ════════════ -->
 <style id="atl-cs658-css">
-/* cs-v6.63:②產生 合併預覽鈕(金色外框,跟預覽鈕同調) */
+/* cs-v6.67:②產生 合併預覽鈕(金色外框,跟預覽鈕同調) */
 .atl-merged-prev{ font-size:13px; font-weight:800; font-family:inherit; color:#A8855E; background:#fff; border:1px solid #C9A57A; border-radius:999px; padding:9px 18px; cursor:pointer; transition:all .15s ease; }
 .atl-merged-prev:hover{ background:#A51820; border-color:#A51820; color:#fff; }
 </style>
 <style id="atl-cs654-css">
 /* cs-v6.55:移除 cs654 的 .btn-sf margin-right:auto(它在 AI 智能後塞空隙、把它擠到中間)。 */
-/* cs-v6.63:進階勾選框長相比照核對清單16個(18px、同一個紅 --rouge) */
+/* cs-v6.67:進階勾選框長相比照核對清單16個(18px、同一個紅 --rouge) */
 .atl-selrow > label > .fw-selbox{ width:18px; height:18px; accent-color:var(--rouge); vertical-align:-4px; margin-right:8px; cursor:pointer; flex:0 0 auto; }
-/* cs-v6.63:全選排到 AI 智能後面、靠最右 → AI 智能回最左、全選最右(同一排兩端) */
+/* cs-v6.67:全選排到 AI 智能後面、靠最右 → AI 智能回最左、全選最右(同一排兩端) */
 .atl-cksel-fine{ order:9 !important; margin-left:auto !important; }
 </style>
