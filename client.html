@@ -725,7 +725,7 @@ details.cat .cat-body{padding:14px 15px}
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">客戶服務台</span></span>
-    <span id="verBadge">cs-v6.44</span>
+    <span id="verBadge">cs-v6.45</span>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button type="button" id="popoutBtn" class="popout-btn" title="把客戶服務台開成獨立小視窗"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6"/><path d="M20 4l-9 9"/><path d="M14 12v7H5V10h7"/></svg>小視窗</button>
@@ -9160,7 +9160,7 @@ button:not(:disabled), .btn:not(.disabled):not([disabled]), [role="button"]{
   if(window.__atlCs473Continuity) return; window.__atlCs473Continuity=true;
   function cleanTextNode(n){var s=n.nodeValue||''; var ns=s.replace(/cs-v4\.\d+\s*(SAFE|LATEST)?\s*[｜|·:-]?\s*/g,'').replace(/\bv\d{3}\s*[｜|·:-]?\s*/g,''); if(ns!==s)n.nodeValue=ns;}
   function cleanVersions(){
-    try{var vb=document.getElementById('verBadge'); if(vb)vb.textContent='cs-v6.44';}catch(e){}
+    try{var vb=document.getElementById('verBadge'); if(vb)vb.textContent='cs-v6.45';}catch(e){}
     try{var w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT,{acceptNode:function(n){var p=n.parentElement; if(!p||p.id==='verBadge'||/^(SCRIPT|STYLE|TEXTAREA)$/i.test(p.tagName))return NodeFilter.FILTER_REJECT; return /(cs-v4\.\d+|\bv\d{3})/.test(n.nodeValue||'')?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_REJECT;}}); var nodes=[],n; while(n=w.nextNode())nodes.push(n); nodes.forEach(cleanTextNode);}catch(e){}
   }
   function alignSelection(){
@@ -9220,7 +9220,7 @@ input[type="text"]:focus,input:not([type]):focus{border-color:#D4A574!important;
     btn.onclick=function(e){e.stopPropagation(); set(!safe.classList.contains('atl-safe474-collapsed'));};
     h.appendChild(summary); h.appendChild(btn); set(localStorage.getItem('atl.cs474.safeCollapsed')!=='0');
   }
-  function cleanBadge(){ var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v6.44'; }
+  function cleanBadge(){ var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v6.45'; }
   function run(){ cleanBadge(); ensureSafeCollapse(); wireAutogrow(document); }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run); else run();
   setInterval(run,1200);
@@ -9281,7 +9281,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
   function wire(root){qsa('textarea,input[type="text"],input[type="url"],input[type="email"],input:not([type])',root||document).forEach(function(el){if(el.__atl475)return; if(el.closest('.atl-field-modal,.atl-final-modal'))return; el.__atl475=true; el.addEventListener('focus',function(){show(el); autogrow(el)}); el.addEventListener('input',function(){autogrow(el)}); el.addEventListener('blur',hideSoon); autogrow(el);});}
   document.addEventListener('click',function(e){var b=e.target.closest('#atlFieldToolbar button'); if(!b||!active)return; var a=b.getAttribute('data-act'); if(a==='prompt')openModal('prompt',active); if(a==='fill')openModal('fill',active); if(a==='edit')openModal('edit',active); if(a==='done'){var bar=qs('#atlFieldToolbar'); if(bar)bar.classList.remove('on'); if(active)active.classList.remove('atl-field-active'); toastSafe('此欄位可視為定案，請記得儲存');}},true);
   function addCollapse(root){qsa('.section-card,.deliverable-card,.atl452safe-card',root||document).forEach(function(card){if(card.__atlCollapse475||card.closest('.preview-modal,.atl-field-modal'))return; card.__atlCollapse475=true; card.classList.add('atl-collapsible'); var h=qs('h2,h3,h4,.stitle,.section-title',card)||card.firstElementChild; if(h)h.classList.add('atl-keep-visible'); var btn=document.createElement('button'); btn.type='button'; btn.className='atl-collapse-toggle'; btn.textContent='收合'; btn.addEventListener('click',function(e){e.preventDefault(); e.stopPropagation(); var closed=card.classList.toggle('atl-closed'); btn.textContent=closed?'展開':'收合';}); card.insertBefore(btn,card.firstChild);});}
-  function boot(){try{var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v6.44';}catch(e){} wire(document); addCollapse(document);}
+  function boot(){try{var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v6.45';}catch(e){} wire(document); addCollapse(document);}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot); else boot();
   try{new MutationObserver(function(ms){var hit=false; ms.forEach(function(m){if(m.addedNodes&&m.addedNodes.length)hit=true}); if(hit){clearTimeout(window.__atl475Timer); window.__atl475Timer=setTimeout(boot,180);}}).observe(document.body,{childList:true,subtree:true});}catch(e){}
 })();
@@ -9322,7 +9322,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
 <script id="atl478-final-export-js">
 (function(){
   if(window.__atl478FinalExport)return; window.__atl478FinalExport=true;
-  var VERSION='cs-v6.44';
+  var VERSION='cs-v6.45';
   function esc(s){return (s==null?'':String(s)).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
   function qsa(sel,root){return Array.prototype.slice.call((root||document).querySelectorAll(sel))}
   function text(el){return (el&&el.innerText||el&&el.textContent||'').replace(/\s+/g,' ').trim()}
@@ -9442,7 +9442,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
 <script>
 (function(){
   if(window.__atlCs480) return; window.__atlCs480=true;
-  var V='cs-v6.44';
+  var V='cs-v6.45';
   function lock(){ var vb=document.getElementById('verBadge'); if(vb && (vb.textContent||'').trim()!==V) vb.textContent=V; }
   function unify(){
     var safe=document.querySelector('.atl452safe'); if(!safe) return;
@@ -10390,7 +10390,7 @@ input.atl477-open-field:not([type="checkbox"]):not([type="radio"]):not([type="bu
 <script id="atl-cs477-final-touch">
 (function(){
   if(window.__atlCs477FinalTouch) return; window.__atlCs477FinalTouch=true;
-  var VERSION='cs-v6.44';
+  var VERSION='cs-v6.45';
   function qs(s,r){return (r||document).querySelector(s)}
   function qsa(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
   function setVersion(){try{var b=qs('#verBadge'); if(b)b.textContent=VERSION; window.ATELIER_CLIENT_VERSION=VERSION;}catch(e){}}
@@ -16933,5 +16933,58 @@ textarea.p2-ta{ width:100%; box-sizing:border-box; min-height:40px; resize:verti
     var f={ctx:window.__atlToggleCtx,lens:window.__atlToggleLoop,master:window.__atlToggleMaster}[kind];
     if(typeof f==='function') return f(btn);
   };
+})();
+</script>
+
+<!-- ════════════ cs-v6.45 · ③問診「行銷問診卡」(.mkb-card)套用初診標準:報告式預覽 + AI智能3步填寫。
+  關鍵:readSectionFields 是通用的(讀卡內任何 input/textarea、自動配 id、回傳 src),openReadingPreview(可編輯)
+  與 openSectionFill(3步) 都靠這個 + applyPreviewEdits/applySectionFill 用 data-src 寫回 → 對 .mkb-row textarea 一樣可用。
+  做法:① 隱藏舊的內嵌小預覽 .mkb-prev(被報告式取代)。② 卡頭工具列加「🔍 預覽」(紅放大鏡→openReadingPreview)
+  與「📋 AI 智能」(→openSectionFill,暫掛 .section-card 讓其 closest 抓得到、捕捉後同步移除、無閃動)。
+  保留原本「產生問診提示詞 / 補缺漏」(問診專用、不同用途)。純前端、addon、可逆,且 100% 沿用已驗證的寫回機制。 ════════════ -->
+<style id="atl-cs645-css">
+.mkb-card .mkb-prev{ display:none !important; }   /* 舊內嵌小預覽 → 改用報告式預覽 */
+.mkb-card .mkb-std-tools{ display:inline-flex; align-items:center; gap:6px; }
+.mkb-card .mkb-std-prev{ background:#fff; border:1px solid #E2D6D3; color:#8A7274; -webkit-text-fill-color:#8A7274;
+  border-radius:999px; padding:4px 11px; font-size:12px; cursor:pointer; font-family:inherit; display:inline-flex; align-items:center; gap:5px; }
+.mkb-card .mkb-std-prev:hover{ border-color:#A51820; color:#A51820; -webkit-text-fill-color:#A51820; background:#FBF1F0; }
+.mkb-card .mkb-std-prev svg{ stroke:#A51820; }   /* 放大鏡紅(比照初診) */
+.mkb-card .mkb-std-ai{ background:#FDFBF8; border:1px solid #A51820; color:#A51820; -webkit-text-fill-color:#A51820;
+  border-radius:999px; padding:5px 13px; font-size:12px; font-weight:800; cursor:pointer; font-family:inherit; display:inline-flex; align-items:center; gap:5px; }
+.mkb-card .mkb-std-ai:hover{ background:#A51820; color:#fff; -webkit-text-fill-color:#fff; }
+</style>
+<script id="atl-cs645-js">
+(function(){
+  if(window.__atlMkbStd) return; window.__atlMkbStd=true;
+  var SRCH='<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><circle cx="11" cy="11" r="6.3"/><path d="M20 20l-4.5-4.5"/></svg>';
+  var PRMT='<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 7h6M9 11h6M9 15h3"/></svg>';
+  window.__atlMkbPreview=function(btn){
+    var mkb=btn.closest('.mkb-card'); if(!mkb||typeof openReadingPreview!=='function'||typeof readSectionFields!=='function') return;
+    var fields=readSectionFields(mkb,true);
+    openReadingPreview('行銷問診卡','可直接在這裡修改，按「套用修改」寫回表單，再到下方匯出',fields,'行銷問診卡',true);
+  };
+  window.__atlMkbFill=function(btn){
+    var mkb=btn.closest('.mkb-card'); if(!mkb||typeof openSectionFill!=='function') return;
+    mkb.classList.add('section-card');                 /* 暫掛,讓 openSectionFill 的 closest 抓得到 */
+    try{ openSectionFill(btn); } finally { mkb.classList.remove('section-card'); }  /* 同步移除,卡片不會吃到 section-card 樣式、無閃動 */
+  };
+  function inject(){
+    document.querySelectorAll('.mkb-card').forEach(function(mkb){
+      if(mkb.querySelector('.mkb-std-tools')) return;
+      var tools=mkb.querySelector('.mkb-tools');       /* beautifyMkb 的右上工具列 */
+      var wrap=document.createElement('span'); wrap.className='mkb-std-tools';
+      var ai=document.createElement('button'); ai.type='button'; ai.className='mkb-std-ai'; ai.innerHTML=PRMT+' AI 智能';
+      ai.onclick=function(e){ e.stopPropagation(); window.__atlMkbFill(ai); };
+      var pv=document.createElement('button'); pv.type='button'; pv.className='mkb-std-prev'; pv.innerHTML=SRCH+'預覽';
+      pv.onclick=function(e){ e.stopPropagation(); window.__atlMkbPreview(pv); };
+      wrap.appendChild(ai); wrap.appendChild(pv);
+      if(tools){ tools.insertBefore(wrap, tools.firstChild); }   /* 放進原工具列最前(隱藏的舊預覽就在這列) */
+      else { mkb.insertBefore(wrap, mkb.firstChild); }
+    });
+  }
+  function boot(){ inject(); setInterval(inject,900);
+    try{ new MutationObserver(function(){ clearTimeout(window.__atlMkbT); window.__atlMkbT=setTimeout(inject,200); }).observe(document.body,{childList:true,subtree:true}); }catch(e){}
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',boot); else boot();
 })();
 </script>
