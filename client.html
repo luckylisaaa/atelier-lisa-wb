@@ -767,7 +767,7 @@ details.cat summary .cat-name{vertical-align:middle}
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">客戶服務台</span></span>
-    <span id="verBadge">cs-v8.01</span>
+    <span id="verBadge">cs-v8.02</span>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button type="button" id="atlSpecBtn" class="popout-btn" title="規格模式"></button>
@@ -10039,7 +10039,7 @@ button:not(:disabled), .btn:not(.disabled):not([disabled]), [role="button"]{
   if(window.__atlCs473Continuity) return; window.__atlCs473Continuity=true;
   function cleanTextNode(n){var s=n.nodeValue||''; var ns=s.replace(/cs-v4\.\d+\s*(SAFE|LATEST)?\s*[｜|·:-]?\s*/g,'').replace(/\bv\d{3}\s*[｜|·:-]?\s*/g,''); if(ns!==s)n.nodeValue=ns;}
   function cleanVersions(){
-    try{var vb=document.getElementById('verBadge'); if(vb)vb.textContent='cs-v8.01';}catch(e){}
+    try{var vb=document.getElementById('verBadge'); if(vb)vb.textContent='cs-v8.02';}catch(e){}
     try{var w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT,{acceptNode:function(n){var p=n.parentElement; if(!p||p.id==='verBadge'||/^(SCRIPT|STYLE|TEXTAREA)$/i.test(p.tagName))return NodeFilter.FILTER_REJECT; return /(cs-v4\.\d+|\bv\d{3})/.test(n.nodeValue||'')?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_REJECT;}}); var nodes=[],n; while(n=w.nextNode())nodes.push(n); nodes.forEach(cleanTextNode);}catch(e){}
   }
   function alignSelection(){
@@ -10099,7 +10099,7 @@ input[type="text"]:focus,input:not([type]):focus{border-color:#D4A574!important;
     btn.onclick=function(e){e.stopPropagation(); set(!safe.classList.contains('atl-safe474-collapsed'));};
     h.appendChild(summary); h.appendChild(btn); set(localStorage.getItem('atl.cs474.safeCollapsed')!=='0');
   }
-  function cleanBadge(){ var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v8.01'; }
+  function cleanBadge(){ var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v8.02'; }
   function run(){ cleanBadge(); ensureSafeCollapse(); wireAutogrow(document); }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run); else run();
   setInterval(run,1200);
@@ -10160,7 +10160,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
   function wire(root){qsa('textarea,input[type="text"],input[type="url"],input[type="email"],input:not([type])',root||document).forEach(function(el){if(el.__atl475)return; if(el.closest('.atl-field-modal,.atl-final-modal'))return; el.__atl475=true; el.addEventListener('focus',function(){show(el); autogrow(el)}); el.addEventListener('input',function(){autogrow(el)}); el.addEventListener('blur',hideSoon); autogrow(el);});}
   document.addEventListener('click',function(e){var b=e.target.closest('#atlFieldToolbar button'); if(!b||!active)return; var a=b.getAttribute('data-act'); if(a==='prompt')openModal('prompt',active); if(a==='fill')openModal('fill',active); if(a==='edit')openModal('edit',active); if(a==='done'){var bar=qs('#atlFieldToolbar'); if(bar)bar.classList.remove('on'); if(active)active.classList.remove('atl-field-active'); toastSafe('此欄位可視為定案，請記得儲存');}},true);
   function addCollapse(root){qsa('.section-card,.deliverable-card,.atl452safe-card',root||document).forEach(function(card){if(card.__atlCollapse475||card.closest('.preview-modal,.atl-field-modal'))return; card.__atlCollapse475=true; card.classList.add('atl-collapsible'); var h=qs('h2,h3,h4,.stitle,.section-title',card)||card.firstElementChild; if(h)h.classList.add('atl-keep-visible'); var btn=document.createElement('button'); btn.type='button'; btn.className='atl-collapse-toggle'; btn.textContent='收合'; btn.addEventListener('click',function(e){e.preventDefault(); e.stopPropagation(); var closed=card.classList.toggle('atl-closed'); btn.textContent=closed?'展開':'收合';}); card.insertBefore(btn,card.firstChild);});}
-  function boot(){try{var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v8.01';}catch(e){} wire(document); addCollapse(document);}
+  function boot(){try{var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v8.02';}catch(e){} wire(document); addCollapse(document);}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot); else boot();
   try{new MutationObserver(function(ms){var hit=false; ms.forEach(function(m){if(m.addedNodes&&m.addedNodes.length)hit=true}); if(hit){clearTimeout(window.__atl475Timer); window.__atl475Timer=setTimeout(boot,180);}}).observe(document.body,{childList:true,subtree:true});}catch(e){}
 })();
@@ -10201,7 +10201,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
 <script id="atl478-final-export-js">
 (function(){
   if(window.__atl478FinalExport)return; window.__atl478FinalExport=true;
-  var VERSION='cs-v8.01';
+  var VERSION='cs-v8.02';
   function esc(s){return (s==null?'':String(s)).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
   function qsa(sel,root){return Array.prototype.slice.call((root||document).querySelectorAll(sel))}
   function text(el){return (el&&el.innerText||el&&el.textContent||'').replace(/\s+/g,' ').trim()}
@@ -10321,7 +10321,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
 <script>
 (function(){
   if(window.__atlCs480) return; window.__atlCs480=true;
-  var V='cs-v8.01';
+  var V='cs-v8.02';
   function lock(){ var vb=document.getElementById('verBadge'); if(vb && (vb.textContent||'').trim()!==V) vb.textContent=V; }
   function unify(){
     var safe=document.querySelector('.atl452safe'); if(!safe) return;
@@ -11269,7 +11269,7 @@ input.atl477-open-field:not([type="checkbox"]):not([type="radio"]):not([type="bu
 <script id="atl-cs477-final-touch">
 (function(){
   if(window.__atlCs477FinalTouch) return; window.__atlCs477FinalTouch=true;
-  var VERSION='cs-v8.01';
+  var VERSION='cs-v8.02';
   function qs(s,r){return (r||document).querySelector(s)}
   function qsa(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
   function setVersion(){try{var b=qs('#verBadge'); if(b)b.textContent=VERSION; window.ATELIER_CLIENT_VERSION=VERSION;}catch(e){}}
@@ -19247,6 +19247,105 @@ function boot(){
   addPreCardTab();
   enhanceStage6();
   setInterval(function(){ addPreCardTab(); enhanceStage6(); },3000);
+}
+if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',boot); else boot();
+})();
+</script>
+
+<script id="atl-cs802-final">
+/* cs-v8.02：⑨交付復盤新增欄位＋全9階段AI提示詞更新 */
+(function(){
+if(window.__atl802) return; window.__atl802=true;
+
+/* ─── ⑨交付復盤（stage7）新增欄位 ─── */
+function enhanceStage7(){
+  var v=document.getElementById('view-stage7'); if(!v) return;
+  var fillPane=v.querySelector('[data-sxpane="fill"]'); if(!fillPane) return;
+  if(fillPane.querySelector('.cs-deliver-mods')) return;
+  var mods=document.createElement('div'); mods.className='cs-deliver-mods';
+  mods.innerHTML='<div class="section-card" style="margin-top:16px;border-left:3px solid #A51820"><h3>主平台成品交付</h3>'
+    +'<div class="fld"><label>Reels / 影片檔案</label><textarea class="paste-box" id="cs9-reels" placeholder="已交付的影片清單與檔案連結…"></textarea></div>'
+    +'<div class="fld"><label>封面</label><textarea class="paste-box" id="cs9-covers" placeholder="每支影片的封面設計狀態…"></textarea></div>'
+    +'<div class="fld"><label>文案</label><textarea class="paste-box" id="cs9-captions" placeholder="每支影片的文案…"></textarea></div>'
+    +'<div class="fld"><label>上線建議</label><textarea class="paste-box" id="cs9-pubAdvice" placeholder="發布時間、hashtag、互動建議…"></textarea></div>'
+    +'</div>'
+    +'<div class="section-card" style="margin-top:12px;border-left:3px solid #A51820"><h3>輸出格式</h3>'
+    +'<div style="display:flex;flex-direction:column;gap:6px;margin:8px 0">'
+    +'<label class="s1agg-chk"><input type="checkbox" data-cs9="ppt"><span>PPT 輸出</span></label>'
+    +'<label class="s1agg-chk"><input type="checkbox" data-cs9="pdf"><span>PDF 輸出</span></label>'
+    +'<label class="s1agg-chk"><input type="checkbox" data-cs9="html"><span>HTML 輸出</span></label>'
+    +'<label class="s1agg-chk"><input type="checkbox" data-cs9="diag"><span>診斷書輸出</span></label>'
+    +'</div></div>'
+    +'<div class="section-card" style="margin-top:12px;border-left:3px solid #D4A574"><h3>本次成果整理</h3>'
+    +'<div class="fld"><label>本次成果摘要</label><textarea class="paste-box" id="cs9-results" placeholder="這一輪合作完成了什麼、達成了什麼效果…"></textarea></div>'
+    +'<div class="fld"><label>下一輪內容建議</label><textarea class="paste-box" id="cs9-nextContent" placeholder="下一輪應該延續什麼、調整什麼…"></textarea></div>'
+    +'<div class="fld"><label>續約 / 優化建議</label><textarea class="paste-box" id="cs9-renewal" placeholder="是否續約、優化方向、加購項目…"></textarea></div>'
+    +'</div>';
+  fillPane.appendChild(mods);
+}
+
+/* ─── 全9階段 AI 提示詞更新 ─── */
+var origBuildExt=window.buildExtStagePrompt;
+window.buildExtStagePrompt=function(stageId){
+  var a=(typeof curAcc==='function')?curAcc():null; if(!a) return;
+  var nm=a.displayName||a.handle||'客戶';
+  var extra=''; try{var el=document.getElementById('x-'+stageId+'-extra'); extra=el?el.value:'';}catch(e){}
+  var prompts={
+    stage4:'請你幫我產出「內容診斷」。客戶：'+nm+'。\n\n請把初診、建檔、問診收集到的資料收斂成以下判斷：\n1. 目前定位判斷\n2. 受眾心理洞察\n3. 內容缺口\n4. 轉換缺口\n5. 優先改善順序\n\n這是正式合作後的診斷，不是免費提案前的簡單觀察。請用「欄位名稱：內容」格式回覆。',
+    stage5:'請你幫我產出「素材盤點」。客戶：'+nm+'。\n\n請整理：\n1. 既有內容資產（過去表現好的影片、文章、官網頁、案例）\n2. 可延伸內容主軸（3-5 條）\n3. 故事素材（老闆故事、客戶故事、失敗經驗、轉折）\n4. 服務證據（成果、數據、客戶回饋、證照、媒體背書）\n5. 拍攝素材條件（人、場地、物件、流程畫面）\n6. 缺漏與待補資料\n\n用「欄位名稱：內容」格式回覆。',
+    stage6:'請你幫我產出「內容策略」。客戶：'+nm+'。\n\n依據診斷與盤點結果，請整理：\n\nA. IP 與內容定位：\n- 客戶目前定位、建議內容定位、要讓市場記得的角色、品牌語氣、不建議方向\n\nB. 主題方向規劃：\n- 本輪內容主軸、主要受眾、痛點情境、內容題庫（10-20題）、優先拍攝主題、內容戰役安排\n\nC. 腳本內容整理：\n- Hook方向、影片結構、白話轉譯重點、專業證據、CTA、審稿注意事項\n\n用「欄位名稱：內容」格式回覆。',
+    stage7:'請你幫我產出「交付復盤」。客戶：'+nm+'。\n\n請整理：\n1. 已交付項目清單\n2. 客戶回饋摘要\n3. 修改紀錄\n4. 本次成果整理\n5. 下一階段內容建議\n6. 續約/優化建議\n\n用「欄位名稱：內容」格式回覆。'
+  };
+  var p=prompts[stageId];
+  if(!p){ if(origBuildExt) return origBuildExt(stageId); return; }
+  if(extra) p+='\n\n額外補充：\n'+extra;
+  if(typeof copyPrompt==='function') copyPrompt(p,(window.STAGE_EXT&&window.STAGE_EXT[stageId]?window.STAGE_EXT[stageId].title:'')+'提示詞');
+  else{try{navigator.clipboard.writeText(p);toast&&toast('已複製');}catch(e){}}
+};
+
+/* ─── ③提案前對焦卡 AI 提示詞 ─── */
+window.__atlPreCardAI=function(){
+  var a=(typeof curAcc==='function')?curAcc():null; if(!a){toast&&toast('尚未選定客戶');return;}
+  var nm=a.displayName||a.handle||'客戶';
+  var p='請你幫我產出「提案前對焦卡」。客戶：'+nm+'。\n\n根據客戶原話與初步資料，請整理：\n1. 客戶原話（實際說出的需求）\n2. 我聽到的真正需求（翻譯成商業需求）\n3. 初步核心缺口（最多1-3個，不能變成完整診斷）\n4. 初步方向（往哪走，但不給完整方案）\n5. 小示範（一個內容切角、一句Hook概念、一個承接概念）\n6. 建議服務路徑\n7. 下一步\n\n⚠ 注意：這不是完整企劃，不能產出完整90天路線圖、完整題庫、完整腳本或完整執行表。\n\n用「欄位名稱：內容」格式回覆。';
+  if(typeof copyPrompt==='function') copyPrompt(p,'提案前對焦卡·AI提示詞');
+  else{try{navigator.clipboard.writeText(p);toast&&toast('已複製');}catch(e){}}
+};
+
+/* ─── ⑧製作執行 AI 提示詞 ─── */
+window.__atlProdAI=function(){
+  var a=(typeof curAcc==='function')?curAcc():null; if(!a){toast&&toast('尚未選定客戶');return;}
+  var nm=a.displayName||a.handle||'客戶';
+  var p='請你幫我產出「製作執行規劃」。客戶：'+nm+'。\n\n請整理：\n1. 拍攝規劃（日期、場地、出鏡人物、服裝道具）\n2. 影片清單（每支影片的主題與重點）\n3. 後製需求（字幕、封面、音樂、節奏、畫面調整）\n4. 修改節點（初剪→修改→定稿的時程）\n5. 客戶審核狀態\n\n用「欄位名稱：內容」格式回覆。';
+  if(typeof copyPrompt==='function') copyPrompt(p,'製作執行·AI提示詞');
+  else{try{navigator.clipboard.writeText(p);toast&&toast('已複製');}catch(e){}}
+};
+
+/* ─── 在提案前對焦卡加 AI 智能按鈕 ─── */
+function addPreCardAI(){
+  var pane=document.querySelector('#view-stage3 [data-s1pane="precard"]'); if(!pane) return;
+  var h3=pane.querySelector('h3'); if(!h3||h3.querySelector('.btn-sf')) return;
+  var btn=document.createElement('button'); btn.type='button'; btn.className='btn-sf';
+  btn.style.cssText='margin-left:12px;font-size:12px;padding:6px 15px';
+  btn.innerHTML=(window.ICN&&window.ICN.prompt||'')+' AI 智能';
+  btn.onclick=function(){ window.__atlPreCardAI(); };
+  h3.appendChild(btn);
+}
+
+/* ─── 在⑧製作執行加 AI 智能按鈕 ─── */
+function addProdAI(){
+  var v=document.getElementById('view-stageProd'); if(!v) return;
+  var h2=v.querySelector('.ph-title'); if(!h2||h2.querySelector('.btn-sf')) return;
+  var btn=document.createElement('button'); btn.type='button'; btn.className='btn-sf';
+  btn.style.cssText='margin-left:12px;font-size:12px;padding:6px 15px';
+  btn.innerHTML=(window.ICN&&window.ICN.prompt||'')+' AI 智能';
+  btn.onclick=function(){ window.__atlProdAI(); };
+  h2.appendChild(btn);
+}
+
+function boot(){
+  enhanceStage7(); addPreCardAI(); addProdAI();
+  setInterval(function(){ enhanceStage7(); addPreCardAI(); addProdAI(); },3000);
 }
 if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',boot); else boot();
 })();
