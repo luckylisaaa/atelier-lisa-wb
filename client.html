@@ -767,9 +767,10 @@ details.cat summary .cat-name{vertical-align:middle}
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">客戶服務台</span></span>
-    <span id="verBadge">cs-v7.06</span>
+    <span id="verBadge">cs-v7.07</span>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
+    <button type="button" id="atlSpecBtn" class="popout-btn" title="規格模式"></button>
     <button type="button" id="popoutBtn" class="popout-btn" title="把客戶服務台開成獨立小視窗"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6"/><path d="M20 4l-9 9"/><path d="M14 12v7H5V10h7"/></svg>小視窗</button>
     <button type="button" id="reloadBtn" class="popout-btn" title="重新整理（抓最新版）"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 4v5h-5"/></svg>重新整理</button>
     <div class="stat">已存 <b id="cliCount">0</b> 個客戶</div>
@@ -10034,7 +10035,7 @@ button:not(:disabled), .btn:not(.disabled):not([disabled]), [role="button"]{
   if(window.__atlCs473Continuity) return; window.__atlCs473Continuity=true;
   function cleanTextNode(n){var s=n.nodeValue||''; var ns=s.replace(/cs-v4\.\d+\s*(SAFE|LATEST)?\s*[｜|·:-]?\s*/g,'').replace(/\bv\d{3}\s*[｜|·:-]?\s*/g,''); if(ns!==s)n.nodeValue=ns;}
   function cleanVersions(){
-    try{var vb=document.getElementById('verBadge'); if(vb)vb.textContent='cs-v7.06';}catch(e){}
+    try{var vb=document.getElementById('verBadge'); if(vb)vb.textContent='cs-v7.07';}catch(e){}
     try{var w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT,{acceptNode:function(n){var p=n.parentElement; if(!p||p.id==='verBadge'||/^(SCRIPT|STYLE|TEXTAREA)$/i.test(p.tagName))return NodeFilter.FILTER_REJECT; return /(cs-v4\.\d+|\bv\d{3})/.test(n.nodeValue||'')?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_REJECT;}}); var nodes=[],n; while(n=w.nextNode())nodes.push(n); nodes.forEach(cleanTextNode);}catch(e){}
   }
   function alignSelection(){
@@ -10094,7 +10095,7 @@ input[type="text"]:focus,input:not([type]):focus{border-color:#D4A574!important;
     btn.onclick=function(e){e.stopPropagation(); set(!safe.classList.contains('atl-safe474-collapsed'));};
     h.appendChild(summary); h.appendChild(btn); set(localStorage.getItem('atl.cs474.safeCollapsed')!=='0');
   }
-  function cleanBadge(){ var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v7.06'; }
+  function cleanBadge(){ var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v7.07'; }
   function run(){ cleanBadge(); ensureSafeCollapse(); wireAutogrow(document); }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run); else run();
   setInterval(run,1200);
@@ -10155,7 +10156,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
   function wire(root){qsa('textarea,input[type="text"],input[type="url"],input[type="email"],input:not([type])',root||document).forEach(function(el){if(el.__atl475)return; if(el.closest('.atl-field-modal,.atl-final-modal'))return; el.__atl475=true; el.addEventListener('focus',function(){show(el); autogrow(el)}); el.addEventListener('input',function(){autogrow(el)}); el.addEventListener('blur',hideSoon); autogrow(el);});}
   document.addEventListener('click',function(e){var b=e.target.closest('#atlFieldToolbar button'); if(!b||!active)return; var a=b.getAttribute('data-act'); if(a==='prompt')openModal('prompt',active); if(a==='fill')openModal('fill',active); if(a==='edit')openModal('edit',active); if(a==='done'){var bar=qs('#atlFieldToolbar'); if(bar)bar.classList.remove('on'); if(active)active.classList.remove('atl-field-active'); toastSafe('此欄位可視為定案，請記得儲存');}},true);
   function addCollapse(root){qsa('.section-card,.deliverable-card,.atl452safe-card',root||document).forEach(function(card){if(card.__atlCollapse475||card.closest('.preview-modal,.atl-field-modal'))return; card.__atlCollapse475=true; card.classList.add('atl-collapsible'); var h=qs('h2,h3,h4,.stitle,.section-title',card)||card.firstElementChild; if(h)h.classList.add('atl-keep-visible'); var btn=document.createElement('button'); btn.type='button'; btn.className='atl-collapse-toggle'; btn.textContent='收合'; btn.addEventListener('click',function(e){e.preventDefault(); e.stopPropagation(); var closed=card.classList.toggle('atl-closed'); btn.textContent=closed?'展開':'收合';}); card.insertBefore(btn,card.firstChild);});}
-  function boot(){try{var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v7.06';}catch(e){} wire(document); addCollapse(document);}
+  function boot(){try{var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v7.07';}catch(e){} wire(document); addCollapse(document);}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot); else boot();
   try{new MutationObserver(function(ms){var hit=false; ms.forEach(function(m){if(m.addedNodes&&m.addedNodes.length)hit=true}); if(hit){clearTimeout(window.__atl475Timer); window.__atl475Timer=setTimeout(boot,180);}}).observe(document.body,{childList:true,subtree:true});}catch(e){}
 })();
@@ -10196,7 +10197,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
 <script id="atl478-final-export-js">
 (function(){
   if(window.__atl478FinalExport)return; window.__atl478FinalExport=true;
-  var VERSION='cs-v7.06';
+  var VERSION='cs-v7.07';
   function esc(s){return (s==null?'':String(s)).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
   function qsa(sel,root){return Array.prototype.slice.call((root||document).querySelectorAll(sel))}
   function text(el){return (el&&el.innerText||el&&el.textContent||'').replace(/\s+/g,' ').trim()}
@@ -10316,7 +10317,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
 <script>
 (function(){
   if(window.__atlCs480) return; window.__atlCs480=true;
-  var V='cs-v7.06';
+  var V='cs-v7.07';
   function lock(){ var vb=document.getElementById('verBadge'); if(vb && (vb.textContent||'').trim()!==V) vb.textContent=V; }
   function unify(){
     var safe=document.querySelector('.atl452safe'); if(!safe) return;
@@ -11264,7 +11265,7 @@ input.atl477-open-field:not([type="checkbox"]):not([type="radio"]):not([type="bu
 <script id="atl-cs477-final-touch">
 (function(){
   if(window.__atlCs477FinalTouch) return; window.__atlCs477FinalTouch=true;
-  var VERSION='cs-v7.06';
+  var VERSION='cs-v7.07';
   function qs(s,r){return (r||document).querySelector(s)}
   function qsa(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
   function setVersion(){try{var b=qs('#verBadge'); if(b)b.textContent=VERSION; window.ATELIER_CLIENT_VERSION=VERSION;}catch(e){}}
@@ -18248,3 +18249,425 @@ try{ window.__atl632=true; }catch(e){}
 /* cs-v7.06:全選排到 AI 智能後面、靠最右 → AI 智能回最左、全選最右(同一排兩端) */
 .atl-cksel-fine{ order:9 !important; margin-left:auto !important; }
 </style>
+
+<style id="atl-spec-style">
+#atlSpecBtn{display:inline-flex;align-items:center;gap:5px}
+#atlSpecBtn.on{background:#A51820 !important;color:#fff !important;-webkit-text-fill-color:#fff !important;border-color:#A51820 !important}
+#atlSpecBtn svg{flex:0 0 auto}
+#atlSpecHint{position:fixed;top:96px;right:14px;z-index:99999;background:#FCF8F1;border:1px solid #ECDFC9;color:#9A6B1E;border-radius:10px;padding:9px 12px;font-size:12px;max-width:252px;display:none;font-family:'Noto Sans TC',sans-serif;line-height:1.7}
+#atlSpecHint b.lk{color:#A51820;cursor:pointer;text-decoration:underline}
+body.atl-spec-on #atlSpecHint{display:block}
+body.atl-spec-on [data-_spechit]{outline:1.5px dashed #D4A574 !important;outline-offset:2px;cursor:help !important}
+body.atl-spec-on .atl-spec-selected{outline:2.5px solid #A51820 !important;outline-offset:2px;box-shadow:0 0 0 4px rgba(165,24,32,.16) !important;border-radius:4px;transition:box-shadow .15s}
+#atlSpecPop{position:fixed;top:80px;left:50%;transform:translateX(-50%);z-index:99999;width:min(580px,93vw);background:#fff;border:1px solid #ECDFC9;border-radius:14px;box-shadow:0 12px 34px rgba(0,0,0,.22);display:none;font-family:'Noto Sans TC',sans-serif}
+#atlSpecPop.show{display:block}
+#atlSpecPop .hh{display:flex;align-items:center;gap:8px;background:#FCF8F1;border-bottom:1px solid #ECDFC9;border-radius:14px 14px 0 0;padding:11px 16px;cursor:move;user-select:none}
+#atlSpecPop .hh b{font-family:'Noto Serif TC',serif;font-size:14px;color:#2A1A1C}
+#atlSpecPop .hh .drag{color:#C9A57A;font-size:13px;letter-spacing:1px}
+#atlSpecPop .hh .x{margin-left:auto;cursor:pointer;color:#9A8E8A;font-size:20px;line-height:1}
+#atlSpecPop .rows{padding:6px 0;max-height:58vh;overflow:auto}
+#atlSpecPop .rr{display:grid;grid-template-columns:108px 1fr;gap:10px;padding:8px 16px;border-bottom:1px dashed #EDE0CC;font-size:12.5px;color:#3A2A2C;line-height:1.66}
+#atlSpecPop .rr:last-child{border-bottom:none}
+#atlSpecPop .rr b{color:#9A6B1E;font-weight:800}
+#atlSpecPop .rr.warn{background:#FBF1F0}
+#atlSpecPop .rr.warn b{color:#A51820}
+#atlSpecPop code{font-family:ui-monospace,Menlo,monospace;background:#F3EAD8;color:#7A1518;padding:1px 5px;border-radius:4px;font-size:11.5px}
+.atl-sw{display:inline-block;width:11px;height:11px;border-radius:3px;vertical-align:-1px;margin-right:3px;border:1px solid rgba(0,0,0,.15)}
+#atlSpecPop .hh .cp{cursor:pointer;color:#A51820;font-weight:800;font-size:11.5px;border:1px solid #E2CFB6;border-radius:999px;padding:2px 9px;background:#fff;white-space:nowrap}
+#atlSpecPop .hh .cp:active{background:#FBF1F0}
+#atlSpecPop .atl-pre{white-space:pre-wrap;font-family:ui-monospace,Menlo,monospace;font-size:11px;line-height:1.55;background:#FBF7EF;border:1px solid #ECE0CC;border-radius:8px;padding:9px 11px;color:#3A2A2C;margin:2px 0 0;overflow:auto;max-height:42vh}
+#atlSpecPop .atl-cp{display:inline-block;margin-top:6px;cursor:pointer;color:#A51820;font-weight:800;font-size:11px;border:1px solid #E2CFB6;border-radius:999px;padding:3px 11px;background:#fff}
+#atlSpecPop .atl-cp:active{background:#FBF1F0}
+.atl-spec-toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:100002;background:#2A1A1C;color:#fff;font-family:'Noto Sans TC',sans-serif;font-size:13px;padding:9px 16px;border-radius:999px;box-shadow:0 6px 20px rgba(0,0,0,.3);opacity:0;transition:opacity .2s;pointer-events:none}
+.atl-spec-toast.show{opacity:1}
+</style>
+<div id="atlSpecHint">規格模式：點任一個有金色虛線的元件，彈窗會浮到它旁邊、該元件同時亮起<b style="color:#A51820">紅框</b>。分頁/導覽會真的切過去，方便你進別的分頁看內容。<br><b class="lk" onclick="window.__atlSpecTokens()">設計總則</b>　<b class="lk" onclick="window.__atlSpecExt()">④–⑦ 共用骨架</b>　<b class="lk" onclick="window.__atlSpecTalk()">跟 AI 溝通模板</b>　<b class="lk" onclick="window.__atlSpecLog()">更新紀錄</b><br>標紅三角的列＝與 cs-v7.06 實況不符、已校正。再按一次「規格」鈕關閉。</div>
+<div id="atlSpecPop"><div class="hh" id="atlSpecHead"><b id="atlSpecT"></b><span class="cp" id="atlSpecCopy" onclick="window.__atlCopyCur()">複製給AI</span><span class="drag" id="atlSpecDrag" title="拖曳"></span><span class="x" id="atlSpecX" onclick="window.__atlSpecClose()"></span></div><div class="rows" id="atlSpecR"></div></div>
+<script>
+(function(){
+  var SW='<span class="atl-sw" style="background:';
+  var IC={
+    ruler:'<path d="M4 4 L4 20 L20 20 Z"/><path d="M8 20v-3M12 20v-4M8.5 8.5h2.2"/>',
+    warn:'<path d="M12 4 21 19 H3 Z"/><path d="M12 10.5v4"/><path d="M12 17v.4"/>',
+    grip:'<path d="M9 6h.01M15 6h.01M9 12h.01M15 12h.01M9 18h.01M15 18h.01"/>',
+    x:'<path d="M6 6l12 12M18 6L6 18"/>'
+  };
+  function ico(n,s){ s=s||13; return '<svg width="'+s+'" height="'+s+'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;flex:0 0 auto">'+(IC[n]||'')+'</svg>'; }
+  var SPEC_VER='spec-v1.3';
+  var CHANGELOG=[
+    ['spec-v1.3','規格模式合併進 client.html（開發本體），方便邊改邊對照；更正 .s1feed-ai 規格（隱藏其實是有 scope 的：只藏 .s1feed-title 內那顆，問答頁的 .btn-sf.s1feed-ai 是正版可見小鈕、要保留）。'],
+    ['spec-v1.2','合併成單一可上線檔；規格鈕嵌入頂列右側；所有符號改自畫 SVG（不用 emoji）；版本顯示在「規格」鈕上。'],
+    ['spec-v1.1','規格模式下分頁/導覽可真的切換；流程導覽列改「步數依站而定」（初診=4步 .atl-flow、問診=5步 .s2-topflow）；新增分頁內容區命名；fallback 多顯示所在站/分頁。'],
+    ['spec-v1.0','加入版本徽章＋更新紀錄。以後每次改我都會把這個號碼往上加，你看右上角就知道是哪一版。'],
+    ['v0.4（前一版）','開規格模式不再自動跳視窗；修好 .atl-flow（公開資料初診上方那排 1234，原誤寫 .cc-flow 點不到）；ⓘ／AI智能／預覽 補上「點開呈現」；點到未建規格的元素會回報它的 class/名稱；補頂列「小視窗/重新整理」.popout-btn、客戶數 .stat、提示條 .cs-banner、分頁列 .tabs；分頁數改成「依站而定」（③問診=5）。'],
+    ['v0.3','新增「跟 AI 溝通模板」面板（守則＋模板A/B/C＋範例，可一鍵複製）；彈窗加「複製給AI」＝每個元件對應一句可貼指令。'],
+    ['v0.2','全部條目對照 cs-v7.06 實際生效層校正（ⓘ 改金棕 #A8855E、卡片標題實際 18px、AI 鈕現役 .btn-sf、cpb hover 色…）；新增 ④–⑦ 共用骨架（renderExtStage / STAGE_EXT）規格。'],
+    ['v0.1','首版規格層：規格模式、SPEC 字典、修好舊版漏逗號 bug、彈窗會錨定並亮框被點元件。']
+  ];
+  var _curCopy='';
+  var TPL={
+    guard:'【開發守則・每次必貼】\n1. 開發本體＝cs-v7.06.html；唯一 UI 依據＝互動規格書（規格模式）。\n2. 只准改內容語義（階段名/目的/欄位/服務內容/AI提示詞/客戶版顧問版文案/總和邏輯）。\n3. 不准動共用骨架：class、位置、字級、顏色、間距、圓角、hover/open 一律照規格書，不可重新發明。\n4. 用「繼承＋差異」：複製最接近的既有階段結構再換內容；能用既有 class 就不新增。\n5. 改完自我檢查：視覺一致、對齊不跑、字級色票沒變、AI靠左全選靠右、勾選框獨立一欄、三膠囊順序、產生/交付/總和邏輯一致、沒動到規格書本體。\n6. 先說明：繼承哪一階、只改哪些語義、保留哪些 class，最後才輸出完整檔。',
+    A:'【任務】新增 ⑧〔階段名〕。照 ④–⑦ 共用骨架：只在 STAGE_EXT 加一筆、buildExtStagePrompt 補一句 ask；renderExtStage / .sxtabs / .x-fld 一行都不要動。\nSTAGE_EXT 新筆：\n  no：⑧\n  en：STAGE ⑧ · 〔英文小標〕\n  title：〔中文站名〕\n  purpose：〔一句話目的〕\n  fields（每行＝ id, "中文標題", "提示語"）：\n    1. 〔id〕, "〔標題〕", "〔提示〕"\n    2. …\nask：〔這站要 AI 產出什麼，一句話〕',
+    B:'【任務】〔修改 ③問診內容 / 做一個像 ②建檔的新問診表〕。繼承來源：最接近的是〔②建檔 / ③問診〕，複製其分頁與卡片結構，只換內容：\n- 問診欄位/題目：〔逐條列〕\n- 勾選一律用 .p2-fldsel（18px 紅方框、獨立一欄），不要用 s1agg-chk\n- AI 動作（出題/擬答/解析）文案：〔…〕\n- 客戶版 / 顧問版文案方向：〔…〕\n共用 class 全保留：.page-head .ph-title、.section-card>h3、.s1tab、.btn-sf.s2-ai-inline（靠左）、.atl-cksel-fine（靠右）、.cat-actions 三膠囊。',
+    C:'【任務】只改〔④診斷〕的「〔填寫/產生/交付/總和〕」分頁內容，其他分頁與骨架不動。\n要改的內容語義：〔逐條列〕\n不准碰：.sxtabs / .s1tab.active 狀態、.x-fld 或 .p2-fldsel 外觀、三膠囊、字級色票。只換該 pane 的文字/欄位/提示詞。',
+    eg:'【守則】開發本體 cs-v7.06；UI 依規格書；只改內容語義；繼承＋差異；改完自我檢查；先說明再輸出。\n\n【任務】新增 ⑧ 成效回顧。照 ④–⑦ 骨架只加一筆 STAGE_EXT、補一句 ask，renderExtStage / .sxtabs / .x-fld 別動。\nSTAGE_EXT 新筆：\n  no：⑧\n  en：STAGE ⑧ · PERFORMANCE REVIEW\n  title：成效回顧\n  purpose：把上線後數據、客戶反饋與下一輪方向收斂成可回報、可決策的回顧。\n  fields：\n    1. metrics, "關鍵數據", "觀看/完播/互動/私訊/預約/成交，列出實際數字與期間。"\n    2. winLose, "成效落差", "哪些超標、哪些低於預期？原因？"\n    3. clientVoice, "客戶回饋", "客戶最在意什麼、滿意與不滿意各是什麼？"\n    4. nextRound, "下一輪方向", "依數據要保留/調整/捨棄哪些主軸與題型？"\nask：請幫我產出「成效回顧」：把數據與反饋收斂成成效判讀、落差原因與下一輪調整建議。'
+  };
+  function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  function _strip(html){ var d=document.createElement('div'); d.innerHTML=html; return (d.textContent||'').replace(/[ \t]+/g,' ').trim(); }
+  function plainOf(d){ var lines=[d.t]; d.r.forEach(function(r){ lines.push('・'+_strip(r[0])+'：'+_strip(r[1])); }); lines.push('（請照互動規格書，勿改共用骨架／字級／顏色／對齊）'); return lines.join('\n'); }
+  function specToast(msg){ var t=document.getElementById('atlSpecToast'); if(!t){ t=document.createElement('div'); t.id='atlSpecToast'; t.className='atl-spec-toast'; document.body.appendChild(t); } t.textContent=msg; t.classList.add('show'); clearTimeout(t._tm); t._tm=setTimeout(function(){ t.classList.remove('show'); },1600); }
+  function _fallbackCopy(text){ try{ var ta=document.createElement('textarea'); ta.value=text; ta.style.position='fixed'; ta.style.opacity='0'; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); specToast('已複製，可貼給 AI'); }catch(e){ specToast('複製失敗，請手動選取'); } }
+  function doCopy(text){ if(!text){ return; } try{ if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(text).then(function(){ specToast('已複製，可貼給 AI'); },function(){ _fallbackCopy(text); }); } else { _fallbackCopy(text); } }catch(e){ _fallbackCopy(text); } }
+  var SPEC=[
+    ['__tokens',{t:'設計總則｜Design Tokens（色票・字體・全域）',r:[
+      ['版本','目前＝<b>spec-v1.3</b>（版本也顯示在右上「規格」鈕上；點提示框的「更新紀錄」看完整歷史）'],
+      ['⚠ 本檔提醒','cs-v7.06 由 <code>cs-v410</code>→<code>cs-v658</code> 一百多層 &lt;style&gt; 疊成，最終樣式＝最新覆寫層＋!important。以下數值均對照實際生效層，標 ⚠ 者為與舊規格不符、已更正。'],
+      ['主紅 rouge',SW+'#A51820"></span><code>--rouge / --primary</code> #A51820｜深一階 hover '+SW+'#7A1018"></span><code>--rouge-soft</code> #7A1018'],
+      ['金 gold',SW+'#D4A574"></span><code>--gold</code> #D4A574｜深金 '+SW+'#9C7D4A"></span><code>--gold-dark</code> #9C7D4A｜淡金框 '+SW+'#EDE3D4"></span>#EDE3D4'],
+      ['墨／字',SW+'#2A1A1C"></span><code>--ink</code> #2A1A1C（標題）｜'+SW+'#5C4248"></span><code>--text</code> #5C4248（內文）｜'+SW+'#8A7274"></span><code>--sub</code> #8A7274（次要）'],
+      ['底色',SW+'#FCFAF8"></span><code>--bg</code> #FCFAF8（頁底）｜'+SW+'#FDFBF8"></span><code>--warm-white</code> #FDFBF8｜'+SW+'#FFFFFF"></span><code>--card</code> #FFFFFF（卡片）'],
+      ['頂列底','<code>.topbar</code> = linear-gradient(135deg,#A51820,#7A1018)＋底部 3px '+SW+'#D4A574"></span>金線；sticky、z-index 50'],
+      ['內文字體','<code>Noto Sans TC</code>（sans，400/700）'],
+      ['中文標題','<code>Noto Serif TC</code>（明體 serif，500/700/900）'],
+      ['英數','<code>Cormorant Garamond</code>（serif，500/600；用於 kicker、數字、英文小標）'],
+      ['跨站一致','①②③＝客製站（renderStage1/2/3）；④⑤⑥⑦＝設定驅動站，共用 renderExtStage 骨架。做新階段＝照 ④–⑦ 加一筆 STAGE_EXT，不重寫骨架（按上方「④–⑦ 共用骨架」看細節）。']
+    ]}],
+    ['__ext',{t:'④–⑦ 共用骨架｜renderExtStage + STAGE_EXT（做新階段照這個）',r:[
+      ['⚠ 最關鍵','④診斷／⑤盤點／⑥企劃／⑦交付 <b>沒有各自的 HTML/CSS</b>，全由 <code>window.renderExtStage(stageId)</code> 一個函式產生，外觀必然一致、不可能跑版。'],
+      ['唯一可改','設定物件 <code>STAGE_EXT[stageId]</code> 的：<code>no</code>(④⑤⑥⑦)、<code>en</code>(金色英文小標)、<code>title</code>(中文站名)、<code>purpose</code>(一句目的)、<code>fields</code>(欄位)；外加 <code>buildExtStagePrompt</code> 裡該站那句 <code>ask</code>。'],
+      ['欄位寫法','<code>fields:[[欄位id,"中文標題","提示語"], …]</code>。骨架自動把每筆畫成 <code>.x-fld</code>（標題＋提示＋textarea）。'],
+      ['分頁','預設 4：填寫 / 產生 / 交付 / 總和（容器 <code>.sxtabs</code>）。<b>數量非固定</b>——由該站 <code>TABS</code> 清單決定，要 5 個就多列一格＋多一個 pane（容器已是 5 欄格線）。參考 ③問診＝5 個。'],
+      ['AI 提示詞','<code>buildExtStagePrompt(stageId)</code> 自動帶入前面各站已填資料(<code>collectContext</code>)＋本站欄位 → 產「客戶版／顧問版／可貼回欄位版」。'],
+      ['貼回解析','<code>parseExtStagePaste(stageId)</code> 認「欄位名稱：內容」逐行回填。'],
+      ['存檔/狀態','<code>readExtStageToData</code> 自動算完成度（填≥55%或有產出＝done）。這些都不用碰。'],
+      ['給 AI 的標準句','「新增/修改 ⑧ 階段：只在 STAGE_EXT 加一筆 no=⑧、en=…、title=…、purpose=…、fields=[[…]]，並在 buildExtStagePrompt 補一句 ask；<b>renderExtStage / .sxtabs / .x-fld 的樣式一行都不要動</b>。」']
+    ]}],
+    ['.sxtabs',{t:'④–⑦ 分頁列｜.sxtabs（清單驅動，預設 4、最多 5 欄）',r:[
+      ['容器','<code>.sxtabs</code>：<code>display:grid; grid-template-columns:repeat(5,1fr)</code>（cs-v632）＝<b>5 欄格線</b>，所以 4 或 5 個分頁都排得整齊'],
+      ['分頁來源','由 <code>var TABS=[[鍵,標籤], …]</code> 清單 <code>.map</code> 出來，<b>列幾個就有幾個分頁</b>（預設 4：填寫/產生/交付/總和；另有含「脈絡」的 5 個變體）'],
+      ['每格','沿用 <code>.s1tab</code>，padding-lr 3px、置中；<code>.s1tab-label</code> 13px nowrap'],
+      ['加一個分頁','在該站 <code>TABS</code> 加一筆 ＋ 對應加一個 <code>data-sxpane</code> 的 pane；不必改樣式（5 格內格線自動分配）'],
+      ['超過 5 個','才需要把 <code>repeat(5,1fr)</code> 改成對應數字（例 6）'],
+      ['⚠ 狀態','目前格＝<code>.active</code>（非 .on）→ 紅字紅底線；切換 <code>switchSx2()/switchSxTab()</code>'],
+      ['行為','點→切該 pane、捲到分頁列頂端']
+    ]}],
+    ['.x-fld',{t:'④–⑦ 欄位卡｜.x-fld（文字型，非勾選）',r:[
+      ['容器','<code>.x-fld</code>：bg '+SW+'#FFFDFB"></span>#FFFDFB、border 1px '+SW+'#ECE3D6"></span>#ECE3D6、radius 11px、padding 12/14/13、陰影 0 1px 4px rgba(42,26,28,.03)、flex column（cs-v601）'],
+      ['標題','<code>.x-fld&gt;label</code>：13.5px、weight 800、'+SW+'#2A1A1C"></span>#2A1A1C'],
+      ['提示','<code>.x-fld-hint</code>：11.5px、'+SW+'#7A5A5E"></span>藕紫 #7A5A5E、line-height 1.62、margin 4/0/8'],
+      ['輸入','<code>.x-fld textarea</code>：min-height 84px、flex:1'],
+      ['⚠ 注意','ext 欄位是純文字，<b>沒有 .p2-fldsel 勾選框</b>。要逐項打勾的階段請改繼承 ②③（用 .p2-fldsel），不能用 x-fld。']
+    ]}],
+    ['.atl-infodot.dbl',{t:'雙圈 ⓘ｜.atl-infodot.dbl（流程步驟）',r:[
+      ['class','<code>.atl-infodot.dbl</code>（單圈再加 .dbl）'],
+      ['長相','約 17px 圓（aspect-ratio 1/1）、內含小寫 i（Georgia serif）、外圈 <code>box-shadow:0 0 0 2px #FDFBF8, 0 0 0 3px currentColor</code>'],
+      ['⚠ 顏色','字/框 '+SW+'#A8855E"></span>金棕 #A8855E（框 #C9A57A）；hover 轉紅 '+SW+'#A51820"></span>#A51820＋底 #FBF1F0。<b>舊規格寫灰 #8A7274 已過時</b>'],
+      ['意義','<b>雙圈＝有操作流程／步驟</b>'],
+      ['用在','分頁名稱旁（每分頁一顆）'],
+      ['行為','點→出現說明小窗'],
+      ['點開呈現','彈出可停留說明窗 <code>.atl-infopop</code>（display:block）；停在原處、<b>點別處才消失</b>；內容＝這個分頁/步驟在做什麼。']
+    ]}],
+    ['.atl-infodot',{t:'單圈 ⓘ｜.atl-infodot（純說明）',r:[
+      ['class','<code>.atl-infodot</code>'],
+      ['大小','約 17px 圓（<code>aspect-ratio:1/1</code>，cs-v571）、margin-left 7px、vertical-align middle、內含小寫 i'],
+      ['⚠ 顏色','字 '+SW+'#A8855E"></span>#A8855E、框 1px '+SW+'#C9A57A"></span>#C9A57A、無陰影；hover 字/框紅 #A51820＋底 #FBF1F0（cs-v651）。<b>舊規格寫灰 #8A7274 已過時</b>'],
+      ['意義','<b>單圈＝純說明／註解</b>'],
+      ['用在','卡片標題旁、欄位旁、站別大標旁'],
+      ['行為','點→出現說明小窗'],
+      ['點開呈現','彈出可停留說明窗 <code>.atl-infohold + .atl-infopop</code>；停在原處、點別處才消失；內容＝這格/這張卡在幹嘛。'],
+      ['對比','雙圈＝流程步驟；單圈＝註解']
+    ]}],
+    ['.section-preview-btn',{t:'預覽鈕（紅放大鏡）｜.section-preview-btn',r:[
+      ['class','<code>.section-preview-btn</code>'],
+      ['位置','卡片標題列<b>最右</b>（<code>order:90 !important; margin-left:auto !important</code>，cs-v569）'],
+      ['樣式','透明底、border 1px '+SW+'#DCC8CB"></span>#DCC8CB、字 '+SW+'#A51820"></span>紅 #A51820、radius 999px、padding 6×14、font 12px（cs-v0 第287行 !important）'],
+      ['hover','底 '+SW+'#FAF3F4"></span>#FAF3F4'],
+      ['圖示','放大鏡（圓＋斜柄）'],
+      ['行為','點→開「閱讀預覽」大視窗'],
+      ['點開呈現','彈出置中閱讀預覽 modal（覆蓋層 + sheet）：可在裡面編輯，按「套用修改」把內容寫回該卡表單。']
+    ]}],
+    ['.atl-s1coll-chev',{t:'收合三角形｜.atl-s1coll-chev（現已隱藏）',r:[
+      ['class','<code>.atl-s1coll-chev</code>'],
+      ['原設計','▾展開／▸收合、紅 #A51820、無框、12px、transition transform .15s'],
+      ['⚠ 現況','cs-v7.06 已 <code>display:none !important</code>（cs-v562）＝<b>這顆在現行版面是看不到的</b>。叫 AI 時別再參照它；整卡收合改點標題列。']
+    ]}],
+    ['.s1feed-ai',{t:'AI 智能鈕｜.s1feed-ai（隱藏是有 scope 的，別誤刪）',r:[
+      ['⚠ 更正','<code>.s1feed-ai</code><b>不是全站停用</b>。隱藏規則只有 <code>.s1feed-title .s1feed-ai{display:none}</code>（第14149行）＝只藏「放在 .s1feed-title 裡」的那顆（舊 genS1FeedTriage）。'],
+      ['正版可見','問答頁那顆 <code>.btn-sf.s1feed-ai</code>（onclick s3ToggleAI、11.5px、靠左、不在 .s1feed-title 內）＝<b>正常顯示的正版小鈕，要保留</b>。'],
+      ['真正停用','浮動 chip <code>.atl-fai-chip</code> / <code>.atl-uai-chip</code> 才是整顆 display:none。'],
+      ['等同','它跟 <code>.btn-sf.s2-ai-inline</code> 同一個「靠左小膠囊」角色（見下一條 .btn-sf）。新階段 AI 鈕照這顆。']
+    ]}],
+    ['.btn-sf',{t:'AI 智能鈕（現役正版）｜.btn-sf（＋ s2-ai-inline / cat-ai-inline）',r:[
+      ['class','<code>.btn-sf</code>＝現行所有「AI 智能」inline 鈕的底；建檔/問診加 <code>.s2-ai-inline</code>、賣點類加 <code>.cat-ai-inline</code>'],
+      ['樣式','<b>紅底白字</b> bg '+SW+'#A51820"></span>#A51820、border 1px #A51820、radius 999px、padding 6×15、font 12px/800、inline-flex gap 5（cs-v0 第634行）'],
+      ['修飾尺寸','<code>.s2-ai-inline</code> 11.5–12.5px、padding 4×12；<code>.cat-ai-inline</code> 12px、padding 6×14'],
+      ['位置','靠最左，與全選（最右）同一排'],
+      ['hover','底轉淡紅 '+SW+'#FBEDED"></span>#FBEDED、框紅（cs-v528）'],
+      ['行為','點→開啟 AI 動作面板（出題/擬答/解析…）'],
+      ['點開呈現','展開為置中視窗 <code>.atl-aip-sheet</code>：寬 640px(max 94vw)、max-height 88vh、白底 #FDFBF8、radius 16、padding 24、大陰影；頂部金色 kicker <code>.k</code>；內含動作步驟 <code>.atl-aip-step</code>＋「複製 <code>.atl-aip-copy</code>／套用 <code>.atl-aip-apply</code>／關閉 <code>.atl-aip-x</code>」。<b>要 AI 一併做這個展開面板時，指名 .atl-aip-sheet。</b>'],
+      ['溝通建議','要 AI 智能鈕＝指名 <code>.btn-sf.s2-ai-inline</code>（靠左），別再用已停用的 .s1feed-ai / .atl-fai-chip']
+    ]}],
+    ['.atl-cksel-fine',{t:'全選鈕｜.atl-cksel-fine',r:[
+      ['class','<code>.atl-cksel-fine</code>'],
+      ['位置','<b>靠最右</b>（<code>order:9 !important; margin-left:auto !important</code>，cs-v653）'],
+      ['樣式','細框膠囊、灰字 '+SW+'#5C4248"></span>#5C4248、內含 12×12 方框打勾 SVG'],
+      ['hover','框 '+SW+'#C9A57A"></span>#C9A57A、字 '+SW+'#A51820"></span>紅、底 #FBF6EF'],
+      ['行為','點→全選／全部取消該範圍勾選框']
+    ]}],
+    ['.p2-fldsel',{t:'欄位勾選框（正版）｜.p2-fldsel',r:[
+      ['結構','整列 <code>.p2-fld-row</code>：flex、gap 10、align-items flex-start｜勾選欄 <code>.p2-fld-cb</code>：flex 0、margin-top 9px｜內容 <code>.p2-fld-body</code>：flex 1、min-width 0'],
+      ['勾選框','<code>.p2-fldsel</code>：18×18px（min/max 鎖死）、<code>border:0; border-radius:0; padding:0</code>、bg transparent、<code>appearance:auto</code>'],
+      ['勾起來','紅 '+SW+'#A51820"></span><code>accent-color:var(--rouge)</code>；沒勾＝空白方框'],
+      ['重點','框在文字左邊獨立一欄、<b>不卡到文字</b>；①–③ 問診題目用這個，不是 s1agg-chk；④–⑦ 不用勾選框（用 x-fld）']
+    ]}],
+    ['.s1agg-chk',{t:'密集勾選框｜.s1agg-chk',r:[
+      ['class','<code>.s1agg-chk</code>＝label 包 input＋span；密集版 <code>.s1agg-chk.sm</code>'],
+      ['容器','inline-flex、align-center、gap 8、font 13px/600、'+SW+'#2A1A1C"></span>#2A1A1C、cursor pointer（cs-v577）'],
+      ['input','16×16px、<code>accent-color:#A51820</code>、flex 0'],
+      ['.sm','font 12px/600'],
+      ['用在','總覽勾選排、逐項挑選的小項']
+    ]}],
+    ['.cat-actions',{t:'底部三膠囊｜_s1Trio → .cat-actions',r:[
+      ['容器','<code>.cat-actions</code>：flex、justify-end、gap 8、margin-top 12、padding-top 10、border-top 1px dashed '+SW+'#E8DACE"></span>#E8DACE'],
+      ['三顆共同','inline-flex、gap 5、font 11px/600、letter-spacing .5、padding 4×13、radius 999、border 1px '+SW+'#E2CFB6"></span>#E2CFB6、透明底、字 '+SW+'#9A7B5E"></span>#9A7B5E、SVG 12×12'],
+      ['歷史 .cat-hist','靠左（<code>margin-right:auto</code>）⟲；hover 框/字 '+SW+'#A8855E"></span>金棕＋底 #FBF6EF'],
+      ['儲存 .cat-save','軟碟；hover '+SW+'#C9A57A"></span>金底白字 #C9A57A'],
+      ['清除 .cat-clear','垃圾桶；hover '+SW+'#A51820"></span>紅 #A51820＋底 #FBF1F1'],
+      ['排列','歷史靠左，儲存＋清除靠右'],
+      ['產生版','客戶版/顧問版下面用對應 trio（歷史版本／儲存此版／清除此版）']
+    ]}],
+    ['.cpb-next',{t:'智能下一步｜.cpb-next',r:[
+      ['外框','<code>.cpb-next</code>：bg '+SW+'#FFFDF9"></span>#FFFDF9、border 1px '+SW+'#EAD9C2"></span>#EAD9C2、radius 12px、padding 11×13'],
+      ['標籤','<code>.cpb-next-tag</code>：11.5px/800、'+SW+'#A51820"></span>紅、letter-spacing .3、margin-bottom 4、前面燈泡圖示'],
+      ['說明','<code>.cpb-next-hint</code>：12.5px、#5C4248、line-height 1.65、margin-bottom 9'],
+      ['行動鈕','<code>.cpb-next-btn</code>：紅底白字 #A51820、border none、radius 9、padding 8×16、12.5px/800'],
+      ['⚠ hover','底 '+SW+'#8E1419"></span>#8E1419（cs-v607）；<b>舊規格寫 #7A1018 已過時</b>。小版 <code>.cpb-next-btn.sm</code> padding 5×13、12px、radius 8'],
+      ['行為','依目前站給「下一步」建議＋一顆行動鈕']
+    ]}],
+    ['.cpb-more-btn',{t:'控制列｜客戶現況／閉環視角／服務台總控',r:[
+      ['class','<code>.cpb-more-btn</code>（三顆同款，同位置、同設計）'],
+      ['關閉態','白底 #fff、border '+SW+'#E2D6D3"></span>#E2D6D3、藕紫字 '+SW+'#7A5A5E"></span>#7A5A5E、min-height 30、膠囊、12.5px、尾 ▾'],
+      ['hover','框/字轉紅 '+SW+'#A51820"></span>#A51820＋底 #FBF1F0（cs-v607）'],
+      ['⚠ 開啟態','舊規格寫「紫 #6E4F86 邊框/字」，但 cs-v7.06 的 CSS 找不到此態，hover 實際是紅。<b>此條待你確認，現以紅態為準。</b>'],
+      ['行為','點→在下方展開白底面板；箭頭 ▾→▴']
+    ]}],
+    ['.cpb-progress',{t:'進度條｜.cpb-progress',r:[
+      ['條','<code>.cpb-progress</code>：高 6px、底 '+SW+'#F2EDE5"></span>#F2EDE5、radius 99、overflow hidden、margin-top 6'],
+      ['填色','<code>&gt; i</code>：金→紅漸層 <code>linear-gradient(90deg,#D4A574,#A51820)</code>、radius 99'],
+      ['動畫','width 隨完成度，<code>transition:width .4s ease</code>']
+    ]}],
+    ['.cpb-kicker',{t:'歸檔卡小標｜.cpb-kicker',r:[
+      ['class','<code>.cpb-kicker</code>'],
+      ['字','Cormorant Garamond、11px、letter-spacing 3px、大寫'],
+      ['顏色',SW+'#D4A574"></span>金 #D4A574'],
+      ['文字','客戶進度歸檔卡 · OVERALL PROGRESS']
+    ]}],
+    ['.cpb-stage',{t:'目前站文字／狀態膠囊｜.cpb-stage / .cpb-stagestatus',r:[
+      ['文字','<code>.cpb-stage</code>：13px、'+SW+'#5C4248"></span>#5C4248；內容＝客戶名 · 目前在 ①初診'],
+      ['狀態膠囊','<code>.cpb-stagestatus</code>：inline-flex、gap 7、padding 4×12、radius 999、12px/700、底 #FBF1F0、字 #7A5A5E、border #EAD9C2，前面 7px 圓點（cs-v550）'],
+      ['done',SW+'#8A6A24"></span>金棕字 #8A6A24＋底 #F3E9D7＋框 #E4D6BC'],
+      ['prog',SW+'#A51820"></span>紅字 #A51820＋底 #FBEDED＋框 #E7C9A8']
+    ]}],
+    ['.s2-tf-item',{t:'站內導覽列｜.s2-topflow .s2-tf-item',r:[
+      ['容器','<code>.s2-topflow</code>：flex、置中、flex-wrap、gap 2×4、max-width 680、margin 14 auto 2（cs-v608）'],
+      ['每項','<code>.s2-tf-item</code>：flex、align-center、gap 9、padding 0 8'],
+      ['主字','<code>.s2-tf-t b</code>：13px、'+SW+'#2A1A1C"></span>#2A1A1C、line-height 1.3（font-family:inherit＝與初診同字體，關鍵）'],
+      ['副字','<code>.s2-tf-t i</code>：10.5px、'+SW+'#9A7A7C"></span>#9A7A7C、正體'],
+      ['連接線','<code>.s2-tf-line</code>：46×1px（窄版 20px）、'+SW+'#E0D2C4"></span>#E0D2C4'],
+      ['一般/目前','一般灰；目前＝加 <code>.active</code>（紅圈）；點→切該分頁＋捲到頂端']
+    ]}],
+    ['.s1tab',{t:'分頁鈕｜.s1tab（數量依站而定，非固定四個）',r:[
+      ['⚠ 不是固定四個','<code>.s1tab</code> 是「分頁鈕」這個<b>元件</b>，分頁<b>數量由每一站自己列</b>。實際：①初診=4（蒐集/產生/交付/總和）、<b>③問診=5</b>（脈絡/問答/產生/交付/總和）、④–⑦=4（填寫/產生/交付/總和）。'],
+      ['要做 5 個怎麼辦','照 ③問診 的做法：在那一站的分頁列<b>多列一格</b>（一個 data-鍵＋一個 .s1tab-label）＋對應<b>多一個 pane</b>。版面不用改——ext 容器 .sxtabs 已是 5 欄格線，5 格剛好排滿。'],
+      ['base','<code>.s1tab</code>：bg transparent、border none、<b>border-bottom 3px solid transparent</b>、padding 14×16、flex 置中 gap 6、font-family inherit、14.5px、字 '+SW+'#5C4248"></span>#5C4248、transition all .22s'],
+      ['數字/標籤','<code>.s1tab-num</code> Cormorant 17px；<code>.s1tab-label</code> 12.5px ls 1（窄版 11px）'],
+      ['⚠ 目前態','加 <code>.active</code>（不是 .on）→ 字 '+SW+'#A51820"></span>紅、<b>border-bottom-color 紅</b>、數字也轉紅（cs-v0 第326行＋cs-v566 !important）'],
+      ['雙圈ⓘ','<code>.s1tab-info</code>：18px 圓、border 1px #DCC8CB、字 #8A7274、11px、hover 紅'],
+      ['行為','點→切該頁、捲到分頁列頂端']
+    ]}],
+    ['[data-s1pane]',{t:'分頁內容區｜每個分頁各自的內容（pane）',r:[
+      ['class','<code>[data-s1pane]</code>（①–③）／<code>[data-sxpane]</code>（④–⑦）＝某一分頁的內容容器'],
+      ['重點','每一頁內容<b>都不同</b>：蒐集＝帶資料進來＋題目；產生＝AI 出客戶版/顧問版；交付＝挑要交付的項目；總和＝彙整匯出。'],
+      ['data 值','分頁鍵：初診 gather/produce/deliver/export；問診 mkb/qa/produce/deliver/sum'],
+      ['怎麼看別頁','規格模式下點上面分頁鈕會<b>真的切過去</b>，切完該頁元件就點得到、會命名。']
+    ]}],
+    ['.atl-flow',{t:'流程導覽列｜.atl-flow（步數依站而定，初診=4步）',r:[
+      ['這是什麼','站別大標<b>上方</b>那排「先蒐集→產生→交付→總和」＝本站的<b>流程導覽捷徑</b>（不是頂端選單，也不是下面的分頁列）'],
+      ['⚠ 名稱要彈性','這個「角色」是流程導覽，<b>步數依站而定</b>：①初診=4 步、用 <code>.atl-flow</code>；<b>③問診=5 步</b>、改用 <code>.s2-topflow</code>（見 .s2-tf-item 那條）。命名時講「流程導覽列」就好，別寫死「四步」。'],
+      ['⚠ class','<code>.atl-flow</code>（舊規格誤寫 .cc-flow＝點不到，已更正）'],
+      ['每步','<code>.afl-step</code>：inline-flex、gap 8；可點版加 <code>.clk</code>'],
+      ['圓點','<code>.afl-dot</code>：目前步＝<b>紅實心</b> '+SW+'#A51820"></span>#A51820＋白字＋紅光暈；其他步＝紅字紅框白底'],
+      ['標籤','<code>.afl-lab</code>：12.5px、'+SW+'#6B5A5C"></span>#6B5A5C、ls .2、nowrap'],
+      ['連接線','<code>.afl-link</code>：26×1px 漸層 #E6D8C6→#EFE6D7'],
+      ['點開呈現','點某一步→跳到對應的下面分頁並捲到頂端。<b>規格模式下會真的切過去</b>，方便你進別的分頁看內容。']
+    ]}],
+    ['.section-card>h3',{t:'卡片＋卡片標題｜.section-card / > h3',r:[
+      ['卡片','<code>.section-card</code>：bg '+SW+'#FFFFFF"></span>#FFFFFF、border 1px '+SW+'#F0E9E4"></span>#F0E9E4、radius 11px、陰影 0 1px 3px rgba(90,40,45,.04)、padding 16、margin-bottom 14（大版 28）'],
+      ['AI 卡','<code>.section-card.ai-fill</code>：左邊 3px '+SW+'#A51820"></span>紅條＋淡紅漸層底'],
+      ['標題字體','<code>&gt; h3</code>：Noto Serif TC（明體）、weight 700'],
+      ['⚠ 字級','base 宣告 15px（第121行），但被 <code>.section-card h3{font-size:18px !important}</code>（第383行）蓋過＝<b>實際生效 18px</b>；站別大標版 20px/900'],
+      ['顏色',SW+'#2A1A1C"></span>黑墨 #2A1A1C（<b>不是紅</b>）'],
+      ['排版','letter-spacing .5px；display flex、align-center、gap 8（接 ⓘ）；內含 svg 染紅 var(--rouge)'],
+      ['註解列','<code>.sc-note</code>：12px、#8A7274、line-height 1.7']
+    ]}],
+    ['.btn-go',{t:'主要行動鈕｜.btn-go / .btn-gold',r:[
+      ['樣式','<code>.btn-go</code>：紅底白字 '+SW+'#A51820"></span>#A51820、border 1px rgba(255,255,255,.15)、<b>min-height 32、radius 10</b>、inline-flex 置中（cs-v478）'],
+      ['大版','置中、max-width 360、padding 14×24、font 14px（第271行）'],
+      ['hover/active','hover '+SW+'#7A1018"></span>#7A1018；active 回 #A51820'],
+      ['⚠ btn-gold','<code>.btn-gold</code>（產生提示詞）名為金、實際也是<b>紅底白字</b>、weight 600、ls .5（非金色）'],
+      ['用途','產生提示詞、打開資料庫等主動作；下方常接金字「✦ 已套用 ATELIER 七維診斷框架」']
+    ]}],
+    ['.popout-btn',{t:'頂列右側鈕｜小視窗 / 重新整理（.popout-btn）',r:[
+      ['class','<code>.popout-btn</code>（兩顆同款）：<code>#popoutBtn</code>＝小視窗、<code>#reloadBtn</code>＝重新整理'],
+      ['位置','最頂紅色列右側，「已存 N 個客戶」左邊'],
+      ['小視窗','把客戶服務台開成獨立浮動小視窗（被擋則退化為新分頁）'],
+      ['重新整理','reload 抓最新版'],
+      ['樣式','深紅列上的淺色膠囊鈕、內含 13px outline 圖示']
+    ]}],
+    ['.stat',{t:'客戶數統計｜.stat（已存 N 個客戶）',r:[
+      ['class','<code>.topbar .stat</code>，數字在 <code>#cliCount</code>'],
+      ['位置','最頂紅色列<b>最右</b>'],
+      ['字','11px 淺粉 #F0D8D5；數字 <b>14px 暖白 #FDFBF8</b>'],
+      ['意義','目前資料庫裡的客戶總數（與診斷工作台共用）']
+    ]}],
+    ['.cs-banner',{t:'目前服務對象提示條｜.cs-banner',r:[
+      ['class','<code>.cs-banner</code>（<code>#csBanner</code>）；未選客戶時加 <code>.empty</code>'],
+      ['位置','分頁列<b>下方</b>、站別大標上方'],
+      ['內容','選定客戶後顯示：@帳號 · 客戶名、我的客戶(★)、健康 NN/50、變更狀態點、「七階段…前往⑦交付」狀態膠囊、找客戶、影片庫 N'],
+      ['未選態','灰字「尚未選定服務對象 — 請到選擇客戶挑一位」'],
+      ['提示','條內各按鈕是 JS 動態產生；想要某顆的完整規格，點它一下看下方（會給它的 class），再叫我補。']
+    ]}],
+    ['.tabs',{t:'頂端選單列容器｜.tabs（#tabs）',r:[
+      ['class','<code>.tabs</code>（<code>#tabs</code>）＝包住所有 <code>.tab[data-view]</code> 的橫列'],
+      ['內含','選擇客戶／儀表板／①初診…⑦交付＋最右「回診斷工作台」'],
+      ['行為','sticky 固定在頂紅列下方；點某項 <code>switchTo()</code> 切整頁'],
+      ['細節','單顆規格見下一條 [data-view]']
+    ]}],
+    ['[data-view]',{t:'頂端選單列單顆｜.tab[data-view]',r:[
+      ['class','<code>.tab[data-view]</code>，每項一顆（選擇客戶／儀表板／①初診…⑦交付／回診斷工作台）'],
+      ['圖示','<code>.tic</code>：16×16、fill none、stroke currentColor、stroke-width 1.6、opacity .75（目前項 opacity 1）'],
+      ['一般項','灰字、有圖示；hover 轉紅（第6553行）'],
+      ['目前項','<code>.tab.on</code>：字 '+SW+'#A51820"></span>紅、<b>border-bottom-color 紅</b>（第54行）'],
+      ['停用項','<code>.tab.disabled</code>：字 #C9BEB8＋「soon」小標'],
+      ['最右','<code>.tab.back</code>「回診斷工作台」：金棕字、margin-left auto'],
+      ['行為','點→<code>switchTo(data-view)</code> 切整頁；這排每站都在，只有 active 項不同']
+    ]}],
+    ['.page-head .ph-title',{t:'站別大標題｜.page-head（ph-en / ph-title / ph-sub）',r:[
+      ['容器','<code>.page-head</code>：置中、padding 12 0 18（stage 版 order 1、margin 6 0 6）'],
+      ['英文小標','<code>.ph-en</code>：Cormorant 11px、ls 4、'+SW+'#9C7D4A"></span>深金 #9C7D4A、大寫、margin-bottom 7（例：STAGE ① · INITIAL SCAN）'],
+      ['大標','<code>.ph-title</code>：Noto Serif TC、25px/500、ls 3（大版面 38px/900；另一版 32px）；display flex 置中、gap 9（cs-v566）'],
+      ['⚠ 大標色','base '+SW+'#A51820"></span>主紅 #A51820；大版面 scope 為 '+SW+'#2A1A1C"></span>墨 #2A1A1C（視該 view 而定）'],
+      ['副標','<code>.ph-sub</code>：Cormorant 斜體 13px、ls 1、'+SW+'#8A7274"></span>灰、margin-top 7'],
+      ['旁邊圈','大標右邊接一顆<b>單圈ⓘ</b>（atl-infodot＝這一站在做什麼）']
+    ]}],
+    ['[data-mktbrief]',{t:'行銷問診卡｜[data-mktbrief]',r:[
+      ['class','<code>[data-mktbrief].section-card</code>'],
+      ['標題','h3「行銷問診卡」＋單圈ⓘ（誰會買×賣什麼×看完去哪×憑什麼信）'],
+      ['工具排','<code>.mkb-toolrow</code>：AI智能（mkb-aitog，靠左）＋全選（mkb-all，靠右）'],
+      ['AI面板','<code>.mkb-aitools</code> 底色框（#FBF7F2、框 #EFE3D4）'],
+      ['分區','<code>.mkb-sec</code> 紅明體小標（市場位置／ICP／Offer…）'],
+      ['每項','<code>.mkb-item</code>：勾選 s1agg-chk ＋欄位旁 ⓘ ＋ textarea'],
+      ['底部','三膠囊（歷史/儲存此版/清除此版）；資料來源 marketingBrief（③問診脈絡頁用）']
+    ]}]
+  ];
+  function rowHTML(r){ var warn=/^⚠/.test(r[0]); var lab=warn?r[0].replace(/^⚠\s*/,''):r[0]; return '<div class="rr'+(warn?' warn':'')+'"><b>'+(warn?'<span style="color:#A51820">'+ico('warn',12)+'</span> ':'')+lab+'</b><span>'+r[1]+'</span></div>'; }
+  function clearSel(){ document.querySelectorAll('.atl-spec-selected').forEach(function(x){ x.classList.remove('atl-spec-selected'); }); }
+  function placePop(P,el){
+    requestAnimationFrame(function(){
+      var r=el.getBoundingClientRect(), pw=P.offsetWidth, ph=P.offsetHeight, vw=window.innerWidth, vh=window.innerHeight;
+      var left=r.left; if(left+pw>vw-12) left=vw-pw-12; if(left<12) left=12;
+      var top=r.bottom+10; if(top+ph>vh-12) top=r.top-ph-10; if(top<12) top=12;
+      P.style.left=left+'px'; P.style.top=top+'px'; P.style.transform='none';
+    });
+  }
+  function show(d,el){
+    var T=document.getElementById('atlSpecT'),R=document.getElementById('atlSpecR'),P=document.getElementById('atlSpecPop');
+    if(!T) return;
+    T.textContent=d.t; R.innerHTML=d.r.map(rowHTML).join(''); P.classList.add('show'); _curCopy=plainOf(d);
+    clearSel();
+    if(el){ el.classList.add('atl-spec-selected'); try{ el.scrollIntoView({behavior:'smooth',block:'center'}); }catch(e){} placePop(P,el); }
+    else { P.style.left='50%'; P.style.top='80px'; P.style.transform='translateX(-50%)'; }
+  }
+  function elLabel(el){ var t=(el.getAttribute&&(el.getAttribute('title')||el.getAttribute('aria-label')))||''; var txt=(el.textContent||'').replace(/\s+/g,' ').trim(); return (t||txt||'').slice(0,30); }
+  function showFallback(el){
+    var tag=el.tagName?el.tagName.toLowerCase():'?';
+    var cls=(typeof el.className==='string'?el.className:'').split(/\s+/).filter(function(c){return c&&c!=='atl-spec-selected';}).join('.');
+    var id=el.id||'', lab=elLabel(el);
+    var pane=''; try{ var pp=el.closest('[data-s1pane],[data-sxpane]'); if(pp) pane=pp.getAttribute('data-s1pane')||pp.getAttribute('data-sxpane')||''; }catch(e){}
+    var vw=''; try{ var vv=el.closest('.view'); if(vv) vw=vv.id.replace(/^view-/,''); }catch(e){}
+    var d={t:'（尚未建專屬規格）'+(lab?'｜'+lab:''),r:[
+      ['這是什麼','這顆我還沒寫專屬規格——先把它的「身分證」抓給你，貼給我就能補。'],
+      ['標籤','&lt;'+tag+'&gt;'],
+      ['class', cls?'<code>.'+esc(cls)+'</code>':'（這個元素沒有 class，可改用下面的所在位置描述）'],
+      ['id', id?'<code>#'+esc(id)+'</code>':'（無 id）'],
+      ['文字',esc(lab)||'（無文字）'],
+      ['所在位置',(vw?'站：'+esc(vw):'')+(pane?'　分頁：'+esc(pane):'')||'（頂層）'],
+      ['給 AI 用','按右上「複製給AI」整段抄走（已含 class＋位置）。我會回你：這顆叫什麼、用途、字級/顏色/位置/hover、<b>點開後長怎樣</b>，並補進規格書。']
+    ]};
+    show(d,el);
+  }
+  function byKey(k){ for(var i=0;i<SPEC.length;i++){ if(SPEC[i][0]===k) return SPEC[i][1]; } return null; }
+  function mark(){ try{ SPEC.forEach(function(p){ var s=p[0]; if(s.charAt(0)==='.'||s.charAt(0)==='['||s.indexOf('>')>=0){ try{ document.querySelectorAll(s).forEach(function(el){ el.setAttribute('data-_spechit','1'); }); }catch(e){} } }); }catch(e){} }
+  window.__atlSpecClose=function(){ document.getElementById('atlSpecPop').classList.remove('show'); clearSel(); };
+  window.__atlSpecTokens=function(){ show(byKey('__tokens')); };
+  window.__atlSpecExt=function(){ show(byKey('__ext')); };
+  window.__atlSpecLog=function(){
+    var T=document.getElementById('atlSpecT'),R=document.getElementById('atlSpecR'),P=document.getElementById('atlSpecPop');
+    if(!T) return;
+    T.textContent='互動規格書 更新紀錄（目前：'+SPEC_VER+'）';
+    R.innerHTML='<div class="rr"><b>怎麼看</b><span>右上角徽章＝目前版本。最上面一條就是這次的更動；越下面越早。</span></div>'
+      +CHANGELOG.map(function(c,i){ return '<div class="rr'+(i===0?' warn':'')+'"><b>'+c[0]+'</b><span>'+c[1]+'</span></div>'; }).join('');
+    P.classList.add('show'); clearSel();
+    P.style.left='50%'; P.style.top='70px'; P.style.transform='translateX(-50%)';
+    _curCopy='互動規格書 '+SPEC_VER+' 更新紀錄\n'+CHANGELOG.map(function(c){return c[0]+'：'+c[1];}).join('\n');
+  };
+  window.__atlCopyCur=function(){ doCopy(_curCopy); };
+  window.__atlCopyTpl=function(k){ doCopy(TPL[k]); };
+  window.__atlSpecTalk=function(){
+    var T=document.getElementById('atlSpecT'),R=document.getElementById('atlSpecR'),P=document.getElementById('atlSpecPop');
+    if(!T) return;
+    T.textContent='跟 AI 溝通模板（可一鍵複製）';
+    function block(label,key,note){ return '<div class="rr"><b>'+label+'</b><span>'+(note?note+'<br>':'')+'<pre class="atl-pre">'+esc(TPL[key])+'</pre><span class="atl-cp" onclick="window.__atlCopyTpl(\''+key+'\')">複製這段</span></span></div>'; }
+    R.innerHTML=
+      '<div class="rr"><b>怎麼用</b><span>① 判斷類型（ext／客製／只改分頁）→ ② 先貼「守則」→ ③ 貼對應模板填空。不確定某元件長相時，回去點該元件、按標題列「複製給AI」。</span></div>'
+      +block('① 守則（必貼）','guard')
+      +block('模板A · ext新階段','A','④–⑦ 型：只加一筆 STAGE_EXT，骨架不碰')
+      +block('模板B · 改①–③','B','打勾問診表型：繼承 ②/③')
+      +block('模板C · 只改分頁','C','最小改動')
+      +block('完整範例','eg','把數字換掉就能用');
+    P.classList.add('show'); clearSel();
+    P.style.left='50%'; P.style.top='70px'; P.style.transform='translateX(-50%)';
+    _curCopy=TPL.guard+'\n\n'+TPL.A+'\n\n'+TPL.B+'\n\n'+TPL.C;
+  };
+  window.__atlSpecToggle=function(){
+    var on=document.body.classList.toggle('atl-spec-on');
+    document.getElementById('atlSpecBtn').classList.toggle('on',on);
+    if(!on){ window.__atlSpecClose(); document.querySelectorAll('[data-_spechit]').forEach(function(x){x.removeAttribute('data-_spechit');}); }
+    else { mark(); }
+  };
+  var NAV='.tab[data-view],.s1tab,.afl-step,.atl-flow,.s2-tf-item,.s2-topflow';
+  document.addEventListener('click',function(e){
+    if(!document.body.classList.contains('atl-spec-on')) return;
+    if(e.target.closest('#atlSpecPop')||e.target.closest('#atlSpecBtn')||e.target.closest('#atlSpecHint')||e.target.closest('#atlSpecVer')) return;
+    var isNav=false; try{ isNav=!!e.target.closest(NAV); }catch(_e){}
+    for(var i=0;i<SPEC.length;i++){ var sel=SPEC[i][0]; if(sel.charAt(0)==='_') continue; var el; try{ el=e.target.closest(sel); }catch(x){ el=null; } if(el){ show(SPEC[i][1],el); if(!isNav){ e.preventDefault(); e.stopPropagation(); } return; } }
+    if(isNav) return;
+    var ft=e.target.closest('button,a,label,input,select,textarea,[data-view],[class]')||e.target; if(ft && ft!==document.body && ft.nodeType===1){ e.preventDefault(); e.stopPropagation(); showFallback(ft); }
+  },true);
+  (function(){
+    var P=document.getElementById('atlSpecPop'),H=document.getElementById('atlSpecHead'),drag=false,ox=0,oy=0;
+    if(!H) return;
+    H.addEventListener('mousedown',function(e){ if(e.target.closest('.x')) return; drag=true; var r=P.getBoundingClientRect(); ox=e.clientX-r.left; oy=e.clientY-r.top; P.style.transform='none'; e.preventDefault(); });
+    document.addEventListener('mousemove',function(e){ if(!drag) return; P.style.left=(e.clientX-ox)+'px'; P.style.top=(e.clientY-oy)+'px'; });
+    document.addEventListener('mouseup',function(){ drag=false; });
+  })();
+  function _atlInitChrome(){
+    try{ var b=document.getElementById('atlSpecBtn'); if(b && !b._atlInit){ b._atlInit=1; b.type='button'; b.innerHTML=ico('ruler',14)+'<span style="margin-left:1px">規格 '+SPEC_VER+'</span>'; b.onclick=window.__atlSpecToggle; b.title='規格模式（查規格／複製給AI／溝通模板）'; } }catch(e){}
+    try{ var d=document.getElementById('atlSpecDrag'); if(d) d.innerHTML=ico('grip',13); }catch(e){}
+    try{ var x=document.getElementById('atlSpecX'); if(x) x.innerHTML=ico('x',15); }catch(e){}
+  }
+  _atlInitChrome();
+  setTimeout(_atlInitChrome,600); setTimeout(_atlInitChrome,1600);
+  setInterval(function(){ if(document.body.classList.contains('atl-spec-on')) mark(); },1200);
+})();
+</script>
