@@ -767,7 +767,7 @@ details.cat summary .cat-name{vertical-align:middle}
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">客戶服務台</span></span>
-    <span id="verBadge">cs-v8.04</span>
+    <span id="verBadge">cs-v8.05</span>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button type="button" id="atlSpecBtn" class="popout-btn" title="規格模式"></button>
@@ -10046,7 +10046,7 @@ button:not(:disabled), .btn:not(.disabled):not([disabled]), [role="button"]{
   if(window.__atlCs473Continuity) return; window.__atlCs473Continuity=true;
   function cleanTextNode(n){var s=n.nodeValue||''; var ns=s.replace(/cs-v4\.\d+\s*(SAFE|LATEST)?\s*[｜|·:-]?\s*/g,'').replace(/\bv\d{3}\s*[｜|·:-]?\s*/g,''); if(ns!==s)n.nodeValue=ns;}
   function cleanVersions(){
-    try{var vb=document.getElementById('verBadge'); if(vb)vb.textContent='cs-v8.04';}catch(e){}
+    try{var vb=document.getElementById('verBadge'); if(vb)vb.textContent='cs-v8.05';}catch(e){}
     try{var w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT,{acceptNode:function(n){var p=n.parentElement; if(!p||p.id==='verBadge'||/^(SCRIPT|STYLE|TEXTAREA)$/i.test(p.tagName))return NodeFilter.FILTER_REJECT; return /(cs-v4\.\d+|\bv\d{3})/.test(n.nodeValue||'')?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_REJECT;}}); var nodes=[],n; while(n=w.nextNode())nodes.push(n); nodes.forEach(cleanTextNode);}catch(e){}
   }
   function alignSelection(){
@@ -10106,7 +10106,7 @@ input[type="text"]:focus,input:not([type]):focus{border-color:#D4A574!important;
     btn.onclick=function(e){e.stopPropagation(); set(!safe.classList.contains('atl-safe474-collapsed'));};
     h.appendChild(summary); h.appendChild(btn); set(localStorage.getItem('atl.cs474.safeCollapsed')!=='0');
   }
-  function cleanBadge(){ var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v8.04'; }
+  function cleanBadge(){ var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v8.05'; }
   function run(){ cleanBadge(); ensureSafeCollapse(); wireAutogrow(document); }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run); else run();
   setInterval(run,1200);
@@ -10167,7 +10167,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
   function wire(root){qsa('textarea,input[type="text"],input[type="url"],input[type="email"],input:not([type])',root||document).forEach(function(el){if(el.__atl475)return; if(el.closest('.atl-field-modal,.atl-final-modal'))return; el.__atl475=true; el.addEventListener('focus',function(){show(el); autogrow(el)}); el.addEventListener('input',function(){autogrow(el)}); el.addEventListener('blur',hideSoon); autogrow(el);});}
   document.addEventListener('click',function(e){var b=e.target.closest('#atlFieldToolbar button'); if(!b||!active)return; var a=b.getAttribute('data-act'); if(a==='prompt')openModal('prompt',active); if(a==='fill')openModal('fill',active); if(a==='edit')openModal('edit',active); if(a==='done'){var bar=qs('#atlFieldToolbar'); if(bar)bar.classList.remove('on'); if(active)active.classList.remove('atl-field-active'); toastSafe('此欄位可視為定案，請記得儲存');}},true);
   function addCollapse(root){qsa('.section-card,.deliverable-card,.atl452safe-card',root||document).forEach(function(card){if(card.__atlCollapse475||card.closest('.preview-modal,.atl-field-modal'))return; card.__atlCollapse475=true; card.classList.add('atl-collapsible'); var h=qs('h2,h3,h4,.stitle,.section-title',card)||card.firstElementChild; if(h)h.classList.add('atl-keep-visible'); var btn=document.createElement('button'); btn.type='button'; btn.className='atl-collapse-toggle'; btn.textContent='收合'; btn.addEventListener('click',function(e){e.preventDefault(); e.stopPropagation(); var closed=card.classList.toggle('atl-closed'); btn.textContent=closed?'展開':'收合';}); card.insertBefore(btn,card.firstChild);});}
-  function boot(){try{var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v8.04';}catch(e){} wire(document); addCollapse(document);}
+  function boot(){try{var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v8.05';}catch(e){} wire(document); addCollapse(document);}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot); else boot();
   try{new MutationObserver(function(ms){var hit=false; ms.forEach(function(m){if(m.addedNodes&&m.addedNodes.length)hit=true}); if(hit){clearTimeout(window.__atl475Timer); window.__atl475Timer=setTimeout(boot,180);}}).observe(document.body,{childList:true,subtree:true});}catch(e){}
 })();
@@ -10208,7 +10208,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
 <script id="atl478-final-export-js">
 (function(){
   if(window.__atl478FinalExport)return; window.__atl478FinalExport=true;
-  var VERSION='cs-v8.04';
+  var VERSION='cs-v8.05';
   function esc(s){return (s==null?'':String(s)).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
   function qsa(sel,root){return Array.prototype.slice.call((root||document).querySelectorAll(sel))}
   function text(el){return (el&&el.innerText||el&&el.textContent||'').replace(/\s+/g,' ').trim()}
@@ -10328,7 +10328,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
 <script>
 (function(){
   if(window.__atlCs480) return; window.__atlCs480=true;
-  var V='cs-v8.04';
+  var V='cs-v8.05';
   function lock(){ var vb=document.getElementById('verBadge'); if(vb && (vb.textContent||'').trim()!==V) vb.textContent=V; }
   function unify(){
     var safe=document.querySelector('.atl452safe'); if(!safe) return;
@@ -11276,7 +11276,7 @@ input.atl477-open-field:not([type="checkbox"]):not([type="radio"]):not([type="bu
 <script id="atl-cs477-final-touch">
 (function(){
   if(window.__atlCs477FinalTouch) return; window.__atlCs477FinalTouch=true;
-  var VERSION='cs-v8.04';
+  var VERSION='cs-v8.05';
   function qs(s,r){return (r||document).querySelector(s)}
   function qsa(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
   function setVersion(){try{var b=qs('#verBadge'); if(b)b.textContent=VERSION; window.ATELIER_CLIENT_VERSION=VERSION;}catch(e){}}
@@ -19371,6 +19371,102 @@ function addProdAI(){
 function boot(){
   enhanceStage7(); addPreCardAI(); addProdAI();
   setInterval(function(){ enhanceStage7(); addPreCardAI(); addProdAI(); },3000);
+}
+if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',boot); else boot();
+})();
+</script>
+
+<style id="atl-cs805-navbtn">
+/* 導覽卡改成按鈕＋彈窗 */
+.atl-stage-nav{display:none !important} /* 隱藏原本的靜態導覽卡 */
+.atl-nav-btn{display:inline-flex;align-items:center;gap:4px;background:#FDFBF8;border:1.5px solid #D4A574;color:#A51820;font-size:11.5px;font-weight:800;padding:5px 12px;border-radius:999px;cursor:pointer;white-space:nowrap;font-family:'Noto Sans TC',sans-serif}
+.atl-nav-btn:hover{background:#FBF1F0;border-color:#A51820}
+.atl-nav-btn svg{width:14px;height:14px;flex:0 0 auto}
+.atl-nav-pop{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:100070;background:#FDFBF8;border:1px solid #ECDFC9;border-left:4px solid #D4A574;border-radius:0 14px 14px 0;padding:18px 20px;max-width:440px;width:92vw;box-shadow:0 16px 48px rgba(42,26,28,.22);font-size:13px;color:#5A4448;line-height:1.8;font-family:'Noto Sans TC',sans-serif;display:none}
+.atl-nav-pop.show{display:block}
+.atl-nav-pop b{color:#2A1A1C}
+.atl-nav-pop .sn-pos{color:#A51820;font-weight:800;font-size:14px}
+.atl-nav-pop .nav-x{position:absolute;top:10px;right:12px;background:none;border:none;font-size:18px;cursor:pointer;color:#8A7274}
+.atl-nav-mask{position:fixed;inset:0;background:rgba(42,26,28,.3);z-index:100069;display:none}
+.atl-nav-mask.show{display:block}
+</style>
+<script id="atl-cs805-navbtn-js">
+/* cs-v8.05：導覽卡改成按鈕（放在閉環視角左邊）＋進度 7→9 */
+(function(){
+if(window.__atl805) return; window.__atl805=true;
+var NAV_CARDS={
+  stage1:{pos:'提案前 / ① 初診',purpose:'用公開資料快速看見客戶目前在市場上的樣子。',scope:'只做外部可見資料觀察，不做完整策略方案。',output:'公開資料初步觀察、會前初診摘要、初步問題清單。',next:'② 建檔'},
+  stage2:{pos:'提案前 / ② 建檔',purpose:'把客戶變成一個正式可管理的專案。',scope:'只建立客戶身份與合作範圍，不做深度策略判斷。',output:'客戶專案資料卡、合作範圍初稿。',next:'③ 問診'},
+  stage3:{pos:'提案前 / ③ 問診',purpose:'問出誰會買、賣什麼、看完去哪、憑什麼信。',scope:'問出商業真相與內容方向，不直接給完整企劃。',output:'問診摘要、商業真相卡、提案前對焦卡。',next:'④ 分流確認'},
+  stageRoute:{pos:'合作轉換 / ④ 分流確認',purpose:'判斷客戶適合哪一種服務路徑。',scope:'確認短影音週期型、長期行銷落地型、單點專案型或顧問陪跑型。',output:'服務路徑建議、合作方案建議。',next:'⑤ 診斷'},
+  stage4:{pos:'合作後 / ⑤ 診斷',purpose:'正式判斷定位、受眾、內容、CTA 與轉換缺口。',scope:'正式合作後的診斷，不是免費提案前的觀察。',output:'內容診斷書、定位缺口、優先改善順序。',next:'⑥ 盤點'},
+  stage5:{pos:'合作後 / ⑥ 盤點',purpose:'整理客戶現有素材、故事、服務證據與拍攝條件。',scope:'盤點可以被轉成內容的素材。',output:'素材盤點表、內容資產地圖、待補清單。',next:'⑦ 內容策略'},
+  stage6:{pos:'合作後 / ⑦ 內容策略',purpose:'將診斷與盤點轉成 IP 定位、主題規劃、腳本整理。',scope:'正式產出內容策略。',output:'內容主軸、題庫、腳本方向、內容戰役。',next:'⑧ 製作執行'},
+  stageProd:{pos:'合作後 / ⑧ 製作執行',purpose:'把策略變成可拍、可剪、可交付的製作流程。',scope:'拍攝規劃、後製整理、客戶審核。',output:'拍攝表、影片清單、後製需求、修改紀錄。',next:'⑨ 交付復盤'},
+  stage7:{pos:'合作後 / ⑨ 交付復盤',purpose:'完成主平台成品交付，整理下一階段建議。',scope:'不只交檔案，要完成復盤與下一輪建議。',output:'成品、封面、文案、復盤報告、續約建議。',next:'下一輪'}
+};
+/* 彈窗 */
+var mask,pop;
+function ensurePopup(){
+  if(pop) return;
+  mask=document.createElement('div'); mask.className='atl-nav-mask'; mask.onclick=closeNav;
+  pop=document.createElement('div'); pop.className='atl-nav-pop';
+  document.body.appendChild(mask); document.body.appendChild(pop);
+}
+function showNav(stageId){
+  ensurePopup();
+  var c=NAV_CARDS[stageId]; if(!c){closeNav();return;}
+  pop.innerHTML='<button class="nav-x" onclick="window.__atlCloseNav()">✕</button>'
+    +'<div class="sn-pos">'+c.pos+'</div>'
+    +'<div style="margin-top:8px"><b>本階段目的：</b>'+c.purpose+'</div>'
+    +'<div><b>做到什麼程度：</b>'+c.scope+'</div>'
+    +'<div><b>可以產出：</b>'+c.output+'</div>'
+    +'<div><b>下一步：</b>'+c.next+'</div>';
+  mask.classList.add('show'); pop.classList.add('show');
+}
+function closeNav(){ if(mask)mask.classList.remove('show'); if(pop)pop.classList.remove('show'); }
+window.__atlShowNav=showNav;
+window.__atlCloseNav=closeNav;
+
+/* 在每個階段的閉環視角那一排加「本階段導覽」按鈕 */
+var NAV_IC='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>';
+function addNavButtons(){
+  ['stage1','stage2','stage3','stageRoute','stage4','stage5','stage6','stageProd','stage7'].forEach(function(sid){
+    var v=document.getElementById('view-'+sid); if(!v) return;
+    if(v.querySelector('.atl-nav-btn')) return;
+    /* 找閉環視角那一排（cpb-more area）或 page-head */
+    var target=v.querySelector('.cpb-more')||v.querySelector('.page-head')||v.firstElementChild;
+    if(!target) return;
+    var btn=document.createElement('button'); btn.type='button'; btn.className='atl-nav-btn';
+    btn.innerHTML=NAV_IC+' 本階段導覽';
+    btn.onclick=function(e){ e.stopPropagation(); showNav(sid); };
+    /* 放在 target 的最後面或旁邊 */
+    if(target.classList.contains('page-head')){
+      target.style.display='flex'; target.style.alignItems='center'; target.style.flexWrap='wrap'; target.style.gap='8px';
+      target.appendChild(btn);
+    } else {
+      target.parentNode.insertBefore(btn,target.nextSibling);
+    }
+  });
+}
+
+/* 進度 7→9（客戶進度歸檔卡的圓點）*/
+function updateProgress(){
+  document.querySelectorAll('.cpb-progress,.cpb-stage').forEach(function(el){
+    var t=el.textContent||'';
+    if(t.indexOf('七階段')>=0) el.textContent=t.replace('七階段','九階段');
+    if(t.indexOf('7 階段')>=0) el.textContent=t.replace('7 階段','9 階段');
+  });
+  /* 歸檔卡的「前往 ⑦」改成「前往 ⑨」*/
+  document.querySelectorAll('.cpb-next,.cpb-kicker').forEach(function(el){
+    var t=el.textContent||'';
+    if(t.indexOf('⑦ 交付')>=0) el.textContent=t.replace('⑦ 交付','⑨ 交付復盤');
+  });
+}
+
+function boot(){
+  addNavButtons(); updateProgress();
+  setInterval(function(){ addNavButtons(); updateProgress(); },3000);
 }
 if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',boot); else boot();
 })();
