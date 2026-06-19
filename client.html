@@ -767,7 +767,7 @@ details.cat summary .cat-name{vertical-align:middle}
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">客戶服務台</span></span>
-    <span id="verBadge">cs-v7.09</span>
+    <span id="verBadge">cs-v7.10</span>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button type="button" id="atlSpecBtn" class="popout-btn" title="規格模式"></button>
@@ -10035,7 +10035,7 @@ button:not(:disabled), .btn:not(.disabled):not([disabled]), [role="button"]{
   if(window.__atlCs473Continuity) return; window.__atlCs473Continuity=true;
   function cleanTextNode(n){var s=n.nodeValue||''; var ns=s.replace(/cs-v4\.\d+\s*(SAFE|LATEST)?\s*[｜|·:-]?\s*/g,'').replace(/\bv\d{3}\s*[｜|·:-]?\s*/g,''); if(ns!==s)n.nodeValue=ns;}
   function cleanVersions(){
-    try{var vb=document.getElementById('verBadge'); if(vb)vb.textContent='cs-v7.09';}catch(e){}
+    try{var vb=document.getElementById('verBadge'); if(vb)vb.textContent='cs-v7.10';}catch(e){}
     try{var w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT,{acceptNode:function(n){var p=n.parentElement; if(!p||p.id==='verBadge'||/^(SCRIPT|STYLE|TEXTAREA)$/i.test(p.tagName))return NodeFilter.FILTER_REJECT; return /(cs-v4\.\d+|\bv\d{3})/.test(n.nodeValue||'')?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_REJECT;}}); var nodes=[],n; while(n=w.nextNode())nodes.push(n); nodes.forEach(cleanTextNode);}catch(e){}
   }
   function alignSelection(){
@@ -10095,7 +10095,7 @@ input[type="text"]:focus,input:not([type]):focus{border-color:#D4A574!important;
     btn.onclick=function(e){e.stopPropagation(); set(!safe.classList.contains('atl-safe474-collapsed'));};
     h.appendChild(summary); h.appendChild(btn); set(localStorage.getItem('atl.cs474.safeCollapsed')!=='0');
   }
-  function cleanBadge(){ var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v7.09'; }
+  function cleanBadge(){ var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v7.10'; }
   function run(){ cleanBadge(); ensureSafeCollapse(); wireAutogrow(document); }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run); else run();
   setInterval(run,1200);
@@ -10156,7 +10156,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
   function wire(root){qsa('textarea,input[type="text"],input[type="url"],input[type="email"],input:not([type])',root||document).forEach(function(el){if(el.__atl475)return; if(el.closest('.atl-field-modal,.atl-final-modal'))return; el.__atl475=true; el.addEventListener('focus',function(){show(el); autogrow(el)}); el.addEventListener('input',function(){autogrow(el)}); el.addEventListener('blur',hideSoon); autogrow(el);});}
   document.addEventListener('click',function(e){var b=e.target.closest('#atlFieldToolbar button'); if(!b||!active)return; var a=b.getAttribute('data-act'); if(a==='prompt')openModal('prompt',active); if(a==='fill')openModal('fill',active); if(a==='edit')openModal('edit',active); if(a==='done'){var bar=qs('#atlFieldToolbar'); if(bar)bar.classList.remove('on'); if(active)active.classList.remove('atl-field-active'); toastSafe('此欄位可視為定案，請記得儲存');}},true);
   function addCollapse(root){qsa('.section-card,.deliverable-card,.atl452safe-card',root||document).forEach(function(card){if(card.__atlCollapse475||card.closest('.preview-modal,.atl-field-modal'))return; card.__atlCollapse475=true; card.classList.add('atl-collapsible'); var h=qs('h2,h3,h4,.stitle,.section-title',card)||card.firstElementChild; if(h)h.classList.add('atl-keep-visible'); var btn=document.createElement('button'); btn.type='button'; btn.className='atl-collapse-toggle'; btn.textContent='收合'; btn.addEventListener('click',function(e){e.preventDefault(); e.stopPropagation(); var closed=card.classList.toggle('atl-closed'); btn.textContent=closed?'展開':'收合';}); card.insertBefore(btn,card.firstChild);});}
-  function boot(){try{var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v7.09';}catch(e){} wire(document); addCollapse(document);}
+  function boot(){try{var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v7.10';}catch(e){} wire(document); addCollapse(document);}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot); else boot();
   try{new MutationObserver(function(ms){var hit=false; ms.forEach(function(m){if(m.addedNodes&&m.addedNodes.length)hit=true}); if(hit){clearTimeout(window.__atl475Timer); window.__atl475Timer=setTimeout(boot,180);}}).observe(document.body,{childList:true,subtree:true});}catch(e){}
 })();
@@ -10197,7 +10197,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
 <script id="atl478-final-export-js">
 (function(){
   if(window.__atl478FinalExport)return; window.__atl478FinalExport=true;
-  var VERSION='cs-v7.09';
+  var VERSION='cs-v7.10';
   function esc(s){return (s==null?'':String(s)).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
   function qsa(sel,root){return Array.prototype.slice.call((root||document).querySelectorAll(sel))}
   function text(el){return (el&&el.innerText||el&&el.textContent||'').replace(/\s+/g,' ').trim()}
@@ -10317,7 +10317,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
 <script>
 (function(){
   if(window.__atlCs480) return; window.__atlCs480=true;
-  var V='cs-v7.09';
+  var V='cs-v7.10';
   function lock(){ var vb=document.getElementById('verBadge'); if(vb && (vb.textContent||'').trim()!==V) vb.textContent=V; }
   function unify(){
     var safe=document.querySelector('.atl452safe'); if(!safe) return;
@@ -11265,7 +11265,7 @@ input.atl477-open-field:not([type="checkbox"]):not([type="radio"]):not([type="bu
 <script id="atl-cs477-final-touch">
 (function(){
   if(window.__atlCs477FinalTouch) return; window.__atlCs477FinalTouch=true;
-  var VERSION='cs-v7.09';
+  var VERSION='cs-v7.10';
   function qs(s,r){return (r||document).querySelector(s)}
   function qsa(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
   function setVersion(){try{var b=qs('#verBadge'); if(b)b.textContent=VERSION; window.ATELIER_CLIENT_VERSION=VERSION;}catch(e){}}
@@ -18275,6 +18275,15 @@ try{ window.__atl632=true; }catch(e){}
 })();
 </script>
 
+<style id="atl-cs710-aibtn">
+/* cs-v7.10:所有「AI 智能」鈕一律比照①初診基底 .btn-sf(12px / padding 6×15)。
+   建檔②/問診原用較小的 .s2-ai-inline(11.5px/4×12)、.mkb-aitog 行內(11.5px/4×12)＝看起來偏小;統一放大成初診尺寸。 */
+.btn-sf.s2-ai-inline,
+.btn-sf.cat-ai-inline,
+.btn-sf.s1feed-ai,
+.btn-sf.mkb-aitog{ font-size:12px !important; padding:6px 15px !important; }
+</style>
+
 <style id="atl-spec-style">
 #atlSpecBtn{display:inline-flex;align-items:center;gap:5px}
 #atlSpecBtn.on{background:#A51820 !important;color:#fff !important;-webkit-text-fill-color:#fff !important;border-color:#A51820 !important}
@@ -18318,9 +18327,10 @@ body.atl-spec-on .atl-spec-selected{outline:2.5px solid #A51820 !important;outli
     x:'<path d="M6 6l12 12M18 6L6 18"/>'
   };
   function ico(n,s){ s=s||13; return '<svg width="'+s+'" height="'+s+'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;flex:0 0 auto">'+(IC[n]||'')+'</svg>'; }
-  var SPEC_VER='spec-v1.4';
+  var SPEC_VER='spec-v1.5';
   var CHANGELOG=[
-    ['spec-v1.4','規格模式下「展開類按鈕會真的展開」了（AI 智能／收合／ⓘ／details）——面板打開後，裡面的框框你就點得到、也能複製給我；fallback 多了「我的指示模板」，即使元件是錯的、沒規格，你也能複製一段「要移除／改成X／照哪個正版」直接貼給我。'],
+    ['spec-v1.5','找到①初診 AI 智能的真正規格＝純 .btn-sf 基底（12px/padding 6×15，第4322行）＝新標準；建檔②/問診原本用較小的 .s2-ai-inline(11.5px/4×12)＝確實比初診小，cs-v7.10 已全部放大統一成初診尺寸。'],
+    ['spec-v1.4','規格模式下展開類按鈕會真的展開；fallback 加「我的指示模板」。'],
     ['spec-v1.3','規格模式合併進 client.html；更正 .s1feed-ai 規格（隱藏為 scoped）。'],
     ['spec-v1.2','合併成單一可上線檔；規格鈕嵌入頂列右側；所有符號改自畫 SVG（不用 emoji）；版本顯示在「規格」鈕上。'],
     ['spec-v1.1','規格模式下分頁/導覽可真的切換；流程導覽列改「步數依站而定」（初診=4步 .atl-flow、問診=5步 .s2-topflow）；新增分頁內容區命名；fallback 多顯示所在站/分頁。'],
@@ -18346,7 +18356,7 @@ body.atl-spec-on .atl-spec-selected{outline:2.5px solid #A51820 !important;outli
   function doCopy(text){ if(!text){ return; } try{ if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(text).then(function(){ specToast('已複製，可貼給 AI'); },function(){ _fallbackCopy(text); }); } else { _fallbackCopy(text); } }catch(e){ _fallbackCopy(text); } }
   var SPEC=[
     ['__tokens',{t:'設計總則｜Design Tokens（色票・字體・全域）',r:[
-      ['版本','目前＝<b>spec-v1.4</b>（版本也顯示在右上「規格」鈕上；點提示框的「更新紀錄」看完整歷史）'],
+      ['版本','目前＝<b>spec-v1.5</b>（版本也顯示在右上「規格」鈕上；點提示框的「更新紀錄」看完整歷史）'],
       ['⚠ 本檔提醒','cs-v7.06 由 <code>cs-v410</code>→<code>cs-v658</code> 一百多層 &lt;style&gt; 疊成，最終樣式＝最新覆寫層＋!important。以下數值均對照實際生效層，標 ⚠ 者為與舊規格不符、已更正。'],
       ['主紅 rouge',SW+'#A51820"></span><code>--rouge / --primary</code> #A51820｜深一階 hover '+SW+'#7A1018"></span><code>--rouge-soft</code> #7A1018'],
       ['金 gold',SW+'#D4A574"></span><code>--gold</code> #D4A574｜深金 '+SW+'#9C7D4A"></span><code>--gold-dark</code> #9C7D4A｜淡金框 '+SW+'#EDE3D4"></span>#EDE3D4'],
@@ -18423,15 +18433,15 @@ body.atl-spec-on .atl-spec-selected{outline:2.5px solid #A51820 !important;outli
       ['真正停用','浮動 chip <code>.atl-fai-chip</code> / <code>.atl-uai-chip</code> 才是整顆 display:none。'],
       ['等同','它跟 <code>.btn-sf.s2-ai-inline</code> 同一個「靠左小膠囊」角色（見下一條 .btn-sf）。新階段 AI 鈕照這顆。']
     ]}],
-    ['.btn-sf',{t:'AI 智能鈕（現役正版）｜.btn-sf（＋ s2-ai-inline / cat-ai-inline）',r:[
-      ['class','<code>.btn-sf</code>＝現行所有「AI 智能」inline 鈕的底；建檔/問診加 <code>.s2-ai-inline</code>、賣點類加 <code>.cat-ai-inline</code>'],
-      ['樣式','<b>紅底白字</b> bg '+SW+'#A51820"></span>#A51820、border 1px #A51820、radius 999px、padding 6×15、font 12px/800、inline-flex gap 5（cs-v0 第634行）'],
-      ['修飾尺寸','<code>.s2-ai-inline</code> 11.5–12.5px、padding 4×12；<code>.cat-ai-inline</code> 12px、padding 6×14'],
+    ['.btn-sf',{t:'AI 智能鈕（標準＝①初診基底）｜.btn-sf',r:[
+      ['⚠ 標準','<b>所有「AI 智能」鈕一律比照①初診</b>＝純 <code>.btn-sf</code> 基底（第634行）：<b>font 12px、padding 6×15</b>。初診那顆在資料核對清單卡頂（第4322行，純 .btn-sf＋data-sf-btn，無縮小修飾）。'],
+      ['樣式','<b>紅底白字</b> bg '+SW+'#A51820"></span>#A51820、border 1px #A51820、radius 999px、padding 6×15、font 12px/800、inline-flex gap 5、icon ICN.prompt'],
+      ['⚠ 已統一放大','建檔②原用 <code>.s2-ai-inline</code>(11.5px/4×12)、問診脈絡/問答用行內(11.5px/4×12)＝<b>都比初診小一圈</b>；<b>cs-v7.10 已用 CSS 全部放大回 12px/6×15</b>，跟初診一致。'],
       ['位置','靠最左，與全選（最右）同一排'],
-      ['hover','底轉淡紅 '+SW+'#FBEDED"></span>#FBEDED、框紅（cs-v528）'],
+      ['hover','底轉淡紅 '+SW+'#FBEDED"></span>#FBEDED、框紅'],
       ['行為','點→開啟 AI 動作面板（出題/擬答/解析…）'],
-      ['點開呈現','展開為置中視窗 <code>.atl-aip-sheet</code>：寬 640px(max 94vw)、max-height 88vh、白底 #FDFBF8、radius 16、padding 24、大陰影；頂部金色 kicker <code>.k</code>；內含動作步驟 <code>.atl-aip-step</code>＋「複製 <code>.atl-aip-copy</code>／套用 <code>.atl-aip-apply</code>／關閉 <code>.atl-aip-x</code>」。<b>要 AI 一併做這個展開面板時，指名 .atl-aip-sheet。</b>'],
-      ['溝通建議','要 AI 智能鈕＝指名 <code>.btn-sf.s2-ai-inline</code>（靠左），別再用已停用的 .s1feed-ai / .atl-fai-chip']
+      ['點開呈現','展開為置中視窗 <code>.atl-aip-sheet</code>／<code>.hcmp-paper</code>：白底、radius 16、大陰影、三步驟（產生提示詞→貼回匯入→套用）。要 AI 一併做展開面板時指名它。'],
+      ['溝通建議','要新的 AI 智能鈕＝<b>照初診純 .btn-sf（12px/6×15）</b>，別再用縮小的 .s2-ai-inline，也別用已停用的 .atl-fai-chip']
     ]}],
     ['.atl-cksel-fine',{t:'全選鈕｜.atl-cksel-fine',r:[
       ['class','<code>.atl-cksel-fine</code>'],
