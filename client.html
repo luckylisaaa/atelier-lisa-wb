@@ -767,7 +767,7 @@ details.cat summary .cat-name{vertical-align:middle}
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">客戶服務台</span></span>
-    <span id="verBadge">cs-v7.13</span>
+    <span id="verBadge">cs-v7.14</span>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button type="button" id="atlSpecBtn" class="popout-btn" title="規格模式"></button>
@@ -2665,10 +2665,11 @@ function renderStage3(){
     +'<div class="fld"><label>（選填）想讓 AI 一起參考的資料</label><textarea id="s3extra" placeholder="例如：客戶官網連結、主力服務、之前聊到的重點…（沒有也可留空）"></textarea></div>'
     +'<div class="s2-ai-actions">'
     +'<button class="btn btn-gold s2-ai-btn" onclick="buildStage3Prompt()">'+ICN.prompt+'<span class="btn-2l"><span>產生問診提綱</span><span class="btn-sub">帶入建檔背景 → 請 AI 出客製題</span></span></button>'
-    +'<button class="btn btn-ghost s2-ai-btn" onclick="buildStage3DraftPrompt()">'+ICN.prompt+'<span class="btn-2l"><span>補缺漏 → 問 AI</span><span class="btn-sub">請 AI 先替勾選的題擬答當底稿</span></span></button>'
+    +'<button class="btn btn-go s2-ai-btn" onclick="buildStage3DraftPrompt()">'+ICN.prompt+'<span class="btn-2l"><span>產生訪談提示詞</span><span class="btn-sub">問當事人 → AI 整理成回答</span></span></button>'
+    +'<button class="btn btn-ghost s2-ai-btn" onclick="window.s3QaMissing&&s3QaMissing()">'+ICN.prompt+'<span class="btn-2l"><span>補缺漏欄位 → 問 AI</span><span class="btn-sub">帶入已填的題目請 AI 補齊</span></span></button>'
     +'</div>'
     +'<div class="fld" style="margin-top:12px"><label>把 AI 擬好的初稿貼回這裡</label><textarea class="paste-box" id="s3draft" placeholder="貼回「第1題：… / 第2題：…」那整段…"></textarea></div>'
-    +'<div class="s2parse-row" style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:4px"><button class="btn btn-go" onclick="parseStage3Draft()">解析並回填 10 題</button></div>'
+    +'<div class="s2parse-row" style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:4px"><button class="btn btn-go" onclick="parseStage3Draft()">解析並回填問診紀錄</button><button class="btn btn-ghost atl-cite-btn" style="margin-left:auto" onclick="window.__atlCleanCite&&window.__atlCleanCite(\'#s3qaWrap\')">✓ 清掉來源標記</button></div>'
     +'<div id="s3parseMsg" style="font-size:12px;margin-top:8px;line-height:1.7"></div>'
     +'</div>'
     +'<div class="sc-note" style="margin-top:0">逐題記錄客戶回答；每題前可勾選要不要納入 AI／交付。</div>'
@@ -2923,7 +2924,7 @@ function s3xSave(arr){ var a=curAcc(); if(!a) return; a.stage3Extra=arr; a.updat
 function s3xReadDOM(){ var host=document.getElementById('s3x9-host'); if(!host) return null; var items=[]; [].forEach.call(host.querySelectorAll('.s3x-item'),function(it){ var q=((it.querySelector('.s3x-q')||{}).value||'').trim(); var an=((it.querySelector('.s3x-a')||{}).value||'').trim(); items.push({q:q,a:an}); }); return items; }
 function s3xSyncFromDOM(){ var items=s3xReadDOM(); if(items) s3xSave(items); }
 window.s3xRender=function(){ var host=document.getElementById('s3x9-host'); if(!host) return; var items=s3xGet();
-  var head='<div class="s1feed-seg v-e" style="margin-top:16px"><div class="s3rec-h"><span class="s1feed-seg-t">❾ 額外項目 · 訪談題庫</span><button type="button" class="atl-cksel-fine" style="margin-left:auto" onclick="s1ScopeAll(this,\'#s3x9-list\')" title="全選／全部取消">'+_S2_IC_ALL+'全選</button></div>'
+  var head='<div class="s1feed-seg v-e" style="margin-top:16px"><div class="s3rec-h"><span class="s1feed-seg-t">⑪ 額外項目 · 訪談題庫</span><button type="button" class="atl-cksel-fine" style="margin-left:auto" onclick="s1ScopeAll(this,\'#s3x9-list\')" title="全選／全部取消">'+_S2_IC_ALL+'全選</button></div>'
     +'<div class="sc-note" style="margin:0 0 10px">八大類與 10 題之外、這位客戶獨有的追問或題庫放這裡。流程：按「產生訪談題庫提示詞」→ 問當事人 → 貼回下面 → 按「解析並歸檔」自動變項目；或直接「＋ 新增一項」。</div>'
     +'<div class="x9-airow"><button type="button" class="btn btn-ghost" onclick="s3xPrompt()">'+ICN.prompt+' 產生訪談題庫提示詞</button><button type="button" class="btn btn-ghost" onclick="s3xAdd()">＋ 新增一項</button></div>'
     +'<textarea class="s3x-paste" placeholder="把 AI 整理好的題庫整段貼進來（一行一題：主題：內容），再按下面解析…"></textarea>'
@@ -8576,11 +8577,12 @@ details.ovBlock > summary .ovx-tag.has{color:#9C7D4A}
       +'<div class="sc-note" style="margin-top:0">讓 AI 幫你擬商業脈絡問診，貼回下面自動分欄到各欄位。</div>'
       +'<div class="fld"><label>（選填）想讓 AI 一起參考的資料</label><textarea class="mkb-ref" placeholder="例如：客戶官網連結、主力服務、之前聊到的重點…（沒有也可留空）"></textarea></div>'
       +'<div class="s2-ai-actions">'
-      +'<button type="button" class="btn btn-gold s2-ai-btn" data-act="ai">'+spark+'<span class="btn-2l"><span>查看／複製 AI 問診提示詞</span><span class="btn-sub">讓 AI 幫你擬商業脈絡 → 貼回自動分欄</span></span></button>'
-      +'<button type="button" class="btn btn-ghost s2-ai-btn" data-act="miss">'+spark+'<span class="btn-2l"><span>補缺漏 → 問 AI</span><span class="btn-sub">帶入已填的欄位請 AI 補齊空的</span></span></button>'
+      +'<button type="button" class="btn btn-gold s2-ai-btn" data-act="ai">'+spark+'<span class="btn-2l"><span>產生問診提示詞</span><span class="btn-sub">AI 查公開資料擬商業脈絡</span></span></button>'
+      +'<button type="button" class="btn btn-go s2-ai-btn" data-act="interview">'+spark+'<span class="btn-2l"><span>產生訪談提示詞</span><span class="btn-sub">問當事人 → AI 整理成分欄</span></span></button>'
+      +'<button type="button" class="btn btn-ghost s2-ai-btn" data-act="miss">'+spark+'<span class="btn-2l"><span>補缺漏欄位 → 問 AI</span><span class="btn-sub">帶入已填的欄位請 AI 補齊空的</span></span></button>'
       +'</div>'
       +'<div class="fld" style="margin-top:12px"><label>把 AI 回覆貼回這裡</label><textarea class="mkb-paste paste-box" placeholder="把 AI 回覆貼這裡 → 按下面自動分欄…"></textarea></div>'
-      +'<div class="s2parse-row" style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:4px"><button type="button" class="btn btn-go" data-act="parse">貼回自動分欄</button></div>'
+      +'<div class="s2parse-row" style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:4px"><button type="button" class="btn btn-go" data-act="parse">解析並填入行銷問診卡</button><button type="button" class="btn btn-ghost atl-cite-btn" style="margin-left:auto" onclick="window.__atlCleanCite&&window.__atlCleanCite(\'[data-mktbrief]\')">✓ 清掉來源標記</button></div>'
       +'</div>'
       +'<div class="mkb-items">'+items+'</div>'
       +'<div class="mkb-foot"><button type="button" class="mkb-foot-btn ghost" data-act="hist">'+(ICN.history||'⟲')+' 歷史版本</button><span class="mkb-foot-r"><button type="button" class="mkb-foot-btn" data-act="save">儲存此版</button><button type="button" class="mkb-foot-btn ghost" data-act="clear">清除此版</button></span></div>';
@@ -10040,7 +10042,7 @@ button:not(:disabled), .btn:not(.disabled):not([disabled]), [role="button"]{
   if(window.__atlCs473Continuity) return; window.__atlCs473Continuity=true;
   function cleanTextNode(n){var s=n.nodeValue||''; var ns=s.replace(/cs-v4\.\d+\s*(SAFE|LATEST)?\s*[｜|·:-]?\s*/g,'').replace(/\bv\d{3}\s*[｜|·:-]?\s*/g,''); if(ns!==s)n.nodeValue=ns;}
   function cleanVersions(){
-    try{var vb=document.getElementById('verBadge'); if(vb)vb.textContent='cs-v7.13';}catch(e){}
+    try{var vb=document.getElementById('verBadge'); if(vb)vb.textContent='cs-v7.14';}catch(e){}
     try{var w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT,{acceptNode:function(n){var p=n.parentElement; if(!p||p.id==='verBadge'||/^(SCRIPT|STYLE|TEXTAREA)$/i.test(p.tagName))return NodeFilter.FILTER_REJECT; return /(cs-v4\.\d+|\bv\d{3})/.test(n.nodeValue||'')?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_REJECT;}}); var nodes=[],n; while(n=w.nextNode())nodes.push(n); nodes.forEach(cleanTextNode);}catch(e){}
   }
   function alignSelection(){
@@ -10100,7 +10102,7 @@ input[type="text"]:focus,input:not([type]):focus{border-color:#D4A574!important;
     btn.onclick=function(e){e.stopPropagation(); set(!safe.classList.contains('atl-safe474-collapsed'));};
     h.appendChild(summary); h.appendChild(btn); set(localStorage.getItem('atl.cs474.safeCollapsed')!=='0');
   }
-  function cleanBadge(){ var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v7.13'; }
+  function cleanBadge(){ var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v7.14'; }
   function run(){ cleanBadge(); ensureSafeCollapse(); wireAutogrow(document); }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run); else run();
   setInterval(run,1200);
@@ -10161,7 +10163,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
   function wire(root){qsa('textarea,input[type="text"],input[type="url"],input[type="email"],input:not([type])',root||document).forEach(function(el){if(el.__atl475)return; if(el.closest('.atl-field-modal,.atl-final-modal'))return; el.__atl475=true; el.addEventListener('focus',function(){show(el); autogrow(el)}); el.addEventListener('input',function(){autogrow(el)}); el.addEventListener('blur',hideSoon); autogrow(el);});}
   document.addEventListener('click',function(e){var b=e.target.closest('#atlFieldToolbar button'); if(!b||!active)return; var a=b.getAttribute('data-act'); if(a==='prompt')openModal('prompt',active); if(a==='fill')openModal('fill',active); if(a==='edit')openModal('edit',active); if(a==='done'){var bar=qs('#atlFieldToolbar'); if(bar)bar.classList.remove('on'); if(active)active.classList.remove('atl-field-active'); toastSafe('此欄位可視為定案，請記得儲存');}},true);
   function addCollapse(root){qsa('.section-card,.deliverable-card,.atl452safe-card',root||document).forEach(function(card){if(card.__atlCollapse475||card.closest('.preview-modal,.atl-field-modal'))return; card.__atlCollapse475=true; card.classList.add('atl-collapsible'); var h=qs('h2,h3,h4,.stitle,.section-title',card)||card.firstElementChild; if(h)h.classList.add('atl-keep-visible'); var btn=document.createElement('button'); btn.type='button'; btn.className='atl-collapse-toggle'; btn.textContent='收合'; btn.addEventListener('click',function(e){e.preventDefault(); e.stopPropagation(); var closed=card.classList.toggle('atl-closed'); btn.textContent=closed?'展開':'收合';}); card.insertBefore(btn,card.firstChild);});}
-  function boot(){try{var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v7.13';}catch(e){} wire(document); addCollapse(document);}
+  function boot(){try{var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v7.14';}catch(e){} wire(document); addCollapse(document);}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot); else boot();
   try{new MutationObserver(function(ms){var hit=false; ms.forEach(function(m){if(m.addedNodes&&m.addedNodes.length)hit=true}); if(hit){clearTimeout(window.__atl475Timer); window.__atl475Timer=setTimeout(boot,180);}}).observe(document.body,{childList:true,subtree:true});}catch(e){}
 })();
@@ -10202,7 +10204,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
 <script id="atl478-final-export-js">
 (function(){
   if(window.__atl478FinalExport)return; window.__atl478FinalExport=true;
-  var VERSION='cs-v7.13';
+  var VERSION='cs-v7.14';
   function esc(s){return (s==null?'':String(s)).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
   function qsa(sel,root){return Array.prototype.slice.call((root||document).querySelectorAll(sel))}
   function text(el){return (el&&el.innerText||el&&el.textContent||'').replace(/\s+/g,' ').trim()}
@@ -10322,7 +10324,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
 <script>
 (function(){
   if(window.__atlCs480) return; window.__atlCs480=true;
-  var V='cs-v7.13';
+  var V='cs-v7.14';
   function lock(){ var vb=document.getElementById('verBadge'); if(vb && (vb.textContent||'').trim()!==V) vb.textContent=V; }
   function unify(){
     var safe=document.querySelector('.atl452safe'); if(!safe) return;
@@ -11270,7 +11272,7 @@ input.atl477-open-field:not([type="checkbox"]):not([type="radio"]):not([type="bu
 <script id="atl-cs477-final-touch">
 (function(){
   if(window.__atlCs477FinalTouch) return; window.__atlCs477FinalTouch=true;
-  var VERSION='cs-v7.13';
+  var VERSION='cs-v7.14';
   function qs(s,r){return (r||document).querySelector(s)}
   function qsa(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
   function setVersion(){try{var b=qs('#verBadge'); if(b)b.textContent=VERSION; window.ATELIER_CLIENT_VERSION=VERSION;}catch(e){}}
@@ -18289,34 +18291,89 @@ try{ window.__atl632=true; }catch(e){}
 .btn-sf.mkb-aitog{ font-size:12px !important; padding:6px 15px !important; }
 </style>
 
-<script id="atl-cs712-mkbmiss">
-/* cs-v7.12:脈絡 行銷問診卡「補缺漏→問AI」鈕(data-act="miss")——抓空欄位產生補齊提示詞 */
+<script id="atl-cs714-mkb-3btn">
+/* cs-v7.14:脈絡 行銷問診卡 三按鈕事件綁定（產生問診提示詞/產生訪談提示詞/補缺漏） + 清掉來源標記 */
 (function(){
+  if(window.__atlMkb3) return; window.__atlMkb3=true;
   function wire(){
     document.querySelectorAll('[data-mktbrief]').forEach(function(box){
-      var mb=box.querySelector('[data-act="miss"]'); if(!mb||mb.__wired) return; mb.__wired=true;
-      mb.onclick=function(e){ e.stopPropagation();
-        try{
-          var rows=[].slice.call(box.querySelectorAll('textarea[data-mk]'));
-          var empty=[],filled=[];
+      /* 產生訪談提示詞 */
+      var iv=box.querySelector('[data-act="interview"]'); if(iv&&!iv.__w){ iv.__w=1;
+        iv.onclick=function(e){ e.stopPropagation(); var a=(typeof curAcc==='function')?curAcc():null; if(!a){toast&&toast('尚未選定客戶');return;}
+          var p='請幫客戶「'+(a.displayName||a.handle||'')+'」（'+(a.industry||'產業未填')+'）設計一份「行銷問診訪談提綱」—— 針對商業脈絡（誰會買×賣什麼×看完去哪×憑什麼信），出 8-12 個訪談問題。\n每題用「欄位名稱：問題」格式，方便我貼回自動分欄。';
+          if(typeof copyPrompt==='function') copyPrompt(p,'行銷問診·訪談提示詞'); else {try{navigator.clipboard.writeText(p);toast&&toast('已複製');}catch(_){}}
+        };
+      }
+      /* 補缺漏 */
+      var mb=box.querySelector('[data-act="miss"]'); if(mb&&!mb.__w){ mb.__w=1;
+        mb.onclick=function(e){ e.stopPropagation();
+          var rows=[].slice.call(box.querySelectorAll('textarea[data-mk]')); var empty=[],filled=[];
           rows.forEach(function(ta){ var k=ta.getAttribute('data-mk')||''; var v=(ta.value||'').trim(); if(!v) empty.push(k); else filled.push(k+': '+v); });
           var a=(typeof curAcc==='function')?curAcc():null; var nm=a?(a.displayName||a.handle||''):'';
-          var p='請幫客戶「'+nm+'」補齊「行銷問診卡」還沒填的欄位（影片看不到的商業資訊：誰會買、賣什麼、看完去哪、憑什麼信）。\n\n已填：\n'+(filled.length?filled.join('\n'):'（都沒填）')+'\n\n待補：\n'+(empty.length?empty.map(function(x){return x+'：';}).join('\n'):'（都填了，請挑可更精準的欄位給更好寫法）')+'\n\n每一欄給 1-2 句具體建議，格式「欄位名稱：內容」，方便我貼回自動分欄。';
-          if(typeof copyPrompt==='function') copyPrompt(p,'行銷問診·補缺漏');
-          else { try{ navigator.clipboard.writeText(p); if(typeof toast==='function') toast('已複製'); }catch(_){} }
-        }catch(err){ console.error(err); }
-      };
+          var p='請幫客戶「'+nm+'」補齊「行銷問診卡」還沒填的欄位。\n\n已填：\n'+(filled.length?filled.join('\n'):'（都沒填）')+'\n\n待補：\n'+(empty.length?empty.map(function(x){return x+'：';}).join('\n'):'（都填了）')+'\n\n每一欄給 1-2 句，格式「欄位名稱：內容」。';
+          if(typeof copyPrompt==='function') copyPrompt(p,'行銷問診·補缺漏'); else {try{navigator.clipboard.writeText(p);toast&&toast('已複製');}catch(_){}}
+        };
+      }
     });
   }
   wire(); setInterval(wire,1200);
-  try{ new MutationObserver(function(){wire();}).observe(document.documentElement,{childList:true,subtree:true}); }catch(e){}
+  try{new MutationObserver(function(){wire();}).observe(document.documentElement,{childList:true,subtree:true});}catch(e){}
 })();
 </script>
 
-<script id="atl-cs713-s3x9mkb">
-/* cs-v7.13:③問診 脈絡頁也放⑨額外項目卡（比照問答頁，共用 a.stage3Extra 資料）。
-   問答頁的 #s3x9-host 由原本的 s3xRender 負責；脈絡頁的 #s3x9-mkb 由這個 addon 獨立渲染。
-   兩邊編輯後都寫回同一份 a.stage3Extra，切頁時自動刷新。 */
+<script id="atl-cs714-qa-miss">
+/* cs-v7.14:問答頁「補缺漏→問AI」 */
+window.s3QaMissing=function(){
+  var a=(typeof curAcc==='function')?curAcc():null; if(!a){toast&&toast('尚未選定客戶');return;}
+  var qs=document.querySelectorAll('#s3qaWrap textarea'); var empty=[],filled=[];
+  [].forEach.call(qs,function(ta){ var lab=''; try{var r=ta.closest('.p2-fld-row')||ta.closest('.fld'); if(r){var l=r.querySelector('label,.p2-fld-body>b'); lab=l?(l.textContent||'').trim():'';}}catch(e){} var v=(ta.value||'').trim(); if(!v) empty.push(lab||'(未標)'); else filled.push((lab||'?')+': '+v.slice(0,60)); });
+  var p='請幫客戶「'+(a.displayName||a.handle||'')+'」補齊問診紀錄還沒填的題目。\n\n已填：\n'+(filled.length?filled.join('\n'):'（都沒填）')+'\n\n待補：\n'+(empty.length?empty.map(function(x){return x+'：';}).join('\n'):'（都填了）')+'\n\n每題給 1-2 句，格式「題目：回答」。';
+  if(typeof copyPrompt==='function') copyPrompt(p,'問診紀錄·補缺漏'); else {try{navigator.clipboard.writeText(p);toast&&toast('已複製');}catch(_){}}
+};
+</script>
+
+<script id="atl-cs714-cleancite">
+/* cs-v7.14:問診頁通用「清掉來源標記」 */
+window.__atlCleanCite=function(scope){
+  try{
+    var root=document.querySelector(scope); if(!root) return;
+    root.querySelectorAll('textarea,input[type="text"]').forEach(function(el){
+      var v=el.value||''; var nv=v.replace(/\s*\(\[.*?\]\[\d+\]\)/g,'').replace(/\s*\[\d+\]/g,'').replace(/\s+/g,' ').trim();
+      if(nv!==v){ el.value=nv; try{el.dispatchEvent(new Event('input',{bubbles:true}));}catch(e){} }
+    });
+    if(typeof toast==='function') toast('已清掉來源標記');
+  }catch(e){}
+};
+</script>
+
+<script id="atl-cs714-trio">
+/* cs-v7.14:③問診 問答頁問診紀錄卡＋脈絡頁行銷問診卡 底部加三膠囊(歷史/儲存/清除) */
+(function(){
+  if(window.__atlTrio714) return; window.__atlTrio714=true;
+  var IC_H='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v5h5"/><path d="M3.05 13A9 9 0 1 0 6 5.3L3 8"/><path d="M12 7v5l4 2"/></svg>';
+  var IC_S='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8M7 3v5h8"/></svg>';
+  var IC_X='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2m2 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg>';
+  function addTrio(card,saveF,clearF,label){
+    if(!card||card.querySelector('.cat-actions')) return;
+    var d=document.createElement('div'); d.className='cat-actions';
+    d.innerHTML='<button type="button" class="cat-hist" onclick="toast&&toast(\'每次儲存都會自動暫存同步。\')">'+IC_H+'歷史版本</button>'
+      +'<button type="button" class="cat-save" onclick="'+saveF+'">'+IC_S+'儲存此版</button>'
+      +'<button type="button" class="cat-clear" onclick="'+clearF+'">'+IC_X+'清除此版</button>';
+    card.appendChild(d);
+  }
+  function inject(){
+    /* 問答頁問診紀錄卡 */
+    var qaCard=document.querySelector('[data-s1pane="qa"]>.section-card'); 
+    if(qaCard) addTrio(qaCard, "if(typeof saveCurrent==='function')saveCurrent(true);toast&&toast('已儲存問診紀錄')", "if(confirm('要清除問診紀錄全部回答嗎？')){document.querySelectorAll('#s3qaWrap textarea').forEach(function(t){t.value='';});if(typeof saveCurrent==='function')saveCurrent(true);toast&&toast('已清除問診紀錄')}", '問診紀錄');
+    /* 脈絡頁行銷問診卡(由 mkb addon 動態建) — mkb-foot 已有類似功能，不重複加 */
+  }
+  inject(); setInterval(inject,1500);
+  try{new MutationObserver(function(){inject();}).observe(document.documentElement,{childList:true,subtree:true});}catch(e){}
+})();
+</script>
+
+<script id="atl-cs714-s3x9mkb">
+/* cs-v7.14:③問診 脈絡頁⑨額外項目卡(比照建檔②#s2x9-card，共用 a.stage3Extra) */
 (function(){
   if(window.__atlS3x9Mkb) return; window.__atlS3x9Mkb=true;
   var ICN=window.ICN||{};
@@ -18325,33 +18382,33 @@ try{ window.__atl632=true; }catch(e){}
   function save(arr){ var a=(typeof curAcc==='function')?curAcc():null; if(!a) return; a.stage3Extra=arr; a.updatedAt=Date.now(); try{if(window._scheduleAutoSave) window._scheduleAutoSave();}catch(e){} }
   function readDOM(host){ if(!host) return null; var items=[]; [].forEach.call(host.querySelectorAll('.s3x-item'),function(it){ var q=((it.querySelector('.s3x-q')||{}).value||'').trim(); var an=((it.querySelector('.s3x-a')||{}).value||'').trim(); items.push({q:q,a:an}); }); return items; }
   function syncDOM(host){ var items=readDOM(host); if(items) save(items); }
-  var _S2_IC_ALL='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M8 12l3 3 5-6"/></svg>';
+  var _IC_ALL='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M8 12l3 3 5-6"/></svg>';
+  var IC_H='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v5h5"/><path d="M3.05 13A9 9 0 1 0 6 5.3L3 8"/><path d="M12 7v5l4 2"/></svg>';
+  var IC_S='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8M7 3v5h8"/></svg>';
+  var IC_X='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2m2 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg>';
   function render(){
-    var host=document.getElementById('s3x9-mkb'); if(!host) return;
-    var items=get();
-    var head='<div class="section-card" style="margin-top:18px"><h3>\u2779 額外項目 · 訪談題庫</h3>'
-      +'<div class="sc-note">八大類與 10 題之外、這位客戶獨有的追問或題庫放這裡。流程：按「產生訪談題庫提示詞」→ 問當事人 → 貼回下面 → 按「解析並歸檔」。</div>'
+    var host=document.getElementById('s3x9-mkb'); if(!host) return; var items=get();
+    /* 脈絡頁的行銷問診卡有多少欄位 → 決定序號 */
+    var mkbCount=0; try{mkbCount=document.querySelectorAll('[data-mktbrief] textarea[data-mk]').length;}catch(e){} var num=mkbCount+1;
+    var cnum=num<=20?String.fromCharCode(0x2460+num-1):num;
+    host.innerHTML='<div class="section-card" style="margin-top:18px"><h3>'+cnum+' 額外項目 · 訪談題庫</h3>'
+      +'<div class="sc-note">行銷問診卡之外、這位客戶獨有的追問或題庫放這裡。</div>'
       +'<div class="s2-ai-box" style="margin:8px 0 14px">'
       +'<div class="s2-ai-actions"><button type="button" class="btn btn-gold s2-ai-btn" onclick="window.__s3x9mkbPrompt()">'+((ICN.prompt)||'')+'<span class="btn-2l"><span>產生訪談題庫提示詞</span><span class="btn-sub">讓 AI 針對這位客戶出客製追問題</span></span></button>'
       +'<button type="button" class="btn btn-ghost s2-ai-btn" onclick="window.__s3x9mkbAdd()">+<span class="btn-2l"><span>新增一項</span><span class="btn-sub">手動加一條額外問題</span></span></button></div>'
       +'<div class="fld" style="margin-top:10px"><label>把 AI 整理好的題庫貼進來</label><textarea class="paste-box s3x9mkb-paste" placeholder="把 AI 整理好的題庫整段貼進來（一行一題），再按下面解析…"></textarea></div>'
       +'<div class="s2parse-row" style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:4px"><button type="button" class="btn btn-go" onclick="window.__s3x9mkbParse()">解析並歸檔成額外項目</button>'
-      +'<button type="button" class="atl-cksel-fine" style="margin-left:auto" onclick="s1ScopeAll(this,\'#s3x9mkb-list\')">'+_S2_IC_ALL+'全選</button></div></div>';
-    var list='<div id="s3x9mkb-list" style="margin-top:10px">'+(items.length?items.map(function(it,i){ return '<div class="s3x-item"><div class="s3x-itemh"><label class="s1agg-chk"><input type="checkbox" checked><span>'+(i+1)+'</span></label><input class="s3x-q" value="'+esc(it.q||'')+'" placeholder="主題／題目…" oninput="window.__s3x9mkbSync()"><button type="button" class="btn btn-ghost s3x-del" onclick="window.__s3x9mkbDel('+i+')">刪除</button></div><textarea class="s3x-a" placeholder="內容／當事人的回答…（可留空，問完再補）" oninput="window.__s3x9mkbSync()">'+esc(it.a||'')+'</textarea></div>'; }).join(''):'<div style="font-size:12.5px;color:#9A8488;padding:8px 2px">目前沒有額外項目。</div>')+'</div>';
-    host.innerHTML=head+list+'</div>';
+      +'<button type="button" class="atl-cksel-fine" style="margin-left:auto" onclick="s1ScopeAll(this,\'#s3x9mkb-list\')">'+_IC_ALL+'全選</button></div></div>'
+      +'<div id="s3x9mkb-list" style="margin-top:10px">'+(items.length?items.map(function(it,i){ return '<div class="s3x-item"><div class="s3x-itemh"><label class="s1agg-chk"><input type="checkbox" checked><span>'+(i+1)+'</span></label><input class="s3x-q" value="'+esc(it.q||'')+'" placeholder="主題／題目…" oninput="window.__s3x9mkbSync()"><button type="button" class="btn btn-ghost s3x-del" onclick="window.__s3x9mkbDel('+i+')">刪除</button></div><textarea class="s3x-a" placeholder="內容／當事人的回答…" oninput="window.__s3x9mkbSync()">'+esc(it.a||'')+'</textarea></div>'; }).join(''):'<div style="font-size:12.5px;color:#9A8488;padding:8px 2px">目前沒有額外項目。</div>')+'</div>'
+      +'<div class="cat-actions"><button type="button" class="cat-hist" onclick="toast&&toast(\'每次儲存都會自動暫存同步。\')">'+IC_H+'歷史版本</button><button type="button" class="cat-save" onclick="window.__s3x9mkbSync();toast&&toast(\'已儲存額外項目\')">'+IC_S+'儲存此版</button><button type="button" class="cat-clear" onclick="if(confirm(\'要清除所有額外項目嗎？\')){save([]);render();if(window.s3xRender)try{window.s3xRender();}catch(e){};toast&&toast(\'已清除\')}">'+IC_X+'清除此版</button></div></div>';
   }
-  window.__s3x9mkbSync=function(){ var h=document.getElementById('s3x9-mkb'); syncDOM(h); };
-  window.__s3x9mkbAdd=function(){ var h=document.getElementById('s3x9-mkb'); syncDOM(h); var arr=get().slice(); arr.push({q:'',a:''}); save(arr); render(); if(window.s3xRender) try{window.s3xRender();}catch(e){} };
-  window.__s3x9mkbDel=function(i){ var h=document.getElementById('s3x9-mkb'); syncDOM(h); var arr=get().slice(); arr.splice(i,1); save(arr); render(); if(window.s3xRender) try{window.s3xRender();}catch(e){} };
-  window.__s3x9mkbParse=function(){ var h=document.getElementById('s3x9-mkb'); if(!h) return; var pt=h.querySelector('.s3x9mkb-paste'); var raw=pt?pt.value:''; if(!raw.trim()){ if(typeof toast==='function') toast((ICN.warn||'')+' 請先貼上題庫'); return; } syncDOM(h); var arr=get().slice(); var add=0; raw.split(/\n+/).forEach(function(l){ l=l.replace(/^\s*[■◆●·\u2022\-\d\.、\)）]+\s*/,'').trim(); if(!l) return; var idx=l.search(/[:：]/); var q=idx>=0?l.slice(0,idx).trim():l; var an=idx>=0?l.slice(idx+1).trim():''; if(q){ arr.push({q:q,a:an}); add++; } }); save(arr); render(); if(window.s3xRender) try{window.s3xRender();}catch(e){} if(typeof toast==='function') toast((ICN.check||'✓')+' 已歸檔 '+add+' 項'); };
-  window.__s3x9mkbPrompt=function(){ if(typeof window.s3xPrompt==='function'){ window.s3xPrompt(); return; } var a=(typeof curAcc==='function')?curAcc():null; if(!a){ if(typeof toast==='function') toast((ICN.warn||'')+' 尚未選定客戶'); return; } var p='請幫客戶「'+(a.displayName||a.handle||'')+'」設計一份「額外訪談題庫」—— 8-12 題，一行一題「主題：問題」。'; if(typeof copyPrompt==='function') copyPrompt(p,'訪談題庫提示詞'); else { try{ navigator.clipboard.writeText(p); if(typeof toast==='function') toast('已複製'); }catch(e){} } };
-  /* 切到脈絡頁時刷新 */
+  window.__s3x9mkbSync=function(){ syncDOM(document.getElementById('s3x9-mkb')); };
+  window.__s3x9mkbAdd=function(){ syncDOM(document.getElementById('s3x9-mkb')); var arr=get().slice(); arr.push({q:'',a:''}); save(arr); render(); if(window.s3xRender) try{window.s3xRender();}catch(e){} };
+  window.__s3x9mkbDel=function(i){ syncDOM(document.getElementById('s3x9-mkb')); var arr=get().slice(); arr.splice(i,1); save(arr); render(); if(window.s3xRender) try{window.s3xRender();}catch(e){} };
+  window.__s3x9mkbParse=function(){ var h=document.getElementById('s3x9-mkb'); if(!h) return; var pt=h.querySelector('.s3x9mkb-paste'); var raw=pt?pt.value:''; if(!raw.trim()){ toast&&toast('請先貼上題庫'); return; } syncDOM(h); var arr=get().slice(); var add=0; raw.split(/\n+/).forEach(function(l){ l=l.replace(/^\s*[■◆●·\u2022\-\d\.、\)）]+\s*/,'').trim(); if(!l) return; var idx=l.search(/[:：]/); var q=idx>=0?l.slice(0,idx).trim():l; var an=idx>=0?l.slice(idx+1).trim():''; if(q){ arr.push({q:q,a:an}); add++; } }); save(arr); render(); if(window.s3xRender) try{window.s3xRender();}catch(e){} toast&&toast('已歸檔 '+add+' 項'); };
+  window.__s3x9mkbPrompt=function(){ if(typeof window.s3xPrompt==='function'){ window.s3xPrompt(); return; } var a=(typeof curAcc==='function')?curAcc():null; if(!a){toast&&toast('尚未選定客戶');return;} var p='請幫客戶「'+(a.displayName||a.handle||'')+'」設計一份「額外訪談題庫」—— 8-12 題，一行一題「主題：問題」。'; if(typeof copyPrompt==='function') copyPrompt(p,'訪談題庫提示詞'); else {try{navigator.clipboard.writeText(p);toast&&toast('已複製');}catch(e){}} };
   var origSwitch=window.switchS3Tab;
-  window.switchS3Tab=function(tab){
-    if(origSwitch) origSwitch(tab);
-    if(tab==='mkb') setTimeout(render,100);
-  };
-  /* 初次渲染 */
+  window.switchS3Tab=function(tab){ if(origSwitch) origSwitch(tab); if(tab==='mkb') setTimeout(render,100); };
   function boot(){ render(); setInterval(function(){ var h=document.getElementById('s3x9-mkb'); if(h&&!h.children.length) render(); },1500); }
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',boot); else boot();
 })();
