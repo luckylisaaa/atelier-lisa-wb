@@ -767,7 +767,7 @@ details.cat summary .cat-name{vertical-align:middle}
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">客戶服務台</span></span>
-    <span id="verBadge">cs-v7.67</span>
+    <span id="verBadge">cs-v7.68</span>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button type="button" id="atlSpecBtn" class="popout-btn" title="規格模式（點一下開啟，再點任一元件看它的規格）"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7l4-4 14 14-4 4z"/><path d="M9 5l1.5 1.5M12 8l1.5 1.5M15 11l1.5 1.5"/></svg>規格</button>
@@ -3176,7 +3176,8 @@ window._genS3Ver=function(which, mode){
       +'<div class="fld" style="margin-top:12px"><label>把 AI 回傳的欄位版貼回這裡</label><textarea class="paste-box" id="x-'+s+'-paste" placeholder="欄位名稱：內容"></textarea></div>'
       +'<div class="s2parse-row" style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:4px"><button class="btn btn-go" onclick="parseExtStagePaste(\''+s+'\')">解析並填入</button></div>';
     return '<div class="s2-aibar" style="margin:0 0 12px"><button type="button" class="btn-sf s2-ai-inline" onclick="sxToggleAI(this)">'+ic('prompt')+' AI 智能</button>'
-      +'<span class="atl-infohold"><button type="button" class="atl-infodot" onclick="event.stopPropagation();var p=this.nextElementSibling;p.style.display=(p.style.display===\'block\')?\'none\':\'block\'" title="這個 AI 智能在做什麼">i</button><span class="atl-infopop">AI 智能＝用①初診～③問診已收集的資料＋公開資料，把這一站欄位一次填好；或先問當事人再整理。下面三顆：「產生填寫提示詞」AI 直接查好填、「產生訪談提示詞」問當事人後 AI 整理、「補缺漏欄位」帶已填的請 AI 補齊。AI 回覆貼回下框、按「解析並填入」一鍵歸位。</span></span></div>'
+      +'<span class="atl-infohold"><button type="button" class="atl-infodot" onclick="event.stopPropagation();var p=this.nextElementSibling;p.style.display=(p.style.display===\'block\')?\'none\':\'block\'" title="這個 AI 智能在做什麼">i</button><span class="atl-infopop">AI 智能＝用①初診～③問診已收集的資料＋公開資料，把這一站欄位一次填好；或先問當事人再整理。下面三顆：「產生填寫提示詞」AI 直接查好填、「產生訪談提示詞」問當事人後 AI 整理、「補缺漏欄位」帶已填的請 AI 補齊。AI 回覆貼回下框、按「解析並填入」一鍵歸位。</span></span>'
+      +'<button type="button" class="atl-cksel-fine s2-selall-btn" style="margin-left:auto" onclick="sxFieldSelAll(this)" title="全選／全不選下面每一欄"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M8 12l3 3 5-6"/></svg>全選</button></div>'
       +'<div class="sx-ai-box s2-ai-box" style="display:none;margin:4px 0 14px">'+aiBox+'</div>';
   };
   function priorCtx(a,s){
@@ -3312,13 +3313,8 @@ window._genS3Ver=function(which, mode){
         +'</div>';
     }
     return '<div class="section-card"><h3>兩版交付整理</h3><div class="sc-note">客戶版＝可直接給客戶看；顧問版＝保留你的真實判斷與內部策略。各自可按「AI 精煉此版」帶入前面各站資料。兩者都會存回這位客戶。</div>'
-      +block('客戶版','client','x-'+s+'-resultClient',d.resultClient,'','貼上整理後可給客戶看的版本…')
-      +block('顧問版','advisor','x-'+s+'-resultAdvisor',d.resultAdvisor,'','貼上內部完整判斷、風險與推論…')
-      +'<div class="cat-actions" style="margin-top:14px;border-top:1px solid #E8DACE;padding-top:12px">'
-        +'<button type="button" class="cat-hist" onclick="sxOpenResultHist(\''+s+'\')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v5h5"/><path d="M3.05 13A9 9 0 1 0 6 5.3L3 8"/><path d="M12 7v5l4 2"/></svg>歷史版本</button>'
-        +'<button type="button" class="cat-save" onclick="sxSaveResultVer(\''+s+'\')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8M7 3v5h8"/></svg>儲存此版</button>'
-        +'<button type="button" class="cat-clear" onclick="if(!confirm(\'清除客戶版＋顧問版目前內容？(已儲存版本不受影響)\'))return;var c=document.getElementById(\'x-'+s+'-resultClient\'),aa=document.getElementById(\'x-'+s+'-resultAdvisor\');if(c)c.value=\'\';if(aa)aa.value=\'\';if(window.saveExtStage)saveExtStage(\''+s+'\');if(window.toast)toast(((window.ICN&&ICN.check)||\'\u2713\')+\' 已清除兩版\')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2m2 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg>清除此版</button>'
-      +'</div>'
+      +block('客戶版','client','x-'+s+'-resultClient',d.resultClient,'C','貼上整理後可給客戶看的版本…')
+      +block('顧問版','advisor','x-'+s+'-resultAdvisor',d.resultAdvisor,'A','貼上內部完整判斷、風險與推論…')
       +'</div>';
   };
   /* cs-v7.66: ④⑤⑥⑦ 產生頁「概況列(整組勾)」「AI 幫我判斷」＋分頁雙圈清楚彈窗(照①初診 openS1TabInfo)。沿用 .s1feed-* / .s1agg-chk / .s3pickwrap。 */
@@ -3366,12 +3362,34 @@ window._genS3Ver=function(which, mode){
       sum:{t:conf.no+conf.title+'｜總和 · 這頁在做什麼', lines:[['挑站別與項目','選要納入交付物的站別與欄位。'],['輸出','產出 PPT／HTML／PDF，三種格式同一套 ATELIER 排版。']]}
     };
     var c=C[name]||C.fill;
+    var KICK={fill:'FILL · WHY & HOW',produce:'PRODUCE · WHY & HOW',deliver:'DELIVER',sum:'EXPORT'};
+    var ICO=[ic('clipboard')||ic('search')||ic('spark'),ic('target')||ic('spark'),ic('bulb')||ic('flask')||ic('spark'),ic('gear')||ic('mirror')||ic('spark')];
     var ov=document.createElement('div'); ov.style.cssText='position:fixed;inset:0;background:rgba(20,10,12,.5);z-index:99999;display:flex;align-items:center;justify-content:center;padding:20px';
-    var h='<div style="background:#fff;border-radius:14px;max-width:520px;width:100%;max-height:80vh;overflow:auto;padding:18px 20px;box-shadow:0 20px 60px rgba(0,0,0,.3)"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><b style="font-size:14px;color:#5C0F14">'+esc(c.t)+'</b><button class="x" style="border:none;background:none;font-size:18px;cursor:pointer;color:#8A7274">\u2715</button></div>';
-    c.lines.forEach(function(l){ h+='<div style="border:1px solid #ECE0D2;border-radius:10px;padding:10px 12px;margin:8px 0;background:#FFFDFB"><div style="font-weight:800;font-size:12.5px;color:#2A1A1C;margin-bottom:3px">'+esc(l[0])+'</div><div style="font-size:12px;line-height:1.7;color:#5A4448">'+esc(l[1])+'</div></div>'; });
-    h+='</div>'; ov.innerHTML=h;
+    var h='<div style="background:#fff;border-radius:16px;max-width:540px;width:100%;max-height:82vh;overflow:auto;padding:0;box-shadow:0 24px 70px rgba(0,0,0,.32)">'
+      +'<div style="background:linear-gradient(135deg,#5C0F14,#8A1A22);padding:16px 20px 14px;border-radius:16px 16px 0 0;position:sticky;top:0">'
+      +'<div style="font-size:10px;letter-spacing:1.5px;opacity:.72;font-weight:700;color:#fff;-webkit-text-fill-color:#fff">'+esc(conf.no+' '+(conf.en||conf.title)+' · '+(KICK[name]||''))+'</div>'
+      +'<div style="display:flex;justify-content:space-between;align-items:center;margin-top:3px"><b style="font-size:15px;color:#fff;-webkit-text-fill-color:#fff">'+esc(c.t)+'</b><button class="x" style="border:none;background:none;font-size:20px;cursor:pointer;color:#fff;-webkit-text-fill-color:#fff;line-height:1">\u2715</button></div></div>'
+      +'<div style="padding:14px 18px 18px">';
+    c.lines.forEach(function(l,i){ h+='<div style="display:flex;gap:11px;border:1px solid #ECE0D2;border-radius:12px;padding:11px 13px;margin:9px 0;background:#FFFDFB"><div style="flex:0 0 auto;color:#A51820;-webkit-text-fill-color:#A51820;width:20px">'+(ICO[i%ICO.length]||'')+'</div><div><div style="font-weight:800;font-size:12.5px;color:#2A1A1C;-webkit-text-fill-color:#2A1A1C;margin-bottom:3px">'+esc(l[0])+'</div><div style="font-size:12px;line-height:1.7;color:#5A4448;-webkit-text-fill-color:#5A4448">'+esc(l[1])+'</div></div></div>'; });
+    h+='</div></div>'; ov.innerHTML=h;
     ov.querySelector('.x').onclick=function(){ ov.remove(); }; ov.onclick=function(e){ if(e.target===ov) ov.remove(); };
     document.body.appendChild(ov);
+  };
+  window.sxFieldSelAll=function(btn){
+    var card=btn.closest('.section-card'); if(!card) return;
+    var cbs=[].slice.call(card.querySelectorAll('.x-fldsel')); if(!cbs.length) return;
+    var allOn=cbs.every(function(c){return c.checked;}); cbs.forEach(function(c){c.checked=!allOn;});
+  };
+  window.sxFieldTrio=function(s){
+    var icH='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v5h5"/><path d="M3.05 13A9 9 0 1 0 6 5.3L3 8"/><path d="M12 7v5l4 2"/></svg>';
+    var icS='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8M7 3v5h8"/></svg>';
+    var icC='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2m2 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg>';
+    return '<div class="cat-actions" style="margin-top:16px;border-top:1px solid #E8DACE;padding-top:14px"><button type="button" class="cat-hist" onclick="toast(\'欄位每次編輯都會自動暫存；兩版的歷史在「產生」分頁。\')">'+icH+'歷史版本</button><button type="button" class="cat-save" onclick="if(window.saveExtStage)saveExtStage(\''+s+'\');toast(((window.ICN&&ICN.check)||\'\u2713\')+\' 已儲存此類\')">'+icS+'儲存此類</button><button type="button" class="cat-clear" onclick="sxClearFields(\''+s+'\')">'+icC+'清除此類</button></div>';
+  };
+  window.sxClearFields=function(s){
+    var conf=CONF(s); if(!conf) return; if(!window.confirm('清除這一站所有欄位的內容？(額外項目與兩版不受影響)')) return;
+    conf.fields.forEach(function(fd){ var el=document.getElementById('x-'+s+'-'+fd[0]); if(el) el.value=''; });
+    if(window.saveExtStage) saveExtStage(s); if(window.toast) toast(((window.ICN&&ICN.check)||'\u2713')+' 已清除此類');
   };
 })();
 
@@ -5060,7 +5078,7 @@ window.addEventListener('DOMContentLoaded', function(){
   };
   function extRows(stageId,conf,rec){
     var d=rec.data||{};
-    return conf.fields.map(function(fd){ return '<div class="fld x-fld"><label>'+esc(fd[1])+'</label><div class="x-fld-hint">'+esc(fd[2])+'</div><textarea id="x-'+stageId+'-'+fd[0]+'" placeholder="'+esc(fd[2])+'">'+esc(d[fd[0]]||'')+'</textarea></div>'; }).join('');
+    return conf.fields.map(function(fd){ return '<div class="fld x-fld"><div class="x-fld-top" style="display:flex;align-items:flex-start;gap:8px;margin-bottom:7px"><input type="checkbox" class="x-fldsel" id="xsel-'+stageId+'-'+fd[0]+'" onclick="event.stopPropagation()" title="選取這一欄" style="margin-top:3px;width:18px;height:18px;accent-color:#A51820;flex:0 0 auto;cursor:pointer"><label style="flex:1;margin:0">'+esc(fd[1])+' <span class="atl-infohold"><button type="button" class="atl-infodot" onclick="event.stopPropagation();var p=this.nextElementSibling;p.style.display=(p.style.display===\'block\')?\'none\':\'block\'" title="這欄填什麼">i</button><span class="atl-infopop">'+esc(fd[2])+'</span></span></label></div><textarea id="x-'+stageId+'-'+fd[0]+'" placeholder="'+esc(fd[2])+'">'+esc(d[fd[0]]||'')+'</textarea></div>'; }).join('');
   }
   function normLabel(x){ return String(x||'').replace(/[\s　＊*【】\[\]#：:：\-•]/g,'').trim(); }
   function parseExtLines(text,conf,stageId){
@@ -5132,7 +5150,7 @@ window.addEventListener('DOMContentLoaded', function(){
       +'<div class="fld" style="margin-top:12px"><label>把 AI 回傳的欄位版貼回這裡</label><textarea class="paste-box" id="x-'+stageId+'-paste" placeholder="欄位名稱：內容"></textarea></div>'
       +'<button class="btn btn-go" onclick="parseExtStagePaste(\''+stageId+'\')">解析並填入</button></div>';
     var workCard='<div class="section-card"><h3>'+conf.no+' '+conf.title+'工作區 <span class="atl-infohold"><button type="button" class="atl-infodot" onclick="event.stopPropagation();var p=this.nextElementSibling;p.style.display=(p.style.display===\'block\')?\'none\':\'block\'" title="這個工作區在做什麼">i</button><span class="atl-infopop">'+conf.no+conf.title+'工作區＝這一站要填的欄位區。每一格都可以先粗填，系統會自動暫存；填越完整，後面的企劃、交付與結案就越穩。固定欄位之外的補充，寫到最底下的「額外項目」。</span></span></h3>'+(window.sxAIBar?sxAIBar(stageId):'')
-      +'<div class="stage-grid">'+extRows(stageId,conf,rec)+'</div></div>';
+      +'<div class="stage-grid" style="grid-template-columns:1fr">'+extRows(stageId,conf,rec)+'</div>'+(window.sxFieldTrio?sxFieldTrio(stageId):'')+'</div>';
     var twoVerCard=(stageId==='stage7')
       ? '<div class="section-card"><h3>交付摘要</h3><div class="sc-note">交付追蹤屬於內部 ops，改為單欄整理：交付狀態、款項、修改紀錄、待辦與復盤。</div><div class="fld"><label>交付摘要</label><textarea class="large-ver-textarea" id="x-'+stageId+'-deliverySummary" placeholder="整理本次交付狀態、已完成項目、待補資料、款項狀態、修改紀錄與下一步提醒…">'+esc(d.deliverySummary||d.finalSummary||d.resultAdvisor||d.resultClient||'')+'</textarea></div></div>'
       : '<div class="section-card"><h3>兩版交付整理</h3><div class="sc-note">客戶版＝可直接給客戶看；顧問版＝保留你的真實判斷與內部策略。兩者都會存回這位客戶的資料裡。</div><div class="fld"><label>客戶版</label><textarea class="large-ver-textarea" id="x-'+stageId+'-resultClient" placeholder="貼上整理後可給客戶看的版本…">'+esc(d.resultClient||'')+'</textarea>'+_sxVerTrio(stageId,'C')+'</div><div class="fld"><label>顧問版</label><textarea class="large-ver-textarea" id="x-'+stageId+'-resultAdvisor" placeholder="貼上內部完整判斷、風險與推論…">'+esc(d.resultAdvisor||'')+'</textarea>'+_sxVerTrio(stageId,'A')+'</div></div>';
@@ -10516,7 +10534,7 @@ button:not(:disabled), .btn:not(.disabled):not([disabled]), [role="button"]{
   if(window.__atlCs473Continuity) return; window.__atlCs473Continuity=true;
   function cleanTextNode(n){var s=n.nodeValue||''; var ns=s.replace(/cs-v4\.\d+\s*(SAFE|LATEST)?\s*[｜|·:-]?\s*/g,'').replace(/\bv\d{3}\s*[｜|·:-]?\s*/g,''); if(ns!==s)n.nodeValue=ns;}
   function cleanVersions(){
-    try{var vb=document.getElementById('verBadge'); if(vb)vb.textContent='cs-v7.67';}catch(e){}
+    try{var vb=document.getElementById('verBadge'); if(vb)vb.textContent='cs-v7.68';}catch(e){}
     try{var w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT,{acceptNode:function(n){var p=n.parentElement; if(!p||p.id==='verBadge'||/^(SCRIPT|STYLE|TEXTAREA)$/i.test(p.tagName))return NodeFilter.FILTER_REJECT; return /(cs-v4\.\d+|\bv\d{3})/.test(n.nodeValue||'')?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_REJECT;}}); var nodes=[],n; while(n=w.nextNode())nodes.push(n); nodes.forEach(cleanTextNode);}catch(e){}
   }
   function alignSelection(){
@@ -10576,7 +10594,7 @@ input[type="text"]:focus,input:not([type]):focus{border-color:#D4A574!important;
     btn.onclick=function(e){e.stopPropagation(); set(!safe.classList.contains('atl-safe474-collapsed'));};
     h.appendChild(summary); h.appendChild(btn); set(localStorage.getItem('atl.cs474.safeCollapsed')!=='0');
   }
-  function cleanBadge(){ var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v7.67'; }
+  function cleanBadge(){ var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v7.68'; }
   function run(){ cleanBadge(); ensureSafeCollapse(); wireAutogrow(document); }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run); else run();
   setInterval(run,1200);
@@ -10637,7 +10655,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
   function wire(root){qsa('textarea,input[type="text"],input[type="url"],input[type="email"],input:not([type])',root||document).forEach(function(el){if(el.__atl475)return; if(el.closest('.atl-field-modal,.atl-final-modal'))return; el.__atl475=true; el.addEventListener('focus',function(){show(el); autogrow(el)}); el.addEventListener('input',function(){autogrow(el)}); el.addEventListener('blur',hideSoon); autogrow(el);});}
   document.addEventListener('click',function(e){var b=e.target.closest('#atlFieldToolbar button'); if(!b||!active)return; var a=b.getAttribute('data-act'); if(a==='prompt')openModal('prompt',active); if(a==='fill')openModal('fill',active); if(a==='edit')openModal('edit',active); if(a==='done'){var bar=qs('#atlFieldToolbar'); if(bar)bar.classList.remove('on'); if(active)active.classList.remove('atl-field-active'); toastSafe('此欄位可視為定案，請記得儲存');}},true);
   function addCollapse(root){qsa('.section-card,.deliverable-card,.atl452safe-card',root||document).forEach(function(card){if(card.__atlCollapse475||card.closest('.preview-modal,.atl-field-modal'))return; card.__atlCollapse475=true; card.classList.add('atl-collapsible'); var h=qs('h2,h3,h4,.stitle,.section-title',card)||card.firstElementChild; if(h)h.classList.add('atl-keep-visible'); var btn=document.createElement('button'); btn.type='button'; btn.className='atl-collapse-toggle'; btn.textContent='收合'; btn.addEventListener('click',function(e){e.preventDefault(); e.stopPropagation(); var closed=card.classList.toggle('atl-closed'); btn.textContent=closed?'展開':'收合';}); card.insertBefore(btn,card.firstChild);});}
-  function boot(){try{var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v7.67';}catch(e){} wire(document); addCollapse(document);}
+  function boot(){try{var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v7.68';}catch(e){} wire(document); addCollapse(document);}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot); else boot();
   try{new MutationObserver(function(ms){var hit=false; ms.forEach(function(m){if(m.addedNodes&&m.addedNodes.length)hit=true}); if(hit){clearTimeout(window.__atl475Timer); window.__atl475Timer=setTimeout(boot,180);}}).observe(document.body,{childList:true,subtree:true});}catch(e){}
 })();
@@ -10678,7 +10696,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
 <script id="atl478-final-export-js">
 (function(){
   if(window.__atl478FinalExport)return; window.__atl478FinalExport=true;
-  var VERSION='cs-v7.67';
+  var VERSION='cs-v7.68';
   function esc(s){return (s==null?'':String(s)).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
   function qsa(sel,root){return Array.prototype.slice.call((root||document).querySelectorAll(sel))}
   function text(el){return (el&&el.innerText||el&&el.textContent||'').replace(/\s+/g,' ').trim()}
@@ -10798,7 +10816,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
 <script>
 (function(){
   if(window.__atlCs480) return; window.__atlCs480=true;
-  var V='cs-v7.67';
+  var V='cs-v7.68';
   function lock(){ var vb=document.getElementById('verBadge'); if(vb && (vb.textContent||'').trim()!==V) vb.textContent=V; }
   function unify(){
     var safe=document.querySelector('.atl452safe'); if(!safe) return;
@@ -11746,7 +11764,7 @@ input.atl477-open-field:not([type="checkbox"]):not([type="radio"]):not([type="bu
 <script id="atl-cs477-final-touch">
 (function(){
   if(window.__atlCs477FinalTouch) return; window.__atlCs477FinalTouch=true;
-  var VERSION='cs-v7.67';
+  var VERSION='cs-v7.68';
   function qs(s,r){return (r||document).querySelector(s)}
   function qsa(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
   function setVersion(){try{var b=qs('#verBadge'); if(b)b.textContent=VERSION; window.ATELIER_CLIENT_VERSION=VERSION;}catch(e){}}
