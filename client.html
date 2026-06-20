@@ -767,7 +767,7 @@ details.cat summary .cat-name{vertical-align:middle}
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">客戶服務台</span></span>
-    <span id="verBadge">cs-v7.37</span>
+    <span id="verBadge">cs-v7.39</span>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button type="button" id="atlSpecBtn" class="popout-btn" title="規格模式（點一下開啟，再點任一元件看它的規格）"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7l4-4 14 14-4 4z"/><path d="M9 5l1.5 1.5M12 8l1.5 1.5M15 11l1.5 1.5"/></svg>規格</button>
@@ -1746,7 +1746,7 @@ function renderStage1(){
     '<div class="page-head"><div class="ph-en">STAGE ① · INITIAL SCAN</div><h2 class="ph-title">公開資料初診 <button type="button" class="stage-info-btn" onclick="openS1TabInfo(\'gather\')" title="查看此階段的底層邏輯">'+ICN.info+'</button></h2></div>'
     +stageHead('只用公開資料，判斷這位客戶目前在市場上「被看見的樣子」——還沒跟客戶深聊就能做的分析。','stage1_initial')
     +tabHTML
-    +'<div class="s1tab-pane active" data-s1pane="gather">'+wbGuideHTML+aiFillHTML+sourcesHTML+fwHTML+'<div id="s1x9-host"></div></div>'
+    +'<div class="s1tab-pane active" data-s1pane="gather">'+wbGuideHTML+'<div class="s2-aibar" style="margin:12px 0 4px"><button type="button" class="btn-sf s2-ai-inline" onclick="s1ToggleAIbox(this)">'+ICN.prompt+'AI 智能</button><button type="button" class="s2-aitip-btn" onclick="toast(\'AI 一次幫你查好＝把 16 來源＋5 進階判斷用公開資料逐條查好、填好。\')" title="這是什麼">'+ICN.info+'</button><button type="button" class="atl-cksel-fine s2-selall-btn" onclick="s1GatherSelectAll(this)" title="全選／全不選所有來源＋進階判斷"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M8 12l3 3 5-6"/></svg>全選</button></div>'+aiFillHTML+sourcesHTML+fwHTML+'<div id="s1x9-host"></div></div>'
     +'<div class="s1tab-pane" data-s1pane="produce">'+pasteHTML+'</div>'
     +'<div class="s1tab-pane" data-s1pane="deliver">'+deliveryHTML+'</div>'
     +'<div class="s1tab-pane" data-s1pane="export">'+exportHTML+'</div>';
@@ -2665,8 +2665,7 @@ function renderStage3(){
     +'<div class="s1tab-pane" data-s1pane="qa">'
     +'<div class="section-card">'
     +'<h3>問診記錄 <span class="atl-infohold"><button type="button" class="atl-infodot" onclick="event.stopPropagation();var p=this.nextElementSibling;p.style.display=(p.style.display===\'block\')?\'none\':\'block\'" title="這頁在做什麼">i</button><span class="atl-infopop">問診記錄＝正式問診時逐題記錄客戶回答。可先用 AI 智能出題或擬答當底稿；每題前可勾選要不要納入 AI／交付。</span></span></h3>'
-    +'<div style="display:flex;align-items:center;gap:8px;margin:0 0 12px"><button type="button" class="btn-sf s1feed-ai" style="flex:0 0 auto;font-size:11.5px;padding:4px 12px" onclick="s3ToggleAI(this)">'+(ICN.prompt||ICN.spark)+' AI 智能</button>'
-    +'<button type="button" class="atl-cksel-fine" style="margin-left:auto;flex:0 0 auto" onclick="s1ScopeAll(this,\'#s3qaWrap\')" title="全選／全部取消這 10 題">'+_S2_IC_ALL+'全選</button></div>'
+    +'<div class="s2-aibar" style="margin:0 0 12px"><button type="button" class="btn-sf s2-ai-inline" onclick="s3ToggleAI(this)">'+ICN.prompt+' AI 智能</button><button type="button" class="s2-aitip-btn" onclick="toast(\'產生問診提綱、補缺漏問 AI，或把 AI 擬好的初稿貼回、一鍵回填 10 題。\')" title="這是什麼">'+ICN.info+'</button><button type="button" class="atl-cksel-fine s2-selall-btn" onclick="s1ScopeAll(this,\'#s3qaWrap\')" title="全選／全部取消這 10 題"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M8 12l3 3 5-6"/></svg>全選</button></div>'
     +'<div id="s3aiTools" class="s2-ai-box" style="display:none;margin:4px 0 14px">'
     +'<div class="sc-note" style="margin-top:0">產生問診提綱、補缺漏問 AI，或把 AI 擬好的初稿貼回、一鍵回填 10 題。</div>'
     +'<div class="fld"><label>（選填）想讓 AI 一起參考的資料</label><textarea id="s3extra" placeholder="例如：客戶官網連結、主力服務、之前聊到的重點…（沒有也可留空）"></textarea></div>'
@@ -2947,7 +2946,7 @@ window.s3xRender=function(){ var host=document.getElementById('s3x9-host'); if(!
     +'<div class="cat-actions" style="margin-top:14px;border-top:1px solid #E8DACE;padding-top:12px"><button type="button" class="cat-hist" onclick="toast(\'產生頁的勾選每次都會自動暫存。\')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v5h5"/><path d="M3.05 13A9 9 0 1 0 6 5.3L3 8"/><path d="M12 7v5l4 2"/></svg>歷史版本</button><button type="button" class="cat-save" onclick="s3xSyncFromDOM();toast((ICN.check||\'✓\')+\' 已儲存額外項目\')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8M7 3v5h8"/></svg>儲存此類</button><button type="button" class="cat-clear" onclick="if(!confirm(\'要清除全部額外項目嗎？\')){return;}s3xSave([]);s3xRender();toast((ICN.check||\'✓\')+\' 已清除\')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2m2 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg>清除此類</button></div>'
     +'</div>';
 };
-/* cs-v7.37: 脈絡頁也顯示同一份額外項目 */
+/* cs-v7.39: 脈絡頁也顯示同一份額外項目 */
 (function(){
   var _orig=window.s3xRender;
   window.s3xRender=function(){
@@ -2963,11 +2962,49 @@ window.s3xAdd=function(){ s3xSyncFromDOM(); var arr=s3xGet().slice(); arr.push({
 window.s3xDel=function(i){ s3xSyncFromDOM(); var arr=s3xGet().slice(); arr.splice(i,1); s3xSave(arr); s3xRender(); };
 window.s3xParse=function(){ var host=document.getElementById('s3x9-host'); if(!host) return; var pt=host.querySelector('.x9-paste'); var raw=pt?pt.value:''; if(!raw.trim()){ toast(ICN.warn+' 請先貼上題庫'); return; } s3xSyncFromDOM(); var arr=s3xGet().slice(); var add=0; raw.split(/\n+/).forEach(function(l){ l=l.replace(/^\s*[■◆●·\u2022\-\d\.、\)）]+\s*/,'').trim(); if(!l) return; var idx=l.search(/[:：]/); var q=idx>=0?l.slice(0,idx).trim():l; var an=idx>=0?l.slice(idx+1).trim():''; if(q){ arr.push({q:q,a:an}); add++; } }); s3xSave(arr); s3xRender(); toast((ICN.check||'✓')+' 已歸檔 '+add+' 項'); };
 window.s3xPrompt=function(){ var a=curAcc(); if(!a){ toast(ICN.warn+' 尚未選定客戶'); return; } var p='請幫客戶「'+(a.displayName||a.handle||'')+'」（'+(a.industry||'產業未填')+'）設計一份「深度問診的額外訪談題庫」——針對這位客戶的產業與獨特處境，出 8-12 題標準 10 題以外、值得追問的客製問題。\n每題用「主題：問題」一行，方便我貼回自動歸檔。只輸出題目，前後不要多餘說明。'; copyPrompt(p,'訪談題庫提示詞（問當事人 → 貼回自動歸檔成額外項目）'); };
-/* cs-v7.37:①初診蒐集頁 AI智能展收 + 全選；②建檔 AI精煉此版 */
+/* cs-v7.39:①初診蒐集頁 AI智能展收 + 全選；②建檔 AI精煉此版 */
+
+/* cs-v7.39：④⑤⑥⑦ 額外項目卡（照建檔設計，資料存 a[stageId+'Extra']）*/
+window.sxExtraRender=function(stageId){
+  var host=document.getElementById('sx-'+stageId+'-x9'); if(!host) return;
+  var a=(typeof curAcc==='function')?curAcc():null; if(!a) return;
+  var key=stageId+'Extra'; if(!Array.isArray(a[key])) a[key]=[];
+  var items=a[key];
+  var ic=function(k){return (typeof ICN!=='undefined'&&ICN[k])||'';};
+  var _allSvg='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M8 12l3 3 5-6"/></svg>';
+  var conf=(typeof STAGE_EXT!=='undefined'&&STAGE_EXT[stageId])||{title:stageId};
+  var itemHTML=items.length?items.map(function(it,i){
+    return '<div class="x9-item"><div class="x9-item-top"><input type="checkbox" class="x9-sel" checked><span class="x9-num">'+(i+1)+'</span>'
+      +'<input class="x9-q" type="text" placeholder="項目／重點…" value="'+esc(it.q||'')+'" oninput="sxExtraSyncDOM(\''+stageId+'\')">'
+      +'<button type="button" class="x9-del" onclick="sxExtraDel(\''+stageId+'\','+i+')">刪除</button></div>'
+      +'<textarea class="x9-a" placeholder="內容…（可留空）" oninput="sxExtraSyncDOM(\''+stageId+'\')">'+esc(it.a||'')+'</textarea></div>';
+  }).join(''):'<div class="x9-empty">目前沒有額外項目。</div>';
+  host.innerHTML='<div class="section-card" style="margin-top:18px">'
+    +'<h3>額外項目</h3>'
+    +'<div class="x9-note">'+conf.title+'工作區之外、這位客戶特有的補充項目放這裡。按「＋ 新增一項」加入。</div>'
+    +'<div class="x9-airow"><button type="button" class="btn btn-sf" onclick="sxExtraAdd(\''+stageId+'\')">＋ 新增一項</button></div>'
+    +'<div class="x9-airow x9-parserow" style="margin-top:8px"><span></span><button type="button" class="atl-cksel-fine" onclick="sxExtraSelAll(\''+stageId+'\',this)" style="margin-left:auto">'+_allSvg+'全選</button></div>'
+    +'<div class="x9-list" style="margin-top:6px">'+itemHTML+'</div>'
+    +'<div class="cat-actions" style="margin-top:14px;border-top:1px solid #E8DACE;padding-top:12px"><button type="button" class="cat-hist" onclick="toast(\'自動暫存中。\')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v5h5"/><path d="M3.05 13A9 9 0 1 0 6 5.3L3 8"/><path d="M12 7v5l4 2"/></svg>歷史版本</button><button type="button" class="cat-save" onclick="sxExtraSyncDOM(\''+stageId+'\');toast((ICN.check||\'✓\')+\' 已儲存\')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8M7 3v5h8"/></svg>儲存此類</button><button type="button" class="cat-clear" onclick="if(!confirm(\'要清除全部額外項目嗎？\')){return;}var _a=curAcc();if(_a)_a[\''+stageId+'Extra\']=[];sxExtraRender(\''+stageId+'\');toast((ICN.check||\'✓\')+\' 已清除\')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2m2 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg>清除此類</button></div>'
+    +'</div>';
+};
+window.sxExtraSyncDOM=function(stageId){
+  var host=document.getElementById('sx-'+stageId+'-x9'); if(!host) return;
+  var a=(typeof curAcc==='function')?curAcc():null; if(!a) return;
+  var items=[]; [].forEach.call(host.querySelectorAll('.x9-item'),function(it){
+    items.push({q:((it.querySelector('.x9-q')||{}).value||'').trim(), a:((it.querySelector('.x9-a')||{}).value||'').trim()});
+  });
+  a[stageId+'Extra']=items; a.updatedAt=Date.now();
+  try{ if(window._scheduleAutoSave) window._scheduleAutoSave(); }catch(e){}
+};
+window.sxExtraAdd=function(stageId){ sxExtraSyncDOM(stageId); var a=curAcc(); if(!a) return; var k=stageId+'Extra'; if(!Array.isArray(a[k])) a[k]=[]; a[k].push({q:'',a:''}); sxExtraRender(stageId); };
+window.sxExtraDel=function(stageId,i){ sxExtraSyncDOM(stageId); var a=curAcc(); if(!a) return; var k=stageId+'Extra'; if(Array.isArray(a[k])) a[k].splice(i,1); sxExtraRender(stageId); };
+window.sxExtraSelAll=function(stageId,btn){ var host=document.getElementById('sx-'+stageId+'-x9'); if(!host) return; var cbs=[].slice.call(host.querySelectorAll('.x9-sel')); if(!cbs.length) return; var allOn=cbs.every(function(c){return c.checked;}); cbs.forEach(function(c){c.checked=!allOn;}); };
+
 window.s1ToggleAIbox=function(btn){ var card=document.querySelector('#view-stage1 .ai-fill'); if(!card) return; card.style.display=(card.style.display!=='none')?'none':'block'; };
 window.s1GatherSelectAll=function(btn){ var v=document.getElementById('view-stage1'); if(!v) return; var cbs=[].slice.call(v.querySelectorAll('.s1-chk input[type=checkbox], .s1fw-chk input[type=checkbox]')); if(!cbs.length) return; var allOn=cbs.every(function(c){return c.checked;}); cbs.forEach(function(c){c.checked=!allOn;}); };
 window.genS2VersionPrompt=function(which){ var a=(typeof curAcc==='function')?curAcc():null; if(!a){toast(ICN.warn+' 尚未選定客戶');return;} var ta=document.getElementById(which==='client'?'s2resultC':'s2resultA'); var txt=ta?ta.value.trim():''; var role=which==='client'?'客戶版（給客戶看的乾淨版）':'顧問版（保留判斷理由與風險）'; var p='你是 ATELIER 品牌顧問。請精煉以下「'+(a.displayName||a.handle||'客戶')+'」的建檔'+role+'：\n\n'+(txt||'（目前空白，請依建檔資料重新產出）')+'\n\n請保持原有結構但讓文字更精準、重點更突出，輸出完整一版可直接貼回。'; if(typeof copyPrompt==='function') copyPrompt(p,'建檔·'+role+' 精煉提示詞'); else { try{navigator.clipboard.writeText(p);toast((ICN.check||'✓')+' 已複製');}catch(e){} } };
-/* cs-v7.37:①初診「額外項目·自訂觀察」——照搬③問診/②建檔那套(產生提示詞/新增一項/貼回解析/逐項勾選+刪除)，資料存 a.stage1Extra，host #s1x9-host，沿用 .s3x-* 樣式；q/a 即時同步。 */
+/* cs-v7.39:①初診「額外項目·自訂觀察」——照搬③問診/②建檔那套(產生提示詞/新增一項/貼回解析/逐項勾選+刪除)，資料存 a.stage1Extra，host #s1x9-host，沿用 .s3x-* 樣式；q/a 即時同步。 */
 function s1xGet(){ var a=curAcc(); if(!a) return []; if(!Array.isArray(a.stage1Extra)) a.stage1Extra=[]; return a.stage1Extra; }
 function s1xSave(arr){ var a=curAcc(); if(!a) return; a.stage1Extra=arr; a.updatedAt=Date.now(); try{ if(window._scheduleAutoSave) window._scheduleAutoSave(); }catch(e){} }
 function s1xReadDOM(){ var host=document.getElementById('s1x9-host'); if(!host) return null; var items=[]; [].forEach.call(host.querySelectorAll('.x9-item'),function(it){ var q=((it.querySelector('.x9-q')||{}).value||'').trim(); var an=((it.querySelector('.x9-a')||{}).value||'').trim(); items.push({q:q,a:an}); }); return items; }
@@ -10105,7 +10142,7 @@ button:not(:disabled), .btn:not(.disabled):not([disabled]), [role="button"]{
   if(window.__atlCs473Continuity) return; window.__atlCs473Continuity=true;
   function cleanTextNode(n){var s=n.nodeValue||''; var ns=s.replace(/cs-v4\.\d+\s*(SAFE|LATEST)?\s*[｜|·:-]?\s*/g,'').replace(/\bv\d{3}\s*[｜|·:-]?\s*/g,''); if(ns!==s)n.nodeValue=ns;}
   function cleanVersions(){
-    try{var vb=document.getElementById('verBadge'); if(vb)vb.textContent='cs-v7.37';}catch(e){}
+    try{var vb=document.getElementById('verBadge'); if(vb)vb.textContent='cs-v7.39';}catch(e){}
     try{var w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT,{acceptNode:function(n){var p=n.parentElement; if(!p||p.id==='verBadge'||/^(SCRIPT|STYLE|TEXTAREA)$/i.test(p.tagName))return NodeFilter.FILTER_REJECT; return /(cs-v4\.\d+|\bv\d{3})/.test(n.nodeValue||'')?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_REJECT;}}); var nodes=[],n; while(n=w.nextNode())nodes.push(n); nodes.forEach(cleanTextNode);}catch(e){}
   }
   function alignSelection(){
@@ -10165,7 +10202,7 @@ input[type="text"]:focus,input:not([type]):focus{border-color:#D4A574!important;
     btn.onclick=function(e){e.stopPropagation(); set(!safe.classList.contains('atl-safe474-collapsed'));};
     h.appendChild(summary); h.appendChild(btn); set(localStorage.getItem('atl.cs474.safeCollapsed')!=='0');
   }
-  function cleanBadge(){ var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v7.37'; }
+  function cleanBadge(){ var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v7.39'; }
   function run(){ cleanBadge(); ensureSafeCollapse(); wireAutogrow(document); }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run); else run();
   setInterval(run,1200);
@@ -10226,7 +10263,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
   function wire(root){qsa('textarea,input[type="text"],input[type="url"],input[type="email"],input:not([type])',root||document).forEach(function(el){if(el.__atl475)return; if(el.closest('.atl-field-modal,.atl-final-modal'))return; el.__atl475=true; el.addEventListener('focus',function(){show(el); autogrow(el)}); el.addEventListener('input',function(){autogrow(el)}); el.addEventListener('blur',hideSoon); autogrow(el);});}
   document.addEventListener('click',function(e){var b=e.target.closest('#atlFieldToolbar button'); if(!b||!active)return; var a=b.getAttribute('data-act'); if(a==='prompt')openModal('prompt',active); if(a==='fill')openModal('fill',active); if(a==='edit')openModal('edit',active); if(a==='done'){var bar=qs('#atlFieldToolbar'); if(bar)bar.classList.remove('on'); if(active)active.classList.remove('atl-field-active'); toastSafe('此欄位可視為定案，請記得儲存');}},true);
   function addCollapse(root){qsa('.section-card,.deliverable-card,.atl452safe-card',root||document).forEach(function(card){if(card.__atlCollapse475||card.closest('.preview-modal,.atl-field-modal'))return; card.__atlCollapse475=true; card.classList.add('atl-collapsible'); var h=qs('h2,h3,h4,.stitle,.section-title',card)||card.firstElementChild; if(h)h.classList.add('atl-keep-visible'); var btn=document.createElement('button'); btn.type='button'; btn.className='atl-collapse-toggle'; btn.textContent='收合'; btn.addEventListener('click',function(e){e.preventDefault(); e.stopPropagation(); var closed=card.classList.toggle('atl-closed'); btn.textContent=closed?'展開':'收合';}); card.insertBefore(btn,card.firstChild);});}
-  function boot(){try{var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v7.37';}catch(e){} wire(document); addCollapse(document);}
+  function boot(){try{var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v7.39';}catch(e){} wire(document); addCollapse(document);}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot); else boot();
   try{new MutationObserver(function(ms){var hit=false; ms.forEach(function(m){if(m.addedNodes&&m.addedNodes.length)hit=true}); if(hit){clearTimeout(window.__atl475Timer); window.__atl475Timer=setTimeout(boot,180);}}).observe(document.body,{childList:true,subtree:true});}catch(e){}
 })();
@@ -10267,7 +10304,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
 <script id="atl478-final-export-js">
 (function(){
   if(window.__atl478FinalExport)return; window.__atl478FinalExport=true;
-  var VERSION='cs-v7.37';
+  var VERSION='cs-v7.39';
   function esc(s){return (s==null?'':String(s)).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
   function qsa(sel,root){return Array.prototype.slice.call((root||document).querySelectorAll(sel))}
   function text(el){return (el&&el.innerText||el&&el.textContent||'').replace(/\s+/g,' ').trim()}
@@ -10387,7 +10424,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
 <script>
 (function(){
   if(window.__atlCs480) return; window.__atlCs480=true;
-  var V='cs-v7.37';
+  var V='cs-v7.39';
   function lock(){ var vb=document.getElementById('verBadge'); if(vb && (vb.textContent||'').trim()!==V) vb.textContent=V; }
   function unify(){
     var safe=document.querySelector('.atl452safe'); if(!safe) return;
@@ -11335,7 +11372,7 @@ input.atl477-open-field:not([type="checkbox"]):not([type="radio"]):not([type="bu
 <script id="atl-cs477-final-touch">
 (function(){
   if(window.__atlCs477FinalTouch) return; window.__atlCs477FinalTouch=true;
-  var VERSION='cs-v7.37';
+  var VERSION='cs-v7.39';
   function qs(s,r){return (r||document).querySelector(s)}
   function qsa(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
   function setVersion(){try{var b=qs('#verBadge'); if(b)b.textContent=VERSION; window.ATELIER_CLIENT_VERSION=VERSION;}catch(e){}}
@@ -14082,7 +14119,7 @@ details.cs-context[open] > summary::after{ content:'\25BE' !important; }
 #s3x9-host .x9-airow .btn{ width:auto; flex:0 1 auto; padding-left:16px; padding-right:16px; }
 #s1x9-host .x9-airow .btn{ width:auto; flex:0 1 auto; padding-left:16px; padding-right:16px; }
 
-/* cs-v7.37：額外項目卡統一 CSS（全域，讓①初診③問診也套用②建檔的正版設計）*/
+/* cs-v7.39：額外項目卡統一 CSS（全域，讓①初診③問診也套用②建檔的正版設計）*/
 .x9-note{ font-size:12.5px; line-height:1.8; color:#5A4448; -webkit-text-fill-color:#5A4448; background:#FBF7F2; border-left:3px solid #C9A57A; border-radius:0 8px 8px 0; padding:9px 12px; margin:0 0 12px; }
 .x9-airow{ display:flex; flex-wrap:wrap; gap:8px; margin-bottom:8px; }
 textarea.x9-paste{ width:100%; min-height:78px; border:1px solid #E2CFB6; border-radius:9px; padding:9px 11px; font-family:inherit; font-size:12.5px; line-height:1.7; color:#2A1A1C; -webkit-text-fill-color:#2A1A1C; background:#FFFDFB; box-sizing:border-box; }
@@ -15504,6 +15541,11 @@ textarea.p2-ta{ width:100%; box-sizing:border-box; min-height:40px; resize:verti
 #view-stage1 .s2-aitip-btn{ display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; padding:0; border:none; background:none; cursor:pointer; color:#B0896C; -webkit-text-fill-color:#B0896C; }
 #view-stage1 .s2-aitip-btn svg{ width:16px; height:16px; }
 #view-stage1 .s2-aitip-btn:hover{ color:#A51820; -webkit-text-fill-color:#A51820; }
+#view-stage3 .s2-aibar{ display:flex; align-items:center; justify-content:flex-start; flex-wrap:wrap; gap:8px; margin:10px 0 4px; text-align:left; position:relative; }
+#view-stage3 .s2-aibar .s2-ai-inline{ font-size:12.5px; margin:0 !important; }
+#view-stage3 .s2-aitip-btn{ display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; padding:0; border:none; background:none; cursor:pointer; color:#B0896C; -webkit-text-fill-color:#B0896C; }
+#view-stage3 .s2-aitip-btn svg{ width:16px; height:16px; }
+#view-stage3 .s2-aitip-btn:hover{ color:#A51820; -webkit-text-fill-color:#A51820; }
 #view-stage2 .s2-hintpop{ position:absolute; top:30px; left:0; z-index:30; max-width:340px; background:#fff; border:1px solid #E6DAC9; border-radius:12px; box-shadow:0 10px 30px rgba(90,40,30,.14); padding:13px 15px 13px; }
 #view-stage2 .s2-hintpop .s2-hintpop-tx{ font-size:12.5px; line-height:1.75; color:#5C4248; -webkit-text-fill-color:#5C4248; padding-right:18px; }
 #view-stage2 .s2-hintpop .s2-hintpop-x{ position:absolute; top:8px; right:9px; width:20px; height:20px; padding:0; border:none; background:none; cursor:pointer; color:#9A7A7C; -webkit-text-fill-color:#9A7A7C; display:inline-flex; align-items:center; justify-content:center; }
@@ -18400,7 +18442,7 @@ try{ window.__atl632=true; }catch(e){}
 /* 7. 按鈕不超框 */
 .btn-row .btn{white-space:normal !important;word-break:break-word !important;max-width:100% !important}
 
-/* 8. 逐項分組框 — cs-v7.37：移除此覆蓋，框框回到 v7.00 設計（優雅版 CSS 已內建於上方 .s3pg-group 區塊，紅字標頭＋金色編號）。邏輯不動。 */
+/* 8. 逐項分組框 — cs-v7.39：移除此覆蓋，框框回到 v7.00 設計（優雅版 CSS 已內建於上方 .s3pg-group 區塊，紅字標頭＋金色編號）。邏輯不動。 */
 
 /* 9. 導覽按鈕 */
 .atl-nav-btn{display:inline-flex;align-items:center;gap:4px;background:#A51820;border:1px solid #A51820;color:#fff;-webkit-text-fill-color:#fff;font-size:10.5px;font-weight:800;padding:4px 10px;border-radius:999px;cursor:pointer;white-space:nowrap;position:absolute;top:0;right:0;z-index:10}
@@ -18478,7 +18520,7 @@ function run(){addAiBtn();addNavBtns();} /* regroupS2 已內建模板，不再�
 })();
 </script>
 <script>
-/* cs-v7.37：規格模式（輕量重建）— 規格鈕開啟後，點任一元件，彈出該元件的 class／字體／字級／字重／文字色／底色／框線／內距。再點規格鈕關閉。僅用兩次 setTimeout 接鈕，無計時迴圈、無 DOM 監聽器。 */
+/* cs-v7.39：規格模式（輕量重建）— 規格鈕開啟後，點任一元件，彈出該元件的 class／字體／字級／字重／文字色／底色／框線／內距。再點規格鈕關閉。僅用兩次 setTimeout 接鈕，無計時迴圈、無 DOM 監聽器。 */
 (function(){
   var on=false, btn=null, pop=null;
   function ensurePop(){
