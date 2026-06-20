@@ -767,7 +767,7 @@ details.cat summary .cat-name{vertical-align:middle}
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">客戶服務台</span></span>
-    <span id="verBadge">cs-v7.77</span>
+    <span id="verBadge">cs-v7.78</span>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button type="button" id="atlSpecBtn" class="popout-btn" title="規格模式（點一下開啟，再點任一元件看它的規格）"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7l4-4 14 14-4 4z"/><path d="M9 5l1.5 1.5M12 8l1.5 1.5M15 11l1.5 1.5"/></svg>規格</button>
@@ -3278,16 +3278,45 @@ window._genS3Ver=function(which, mode){
         +'<div class="s1feed-selrow"><button type="button" class="btn-sf s1feed-smart" onclick="sxSmartCheck(\''+s+'\')">'+ic('spark')+' 智能勾選（只留有資料的）</button><button type="button" class="atl-cksel-fine" onclick="s1ScopeAll(this,\'#x'+s+'pDetail\')" title="全選／全部取消下面每一個欄位">'+_allSvg+'全選</button></div>'
         +sxProduceGroups(s)
         +'</div></details>'
-        +'<details class="s1feed-detail" style="border:1px solid #E3CBBE;border-radius:10px;background:#FFFDF9;padding:0 12px;margin-top:12px"><summary style="display:flex;align-items:center;gap:8px;cursor:pointer;list-style:none;font-weight:700;color:#5C0F14;-webkit-text-fill-color:#5C0F14;padding:11px 2px"><span style="color:#A51820;-webkit-text-fill-color:#A51820;font-weight:800">\u25B8</span>'+ic('spark')+' AI 幫我決定要勾哪些<span class="atl-infohold" style="margin-left:auto" onclick="event.stopPropagation()"><button type="button" class="atl-infodot" onclick="event.stopPropagation();var p=this.nextElementSibling;p.style.display=(p.style.display===\'block\')?\'none\':\'block\'" title="這是什麼">i</button><span class="atl-infopop">把你目前勾選的項目丟給 AI，AI 逐項回你「保留／移除」、放客戶版還是顧問版；再把回覆貼回，自動幫你打勾。照①初診的判斷流程。</span></span></summary><div class="s1feed-detail-body" style="padding-bottom:10px">'
-        +'<div class="s1feed-explain">① 按「複製打勾提示詞」（帶上你目前勾選的項目）→ 丟 AI → AI 回每項「保留／移除」→ ② 把回覆貼回下面，自動幫你打勾。</div>'
-        +'<div class="s1feed-selrow" style="display:flex;align-items:center;gap:8px"><button type="button" class="btn btn-go" style="width:auto;flex:0 0 auto;padding:6px 14px;font-size:12.5px;margin:0" onclick="sxPickPrompt(\''+s+'\')"><span class="atl-cktri-step" style="color:#fff;-webkit-text-fill-color:#fff;margin-right:4px">①</span>複製打勾提示詞</button><button type="button" class="atl-cksel-fine" style="margin-left:auto" onclick="s1ScopeAll(this,\'#x'+s+'pDetail\')" title="全選／全部取消">'+_allSvg+'全選</button></div>'
+        +'<details class="s1feed-detail s3pickwrap"><summary>'+ic('spark')+' AI 幫我決定要勾哪些（點我打開）</summary><div class="s1feed-detail-body">'
+        +'<div class="s1feed-explain">① 按「複製打勾提示詞」（會帶上你目前勾選的項目）→ 丟 AI → AI 回每項「保留／移除」→ ② 把回覆貼回下面，自動幫你打勾。</div>'
+        +'<div class="s1feed-selrow" style="display:flex;align-items:center"><button type="button" class="atl-cksel-fine" onclick="sxPickPrompt(\''+s+'\')"><span class="atl-cktri-step">①</span>複製打勾提示詞</button><button type="button" class="atl-cksel-fine" style="margin-left:auto" onclick="s1ScopeAll(this,\'#x'+s+'pDetail\')" title="全選／全部取消">'+_allSvg+'全選</button></div>'
         +'<textarea id="x'+s+'pickPaste" class="paste-box" style="min-height:88px;margin-top:8px" placeholder="把 AI 回覆整段貼進來（含「保留：…／移除：…」），再按下面自動打勾…"></textarea>'
-        +'<div class="s1feed-selrow" style="display:flex;align-items:center;gap:8px;margin-top:8px"><button type="button" class="btn btn-go" style="width:auto;flex:0 0 auto;padding:6px 14px;font-size:12.5px;margin:0" onclick="sxPickApply(\''+s+'\')"><span class="atl-cktri-step" style="color:#fff;-webkit-text-fill-color:#fff;margin-right:4px">②</span>貼回，自動幫我打勾</button><button type="button" class="atl-cksel-fine" style="margin-left:auto" onclick="var e=document.getElementById(\'x'+s+'pickPaste\');if(e)e.value=\'\';var m=document.getElementById(\'x'+s+'pickMsg\');if(m)m.innerHTML=\'\'">清空</button></div>'
+        +'<div class="s1feed-selrow" style="display:flex;align-items:center;margin-top:8px"><button type="button" class="atl-cksel-fine" onclick="sxPickApply(\''+s+'\')"><span class="atl-cktri-step">②</span>貼回，自動幫我打勾</button><button type="button" class="atl-cksel-fine" style="margin-left:auto" onclick="var e=document.getElementById(\'x'+s+'pickPaste\');if(e)e.value=\'\';var m=document.getElementById(\'x'+s+'pickMsg\');if(m)m.innerHTML=\'\'">清空</button></div>'
         +'<div id="x'+s+'pickMsg" style="font-size:12px;line-height:1.7;margin-top:8px"></div>'
         +'</div></details>'
       +'</div>'
       +'</div>';
   };
+  /* cs-v7.78:④⑤⑥ 交付分頁 → 五分頁(初診來源／建檔資料／問診／客戶版／顧問版),照問診交付樣式(ver-tab/deliver-paper)。全程防呆,出錯由 paneOf 退回兩版預覽。 */
+  window.sxBuildDeliver=function(stageId){
+    var a=(typeof curAcc==='function')?curAcc():null; if(!a) return '';
+    var f=(typeof ensureFlow==='function')?ensureFlow(a):(a.flow||{});
+    function dat(k){ try{ return (f&&f[k]&&f[k].data)||{}; }catch(e){ return {}; } }
+    function E(t){ return (typeof esc==='function')?esc(t):String(t==null?'':t); }
+    var s1=dat('stage1_initial'), s2=dat('stage2_filing'), s3=dat('stage3_interview');
+    var conf=(window.ATELIER_STAGE_EXT&&ATELIER_STAGE_EXT[stageId])||((typeof STAGE_EXT!=='undefined')&&STAGE_EXT[stageId])||{no:'④',title:'診斷',key:'stage4_diagnosis'};
+    var dx=dat(conf.key);
+    function paper(kicker,title,txt){ var has=txt&&String(txt).trim(); var body=has?E(txt).replace(/\n/g,'<br>'):'<div class="dp-empty">尚未產生（到對應階段的「產生」分頁整理兩版）</div>'; return '<div class="deliver-paper"><div class="dp-kicker">'+kicker+'</div><div class="dp-title">'+title+'</div><div class="dp-line"></div><div class="dp-body">'+body+'</div></div>'; }
+    var TB=[
+      ['s1','初診來源','STAGE \u2460 · INITIAL','\u2460 初診 · 客戶版整理', s1.resultClient||s1.result||''],
+      ['s2','建檔資料','STAGE \u2461 · FILING','\u2461 建檔 · 客戶版整理', s2.resultClient||''],
+      ['s3','問診','STAGE \u2462 · INTERVIEW','\u2462 問診 · 客戶版整理', s3.resultClient||''],
+      ['client','客戶版','STAGE '+conf.no+' · DELIVERY', conf.no+conf.title+' · 客戶版', dx.resultClient||''],
+      ['advisor','顧問版','STAGE '+conf.no+' · DELIVERY', conf.no+conf.title+' · 顧問版', dx.resultAdvisor||'']
+    ];
+    var nav=TB.map(function(t,i){ var ck=((t[0]==='client'&&dx.resultClient)||(t[0]==='advisor'&&dx.resultAdvisor))?' <span class="vt-check">\u2713</span>':''; return '<button type="button" class="ver-tab'+(i===0?' is-on':'')+'" data-sxdv="'+t[0]+'" onclick="sxSwitchDeliver(\''+stageId+'\',\''+t[0]+'\')">'+t[1]+ck+'</button>'; }).join('');
+    var panes=TB.map(function(t,i){ return '<div class="sxdv-pane'+(i===0?' is-on':'')+'" data-sxdvpane="'+t[0]+'"'+(i===0?'':' style="display:none"')+'>'+paper(t[2],t[3],t[4])+'</div>'; }).join('');
+    return '<div class="section-card"><h3>'+conf.no+' 交付物（初診／建檔／問診＋本階段兩版）</h3><div class="sc-note">五個分頁：初診來源／建檔資料／問診／客戶版／顧問版。把前面三站成果＋本階段客戶版、顧問版收成一份完整交付；編輯「產生」分頁存檔後這裡會更新。</div><div class="ver-switch" style="flex-wrap:wrap;gap:6px">'+nav+'</div><div class="sxdv-body" style="margin-top:12px">'+panes+'</div></div>';
+  };
+  window.sxSwitchDeliver=function(stageId,name){
+    try{ var box=document.getElementById('view-'+stageId); if(!box) return;
+      var pane=box.querySelector('.sxpane[data-sxpane="deliver"]'); if(!pane) return;
+      [].forEach.call(pane.querySelectorAll('.ver-tab'),function(b){ b.classList.toggle('is-on', b.getAttribute('data-sxdv')===name); });
+      [].forEach.call(pane.querySelectorAll('.sxdv-pane'),function(p){ var on=p.getAttribute('data-sxdvpane')===name; p.style.display=on?'':'none'; p.classList.toggle('is-on',on); });
+    }catch(e){}
+  };
+
   window.sxProducePrompt=function(s){ var a=A(); if(!a){ toast(ic('warn')+' 尚未選定客戶'); return; } var conf=CONF(s); if(!conf) return; var fields=conf.fields.map(function(fd){return '- '+fd[1]+'：'+fd[2];}).join('\n'); var ctx=sxCollect(s,true);
     var p='我是 ATELIER 短影音內容營運顧問，要把客戶「'+(a.displayName||a.handle||'')+'」的「'+conf.no+conf.title+'」整理成可交付的兩版。\n\n【已勾選帶入的資料】\n'+ctx+'\n\n【請依下列欄位收斂判斷】\n'+fields+'\n\n【輸出格式】\n===== 客戶版（乾淨、專業、可直接給客戶看）=====\n（清楚段落與小標，語氣專業但不尖銳）\n\n===== 顧問版（完整、犀利、保留判斷理由）=====\n（保留推論依據、風險、缺口、下一步，方便內部決策）\n\n最後附上「可直接貼回工作台的欄位版」，每行「欄位名稱：內容」。'+DEMK; if(typeof copyPrompt==='function') copyPrompt(p,conf.no+conf.title+'·產生兩版提示詞'); };
 
@@ -5211,7 +5240,7 @@ window.addEventListener('DOMContentLoaded', function(){
       var act=(k===firstKey)?' active':'';
       if(k==='fill') return '<div class="s1tab-pane sxpane'+act+'" data-sxpane="fill">'+workCard+'<div id="'+stageId+'x9-host" class="sxx-host"></div></div>';
       if(k==='produce') return '<div class="s1tab-pane sxpane'+act+'" data-sxpane="produce">'+(window.sxProduceCard?sxProduceCard(stageId):aiCard)+(window.sxVerCard?sxVerCard(stageId):twoVerCard)+'</div>';
-      if(k==='deliver') return '<div class="s1tab-pane sxpane'+act+'" data-sxpane="deliver">'+previewCard+'</div>';
+      if(k==='deliver'){ var _dv; try{ _dv=(stageId!=='stage7'&&window.sxBuildDeliver)?sxBuildDeliver(stageId):previewCard; if(!_dv) _dv=previewCard; }catch(e){ _dv=previewCard; } return '<div class="s1tab-pane sxpane'+act+'" data-sxpane="deliver">'+_dv+'</div>'; }
       if(k==='sum') return '<div class="s1tab-pane sxpane'+act+'" data-sxpane="sum"><div class="sc-note" style="margin-bottom:10px">挑選要納入交付物的站別與項目，產出 PPT／HTML／PDF（下方產出區稍候自動載入）。</div></div>';
       return '<div class="s1tab-pane sxpane'+act+'" data-sxpane="'+k+'"><div class="sc-note" style="margin-bottom:10px">這張卡是這一站的第一步，下面會自動帶入這位客戶的資料。</div><div class="sxx-host" id="sx-'+k+'-host-'+stageId+'"></div></div>';
     }
@@ -10590,7 +10619,7 @@ button:not(:disabled), .btn:not(.disabled):not([disabled]), [role="button"]{
   if(window.__atlCs473Continuity) return; window.__atlCs473Continuity=true;
   function cleanTextNode(n){var s=n.nodeValue||''; var ns=s.replace(/cs-v4\.\d+\s*(SAFE|LATEST)?\s*[｜|·:-]?\s*/g,'').replace(/\bv\d{3}\s*[｜|·:-]?\s*/g,''); if(ns!==s)n.nodeValue=ns;}
   function cleanVersions(){
-    try{var vb=document.getElementById('verBadge'); if(vb)vb.textContent='cs-v7.77';}catch(e){}
+    try{var vb=document.getElementById('verBadge'); if(vb)vb.textContent='cs-v7.78';}catch(e){}
     try{var w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT,{acceptNode:function(n){var p=n.parentElement; if(!p||p.id==='verBadge'||/^(SCRIPT|STYLE|TEXTAREA)$/i.test(p.tagName))return NodeFilter.FILTER_REJECT; return /(cs-v4\.\d+|\bv\d{3})/.test(n.nodeValue||'')?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_REJECT;}}); var nodes=[],n; while(n=w.nextNode())nodes.push(n); nodes.forEach(cleanTextNode);}catch(e){}
   }
   function alignSelection(){
@@ -10650,7 +10679,7 @@ input[type="text"]:focus,input:not([type]):focus{border-color:#D4A574!important;
     btn.onclick=function(e){e.stopPropagation(); set(!safe.classList.contains('atl-safe474-collapsed'));};
     h.appendChild(summary); h.appendChild(btn); set(localStorage.getItem('atl.cs474.safeCollapsed')!=='0');
   }
-  function cleanBadge(){ var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v7.77'; }
+  function cleanBadge(){ var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v7.78'; }
   function run(){ cleanBadge(); ensureSafeCollapse(); wireAutogrow(document); }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run); else run();
   setInterval(run,1200);
@@ -10711,7 +10740,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
   function wire(root){qsa('textarea,input[type="text"],input[type="url"],input[type="email"],input:not([type])',root||document).forEach(function(el){if(el.__atl475)return; if(el.closest('.atl-field-modal,.atl-final-modal'))return; el.__atl475=true; el.addEventListener('focus',function(){show(el); autogrow(el)}); el.addEventListener('input',function(){autogrow(el)}); el.addEventListener('blur',hideSoon); autogrow(el);});}
   document.addEventListener('click',function(e){var b=e.target.closest('#atlFieldToolbar button'); if(!b||!active)return; var a=b.getAttribute('data-act'); if(a==='prompt')openModal('prompt',active); if(a==='fill')openModal('fill',active); if(a==='edit')openModal('edit',active); if(a==='done'){var bar=qs('#atlFieldToolbar'); if(bar)bar.classList.remove('on'); if(active)active.classList.remove('atl-field-active'); toastSafe('此欄位可視為定案，請記得儲存');}},true);
   function addCollapse(root){qsa('.section-card,.deliverable-card,.atl452safe-card',root||document).forEach(function(card){if(card.__atlCollapse475||card.closest('.preview-modal,.atl-field-modal'))return; card.__atlCollapse475=true; card.classList.add('atl-collapsible'); var h=qs('h2,h3,h4,.stitle,.section-title',card)||card.firstElementChild; if(h)h.classList.add('atl-keep-visible'); var btn=document.createElement('button'); btn.type='button'; btn.className='atl-collapse-toggle'; btn.textContent='收合'; btn.addEventListener('click',function(e){e.preventDefault(); e.stopPropagation(); var closed=card.classList.toggle('atl-closed'); btn.textContent=closed?'展開':'收合';}); card.insertBefore(btn,card.firstChild);});}
-  function boot(){try{var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v7.77';}catch(e){} wire(document); addCollapse(document);}
+  function boot(){try{var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v7.78';}catch(e){} wire(document); addCollapse(document);}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot); else boot();
   try{new MutationObserver(function(ms){var hit=false; ms.forEach(function(m){if(m.addedNodes&&m.addedNodes.length)hit=true}); if(hit){clearTimeout(window.__atl475Timer); window.__atl475Timer=setTimeout(boot,180);}}).observe(document.body,{childList:true,subtree:true});}catch(e){}
 })();
@@ -10752,7 +10781,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
 <script id="atl478-final-export-js">
 (function(){
   if(window.__atl478FinalExport)return; window.__atl478FinalExport=true;
-  var VERSION='cs-v7.77';
+  var VERSION='cs-v7.78';
   function esc(s){return (s==null?'':String(s)).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
   function qsa(sel,root){return Array.prototype.slice.call((root||document).querySelectorAll(sel))}
   function text(el){return (el&&el.innerText||el&&el.textContent||'').replace(/\s+/g,' ').trim()}
@@ -10872,7 +10901,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
 <script>
 (function(){
   if(window.__atlCs480) return; window.__atlCs480=true;
-  var V='cs-v7.77';
+  var V='cs-v7.78';
   function lock(){ var vb=document.getElementById('verBadge'); if(vb && (vb.textContent||'').trim()!==V) vb.textContent=V; }
   function unify(){
     var safe=document.querySelector('.atl452safe'); if(!safe) return;
@@ -11820,7 +11849,7 @@ input.atl477-open-field:not([type="checkbox"]):not([type="radio"]):not([type="bu
 <script id="atl-cs477-final-touch">
 (function(){
   if(window.__atlCs477FinalTouch) return; window.__atlCs477FinalTouch=true;
-  var VERSION='cs-v7.77';
+  var VERSION='cs-v7.78';
   function qs(s,r){return (r||document).querySelector(s)}
   function qsa(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
   function setVersion(){try{var b=qs('#verBadge'); if(b)b.textContent=VERSION; window.ATELIER_CLIENT_VERSION=VERSION;}catch(e){}}
@@ -13133,22 +13162,22 @@ body.atl-hide-final #atlFinalFloat{ display:none !important; }
      優先讀 本次服務包 + Stage3問診 + 鏡像庫相近案例；來源依據/參考案例/Hook/CTA 自動帶入；資料不足顯示「待補」；
      存在 a.translationCard35(相容新欄位、不碰 clientFlow)。觀察器只盯 #view-stage4 childList(不盯 class)。規格 §五。 -->
 <style id="atl-p3-css">
-.atl-p3-card{ border:1px solid #E7C9A8; border-radius:16px; background:linear-gradient(180deg,#FFFDF9,#FDF6EC); padding:18px 18px 16px; margin:0 0 18px; box-shadow:0 6px 20px rgba(165,24,32,.06); }
+.atl-p3-card{ border:1px solid #EFE6DC; border-left:3px solid #A51820; border-radius:12px; background:#fff; padding:18px 18px 16px; margin:0 0 18px; box-shadow:0 1px 3px rgba(90,40,45,.05); }
 .atl-p3-head{ display:flex; align-items:center; gap:10px; margin-bottom:6px; }
 .atl-p3-badge{ background:#5C0F14; color:#fff; -webkit-text-fill-color:#fff; font-size:11px; font-weight:800; border-radius:7px; padding:3px 9px; letter-spacing:.5px; }
 .atl-p3-head h3{ margin:0; font-family:'Noto Serif TC',serif; font-size:18px; color:#2A1A1C; font-weight:800; }
 .atl-p3-note{ font-size:12px; color:#7A5A5E; -webkit-text-fill-color:#7A5A5E; line-height:1.7; margin-bottom:10px; }
-.atl-p3-src{ font-size:12px; color:#5C0F14; -webkit-text-fill-color:#5C0F14; background:#fff; border:1px dashed #E0C49C; border-radius:10px; padding:9px 12px; margin-bottom:14px; }
+.atl-p3-src{ font-size:12px; color:#5C0F14; -webkit-text-fill-color:#5C0F14; background:#fff; border:1px dashed #E6D8DA; border-radius:10px; padding:9px 12px; margin-bottom:14px; }
 .atl-p3-src b{ color:#A51820; -webkit-text-fill-color:#A51820; }
 .atl-p3-refresh{ float:right; background:#fff; border:1px solid #D9B7B7; color:#A51820; -webkit-text-fill-color:#A51820; border-radius:999px; padding:3px 10px; font-size:11px; font-weight:800; cursor:pointer; font-family:inherit; }
 .atl-p3-fld{ margin-bottom:11px; }
 .atl-p3-fld label{ display:block; font-size:12.5px; font-weight:800; color:#2A1A1C; margin-bottom:5px; }
 .atl-p3-fld textarea{ width:100%; box-sizing:border-box; min-height:46px; resize:none; overflow-y:hidden; line-height:1.7;
   border:1px solid #E7DCCB; border-radius:9px; padding:10px 12px; font-size:13.5px; font-family:inherit; color:#2A1A1C; -webkit-text-fill-color:#2A1A1C; background:#fff; }
-.atl-p3-fld textarea::placeholder{ color:#C2A98C; -webkit-text-fill-color:#C2A98C; }
-.atl-p3-fld textarea:focus{ border-color:#D4A574; box-shadow:0 0 0 3px rgba(212,165,116,.14); outline:none; }
-.atl-p3-fld.auto textarea{ background:#FBF6EE; }
-.atl-p3-fld.auto label::after{ content:' · 自動帶入'; color:#A57A2A; -webkit-text-fill-color:#A57A2A; font-size:10.5px; font-weight:700; }
+.atl-p3-fld textarea::placeholder{ color:#B7A6A8; -webkit-text-fill-color:#B7A6A8; }
+.atl-p3-fld textarea:focus{ border-color:#A51820; box-shadow:0 0 0 3px rgba(165,24,32,.12); outline:none; }
+.atl-p3-fld.auto textarea{ background:#FBF7F4; }
+.atl-p3-fld.auto label::after{ content:' · 自動帶入'; color:#A51820; -webkit-text-fill-color:#A51820; font-size:10.5px; font-weight:700; }
 .atl-p3-acts{ text-align:right; margin-top:6px; }
 .atl-p3-save{ background:#A51820; color:#fff; -webkit-text-fill-color:#fff; border:none; border-radius:999px; padding:9px 20px; font-size:13.5px; font-weight:800; cursor:pointer; font-family:inherit; }
 .atl-p3-save:hover{ background:#7A1018; }
@@ -13206,7 +13235,7 @@ body.atl-hide-final #atlFinalFloat{ display:none !important; }
     if(v.querySelector('#atlP3Card')){ updateSrc(); fillAuto(false); return; }
     var saved=load();
     var html='<div id="atlP3Card" class="atl-p3-card">'
-      +'<div class="atl-p3-head"><span class="atl-p3-badge">Stage 3.5</span><h3>專業內容轉譯卡</h3></div>'
+      +'<div class="atl-p3-head"><span class="atl-p3-badge">Stage 3.5</span><h3>專業內容轉譯卡</h3><span class="atl-infohold"><button type="button" class="atl-infodot" onclick="event.stopPropagation();var p=this.nextElementSibling;p.style.display=(p.style.display===\'block\')?\'none\':\'block\'" title="這張卡在做什麼">i</button><span class="atl-infopop">把客戶的專業內容翻成觀眾聽得懂、會在意的生活語言：專業名詞 → 觀眾的生活場景 → 他在怕什麼 → 他會怎麼說 → 白話賣點 → 待補。這是④診斷的第一步，填好後面的填寫／產生會更精準。</span></span></div>'
       +'<div class="atl-p3-note">把客戶的「專業」翻成觀眾聽得懂、會行動的內容。本卡優先讀：本次服務包＋Stage 3 問診＋鏡像庫相近案例。AI 不憑空猜，資料不足的欄位請保留「待補」，下次問診補齊。</div>'
       +'<div class="atl-p3-src" id="atlP3Src">'+srcHtml()+'</div>';
     FIELDS.forEach(function(f){
@@ -13343,7 +13372,7 @@ body.atl-hide-final #atlFinalFloat{ display:none !important; }
 .atl-p5-fld label{ display:block; font-size:12.5px; font-weight:800; color:#2A1A1C; margin-bottom:5px; }
 .atl-p5-fld textarea{ width:100%; box-sizing:border-box; min-height:44px; resize:none; overflow-y:hidden; line-height:1.7;
   border:1px solid #E7DCCB; border-radius:9px; padding:10px 12px; font-size:13.5px; font-family:inherit; color:#2A1A1C; -webkit-text-fill-color:#2A1A1C; background:#fff; }
-.atl-p5-fld textarea:focus{ border-color:#D4A574; box-shadow:0 0 0 3px rgba(212,165,116,.14); outline:none; }
+.atl-p5-fld textarea:focus{ border-color:#A51820; box-shadow:0 0 0 3px rgba(165,24,32,.12); outline:none; }
 .atl-p5-fld.auto textarea{ background:#FBF3F1; }
 .atl-p5-fld.auto label::after{ content:' · 自動帶入'; color:#A5572A; -webkit-text-fill-color:#A5572A; font-size:10.5px; font-weight:700; }
 .atl-p5-acts{ display:flex; align-items:center; gap:12px; justify-content:flex-end; margin-top:8px; }
@@ -15766,9 +15795,10 @@ textarea.p2-ta{ width:100%; box-sizing:border-box; min-height:40px; resize:verti
 #view-stage4 > #atlP3Card,
 #view-stage4 > .cta1c-card,
 #view-stage6 > .cmp-card,
-#view-stage7 > .rvw-card, #view-stage7 > .atl-final-card,
-#view-stage4 > .cs-lens, #view-stage5 > .cs-lens, #view-stage6 > .cs-lens, #view-stage7 > .cs-lens,
-#view-stage4 > .atl452safe, #view-stage5 > .atl452safe, #view-stage6 > .atl452safe, #view-stage7 > .atl452safe{ display:none !important; }
+#view-stage7 > .rvw-card, #view-stage7 > .atl-final-card{ display:none !important; }
+/* cs-v7.78: 閉環視角/服務台總控 改成「沒展開才隱藏」→ 歸檔卡的收合鈕(atl-loop-open/atl-master-open)才點得動、收得回 */
+#view-stage4:not(.atl-loop-open) > .cs-lens, #view-stage5:not(.atl-loop-open) > .cs-lens, #view-stage6:not(.atl-loop-open) > .cs-lens, #view-stage7:not(.atl-loop-open) > .cs-lens{ display:none !important; }
+#view-stage4:not(.atl-master-open) > .atl452safe, #view-stage5:not(.atl-master-open) > .atl452safe, #view-stage6:not(.atl-master-open) > .atl452safe, #view-stage7:not(.atl-master-open) > .atl452safe{ display:none !important; }
 .sx-flow{ display:flex; justify-content:center; align-items:center; gap:0; margin:6px 0 18px; flex-wrap:nowrap; width:100%; }
 .sx-flow .afl-track{ display:flex; align-items:center; justify-content:center; flex-wrap:nowrap; gap:0; }
 .sx-flow .afl-step{ display:inline-flex; align-items:center; gap:8px; background:transparent; border:none; padding:3px 1px; font-family:inherit; cursor:pointer; line-height:1; }
