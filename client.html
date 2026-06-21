@@ -775,7 +775,7 @@ details.cat summary .cat-name{vertical-align:middle}
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">客戶服務台</span></span>
-    <span id="verBadge">cs-v7.99</span>
+    <span id="verBadge">cs-v7.992</span>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button type="button" id="atlSpecBtn" class="popout-btn" title="規格模式（點一下開啟，再點任一元件看它的規格）"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7l4-4 14 14-4 4z"/><path d="M9 5l1.5 1.5M12 8l1.5 1.5M15 11l1.5 1.5"/></svg>規格</button>
@@ -10635,7 +10635,7 @@ button:not(:disabled), .btn:not(.disabled):not([disabled]), [role="button"]{
   if(window.__atlCs473Continuity) return; window.__atlCs473Continuity=true;
   function cleanTextNode(n){var s=n.nodeValue||''; var ns=s.replace(/cs-v4\.\d+\s*(SAFE|LATEST)?\s*[｜|·:-]?\s*/g,'').replace(/\bv\d{3}\s*[｜|·:-]?\s*/g,''); if(ns!==s)n.nodeValue=ns;}
   function cleanVersions(){
-    try{var vb=document.getElementById('verBadge'); if(vb)vb.textContent='cs-v7.99';}catch(e){}
+    try{var vb=document.getElementById('verBadge'); if(vb)vb.textContent='cs-v7.992';}catch(e){}
     try{var w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT,{acceptNode:function(n){var p=n.parentElement; if(!p||p.id==='verBadge'||/^(SCRIPT|STYLE|TEXTAREA)$/i.test(p.tagName))return NodeFilter.FILTER_REJECT; return /(cs-v4\.\d+|\bv\d{3})/.test(n.nodeValue||'')?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_REJECT;}}); var nodes=[],n; while(n=w.nextNode())nodes.push(n); nodes.forEach(cleanTextNode);}catch(e){}
   }
   function alignSelection(){
@@ -10695,7 +10695,7 @@ input[type="text"]:focus,input:not([type]):focus{border-color:#D4A574!important;
     btn.onclick=function(e){e.stopPropagation(); set(!safe.classList.contains('atl-safe474-collapsed'));};
     h.appendChild(summary); h.appendChild(btn); set(localStorage.getItem('atl.cs474.safeCollapsed')!=='0');
   }
-  function cleanBadge(){ var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v7.99'; }
+  function cleanBadge(){ var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v7.992'; }
   function run(){ cleanBadge(); ensureSafeCollapse(); wireAutogrow(document); }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run); else run();
   setInterval(run,1200);
@@ -10756,7 +10756,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
   function wire(root){qsa('textarea,input[type="text"],input[type="url"],input[type="email"],input:not([type])',root||document).forEach(function(el){if(el.__atl475)return; if(el.closest('.atl-field-modal,.atl-final-modal'))return; el.__atl475=true; el.addEventListener('focus',function(){show(el); autogrow(el)}); el.addEventListener('input',function(){autogrow(el)}); el.addEventListener('blur',hideSoon); autogrow(el);});}
   document.addEventListener('click',function(e){var b=e.target.closest('#atlFieldToolbar button'); if(!b||!active)return; var a=b.getAttribute('data-act'); if(a==='prompt')openModal('prompt',active); if(a==='fill')openModal('fill',active); if(a==='edit')openModal('edit',active); if(a==='done'){var bar=qs('#atlFieldToolbar'); if(bar)bar.classList.remove('on'); if(active)active.classList.remove('atl-field-active'); toastSafe('此欄位可視為定案，請記得儲存');}},true);
   function addCollapse(root){qsa('.section-card,.deliverable-card,.atl452safe-card',root||document).forEach(function(card){if(card.__atlCollapse475||card.closest('.preview-modal,.atl-field-modal'))return; card.__atlCollapse475=true; card.classList.add('atl-collapsible'); var h=qs('h2,h3,h4,.stitle,.section-title',card)||card.firstElementChild; if(h)h.classList.add('atl-keep-visible'); var btn=document.createElement('button'); btn.type='button'; btn.className='atl-collapse-toggle'; btn.textContent='收合'; btn.addEventListener('click',function(e){e.preventDefault(); e.stopPropagation(); var closed=card.classList.toggle('atl-closed'); btn.textContent=closed?'展開':'收合';}); card.insertBefore(btn,card.firstChild);});}
-  function boot(){try{var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v7.99';}catch(e){} wire(document); addCollapse(document);}
+  function boot(){try{var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v7.992';}catch(e){} wire(document); addCollapse(document);}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot); else boot();
   try{new MutationObserver(function(ms){var hit=false; ms.forEach(function(m){if(m.addedNodes&&m.addedNodes.length)hit=true}); if(hit){clearTimeout(window.__atl475Timer); window.__atl475Timer=setTimeout(boot,180);}}).observe(document.body,{childList:true,subtree:true});}catch(e){}
 })();
@@ -10797,7 +10797,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
 <script id="atl478-final-export-js">
 (function(){
   if(window.__atl478FinalExport)return; window.__atl478FinalExport=true;
-  var VERSION='cs-v7.99';
+  var VERSION='cs-v7.992';
   function esc(s){return (s==null?'':String(s)).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
   function qsa(sel,root){return Array.prototype.slice.call((root||document).querySelectorAll(sel))}
   function text(el){return (el&&el.innerText||el&&el.textContent||'').replace(/\s+/g,' ').trim()}
@@ -10917,7 +10917,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
 <script>
 (function(){
   if(window.__atlCs480) return; window.__atlCs480=true;
-  var V='cs-v7.99';
+  var V='cs-v7.992';
   function lock(){ var vb=document.getElementById('verBadge'); if(vb && (vb.textContent||'').trim()!==V) vb.textContent=V; }
   function unify(){
     var safe=document.querySelector('.atl452safe'); if(!safe) return;
@@ -11865,7 +11865,7 @@ input.atl477-open-field:not([type="checkbox"]):not([type="radio"]):not([type="bu
 <script id="atl-cs477-final-touch">
 (function(){
   if(window.__atlCs477FinalTouch) return; window.__atlCs477FinalTouch=true;
-  var VERSION='cs-v7.99';
+  var VERSION='cs-v7.992';
   function qs(s,r){return (r||document).querySelector(s)}
   function qsa(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
   function setVersion(){try{var b=qs('#verBadge'); if(b)b.textContent=VERSION; window.ATELIER_CLIENT_VERSION=VERSION;}catch(e){}}
@@ -13240,7 +13240,10 @@ body.atl-hide-final #atlFinalFloat{ display:none !important; }
   function load(){ var a=curAccObj(); return (a&&a.translationCard35)||{}; }
   function save(){ var a=curAccObj(); if(!a){ toast('請先選擇客戶'); return; } var c=a.translationCard35=a.translationCard35||{};
     FIELDS.forEach(function(f){ var el=document.getElementById('atlP3-'+f[0]); if(el) c[f[0]]=el.value; });
+    var ex=[]; [].forEach.call(document.querySelectorAll('#atlP3XList .atlP3X'),function(t){ var v=(t.value||'').trim(); if(v) ex.push(v); }); c.extras=ex;
     c.updatedAt=Date.now(); persistAcc(); toast('已儲存 Stage 3.5 轉譯卡'); }
+  function _p3XAddRow(v){ var list=document.getElementById('atlP3XList'); if(!list) return; var row=document.createElement('div'); row.style.cssText='display:flex;gap:8px;align-items:flex-start;margin-bottom:8px'; var ta=document.createElement('textarea'); ta.className='atlP3X'; ta.placeholder='自訂的觀察／補充（上面欄位沒涵蓋到的）…'; ta.style.cssText='flex:1;box-sizing:border-box;border:1px solid #E3DAD0;border-radius:8px;padding:7px 10px;font-family:inherit;font-size:12.5px;min-height:42px;resize:vertical'; ta.value=v||''; var del=document.createElement('button'); del.type='button'; del.title='刪除這項'; del.textContent='\u2715'; del.style.cssText='border:1px solid #E2D6D3;background:#fff;color:#A08C7A;border-radius:8px;padding:6px 10px;cursor:pointer;font-family:inherit;flex:0 0 auto'; del.onclick=function(){ row.remove(); save(); }; row.appendChild(ta); row.appendChild(del); list.appendChild(row); }
+  function _p3XRender(){ var list=document.getElementById('atlP3XList'); if(!list) return; list.innerHTML=''; var ex=(load().extras)||[]; ex.forEach(function(v){ _p3XAddRow(v); }); }
   function fillAuto(force){
     function setIf(id,val){ var el=document.getElementById('atlP3-'+id); if(el&&val&&(force||!el.value.trim())){ el.value=val; grow(el); } }
     setIf('srcBasis',autoSrcBasis()); setIf('refCase',autoRefCase()); setIf('hook',autoHooks()); setIf('cta',autoCtas());
@@ -13277,6 +13280,7 @@ body.atl-hide-final #atlFinalFloat{ display:none !important; }
       if(f[0]==='srcBasis'||f[0]==='refCase'){ srcCollapse+=fld; } else { html+=fld; }
     });
     if(srcCollapse){ html+='<details class="atl-p3-fold" style="margin:4px 0 12px;border-top:1px dashed #EFE6DC;padding-top:8px"><summary style="cursor:pointer;list-style:none;font-size:12.5px;font-weight:800;color:#A51820;-webkit-text-fill-color:#A51820;padding:6px 0">▸ 工作台來源依據／參考案例（自動帶入，點開看）</summary>'+srcCollapse+'</details>'; }
+    html+='<div class="atl-p3-extra" style="margin-top:14px;border-top:1px dashed #EFE6DC;padding-top:12px"><div style="display:flex;align-items:center;gap:8px;margin-bottom:8px"><span style="font-size:13px;font-weight:800;color:#7A1018">額外項目 <span style="font-weight:400;color:#A08C7A;font-size:11.5px">（上面沒問到的，自己加）</span></span><button type="button" id="atlP3XAdd" class="atl-p3-trio" style="margin-left:auto;padding:5px 12px;font-size:12px">＋ 新增一項</button></div><div id="atlP3XList"></div></div>';
     html+='<div class="cat-actions" style="margin-top:14px;border-top:1px dashed #EFE6DC;padding-top:12px"><button type="button" id="atlP3Hist" class="cat-hist"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v5h5"/><path d="M3.05 13A9 9 0 1 0 6 5.3L3 8"/><path d="M12 7v5l4 2"/></svg>歷史版本</button><button type="button" id="atlP3Save" class="cat-save"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8M7 3v5h8"/></svg>儲存此版</button><button type="button" id="atlP3Clear" class="cat-clear"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2m2 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg>清除此版</button></div><div id="atlP3HistBox" style="display:none;margin-top:10px;padding:12px 14px;border:1px solid #EFE6DC;border-radius:10px;background:#FCFAF7"></div></div>';
     var wrap=document.createElement('div'); wrap.innerHTML=html;
     v.insertBefore(wrap.firstChild, v.firstChild);
@@ -13291,6 +13295,8 @@ body.atl-hide-final #atlFinalFloat{ display:none !important; }
     var prevb=document.getElementById('atlP3Prev'), prevp=document.getElementById('atlP3Preview');
     if(prevb&&prevp) prevb.addEventListener('click',function(){ if(prevp.style.display==='none'||!prevp.style.display){ var out=''; FIELDS.forEach(function(f){ var el=document.getElementById('atlP3-'+f[0]); var v=el?el.value.trim():''; if(v) out+='【'+f[1]+'】\n'+v+'\n\n'; }); prevp.textContent=out?out.replace(/\n+$/,''):'（這張卡還沒填內容）'; prevp.style.display='block'; prevb.textContent='收合預覽 \u25B4'; } else { prevp.style.display='none'; prevb.textContent='預覽 \u25BE'; } });
     wireRefresh();
+    _p3XRender();
+    var xadd=document.getElementById('atlP3XAdd'); if(xadd) xadd.addEventListener('click',function(){ _p3XAddRow(''); });
     v.querySelectorAll('#atlP3Card textarea').forEach(function(t){ t.addEventListener('input',function(){grow(t);}); grow(t); });
     fillAuto(false);
   }
@@ -18272,7 +18278,8 @@ try{ window.__atl632=true; }catch(e){}
     var v=document.querySelector('.view.on'); if(!v) return;
     var open=v.classList.toggle('atl-ctx-open');
     if(btn) btn.innerHTML='客戶現況 '+(open?'\u25B4':'\u25BE');
-    if(open){ var p=v.querySelector('.cs-ctx'); if(p&&p.scrollIntoView){ try{ p.scrollIntoView({behavior:'smooth',block:'nearest'}); }catch(e){} } }
+    var p=v.querySelector('.cs-ctx');
+    if(p){ p.style.setProperty('display', open?'block':'none', 'important'); if(open&&p.scrollIntoView){ try{ p.scrollIntoView({behavior:'smooth',block:'nearest'}); }catch(e){} } }
   };
 
   window.switchSx2=function(btn,name){
