@@ -831,7 +831,7 @@ details.cat summary .cat-name{vertical-align:middle}
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">客戶服務台</span></span>
-    <span id="verBadge">cs-v8.04</span>
+    <span id="verBadge">cs-v8.05</span>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button type="button" id="atlSpecBtn" class="popout-btn" title="規格模式（點一下開啟，再點任一元件看它的規格）"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7l4-4 14 14-4 4z"/><path d="M9 5l1.5 1.5M12 8l1.5 1.5M15 11l1.5 1.5"/></svg>規格</button>
@@ -10680,7 +10680,7 @@ button:not(:disabled), .btn:not(.disabled):not([disabled]), [role="button"]{
   if(window.__atlCs473Continuity) return; window.__atlCs473Continuity=true;
   function cleanTextNode(n){var s=n.nodeValue||''; var ns=s.replace(/cs-v4\.\d+\s*(SAFE|LATEST)?\s*[｜|·:-]?\s*/g,'').replace(/\bv\d{3}\s*[｜|·:-]?\s*/g,''); if(ns!==s)n.nodeValue=ns;}
   function cleanVersions(){
-    try{var vb=document.getElementById('verBadge'); if(vb)vb.textContent='cs-v8.04';}catch(e){}
+    try{var vb=document.getElementById('verBadge'); if(vb)vb.textContent='cs-v8.05';}catch(e){}
     try{var w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT,{acceptNode:function(n){var p=n.parentElement; if(!p||p.id==='verBadge'||/^(SCRIPT|STYLE|TEXTAREA)$/i.test(p.tagName))return NodeFilter.FILTER_REJECT; return /(cs-v4\.\d+|\bv\d{3})/.test(n.nodeValue||'')?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_REJECT;}}); var nodes=[],n; while(n=w.nextNode())nodes.push(n); nodes.forEach(cleanTextNode);}catch(e){}
   }
   function alignSelection(){
@@ -10740,7 +10740,7 @@ input[type="text"]:focus,input:not([type]):focus{border-color:#D4A574!important;
     btn.onclick=function(e){e.stopPropagation(); set(!safe.classList.contains('atl-safe474-collapsed'));};
     h.appendChild(summary); h.appendChild(btn); set(localStorage.getItem('atl.cs474.safeCollapsed')!=='0');
   }
-  function cleanBadge(){ var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v8.04'; }
+  function cleanBadge(){ var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v8.05'; }
   function run(){ cleanBadge(); ensureSafeCollapse(); wireAutogrow(document); }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run); else run();
   setInterval(run,1200);
@@ -10801,7 +10801,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
   function wire(root){qsa('textarea,input[type="text"],input[type="url"],input[type="email"],input:not([type])',root||document).forEach(function(el){if(el.__atl475)return; if(el.closest('.atl-field-modal,.atl-final-modal'))return; el.__atl475=true; el.addEventListener('focus',function(){show(el); autogrow(el)}); el.addEventListener('input',function(){autogrow(el)}); el.addEventListener('blur',hideSoon); autogrow(el);});}
   document.addEventListener('click',function(e){var b=e.target.closest('#atlFieldToolbar button'); if(!b||!active)return; var a=b.getAttribute('data-act'); if(a==='prompt')openModal('prompt',active); if(a==='fill')openModal('fill',active); if(a==='edit')openModal('edit',active); if(a==='done'){var bar=qs('#atlFieldToolbar'); if(bar)bar.classList.remove('on'); if(active)active.classList.remove('atl-field-active'); toastSafe('此欄位可視為定案，請記得儲存');}},true);
   function addCollapse(root){qsa('.section-card,.deliverable-card,.atl452safe-card',root||document).forEach(function(card){if(card.__atlCollapse475||card.closest('.preview-modal,.atl-field-modal'))return; card.__atlCollapse475=true; card.classList.add('atl-collapsible'); var h=qs('h2,h3,h4,.stitle,.section-title',card)||card.firstElementChild; if(h)h.classList.add('atl-keep-visible'); var btn=document.createElement('button'); btn.type='button'; btn.className='atl-collapse-toggle'; btn.textContent='收合'; btn.addEventListener('click',function(e){e.preventDefault(); e.stopPropagation(); var closed=card.classList.toggle('atl-closed'); btn.textContent=closed?'展開':'收合';}); card.insertBefore(btn,card.firstChild);});}
-  function boot(){try{var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v8.04';}catch(e){} wire(document); addCollapse(document);}
+  function boot(){try{var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v8.05';}catch(e){} wire(document); addCollapse(document);}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot); else boot();
   try{new MutationObserver(function(ms){var hit=false; ms.forEach(function(m){if(m.addedNodes&&m.addedNodes.length)hit=true}); if(hit){clearTimeout(window.__atl475Timer); window.__atl475Timer=setTimeout(boot,180);}}).observe(document.body,{childList:true,subtree:true});}catch(e){}
 })();
@@ -10842,7 +10842,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
 <script id="atl478-final-export-js">
 (function(){
   if(window.__atl478FinalExport)return; window.__atl478FinalExport=true;
-  var VERSION='cs-v8.04';
+  var VERSION='cs-v8.05';
   function esc(s){return (s==null?'':String(s)).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
   function qsa(sel,root){return Array.prototype.slice.call((root||document).querySelectorAll(sel))}
   function text(el){return (el&&el.innerText||el&&el.textContent||'').replace(/\s+/g,' ').trim()}
@@ -10962,7 +10962,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
 <script>
 (function(){
   if(window.__atlCs480) return; window.__atlCs480=true;
-  var V='cs-v8.04';
+  var V='cs-v8.05';
   function lock(){ var vb=document.getElementById('verBadge'); if(vb && (vb.textContent||'').trim()!==V) vb.textContent=V; }
   function unify(){
     var safe=document.querySelector('.atl452safe'); if(!safe) return;
@@ -11910,7 +11910,7 @@ input.atl477-open-field:not([type="checkbox"]):not([type="radio"]):not([type="bu
 <script id="atl-cs477-final-touch">
 (function(){
   if(window.__atlCs477FinalTouch) return; window.__atlCs477FinalTouch=true;
-  var VERSION='cs-v8.04';
+  var VERSION='cs-v8.05';
   function qs(s,r){return (r||document).querySelector(s)}
   function qsa(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
   function setVersion(){try{var b=qs('#verBadge'); if(b)b.textContent=VERSION; window.ATELIER_CLIENT_VERSION=VERSION;}catch(e){}}
@@ -13332,10 +13332,10 @@ body.atl-hide-final #atlFinalFloat{ display:none !important; }
     html+='<div id="atlP3ExtraCard" class="section-card" style="margin-top:16px">'
       +'<div style="font-size:14px;font-weight:800;color:#5C0F14;-webkit-text-fill-color:#5C0F14;margin-bottom:7px">額外項目・自訂觀察</div>'
       +'<div style="font-size:11.5px;line-height:1.7;color:#7A5A5E;-webkit-text-fill-color:#7A5A5E;background:#FBF7F2;border-left:3px solid #C9A57A;border-radius:0 8px 8px 0;padding:8px 11px;margin-bottom:11px">這一站固定欄位之外、這位客戶特有的觀察或補充放這裡。流程：按「產生提示詞」→ 丟 AI → 把整理好的內容貼回下面 → 按「解析並歸檔」自動變成一條條項目；或直接「＋ 新增一項」。</div>'
-      +'<button type="button" id="atlP3XPrompt" class="atl-cksel-fine" style="width:100%;justify-content:center;margin-bottom:8px;background:#fff;border:1px solid #A51820;color:#A51820;-webkit-text-fill-color:#A51820">'+((window.ICN&&ICN.copy)||'')+' 產生提示詞</button>'
-      +'<button type="button" id="atlP3XAdd" class="atl-cksel-fine" style="width:100%;justify-content:center;margin-bottom:8px;background:#fff;border:1px solid #A51820;color:#A51820;-webkit-text-fill-color:#A51820">＋ 新增一項</button>'
-      +'<textarea id="atlP3XPaste" placeholder="把 AI 整理好的內容整段貼進來（■ 主題 / 1. 項目…），再按下面解析…" style="width:100%;box-sizing:border-box;border:1px solid #E3DAD0;border-radius:8px;padding:9px 11px;font-family:inherit;font-size:12.5px;min-height:74px;resize:vertical;margin-bottom:9px"></textarea>'
-      +'<button type="button" id="atlP3XParse" class="atl-cksel-fine" style="margin-left:0 !important;margin-right:auto;background:#A51820;border:1px solid #A51820;color:#fff;-webkit-text-fill-color:#fff">'+((window.ICN&&ICN.check)||'\u2713')+' 解析並歸檔成額外項目</button>'
+      +'<div class="x9-airow"><button type="button" id="atlP3XPrompt" class="btn btn-sf">'+((window.ICN&&ICN.copy)||'')+' 產生提示詞</button>'
+      +'<button type="button" id="atlP3XAdd" class="btn btn-sf">＋ 新增一項</button></div>'
+      +'<textarea id="atlP3XPaste" class="x9-paste" placeholder="把 AI 整理好的內容整段貼進來（■ 主題 / 1. 項目…），再按下面解析…"></textarea>'
+      +'<div class="x9-airow x9-parserow" style="margin-top:8px"><button type="button" id="atlP3XParse" class="btn btn-go" style="margin:0 !important;flex:0 0 auto">'+((window.ICN&&ICN.check)||'\u2713')+' 解析並歸檔成額外項目</button></div>'
       +'<div id="atlP3XList" style="margin-top:11px"></div>'
       +'<div id="atlP3XEmpty" style="font-size:11.5px;color:#A08C7A;-webkit-text-fill-color:#A08C7A;margin-top:8px">目前沒有額外項目。按上面「產生提示詞」問 AI、貼回自動歸檔，或直接按「＋ 新增一項」自己加。</div>'
       +'<div class="cat-actions" style="margin-top:13px"><button type="button" id="atlP3XHist" class="cat-hist">'+((window.ICN&&ICN.history)||'\u27F2')+' 歷史版本</button><button type="button" id="atlP3XSave" class="cat-save">'+((window.ICN&&ICN.save)||'')+' 儲存此版</button><button type="button" id="atlP3XClear" class="cat-clear">'+((window.ICN&&ICN.trash)||'')+' 清除此版</button></div>'
@@ -14726,6 +14726,8 @@ details.cs-context[open] > summary::after{ content:'\25BE' !important; }
 .x9-airow{ display:flex; flex-wrap:wrap; gap:8px; margin-bottom:8px; }
 #s3x9-host .x9-airow .btn{ width:auto; flex:0 1 auto; padding-left:16px; padding-right:16px; }
 #s1x9-host .x9-airow .btn{ width:auto; flex:0 1 auto; padding-left:16px; padding-right:16px; }
+/* cs-v8.05：④⑤⑥⑦(sxxRender) 與 轉譯卡額外卡(atlP3ExtraCard) 的「產生提示詞／新增一項／解析」按鈕並排不撐滿，比照①③正版額外卡 */
+#stage4x9-host .x9-airow .btn,#stage5x9-host .x9-airow .btn,#stage6x9-host .x9-airow .btn,#stage7x9-host .x9-airow .btn,#atlP3ExtraCard .x9-airow .btn{ width:auto; flex:0 1 auto; padding-left:16px; padding-right:16px; }
 
 /* cs-v7.63：額外項目卡統一 CSS（全域，讓①初診③問診也套用②建檔的正版設計）*/
 .x9-note{ font-size:12.5px; line-height:1.8; color:#5A4448; -webkit-text-fill-color:#5A4448; background:#FBF7F2; border-left:3px solid #C9A57A; border-radius:0 8px 8px 0; padding:9px 12px; margin:0 0 12px; }
