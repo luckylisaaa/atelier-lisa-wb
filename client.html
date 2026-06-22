@@ -2,6 +2,48 @@
 <html lang="zh-Hant">
 <head>
 <meta charset="UTF-8">
+<!--
+═══════════════════════════════════════════════════════════════════════════════
+  ATELIER 客戶服務台 · 內建規格書（給未來任何編輯者：Claude／ChatGPT／新對話）
+  目的：①到⑦每一站的「共用元件」外觀必須一致。只有「資料內容、提示詞文字」依階段不同，
+       框架／顏色／按鈕位置／三件套一律照本規格，不要自創新樣式、也不要各站各做一套。
+  原則：寬鬆但一致 —— 顏色與結構照下表；文案可依階段調整。
+───────────────────────────────────────────────────────────────────────────────
+  ● 設計代幣（顏色）
+    主酒紅 rouge        #A51820   （①②按鈕框線/紅字、紅三角、解析鈕底）
+    深酒紅（標題字）     #5C0F14
+    說明框底            #FBF7F2   ＋ 左邊條 #C9A57A（金，3px）
+    卡片白底            #FFFFFF
+    淺框線              #EFE3D2 ／ 虛線 #E8DCC9
+    提示灰字            #7A5A5E ／ #A08C7A
+───────────────────────────────────────────────────────────────────────────────
+  ● 正版積木 A：「AI 幫我決定要勾哪些」框（模範＝②建檔 .atl-cktri）
+    - 容器：透明、上緣 1px dashed #E8DCC9、padding-top 12px、margin-top 14px（不是實心填色）
+    - 標題列(summary)：flex、gap 8px
+        · 紅三角 ▸（#A51820；展開時 ▾）
+        · 標題字 12.5px / 800 / #5C0F14
+        · ⓘ 用 .atl-infodot，放這一排「最右邊」
+    - 展開內容：
+        · 說明 note：底 #FBF7F2、左邊條 3px #C9A57A、12px
+        · ① 複製打勾提示詞：白底紅框紅字 pill、靠最左
+        · 全選：靠最右
+        · 貼回 textarea（整排）
+        · ② 貼回，自動幫我打勾：白底紅框紅字、靠最左（不要多餘的「清空」鈕）
+    - 底部三件套 .cat-actions：歷史版本（左） … 儲存此版／清除此版（右）
+───────────────────────────────────────────────────────────────────────────────
+  ● 正版積木 B：「額外項目」卡（模範＝③問診 ⑪ 額外項目）
+    - 一張「獨立白卡」：底 #fff、框線 1px #EFE3D2、圓角 12px、padding 15px 16px（不要嵌在別的卡裡）
+    - 標題 14px / 800 / #5C0F14（例：額外項目・自訂觀察）＋ 說明（底 #FBF7F2、左邊條 #C9A57A）
+    - 產生提示詞（整排、白底紅框）→ ＋新增一項（整排、白底紅框）→ 貼回 textarea
+      → 解析並歸檔成額外項目（紅底白字、靠左）＋ 全選（右）→ 清單 → 自己的三件套（歷史左／儲存·清除右）
+    - 每站「只有提示詞文字不同」，框架與按鈕位置全部一樣。
+───────────────────────────────────────────────────────────────────────────────
+  ● 共通鐵則
+    - 版號只改 7 處 setter（verBadge ＋ 3×textContent ＋ 2×var VERSION ＋ 1×var V）。
+    - 改完一定驗：149 段 inline script 語法全過、背景計時器 ≤ 90、變動觀察器 ≤ 77（不要新增）。
+    - 不疊 addon、不盲改產生流程；同一個共用元件改一處要讓①～⑦一起生效。
+═══════════════════════════════════════════════════════════════════════════════
+-->
 <script>/* localStorage 保險絲:受限 iframe(部分 Notion 嵌入)會讓 localStorage 丟錯;正常環境不動作,被擋時用記憶體替代,確保全 App 不中斷。 */
 (function(){try{var t="__atlls";window.localStorage.setItem(t,"1");window.localStorage.removeItem(t);}catch(e){try{var mem={};Object.defineProperty(window,"localStorage",{configurable:true,value:{getItem:function(k){return Object.prototype.hasOwnProperty.call(mem,k)?mem[k]:null;},setItem:function(k,v){mem[k]=String(v);},removeItem:function(k){delete mem[k];},clear:function(){mem={};},key:function(i){return Object.keys(mem)[i]||null;},get length(){return Object.keys(mem).length;}}});}catch(e2){}}})();
 </script>
@@ -779,7 +821,7 @@ details.cat summary .cat-name{vertical-align:middle}
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">客戶服務台</span></span>
-    <span id="verBadge">cs-v7.999</span>
+    <span id="verBadge">cs-v7.9991</span>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button type="button" id="atlSpecBtn" class="popout-btn" title="規格模式（點一下開啟，再點任一元件看它的規格）"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7l4-4 14 14-4 4z"/><path d="M9 5l1.5 1.5M12 8l1.5 1.5M15 11l1.5 1.5"/></svg>規格</button>
@@ -10640,7 +10682,7 @@ button:not(:disabled), .btn:not(.disabled):not([disabled]), [role="button"]{
   if(window.__atlCs473Continuity) return; window.__atlCs473Continuity=true;
   function cleanTextNode(n){var s=n.nodeValue||''; var ns=s.replace(/cs-v4\.\d+\s*(SAFE|LATEST)?\s*[｜|·:-]?\s*/g,'').replace(/\bv\d{3}\s*[｜|·:-]?\s*/g,''); if(ns!==s)n.nodeValue=ns;}
   function cleanVersions(){
-    try{var vb=document.getElementById('verBadge'); if(vb)vb.textContent='cs-v7.999';}catch(e){}
+    try{var vb=document.getElementById('verBadge'); if(vb)vb.textContent='cs-v7.9991';}catch(e){}
     try{var w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT,{acceptNode:function(n){var p=n.parentElement; if(!p||p.id==='verBadge'||/^(SCRIPT|STYLE|TEXTAREA)$/i.test(p.tagName))return NodeFilter.FILTER_REJECT; return /(cs-v4\.\d+|\bv\d{3})/.test(n.nodeValue||'')?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_REJECT;}}); var nodes=[],n; while(n=w.nextNode())nodes.push(n); nodes.forEach(cleanTextNode);}catch(e){}
   }
   function alignSelection(){
@@ -10700,7 +10742,7 @@ input[type="text"]:focus,input:not([type]):focus{border-color:#D4A574!important;
     btn.onclick=function(e){e.stopPropagation(); set(!safe.classList.contains('atl-safe474-collapsed'));};
     h.appendChild(summary); h.appendChild(btn); set(localStorage.getItem('atl.cs474.safeCollapsed')!=='0');
   }
-  function cleanBadge(){ var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v7.999'; }
+  function cleanBadge(){ var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v7.9991'; }
   function run(){ cleanBadge(); ensureSafeCollapse(); wireAutogrow(document); }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run); else run();
   setInterval(run,1200);
@@ -10761,7 +10803,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
   function wire(root){qsa('textarea,input[type="text"],input[type="url"],input[type="email"],input:not([type])',root||document).forEach(function(el){if(el.__atl475)return; if(el.closest('.atl-field-modal,.atl-final-modal'))return; el.__atl475=true; el.addEventListener('focus',function(){show(el); autogrow(el)}); el.addEventListener('input',function(){autogrow(el)}); el.addEventListener('blur',hideSoon); autogrow(el);});}
   document.addEventListener('click',function(e){var b=e.target.closest('#atlFieldToolbar button'); if(!b||!active)return; var a=b.getAttribute('data-act'); if(a==='prompt')openModal('prompt',active); if(a==='fill')openModal('fill',active); if(a==='edit')openModal('edit',active); if(a==='done'){var bar=qs('#atlFieldToolbar'); if(bar)bar.classList.remove('on'); if(active)active.classList.remove('atl-field-active'); toastSafe('此欄位可視為定案，請記得儲存');}},true);
   function addCollapse(root){qsa('.section-card,.deliverable-card,.atl452safe-card',root||document).forEach(function(card){if(card.__atlCollapse475||card.closest('.preview-modal,.atl-field-modal'))return; card.__atlCollapse475=true; card.classList.add('atl-collapsible'); var h=qs('h2,h3,h4,.stitle,.section-title',card)||card.firstElementChild; if(h)h.classList.add('atl-keep-visible'); var btn=document.createElement('button'); btn.type='button'; btn.className='atl-collapse-toggle'; btn.textContent='收合'; btn.addEventListener('click',function(e){e.preventDefault(); e.stopPropagation(); var closed=card.classList.toggle('atl-closed'); btn.textContent=closed?'展開':'收合';}); card.insertBefore(btn,card.firstChild);});}
-  function boot(){try{var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v7.999';}catch(e){} wire(document); addCollapse(document);}
+  function boot(){try{var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v7.9991';}catch(e){} wire(document); addCollapse(document);}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot); else boot();
   try{new MutationObserver(function(ms){var hit=false; ms.forEach(function(m){if(m.addedNodes&&m.addedNodes.length)hit=true}); if(hit){clearTimeout(window.__atl475Timer); window.__atl475Timer=setTimeout(boot,180);}}).observe(document.body,{childList:true,subtree:true});}catch(e){}
 })();
@@ -10802,7 +10844,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
 <script id="atl478-final-export-js">
 (function(){
   if(window.__atl478FinalExport)return; window.__atl478FinalExport=true;
-  var VERSION='cs-v7.999';
+  var VERSION='cs-v7.9991';
   function esc(s){return (s==null?'':String(s)).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
   function qsa(sel,root){return Array.prototype.slice.call((root||document).querySelectorAll(sel))}
   function text(el){return (el&&el.innerText||el&&el.textContent||'').replace(/\s+/g,' ').trim()}
@@ -10922,7 +10964,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
 <script>
 (function(){
   if(window.__atlCs480) return; window.__atlCs480=true;
-  var V='cs-v7.999';
+  var V='cs-v7.9991';
   function lock(){ var vb=document.getElementById('verBadge'); if(vb && (vb.textContent||'').trim()!==V) vb.textContent=V; }
   function unify(){
     var safe=document.querySelector('.atl452safe'); if(!safe) return;
@@ -11870,7 +11912,7 @@ input.atl477-open-field:not([type="checkbox"]):not([type="radio"]):not([type="bu
 <script id="atl-cs477-final-touch">
 (function(){
   if(window.__atlCs477FinalTouch) return; window.__atlCs477FinalTouch=true;
-  var VERSION='cs-v7.999';
+  var VERSION='cs-v7.9991';
   function qs(s,r){return (r||document).querySelector(s)}
   function qsa(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
   function setVersion(){try{var b=qs('#verBadge'); if(b)b.textContent=VERSION; window.ATELIER_CLIENT_VERSION=VERSION;}catch(e){}}
