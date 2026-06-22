@@ -833,7 +833,7 @@ details.cat summary .cat-name{vertical-align:middle}
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">客戶服務台</span></span>
-    <span id="verBadge">cs-v8.15</span>
+    <span id="verBadge">cs-v8.16</span>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button type="button" id="atlSpecBtn" class="popout-btn" title="規格模式（點一下開啟，再點任一元件看它的規格）"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7l4-4 14 14-4 4z"/><path d="M9 5l1.5 1.5M12 8l1.5 1.5M15 11l1.5 1.5"/></svg>規格</button>
@@ -1584,16 +1584,16 @@ function renderDashboard(){
       +'</div>';
   }).join('');
   /* cs-v8.15:儀表板最上方新增「服務流程總覽」導覽圖(規格書第二/十節)。純加區塊+跳轉,不碰工作階段。 */
-  if(!document.getElementById('atl-flowmap-css')){ var _fst=document.createElement('style'); _fst.id='atl-flowmap-css'; _fst.textContent='.atl-flowmap{background:linear-gradient(180deg,#FFFCFA,#FBF6F0);border:1px solid #EFE3D2;border-left:3px solid #C9A57A;border-radius:14px;padding:18px 20px;margin:0 0 20px}.afm-kicker{font-family:"Cormorant Garamond",serif;letter-spacing:4px;color:#C9A57A;font-size:11px}.afm-title{font-family:"Noto Serif TC",serif;font-size:20px;color:#5C0F14;-webkit-text-fill-color:#5C0F14;margin:4px 0 14px;font-weight:800}.afm-body{display:flex;align-items:stretch;gap:10px;flex-wrap:wrap}.afm-seg{flex:1 1 auto;min-width:180px;border:1px solid #EFE3D2;border-radius:12px;padding:10px 12px;background:#fff}.afm-seg-h{display:flex;align-items:baseline;gap:8px;margin-bottom:8px}.afm-seg-lab{font-size:13px;font-weight:800;color:#A51820;-webkit-text-fill-color:#A51820}.afm-seg-sub{font-size:10.5px;color:#9A8488}.afm-nodes{display:flex;align-items:center;gap:4px;flex-wrap:wrap}.afm-node{display:inline-flex;flex-direction:column;align-items:center;gap:2px;border:1px solid #E2CFB6;background:#FFFDFB;border-radius:10px;padding:7px 9px;cursor:pointer;font-family:inherit;min-width:52px;transition:all .15s ease}.afm-node:hover{border-color:#A51820;background:#FBF1F0;transform:translateY(-1px)}.afm-num{font-size:14px;font-weight:800;color:#A51820;-webkit-text-fill-color:#A51820;line-height:1}.afm-nm{font-size:11px;color:#5C4A3C;-webkit-text-fill-color:#5C4A3C;white-space:nowrap;line-height:1.2}.afm-node.afm-todo{cursor:default;background:#F7F2EC;border-style:dashed;opacity:.72}.afm-node.afm-todo:hover{transform:none;border-color:#E2CFB6;background:#F7F2EC}.afm-todo .afm-num,.afm-todo .afm-nm{color:#A0907E;-webkit-text-fill-color:#A0907E}.afm-todo-b{font-size:9px;font-weight:800;color:#B0896C;-webkit-text-fill-color:#B0896C;background:#EFE3D2;border-radius:6px;padding:1px 5px;margin-top:1px}.afm-arrow{color:#D8C4A8;font-size:13px;font-weight:700}.afm-gate{display:flex;align-items:center;color:#C9A57A;font-size:22px;font-weight:300;padding:0 2px}.afm-note{margin-top:12px;font-size:12px;line-height:1.7;color:#7A5A5E;-webkit-text-fill-color:#7A5A5E;background:#FBF7F2;border-left:3px solid #C9A57A;border-radius:0 8px 8px 0;padding:9px 12px}@media(max-width:720px){.afm-gate{display:none}.afm-seg{flex:1 1 100%}}'; document.head.appendChild(_fst); }
+  if(!document.getElementById('atl-flowmap-css')){ var _fst=document.createElement('style'); _fst.id='atl-flowmap-css'; _fst.textContent='.atl-flowmap{background:linear-gradient(180deg,#FFFCFA,#FBF6F0);border:1px solid #EFE3D2;border-left:3px solid #C9A57A;border-radius:14px;margin:0 0 20px;overflow:hidden}.afm-bar{display:flex;align-items:center;gap:10px;padding:13px 18px;cursor:pointer;-webkit-user-select:none;user-select:none}.afm-bar:hover{background:#FCF6EF}.afm-bar-t{font-family:"Noto Serif TC",serif;font-size:15px;font-weight:800;color:#5C0F14;-webkit-text-fill-color:#5C0F14}.afm-bar-h{font-size:11px;color:#9A8488;margin-left:auto}.afm-caret{color:#A51820;-webkit-text-fill-color:#A51820;font-size:12px;transition:transform .2s}.atl-flowmap.afm-open .afm-caret{transform:rotate(180deg)}.afm-collapse{display:none;padding:2px 18px 16px}.atl-flowmap.afm-open .afm-collapse{display:block}.afm-kicker{font-family:"Cormorant Garamond",serif;letter-spacing:4px;color:#C9A57A;font-size:11px}.afm-title{font-family:"Noto Serif TC",serif;font-size:20px;color:#5C0F14;-webkit-text-fill-color:#5C0F14;margin:4px 0 14px;font-weight:800}.afm-body{display:flex;align-items:stretch;gap:10px;flex-wrap:wrap}.afm-seg{flex:1 1 auto;min-width:180px;border:1px solid #EFE3D2;border-radius:12px;padding:10px 12px;background:#fff}.afm-seg-h{display:flex;align-items:baseline;gap:8px;margin-bottom:8px}.afm-seg-lab{font-size:13px;font-weight:800;color:#A51820;-webkit-text-fill-color:#A51820}.afm-seg-sub{font-size:10.5px;color:#9A8488}.afm-nodes{display:flex;align-items:center;gap:4px;flex-wrap:wrap}.afm-node{display:inline-flex;flex-direction:column;align-items:center;gap:2px;border:1px solid #E2CFB6;background:#FFFDFB;border-radius:10px;padding:7px 9px;cursor:pointer;font-family:inherit;min-width:52px;transition:all .15s ease}.afm-node:hover{border-color:#A51820;background:#FBF1F0;transform:translateY(-1px)}.afm-num{font-size:14px;font-weight:800;color:#A51820;-webkit-text-fill-color:#A51820;line-height:1}.afm-nm{font-size:11px;color:#5C4A3C;-webkit-text-fill-color:#5C4A3C;white-space:nowrap;line-height:1.2}.afm-node.afm-todo{cursor:default;background:#F7F2EC;border-style:dashed;opacity:.72}.afm-node.afm-todo:hover{transform:none;border-color:#E2CFB6;background:#F7F2EC}.afm-todo .afm-num,.afm-todo .afm-nm{color:#A0907E;-webkit-text-fill-color:#A0907E}.afm-todo-b{font-size:9px;font-weight:800;color:#B0896C;-webkit-text-fill-color:#B0896C;background:#EFE3D2;border-radius:6px;padding:1px 5px;margin-top:1px}.afm-arrow{color:#D8C4A8;font-size:13px;font-weight:700}.afm-gate{display:flex;align-items:center;color:#C9A57A;font-size:22px;font-weight:300;padding:0 2px}.afm-note{margin-top:12px;font-size:12px;line-height:1.7;color:#7A5A5E;-webkit-text-fill-color:#7A5A5E;background:#FBF7F2;border-left:3px solid #C9A57A;border-radius:0 8px 8px 0;padding:9px 12px}@media(max-width:720px){.afm-gate{display:none}.afm-seg{flex:1 1 100%}}'; document.head.appendChild(_fst); }
   function _afmNode(n){ if(n[0]){ return '<button type="button" class="afm-node" onclick="switchTo(\''+n[0]+'\')"><span class="afm-num">'+n[1]+'</span><span class="afm-nm">'+n[2]+'</span></button>'; } return '<span class="afm-node afm-todo" title="即將推出"><span class="afm-num">'+n[1]+'</span><span class="afm-nm">'+n[2]+'</span><span class="afm-todo-b">待建</span></span>'; }
   function _afmSeg(lab,sub,nodes){ return '<div class="afm-seg"><div class="afm-seg-h"><span class="afm-seg-lab">'+lab+'</span><span class="afm-seg-sub">'+sub+'</span></div><div class="afm-nodes">'+nodes.map(_afmNode).join('<span class="afm-arrow">›</span>')+'</div></div>'; }
-  var flowmap='<div class="atl-flowmap"><div class="afm-head"><div class="afm-kicker">ATELIER · SERVICE FLOW</div><h2 class="afm-title">ATELIER 客戶服務流程總覽</h2></div><div class="afm-body">'
+  var flowmap='<div class="atl-flowmap"><div class="afm-bar" onclick="this.parentNode.classList.toggle(\'afm-open\')"><span class="afm-bar-t">ATELIER 服務流程總覽</span><span class="afm-bar-h">點開看完整服務流程 ①→⑨</span><span class="afm-caret">▾</span></div><div class="afm-collapse"><div class="afm-head"><div class="afm-kicker">ATELIER · SERVICE FLOW</div><h2 class="afm-title">ATELIER 客戶服務流程總覽</h2></div><div class="afm-body">'
     +_afmSeg('提案前','理解 · 方向 · 小示範',[['stage1','①','初診'],['stage2','②','建檔'],['stage3','③','問診'],[null,'③E','提案前對焦卡']])
     +'<div class="afm-gate">›</div>'
     +_afmSeg('合作轉換','確認客戶類型與路徑',[[null,'④','分流確認']])
     +'<div class="afm-gate">›</div>'
     +_afmSeg('合作後','完整診斷 · 完整方案 · 完整執行',[['stage4','⑤','診斷'],['stage5','⑥','盤點'],['stage6','⑦','內容策略'],[null,'⑧','製作執行'],['stage7','⑨','交付復盤']])
-    +'</div><div class="afm-note">提案前給「理解、方向、小示範」；合作後才給「完整診斷、完整方案、完整執行表」。</div></div>';
+    +'</div><div class="afm-note">提案前給「理解、方向、小示範」；合作後才給「完整診斷、完整方案、完整執行表」。</div></div></div>';
   box.innerHTML='<div class="page-head"><div class="ph-en">MONTHLY DASHBOARD · '+_dashMonth()+'</div><h2 class="ph-title">經營儀表板</h2><div class="ph-sub">我的 '+ag.cs.length+' 位客戶 · 一眼看完整體經營概況</div></div>'+flowmap
     +kpi
     +'<div class="dash-grid">'+dist+indu+'</div>'
@@ -10734,7 +10734,7 @@ button:not(:disabled), .btn:not(.disabled):not([disabled]), [role="button"]{
   if(window.__atlCs473Continuity) return; window.__atlCs473Continuity=true;
   function cleanTextNode(n){var s=n.nodeValue||''; var ns=s.replace(/cs-v4\.\d+\s*(SAFE|LATEST)?\s*[｜|·:-]?\s*/g,'').replace(/\bv\d{3}\s*[｜|·:-]?\s*/g,''); if(ns!==s)n.nodeValue=ns;}
   function cleanVersions(){
-    try{var vb=document.getElementById('verBadge'); if(vb)vb.textContent='cs-v8.15';}catch(e){}
+    try{var vb=document.getElementById('verBadge'); if(vb)vb.textContent='cs-v8.16';}catch(e){}
     try{var w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT,{acceptNode:function(n){var p=n.parentElement; if(!p||p.id==='verBadge'||/^(SCRIPT|STYLE|TEXTAREA)$/i.test(p.tagName))return NodeFilter.FILTER_REJECT; return /(cs-v4\.\d+|\bv\d{3})/.test(n.nodeValue||'')?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_REJECT;}}); var nodes=[],n; while(n=w.nextNode())nodes.push(n); nodes.forEach(cleanTextNode);}catch(e){}
   }
   function alignSelection(){
@@ -10794,7 +10794,7 @@ input[type="text"]:focus,input:not([type]):focus{border-color:#D4A574!important;
     btn.onclick=function(e){e.stopPropagation(); set(!safe.classList.contains('atl-safe474-collapsed'));};
     h.appendChild(summary); h.appendChild(btn); set(localStorage.getItem('atl.cs474.safeCollapsed')!=='0');
   }
-  function cleanBadge(){ var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v8.15'; }
+  function cleanBadge(){ var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v8.16'; }
   function run(){ cleanBadge(); ensureSafeCollapse(); wireAutogrow(document); }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run); else run();
   setInterval(run,1200);
@@ -10855,7 +10855,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
   function wire(root){qsa('textarea,input[type="text"],input[type="url"],input[type="email"],input:not([type])',root||document).forEach(function(el){if(el.__atl475)return; if(el.closest('.atl-field-modal,.atl-final-modal'))return; el.__atl475=true; el.addEventListener('focus',function(){show(el); autogrow(el)}); el.addEventListener('input',function(){autogrow(el)}); el.addEventListener('blur',hideSoon); autogrow(el);});}
   document.addEventListener('click',function(e){var b=e.target.closest('#atlFieldToolbar button'); if(!b||!active)return; var a=b.getAttribute('data-act'); if(a==='prompt')openModal('prompt',active); if(a==='fill')openModal('fill',active); if(a==='edit')openModal('edit',active); if(a==='done'){var bar=qs('#atlFieldToolbar'); if(bar)bar.classList.remove('on'); if(active)active.classList.remove('atl-field-active'); toastSafe('此欄位可視為定案，請記得儲存');}},true);
   function addCollapse(root){qsa('.section-card,.deliverable-card,.atl452safe-card',root||document).forEach(function(card){if(card.__atlCollapse475||card.closest('.preview-modal,.atl-field-modal'))return; card.__atlCollapse475=true; card.classList.add('atl-collapsible'); var h=qs('h2,h3,h4,.stitle,.section-title',card)||card.firstElementChild; if(h)h.classList.add('atl-keep-visible'); var btn=document.createElement('button'); btn.type='button'; btn.className='atl-collapse-toggle'; btn.textContent='收合'; btn.addEventListener('click',function(e){e.preventDefault(); e.stopPropagation(); var closed=card.classList.toggle('atl-closed'); btn.textContent=closed?'展開':'收合';}); card.insertBefore(btn,card.firstChild);});}
-  function boot(){try{var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v8.15';}catch(e){} wire(document); addCollapse(document);}
+  function boot(){try{var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v8.16';}catch(e){} wire(document); addCollapse(document);}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot); else boot();
   try{new MutationObserver(function(ms){var hit=false; ms.forEach(function(m){if(m.addedNodes&&m.addedNodes.length)hit=true}); if(hit){clearTimeout(window.__atl475Timer); window.__atl475Timer=setTimeout(boot,180);}}).observe(document.body,{childList:true,subtree:true});}catch(e){}
 })();
@@ -10896,7 +10896,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
 <script id="atl478-final-export-js">
 (function(){
   if(window.__atl478FinalExport)return; window.__atl478FinalExport=true;
-  var VERSION='cs-v8.15';
+  var VERSION='cs-v8.16';
   function esc(s){return (s==null?'':String(s)).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
   function qsa(sel,root){return Array.prototype.slice.call((root||document).querySelectorAll(sel))}
   function text(el){return (el&&el.innerText||el&&el.textContent||'').replace(/\s+/g,' ').trim()}
@@ -11016,7 +11016,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
 <script>
 (function(){
   if(window.__atlCs480) return; window.__atlCs480=true;
-  var V='cs-v8.15';
+  var V='cs-v8.16';
   function lock(){ var vb=document.getElementById('verBadge'); if(vb && (vb.textContent||'').trim()!==V) vb.textContent=V; }
   function unify(){
     var safe=document.querySelector('.atl452safe'); if(!safe) return;
@@ -11964,7 +11964,7 @@ input.atl477-open-field:not([type="checkbox"]):not([type="radio"]):not([type="bu
 <script id="atl-cs477-final-touch">
 (function(){
   if(window.__atlCs477FinalTouch) return; window.__atlCs477FinalTouch=true;
-  var VERSION='cs-v8.15';
+  var VERSION='cs-v8.16';
   function qs(s,r){return (r||document).querySelector(s)}
   function qsa(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
   function setVersion(){try{var b=qs('#verBadge'); if(b)b.textContent=VERSION; window.ATELIER_CLIENT_VERSION=VERSION;}catch(e){}}
