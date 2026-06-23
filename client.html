@@ -833,7 +833,7 @@ details.cat summary .cat-name{vertical-align:middle}
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">客戶服務台</span></span>
-    <span id="verBadge">cs-v8.53</span>
+    <span id="verBadge">cs-v8.54</span>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button type="button" id="atlSpecBtn" class="popout-btn" title="規格模式（點一下開啟，再點任一元件看它的規格）"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7l4-4 14 14-4 4z"/><path d="M9 5l1.5 1.5M12 8l1.5 1.5M15 11l1.5 1.5"/></svg>規格</button>
@@ -10829,7 +10829,7 @@ button:not(:disabled), .btn:not(.disabled):not([disabled]), [role="button"]{
   if(window.__atlCs473Continuity) return; window.__atlCs473Continuity=true;
   function cleanTextNode(n){var s=n.nodeValue||''; var ns=s.replace(/cs-v4\.\d+\s*(SAFE|LATEST)?\s*[｜|·:-]?\s*/g,'').replace(/\bv\d{3}\s*[｜|·:-]?\s*/g,''); if(ns!==s)n.nodeValue=ns;}
   function cleanVersions(){
-    try{var vb=document.getElementById('verBadge'); if(vb)vb.textContent='cs-v8.53';}catch(e){}
+    try{var vb=document.getElementById('verBadge'); if(vb)vb.textContent='cs-v8.54';}catch(e){}
     try{var w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT,{acceptNode:function(n){var p=n.parentElement; if(!p||p.id==='verBadge'||/^(SCRIPT|STYLE|TEXTAREA)$/i.test(p.tagName))return NodeFilter.FILTER_REJECT; return /(cs-v4\.\d+|\bv\d{3})/.test(n.nodeValue||'')?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_REJECT;}}); var nodes=[],n; while(n=w.nextNode())nodes.push(n); nodes.forEach(cleanTextNode);}catch(e){}
   }
   function alignSelection(){
@@ -10889,7 +10889,7 @@ input[type="text"]:focus,input:not([type]):focus{border-color:#D4A574!important;
     btn.onclick=function(e){e.stopPropagation(); set(!safe.classList.contains('atl-safe474-collapsed'));};
     h.appendChild(summary); h.appendChild(btn); set(localStorage.getItem('atl.cs474.safeCollapsed')!=='0');
   }
-  function cleanBadge(){ var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v8.53'; }
+  function cleanBadge(){ var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v8.54'; }
   function run(){ cleanBadge(); ensureSafeCollapse(); wireAutogrow(document); }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run); else run();
   setInterval(run,1200);
@@ -10950,7 +10950,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
   function wire(root){qsa('textarea,input[type="text"],input[type="url"],input[type="email"],input:not([type])',root||document).forEach(function(el){if(el.__atl475)return; if(el.closest('.atl-field-modal,.atl-final-modal'))return; el.__atl475=true; el.addEventListener('focus',function(){show(el); autogrow(el)}); el.addEventListener('input',function(){autogrow(el)}); el.addEventListener('blur',hideSoon); autogrow(el);});}
   document.addEventListener('click',function(e){var b=e.target.closest('#atlFieldToolbar button'); if(!b||!active)return; var a=b.getAttribute('data-act'); if(a==='prompt')openModal('prompt',active); if(a==='fill')openModal('fill',active); if(a==='edit')openModal('edit',active); if(a==='done'){var bar=qs('#atlFieldToolbar'); if(bar)bar.classList.remove('on'); if(active)active.classList.remove('atl-field-active'); toastSafe('此欄位可視為定案，請記得儲存');}},true);
   function addCollapse(root){qsa('.section-card,.deliverable-card,.atl452safe-card',root||document).forEach(function(card){if(card.__atlCollapse475||card.closest('.preview-modal,.atl-field-modal'))return; card.__atlCollapse475=true; card.classList.add('atl-collapsible'); var h=qs('h2,h3,h4,.stitle,.section-title',card)||card.firstElementChild; if(h)h.classList.add('atl-keep-visible'); var btn=document.createElement('button'); btn.type='button'; btn.className='atl-collapse-toggle'; btn.textContent='收合'; btn.addEventListener('click',function(e){e.preventDefault(); e.stopPropagation(); var closed=card.classList.toggle('atl-closed'); btn.textContent=closed?'展開':'收合';}); card.insertBefore(btn,card.firstChild);});}
-  function boot(){try{var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v8.53';}catch(e){} wire(document); addCollapse(document);}
+  function boot(){try{var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v8.54';}catch(e){} wire(document); addCollapse(document);}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot); else boot();
   try{new MutationObserver(function(ms){var hit=false; ms.forEach(function(m){if(m.addedNodes&&m.addedNodes.length)hit=true}); if(hit){clearTimeout(window.__atl475Timer); window.__atl475Timer=setTimeout(boot,180);}}).observe(document.body,{childList:true,subtree:true});}catch(e){}
 })();
@@ -10991,7 +10991,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
 <script id="atl478-final-export-js">
 (function(){
   if(window.__atl478FinalExport)return; window.__atl478FinalExport=true;
-  var VERSION='cs-v8.53';
+  var VERSION='cs-v8.54';
   function esc(s){return (s==null?'':String(s)).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
   function qsa(sel,root){return Array.prototype.slice.call((root||document).querySelectorAll(sel))}
   function text(el){return (el&&el.innerText||el&&el.textContent||'').replace(/\s+/g,' ').trim()}
@@ -11111,7 +11111,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
 <script>
 (function(){
   if(window.__atlCs480) return; window.__atlCs480=true;
-  var V='cs-v8.53';
+  var V='cs-v8.54';
   function lock(){ var vb=document.getElementById('verBadge'); if(vb && (vb.textContent||'').trim()!==V) vb.textContent=V; }
   function unify(){
     var safe=document.querySelector('.atl452safe'); if(!safe) return;
@@ -12062,7 +12062,7 @@ input.atl477-open-field:not([type="checkbox"]):not([type="radio"]):not([type="bu
 <script id="atl-cs477-final-touch">
 (function(){
   if(window.__atlCs477FinalTouch) return; window.__atlCs477FinalTouch=true;
-  var VERSION='cs-v8.53';
+  var VERSION='cs-v8.54';
   function qs(s,r){return (r||document).querySelector(s)}
   function qsa(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
   function setVersion(){try{var b=qs('#verBadge'); if(b)b.textContent=VERSION; window.ATELIER_CLIENT_VERSION=VERSION;}catch(e){}}
@@ -12550,12 +12550,11 @@ body.atl-hide-final #atlFinalFloat{ display:none !important; }
 .section-preview-btn{ background:#fff !important; border:1px solid #E2D6D3 !important; color:#8A7274 !important;
   -webkit-text-fill-color:#8A7274 !important; box-shadow:none !important; }
 .section-preview-btn:hover{ border-color:#A51820 !important; color:#A51820 !important; -webkit-text-fill-color:#A51820 !important; background:#FBF1F0 !important; }
-/* cs-v8.50:④轉譯卡(#atlP3Prev)/⑥戰役卡(.cmp-prev)/⑦復盤卡(.rvw-prev)的客製「預覽」鈕＋下拉三角,文字原本酒紅→對齊⑤盤點的灰色#8A7274(放大鏡圖示跟著currentColor一起轉灰,整顆與⑤一致) */
-.rvw-prev,.cmp-prev,#atlP3Prev,.rvw-caret,.cmp-caret,#atlP3Caret{ color:#8A7274 !important; -webkit-text-fill-color:#8A7274 !important; }
-.rvw-prev:hover,.cmp-prev:hover,#atlP3Prev:hover{ color:#7A1018 !important; -webkit-text-fill-color:#7A1018 !important; border-color:#A51820 !important; background:#FBF1F0 !important; }
-/* cs-v8.53:客製預覽鈕字重對齊模範生.section-preview-btn(原inline 700→正常400)+字級12px(模範生規格);放大鏡SVG明確再上灰色當雙保險(萬一currentColor沒吃到) */
-.rvw-prev,.cmp-prev,#atlP3Prev{ font-weight:400 !important; font-size:12px !important; }
-.rvw-prev .ic,.cmp-prev .ic,#atlP3Prev .ic{ stroke:#8A7274 !important; }
+/* cs-v8.54:④轉譯卡(#atlP3Prev)/⑥戰役卡(.cmp-prev)/⑦復盤卡(.rvw-prev)客製預覽鈕——正確版:「預覽」文字=灰#8A7274+字重400+字級12px;放大鏡+三角=紅#A51820。手法:鈕color設紅→放大鏡SVG(currentColor)紅,再用-webkit-text-fill-color把「預覽」兩字蓋灰(text-fill不影響SVG描邊);三角是另一顆鈕直接給紅。(cs-v8.50把放大鏡也改灰是改錯方向) */
+.rvw-prev,.cmp-prev,#atlP3Prev{ color:#A51820 !important; -webkit-text-fill-color:#8A7274 !important; font-weight:400 !important; font-size:12px !important; }
+.rvw-prev .ic,.cmp-prev .ic,#atlP3Prev .ic{ stroke:#A51820 !important; }
+.rvw-caret,.cmp-caret,#atlP3Caret{ color:#A51820 !important; -webkit-text-fill-color:#A51820 !important; }
+.rvw-prev:hover,.cmp-prev:hover,#atlP3Prev:hover{ -webkit-text-fill-color:#5C0F14 !important; border-color:#A51820 !important; background:#FBF1F0 !important; }
 .rvw-prev:hover .ic,.cmp-prev:hover .ic,#atlP3Prev:hover .ic{ stroke:#7A1018 !important; }
 /* cs-v8.50:轉譯卡/戰役卡/復盤卡標題字重對齊⑤標準工作區標題(原800→700;字級本來就同為18px) */
 .cmp-h,.rvw-h,.atl-p3-head h3{ font-weight:700 !important; }
@@ -18405,6 +18404,17 @@ textarea.p2-ta{ width:100%; box-sizing:border-box; min-height:40px; resize:verti
 .cs-ctx.atl-ctx-forceshow{ margin:-14px 0 16px !important; }  /* cs-v8.51:③~⑦客戶現況卡的間距對齊②建檔(進度卡margin-bottom 18px,-14px後與卡距離=4px,與②一致;原本0=18px太鬆) */
 /* cs-v8.52:③~⑦閉環(cs-lens)/總控(atl452safe)搬到卡下方時的統一間距+圓角,與客戶現況一致(都距卡4px、全12px圓角) */
 .cs-lens.atl-panel-below,.atl452safe.atl-panel-below{ margin:-14px 0 16px !important; border-radius:12px !important; }
+/* cs-v8.54:③~⑦服務台總控「已開啟但還沒被inject定位到卡下方(沒有atl-panel-below)」時先不顯示,避免它在原位(view頂端)閃現一下再跳到卡下方=跳針。點擊當下與每輪tick都會補上atl-panel-below,所以最多900ms內就出現在卡下方。閉環同理也加,雙保險 */
+#view-stage3.atl-master-open > .atl452safe:not(.atl-panel-below),
+#view-stage4.atl-master-open > .atl452safe:not(.atl-panel-below),
+#view-stage5.atl-master-open > .atl452safe:not(.atl-panel-below),
+#view-stage6.atl-master-open > .atl452safe:not(.atl-panel-below),
+#view-stage7.atl-master-open > .atl452safe:not(.atl-panel-below){ display:none !important; }
+#view-stage3.atl-loop-open > .cs-lens:not(.atl-panel-below),
+#view-stage4.atl-loop-open > .cs-lens:not(.atl-panel-below),
+#view-stage5.atl-loop-open > .cs-lens:not(.atl-panel-below),
+#view-stage6.atl-loop-open > .cs-lens:not(.atl-panel-below),
+#view-stage7.atl-loop-open > .cs-lens:not(.atl-panel-below){ display:none !important; }
 .atl-infodot.dbl{ box-shadow:0 0 0 2px #FDFBF8,0 0 0 3px currentColor; }   /* 雙圈＝有操作流程 */
 .sx2nav{ display:flex; align-items:center; justify-content:center; flex-wrap:wrap; gap:2px 10px; max-width:680px; margin:14px auto 14px; }
 .sx2navbtn{ display:flex; align-items:center; gap:9px; padding:0 6px; border:none; background:none; cursor:pointer; font-family:inherit; }
