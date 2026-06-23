@@ -833,7 +833,7 @@ details.cat summary .cat-name{vertical-align:middle}
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">客戶服務台</span></span>
-    <span id="verBadge">cs-v8.29</span>
+    <span id="verBadge">cs-v8.31</span>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button type="button" id="atlSpecBtn" class="popout-btn" title="規格模式（點一下開啟，再點任一元件看它的規格）"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7l4-4 14 14-4 4z"/><path d="M9 5l1.5 1.5M12 8l1.5 1.5M15 11l1.5 1.5"/></svg>規格</button>
@@ -3382,7 +3382,7 @@ window._genS3Ver=function(which, mode){
     var _r1='',_r2=''; TB.forEach(function(t,i){ if(t[0]==='client'||t[0]==='advisor'){_r2+=_tabBtn(t,i);}else{_r1+=_tabBtn(t,i);} });
     var nav='<div class="sxdv-row sxdv-row1">'+_r1+'</div><div class="sxdv-row sxdv-row2">'+_r2+'</div>';
     var panes=TB.map(function(t,i){ return '<div class="sxdv-pane'+(i===0?' is-on':'')+'" data-sxdvpane="'+t[0]+'"'+(i===0?'':' style="display:none"')+'>'+t[2]+'</div>'; }).join('');
-    return '<div class="section-card"><h3>'+conf.no+' 交付物（走過每一站＋本階段兩版）</h3><div class="sc-note">第一排：初診→建檔→問診→…到本站，每站整理都可點開回顧；第二排：本階段客戶版／顧問版。編輯「產生」分頁存檔後這裡會更新。</div><div class="ver-switch sxdv-switch5">'+nav+'</div><div class="sxdv-body" style="margin-top:12px">'+panes+'</div></div><div id="'+stageId+'dlvx9-host"></div>';
+    return '<div class="section-card"><h3 style="display:flex;align-items:center;gap:6px">'+conf.no+' 交付物（走過每一站＋本階段兩版）<span class="atl-infohold"><button type="button" class="atl-infodot" onclick="event.stopPropagation();var p=this.nextElementSibling;p.style.display=(p.style.display===\'block\')?\'none\':\'block\'" title="說明">i</button><span class="atl-infopop">把這位客戶的「健康評分＋全部影片＋顧問筆記」整包變成兩份成果：<b>客戶交付物</b>（給客戶看的成果與方向）＋<b>顧問作戰計畫</b>（你自己用的優化路線）。<br><br>第一排：初診→建檔→問診→…到本站，每站整理都可點開回顧；第二排：本階段客戶版／顧問版。編輯「產生」分頁存檔後這裡會更新。</span></span></h3><div class="ver-switch sxdv-switch5">'+nav+'</div><div class="sxdv-body" style="margin-top:12px">'+panes+'</div></div><div id="'+stageId+'dlvx9-host"></div>';
   };
   window.sxSwitchDeliver=function(stageId,name){
     try{ var box=document.getElementById('view-'+stageId); if(!box) return;
@@ -4360,6 +4360,7 @@ function genFullDeliverable(){
   copyPrompt(p,'完整交付物（客戶版＋顧問版）');
 }
 function injectDeliverable(v){
+  return; /* cs-v8.31:停用「一鍵產出完整交付物」卡——交付物預覽卡+右下浮動「最終匯出」鈕已涵蓋產出/匯出;說明文字已移入交付物卡的ⓘ */
   if(!v||v.id!=='view-stage7') return;
   if(v.querySelector('[data-deliverable]')) return;
   var a=(typeof curAcc==='function')?curAcc():null; if(!a) return;
@@ -5288,7 +5289,7 @@ window.addEventListener('DOMContentLoaded', function(){
     function moveInto(sel,paneKey){ var pane=wrap.querySelector('.sxpane[data-sxpane='+paneKey+']'); if(!pane) return; [].forEach.call(box.querySelectorAll(sel),function(el){ if(!pane.contains(el)){ pane.appendChild(el); } }); }
     if(stageId==='stage4'){ moveInto('#atlP3Card','trans'); moveInto('#atlP3ExtraCard','trans'); (function(){ var pane=wrap.querySelector('.sxpane[data-sxpane=produce]'); var cta=box.querySelector('.cta1c-card'); if(pane&&cta&&pane.firstChild!==cta){ pane.insertBefore(cta, pane.firstChild); } })(); }
     if(stageId==='stage6'){ moveInto('.cmp-card','battle'); moveInto('#cmpExtraCard','battle'); }
-    if(stageId==='stage7'){ moveInto('.rvw-card','recap'); moveInto('.atl-final-card','sum'); }
+    if(stageId==='stage7'){ moveInto('.rvw-card','recap'); moveInto('#rvwx9-host','recap'); moveInto('.atl-final-card','sum'); } /* cs-v8.31:復盤卡的額外項目卡(#rvwx9-host)也一起搬進recap分頁、排在復盤卡後面(原本被漏掉留在最頂端) */
     /* cs-v7.75: 閉環視角(.cs-lens)/服務台總控(.atl452safe) 不再硬搬進填寫頁 —— 改交還給「客戶進度歸檔卡」原生的收合鈕(__atlToggleLoop/__atlToggleMaster)管理,跟①-③一樣可收合;預設由 sx-declutter 的 > 直接子層規則收起(不浮在頂部) */
     /* cs-v7.84: 服務台總控面板(.atl452safe) → 搬到「客戶進度歸檔卡」正下方(仍在 sxtabwrap 之前,不會被下面 loose 迴圈收進填寫頁)。配 v7.78 的「沒 atl-master-open 就隱藏」CSS → 點歸檔卡「服務台總控 ▾」就展開在卡片下方,不在頁面頂端。 */
     try{ var _mcard=box.querySelector('.client-progress-bar'); var _mp=box.querySelector('.atl452safe'); if(_mcard&&_mp&&_mcard.nextSibling!==_mp){ _mcard.parentNode.insertBefore(_mp,_mcard.nextSibling); } }catch(e){}
@@ -6305,8 +6306,7 @@ window.openStageInfo=function(stageName){
   function _pkgHTML(a){
     var list=csDeliveries(a);
     var head='<div class="section-card" style="border-left:3px solid var(--gold);background:linear-gradient(180deg,#FFFCF7,#fff)">'
-      +'<h3 style="display:flex;align-items:center;gap:6px">'+_I('boxPkg','')+'來自診斷工作台的交付包</h3>'
-      +'<div class="sc-note">這些是工作台「策略診斷」拆完公式後送過來的成果（公式＋提示詞＋推薦樣本）。確認後可一鍵填入下方交付摘要，或複製給客戶。</div>'
+      +'<h3 style="display:flex;align-items:center;gap:6px">'+_I('boxPkg','')+'來自診斷工作台的交付包<span class="atl-infohold"><button type="button" class="atl-infodot" onclick="event.stopPropagation();var p=this.nextElementSibling;p.style.display=(p.style.display===\'block\')?\'none\':\'block\'" title="說明">i</button><span class="atl-infopop">這些是工作台「策略診斷」拆完公式後送過來的成果（公式＋提示詞＋推薦樣本）。確認後可一鍵填入下方交付摘要，或複製給客戶。</span></span></h3>'
       +'<div style="margin-top:8px"><button class="btn-deliver" onclick="_csComposeFeedback()">✎ 回饋給工作台</button></div>';
     if(!list.length){
       return head+'<div class="empty-deliver" style="margin-top:6px">尚未收到交付包。<br><span style="font-size:12px;color:#A88">在工作台跑完策略診斷、按「送到服務台」後，這裡就會出現。</span></div></div>';
@@ -10127,8 +10127,7 @@ setInterval(tick,1200);setTimeout(tick,300);
         +'<b style="font-size:12px;color:'+(it.ok?'#5C0F14':'#A0835A')+'">'+esc(it.used)+'</b></div>';
     }).join('');
     return '<div class="section-card" style="border-left:3px solid #A51820;background:linear-gradient(180deg,#FFFCFA,#fff)">'
-      +'<h3 style="display:flex;align-items:center;gap:6px">交付前資料盤點 · 這份交付用了哪些</h3>'
-      +'<div class="sc-note">交付不是憑空生成。下面是這個客戶目前累積的資料來源；圓點深紅＝已備齊，淡金＝還沒有。</div>'
+      +'<h3 style="display:flex;align-items:center;gap:6px">交付前資料盤點 · 這份交付用了哪些<span class="atl-infohold"><button type="button" class="atl-infodot" onclick="event.stopPropagation();var p=this.nextElementSibling;p.style.display=(p.style.display===\'block\')?\'none\':\'block\'" title="說明">i</button><span class="atl-infopop">交付不是憑空生成。下面是這個客戶目前累積的資料來源；圓點深紅＝已備齊，淡金＝還沒有。</span></span></h3>'
       +'<div style="margin-top:8px">'+rows+'</div>'
       +(missing.length?('<div style="margin-top:10px;font-size:12.5px;color:#A51820;background:#FFF6F4;border:1px solid #F0D8D4;border-radius:8px;padding:8px 11px"><b>還缺：</b>'+esc(missing.join('、'))+'。補齊後交付會更完整。</div>')
         :'<div style="margin-top:10px;font-size:12.5px;color:#A51820;background:#FBF7F1;border:1px solid #EADfce;border-radius:8px;padding:8px 11px">資料齊全，可以放心交付。</div>')
@@ -10772,7 +10771,7 @@ button:not(:disabled), .btn:not(.disabled):not([disabled]), [role="button"]{
   if(window.__atlCs473Continuity) return; window.__atlCs473Continuity=true;
   function cleanTextNode(n){var s=n.nodeValue||''; var ns=s.replace(/cs-v4\.\d+\s*(SAFE|LATEST)?\s*[｜|·:-]?\s*/g,'').replace(/\bv\d{3}\s*[｜|·:-]?\s*/g,''); if(ns!==s)n.nodeValue=ns;}
   function cleanVersions(){
-    try{var vb=document.getElementById('verBadge'); if(vb)vb.textContent='cs-v8.29';}catch(e){}
+    try{var vb=document.getElementById('verBadge'); if(vb)vb.textContent='cs-v8.31';}catch(e){}
     try{var w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT,{acceptNode:function(n){var p=n.parentElement; if(!p||p.id==='verBadge'||/^(SCRIPT|STYLE|TEXTAREA)$/i.test(p.tagName))return NodeFilter.FILTER_REJECT; return /(cs-v4\.\d+|\bv\d{3})/.test(n.nodeValue||'')?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_REJECT;}}); var nodes=[],n; while(n=w.nextNode())nodes.push(n); nodes.forEach(cleanTextNode);}catch(e){}
   }
   function alignSelection(){
@@ -10832,7 +10831,7 @@ input[type="text"]:focus,input:not([type]):focus{border-color:#D4A574!important;
     btn.onclick=function(e){e.stopPropagation(); set(!safe.classList.contains('atl-safe474-collapsed'));};
     h.appendChild(summary); h.appendChild(btn); set(localStorage.getItem('atl.cs474.safeCollapsed')!=='0');
   }
-  function cleanBadge(){ var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v8.29'; }
+  function cleanBadge(){ var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v8.31'; }
   function run(){ cleanBadge(); ensureSafeCollapse(); wireAutogrow(document); }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run); else run();
   setInterval(run,1200);
@@ -10893,7 +10892,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
   function wire(root){qsa('textarea,input[type="text"],input[type="url"],input[type="email"],input:not([type])',root||document).forEach(function(el){if(el.__atl475)return; if(el.closest('.atl-field-modal,.atl-final-modal'))return; el.__atl475=true; el.addEventListener('focus',function(){show(el); autogrow(el)}); el.addEventListener('input',function(){autogrow(el)}); el.addEventListener('blur',hideSoon); autogrow(el);});}
   document.addEventListener('click',function(e){var b=e.target.closest('#atlFieldToolbar button'); if(!b||!active)return; var a=b.getAttribute('data-act'); if(a==='prompt')openModal('prompt',active); if(a==='fill')openModal('fill',active); if(a==='edit')openModal('edit',active); if(a==='done'){var bar=qs('#atlFieldToolbar'); if(bar)bar.classList.remove('on'); if(active)active.classList.remove('atl-field-active'); toastSafe('此欄位可視為定案，請記得儲存');}},true);
   function addCollapse(root){qsa('.section-card,.deliverable-card,.atl452safe-card',root||document).forEach(function(card){if(card.__atlCollapse475||card.closest('.preview-modal,.atl-field-modal'))return; card.__atlCollapse475=true; card.classList.add('atl-collapsible'); var h=qs('h2,h3,h4,.stitle,.section-title',card)||card.firstElementChild; if(h)h.classList.add('atl-keep-visible'); var btn=document.createElement('button'); btn.type='button'; btn.className='atl-collapse-toggle'; btn.textContent='收合'; btn.addEventListener('click',function(e){e.preventDefault(); e.stopPropagation(); var closed=card.classList.toggle('atl-closed'); btn.textContent=closed?'展開':'收合';}); card.insertBefore(btn,card.firstChild);});}
-  function boot(){try{var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v8.29';}catch(e){} wire(document); addCollapse(document);}
+  function boot(){try{var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v8.31';}catch(e){} wire(document); addCollapse(document);}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot); else boot();
   try{new MutationObserver(function(ms){var hit=false; ms.forEach(function(m){if(m.addedNodes&&m.addedNodes.length)hit=true}); if(hit){clearTimeout(window.__atl475Timer); window.__atl475Timer=setTimeout(boot,180);}}).observe(document.body,{childList:true,subtree:true});}catch(e){}
 })();
@@ -10934,7 +10933,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
 <script id="atl478-final-export-js">
 (function(){
   if(window.__atl478FinalExport)return; window.__atl478FinalExport=true;
-  var VERSION='cs-v8.29';
+  var VERSION='cs-v8.31';
   function esc(s){return (s==null?'':String(s)).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
   function qsa(sel,root){return Array.prototype.slice.call((root||document).querySelectorAll(sel))}
   function text(el){return (el&&el.innerText||el&&el.textContent||'').replace(/\s+/g,' ').trim()}
@@ -11054,7 +11053,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
 <script>
 (function(){
   if(window.__atlCs480) return; window.__atlCs480=true;
-  var V='cs-v8.29';
+  var V='cs-v8.31';
   function lock(){ var vb=document.getElementById('verBadge'); if(vb && (vb.textContent||'').trim()!==V) vb.textContent=V; }
   function unify(){
     var safe=document.querySelector('.atl452safe'); if(!safe) return;
@@ -12005,7 +12004,7 @@ input.atl477-open-field:not([type="checkbox"]):not([type="radio"]):not([type="bu
 <script id="atl-cs477-final-touch">
 (function(){
   if(window.__atlCs477FinalTouch) return; window.__atlCs477FinalTouch=true;
-  var VERSION='cs-v8.29';
+  var VERSION='cs-v8.31';
   function qs(s,r){return (r||document).querySelector(s)}
   function qsa(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
   function setVersion(){try{var b=qs('#verBadge'); if(b)b.textContent=VERSION; window.ATELIER_CLIENT_VERSION=VERSION;}catch(e){}}
