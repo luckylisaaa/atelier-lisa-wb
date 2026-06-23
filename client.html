@@ -833,7 +833,7 @@ details.cat summary .cat-name{vertical-align:middle}
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">客戶服務台</span></span>
-    <span id="verBadge">cs-v8.43</span>
+    <span id="verBadge">cs-v8.44</span>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button type="button" id="atlSpecBtn" class="popout-btn" title="規格模式（點一下開啟，再點任一元件看它的規格）"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7l4-4 14 14-4 4z"/><path d="M9 5l1.5 1.5M12 8l1.5 1.5M15 11l1.5 1.5"/></svg>規格</button>
@@ -2191,7 +2191,7 @@ function renderStage2(){
     +'<span class="s2-tf-line"></span>'
     +'<button type="button" class="s2-tf-item clk" data-s2step="sum" onclick="switchS2Tab(\'sum\')"><span class="s2-tf-n">4</span><span class="s2-tf-lab">總和</span></button>'
     +'</div>'
-    +'<div class="page-head"><div class="ph-en">STAGE ② · CLIENT FILING</div><h2 class="ph-title">客戶資料建檔 <button type="button" class="stage-info-btn" onclick="openS2Info(\'fill\')" title="這一站在做什麼">'+ICN.info+'</button></h2></div>'
+    +'<div class="page-head"><div class="ph-en">STAGE ② · CLIENT FILING</div><h2 class="ph-title">客戶資料建檔 <button type="button" class="stage-info-btn" onclick="openStageInfo(\'stage2\')" title="這一站在做什麼">'+ICN.info+'</button></h2></div>'
     +tabNav+paneFill+paneProduce+paneDeliver+paneReview+paneSum;
   try{ s2RenderDeliver&&s2RenderDeliver(); }catch(e){}
   setTimeout(function(){ try{ var feed=document.getElementById('s2pFeed'); if(feed && !feed.__atlCkTri && typeof window.__atlMountCkTri==='function'){ window.__atlMountCkTri(feed, feed, {scopeName:'②建檔產生', expandDetail:function(){ var d=feed.querySelector('.s1feed-detail'); if(d)d.open=true; }}); } }catch(e){} },0);
@@ -3376,7 +3376,7 @@ window._genS3Ver=function(which, mode){
     window.sxSubTog=function(btn,uid,which){ var target=document.getElementById(uid+'-'+which); if(!target) return; var body=target.parentNode; [].slice.call(body.children).forEach(function(c){ c.style.display='none'; }); target.style.display=''; try{ var bx=btn.parentNode; [].slice.call(bx.querySelectorAll('.dp-srcbtn')).forEach(function(b){ b.classList.remove('on'); }); btn.classList.add('on'); }catch(e){} }; /* cs-v8.43:支援多顆(初始/本站產生/後續各站產生) */
     /* cs-v8.13:④⑤⑥ 交付第一排補上走過的每一站(診斷->盤點->企劃,到目前站),第二排才是客戶版/顧問版;非序列站(如⑦)自動退回原樣 */
     var STAGE_SEQ=[['stage4','\u2463','診斷','stage4_diagnosis'],['stage5','\u2464','盤點','stage5_inventory'],['stage6','\u2465','企劃','stage6_planning'],['stage7','\u2466','交付','stage7_delivery']]; /* cs-v8.28:⑦交付也納入,讓⑦交付的交付物含自己的「交付初始/交付產生」分頁 */
-    var _curIdx=-1; for(var _si=0;_si<STAGE_SEQ.length;_si++){ if(STAGE_SEQ[_si][0]===stageId){ _curIdx=_si; break; } } _curIdx=STAGE_SEQ.length-1; /* cs-v8.39:每一站的交付物都顯示到⑦交付產生(原本只到當前站,害非⑦的交付物看不到「交付產生」這站);未產生的顯示「尚未產生」 */
+    var _curIdx=-1; for(var _si=0;_si<STAGE_SEQ.length;_si++){ if(STAGE_SEQ[_si][0]===stageId){ _curIdx=_si; break; } } if(_curIdx<0) _curIdx=STAGE_SEQ.length-1; /* cs-v8.44:交付物站別與每站累積產生都只到「目前這站」(原v8.39 always到⑦,害⑤盤點的診斷站多出企劃/交付產生) */
     for(var _sj=0;_sj<=_curIdx;_sj++){ var _st=STAGE_SEQ[_sj], _sd=dat(_st[3]); var _laters=STAGE_SEQ.slice(_sj+1,_curIdx+1); TB.push([_st[0], _st[1]+' '+_st[2], _sxStagePane(_st[0], _sd, _st[1], _st[2], _laters)]); }
     TB.push(['client','客戶版', paper('STAGE '+conf.no+' \u00b7 DELIVERY', conf.no+conf.title+' \u00b7 客戶版', dx.resultClient||'')]);
     TB.push(['advisor','顧問版', paper('STAGE '+conf.no+' \u00b7 DELIVERY', conf.no+conf.title+' \u00b7 顧問版', dx.resultAdvisor||'')]);
@@ -6238,8 +6238,8 @@ window.openStageInfo=function(stageName){
     +'<h2 style="font-family:Noto Serif TC,serif;font-size:24px;color:#2A1A1C;margin:0 0 6px">'+note.title+'</h2>'
     +'<div style="height:2px;width:60px;background:#D4A574;margin:14px 0 18px"></div>'
     +'<div style="font-size:13px;color:#5C4248;line-height:1.9;background:#FAF6F1;padding:14px 16px;border-radius:8px;border-left:3px solid #D4A574;margin-bottom:8px"><b style="color:#2A1A1C">為什麼這階段要做？</b><br>'+note.why+'</div>'
-    +(({stage3:'問診題目、客戶原話、真正需求、卡關點、預算與決策邏輯。',stage4:'①初診觀察、②建檔事實、③問診結論——這站是把前面收斂成判斷，不是重新收集。',stage5:'人設、服務、案例、場景、客戶見證、可拍素材清單。',stage6:'診斷結論、盤點素材、賣點、戰役主軸、CTA／承接窗口。',stage7:'客戶版／顧問版整理、交付前資料盤點（料齊不齊）、款項與修改紀錄。'})[stageName]?'<div style="font-size:13px;color:#5C4248;line-height:1.9;background:#F4F7F2;padding:14px 16px;border-radius:8px;border-left:3px solid #8AA17C;margin-bottom:8px"><b style="color:#2A1A1C">這站該準備什麼？</b><br>'+({stage3:'問診題目、客戶原話、真正需求、卡關點、預算與決策邏輯。',stage4:'①初診觀察、②建檔事實、③問診結論——這站是把前面收斂成判斷，不是重新收集。',stage5:'人設、服務、案例、場景、客戶見證、可拍素材清單。',stage6:'診斷結論、盤點素材、賣點、戰役主軸、CTA／承接窗口。',stage7:'客戶版／顧問版整理、交付前資料盤點（料齊不齊）、款項與修改紀錄。'})[stageName]+'</div>':'') /* cs-v8.37:單圈「該準備什麼」併進雙圈modal */
-    +(({stage3:'客戶原話與真實需求：痛點、目標、ICP、Offer、CTA、信任證據、可公開邊界。',stage4:'收斂成判斷——定位、受眾心理、內容缺口、轉換缺口、優先改善順序（下面那幾格就是填這些）。',stage5:'既有內容資產、可延伸內容主軸、故事素材、拍攝素材條件、服務與承接資產。',stage6:'本階段合作目標、提案核心角度、首波題庫、腳本方向、執行時程與 KPI。',stage7:'已交付項目清單、客戶回饋、內部復盤、款項與結案、下一輪建議。'})[stageName]?'<div style="font-size:13px;color:#5C4248;line-height:1.9;background:#FBF6F6;padding:14px 16px;border-radius:8px;border-left:3px solid #A51820;margin-bottom:8px"><b style="color:#5C0F14">這站要填／收集什麼？</b> <span style="font-size:11.5px;color:#8A7274">下面的表單就是填這些</span><br>'+({stage3:'客戶原話與真實需求：痛點、目標、ICP、Offer、CTA、信任證據、可公開邊界。',stage4:'收斂成判斷——定位、受眾心理、內容缺口、轉換缺口、優先改善順序（下面那幾格就是填這些）。',stage5:'既有內容資產、可延伸內容主軸、故事素材、拍攝素材條件、服務與承接資產。',stage6:'本階段合作目標、提案核心角度、首波題庫、腳本方向、執行時程與 KPI。',stage7:'已交付項目清單、客戶回饋、內部復盤、款項與結案、下一輪建議。'})[stageName]+'</div>':'') /* cs-v8.41:加「這站要填/收集什麼」對應下面表單,接起modal與表單 */
+    +(({stage2:'八大類事實：基本身份、服務內容、目標人群、內容現況、信任資產、轉換路徑、競爭位置、拍攝條件。',stage3:'問診題目、客戶原話、真正需求、卡關點、預算與決策邏輯。',stage4:'①初診觀察、②建檔事實、③問診結論——這站是把前面收斂成判斷，不是重新收集。',stage5:'人設、服務、案例、場景、客戶見證、可拍素材清單。',stage6:'診斷結論、盤點素材、賣點、戰役主軸、CTA／承接窗口。',stage7:'客戶版／顧問版整理、交付前資料盤點（料齊不齊）、款項與修改紀錄。'})[stageName]?'<div style="font-size:13px;color:#5C4248;line-height:1.9;background:#F4F7F2;padding:14px 16px;border-radius:8px;border-left:3px solid #8AA17C;margin-bottom:8px"><b style="color:#2A1A1C">這站該準備什麼？</b><br>'+({stage2:'八大類事實：基本身份、服務內容、目標人群、內容現況、信任資產、轉換路徑、競爭位置、拍攝條件。',stage3:'問診題目、客戶原話、真正需求、卡關點、預算與決策邏輯。',stage4:'①初診觀察、②建檔事實、③問診結論——這站是把前面收斂成判斷，不是重新收集。',stage5:'人設、服務、案例、場景、客戶見證、可拍素材清單。',stage6:'診斷結論、盤點素材、賣點、戰役主軸、CTA／承接窗口。',stage7:'客戶版／顧問版整理、交付前資料盤點（料齊不齊）、款項與修改紀錄。'})[stageName]+'</div>':'') /* cs-v8.37:單圈「該準備什麼」併進雙圈modal */
+    +(({stage2:'逐格把八大類填好：他是誰、賣什麼、賣給誰、現在內容長怎樣、有什麼信任資產、怎麼成交、對手是誰、能怎麼拍（下面的表單就是填這些）。',stage3:'客戶原話與真實需求：痛點、目標、ICP、Offer、CTA、信任證據、可公開邊界。',stage4:'收斂成判斷——定位、受眾心理、內容缺口、轉換缺口、優先改善順序（下面那幾格就是填這些）。',stage5:'既有內容資產、可延伸內容主軸、故事素材、拍攝素材條件、服務與承接資產。',stage6:'本階段合作目標、提案核心角度、首波題庫、腳本方向、執行時程與 KPI。',stage7:'已交付項目清單、客戶回饋、內部復盤、款項與結案、下一輪建議。'})[stageName]?'<div style="font-size:13px;color:#5C4248;line-height:1.9;background:#FBF6F6;padding:14px 16px;border-radius:8px;border-left:3px solid #A51820;margin-bottom:8px"><b style="color:#5C0F14">這站要填／收集什麼？</b> <span style="font-size:11.5px;color:#8A7274">下面的表單就是填這些</span><br>'+({stage2:'逐格把八大類填好：他是誰、賣什麼、賣給誰、現在內容長怎樣、有什麼信任資產、怎麼成交、對手是誰、能怎麼拍（下面的表單就是填這些）。',stage3:'客戶原話與真實需求：痛點、目標、ICP、Offer、CTA、信任證據、可公開邊界。',stage4:'收斂成判斷——定位、受眾心理、內容缺口、轉換缺口、優先改善順序（下面那幾格就是填這些）。',stage5:'既有內容資產、可延伸內容主軸、故事素材、拍攝素材條件、服務與承接資產。',stage6:'本階段合作目標、提案核心角度、首波題庫、腳本方向、執行時程與 KPI。',stage7:'已交付項目清單、客戶回饋、內部復盤、款項與結案、下一輪建議。'})[stageName]+'</div>':'') /* cs-v8.41:加「這站要填/收集什麼」對應下面表單,接起modal與表單 */
     +rows
     +'<div style="margin-top:24px;padding-top:14px;border-top:1px solid #E8E3DA;color:#8A7274;font-size:11px;font-style:italic">底層邏輯說明書 · ATELIER Methodology Note · 此說明是給顧問自己看的，不會匯出到客戶版。</div>'
     +'</div>';
@@ -10171,10 +10171,11 @@ setInterval(tick,1200);setTimeout(tick,300);
     var sig=a.id+'|'+JSON.stringify(gather(a));
     if(host.getAttribute('data-sig')===sig && host.children.length) return;
     host.setAttribute('data-sig',sig);
-    host.innerHTML='<button type="button" class="atl-deliv-toggle" onclick="window.__atlDelivInvTg&&window.__atlDelivInvTg(this)" style="display:inline-flex;align-items:center;gap:7px;background:#FFFCFA;border:1px solid #E6BEBE;border-radius:10px;padding:10px 16px;font-size:13.5px;font-weight:700;font-family:inherit;color:#2A1A1C;-webkit-text-fill-color:#2A1A1C;cursor:pointer;margin:0 0 2px"><span style="color:#A51820;-webkit-text-fill-color:#A51820;font-weight:800">● 必看</span>｜交付前盤點 <span class="atl-dlv-tri">\u25BE</span></button><div id="atl-deliv-inv-body" style="display:none;margin-top:8px">'+panelHTML(a)+'</div>';
+    var _pb=document.getElementById('atl-deliv-inv-body'); var _wasOpen=!!(_pb && _pb.style.display==='block'); /* cs-v8.44:重畫時保留展開狀態 */
+    host.innerHTML='<div id="atl-deliv-inv-body" style="display:'+(_wasOpen?'block':'none')+';margin-top:6px">'+panelHTML(a)+'</div>'; /* cs-v8.44:必看鈕已移進客戶進度歸檔卡內,這裡只放收合內容(收合時不佔空間,不再卡外多一塊) */
   }
   function boot(){ render(); setInterval(render,1500); }
-  window.__atlDelivInvTg=function(btn){ var b=document.getElementById('atl-deliv-inv-body'); if(!b) return; var open=(b.style.display!=='none'); b.style.display=open?'none':''; try{ var tri=btn.querySelector('.atl-dlv-tri'); if(tri) tri.textContent=open?'\u25BE':'\u25B4'; }catch(e){} }; /* cs-v8.42:展開/收合盤點(鈕改放進度卡下方) */
+  window.__atlDelivInvTg=function(btn){ var b=document.getElementById('atl-deliv-inv-body'); if(!b) return; var open=(b.style.display==='block'); b.style.display=open?'none':'block'; try{ var tri=btn.querySelector('.atl-dlv-tri'); if(tri) tri.textContent=open?'\u25BE':'\u25B4'; }catch(e){} if(!open && b.scrollIntoView){ try{ b.scrollIntoView({behavior:'smooth',block:'nearest'}); }catch(e){} } }; /* cs-v8.44:展開/收合盤點(鈕在客戶進度歸檔卡內) */
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',boot); else boot();
 })();
 </script>
@@ -10796,7 +10797,7 @@ button:not(:disabled), .btn:not(.disabled):not([disabled]), [role="button"]{
   if(window.__atlCs473Continuity) return; window.__atlCs473Continuity=true;
   function cleanTextNode(n){var s=n.nodeValue||''; var ns=s.replace(/cs-v4\.\d+\s*(SAFE|LATEST)?\s*[｜|·:-]?\s*/g,'').replace(/\bv\d{3}\s*[｜|·:-]?\s*/g,''); if(ns!==s)n.nodeValue=ns;}
   function cleanVersions(){
-    try{var vb=document.getElementById('verBadge'); if(vb)vb.textContent='cs-v8.43';}catch(e){}
+    try{var vb=document.getElementById('verBadge'); if(vb)vb.textContent='cs-v8.44';}catch(e){}
     try{var w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT,{acceptNode:function(n){var p=n.parentElement; if(!p||p.id==='verBadge'||/^(SCRIPT|STYLE|TEXTAREA)$/i.test(p.tagName))return NodeFilter.FILTER_REJECT; return /(cs-v4\.\d+|\bv\d{3})/.test(n.nodeValue||'')?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_REJECT;}}); var nodes=[],n; while(n=w.nextNode())nodes.push(n); nodes.forEach(cleanTextNode);}catch(e){}
   }
   function alignSelection(){
@@ -10856,7 +10857,7 @@ input[type="text"]:focus,input:not([type]):focus{border-color:#D4A574!important;
     btn.onclick=function(e){e.stopPropagation(); set(!safe.classList.contains('atl-safe474-collapsed'));};
     h.appendChild(summary); h.appendChild(btn); set(localStorage.getItem('atl.cs474.safeCollapsed')!=='0');
   }
-  function cleanBadge(){ var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v8.43'; }
+  function cleanBadge(){ var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v8.44'; }
   function run(){ cleanBadge(); ensureSafeCollapse(); wireAutogrow(document); }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run); else run();
   setInterval(run,1200);
@@ -10917,7 +10918,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
   function wire(root){qsa('textarea,input[type="text"],input[type="url"],input[type="email"],input:not([type])',root||document).forEach(function(el){if(el.__atl475)return; if(el.closest('.atl-field-modal,.atl-final-modal'))return; el.__atl475=true; el.addEventListener('focus',function(){show(el); autogrow(el)}); el.addEventListener('input',function(){autogrow(el)}); el.addEventListener('blur',hideSoon); autogrow(el);});}
   document.addEventListener('click',function(e){var b=e.target.closest('#atlFieldToolbar button'); if(!b||!active)return; var a=b.getAttribute('data-act'); if(a==='prompt')openModal('prompt',active); if(a==='fill')openModal('fill',active); if(a==='edit')openModal('edit',active); if(a==='done'){var bar=qs('#atlFieldToolbar'); if(bar)bar.classList.remove('on'); if(active)active.classList.remove('atl-field-active'); toastSafe('此欄位可視為定案，請記得儲存');}},true);
   function addCollapse(root){qsa('.section-card,.deliverable-card,.atl452safe-card',root||document).forEach(function(card){if(card.__atlCollapse475||card.closest('.preview-modal,.atl-field-modal'))return; card.__atlCollapse475=true; card.classList.add('atl-collapsible'); var h=qs('h2,h3,h4,.stitle,.section-title',card)||card.firstElementChild; if(h)h.classList.add('atl-keep-visible'); var btn=document.createElement('button'); btn.type='button'; btn.className='atl-collapse-toggle'; btn.textContent='收合'; btn.addEventListener('click',function(e){e.preventDefault(); e.stopPropagation(); var closed=card.classList.toggle('atl-closed'); btn.textContent=closed?'展開':'收合';}); card.insertBefore(btn,card.firstChild);});}
-  function boot(){try{var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v8.43';}catch(e){} wire(document); addCollapse(document);}
+  function boot(){try{var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v8.44';}catch(e){} wire(document); addCollapse(document);}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot); else boot();
   try{new MutationObserver(function(ms){var hit=false; ms.forEach(function(m){if(m.addedNodes&&m.addedNodes.length)hit=true}); if(hit){clearTimeout(window.__atl475Timer); window.__atl475Timer=setTimeout(boot,180);}}).observe(document.body,{childList:true,subtree:true});}catch(e){}
 })();
@@ -10958,7 +10959,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
 <script id="atl478-final-export-js">
 (function(){
   if(window.__atl478FinalExport)return; window.__atl478FinalExport=true;
-  var VERSION='cs-v8.43';
+  var VERSION='cs-v8.44';
   function esc(s){return (s==null?'':String(s)).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
   function qsa(sel,root){return Array.prototype.slice.call((root||document).querySelectorAll(sel))}
   function text(el){return (el&&el.innerText||el&&el.textContent||'').replace(/\s+/g,' ').trim()}
@@ -11078,7 +11079,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
 <script>
 (function(){
   if(window.__atlCs480) return; window.__atlCs480=true;
-  var V='cs-v8.43';
+  var V='cs-v8.44';
   function lock(){ var vb=document.getElementById('verBadge'); if(vb && (vb.textContent||'').trim()!==V) vb.textContent=V; }
   function unify(){
     var safe=document.querySelector('.atl452safe'); if(!safe) return;
@@ -12029,7 +12030,7 @@ input.atl477-open-field:not([type="checkbox"]):not([type="radio"]):not([type="bu
 <script id="atl-cs477-final-touch">
 (function(){
   if(window.__atlCs477FinalTouch) return; window.__atlCs477FinalTouch=true;
-  var VERSION='cs-v8.43';
+  var VERSION='cs-v8.44';
   function qs(s,r){return (r||document).querySelector(s)}
   function qsa(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
   function setVersion(){try{var b=qs('#verBadge'); if(b)b.textContent=VERSION; window.ATELIER_CLIENT_VERSION=VERSION;}catch(e){}}
@@ -12273,6 +12274,12 @@ input.atl477-open-field:not([type="checkbox"]):not([type="radio"]):not([type="bu
             +'</span>';
         }
         _extra+='</div>';
+        if(currentStageKey==='stage7'){ /* cs-v8.44:必看交付前盤點鈕收進客戶進度歸檔卡內,自己一行(不擠客戶現況那排,也不在卡外另開空間);內容收合在卡下方 */
+          var _dvb=document.getElementById('atl-deliv-inv-body'); var _dvOpen=!!(_dvb && _dvb.style.display==='block');
+          _extra+='<div class="cpb-delivrow" style="grid-column:1/-1;margin-top:9px;padding-top:9px;border-top:1px solid #EFE2D4">'
+            +'<button type="button" class="atl-deliv-toggle" onclick="window.__atlDelivInvTg&&window.__atlDelivInvTg(this)" style="display:inline-flex;align-items:center;gap:7px;background:#FFFCFA;border:1px solid #E6BEBE;border-radius:10px;padding:8px 15px;font-size:13px;font-weight:700;font-family:inherit;color:#2A1A1C;-webkit-text-fill-color:#2A1A1C;cursor:pointer">'
+            +'<span style="color:#A51820;-webkit-text-fill-color:#A51820;font-weight:800">\u25CF 必看</span>\uFF5C交付前盤點 <span class="atl-dlv-tri">'+(_dvOpen?'\u25B4':'\u25BE')+'</span></button></div>';
+        }
       }
       return '<div class="client-progress-bar">'
         +'<div><div class="cpb-kicker">客戶進度歸檔卡 · OVERALL PROGRESS</div><div class="cpb-stage">'+esc2(a.displayName||a.handle||'客戶')+' · 目前在 '+ts.no+ts.name+'</div>'+three+'</div>'
@@ -18464,17 +18471,18 @@ try{ window.__atl632=true; }catch(e){}
   function txt(el){ try{ return (el.innerText||el.textContent||'').replace(/\s+/g,''); }catch(e){ return ''; } }
 
   window.__atlToggleCtx=function(btn){
-    var v=(btn&&btn.closest&&btn.closest('.view'))||document.querySelector('.view.on'); if(!v) return; /* cs-v8.43:改用按鈕自己所在的view(看得見的那份),避免重複view-id時抓到隱藏view害客戶現況打不開 */
-    var open=v.classList.toggle('atl-ctx-open');
-    if(btn) btn.innerHTML='客戶現況 '+(open?'\u25B4':'\u25BE');
-    if(open){ try{ if(window.__atlCtxInject) window.__atlCtxInject(); }catch(e){} }
-    var p=v.querySelector('.cs-ctx');
-    if(open && !p && window.__atlCtxBuild){ try{ p=window.__atlCtxBuild(); if(p) v.insertBefore(p, v.firstChild); }catch(e){} }  /* cs-v8.34:注入沒在當前view產生卡時(重複id/時序),直接在當前view補一張,確保打得開 */
-    if(p){
-      /* cs-v8.29:就地展開——把客戶現況卡移到按鈕所在的進度卡正下方,不要跑到整頁最頂端 */
-      if(open&&btn){ try{ var host=btn.closest('.client-progress-bar')||btn.closest('.atl-cpb')||btn.closest('.section-card'); if(host&&host.parentNode){ host.parentNode.insertBefore(p, host.nextSibling); } }catch(e){} }
-      p.style.setProperty('display', open?'block':'none', 'important'); if(open&&p.scrollIntoView){ try{ p.scrollIntoView({behavior:'smooth',block:'nearest'}); }catch(e){} }
-    }
+    /* cs-v8.44:最穩版——直接在「按鈕自己那張進度卡」下方建/顯示客戶現況卡,狀態記在卡的data上,不依賴view class或重複view-id */
+    var v=(btn&&btn.closest&&btn.closest('.view'))||document.querySelector('.view.on'); if(!v) return;
+    var host=(btn&&btn.closest&&btn.closest('.client-progress-bar'))||v.querySelector('.client-progress-bar');
+    var p=(host&&host.nextElementSibling&&host.nextElementSibling.classList&&host.nextElementSibling.classList.contains('cs-ctx'))?host.nextElementSibling:v.querySelector('.cs-ctx[data-cs-ctx]');
+    var isOpen=!!(p&&p.getAttribute('data-ctxopen')==='1'&&p.style.display!=='none');
+    if(isOpen){ if(p){ p.style.setProperty('display','none','important'); p.setAttribute('data-ctxopen','0'); } if(btn) btn.innerHTML=(btn.getAttribute('data-lbl')||'客戶現況')+' \u25BE'; return; }
+    if(!p && window.__atlCtxBuild){ try{ p=window.__atlCtxBuild(); }catch(e){} }
+    if(!p) return;
+    try{ if(host&&host.parentNode){ host.parentNode.insertBefore(p, host.nextSibling); } else { v.insertBefore(p, v.firstChild); } }catch(e){}
+    p.style.setProperty('display','block','important'); p.setAttribute('data-ctxopen','1');
+    if(btn) btn.innerHTML=(btn.getAttribute('data-lbl')||'客戶現況')+' \u25B4';
+    if(p.scrollIntoView){ try{ p.scrollIntoView({behavior:'smooth',block:'nearest'}); }catch(e){} }
   };
 
   window.switchSx2=function(btn,name){
@@ -18811,8 +18819,10 @@ try{ window.__atl632=true; }catch(e){}
 (function(){
   if(window.__atlCpbTg) return;
   window.__atlCpbTg=function(kind,btn){
+    var v=(btn&&btn.closest&&btn.closest('.view'))||document.querySelector('.view.on');
+    if(v && v.id==='view-stage2' && typeof window.__atlS2Float==='function'){ return window.__atlS2Float(kind,btn); } /* cs-v8.44:②建檔走回原本會動的浮動面板(上版硬改標準反而打不開) */
     var f={ctx:window.__atlToggleCtx,lens:window.__atlToggleLoop,master:window.__atlToggleMaster}[kind];
-    if(typeof f==='function') return f(btn); /* cs-v8.43:②建檔也走標準客戶現況(原走__atlS2Float,內容跟其他站不一致);統一由__atlToggleCtx處理 */
+    if(typeof f==='function') return f(btn);
   };
 })();
 </script>
