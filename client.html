@@ -833,7 +833,7 @@ details.cat summary .cat-name{vertical-align:middle}
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">客戶服務台</span></span>
-    <span id="verBadge">cs-v8.26</span>
+    <span id="verBadge">cs-v8.27</span>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button type="button" id="atlSpecBtn" class="popout-btn" title="規格模式（點一下開啟，再點任一元件看它的規格）"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7l4-4 14 14-4 4z"/><path d="M9 5l1.5 1.5M12 8l1.5 1.5M15 11l1.5 1.5"/></svg>規格</button>
@@ -10732,7 +10732,7 @@ button:not(:disabled), .btn:not(.disabled):not([disabled]), [role="button"]{
   window.openFinalDeliveryOverview=openFinal;
   document.addEventListener('click',function(e){var t=e.target&&e.target.closest&&e.target.closest('[data-final-open],[data-final-close],[data-final-rec],[data-final-copy],[data-final-html],[data-final-ppt]'); if(!t)return; if(t.hasAttribute('data-final-open'))openFinal(); else if(t.hasAttribute('data-final-close')){try{closeModal()}catch(_e){var md=qs('#modal'); if(md)md.classList.remove('show')}} else if(t.hasAttribute('data-final-rec'))renderRec(); else if(t.hasAttribute('data-final-copy'))copySafe(selectedText(),'已複製最終交付內容'); else if(t.hasAttribute('data-final-html'))downloadHtml(); else if(t.hasAttribute('data-final-ppt'))dlPpt();});
   document.addEventListener('change',function(e){var t=e.target; if(!t)return; if(t.hasAttribute('data-final-stage-all')){var det=t.closest('.atl-stage-detail'); if(det)qsa('input[data-final-item]',det).forEach(function(x){x.checked=t.checked}); renderRec();} else if(t.hasAttribute('data-final-item'))renderRec();});
-  function installFinalCard(){qsa('#view-stage7').forEach(function(v){if(!v||v.querySelector('[data-final-card]'))return; var card=document.createElement('div'); card.className='atl-final-card'; card.setAttribute('data-final-card','1'); card.innerHTML='<h3>最終交付總覽</h3><p>七站完成後，從這裡勾選要放進最終交付的站別與項目。系統會先給建議頁清單，再輸出 HTML 或 PPT。</p><div class="atl-final-actions"><button type="button" class="primary" data-final-open>開啟最終交付總覽</button><button type="button" class="ghost" data-final-open>查看建議頁清單</button></div>'; v.insertBefore(card,v.firstChild);});}
+  function installFinalCard(){/* cs-v8.27:停用重複的「最終交付總覽」卡(只是啟動器);真匯出走右下浮動「最終匯出」鈕→openFinal彈窗，產出走「一鍵產出完整交付物」卡 */}
   function boot(){installStageSelect(); installSave(); installFinalCard();}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot); else boot();
   setInterval(boot,1800);
@@ -10772,7 +10772,7 @@ button:not(:disabled), .btn:not(.disabled):not([disabled]), [role="button"]{
   if(window.__atlCs473Continuity) return; window.__atlCs473Continuity=true;
   function cleanTextNode(n){var s=n.nodeValue||''; var ns=s.replace(/cs-v4\.\d+\s*(SAFE|LATEST)?\s*[｜|·:-]?\s*/g,'').replace(/\bv\d{3}\s*[｜|·:-]?\s*/g,''); if(ns!==s)n.nodeValue=ns;}
   function cleanVersions(){
-    try{var vb=document.getElementById('verBadge'); if(vb)vb.textContent='cs-v8.26';}catch(e){}
+    try{var vb=document.getElementById('verBadge'); if(vb)vb.textContent='cs-v8.27';}catch(e){}
     try{var w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT,{acceptNode:function(n){var p=n.parentElement; if(!p||p.id==='verBadge'||/^(SCRIPT|STYLE|TEXTAREA)$/i.test(p.tagName))return NodeFilter.FILTER_REJECT; return /(cs-v4\.\d+|\bv\d{3})/.test(n.nodeValue||'')?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_REJECT;}}); var nodes=[],n; while(n=w.nextNode())nodes.push(n); nodes.forEach(cleanTextNode);}catch(e){}
   }
   function alignSelection(){
@@ -10832,7 +10832,7 @@ input[type="text"]:focus,input:not([type]):focus{border-color:#D4A574!important;
     btn.onclick=function(e){e.stopPropagation(); set(!safe.classList.contains('atl-safe474-collapsed'));};
     h.appendChild(summary); h.appendChild(btn); set(localStorage.getItem('atl.cs474.safeCollapsed')!=='0');
   }
-  function cleanBadge(){ var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v8.26'; }
+  function cleanBadge(){ var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v8.27'; }
   function run(){ cleanBadge(); ensureSafeCollapse(); wireAutogrow(document); }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run); else run();
   setInterval(run,1200);
@@ -10893,7 +10893,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
   function wire(root){qsa('textarea,input[type="text"],input[type="url"],input[type="email"],input:not([type])',root||document).forEach(function(el){if(el.__atl475)return; if(el.closest('.atl-field-modal,.atl-final-modal'))return; el.__atl475=true; el.addEventListener('focus',function(){show(el); autogrow(el)}); el.addEventListener('input',function(){autogrow(el)}); el.addEventListener('blur',hideSoon); autogrow(el);});}
   document.addEventListener('click',function(e){var b=e.target.closest('#atlFieldToolbar button'); if(!b||!active)return; var a=b.getAttribute('data-act'); if(a==='prompt')openModal('prompt',active); if(a==='fill')openModal('fill',active); if(a==='edit')openModal('edit',active); if(a==='done'){var bar=qs('#atlFieldToolbar'); if(bar)bar.classList.remove('on'); if(active)active.classList.remove('atl-field-active'); toastSafe('此欄位可視為定案，請記得儲存');}},true);
   function addCollapse(root){qsa('.section-card,.deliverable-card,.atl452safe-card',root||document).forEach(function(card){if(card.__atlCollapse475||card.closest('.preview-modal,.atl-field-modal'))return; card.__atlCollapse475=true; card.classList.add('atl-collapsible'); var h=qs('h2,h3,h4,.stitle,.section-title',card)||card.firstElementChild; if(h)h.classList.add('atl-keep-visible'); var btn=document.createElement('button'); btn.type='button'; btn.className='atl-collapse-toggle'; btn.textContent='收合'; btn.addEventListener('click',function(e){e.preventDefault(); e.stopPropagation(); var closed=card.classList.toggle('atl-closed'); btn.textContent=closed?'展開':'收合';}); card.insertBefore(btn,card.firstChild);});}
-  function boot(){try{var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v8.26';}catch(e){} wire(document); addCollapse(document);}
+  function boot(){try{var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v8.27';}catch(e){} wire(document); addCollapse(document);}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot); else boot();
   try{new MutationObserver(function(ms){var hit=false; ms.forEach(function(m){if(m.addedNodes&&m.addedNodes.length)hit=true}); if(hit){clearTimeout(window.__atl475Timer); window.__atl475Timer=setTimeout(boot,180);}}).observe(document.body,{childList:true,subtree:true});}catch(e){}
 })();
@@ -10934,7 +10934,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
 <script id="atl478-final-export-js">
 (function(){
   if(window.__atl478FinalExport)return; window.__atl478FinalExport=true;
-  var VERSION='cs-v8.26';
+  var VERSION='cs-v8.27';
   function esc(s){return (s==null?'':String(s)).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
   function qsa(sel,root){return Array.prototype.slice.call((root||document).querySelectorAll(sel))}
   function text(el){return (el&&el.innerText||el&&el.textContent||'').replace(/\s+/g,' ').trim()}
@@ -11034,7 +11034,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
   function loadPptxLib(){return new Promise(function(resolve){if(window.pptxgen||window.PptxGenJS)return resolve(true);var s=document.createElement('script'); s.src='https://cdn.jsdelivr.net/npm/pptxgenjs@3.12.0/dist/pptxgen.bundle.js';s.onload=function(){resolve(!!(window.pptxgen||window.PptxGenJS))}; s.onerror=function(){resolve(false)}; document.head.appendChild(s)})}
   function clip(s,n){s=String(s||''); return s.length>n?s.slice(0,n-1)+'…':s}
   async function downloadPPT(){var ok=await loadPptxLib(); if(!ok){toast('PPTX 函式庫載入失敗，請先確認網路');return}var P=window.pptxgen||window.PptxGenJS; var pptx=new P(); var name=currentClientName(); var sel=selected();pptx.layout='LAYOUT_WIDE'; pptx.author='ATELIER'; pptx.subject='Final Delivery';pptx.theme={headFontFace:'Noto Serif TC',bodyFontFace:'Noto Sans TC',lang:'zh-TW'};function footer(slide,no){slide.addText('ATELIER',{x:.75,y:7.03,w:2,h:.2,fontSize:9,color:'C4B5B8',fontFace:'Cormorant Garamond'});slide.addText(String(no).padStart(2,'0'),{x:12,y:7.03,w:.55,h:.2,fontSize:9,color:'C4B5B8',fontFace:'Cormorant Garamond',align:'right'})}var slide=pptx.addSlide(); slide.background={color:'FDF7F6'}; slide.addText('ATELIER · FINAL DELIVERY',{x:.8,y:1.1,w:7,h:.3,fontSize:12,color:'A89498',fontFace:'Cormorant Garamond',charSpace:4}); slide.addText('ATELIER × '+name,{x:.8,y:2.35,w:11.7,h:.8,fontSize:42,bold:true,color:'2A1A1C',fontFace:'Noto Serif TC',fit:'shrink'}); slide.addText('最終交付選取檔案',{x:.8,y:3.45,w:6,h:.36,fontSize:20,color:'A51820',fontFace:'Noto Sans TC'}); footer(slide,1);var groups={}; sel.forEach(function(it){(groups[it.stage]=groups[it.stage]||[]).push(it)});var page=2; Object.keys(groups).forEach(function(st){var arr=groups[st], chunks=[]; for(var i=0;i<arr.length;i+=3)chunks.push(arr.slice(i,i+3));chunks.forEach(function(chunk){var s=pptx.addSlide(); s.background={color:'FDFBF8'}; s.addText('FINAL DELIVERY',{x:.8,y:.58,w:4,h:.25,fontSize:11,color:'A89498',fontFace:'Cormorant Garamond',charSpace:4}); s.addText(st,{x:.8,y:1.08,w:5,h:.45,fontSize:28,bold:true,color:'A51820',fontFace:'Noto Serif TC'});chunk.forEach(function(it,j){var y=2.05+j*1.55; s.addText(it.title,{x:.9,y:y,w:11.4,h:.28,fontSize:15,bold:true,color:'2A1A1C',fontFace:'Noto Sans TC',fit:'shrink'}); s.addText(clip(it.body,160),{x:.9,y:y+.38,w:11.4,h:.85,fontSize:10.5,color:'5C4248',fontFace:'Noto Sans TC',fit:'shrink',valign:'top'});});footer(s,page++)})});var end=pptx.addSlide(); end.background={color:'FEFAFA'}; end.addText('NEXT STEP',{x:.8,y:1.2,w:4,h:.3,fontSize:12,color:'A89498',fontFace:'Cormorant Garamond',charSpace:4}); end.addText('下一步確認',{x:.8,y:2.35,w:8,h:.6,fontSize:40,bold:true,color:'2A1A1C',fontFace:'Noto Serif TC'}); end.addText('確認交付內容、補齊缺口，並將下一輪內容戰役回寫到服務台。',{x:.8,y:3.35,w:9.5,h:.5,fontSize:16,color:'A51820',fontFace:'Noto Sans TC'}); footer(end,page);await pptx.writeFile({fileName:'ATELIER_最終交付_'+safeFile(name)+'.pptx'}); toast('已下載 PPTX')}
-  function injectCard(){setVersion();if(!document.getElementById('atlFinalFloat')){var fb=document.createElement('button'); fb.id='atlFinalFloat'; fb.className='atl-final-float'; fb.type='button'; fb.textContent='最終匯出'; fb.addEventListener('click',openFinal); document.body.appendChild(fb)}var v=document.getElementById('view-stage7');if(v && !document.getElementById('atlFinalCard')){var card=document.createElement('div'); card.id='atlFinalCard'; card.className='atl-final-card';card.innerHTML='<h3>選取最終匯出檔案</h3><p>把 ① 初診到 ⑦ 交付的內容先勾選，再看建議頁清單，最後輸出 HTML 或 PPTX。</p><div class="atl-final-actions"><button type="button" class="primary">開啟選取匯出</button><button type="button">快速複製目前勾選</button></div>';var bs=card.querySelectorAll('button'); bs[0].addEventListener('click',openFinal); bs[1].addEventListener('click',function(){openFinal(); setTimeout(copySelected,120)});v.insertBefore(card,v.firstChild)}}
+  function injectCard(){setVersion();if(!document.getElementById('atlFinalFloat')){var fb=document.createElement('button'); fb.id='atlFinalFloat'; fb.className='atl-final-float'; fb.type='button'; fb.textContent='最終匯出'; fb.addEventListener('click',openFinal); document.body.appendChild(fb)}/* cs-v8.27:移除重複的「選取最終匯出檔案」卡,只保留右下浮動「最終匯出」鈕(→openFinal) */var _old=document.getElementById('atlFinalCard'); if(_old&&_old.parentNode) _old.parentNode.removeChild(_old);}
   function boot(){injectCard(); setInterval(injectCard,1200); try{new MutationObserver(function(){clearTimeout(window.__atl478FinalTimer); window.__atl478FinalTimer=setTimeout(injectCard,120)}).observe(document.body,{childList:true,subtree:true});}catch(e){}}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();
 })();
@@ -11054,7 +11054,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
 <script>
 (function(){
   if(window.__atlCs480) return; window.__atlCs480=true;
-  var V='cs-v8.26';
+  var V='cs-v8.27';
   function lock(){ var vb=document.getElementById('verBadge'); if(vb && (vb.textContent||'').trim()!==V) vb.textContent=V; }
   function unify(){
     var safe=document.querySelector('.atl452safe'); if(!safe) return;
@@ -12005,7 +12005,7 @@ input.atl477-open-field:not([type="checkbox"]):not([type="radio"]):not([type="bu
 <script id="atl-cs477-final-touch">
 (function(){
   if(window.__atlCs477FinalTouch) return; window.__atlCs477FinalTouch=true;
-  var VERSION='cs-v8.26';
+  var VERSION='cs-v8.27';
   function qs(s,r){return (r||document).querySelector(s)}
   function qsa(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
   function setVersion(){try{var b=qs('#verBadge'); if(b)b.textContent=VERSION; window.ATELIER_CLIENT_VERSION=VERSION;}catch(e){}}
@@ -13642,7 +13642,7 @@ body.atl-hide-final #atlFinalFloat{ display:none !important; }
     html+='<div class="atl-p5-acts"><span class="atl-p5-stamp" id="atlP5Stamp">'+(saved.updatedAt?('已回寫：第 '+(saved.round||1)+' 輪'):'尚未回寫')+'</span>'
       +'<button class="atl-p5-save" id="atlP5Save">↩ 回寫工作台</button></div></div>';
     var wrap=document.createElement('div'); wrap.innerHTML=html;
-    v.insertBefore(wrap.firstChild, v.firstChild);
+    v.appendChild(wrap.firstChild); /* cs-v8.27:結論卡(本輪服務結論)從最上面硬插改成附到底部,讓導覽列/標題/進度表回到最前面,捲動變短 */
     var sv=document.getElementById('atlP5Save'); if(sv) sv.addEventListener('click',writeBack);
     // 自動帶入(只填空白)
     function setIf(id,val){ var el=document.getElementById('atlP5-'+id); if(el&&val&&!el.value.trim()){ el.value=val; } }
