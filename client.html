@@ -872,7 +872,7 @@ html, body { overflow-anchor: none; }
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">中控台</span></span>
-    <span id="verBadge">v1.0.4</span>
+    <span id="verBadge">v1.1.0</span>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button type="button" id="atlSpecBtn" class="popout-btn" title="規格模式（點一下開啟，再點任一元件看它的規格）"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7l4-4 14 14-4 4z"/><path d="M9 5l1.5 1.5M12 8l1.5 1.5M15 11l1.5 1.5"/></svg>規格</button>
@@ -10880,7 +10880,7 @@ button:not(:disabled), .btn:not(.disabled):not([disabled]), [role="button"]{
   if(window.__atlCs473Continuity) return; window.__atlCs473Continuity=true;
   function cleanTextNode(n){var s=n.nodeValue||''; var ns=s.replace(/cs-v4\.\d+\s*(SAFE|LATEST)?\s*[｜|·:-]?\s*/g,'').replace(/\bv\d{3}\s*[｜|·:-]?\s*/g,''); if(ns!==s)n.nodeValue=ns;}
   function cleanVersions(){
-    try{var vb=document.getElementById('verBadge'); if(vb)vb.textContent='v1.0.4';}catch(e){}
+    try{var vb=document.getElementById('verBadge'); if(vb)vb.textContent='v1.1.0';}catch(e){}
     try{var w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT,{acceptNode:function(n){var p=n.parentElement; if(!p||p.id==='verBadge'||/^(SCRIPT|STYLE|TEXTAREA)$/i.test(p.tagName))return NodeFilter.FILTER_REJECT; return /(cs-v4\.\d+|\bv\d{3})/.test(n.nodeValue||'')?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_REJECT;}}); var nodes=[],n; while(n=w.nextNode())nodes.push(n); nodes.forEach(cleanTextNode);}catch(e){}
   }
   function alignSelection(){
@@ -10940,7 +10940,7 @@ input[type="text"]:focus,input:not([type]):focus{border-color:#D4A574!important;
     btn.onclick=function(e){e.stopPropagation(); set(!safe.classList.contains('atl-safe474-collapsed'));};
     h.appendChild(summary); h.appendChild(btn); set(localStorage.getItem('atl.cs474.safeCollapsed')!=='0');
   }
-  function cleanBadge(){ var vb=qs('#verBadge'); if(vb)vb.textContent='v1.0.4'; }
+  function cleanBadge(){ var vb=qs('#verBadge'); if(vb)vb.textContent='v1.1.0'; }
   function run(){ cleanBadge(); ensureSafeCollapse(); wireAutogrow(document); }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run); else run();
   setInterval(run,1200);
@@ -11001,7 +11001,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
   function wire(root){qsa('textarea,input[type="text"],input[type="url"],input[type="email"],input:not([type])',root||document).forEach(function(el){if(el.__atl475)return; if(el.closest('.atl-field-modal,.atl-final-modal'))return; el.__atl475=true; el.addEventListener('focus',function(){show(el); autogrow(el)}); el.addEventListener('input',function(){autogrow(el)}); el.addEventListener('blur',hideSoon); autogrow(el);});}
   document.addEventListener('click',function(e){var b=e.target.closest('#atlFieldToolbar button'); if(!b||!active)return; var a=b.getAttribute('data-act'); if(a==='prompt')openModal('prompt',active); if(a==='fill')openModal('fill',active); if(a==='edit')openModal('edit',active); if(a==='done'){var bar=qs('#atlFieldToolbar'); if(bar)bar.classList.remove('on'); if(active)active.classList.remove('atl-field-active'); toastSafe('此欄位可視為定案，請記得儲存');}},true);
   function addCollapse(root){qsa('.section-card,.deliverable-card,.atl452safe-card',root||document).forEach(function(card){if(card.__atlCollapse475||card.closest('.preview-modal,.atl-field-modal'))return; card.__atlCollapse475=true; card.classList.add('atl-collapsible'); var h=qs('h2,h3,h4,.stitle,.section-title',card)||card.firstElementChild; if(h)h.classList.add('atl-keep-visible'); var btn=document.createElement('button'); btn.type='button'; btn.className='atl-collapse-toggle'; btn.textContent='收合'; btn.addEventListener('click',function(e){e.preventDefault(); e.stopPropagation(); var closed=card.classList.toggle('atl-closed'); btn.textContent=closed?'展開':'收合';}); card.insertBefore(btn,card.firstChild);});}
-  function boot(){try{var vb=qs('#verBadge'); if(vb)vb.textContent='v1.0.4';}catch(e){} wire(document); addCollapse(document);}
+  function boot(){try{var vb=qs('#verBadge'); if(vb)vb.textContent='v1.1.0';}catch(e){} wire(document); addCollapse(document);}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot); else boot();
   try{new MutationObserver(function(ms){var hit=false; ms.forEach(function(m){if(m.addedNodes&&m.addedNodes.length)hit=true}); if(hit){clearTimeout(window.__atl475Timer); window.__atl475Timer=setTimeout(boot,180);}}).observe(document.body,{childList:true,subtree:true});}catch(e){}
 })();
@@ -11042,7 +11042,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
 <script id="atl478-final-export-js">
 (function(){
   if(window.__atl478FinalExport)return; window.__atl478FinalExport=true;
-  var VERSION='v1.0.4';
+  var VERSION='v1.1.0';
   function esc(s){return (s==null?'':String(s)).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
   function qsa(sel,root){return Array.prototype.slice.call((root||document).querySelectorAll(sel))}
   function text(el){return (el&&el.innerText||el&&el.textContent||'').replace(/\s+/g,' ').trim()}
@@ -11162,7 +11162,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
 <script>
 (function(){
   if(window.__atlCs480) return; window.__atlCs480=true;
-  var V='v1.0.4';
+  var V='v1.1.0';
   function lock(){ var vb=document.getElementById('verBadge'); if(vb && (vb.textContent||'').trim()!==V) vb.textContent=V; }
   function unify(){
     var safe=document.querySelector('.atl452safe'); if(!safe) return;
@@ -12113,7 +12113,7 @@ input.atl477-open-field:not([type="checkbox"]):not([type="radio"]):not([type="bu
 <script id="atl-cs477-final-touch">
 (function(){
   if(window.__atlCs477FinalTouch) return; window.__atlCs477FinalTouch=true;
-  var VERSION='v1.0.4';
+  var VERSION='v1.1.0';
   function qs(s,r){return (r||document).querySelector(s)}
   function qsa(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
   function setVersion(){try{var b=qs('#verBadge'); if(b)b.textContent=VERSION; window.ATELIER_CLIENT_VERSION=VERSION;}catch(e){}}
@@ -20426,18 +20426,14 @@ window.buildToolkit=function(stageId){
 };
 })();
 </script>
-<style id="atl-v104-css">
+<style id="atl-v110-css">
 /* ═══════════════════════════════════════════════════════════════════
-   cs-v1.0.4 · 桌機 shell 定位系統 ＋ 顧問宏觀視野入口預留
-   取代 cs-v1.0.3(atl-v103)。沿用其響應式 grid，升級三件事：
-   (1) 統一桌機定位：topbar → service bar(目前服務) → workspace shell，
-       左/中/右三欄一律從 service bar 底部起算，無欄位被蓋住、捲動不卡空。
-   (2) 漢堡收回左側導覽系統：展開時在左欄頂部；收合時左欄變窄 rail 保留展開鈕。
-       操作導覽浮鈕桌機隱藏、改由左欄底部入口呼叫（手機仍保留浮鈕）。
-   (3) 右側欄分「當站輔助」與「顧問宏觀視野」（內部用、不給客戶）——本批先做預留收合卡。
-   不動資料層、不動 stageN 鍵、不新增計時器/觀察器。
+   cs-v1.1.0 · ATELIER 中控台實戰完工版
+   沿用 v1.0.4 桌機 shell 定位系統，疊加「實戰內容引擎」：
+   每站實戰帶跑、顧問宏觀視野 MVP、顧問/客戶雙軌邊界、實戰工具、會前準備模式。
+   不動資料層、不動 localStorage key、不新增計時器/觀察器。
+   設計北極星：中控台是給顧問的宏觀作戰台——在當站同時看見後段交付終點。
    ═══════════════════════════════════════════════════════════════════ */
-
 .atl-shell{
   --atl-primary:#A51820; --atl-deep:#5C0F14; --atl-hover:#7A1018;
   --atl-gold:#C9A57A; --atl-gold2:#D4A574;
@@ -20447,16 +20443,10 @@ window.buildToolkit=function(stageId){
   --atl-paid:#A6842E; --atl-paid-bg:#FFF8EE;
   --atl-nogo:#A51820; --atl-nogo-bg:#FBF1F1;
 }
-
-/* ── service bar（目前服務狀態列）：貼齊 topbar 下方、明確 z-index ── */
-/* --atl-bannertop / --atl-head 由 v104 JS 量測 topbar(+tabs)+banner 後寫到 :root */
 .cs-banner{ top:var(--atl-bannertop,103px); z-index:42; }
-
-/* ── 隱藏舊版型層遺留 ── */
 .atl-v90-top{ display:none !important; }
 .atl-desk-wrap{ display:none !important; }
 
-/* ── shell：手機優先 ── */
 .atl-shell{ display:grid; grid-template-columns:1fr; grid-template-areas:"center" "right"; gap:0; width:100%; box-sizing:border-box; }
 .atl-shell-left{ grid-area:left; display:none; }
 .atl-shell-center{ grid-area:center; min-width:0; }
@@ -20466,56 +20456,35 @@ window.buildToolkit=function(stageId){
 .atl-shell-right{ background:var(--atl-bg); border-top:1px solid var(--atl-line); padding:12px 14px 24px; }
 .atl-shell-right:empty{ display:none; }
 
-/* ── 平板 768–1023：中 + 右 ── */
 @media(min-width:768px){
   .atl-shell{ grid-template-columns:minmax(0,1fr) var(--atl-right,300px); grid-template-areas:"center right"; max-width:1180px; margin:0 auto; }
   .atl-shell.right-collapsed{ grid-template-columns:minmax(0,1fr) 0; grid-template-areas:"center center"; }
   .atl-shell-center .view{ padding:18px 22px 80px; }
-  .atl-shell-right{
-    border-top:0; border-left:1px solid var(--atl-line); background:var(--atl-card);
-    position:sticky; top:var(--atl-head,140px); align-self:start;
-    max-height:calc(100vh - var(--atl-head,140px) - 10px); overflow-y:auto; padding:12px;
-    z-index:20;
-  }
+  .atl-shell-right{ border-top:0; border-left:1px solid var(--atl-line); background:var(--atl-card); position:sticky; top:var(--atl-head,140px); align-self:start; max-height:calc(100vh - var(--atl-head,140px) - 10px); overflow-y:auto; padding:12px; z-index:20; }
   .atl-shell.right-collapsed .atl-shell-right{ display:none; }
 }
-
-/* ── 桌機 ≥1024：左導覽 / 中工作區 / 右輔助，三欄同一 shell ── */
 @media(min-width:1024px){
   .tabs{ display:none !important; }
-  .atl-guide-fab{ display:none !important; }       /* 桌機隱藏浮鈕，改用左欄底部入口（方案 A） */
-  .atl-shell{
-    grid-template-columns:var(--atl-left,210px) minmax(0,1fr) var(--atl-right,320px);
-    grid-template-areas:"left center right"; max-width:1480px; margin:0 auto;
-  }
-  /* 左欄收合＝變窄 rail（保留展開鈕），不再 display:none */
-  .atl-shell.left-collapsed{ grid-template-columns:46px minmax(0,1fr) var(--atl-right,320px); grid-template-areas:"left center right"; }
+  .atl-guide-fab{ display:none !important; }
+  .atl-shell{ grid-template-columns:var(--atl-left,210px) minmax(0,1fr) var(--atl-right,330px); grid-template-areas:"left center right"; max-width:1500px; margin:0 auto; }
+  .atl-shell.left-collapsed{ grid-template-columns:46px minmax(0,1fr) var(--atl-right,330px); grid-template-areas:"left center right"; }
   .atl-shell.right-collapsed{ grid-template-columns:var(--atl-left,210px) minmax(0,1fr) 0; grid-template-areas:"left center center"; }
   .atl-shell.left-collapsed.right-collapsed{ grid-template-columns:46px minmax(0,1fr) 0; grid-template-areas:"left center center"; }
-
-  .atl-shell-left{
-    display:block; background:var(--atl-card); border-right:1px solid var(--atl-line);
-    padding:10px 0; position:sticky; top:var(--atl-head,100px); align-self:start;
-    max-height:calc(100vh - var(--atl-head,100px) - 10px); overflow-y:auto; z-index:20;
-  }
+  .atl-shell-left{ display:block; background:var(--atl-card); border-right:1px solid var(--atl-line); padding:10px 0; position:sticky; top:var(--atl-head,100px); align-self:start; max-height:calc(100vh - var(--atl-head,100px) - 10px); overflow-y:auto; z-index:20; }
   .atl-shell.left-collapsed .atl-snav{ display:none; }
   .atl-shell.left-collapsed .atl-navfoot{ display:none; }
   .atl-shell.left-collapsed .atl-navhead{ justify-content:center; padding:6px 0; }
   .atl-shell.left-collapsed .atl-navhead-label{ display:none; }
-
   .atl-shell-center{ background:#fff; }
   .atl-shell-center .view{ padding:22px 30px 90px; }
   .atl-shell-right{ position:sticky; top:var(--atl-head,100px); align-self:start; max-height:calc(100vh - var(--atl-head,100px) - 10px); overflow-y:auto; z-index:20; }
 }
 
-/* ── 左側導覽頭（漢堡收合鈕的家） ── */
 .atl-navhead{ display:flex; align-items:center; justify-content:space-between; gap:8px; padding:4px 14px 10px; border-bottom:1px solid var(--atl-line); margin-bottom:6px; }
 .atl-navhead-label{ font-size:10px; letter-spacing:2px; color:#B0896C; font-weight:700; }
 .atl-navtoggle{ display:inline-flex; align-items:center; justify-content:center; width:28px; height:28px; border:1px solid var(--atl-line); border-radius:8px; background:#fff; color:var(--atl-primary); cursor:pointer; flex:0 0 auto; }
 .atl-navtoggle svg{ width:15px; height:15px; transition:transform .2s; }
 .atl-shell.left-collapsed .atl-navtoggle svg{ transform:rotate(180deg); }
-
-/* ── 左側導覽 ── */
 .atl-snav{ display:block; }
 .atl-snav .grp{ font-size:10px; color:#B0896C; letter-spacing:2px; font-weight:700; padding:12px 16px 4px; }
 .atl-snav-btn{ display:block; width:100%; text-align:left; padding:9px 16px; border:0; border-left:3px solid transparent; background:none; cursor:pointer; font-family:inherit; color:#5C4A3C; transition:background .15s,color .15s,border-color .15s; }
@@ -20524,25 +20493,20 @@ window.buildToolkit=function(stageId){
 .atl-snav-btn:hover{ background:#FFF8F0; color:var(--atl-primary); }
 .atl-snav-btn.on{ background:#FFF4EC; border-left-color:var(--atl-primary); color:var(--atl-primary); }
 .atl-snav-btn.on .t{ font-weight:800; }
-
-/* ── 左欄底部：操作導覽入口（桌機，轉呼叫原浮鈕） ── */
 .atl-navfoot{ margin-top:10px; padding:10px 12px 4px; border-top:1px solid var(--atl-line); }
-.atl-navfoot button{ display:flex; align-items:center; gap:7px; width:100%; padding:9px 10px; border:1px solid var(--atl-line); border-radius:9px; background:#FFF8F0; color:var(--atl-primary); font-family:inherit; font-size:12px; font-weight:700; cursor:pointer; }
-.atl-navfoot button:hover{ background:#FFEFE2; }
+.atl-navfoot button{ display:flex; align-items:center; gap:7px; width:100%; padding:9px 10px; margin-bottom:6px; border:1px solid var(--atl-line); border-radius:9px; background:#FFF8F0; color:var(--atl-primary); font-family:inherit; font-size:12px; font-weight:700; cursor:pointer; }
+.atl-navfoot button.prep{ background:linear-gradient(135deg,#A51820,#7A1018); color:#fff; border-color:#7A1018; }
+.atl-navfoot button:hover{ filter:brightness(1.03); }
 .atl-navfoot svg{ width:14px; height:14px; flex:0 0 auto; }
 
-/* ── 統一收合三角形 ── */
 .atl-tri{ display:inline-block; width:0; height:0; flex:0 0 auto; vertical-align:middle; border-top:5px solid transparent; border-bottom:5px solid transparent; border-left:7px solid var(--atl-gold); transition:transform .2s; margin-right:2px; }
 .atl-sb[open]>summary .atl-tri, .atl-filing-fold[open]>summary .atl-tri{ transform:rotate(90deg); }
-
-/* ── 右側欄收合卡 ── */
-.atl-rail-label{ font-size:10px; letter-spacing:2px; color:#B0896C; font-weight:700; margin:2px 2px 6px; }
+.atl-rail-label{ font-size:10px; letter-spacing:2px; color:#B0896C; font-weight:700; margin:6px 2px 6px; }
 .atl-sb{ margin:0 0 8px; border:1px solid var(--atl-line); border-radius:10px; background:var(--atl-bg2); overflow:hidden; }
 .atl-sb>summary{ list-style:none; cursor:pointer; padding:9px 12px; font-size:11.5px; font-weight:700; color:var(--atl-deep); display:flex; align-items:center; gap:6px; user-select:none; -webkit-user-select:none; }
 .atl-sb>summary::-webkit-details-marker{ display:none; }
 .atl-sb-body{ padding:9px 12px 11px; font-size:12px; color:var(--atl-ink); line-height:1.6; }
-.atl-sb-body .ps-row{ margin:4px 0; }
-.atl-sb-body .ps-row b{ color:var(--atl-deep); margin-right:5px; }
+.atl-sb-body .ps-row{ margin:4px 0; } .atl-sb-body .ps-row b{ color:var(--atl-deep); margin-right:5px; }
 .atl-sb-body .ps-bound{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:5px; margin:7px 0; }
 .atl-sb-body .ps-b{ padding:5px 7px; border-radius:6px; font-size:11px; line-height:1.45; }
 .atl-sb-body .ps-b b{ display:block; margin-bottom:2px; }
@@ -20557,18 +20521,52 @@ window.buildToolkit=function(stageId){
 .atl-sb-empty{ color:#B0896C; font-size:12px; padding:10px 4px; }
 .atl-shell-right .atl-mktool{ margin:0 0 8px; }
 
-/* ── 顧問宏觀視野卡（內部用，視覺與當站輔助區隔） ── */
+/* 實戰帶跑卡 */
+.atl-sb.atl-run{ border:1.5px solid #C9A57A; }
+.atl-run-q{ margin:7px 0; padding:7px 9px; background:var(--atl-card); border:1px solid #EFE6DA; border-radius:8px; }
+.atl-run-q .q{ display:block; color:var(--atl-deep); font-size:11px; font-weight:700; margin-bottom:3px; }
+.atl-run-q .a{ color:#5C4A3C; font-size:11.5px; line-height:1.55; }
+.atl-run-q .a li{ margin:2px 0; }
+.atl-run-q ul{ margin:3px 0 0; padding-left:16px; }
+.atl-gate{ margin-top:8px; padding:8px 10px; border-radius:8px; font-size:11.5px; font-weight:700; text-align:center; }
+.atl-gate.ok{ background:var(--atl-green-bg); color:var(--atl-green); }
+.atl-gate.wait{ background:var(--atl-paid-bg); color:var(--atl-paid); }
+.atl-presence{ font-size:11px; color:var(--atl-gray); margin:2px 0 6px; }
+.atl-presence b{ color:var(--atl-deep); }
+
+/* 顧問宏觀視野 MVP */
 .atl-sb.atl-macro{ border:1.5px solid var(--atl-gold); background:linear-gradient(180deg,#FFF9F0,#FFFDFB); }
 .atl-sb.atl-macro>summary{ color:var(--atl-hover); }
-.atl-macro-badge{ display:inline-block; font-size:9.5px; font-weight:800; letter-spacing:1px; color:var(--atl-paid); background:var(--atl-paid-bg); border:1px solid #E7CF9C; border-radius:999px; padding:2px 8px; margin-bottom:8px; }
-.atl-macro-path{ margin:6px 0; }
-.atl-macro-path b{ display:block; color:var(--atl-deep); font-size:11px; margin-bottom:2px; }
-.atl-macro-path span{ color:#5C4A3C; font-size:11.5px; }
+.atl-macro-badge{ display:inline-block; font-size:9.5px; font-weight:800; letter-spacing:1px; color:var(--atl-paid); background:var(--atl-paid-bg); border:1px solid #E7CF9C; border-radius:999px; padding:2px 8px; margin:0 4px 8px 0; }
 .atl-macro-blk{ margin:8px 0; padding:7px 9px; background:var(--atl-card); border:1px solid #EFE6DA; border-radius:8px; }
 .atl-macro-blk b{ display:block; color:var(--atl-deep); font-size:11px; margin-bottom:3px; }
 .atl-macro-blk .mm{ color:#5C4A3C; font-size:11.5px; line-height:1.5; margin:2px 0; }
+.atl-macro-blk ul{ margin:3px 0 0; padding-left:16px; color:#5C4A3C; font-size:11.5px; }
+.atl-tag{ display:inline-block; font-size:9px; font-weight:800; letter-spacing:.5px; border-radius:4px; padding:1px 5px; margin-right:5px; vertical-align:middle; }
+.atl-tag.say{ background:var(--atl-green-bg); color:var(--atl-green); }
+.atl-tag.sign{ background:var(--atl-paid-bg); color:var(--atl-paid); }
+.atl-tag.no{ background:var(--atl-nogo-bg); color:var(--atl-nogo); }
 
-/* ── 站2 合作確認 ── */
+/* 雙軌邊界卡 */
+.atl-sb.atl-track .trk{ margin:7px 0; padding:8px 10px; border-radius:8px; }
+.atl-track .trk.say{ background:var(--atl-green-bg); border:1px solid #D9E6CF; }
+.atl-track .trk.sign{ background:var(--atl-paid-bg); border:1px solid #ECD9AE; }
+.atl-track .trk.no{ background:var(--atl-nogo-bg); border:1px solid #ECC9C9; }
+.atl-track .trk b{ display:block; font-size:11px; margin-bottom:3px; }
+.atl-track .trk.say b{ color:var(--atl-green); } .atl-track .trk.sign b{ color:var(--atl-paid); } .atl-track .trk.no b{ color:var(--atl-nogo); }
+.atl-track ul{ margin:0; padding-left:16px; font-size:11.5px; color:#5C4A3C; }
+
+/* 實戰工具卡 */
+.atl-sb.atl-tool11 .tl{ margin:8px 0; padding:8px 10px; background:var(--atl-card); border:1px solid #EFE6DA; border-radius:8px; }
+.atl-tool11 .tl h5{ margin:0 0 4px; font-size:12px; color:var(--atl-deep); font-weight:700; }
+.atl-tool11 .tl .row{ font-size:11px; color:#5C4A3C; margin:2px 0; }
+.atl-tool11 .tl .row b{ color:var(--atl-deep); }
+.atl-tool11 .tl .ready{ font-weight:700; }
+.atl-tool11 .tl .ready.ok{ color:var(--atl-green); } .atl-tool11 .tl .ready.miss{ color:var(--atl-paid); }
+.atl-copy{ display:inline-flex; align-items:center; gap:5px; margin-top:5px; padding:5px 9px; border:1px solid var(--atl-gold); border-radius:7px; background:#fff; color:var(--atl-hover); font-size:11px; font-weight:700; cursor:pointer; font-family:inherit; }
+.atl-copy:hover{ background:#FFF6EC; }
+.atl-copy svg{ width:12px; height:12px; }
+
 .atl-coop{ margin:0 0 14px; }
 .atl-coop-sec{ margin:12px 0; padding:14px 16px; background:var(--atl-bg2); border:1px solid var(--atl-line); border-radius:12px; }
 .atl-coop-sec>h4{ font-family:'Noto Serif TC',serif; font-size:14px; font-weight:700; color:var(--atl-deep); margin:0 0 10px; }
@@ -20581,34 +20579,47 @@ window.buildToolkit=function(stageId){
 .atl-filing-fold>summary::-webkit-details-marker{ display:none; }
 .atl-filing-body{ padding:4px 14px 14px; }
 
-/* ── ⓘ 註解符號 ── */
 .atl-info{ display:inline-flex; align-items:center; justify-content:center; width:18px; height:18px; border-radius:50%; border:1.5px solid var(--atl-gray); color:var(--atl-gray); font-size:11px; font-style:italic; font-family:Georgia,serif; cursor:help; line-height:1; }
-.atl-info:hover{ border-color:var(--atl-primary); color:var(--atl-primary); }
-
-/* ── 統一 SVG 圖示 ── */
 .atl-ic-svg{ display:inline-flex; align-items:center; vertical-align:middle; color:var(--atl-gold); line-height:0; }
 .atl-ic-svg svg{ width:13px; height:13px; display:block; }
-
-/* ── 右欄收合切換鈕（右側邊，低調） ── */
 .atl-rt{ display:none; }
-@media(min-width:768px){
-  .atl-rt{ position:fixed; right:0; top:50%; transform:translateY(-50%); z-index:41; display:inline-flex; flex-direction:column; align-items:center; gap:3px; writing-mode:vertical-rl; padding:10px 4px; border:0; border-radius:7px 0 0 7px; background:var(--atl-primary); color:#fff; cursor:pointer; font-size:11px; font-weight:700; font-family:inherit; }
-  .atl-rt svg{ width:14px; height:14px; }
-}
+@media(min-width:768px){ .atl-rt{ position:fixed; right:0; top:50%; transform:translateY(-50%); z-index:41; display:inline-flex; flex-direction:column; align-items:center; gap:3px; writing-mode:vertical-rl; padding:10px 4px; border:0; border-radius:7px 0 0 7px; background:var(--atl-primary); color:#fff; cursor:pointer; font-size:11px; font-weight:700; font-family:inherit; } .atl-rt svg{ width:14px; height:14px; } }
+
+/* 會前準備 / 真實客戶作戰 抽屜 */
+.atl-prep-mask{ position:fixed; inset:0; background:rgba(42,26,28,.42); z-index:120; opacity:0; pointer-events:none; transition:opacity .2s; }
+.atl-prep-mask.on{ opacity:1; pointer-events:auto; }
+.atl-prep{ position:fixed; top:0; right:0; height:100%; width:min(560px,94vw); background:#FBF7F2; z-index:121; box-shadow:-10px 0 40px rgba(42,26,28,.2); transform:translateX(102%); transition:transform .26s cubic-bezier(.4,0,.2,1); display:flex; flex-direction:column; }
+.atl-prep.on{ transform:translateX(0); }
+.atl-prep-hd{ padding:16px 20px; background:linear-gradient(135deg,#A51820,#7A1018); color:#fff; display:flex; align-items:flex-start; justify-content:space-between; gap:10px; }
+.atl-prep-hd .k{ font-size:10px; letter-spacing:3px; opacity:.85; }
+.atl-prep-hd h3{ margin:3px 0 0; font-size:18px; font-family:'Noto Serif TC',serif; }
+.atl-prep-hd .sub{ font-size:11.5px; opacity:.9; margin-top:3px; }
+.atl-prep-x{ background:rgba(255,255,255,.16); border:0; color:#fff; width:30px; height:30px; border-radius:8px; font-size:18px; cursor:pointer; flex:0 0 auto; }
+.atl-prep-body{ padding:16px 20px 40px; overflow-y:auto; }
+.atl-prep-sec{ margin:0 0 16px; padding:14px 16px; background:#fff; border:1px solid var(--atl-line); border-radius:12px; }
+.atl-prep-sec h4{ margin:0 0 8px; font-size:13.5px; color:var(--atl-deep); font-weight:700; display:flex; align-items:center; gap:7px; }
+.atl-prep-sec .badge{ font-size:9px; font-weight:800; letter-spacing:.5px; border-radius:4px; padding:1px 6px; }
+.atl-prep-sec ul{ margin:4px 0 0; padding-left:18px; font-size:12.5px; color:#4A3A3C; line-height:1.65; }
+.atl-prep-sec li{ margin:3px 0; }
+.atl-prep-sec p{ margin:4px 0; font-size:12.5px; color:#4A3A3C; line-height:1.6; }
+.atl-prep-remind{ background:var(--atl-paid-bg); border-color:#ECD9AE; }
+.atl-prep-remind h4{ color:var(--atl-paid); }
+.atl-prep-step{ display:inline-block; background:var(--atl-deep); color:#fff; border-radius:999px; padding:3px 12px; font-size:12px; font-weight:700; }
+.atl-prep-launch{ display:block; width:100%; margin:0 0 10px; padding:11px 12px; border:0; border-radius:10px; background:linear-gradient(135deg,#A51820,#7A1018); color:#fff; font-family:inherit; font-size:12.5px; font-weight:800; letter-spacing:.5px; cursor:pointer; box-shadow:0 3px 10px rgba(165,24,32,.2); }
+.atl-prep-launch:hover{ filter:brightness(1.05); }
 </style>
-<script id="atl-v104-js">
-/* ═══ cs-v1.0.4 · 設計北極星（正式規格，請勿移除） ═══════════════════
-   ATELIER 中控台的核心不是給客戶看的頁面，而是給顧問使用的宏觀作戰台。
-   顧問需要在「當前服務階段」，同時看見「後段交付終點」。
-   因此系統必須支援：當站操作 / 後段預演 / 交付視野 / 內部判斷 / 客戶版輸出分離。
-   「當站」與「宏觀」不能讓使用者產生兩個大腦——要在同一個中控台裡順暢切換。
-   v1.0.4 範圍：桌機 shell 定位統一 ＋ 右側欄宏觀視野「入口預留」（收合卡）。
-   不做完整 v1.1（雙軌、完整宏觀視圖、狀態判斷器、AI 產生器另批）。
+<script id="atl-v110-js">
+/* ═══ cs-v1.1.0 · 設計北極星（正式規格，請勿移除） ═══════════════════
+   ATELIER 中控台＝給顧問的宏觀作戰台，不是給客戶看的頁面。
+   顧問需在「當站」同時看見「後段交付終點」：當站操作／後段預演／交付視野／
+   內部判斷／客戶版輸出分離，並能據此準備真實客戶對接。
+   v1.1 完成定義：打開一個客戶，能用中控台走完一次真實服務流程。
    ═══════════════════════════════════════════════════════════════════ */
 (function(){
-if(window.__atlV104) return; window.__atlV104=true;
+if(window.__atlV110) return; window.__atlV110=true;
 function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 function ca(){try{return (typeof curAcc==='function')?curAcc():null;}catch(e){return null;}}
+function li(arr){ return '<ul>'+(arr||[]).map(function(x){return '<li>'+esc(x)+'</li>';}).join('')+'</ul>'; }
 
 var STEPS=[
   {id:'select',label:'選擇客戶'},
@@ -20625,8 +20636,224 @@ var STEPS=[
   {id:'nextround',label:'10 下一階段建議',zone:'D'}
 ];
 var ZONE_FULL=window.ZONE_FULL||{A:'前端策略｜診斷定位',B:'內容生產｜內容製作',C:'轉換後端｜上線承接',D:'數據飛輪｜交付復盤'};
+var STEP_NO={stage1:1,stage2:2,stage3:3,stage4:4,stage6:5,stage5:6,shoot:7,postprod:8,stage7:9,nextround:10};
+var ZONE_OF={stage1:'A',stage2:'A',stage3:'A',stage4:'A',stage6:'B',stage5:'B',shoot:'B',postprod:'B',stage7:'C',nextround:'D'};
+var DATA_PATH={stage1:'stage1_initial',stage2:'stage2_filing',stage3:'stage3_interview',stage4:'stage4_diagnosis',stage6:'stage6_planning',stage5:'stage5_inventory',shoot:'stage_shoot',postprod:'stage_postprod',stage7:'stage7_delivery',nextround:'stage_nextround'};
 var REF_RULES={ stage1:['❹ 內容現況'], stage3:['❸ 目標人群'], stage4:['❺ 信任資產','❻ 轉換路徑','❼ 競爭位置'], stage5:['❽ 拍攝條件'], shoot:['❽ 拍攝條件'], stage7:['❻ 轉換路徑'] };
 var RECAP_FIELDS=[ ['deliveredItems','已交付項目'],['feedback','客戶回饋'],['revision','修改紀錄'],['nextStep','下一步行動'],['payment','款項／時數／互惠'],['internalReview','內部復盤'],['finalSummary','結案摘要'],['deliverySummary','交付摘要'] ];
+
+/* ─────── 實戰 PLAYBOOK（十站，給顧問真的服務客戶用） ─────── */
+var PLAYBOOK={
+ stage1:{ problem:'用公開資料先判斷：這個客戶值不值得進一步投入、目前最大的問題在哪。',
+  fill:['官網／Google／Maps／IG 等公開資料盤點','初步問題判斷','會前還缺哪些資料'],
+  output:['初步問題判斷','會前缺資料清單','是否值得進一步訪談的結論'],
+  internalPrep:['先看完公開資料，列 3 個你已看出的問題','預想這客戶最可能的內容缺口'],
+  canSay:['我看了你們公開資料的整體印象','一兩個明顯可優化的方向（不給完整解法）'],
+  afterSign:['完整內容診斷報告','逐項優化清單與優先序'],
+  internalOnly:['客戶值不值得接的判斷','報價與投入產出評估'],
+  askNext:['你們目前最想解決的是什麼？','過去有沒有做過內容？成效如何？'],
+  advance:'公開資料盤完、已有初步問題判斷 → 可進入第 2 站合作確認。',
+  whyMe:'你能在還沒收費前，就講出對方沒注意到的問題——這就是信任的起點。',
+  tools:[
+   {name:'公開資料初診彙整',needs:'官網／Google／Maps／IG 等公開資料',clientLine:'我先幫你做了一份公開印象速覽。',
+    prompt:'你是品牌內容顧問。以下是某客戶的公開資料（官網、Google、Maps、IG）：\n[貼上資料]\n請輸出：1) 對外給人的第一印象 2) 三個明顯的內容/信任缺口 3) 一個可立刻優化的小建議（其餘留待付費診斷）。語氣專業、精簡。',
+    paste:'第一印象：…\n三個缺口：1.… 2.… 3.…\n可立即優化：…'},
+   {name:'值不值得接 判斷表',needs:'公開資料 + 你的初步感覺',clientLine:'（內部用，不對客戶說）',
+    prompt:'根據以下公開資料與我的初步判斷，協助我評估這個客戶是否值得投入：\n[貼上]\n輸出：合作機會分數(1-5)、主要風險、建議下一步（深談/婉拒/觀望）。',
+    paste:'機會分數：_/5\n風險：…\n建議：…'}
+  ],
+  meeting:{must:['你們目前最想解決的內容問題是什麼？','過去做過哪些內容？哪個有效、哪個沒效？'],
+   optional:['理想的客戶長什麼樣子？','有沒有不想接的案子類型？'],
+   followup:['這個問題你已經想解決多久了？','如果不解決，最壞會怎樣？']} },
+
+ stage2:{ problem:'把「要不要合作、做到哪、收多少、何時交付」一次講清楚，避免日後爭議。',
+  fill:['合作方向','服務範圍與交付邊界','合作條件（報價/訂金/付款/時程/修改次數）','下一步決策'],
+  output:['一頁合作確認','明確的免費/付費/不交付邊界','收訂金或進下一站的決策'],
+  internalPrep:['先想好這單的報價區間與最低可接受條件','想好哪些是免費可談、哪些簽約後才給'],
+  canSay:['合作方式、範圍、報價邏輯','免費階段可討論的方向'],
+  afterSign:['完整策略、腳本、拍攝與交付物'],
+  internalOnly:['你的成本與利潤底線','風險備註、議價空間'],
+  askNext:['這樣的範圍與報價，你這邊 OK 嗎？','要先收訂金再進深度訪談嗎？'],
+  advance:'合作方向＋範圍＋報價已確認（或已收訂金）→ 可進入第 3 站深度訪談。',
+  whyMe:'你把邊界講清楚，客戶反而更信任——模糊才會讓人不敢簽。',
+  tools:[
+   {name:'一頁合作確認生成',needs:'合作方向、範圍、報價、時程',clientLine:'這是我們這次合作的範圍與條件。',
+    prompt:'根據以下欄位，幫我整理成一頁清楚的「合作確認」給客戶看（含範圍、報價邏輯、時程、修改次數、交付物、不包含項目）：\n[貼上合作欄位]\n語氣專業友善，邊界清楚但不生硬。',
+    paste:'合作範圍：…\n報價邏輯：…\n時程/修改：…\n不包含：…'},
+   {name:'交付邊界三層檢查',needs:'服務內容',clientLine:'（協助你分清楚能說/能給的）',
+    prompt:'把以下服務內容拆成三層：免費可討論 / 付費後解鎖 / 內部不交付：\n[貼上]\n各列 3-5 點。',
+    paste:'免費可討論：…\n付費後解鎖：…\n內部不交付：…'}
+  ],
+  meeting:{must:['這次合作你期待的成果是什麼？','預算與時程的範圍大概在哪？'],
+   optional:['過去合作不愉快的經驗是什麼？','決策是你一個人，還是需要其他人點頭？'],
+   followup:['如果我們先從小範圍開始，你會比較安心嗎？','要不要先用訂金鎖定時程？']} },
+
+ stage3:{ problem:'挖出客戶的原話、真實需求與信任理由——這是所有內容的素材源頭。',
+  fill:['客戶原話/金句','真實需求與痛點','理想客戶/不想接的案子','常見誤解','客戶信任你的原因','你的專業差異'],
+  output:['一份訪談紀錄','可直接變內容的金句庫','客戶的真實語言'],
+  internalPrep:['準備必問/選問/追問三層問題','準備好錄音或速記，抓原話'],
+  canSay:['我想更了解你的真實想法與客戶','訪談是為了讓內容講你的語言'],
+  afterSign:['由訪談收斂出的完整定位與內容方向'],
+  internalOnly:['你對客戶盲點的判斷','哪些原話之後要當鉤子'],
+  askNext:['你最常被客戶誤解的是什麼？','客戶決定找你之前，通常在猶豫什麼？'],
+  advance:'已收集到足夠原話與真實需求 → 可進入第 4 站 IP 與內容方向。',
+  whyMe:'你用客戶自己的話講他的事，他會覺得「你最懂我」。',
+  tools:[
+   {name:'訪談金句萃取',needs:'訪談逐字/筆記',clientLine:'我把你說的重點整理成可用的內容種子。',
+    prompt:'以下是與客戶的訪談紀錄，請萃取：1) 10 句可直接當內容鉤子的客戶原話 2) 3 個真實痛點 3) 客戶信任他的關鍵原因：\n[貼上訪談]',
+    paste:'金句：1.…\n痛點：…\n信任關鍵：…'},
+   {name:'真實需求 vs 表面需求',needs:'訪談紀錄',clientLine:'（內部判斷，協助你看穿表面）',
+    prompt:'從訪談中區分客戶的「表面需求」與「真實需求」，並指出他自己沒說出口但很重要的點：\n[貼上]',
+    paste:'表面：…\n真實：…\n沒說出口：…'}
+  ],
+  meeting:{must:['你最常被客戶誤解的是什麼？','客戶最後選擇你的原因是什麼？'],
+   optional:['有沒有一個你一直想講、但還沒講出來的故事？','你最不想接的是哪種客戶？'],
+   followup:['這件事可以多講一點嗎？','當時你心裡在想什麼？']} },
+
+ stage4:{ problem:'把前面收集到的東西，收斂成「這個客戶應該被怎麼看見」。',
+  fill:['定位一句話','內容方向','內容缺口','信任資產','競爭位置','轉換路徑'],
+  output:['一句話定位','3-5 個內容支柱','信任資產與轉換路徑地圖'],
+  internalPrep:['把訪談金句對應到定位','先想好交付端要呈現的樣貌（往第 9 站看）'],
+  canSay:['我建議你被看見的核心方向','一兩個內容支柱的概念'],
+  afterSign:['完整定位文件、內容支柱、轉換路徑設計'],
+  internalOnly:['競品比較的完整判斷','你刻意不採用的方向與原因'],
+  askNext:['這個定位你看了有沒有「對，就是這個」的感覺？','哪個內容支柱你最想先做？'],
+  advance:'定位＋內容方向＋信任/轉換路徑成形 → 可進入第 5 站主題方向規劃。',
+  whyMe:'你能把零散的訪談變成一句「他就是該這樣被看見」，這是顧問的核心價值。',
+  tools:[
+   {name:'一句話定位生成',needs:'訪談金句、信任資產、目標人群',clientLine:'我建議你的核心定位是這個方向。',
+    prompt:'根據以下訪談重點、信任資產與目標人群，產出 3 個「一句話定位」候選，並各說明適合的理由：\n[貼上]',
+    paste:'定位候選：1.… 2.… 3.…\n建議採用：…'},
+   {name:'內容支柱規劃',needs:'定位、內容缺口、競爭位置',clientLine:'這是你接下來內容的幾個主軸。',
+    prompt:'根據定位與內容缺口，規劃 3-5 個內容支柱，每個支柱給 1 句說明與 2 個範例題目：\n[貼上]',
+    paste:'支柱1：…（題目a、b）\n支柱2：…'}
+  ],
+  meeting:{must:['你希望別人想到「某個主題」就想到你嗎？','你最不想被貼上的標籤是什麼？'],
+   optional:['你的同行裡，誰你覺得做得不錯？為什麼？'],
+   followup:['如果只能留一個內容方向，你會選哪個？']} },
+
+ stage6:{ problem:'把方向變成可執行的內容主軸、題庫與這一輪的戰役 KPI。',
+  fill:['內容主軸','題庫','本輪 KPI','戰役方向'],
+  output:['內容主軸與題庫','本輪戰役目標與 KPI'],
+  internalPrep:['把第 4 站定位拆成可拍的題目','想好這輪要打什麼成效（曝光/信任/轉換）'],
+  canSay:['這一輪我們主打的方向','幾個示意題目'],
+  afterSign:['完整題庫、發布節奏、KPI 追蹤表'],
+  internalOnly:['哪些題目是鉤子、哪些是轉換','KPI 的內部判讀標準'],
+  askNext:['這一輪你最想看到什麼成效？','有沒有時間點壓力（檔期/活動）？'],
+  advance:'主軸＋題庫＋KPI 確定 → 可進入第 6 站腳本與拍攝規劃。',
+  whyMe:'你讓客戶知道「為什麼是這些題目、為什麼是現在」，內容才不是亂槍打鳥。',
+  tools:[
+   {name:'題庫生成',needs:'內容支柱、目標人群',clientLine:'這是這一輪的內容題庫。',
+    prompt:'根據內容支柱與目標人群，產出 20 個內容題目，標註各題的目的（鉤子/信任/轉換）：\n[貼上]',
+    paste:'題目（目的）：1.…（鉤子）2.…（信任）…'},
+   {name:'本輪 KPI 設定',needs:'戰役方向',clientLine:'這一輪我們要看的是這幾個指標。',
+    prompt:'根據戰役方向，建議這一輪 3 個可衡量 KPI 與判讀方式：\n[貼上]',
+    paste:'KPI：1.… 2.… 3.…\n判讀：…'}
+  ],
+  meeting:{must:['這一輪最想達成什麼？','有沒有非做不可的主題？'],optional:['哪種風格你絕對不要？'],followup:['如果只發 5 支，你想先發哪 5 個方向？']} },
+
+ stage5:{ problem:'把題目變成可拍的腳本，盤點素材、故事、服務證據與拍攝條件。',
+  fill:['素材盤點','故事素材','服務證據','拍攝條件','缺漏待補'],
+  output:['可拍腳本/分鏡草稿','素材與證據清單','拍攝條件確認'],
+  internalPrep:['把題庫對應到可用素材','標出缺哪些素材要客戶補'],
+  canSay:['我們要拍哪些方向','需要你準備哪些素材'],
+  afterSign:['完整腳本、分鏡、拍攝執行表'],
+  internalOnly:['哪些腳本先放內部、簽約後才給','腳本的轉換埋點'],
+  askNext:['這些素材你手邊有嗎？','哪天方便拍攝？場地/人物 OK 嗎？'],
+  advance:'腳本＋素材＋拍攝條件齊 → 可進入第 7 站拍攝執行。',
+  whyMe:'你把「要拍什麼、缺什麼」講清楚，客戶才不會到現場才手忙腳亂。',
+  tools:[
+   {name:'腳本草稿生成',needs:'題目、訪談金句、服務證據',clientLine:'這是這支內容的腳本方向。',
+    prompt:'根據以下題目與素材，寫一支短影音腳本（鉤子→鋪陳→價值→CTA），標出分鏡：\n[貼上]',
+    paste:'鉤子：…\n鋪陳：…\n價值：…\nCTA：…\n分鏡：…'},
+   {name:'素材缺口盤點',needs:'拍攝條件、現有素材',clientLine:'這些是還需要你補的素材。',
+    prompt:'根據腳本需求與現有素材，列出「已有/待補」素材清單，待補項標註誰負責：\n[貼上]',
+    paste:'已有：…\n待補（負責人）：…'}
+  ],
+  meeting:{must:['這些素材你手邊有嗎？','哪天可以拍？'],optional:['有沒有現成的客戶見證可用？'],followup:['這個故事有沒有畫面/物件可以呈現？']} },
+
+ shoot:{ problem:'把拍攝當天的人事時地物與分鏡確認到位，現場不卡關。',
+  fill:['拍攝日期','拍攝清單','場景/人物/服裝/道具','分鏡確認','現場備忘','完成狀態'],
+  output:['拍攝執行表','當天素材','完成狀態紀錄'],
+  internalPrep:['印好分鏡與拍攝清單','確認設備、場地、人員到位'],
+  canSay:['今天我們會拍這些','流程大概這樣走'],
+  afterSign:['（本站為執行，通常已在合作範圍內）'],
+  internalOnly:['哪些畫面是之後的轉換鉤子','備案鏡頭'],
+  askNext:['今天的清單都拍齊了嗎？','有沒有臨時想補的畫面？'],
+  advance:'拍攝清單完成、素材齊 → 可進入第 8 站後製整理。',
+  whyMe:'你讓拍攝有清單、有分鏡，客戶會覺得專業、放心。',
+  tools:[
+   {name:'拍攝清單生成',needs:'腳本、分鏡',clientLine:'這是今天的拍攝清單。',
+    prompt:'根據腳本與分鏡，產出一份拍攝當天清單（鏡位、人物、服裝、道具、場景、備註）：\n[貼上]',
+    paste:'鏡位：…\n人物/服裝/道具：…\n場景：…\n備註：…'},
+   {name:'現場備忘',needs:'拍攝清單',clientLine:'（內部用）',
+    prompt:'把這份拍攝清單轉成現場可勾選的 checklist，並列出常見漏拍提醒：\n[貼上]',
+    paste:'Checklist：☐…☐…\n漏拍提醒：…'}
+  ],
+  meeting:{must:['清單都拍到了嗎？'],optional:['要不要補一些 B-roll？'],followup:['這顆鏡頭再來一次更好嗎？']} },
+
+ postprod:{ problem:'把素材剪成可交付成品，管好版本、修改與輸出規格。',
+  fill:['剪輯','字幕','封面','版本管理','修改紀錄','客戶檢查','輸出規格','成品狀態'],
+  output:['可交付成品','版本與修改紀錄','輸出規格確認'],
+  internalPrep:['訂好版本命名與修改次數上限','先自審一輪再給客戶'],
+  canSay:['初剪好了，請你看這版','修改我們有 N 次'],
+  afterSign:['完整成品、來源檔（依合約）'],
+  internalOnly:['哪些修改超出範圍要加價','來源檔是否交付的判斷'],
+  askNext:['這版你 OK 嗎？要修哪裡？','封面/標題用哪個版本？'],
+  advance:'成品定稿、客戶確認 → 可進入第 9 站主平台成品交付。',
+  whyMe:'你把版本與修改管得清楚，客戶不會無限改、你也不會做白工。',
+  tools:[
+   {name:'修改紀錄整理',needs:'客戶回饋',clientLine:'這是我們這次的修改紀錄。',
+    prompt:'把客戶回饋整理成結構化修改清單（項目、要求、是否在範圍內、預計完成）：\n[貼上]',
+    paste:'修改項：…（範圍內/外）\n預計完成：…'},
+   {name:'封面/標題生成',needs:'成品內容',clientLine:'這幾個封面標題給你選。',
+    prompt:'根據成品內容，產出 5 組封面標題（吸睛但不誇大）：\n[貼上]',
+    paste:'標題：1.…2.…3.…4.…5.…'}
+  ],
+  meeting:{must:['這版 OK 嗎？要修哪裡？'],optional:['封面想走哪種風格？'],followup:['這個修改是必要的，還是偏好？']} },
+
+ stage7:{ problem:'交付成品、確認上線，並把「交付」變成「承接」——導流、CTA、後續轉換。',
+  fill:['交付物','客戶確認','修改紀錄','上線承接','CTA/導流','投放預算判斷'],
+  output:['正式交付','上線/發布','轉換承接設計（CTA、導流）'],
+  internalPrep:['準備交付清單與上線檢查','想好要不要建議投放、預算多少'],
+  canSay:['成品交付，這是上線建議','可以這樣導流/下 CTA'],
+  afterSign:['投放代操、進階轉換設計（另案）'],
+  internalOnly:['投放 ROI 的內部判斷','哪些承接服務是下一個合作機會'],
+  askNext:['上線後要不要追成效？','要不要考慮投放放大？'],
+  advance:'成品交付＋上線承接完成 → 可進入第 10 站下一階段建議。',
+  whyMe:'你不是「交完就走」，而是幫客戶把內容變成生意——這就是續約的理由。',
+  tools:[
+   {name:'交付清單生成',needs:'交付物、規格',clientLine:'這是這次的完整交付清單。',
+    prompt:'根據交付物與規格，產出交付清單與上線檢查表（含 CTA、導流建議）：\n[貼上]',
+    paste:'交付清單：…\n上線檢查：…\nCTA/導流：…'},
+   {name:'投放預算判斷',needs:'成效目標、預算',clientLine:'（內部 + 可選擇性建議客戶）',
+    prompt:'根據成品與成效目標，判斷是否值得投放、建議預算區間與衡量指標：\n[貼上]',
+    paste:'是否投放：…\n建議預算：…\n指標：…'}
+  ],
+  meeting:{must:['上線後想看到什麼？','要不要追蹤成效？'],optional:['要不要考慮投放？'],followup:['這支的成效，要當下一輪的依據嗎？']} },
+
+ nextround:{ problem:'復盤這一輪、用數據決定下一輪主題與續約，把客戶帶回第 1 步。',
+  fill:['復盤','下一輪主題','續約','數據/投放指標','回流第 1 步'],
+  output:['復盤結論','下一輪內容建議','續約/回流決策'],
+  internalPrep:['整理這輪數據與成效','準備下一輪的提案鉤子'],
+  canSay:['這輪成效復盤','下一輪我建議的方向'],
+  afterSign:['下一輪完整企劃（新合約）'],
+  internalOnly:['哪些數據代表續約機會','下一輪報價策略'],
+  askNext:['這輪成效你滿意嗎？','要不要直接接著做下一輪？'],
+  advance:'復盤完成、下一輪方向確定 → 回流第 1 站，開始新循環。',
+  whyMe:'你用數據說話、主動給下一步，客戶會覺得「跟你合作不用自己煩惱」。',
+  tools:[
+   {name:'復盤報告生成',needs:'本輪數據、交付紀錄',clientLine:'這是這一輪的成效復盤。',
+    prompt:'根據本輪數據與交付紀錄，產出復盤報告（成效、學到什麼、下一輪建議）：\n[貼上]',
+    paste:'成效：…\n學到：…\n下一輪建議：…'},
+   {name:'續約提案鉤子',needs:'復盤、客戶目標',clientLine:'下一輪我建議我們這樣做。',
+    prompt:'根據復盤與客戶目標，產出 3 個下一輪續約提案鉤子（具體、誘人、可執行）：\n[貼上]',
+    paste:'鉤子：1.…2.…3.…'}
+  ],
+  meeting:{must:['這輪成效你滿意嗎？','要接著做下一輪嗎？'],optional:['有沒有新的目標想加入？'],followup:['哪一支成效最好？我們把它放大好嗎？']} }
+};
+/* 內部預想腳本方向（會前用，10-30 個，內部不對客戶） */
+var SCRIPT_ANGLES=['創辦人原點故事','一個產業常見誤解破解','服務前 vs 服務後對比','一個真實客戶見證重述','你最常被問的問題','報價背後的價值拆解','你刻意不接的案子（價值觀)','一個失敗/踩雷經驗','專業名詞白話翻譯','幕後流程揭露','選你不選同行的理由','一個反直覺的觀點','常見錯誤示範 + 正解','客戶決策前的猶豫破解','一句金句 + 延伸','時事/節氣切入專業','數據/案例佐證信任','一日工作/服務現場','給新手的 3 個建議','你希望被記住的一句話'];
 
 var SVG={
   gear:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.6 1.6 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.6 1.6 0 0 0-2.7 1.1V21a2 2 0 1 1-4 0v-.1A1.6 1.6 0 0 0 6.8 19.4l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1A1.6 1.6 0 0 0 3 13.9H3a2 2 0 1 1 0-4h.1A1.6 1.6 0 0 0 4.6 8.1l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.6 1.6 0 0 0 1.8.3H9.3A1.6 1.6 0 0 0 10.4 3.1V3a2 2 0 1 1 4 0v.1a1.6 1.6 0 0 0 2.7 1.1l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.6 1.6 0 0 0-.3 1.8v0a1.6 1.6 0 0 0 1.5 1h.1a2 2 0 1 1 0 4H21a1.6 1.6 0 0 0-1.5 1z"/></svg>',
@@ -20636,217 +20863,218 @@ var SVG={
   grid:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><rect x="4" y="4" width="7" height="7" rx="1"/><rect x="13" y="4" width="7" height="7" rx="1"/><rect x="4" y="13" width="7" height="7" rx="1"/><rect x="13" y="13" width="7" height="7" rx="1"/></svg>',
   diamond:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M12 3l9 9-9 9-9-9z"/></svg>',
   chev:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>',
-  compass:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><polygon points="16 8 10 11 8 16 14 13"/></svg>'
+  compass:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><polygon points="16 8 10 11 8 16 14 13"/></svg>',
+  target:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/></svg>',
+  copy:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>'
 };
 var GLYPH={'\u2699':'gear','\u2630':'list','\u25A3':'save','\u21BB':'loop','\u25A6':'grid','\u25C8':'diamond'};
-function swapIcons(root){
-  if(!root||!root.querySelectorAll) return;
-  try{ var ls=root.querySelectorAll('.atl-ic');
-    for(var i=0;i<ls.length;i++){ var el=ls[i]; if(el.getAttribute('data-svg')) continue;
-      var g=(el.textContent||'').trim(); var nm=GLYPH[g];
-      if(nm&&SVG[nm]){ el.innerHTML=SVG[nm]; el.setAttribute('data-svg','1'); el.classList.add('atl-ic-svg'); } } }catch(e){}
-}
+function swapIcons(root){ if(!root||!root.querySelectorAll) return; try{ var ls=root.querySelectorAll('.atl-ic'); for(var i=0;i<ls.length;i++){ var el=ls[i]; if(el.getAttribute('data-svg')) continue; var g=(el.textContent||'').trim(); var nm=GLYPH[g]; if(nm&&SVG[nm]){ el.innerHTML=SVG[nm]; el.setAttribute('data-svg','1'); el.classList.add('atl-ic-svg'); } } }catch(e){} }
 
-/* ─── 桌機定位：量測 topbar(+tabs)+banner，寫進 :root 變數 ─── */
-function px(el){ try{ return el?Math.round(el.getBoundingClientRect().height):0; }catch(e){ return 0; } }
-function visible(el){ try{ return !!(el && el.offsetParent!==null && getComputedStyle(el).display!=='none'); }catch(e){ return false; } }
-function syncHeads(){
-  try{
-    var th=px(document.querySelector('.topbar'))||60;
-    var tabsEl=document.querySelector('.tabs'); var tabsH=visible(tabsEl)?px(tabsEl):0;
-    var sbEl=document.querySelector('.cs-banner'); var sbH=visible(sbEl)?px(sbEl):0; if(sbH<14) sbH=0;
-    var bannerTop=th+tabsH;
-    var head=bannerTop+sbH;
-    var r=document.documentElement;
-    r.style.setProperty('--atl-bannertop', bannerTop+'px');
-    r.style.setProperty('--atl-head', (head+2)+'px');
-  }catch(e){}
-}
+/* ─────── 一鍵複製（給提示詞用） ─────── */
+window.__atlCopy=function(b64){ try{ var txt=decodeURIComponent(escape(atob(b64))); var done=function(){ try{ if(typeof toast==='function') toast('✓ 已複製提示詞'); }catch(e){} }; if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(txt).then(done,function(){fallback(txt);done();}); } else { fallback(txt); done(); } }catch(e){} function fallback(t){ try{ var ta=document.createElement('textarea'); ta.value=t; ta.style.position='fixed'; ta.style.opacity='0'; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); }catch(e){} } };
+function b64(s){ try{ return btoa(unescape(encodeURIComponent(String(s)))); }catch(e){ return ''; } }
 
-/* ─── 讀建檔／復盤資料 ─── */
-function profileItems(catName){
-  var a=ca(); if(!a) return [];
-  var d=(a.clientFlow&&a.clientFlow.stage2_filing&&a.clientFlow.stage2_filing.data)||{};
-  var out=[]; var P=window.PROFILE_CATS||[];
-  P.forEach(function(pc){ if(pc[1]===catName){ (pc[2]||[]).forEach(function(fd){ var v=d[fd[0]]; if(v&&String(v).trim()) out.push({k:fd[1],v:String(v)}); }); } });
-  return out;
-}
-function recapItems(){
-  var a=ca(); if(!a) return [];
-  var d=(a.clientFlow&&a.clientFlow.stage7_delivery&&a.clientFlow.stage7_delivery.data)||{};
-  var out=[]; RECAP_FIELDS.forEach(function(f){ var v=d[f[0]]; if(v&&String(v).trim()) out.push({k:f[1],v:String(v)}); });
-  return out;
-}
+/* ─────── 資料路徑/缺口 ─────── */
+function stationData(stageId){ var a=ca(); if(!a) return {}; var k=DATA_PATH[stageId]; if(!k) return {}; try{ return (a.clientFlow&&a.clientFlow[k]&&a.clientFlow[k].data)||{}; }catch(e){ return {}; } }
+function presence(stageId){ var d=stationData(stageId)||{}; var filled=0,total=0; Object.keys(d).forEach(function(k){ total++; if(d[k]&&String(d[k]).trim())filled++; }); return {filled:filled,total:total}; }
+function profileItems(catName){ var a=ca(); if(!a) return []; var d=(a.clientFlow&&a.clientFlow.stage2_filing&&a.clientFlow.stage2_filing.data)||{}; var out=[]; var P=window.PROFILE_CATS||[]; P.forEach(function(pc){ if(pc[1]===catName){ (pc[2]||[]).forEach(function(fd){ var v=d[fd[0]]; if(v&&String(v).trim()) out.push({k:fd[1],v:String(v)}); }); } }); return out; }
+function recapItems(){ var a=ca(); if(!a) return []; var d=(a.clientFlow&&a.clientFlow.stage7_delivery&&a.clientFlow.stage7_delivery.data)||{}; var out=[]; RECAP_FIELDS.forEach(function(f){ var v=d[f[0]]; if(v&&String(v).trim()) out.push({k:f[1],v:String(v)}); }); return out; }
 
-/* ─── 右側欄區塊 ─── */
-function sb(title,bodyHTML){ return '<details class="atl-sb"><summary><span class="atl-tri"></span>'+esc(title)+'</summary><div class="atl-sb-body">'+bodyHTML+'</div></details>'; }
-function poscardHTML(stageId){
-  var P=window.POSCARD_DATA||{}; var d=P[stageId]; if(!d) return '';
+/* ─────── 右側欄卡片 ─────── */
+function sb(title,bodyHTML,cls){ return '<details class="atl-sb'+(cls?' '+cls:'')+'"><summary><span class="atl-tri"></span>'+esc(title)+'</summary><div class="atl-sb-body">'+bodyHTML+'</div></details>'; }
+function poscardHTML(stageId){ var P=window.POSCARD_DATA||{}; var d=P[stageId]; if(!d) return ''; var b=''; b+='<div class="ps-row"><b>目的</b>'+esc(d.purpose)+'</div>'; b+='<div class="ps-row"><b>準備</b>'+esc(d.prepare)+'</div>'; b+='<div class="ps-row"><b>產出</b>'+esc(d.produce)+'</div>'; b+='<div class="ps-bound"><div class="ps-b free"><b>免費可交付</b>'+esc(d.free)+'</div><div class="ps-b paid"><b>付費解鎖</b>'+esc(d.paid)+'</div><div class="ps-b nogo"><b>內部不交付</b>'+esc(d.internal)+'</div></div>'; b+='<div class="ps-row"><b>可產出檔案</b>'+esc(d.files)+'</div>'; b+='<div class="ps-next">下一步 → '+esc(d.next)+'</div>'; return sb('定位卡 · '+d.flow,b); }
+function refBody(items){ if(!items.length) return '<div class="ps-empty">尚無資料（到對應站別填寫後自動帶入）</div>'; return items.map(function(it){ return '<div class="ref-item"><b>'+esc(it.k)+'</b><span>'+esc(it.v)+'</span></div>'; }).join(''); }
+
+function qrow(q,ansHTML){ return '<div class="atl-run-q"><span class="q">'+esc(q)+'</span><span class="a">'+ansHTML+'</span></div>'; }
+function runCardHTML(stageId){
+  var pb=PLAYBOOK[stageId]; if(!pb) return '';
+  var no=STEP_NO[stageId], zone=ZONE_OF[stageId];
+  var pr=presence(stageId);
   var b='';
-  b+='<div class="ps-row"><b>目的</b>'+esc(d.purpose)+'</div>';
-  b+='<div class="ps-row"><b>準備</b>'+esc(d.prepare)+'</div>';
-  b+='<div class="ps-row"><b>產出</b>'+esc(d.produce)+'</div>';
-  b+='<div class="ps-bound"><div class="ps-b free"><b>免費可交付</b>'+esc(d.free)+'</div><div class="ps-b paid"><b>付費解鎖</b>'+esc(d.paid)+'</div><div class="ps-b nogo"><b>內部不交付</b>'+esc(d.internal)+'</div></div>';
-  b+='<div class="ps-row"><b>可產出檔案</b>'+esc(d.files)+'</div>';
-  b+='<div class="ps-next">下一步 → '+esc(d.next)+'</div>';
-  return sb('定位卡 · '+d.flow,b);
+  b+='<div class="atl-presence">資料狀態：'+(pr.total? '<b>已填 '+pr.filled+'/'+pr.total+' 欄</b>' : '<b>尚未開始填寫</b>')+'</div>';
+  b+=qrow('1 我現在在第幾步？', '第 '+no+' 步 · '+esc(zone)+' 區（'+esc(ZONE_FULL[zone]||'')+'）');
+  b+=qrow('2 這一步真正要解決什麼？', esc(pb.problem));
+  b+=qrow('3 我要填什麼資料？', li(pb.fill));
+  b+=qrow('4 我目前缺什麼？', pr.total? (pr.filled>=pr.total? '看起來都填了，請確認品質。' : '還有未填欄位（已填 '+pr.filled+'/'+pr.total+'）。對照上面「要填什麼」補齊。') : '本站尚未開始，請依「要填什麼」逐項建立。');
+  b+=qrow('5 這一步應該產出什麼？', li(pb.output));
+  b+=qrow('6 顧問內部要先準備什麼？', li(pb.internalPrep));
+  b+=qrow('7 可以跟客戶說什麼？', '<span class="atl-tag say">客戶可說</span>'+li(pb.canSay));
+  b+=qrow('8 簽約後才交付什麼？', '<span class="atl-tag sign">簽約後</span>'+li(pb.afterSign));
+  b+=qrow('9 下一步要問客戶什麼？', li(pb.askNext));
+  b+='<div class="atl-gate '+(pr.filled>0?'ok':'wait')+'">10 是否可推進？ '+esc(pb.advance)+'</div>';
+  return sb('實戰帶跑 · 第 '+no+' 步','<div>'+b+'</div>','atl-run');
 }
-function refBody(items){
-  if(!items.length) return '<div class="ps-empty">尚無資料（到對應站別填寫後自動帶入）</div>';
-  return items.map(function(it){ return '<div class="ref-item"><b>'+esc(it.k)+'</b><span>'+esc(it.v)+'</span></div>'; }).join('');
-}
-/* 顧問宏觀視野：從目前站看到交付終點（內部用、預留收合卡） */
+
 function macroCardHTML(stageId){
   var P=window.POSCARD_DATA||{}; var dlv=P['stage7']||{}; var nxt=P['nextround']||{};
-  var cur=(P[stageId]&&P[stageId].flow)||'目前站';
+  var pb=PLAYBOOK[stageId]||{}; var cur=(P[stageId]&&P[stageId].flow)||'目前站';
   var b='';
-  b+='<div class="atl-macro-badge">內部用 · 不給客戶</div>';
-  b+='<div class="atl-macro-path"><b>從目前站看到交付終點</b><span>'+esc(cur)+' → … → ⑨ 成品交付 → ⑩ 下一階段</span></div>';
-  b+='<div class="atl-macro-blk"><b>交付預演（⑨ 成品交付）</b><div class="mm">目的：'+esc(dlv.purpose||'—')+'</div><div class="mm">產出：'+esc(dlv.produce||'—')+'</div><div class="mm">可能交付物：'+esc(dlv.files||'—')+'</div></div>';
-  b+='<div class="atl-macro-blk"><b>下一階段預演（⑩）</b><div class="mm">'+esc(nxt.purpose||nxt.next||'—')+'</div></div>';
-  b+='<div class="atl-macro-blk"><b>C／D 承接提醒</b><div class="mm">交付後別斷：C 上線承接、D 數據飛輪，導向下一輪續約與內容飛輪。（本批為入口預留，完整宏觀視圖於 v1.1）</div></div>';
-  return '<details class="atl-sb atl-macro"><summary><span class="atl-tri"></span>顧問宏觀視野 · 從目前站看到交付終點</summary><div class="atl-sb-body">'+b+'</div></details>';
+  b+='<div><span class="atl-macro-badge">內部用 · 不給客戶</span></div>';
+  b+='<div class="atl-macro-blk"><b>目前站別</b><div class="mm">'+esc(cur)+'（第 '+(STEP_NO[stageId]||'-')+' 步）</div></div>';
+  b+='<div class="atl-macro-blk"><b>下一步要確認</b>'+li(pb.askNext||[])+'</div>';
+  b+='<div class="atl-macro-blk"><b>第 9 成品交付預演</b><div class="mm">'+esc(dlv.purpose||'—')+'</div><div class="mm">可能交付物：'+esc(dlv.files||'—')+'</div></div>';
+  b+='<div class="atl-macro-blk"><b>第 10 下一階段預演</b><div class="mm">'+esc(nxt.purpose||nxt.next||'—')+'</div></div>';
+  b+='<div class="atl-macro-blk"><b>內部預想腳本方向</b><div class="mm">'+SCRIPT_ANGLES.slice(0,8).map(esc).join('、')+'…（會前準備可看完整 20 個）</div></div>';
+  b+='<div class="atl-macro-blk"><b>邊界（雙軌）</b><div class="mm"><span class="atl-tag say">客戶可說</span>'+esc((pb.canSay&&pb.canSay[0])||'—')+'</div><div class="mm"><span class="atl-tag sign">簽約後交付</span>'+esc((pb.afterSign&&pb.afterSign[0])||'—')+'</div><div class="mm"><span class="atl-tag no">內部不交付</span>'+esc((pb.internalOnly&&pb.internalOnly[0])||'—')+'</div></div>';
+  b+='<div class="atl-macro-blk"><b>C／D 承接提醒</b><div class="mm">交付別斷：C 上線承接（CTA、導流、投放判斷）→ D 數據飛輪（復盤、續約、回流第 1 步）。</div></div>';
+  return sb('顧問宏觀視野 · 從目前站看到交付終點',b,'atl-macro');
 }
+
+function trackCardHTML(stageId){
+  var P=window.POSCARD_DATA||{}; var d=P[stageId]||{}; var pb=PLAYBOOK[stageId]||{};
+  var say=(pb.canSay||[]).concat(d.free?[d.free]:[]);
+  var sign=(pb.afterSign||[]).concat(d.paid?[d.paid]:[]);
+  var no=(pb.internalOnly||[]).concat(d.internal?[d.internal]:[]);
+  var b='';
+  b+='<div class="trk say"><b>免費可討論 · 客戶可說</b>'+li(say)+'</div>';
+  b+='<div class="trk sign"><b>付費後解鎖 · 簽約才交付</b>'+li(sign)+'</div>';
+  b+='<div class="trk no"><b>內部不交付 · 只給顧問</b>'+li(no)+'</div>';
+  return sb('顧問／客戶雙軌邊界',b,'atl-track');
+}
+
+function toolsCardHTML(stageId){
+  var pb=PLAYBOOK[stageId]; if(!pb||!pb.tools||!pb.tools.length) return '';
+  var pr=presence(stageId);
+  var b='';
+  pb.tools.forEach(function(t){
+    var ready=pr.filled>0;
+    b+='<div class="tl"><h5>'+esc(t.name)+'</h5>';
+    b+='<div class="row"><b>吃什麼資料：</b>'+esc(t.needs)+'</div>';
+    b+='<div class="row ready '+(ready?'ok':'miss')+'">資料是否足夠：'+(ready?'可用（已有本站資料）':'尚缺（先填本站資料再用）')+'</div>';
+    b+='<div class="row"><b>客戶版一句話：</b>'+esc(t.clientLine)+'</div>';
+    b+='<button type="button" class="atl-copy" onclick="window.__atlCopy(\''+b64(t.prompt+'\n\n[貼回格式]\n'+t.paste)+'\')">'+SVG.copy+' 複製一鍵提示詞</button>';
+    b+='</div>';
+  });
+  return sb('實戰工具 · 本站必要 '+pb.tools.length+' 個',b,'atl-tool11');
+}
+
 function buildRightPanel(stageId){
-  var isClientStage=(stageId&&stageId!=='select'&&stageId!=='dashboard');
+  var isClientStage=!!PLAYBOOK[stageId];
   var h='';
-  /* 1) 當站輔助 */
+  if(isClientStage){ h+='<button type="button" class="atl-prep-launch" onclick="window.__atlOpenPrep()">會前準備 · 真實客戶作戰</button>'; }
   h+='<div class="atl-rail-label">當站輔助</div>';
   h+=poscardHTML(stageId);
-  var a=ca();
-  var cs=(a&&a.profile&&a.profile.clientStatus)||'未設定';
-  var st=(a&&a.profile&&a.profile.serviceType)||'未設定';
+  var a=ca(); var cs=(a&&a.profile&&a.profile.clientStatus)||'未設定'; var st=(a&&a.profile&&a.profile.serviceType)||'未設定';
   h+=sb('客戶狀態 · 服務型態','<div class="ps-row"><b>狀態</b>'+esc(cs)+'</div><div class="ps-row"><b>型態</b>'+esc(st)+'</div>');
-  try{ if(typeof window.buildToolkit==='function'){ var tk=window.buildToolkit(stageId); if(tk) h+=tk; } }catch(e){}
   (REF_RULES[stageId]||[]).forEach(function(cat){ h+=sb('引用 · '+cat,refBody(profileItems(cat))); });
   if(stageId==='stage2'){ h+=sb('共用客戶檔案 · ❷ 服務內容（建檔引用）',refBody(profileItems('❷ 服務內容'))); }
   if(stageId==='nextround'){ h+=sb('來自第 9 站 · 復盤資料（完整）',refBody(recapItems())); }
-  /* 2) 顧問宏觀視野（內部用，入口預留） */
-  if(isClientStage){ h+='<div class="atl-rail-label">顧問宏觀視野（內部）</div>'+macroCardHTML(stageId); }
-  if(!h) h='<div class="atl-sb-empty">此頁無輔助資訊。</div>';
+  if(isClientStage){
+    h+=runCardHTML(stageId);
+    h+=toolsCardHTML(stageId);
+    h+='<div class="atl-rail-label">顧問宏觀視野（內部）</div>';
+    h+=macroCardHTML(stageId);
+    h+=trackCardHTML(stageId);
+  }
+  if(!h) h='<div class="atl-sb-empty">此頁無輔助資訊。請先到「選擇客戶」選一位客戶。</div>';
   return h;
 }
 
-/* ─── 站2 合作確認 ─── */
+/* ─────── 會前準備 / 真實客戶作戰 抽屜 ─────── */
+function prepBodyHTML(stageId){
+  var a=ca(); var pb=PLAYBOOK[stageId];
+  var name=(a&&(a.displayName||a.id))||'（未選客戶）';
+  var no=STEP_NO[stageId]||'-'; var zone=ZONE_OF[stageId]||'';
+  var P=window.POSCARD_DATA||{}; var dlv=P['stage7']||{};
+  var coopType=(a&&a.profile&&a.profile.coop_coopType)||''; var deposit=(a&&a.profile&&a.profile.coop_deposit)||'';
+  if(!pb){ return '<div class="atl-prep-sec"><p>這位客戶目前在「選擇客戶／儀表板」，請先進入任一服務站（第 1～10 步），系統就會依當站幫你整理會前作戰清單。</p></div>'; }
+  var h='';
+  h+='<div class="atl-prep-sec"><h4>1 這個客戶現在在第幾步</h4><p><span class="atl-prep-step">第 '+no+' 步 · '+esc(zone)+' 區</span> '+esc((P[stageId]&&P[stageId].flow)||'')+'</p><p>'+esc(pb.problem)+'</p></div>';
+  h+='<div class="atl-prep-sec"><h4>2 明天會議：必問</h4>'+li(pb.meeting.must)+'</div>';
+  h+='<div class="atl-prep-sec"><h4>3 選問</h4>'+li(pb.meeting.optional)+'</div>';
+  h+='<div class="atl-prep-sec"><h4>4 追問</h4>'+li(pb.meeting.followup)+'</div>';
+  h+='<div class="atl-prep-sec"><h4>5 我可以先說的提案邏輯 <span class="badge atl-tag say">客戶可說</span></h4>'+li(pb.canSay)+'</div>';
+  h+='<div class="atl-prep-sec atl-prep-remind"><h4>6 不能免費給的內容 <span class="badge atl-tag sign">簽約後</span></h4>'+li(pb.afterSign)+'<p style="margin-top:6px"><span class="atl-tag no">內部不交付</span>'+esc((pb.internalOnly||[]).join('；'))+'</p></div>';
+  h+='<div class="atl-prep-sec"><h4>7 內部先預想的腳本方向（10～20，內部用）</h4>'+li(SCRIPT_ANGLES)+'</div>';
+  h+='<div class="atl-prep-sec"><h4>8 可能的成品交付樣貌（第 9 站預演）</h4><p>'+esc(dlv.purpose||'—')+'</p><p><b>可能交付物：</b>'+esc(dlv.files||'—')+'</p></div>';
+  h+='<div class="atl-prep-sec"><h4>9 這個客戶為什麼需要我</h4><p>'+esc(pb.whyMe)+'</p></div>';
+  h+='<div class="atl-prep-sec atl-prep-remind"><h4>10 合作確認 / 收訂金提醒</h4><p>'+(coopType? '合作類型：'+esc(coopType) : '⚠ 尚未在第 2 站填「合作類型」。')+'　'+(deposit? '訂金：'+esc(deposit) : '⚠ 訂金欄位尚未填，談定後記得在第 2 站登記。')+'</p></div>';
+  return h;
+}
+function ensurePrep(){
+  if(document.getElementById('atl-prep')) return;
+  var mask=document.createElement('div'); mask.className='atl-prep-mask'; mask.id='atl-prep-mask';
+  var dw=document.createElement('aside'); dw.className='atl-prep'; dw.id='atl-prep';
+  var hd=document.createElement('div'); hd.className='atl-prep-hd';
+  var hl=document.createElement('div');
+  hl.innerHTML='<div class="k">REAL CLIENT · 會前作戰</div><h3 id="atl-prep-title">會前準備</h3><div class="sub" id="atl-prep-sub"></div>';
+  var x=document.createElement('button'); x.className='atl-prep-x'; x.type='button'; x.innerHTML='&times;';
+  hd.appendChild(hl); hd.appendChild(x);
+  var body=document.createElement('div'); body.className='atl-prep-body'; body.id='atl-prep-body';
+  dw.appendChild(hd); dw.appendChild(body);
+  document.body.appendChild(mask); document.body.appendChild(dw);
+  function close(){ mask.classList.remove('on'); dw.classList.remove('on'); }
+  x.onclick=close; mask.onclick=close;
+}
+function openPrep(){
+  ensurePrep();
+  var on=document.querySelector('.view.on'); var v=(on&&on.id)?on.id.replace('view-',''):'select';
+  var a=ca(); var name=(a&&(a.displayName||a.id))||'（尚未選客戶）';
+  var t=document.getElementById('atl-prep-title'); if(t) t.textContent='會前準備 · '+name;
+  var s=document.getElementById('atl-prep-sub'); if(s) s.textContent=PLAYBOOK[v]?('目前在第 '+STEP_NO[v]+' 步 · 明天就能拿去對接'):'請先選客戶並進入服務站';
+  var body=document.getElementById('atl-prep-body'); if(body) body.innerHTML=prepBodyHTML(v);
+  document.getElementById('atl-prep-mask').classList.add('on');
+  document.getElementById('atl-prep').classList.add('on');
+}
+window.__atlOpenPrep=openPrep;
+
+/* ─────── 桌機定位量測 ─────── */
+function px(el){ try{ return el?Math.round(el.getBoundingClientRect().height):0; }catch(e){ return 0; } }
+function vis(el){ try{ return !!(el && el.offsetParent!==null && getComputedStyle(el).display!=='none'); }catch(e){ return false; } }
+function syncHeads(){ try{ var th=px(document.querySelector('.topbar'))||60; var tabsEl=document.querySelector('.tabs'); var tabsH=vis(tabsEl)?px(tabsEl):0; var sbEl=document.querySelector('.cs-banner'); var sbH=vis(sbEl)?px(sbEl):0; if(sbH<14)sbH=0; var bt=th+tabsH; var r=document.documentElement; r.style.setProperty('--atl-bannertop',bt+'px'); r.style.setProperty('--atl-head',(bt+sbH+2)+'px'); }catch(e){} }
+
+/* ─────── 站2 合作確認 ─────── */
 var COOP_FIELDS={
   direction:[ ['coopType','合作類型','10支內容週期/20支/30支/單次診斷/長期陪跑/售後支援/提案前諮詢'], ['coopGoal','這次想合作什麼','客戶想達成什麼目標'], ['needDeposit','是否需先收訂金再進下一步','是/否/待討論'] ],
   scope:[ ['scopeInclude','這次包含什麼','列出服務範圍內的項目'], ['scopeExclude','不包含什麼','列出不在範圍的項目'], ['scopeFree','免費可討論的範圍','初次諮詢/方向建議等'], ['scopePaid','付費後才提供','完整策略/腳本/拍攝等'], ['scopeInternal','內部判斷不交付','風險評估/內部筆記等'], ['clientStage','客戶目前買到哪一階段','標記客戶購買到的服務階段'] ],
   terms:[ ['price','報價金額','總價或階段報價'], ['deposit','訂金','訂金金額與支付時間'], ['payMethod','付款方式','轉帳/分期/月結等'], ['timeline','預計執行時程','開始日期→交付日期'], ['meetings','會議次數','包含幾次會議/提案'], ['revisions','修改次數','含幾次修改'], ['shootDays','拍攝天數','預計拍攝幾天'], ['deliverySpec','交付規格','格式/尺寸/數量'], ['reviewProcess','審稿機制','誰審/幾天回覆'], ['contractNote','合約備註','特殊條款'] ],
   decision:[ ['nextAction','下一步決策','進入深度訪談/先收訂金/補資料/進入提案/暫緩/拒接/待客戶回覆'], ['decisionNote','決策備註','補充說明'] ]
 };
-function coopFieldHTML(fd){
-  var a=ca(); var profile=(a&&a.profile)||{}; var val=profile['coop_'+fd[0]]||'';
-  var inner;
-  if(fd[2].indexOf('/')>=0 && fd[2].split('/').length<=8 && fd[2].length<80){
-    var opts=fd[2].split('/');
-    inner='<select id="coop-'+fd[0]+'" onchange="window.__atlCoopSave&&__atlCoopSave()"><option value="">（請選擇）</option>'+opts.map(function(o){o=o.trim();return '<option'+(o===val?' selected':'')+'>'+esc(o)+'</option>';}).join('')+'</select>';
-  } else {
-    inner='<textarea id="coop-'+fd[0]+'" placeholder="'+esc(fd[2])+'" onchange="window.__atlCoopSave&&__atlCoopSave()">'+esc(val)+'</textarea>';
-  }
-  return '<div class="atl-coop-fld"><label>'+esc(fd[1])+'</label>'+inner+'</div>';
-}
+function coopFieldHTML(fd){ var a=ca(); var profile=(a&&a.profile)||{}; var val=profile['coop_'+fd[0]]||''; var inner; if(fd[2].indexOf('/')>=0 && fd[2].split('/').length<=8 && fd[2].length<80){ var opts=fd[2].split('/'); inner='<select id="coop-'+fd[0]+'" onchange="window.__atlCoopSave&&__atlCoopSave()"><option value="">（請選擇）</option>'+opts.map(function(o){o=o.trim();return '<option'+(o===val?' selected':'')+'>'+esc(o)+'</option>';}).join('')+'</select>'; } else { inner='<textarea id="coop-'+fd[0]+'" placeholder="'+esc(fd[2])+'" onchange="window.__atlCoopSave&&__atlCoopSave()">'+esc(val)+'</textarea>'; } return '<div class="atl-coop-fld"><label>'+esc(fd[1])+'</label>'+inner+'</div>'; }
 function coopSecHTML(title,fields){ return '<div class="atl-coop-sec"><h4>'+esc(title)+'</h4>'+fields.map(coopFieldHTML).join('')+'</div>'; }
 function coopBlockHTML(){ return '<div class="atl-coop">'+coopSecHTML('合作方向',COOP_FIELDS.direction)+coopSecHTML('服務範圍與交付邊界',COOP_FIELDS.scope)+coopSecHTML('合作條件',COOP_FIELDS.terms)+coopSecHTML('下一步決策',COOP_FIELDS.decision)+'</div>'; }
 window.__atlCoopSave=function(){ try{ var a=ca(); if(!a) return; if(!a.profile)a.profile={}; Object.keys(COOP_FIELDS).forEach(function(sec){ COOP_FIELDS[sec].forEach(function(fd){ var el=document.getElementById('coop-'+fd[0]); if(el)a.profile['coop_'+fd[0]]=el.value; }); }); if(typeof saveCurrent==='function') saveCurrent(true); }catch(e){} };
 
-/* ─── 建立 shell（createElement 不產生字面 div） ─── */
+/* ─────── shell ─────── */
 function buildShell(){
   if(document.getElementById('atl-shell')) return;
   var shell=document.createElement('div'); shell.className='atl-shell'; shell.id='atl-shell';
   var left=document.createElement('aside'); left.className='atl-shell-left'; left.id='atl-shell-left';
   var center=document.createElement('main'); center.className='atl-shell-center'; center.id='atl-shell-center';
   var right=document.createElement('aside'); right.className='atl-shell-right'; right.id='atl-shell-right';
-
-  /* 左欄頂部：標籤 + 收合鈕（漢堡的家） */
   var head=document.createElement('div'); head.className='atl-navhead';
   var hlabel=document.createElement('span'); hlabel.className='atl-navhead-label'; hlabel.textContent='導覽';
-  var toggle=document.createElement('button'); toggle.type='button'; toggle.className='atl-navtoggle'; toggle.title='收合／展開左側導覽'; toggle.setAttribute('aria-label','收合或展開左側導覽'); toggle.innerHTML=SVG.chev;
+  var toggle=document.createElement('button'); toggle.type='button'; toggle.className='atl-navtoggle'; toggle.title='收合／展開左側導覽'; toggle.innerHTML=SVG.chev;
   toggle.onclick=function(){ shell.classList.toggle('left-collapsed'); syncHeads(); };
-  head.appendChild(hlabel); head.appendChild(toggle);
-  left.appendChild(head);
-
-  var nav=document.createElement('nav'); nav.className='atl-snav';
-  var lastZone=null;
-  STEPS.forEach(function(s){
-    if(s.zone&&s.zone!==lastZone){ lastZone=s.zone; var g=document.createElement('div'); g.className='grp'; g.textContent=s.zone+' · '+(ZONE_FULL[s.zone]||''); nav.appendChild(g); }
-    var b=document.createElement('button'); b.type='button'; b.className='atl-snav-btn'; b.setAttribute('data-nav',s.id);
-    var t=document.createElement('span'); t.className='t'; t.textContent=s.label; b.appendChild(t);
-    if(s.zone){ var z=document.createElement('span'); z.className='z'; z.textContent=s.zone+' 區'; b.appendChild(z); }
-    b.onclick=(function(id){ return function(){ try{ if(typeof switchTo==='function') switchTo(id); }catch(e){} }; })(s.id);
-    nav.appendChild(b);
-  });
+  head.appendChild(hlabel); head.appendChild(toggle); left.appendChild(head);
+  var nav=document.createElement('nav'); nav.className='atl-snav'; var lastZone=null;
+  STEPS.forEach(function(s){ if(s.zone&&s.zone!==lastZone){ lastZone=s.zone; var g=document.createElement('div'); g.className='grp'; g.textContent=s.zone+' · '+(ZONE_FULL[s.zone]||''); nav.appendChild(g); } var b=document.createElement('button'); b.type='button'; b.className='atl-snav-btn'; b.setAttribute('data-nav',s.id); var t=document.createElement('span'); t.className='t'; t.textContent=s.label; b.appendChild(t); if(s.zone){ var z=document.createElement('span'); z.className='z'; z.textContent=s.zone+' 區'; b.appendChild(z); } b.onclick=(function(id){ return function(){ try{ if(typeof switchTo==='function') switchTo(id); }catch(e){} }; })(s.id); nav.appendChild(b); });
   left.appendChild(nav);
-
-  /* 左欄底部：操作導覽入口（轉呼叫原浮鈕，桌機用） */
   var foot=document.createElement('div'); foot.className='atl-navfoot';
-  var gbtn=document.createElement('button'); gbtn.type='button'; gbtn.innerHTML=SVG.compass+'<span>操作導覽</span>';
-  gbtn.onclick=function(){ try{ var f=document.querySelector('.atl-guide-fab'); if(f) f.click(); }catch(e){} };
-  foot.appendChild(gbtn); left.appendChild(foot);
-
+  var pbtn=document.createElement('button'); pbtn.type='button'; pbtn.className='prep'; pbtn.innerHTML=SVG.target+'<span>會前準備 · 真實作戰</span>'; pbtn.onclick=openPrep;
+  var gbtn=document.createElement('button'); gbtn.type='button'; gbtn.innerHTML=SVG.compass+'<span>操作導覽</span>'; gbtn.onclick=function(){ try{ var f=document.querySelector('.atl-guide-fab'); if(f) f.click(); }catch(e){} };
+  foot.appendChild(pbtn); foot.appendChild(gbtn); left.appendChild(foot);
   shell.appendChild(left); shell.appendChild(center); shell.appendChild(right);
-
-  var banner=document.getElementById('csBanner');
-  var anchor=banner||document.getElementById('tabs');
-  if(anchor&&anchor.parentNode){ anchor.parentNode.insertBefore(shell,anchor.nextSibling); }
-  else { document.body.appendChild(shell); }
-
-  var views=document.querySelectorAll('.view');
-  for(var i=0;i<views.length;i++){ center.appendChild(views[i]); }
-
-  /* 右欄收合鈕（側邊，低調） */
-  var rt=document.createElement('button'); rt.className='atl-rt'; rt.type='button'; rt.title='收合／展開右側輔助欄'; rt.innerHTML=SVG.grid;
-  rt.onclick=function(){ shell.classList.toggle('right-collapsed'); };
-  document.body.appendChild(rt);
+  var banner=document.getElementById('csBanner'); var anchor=banner||document.getElementById('tabs');
+  if(anchor&&anchor.parentNode){ anchor.parentNode.insertBefore(shell,anchor.nextSibling); } else { document.body.appendChild(shell); }
+  var views=document.querySelectorAll('.view'); for(var i=0;i<views.length;i++){ center.appendChild(views[i]); }
+  var rt=document.createElement('button'); rt.className='atl-rt'; rt.type='button'; rt.title='收合／展開右側輔助欄'; rt.innerHTML=SVG.grid; rt.onclick=function(){ shell.classList.toggle('right-collapsed'); }; document.body.appendChild(rt);
 }
-
 function updateNav(v){ var nav=document.querySelector('.atl-snav'); if(!nav) return; var bs=nav.querySelectorAll('.atl-snav-btn'); for(var i=0;i<bs.length;i++){ bs[i].classList.toggle('on', bs[i].getAttribute('data-nav')===v); } }
 function updateRight(v){ var r=document.getElementById('atl-shell-right'); if(!r) return; r.innerHTML=buildRightPanel(v); swapIcons(r); }
-
-function wrapAfter(name,fn){
-  var orig=window[name]; if(typeof orig!=='function'||orig.__v104) return;
-  var w=function(){ var r=orig.apply(this,arguments); try{ fn.apply(this,arguments); }catch(e){} return r; };
-  w.__v104=true; window[name]=w;
-}
+function wrapAfter(name,fn){ var orig=window[name]; if(typeof orig!=='function'||orig.__v110) return; var w=function(){ var r=orig.apply(this,arguments); try{ fn.apply(this,arguments); }catch(e){} return r; }; w.__v110=true; window[name]=w; }
 
 wrapAfter('switchTo',function(v){ updateNav(v); updateRight(v); try{ var av=document.getElementById('view-'+v); if(av) swapIcons(av); }catch(e){} syncHeads(); });
-
-wrapAfter('renderStage2',function(){
-  var view=document.getElementById('view-stage2'); if(!view) return;
-  var ph=view.querySelector('.page-head'); if(!ph) return;
-  if(view.querySelector('.atl-coop')) return;
-  var holder=document.createElement('div'); holder.innerHTML=coopBlockHTML();
-  var coop=holder.firstChild; if(!coop) return;
-  if(ph.nextSibling) view.insertBefore(coop,ph.nextSibling); else view.appendChild(coop);
-  try{
-    var det=document.createElement('details'); det.className='atl-filing-fold';
-    var sum=document.createElement('summary'); sum.innerHTML='<span class="atl-tri"></span>共用客戶檔案（建檔 · 8 大類 — 點此展開編輯）'; det.appendChild(sum);
-    var body=document.createElement('div'); body.className='atl-filing-body';
-    var node=coop.nextSibling; while(node){ var nx=node.nextSibling; body.appendChild(node); node=nx; }
-    det.appendChild(body); view.appendChild(det);
-  }catch(e){}
-  swapIcons(view);
-});
-
-['renderShoot','renderPostprod','renderNextround'].forEach(function(name){
-  var id=name.replace('render','').toLowerCase();
-  wrapAfter(name,function(){
-    var view=document.getElementById('view-'+id); if(!view) return;
-    var ph=view.querySelector('.page-head'); if(!ph) return;
-    var node=ph.nextSibling;
-    while(node && !(node.nodeType===1 && node.classList && node.classList.contains('atl-newst-section'))){ var nx=node.nextSibling; if(node.parentNode) node.parentNode.removeChild(node); node=nx; }
-    swapIcons(view);
-  });
-});
+wrapAfter('renderStage2',function(){ var view=document.getElementById('view-stage2'); if(!view) return; var ph=view.querySelector('.page-head'); if(!ph) return; if(view.querySelector('.atl-coop')) return; var holder=document.createElement('div'); holder.innerHTML=coopBlockHTML(); var coop=holder.firstChild; if(!coop) return; if(ph.nextSibling) view.insertBefore(coop,ph.nextSibling); else view.appendChild(coop); try{ var det=document.createElement('details'); det.className='atl-filing-fold'; var sum=document.createElement('summary'); sum.innerHTML='<span class="atl-tri"></span>共用客戶檔案（建檔 · 8 大類 — 點此展開編輯）'; det.appendChild(sum); var body=document.createElement('div'); body.className='atl-filing-body'; var node=coop.nextSibling; while(node){ var nx=node.nextSibling; body.appendChild(node); node=nx; } det.appendChild(body); view.appendChild(det); }catch(e){} swapIcons(view); });
+['renderShoot','renderPostprod','renderNextround'].forEach(function(name){ var id=name.replace('render','').toLowerCase(); wrapAfter(name,function(){ var view=document.getElementById('view-'+id); if(!view) return; var ph=view.querySelector('.page-head'); if(!ph) return; var node=ph.nextSibling; while(node && !(node.nodeType===1 && node.classList && node.classList.contains('atl-newst-section'))){ var nx=node.nextSibling; if(node.parentNode) node.parentNode.removeChild(node); node=nx; } swapIcons(view); }); });
 
 function init(){
   buildShell();
-  var on=document.querySelector('.view.on');
-  var v=(on&&on.id)?on.id.replace('view-',''):'select';
+  var on=document.querySelector('.view.on'); var v=(on&&on.id)?on.id.replace('view-',''):'select';
   updateNav(v); updateRight(v);
   try{ var av=document.getElementById('view-'+v); if(av) swapIcons(av); }catch(e){}
   syncHeads();
-  try{ window.addEventListener('resize', syncHeads); }catch(e){}
-  /* banner 內容載入後再校正一次（不另開計時器，用一次性 rAF） */
+  try{ window.addEventListener('resize',syncHeads); }catch(e){}
   try{ if(window.requestAnimationFrame) requestAnimationFrame(function(){ requestAnimationFrame(syncHeads); }); }catch(e){}
 }
 if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init); else init();
