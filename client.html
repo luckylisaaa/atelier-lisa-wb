@@ -871,8 +871,8 @@ html, body { overflow-anchor: none; }
 <div class="topbar">
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-    <span class="brand-txt">ATELIER<span class="brand-sub">客戶服務台</span></span>
-    <span id="verBadge">cs-v8.59</span>
+    <span class="brand-txt">ATELIER<span class="brand-sub">中控台</span></span>
+    <span id="verBadge">cs-v9.0</span>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button type="button" id="atlSpecBtn" class="popout-btn" title="規格模式（點一下開啟，再點任一元件看它的規格）"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7l4-4 14 14-4 4z"/><path d="M9 5l1.5 1.5M12 8l1.5 1.5M15 11l1.5 1.5"/></svg>規格</button>
@@ -886,13 +886,16 @@ html, body { overflow-anchor: none; }
 <div class="tabs" id="tabs">
   <div class="tab on" data-view="select"><svg class="tic" viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-3.9 3.1-7 7-7s7 3.1 7 7" stroke-linecap="round"/></svg>選擇客戶</div>
   <div class="tab" data-view="dashboard"><svg class="tic" viewBox="0 0 24 24"><rect x="4" y="4" width="7" height="7" rx="1.2"/><rect x="13" y="4" width="7" height="7" rx="1.2"/><rect x="4" y="13" width="7" height="7" rx="1.2"/><rect x="13" y="13" width="7" height="7" rx="1.2"/></svg>儀表板</div>
-  <div class="tab" data-view="stage1"><svg class="tic" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4-4" stroke-linecap="round"/></svg>① 初診</div>
-  <div class="tab" data-view="stage2"><svg class="tic" viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6z" stroke-linejoin="round"/><path d="M9 9h6M9 13h6M9 17h4" stroke-linecap="round"/></svg>② 建檔</div>
-  <div class="tab" data-view="stage3"><svg class="tic" viewBox="0 0 24 24"><path d="M21 12a8 8 0 01-11.6 7.1L4 20l1-5A8 8 0 1121 12z" stroke-linejoin="round"/></svg>③ 問診</div>
-  <div class="tab" data-view="stage4"><svg class="tic" viewBox="0 0 24 24"><path d="M3 12h4l2 7 4-14 2 7h5" stroke-linecap="round" stroke-linejoin="round"/></svg>④ 診斷</div>
-  <div class="tab" data-view="stage5"><svg class="tic" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 9h16M9 4v16" stroke-linecap="round"/></svg>⑤ 盤點</div>
-  <div class="tab" data-view="stage6"><svg class="tic" viewBox="0 0 24 24"><path d="M5 4h11a2 2 0 012 2v14H7a2 2 0 01-2-2z" stroke-linejoin="round"/></svg>⑥ 企劃</div>
-  <div class="tab" data-view="stage7"><svg class="tic" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 013 3L7 19l-4 1 1-4z"/></svg>⑦ 交付</div>
+  <div class="tab" data-view="stage1">1 需求對焦</div>
+  <div class="tab" data-view="stage2">2 合作確認</div>
+  <div class="tab" data-view="stage3">3 深度訪談</div>
+  <div class="tab" data-view="stage4">4 IP方向</div>
+  <div class="tab" data-view="stage6">5 主題規劃</div>
+  <div class="tab" data-view="stage5">6 腳本拍攝</div>
+  <div class="tab" data-view="shoot">7 拍攝執行</div>
+  <div class="tab" data-view="postprod">8 後製整理</div>
+  <div class="tab" data-view="stage7">9 成品交付</div>
+  <div class="tab" data-view="nextround">10 下階段</div>
   <a class="tab back" href="index.html" target="_blank" rel="noopener" title="在新分頁開啟（這頁保留）"><svg class="tic" viewBox="0 0 24 24"><path d="M14 4h6v6"/><path d="M20 4l-10 10"/><path d="M14 12v7H5V10h7"/></svg>回診斷工作台</a>
 </div>
 
@@ -900,6 +903,15 @@ html, body { overflow-anchor: none; }
 <div class="cs-banner empty" id="csBanner">
   <span>尚未選定服務對象 — 請到「選擇客戶」挑一位</span>
 </div>
+
+<!-- ═══ 7 拍攝執行（新站）═══ -->
+<div class="view" id="view-shoot"></div>
+
+<!-- ═══ 8 後製整理（新站）═══ -->
+<div class="view" id="view-postprod"></div>
+
+<!-- ═══ 10 下一階段內容建議（新站）═══ -->
+<div class="view" id="view-nextround"></div>
 
 <!-- ═══ 選擇客戶（預設頁）═══ -->
 <div class="view on" id="view-select">
@@ -10868,7 +10880,7 @@ button:not(:disabled), .btn:not(.disabled):not([disabled]), [role="button"]{
   if(window.__atlCs473Continuity) return; window.__atlCs473Continuity=true;
   function cleanTextNode(n){var s=n.nodeValue||''; var ns=s.replace(/cs-v4\.\d+\s*(SAFE|LATEST)?\s*[｜|·:-]?\s*/g,'').replace(/\bv\d{3}\s*[｜|·:-]?\s*/g,''); if(ns!==s)n.nodeValue=ns;}
   function cleanVersions(){
-    try{var vb=document.getElementById('verBadge'); if(vb)vb.textContent='cs-v8.59';}catch(e){}
+    try{var vb=document.getElementById('verBadge'); if(vb)vb.textContent='cs-v9.0';}catch(e){}
     try{var w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT,{acceptNode:function(n){var p=n.parentElement; if(!p||p.id==='verBadge'||/^(SCRIPT|STYLE|TEXTAREA)$/i.test(p.tagName))return NodeFilter.FILTER_REJECT; return /(cs-v4\.\d+|\bv\d{3})/.test(n.nodeValue||'')?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_REJECT;}}); var nodes=[],n; while(n=w.nextNode())nodes.push(n); nodes.forEach(cleanTextNode);}catch(e){}
   }
   function alignSelection(){
@@ -10928,7 +10940,7 @@ input[type="text"]:focus,input:not([type]):focus{border-color:#D4A574!important;
     btn.onclick=function(e){e.stopPropagation(); set(!safe.classList.contains('atl-safe474-collapsed'));};
     h.appendChild(summary); h.appendChild(btn); set(localStorage.getItem('atl.cs474.safeCollapsed')!=='0');
   }
-  function cleanBadge(){ var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v8.59'; }
+  function cleanBadge(){ var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v9.0'; }
   function run(){ cleanBadge(); ensureSafeCollapse(); wireAutogrow(document); }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run); else run();
   setInterval(run,1200);
@@ -10989,7 +11001,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
   function wire(root){qsa('textarea,input[type="text"],input[type="url"],input[type="email"],input:not([type])',root||document).forEach(function(el){if(el.__atl475)return; if(el.closest('.atl-field-modal,.atl-final-modal'))return; el.__atl475=true; el.addEventListener('focus',function(){show(el); autogrow(el)}); el.addEventListener('input',function(){autogrow(el)}); el.addEventListener('blur',hideSoon); autogrow(el);});}
   document.addEventListener('click',function(e){var b=e.target.closest('#atlFieldToolbar button'); if(!b||!active)return; var a=b.getAttribute('data-act'); if(a==='prompt')openModal('prompt',active); if(a==='fill')openModal('fill',active); if(a==='edit')openModal('edit',active); if(a==='done'){var bar=qs('#atlFieldToolbar'); if(bar)bar.classList.remove('on'); if(active)active.classList.remove('atl-field-active'); toastSafe('此欄位可視為定案，請記得儲存');}},true);
   function addCollapse(root){qsa('.section-card,.deliverable-card,.atl452safe-card',root||document).forEach(function(card){if(card.__atlCollapse475||card.closest('.preview-modal,.atl-field-modal'))return; card.__atlCollapse475=true; card.classList.add('atl-collapsible'); var h=qs('h2,h3,h4,.stitle,.section-title',card)||card.firstElementChild; if(h)h.classList.add('atl-keep-visible'); var btn=document.createElement('button'); btn.type='button'; btn.className='atl-collapse-toggle'; btn.textContent='收合'; btn.addEventListener('click',function(e){e.preventDefault(); e.stopPropagation(); var closed=card.classList.toggle('atl-closed'); btn.textContent=closed?'展開':'收合';}); card.insertBefore(btn,card.firstChild);});}
-  function boot(){try{var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v8.59';}catch(e){} wire(document); addCollapse(document);}
+  function boot(){try{var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v9.0';}catch(e){} wire(document); addCollapse(document);}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot); else boot();
   try{new MutationObserver(function(ms){var hit=false; ms.forEach(function(m){if(m.addedNodes&&m.addedNodes.length)hit=true}); if(hit){clearTimeout(window.__atl475Timer); window.__atl475Timer=setTimeout(boot,180);}}).observe(document.body,{childList:true,subtree:true});}catch(e){}
 })();
@@ -11030,7 +11042,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
 <script id="atl478-final-export-js">
 (function(){
   if(window.__atl478FinalExport)return; window.__atl478FinalExport=true;
-  var VERSION='cs-v8.59';
+  var VERSION='cs-v9.0';
   function esc(s){return (s==null?'':String(s)).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
   function qsa(sel,root){return Array.prototype.slice.call((root||document).querySelectorAll(sel))}
   function text(el){return (el&&el.innerText||el&&el.textContent||'').replace(/\s+/g,' ').trim()}
@@ -11150,7 +11162,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
 <script>
 (function(){
   if(window.__atlCs480) return; window.__atlCs480=true;
-  var V='cs-v8.59';
+  var V='cs-v9.0';
   function lock(){ var vb=document.getElementById('verBadge'); if(vb && (vb.textContent||'').trim()!==V) vb.textContent=V; }
   function unify(){
     var safe=document.querySelector('.atl452safe'); if(!safe) return;
@@ -12101,7 +12113,7 @@ input.atl477-open-field:not([type="checkbox"]):not([type="radio"]):not([type="bu
 <script id="atl-cs477-final-touch">
 (function(){
   if(window.__atlCs477FinalTouch) return; window.__atlCs477FinalTouch=true;
-  var VERSION='cs-v8.59';
+  var VERSION='cs-v9.0';
   function qs(s,r){return (r||document).querySelector(s)}
   function qsa(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
   function setVersion(){try{var b=qs('#verBadge'); if(b)b.textContent=VERSION; window.ATELIER_CLIENT_VERSION=VERSION;}catch(e){}}
@@ -19840,5 +19852,461 @@ button.atl-cflow-node{ outline:none; }
   }
   wrap('renderStage1','stage1'); wrap('renderStage2','stage2'); wrap('renderStage3','stage3'); wrap('renderExtStage', null);
   try{ var on=document.querySelector('.view.on'); if(on && on.id && /^view-stage[1-7]$/.test(on.id)){ var sid=on.id.replace('view-',''); ensureMeta(sid); ensureSvcPkg(sid); } }catch(e){}
+})();
+</script>
+
+<!-- ═══════════════ cs-v9.0: ATELIER 中控台大改版整合版 ═══════════════ -->
+<style id="atl-v90-core">
+/* cs-v9.0: 10步主流程·3新站·商業閉環·行銷工具·投放MVP */
+/* Tab bar: 10 items on 430px → horizontal scroll, compact */
+.tabs{overflow-x:auto!important;-webkit-overflow-scrolling:touch;scrollbar-width:none;flex-wrap:nowrap!important;}
+.tabs::-webkit-scrollbar{display:none;}
+.tabs .tab{white-space:nowrap;font-size:12.5px!important;padding:12px 10px!important;min-width:auto!important;letter-spacing:.5px!important;}
+/* Business loop bar */
+.atl-bloop{display:flex;align-items:center;gap:4px;padding:6px 12px;margin:0 0 4px;background:linear-gradient(90deg,#FBF7F2,#F8F0E6);
+  border-bottom:1px solid #EFE3D2;overflow-x:auto;scrollbar-width:none;font-size:11px;font-weight:700;color:#8A7274;}
+.atl-bloop::-webkit-scrollbar{display:none;}
+.atl-bloop-node{padding:3px 9px;border-radius:999px;white-space:nowrap;cursor:default;transition:all .15s;}
+.atl-bloop-node.on{background:#A51820;color:#fff;-webkit-text-fill-color:#fff;}
+.atl-bloop-arr{color:#D4A574;font-size:10px;}
+/* Marketing toolkit */
+.atl-mktool{margin:8px 0 10px;border:1px solid #EFE3D2;border-radius:12px;background:#FDFBF8;overflow:hidden;}
+.atl-mktool>summary{list-style:none;cursor:pointer;padding:10px 14px;font-size:12.5px;font-weight:700;color:#5C0F14;
+  display:flex;align-items:center;gap:6px;user-select:none;-webkit-user-select:none;}
+.atl-mktool>summary::-webkit-details-marker{display:none;}
+.atl-mktool>summary .chev{transition:transform .2s;font-size:9px;color:#C9A57A;}
+.atl-mktool[open]>summary .chev{transform:rotate(90deg);}
+.atl-mktool-grid{display:grid;grid-template-columns:1fr;gap:8px;padding:8px 14px 12px;}
+.atl-mktool-card{background:#FAF6F1;border:1px solid #EFE6DA;border-radius:9px;padding:10px 12px;}
+.atl-mktool-card h4{font-size:12.5px;font-weight:700;color:#A51820;margin:0 0 3px;}
+.atl-mktool-card p{font-size:11.5px;color:#5C4A3C;line-height:1.55;margin:0;}
+.atl-mktool-card .why{font-size:11px;color:#8A7274;margin-top:3px;}
+.atl-mktool-card button{margin-top:6px;font-size:11px;padding:4px 10px;border:1px solid #C9A57A;border-radius:7px;
+  background:#FFFDFB;color:#A51820;font-weight:700;cursor:pointer;font-family:inherit;}
+/* Tool analysis card paste-back */
+.atl-toolcard{margin:10px 0;border:1px dashed #C9A57A;border-radius:12px;padding:12px 14px;background:#FFF8EE;}
+.atl-toolcard-head{font-size:12px;font-weight:700;color:#A6842E;margin-bottom:6px;}
+.atl-toolcard textarea{width:100%;min-height:80px;font-size:12px;line-height:1.6;padding:8px 10px;
+  border:1px solid #EAD9BA;border-radius:8px;background:#FFFDFB;color:#2A1A1C;font-family:inherit;resize:vertical;}
+/* New station styles */
+.atl-newst-section{margin:14px 0;padding:14px 16px;background:#FDFBF8;border:1px solid #EFE3D2;border-radius:12px;}
+.atl-newst-section h3{font-size:14px;font-weight:700;color:#5C0F14;margin:0 0 8px;}
+.atl-newst-fld{margin:8px 0;}
+.atl-newst-fld label{display:block;font-size:12px;font-weight:700;color:#8A7274;margin-bottom:3px;}
+.atl-newst-fld textarea,.atl-newst-fld select{width:100%;font-size:13px;padding:8px 10px;border:1px solid #E2CFB6;
+  border-radius:8px;background:#FFFDFB;color:#2A1A1C;font-family:inherit;resize:vertical;min-height:38px;}
+/* C/D advertising MVP */
+.atl-admod{margin:10px 0;border:1px solid #EAD9BA;border-left:3px solid #C9A57A;border-radius:12px;padding:12px 14px;background:#FFF8EE;}
+.atl-admod-head{font-size:12.5px;font-weight:700;color:#A6842E;margin-bottom:8px;}
+.atl-admod .atl-newst-fld label{color:#A6842E;}
+/* C-zone reminder card */
+.atl-czone-remind{margin:10px 0;padding:12px 14px;background:#FFF4E8;border:1px dashed #D4A574;border-radius:12px;}
+.atl-czone-remind b{color:#A6842E;}
+</style>
+<script id="atl-v90-core-js">
+/* ═══ cs-v9.0: ATELIER 中控台大改版 — 主腳本 ═══
+   10步主流程·3新站·商業閉環·行銷工具·投放MVP
+   不動資料層、不刪七站、不改 stageN 鍵。 */
+(function(){
+if(window.__atlV90) return; window.__atlV90=true;
+
+/* ─────── 10步主流程定義 ─────── */
+var FLOW=[
+  {n:1,label:'需求對焦',stageId:'stage1',zone:'A',zoneFull:'前端策略｜診斷定位',
+   tools:['SMART','初步 SWOT','定義層速判'],toolsAdv:['PESTEL','五力＋KFS','商業模式圖'],
+   toolPurpose:'判斷市場、壓力、目標清不清楚。'},
+  {n:2,label:'合作確認',stageId:'stage2',zone:'A',zoneFull:'前端策略｜診斷定位',
+   tools:['4C','SMART','值得性判斷'],toolsAdv:['7P','VPC','Value Equation','Offer Ladder','初步 STP'],
+   toolPurpose:'確認賣什麼、值不值得接、offer 強不強、交付邊界。'},
+  {n:3,label:'深度訪談',stageId:'stage3',zone:'A',zoneFull:'前端策略｜診斷定位',
+   tools:['Persona','STP','JTBD'],toolsAdv:['5A','CJM','Empathy Map','覺察度五階'],
+   toolPurpose:'找出真客群、真痛點、信任卡點。'},
+  {n:4,label:'IP與內容方向',stageId:'stage4',zone:'A',zoneFull:'前端策略｜診斷定位',
+   tools:['知覺圖','SWOT→TOWS','黃金圈'],toolsAdv:['藍海','品牌原型','Message House'],
+   toolPurpose:'收斂定位、差異化、內容主軸。'},
+  {n:5,label:'主題方向規劃',stageId:'stage6',zone:'B',zoneFull:'內容生產｜內容製作',
+   tools:['5A／AARRR','Content Pillar','SMART'],toolsAdv:['Hero-Hub-Help','SUCCESs','覺察度五階'],
+   toolPurpose:'把定位變成題庫、戰役方向、每軸 KPI。'},
+  {n:6,label:'腳本與拍攝規劃',stageId:'stage5',zone:'B',zoneFull:'內容生產｜內容製作',
+   tools:['AIDA','Hook','CTA'],toolsAdv:['PAS／BAB／FAB','StoryBrand','4U'],
+   toolPurpose:'把主題變成腳本、開頭、素材、情緒節奏、行動出口。'},
+  {n:7,label:'拍攝執行',stageId:'shoot',zone:'B',zoneFull:'內容生產｜內容製作',isNew:true,
+   tools:['7P People/Process/Physical Evidence','品牌一致性','服務證據檢查'],toolsAdv:[],
+   toolPurpose:'確認現場、人物、場景、流程、實體證據與定位一致。'},
+  {n:8,label:'後製整理',stageId:'postprod',zone:'B',zoneFull:'內容生產｜內容製作',isNew:true,
+   tools:['AIDA 節奏','品牌識別','封面點擊＋完播假設'],toolsAdv:['A/B 測試','Retention Curve'],
+   toolPurpose:'檢查剪輯、字幕、封面、CTA 是否服務商業目的。'},
+  {n:9,label:'主平台成品交付',stageId:'stage7',zone:'D',zoneFull:'數據飛輪｜交付復盤',
+   tools:['CTA 承接','PZB','5A 承接'],toolsAdv:['投放子模組'],
+   toolPurpose:'交付品質、上線承接路徑、投放與導流需求。'},
+  {n:10,label:'下一階段建議',stageId:'nextround',zone:'D',zoneFull:'數據飛輪｜交付復盤',isNew:true,
+   tools:['復盤漏斗／AARRR','CLV','SMART'],toolsAdv:['RFM','NPS','Cohort','North Star','ROAS','CAC'],
+   toolPurpose:'復盤、長期價值、續約、下一輪成長策略。'}
+];
+var ZONE_FULL={A:'前端策略｜診斷定位',B:'內容生產｜內容製作',C:'轉換後端｜上線承接',D:'數據飛輪｜交付復盤'};
+var SID_TO_FLOW={}; FLOW.forEach(function(f,i){SID_TO_FLOW[f.stageId]=i;});
+
+/* ─────── switchTo extension for new stations ─────── */
+var _origSwitchTo=window.switchTo;
+window.switchTo=function(view){
+  if(view==='shoot'||view==='postprod'||view==='nextround'){
+    if(typeof curAcc==='function'&&curAcc()) try{_flushAutoSave();}catch(e){}
+    document.querySelectorAll('.tab').forEach(function(t){t.classList.toggle('on',t.dataset&&t.dataset.view===view);});
+    document.querySelectorAll('.view').forEach(function(v){v.classList.remove('on');});
+    var el=document.getElementById('view-'+view); if(el) el.classList.add('on');
+    if(view==='shoot') renderShoot();
+    else if(view==='postprod') renderPostprod();
+    else if(view==='nextround') renderNextround();
+    window.scrollTo(0,0);
+    return;
+  }
+  return _origSwitchTo.apply(this,arguments);
+};
+/* Re-bind tab clicks for new tabs */
+document.querySelectorAll('.tab').forEach(function(tab){
+  if(tab.classList.contains('disabled')||tab.classList.contains('back')||!tab.dataset.view) return;
+  tab.onclick=function(){switchTo(tab.dataset.view);};
+});
+
+/* ─────── Helper: escape HTML ─────── */
+function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+/* ─────── Business loop status bar ─────── */
+function buildLoopBar(stageId){
+  var idx=SID_TO_FLOW[stageId]; if(idx==null) return '';
+  var cur=FLOW[idx]; var zones=['A','B','C','D'];
+  var h='<div class="atl-bloop">';
+  zones.forEach(function(z,i){
+    if(i) h+='<span class="atl-bloop-arr">→</span>';
+    h+='<span class="atl-bloop-node'+(cur.zone===z?' on':'')+'">'+z+' '+(ZONE_FULL[z]||'')+'</span>';
+  });
+  h+='<span class="atl-bloop-arr">→ 回流 A</span></div>';
+  return h;
+}
+
+/* ─────── Positioning card (10-step version) ─────── */
+var POSCARD_DATA={
+  stage1:{n:1,zone:'A',zoneFull:'前端策略｜診斷定位',flow:'流程 1 · 需求對焦',
+    purpose:'第一次接觸,用公開資料看懂客戶現況,對焦真正的需求與期待。',
+    prepare:'客戶公開資料(官網、IG、YT、FB、Google、地圖、新聞)與他來談時的原始需求。',
+    produce:'公開資料初診觀察、需求對焦的初步判斷。',
+    free:'對外可說的觀察與初步方向建議。',paid:'完整初診分析報告、具體策略判斷。',internal:'內部疑點、風險、還沒對焦清楚的判斷。',
+    files:'初診觀察報告(顧問版)、初步方向建議(客戶版)、提示詞包',next:'2 合作確認'},
+  stage2:{n:2,zone:'A',zoneFull:'前端策略｜診斷定位',flow:'流程 2 · 合作確認',
+    purpose:'確認合作範圍與邊界,把客戶基本資料建檔,讓後面每一站都接得上。',
+    prepare:'合作條件、服務方案/報價、客戶基本資料與聯絡窗口。',
+    produce:'客戶檔案、合作範圍與邊界的確認。',
+    free:'合作範圍、服務內容、雙方分工。',paid:'詳細執行計畫與時程規劃。',internal:'內部邊界備註(哪些不在範圍、風險提醒)。',
+    files:'客戶檔案、合作確認書(客戶版)、服務範圍說明',next:'3 深度訪談'},
+  stage3:{n:3,zone:'A',zoneFull:'前端策略｜診斷定位',flow:'流程 3 · 深度訪談',
+    purpose:'深度訪談,挖出公開資料看不到的脈絡(內幕、人情、市場時機)。',
+    prepare:'訪談大綱、會前問題清單,以及初診與建檔留下的疑點。',
+    produce:'訪談記錄、深度脈絡與關鍵洞察。',
+    free:'可對外的訪談摘要與共識。',paid:'完整訪談分析與深度策略建議。',internal:'內部判斷、敏感資訊、不對外的觀察。',
+    files:'訪談記錄(顧問版)、訪談摘要(客戶版)、問診提示詞包',next:'4 IP與內容方向'},
+  stage4:{n:4,zone:'A',zoneFull:'前端策略｜診斷定位',flow:'流程 4 · IP與內容方向',
+    purpose:'把初診、建檔、問診收斂成可交付的策略判斷:定位、受眾、內容缺口、轉換缺口與優先改善順序。',
+    prepare:'前三站(初診、建檔、問診)的所有資料。',
+    produce:'內容診斷書、IP 與內容方向、優先改善順序。',
+    free:'診斷結論摘要與方向建議。',paid:'完整診斷書、IP定位策略、內容規劃(客戶版)。',internal:'完整判斷、風險與優先序背後的理由。',
+    files:'內容診斷書(顧問版)、診斷摘要(客戶版)、PPT 預覽、提示詞包',next:'5 主題方向規劃'},
+  stage6:{n:5,zone:'B',zoneFull:'內容生產｜內容製作',flow:'流程 5 · 主題方向規劃',
+    purpose:'把診斷結論轉成客戶看得懂、團隊可執行的提案:目標、主軸、題庫、時程、KPI。',
+    prepare:'診斷結論,以及 IP 與內容方向。',
+    produce:'主題企劃、首波題庫、執行時程與成效指標。',
+    free:'提案方向概要與主題建議。',paid:'完整主題企劃、首波題庫、執行時程(客戶版)。',internal:'內部策略主張與配置理由。',
+    files:'主題企劃書(顧問版)、提案簡報(客戶版)、PPT 預覽、題庫',next:'6 腳本與拍攝規劃'},
+  stage5:{n:6,zone:'B',zoneFull:'內容生產｜內容製作',flow:'流程 6 · 腳本與拍攝規劃',
+    purpose:'把客戶手上的人設、服務、案例、場景、證據與可拍素材盤點出來,避免企劃時空想。',
+    prepare:'已定的內容方向,以及客戶既有素材與資產清單。',
+    produce:'素材盤點表、可延伸主軸、待補拍攝清單。',
+    free:'拍攝需求概要與初步規劃。',paid:'完整拍攝計畫、腳本、分鏡與客戶配合清單。',internal:'內部素材判斷與缺漏風險。',
+    files:'素材盤點表、拍攝計畫(客戶版)、拍攝清單',next:'7 拍攝執行'},
+  shoot:{n:7,zone:'B',zoneFull:'內容生產｜內容製作',flow:'流程 7 · 拍攝執行',
+    purpose:'把規劃落到拍攝現場,管理人物、場景、道具、拍攝日流程與現場備忘。',
+    prepare:'拍攝計畫、腳本、分鏡、場景清單、道具清單、客戶確認。',
+    produce:'拍攝完成確認、拍攝日誌、現場備忘、素材清單。',
+    free:'拍攝日程與需要客戶配合的事項。',paid:'完整拍攝日誌與場景紀錄。',internal:'內部拍攝備忘與品質判斷。',
+    files:'拍攝確認單(客戶版)、拍攝日誌(顧問版)、素材清單',next:'8 後製整理'},
+  postprod:{n:8,zone:'B',zoneFull:'內容生產｜內容製作',flow:'流程 8 · 後製整理',
+    purpose:'管理剪輯、字幕、封面、版本、修改紀錄、輸出規格與成品品質。',
+    prepare:'拍攝素材、腳本、品牌規範。',
+    produce:'剪輯版本、字幕、封面、輸出規格確認。',
+    free:'成品預覽與修改溝通。',paid:'完整版本管理與輸出規格。',internal:'內部品質判斷與修改紀錄。',
+    files:'成品預覽(客戶版)、版本紀錄(顧問版)、輸出規格單',next:'9 主平台成品交付'},
+  stage7:{n:9,zone:'D',zoneFull:'數據飛輪｜交付復盤',flow:'流程 9 · 主平台成品交付',
+    purpose:'把交付物、客戶回饋、修改紀錄、下一步與付款狀態集中管理,讓服務閉環。',
+    prepare:'完成的內容成品與交付清單。',
+    produce:'交付紀錄、修改紀錄、結案摘要。',
+    free:'成品交付確認與基本摘要。',paid:'完整交付報告、數據分析、優化建議。',internal:'內部復盤與流程優化筆記。',
+    files:'交付清單、結案報告(客戶版)、修改紀錄、復盤筆記(顧問版)',next:'10 下一階段建議'},
+  nextround:{n:10,zone:'D',zoneFull:'數據飛輪｜交付復盤',flow:'流程 10 · 下一階段建議',
+    purpose:'回看內容成果、整理下一輪方向、續約建議、下一批內容規劃,並回流到第 1 步需求對焦。',
+    prepare:'交付成果、數據表現、客戶回饋。',
+    produce:'數據回看摘要、下一輪主題方向、續約建議。',
+    free:'內容成效摘要與下一步建議。',paid:'完整數據分析與下一輪策略規劃。',internal:'內部策略復盤與成長路線。',
+    files:'數據復盤報告(顧問版)、下一輪建議(客戶版)、續約提案',next:'→ 回流到 1 需求對焦'}
+};
+function buildPoscard(stageId){
+  var d=POSCARD_DATA[stageId]; if(!d) return '';
+  function cell(cls,k,v){return '<div class="atl-poscard-cell'+(cls?' '+cls:'')+'"><div class="atl-poscard-k">'+k+'</div><div class="atl-poscard-v">'+esc(v)+'</div></div>';}
+  return '<div class="atl-poscard"><div class="atl-poscard-top">'
+    +'<span class="atl-poscard-zone">'+esc(d.zone)+' '+esc(d.zoneFull)+'</span>'
+    +'<span class="atl-poscard-flow">客戶流程：<b>'+esc(d.flow)+'</b></span>'
+    +'<span class="atl-poscard-tag">定位卡</span></div>'
+    +'<div class="atl-poscard-purpose"><b>本站目的 · </b>'+esc(d.purpose)+'</div>'
+    +'<details class="atl-poscard-det" open><summary><span class="chev">▶</span>準備 · 產出 · 交付邊界 · 可產出檔案</summary>'
+    +'<div class="atl-poscard-grid">'+cell('','我要準備',d.prepare)+cell('','會產出',d.produce)+'</div>'
+    +'<div class="atl-poscard-k" style="margin:10px 0 4px;font-size:11px;letter-spacing:1px;color:#8A7274">▼ 交付邊界（三層）</div>'
+    +'<div class="atl-poscard-boundary">'+cell('free','免費可交付',d.free)+cell('paid','付費解鎖',d.paid)+cell('nogo','內部不交付',d.internal)+'</div>'
+    +'<div class="atl-poscard-k" style="margin:10px 0 4px;font-size:11px;letter-spacing:1px;color:#8A7274">▼ 本階段可產出檔案</div>'
+    +'<div class="atl-poscard-files">'+esc(d.files)+'</div></details>'
+    +'<div class="atl-poscard-next">下一步 → <b>'+esc(d.next)+'</b></div></div>';
+}
+
+/* ─────── Marketing toolkit builder ─────── */
+function buildToolkit(stageId){
+  var idx=SID_TO_FLOW[stageId]; if(idx==null) return '';
+  var f=FLOW[idx];
+  var h='<details class="atl-mktool"><summary><span class="chev">▶</span>🧰 本站可用行銷工具</summary><div class="atl-mktool-grid">';
+  f.tools.forEach(function(t){
+    h+='<div class="atl-mktool-card"><h4>'+esc(t)+'</h4><p class="why">'+esc(f.toolPurpose)+'</p>'
+      +'<button type="button" onclick="window.__atlToolPrompt&&__atlToolPrompt(\''+esc(stageId)+'\',\''+esc(t)+'\')">一鍵提示詞</button></div>';
+  });
+  if(f.toolsAdv&&f.toolsAdv.length){
+    h+='<div style="grid-column:1/-1;font-size:11px;color:#8A7274;font-weight:700;margin-top:4px">▼ 選用／進階</div>';
+    f.toolsAdv.forEach(function(t){
+      h+='<div class="atl-mktool-card" style="opacity:.75"><h4>'+esc(t)+'</h4><p class="why">進階工具 — 有需要時再展開</p></div>';
+    });
+  }
+  h+='</div></details>';
+  return h;
+}
+
+/* ─────── Tool analysis paste-back card ─────── */
+var TOOL_TEMPLATE='═══ ATELIER 工具分析卡 ═══\n客戶／日期／站別：\n使用工具：\n一句話結論：\n主要判斷：\n判斷依據：\n信心程度：高／中／低\n對客戶生意的影響：\n對內容策略的影響：\n資料缺口：\n要向客戶確認的問題：\n下一步建議：\n客戶版一句話：';
+function buildToolCard(stageId){
+  return '<div class="atl-toolcard"><div class="atl-toolcard-head">📋 工具分析貼回卡</div>'
+    +'<textarea id="atl-toolcard-'+stageId+'" placeholder="把 AI 回傳的工具分析貼在這裡…" onchange="window.__atlToolCardSave&&__atlToolCardSave(\''+stageId+'\')">'+esc(getToolCardVal(stageId))+'</textarea>'
+    +'<div style="margin-top:4px;display:flex;gap:8px;flex-wrap:wrap">'
+    +'<button type="button" style="font-size:11px;padding:4px 10px;border:1px solid #C9A57A;border-radius:7px;background:#FFFDFB;color:#A51820;font-weight:700;cursor:pointer;font-family:inherit" '
+    +'onclick="var t=document.getElementById(\'atl-toolcard-'+stageId+'\');if(t&&!t.value.trim()){t.value=window.__atlToolTemplate||\'\';}">載入空白模板</button></div></div>';
+}
+window.__atlToolTemplate=TOOL_TEMPLATE;
+function getToolCardVal(sid){try{var a=curAcc();return(a&&a.profile&&a.profile['toolCard_'+sid])||'';}catch(e){return '';}}
+window.__atlToolCardSave=function(sid){try{var a=curAcc();if(!a)return;if(!a.profile)a.profile={};var el=document.getElementById('atl-toolcard-'+sid);if(el)a.profile['toolCard_'+sid]=el.value;if(typeof saveCurrent==='function')saveCurrent(true);}catch(e){}};
+window.__atlToolPrompt=function(sid,tool){
+  try{var a=curAcc();if(!a){toast('請先選擇客戶');return;}
+  var name=a.displayName||a.handle||'';
+  var p='你是 ATELIER 自媒體商業閉環顧問。\n\n客戶：'+name+'\n目前在：'+sid+'\n使用工具：'+tool+'\n\n請用「'+tool+'」分析這位客戶,並用以下格式回覆：\n\n'+TOOL_TEMPLATE;
+  if(typeof copyPrompt==='function')copyPrompt(p,'行銷工具提示詞 · '+tool);
+  else{navigator.clipboard.writeText(p).then(function(){toast('✓ 已複製提示詞');});}
+  }catch(e){toast('複製失敗');}
+};
+
+/* ─────── C 轉換後端提醒 ─────── */
+function buildCzoneRemind(){
+  return '<div class="atl-czone-remind"><b>C 轉換後端｜上線承接</b><br>'
+    +'如果本次服務包含上線、CTA、導流、私域、LINE、表單、預約、成交承接，請補 C 轉換後端資料。<br>'
+    +'<span style="font-size:11px;color:#B0896C">未來 C 可獨立為進階模組。目前請在本站欄位中備註。</span></div>';
+}
+
+/* ─────── C/D Advertising MVP (station 9) ─────── */
+function buildAdMVP(stageId){
+  if(stageId!=='stage7') return '';
+  var a=(typeof curAcc==='function')?curAcc():null;
+  var hasAd=(a&&a.profile&&a.profile.hasAdBudget==='是');
+  return '<details class="atl-mktool"'+(hasAd?' open':'')+'><summary><span class="chev">▶</span>💰 投放子模組（客戶有投放預算才開）</summary>'
+    +'<div style="padding:8px 14px 12px"><div class="atl-newst-fld"><label>客戶有投放預算？</label>'
+    +'<select id="atl-ad-budget" onchange="window.__atlAdSave&&__atlAdSave()"><option value="否"'+(!hasAd?' selected':'')+'>否</option><option value="是"'+(hasAd?' selected':'')+'>是</option></select></div>'
+    +(hasAd?buildAdFields():'<div style="font-size:12px;color:#8A7274;margin-top:6px">選「是」後展開投放欄位。</div>')
+    +'</div></details>';
+}
+function buildAdFields(){
+  var fields=['投放目標','上線平台','受眾設定','素材版本','廣告格式','CTA','Landing Page/LINE/表單','Pixel/UTM/事件追蹤','再行銷受眾','A/B Test'];
+  return '<div class="atl-admod"><div class="atl-admod-head">📊 投放設定（MVP）</div>'
+    +fields.map(function(f){return '<div class="atl-newst-fld"><label>'+esc(f)+'</label><textarea rows="1" placeholder="'+esc(f)+'…"></textarea></div>';}).join('')+'</div>';
+}
+window.__atlAdSave=function(){try{var a=curAcc();if(!a)return;if(!a.profile)a.profile={};var el=document.getElementById('atl-ad-budget');if(el)a.profile.hasAdBudget=el.value;if(typeof saveCurrent==='function')saveCurrent(true);renderExtStage('stage7');}catch(e){}};
+
+/* ─────── Advertising diagnostics (station 10) ─────── */
+function buildAdDiag(){
+  var metrics=[
+    ['CTR','點擊率','CTR 壞 → 修內容／Hook／封面／受眾'],
+    ['CPM','千次曝光成本','CPM 高 → 受眾太窄或競價激烈'],
+    ['CPC','每次點擊成本','CPC 高 → 素材吸引力不足'],
+    ['CVR','轉換率','CVR 壞 → 修承接頁／Offer／CTA'],
+    ['CPA/CPL','每次獲客成本','CPA 高 → 看整條漏斗'],
+    ['ROAS','廣告投報率','ROAS 壞 → 看整條漏斗、LTV、定價'],
+    ['CAC','客戶獲取成本','CAC 高 → 檢查渠道效率'],
+    ['LTV','客戶終身價值','LTV 壞 → 修產品、服務、留存與 CRM']
+  ];
+  return '<details class="atl-mktool"><summary><span class="chev">▶</span>📊 投放指標診斷卡</summary>'
+    +'<div class="atl-mktool-grid">'+metrics.map(function(m){
+      return '<div class="atl-mktool-card"><h4>'+esc(m[0])+' — '+esc(m[1])+'</h4><p class="why">'+esc(m[2])+'</p></div>';
+    }).join('')+'</div></details>';
+}
+
+/* ─────── 10-step timeline (override v8.58 cflow) ─────── */
+function buildTimeline(stageId){
+  var idx=SID_TO_FLOW[stageId]; if(idx==null) return '';
+  var cur=FLOW[idx];
+  var h='<div class="atl-cflow"><div class="atl-cflow-head">客戶合作流程<span class="step-hint">你現在在第 '+cur.n+' 步</span></div>';
+  h+='<div class="atl-cflow-track">';
+  FLOW.forEach(function(f,i){
+    if(i) h+='<span class="atl-cflow-arr">›</span>';
+    var isOn=(i===idx);
+    h+='<button type="button" class="atl-cflow-node'+(isOn?' atl-cflow-on':'')+'" onclick="switchTo(\''+f.stageId+'\')">'
+      +'<span class="atl-cflow-n">'+f.n+'</span><span class="atl-cflow-l">'+esc(f.label)+'</span></button>';
+  });
+  h+='</div>';
+  h+='<div class="atl-cflow-zone"><span class="atl-cflow-zone-pill">'+esc(cur.zone)+'</span>'+esc(cur.zoneFull)+'</div></div>';
+  return h;
+}
+
+/* ─────── Client meta (status/type) dropdowns ─────── */
+function buildMeta(){
+  var STATUS=['未設定','未接觸','提案前','已簽約','執行中','交付中','復盤續約'];
+  var TYPES=['未設定','10支內容週期','20支內容週期','30支內容週期','單次診斷','長期陪跑','售後支援'];
+  var a=(typeof curAcc==='function')?curAcc():null;
+  var cs=(a&&a.profile&&a.profile.clientStatus)||'';
+  var st=(a&&a.profile&&a.profile.serviceType)||'';
+  return '<div class="atl-cmeta"><label>客戶狀態</label><select id="atl-cmeta-status" onchange="window.__atlCmetaSave()">'
+    +STATUS.map(function(o){return '<option'+(o===cs?' selected':'')+'>'+esc(o)+'</option>';}).join('')+'</select>'
+    +'<label>服務型態</label><select id="atl-cmeta-type" onchange="window.__atlCmetaSave()">'
+    +TYPES.map(function(o){return '<option'+(o===st?' selected':'')+'>'+esc(o)+'</option>';}).join('')+'</select></div>';
+}
+
+/* ─────── Service package (stage1 only) ─────── */
+function buildSvcPkg(stageId){
+  if(stageId!=='stage1') return '';
+  var a=(typeof curAcc==='function')?curAcc():null;
+  var val=(a&&a.profile&&a.profile.svcPackage)||'';
+  return '<div class="atl-svcpkg"><div class="atl-svcpkg-head">📋 工作台本次服務包（從上游貼入）</div>'
+    +'<textarea class="atl-svcpkg-area" id="atl-svcpkg-txt" placeholder="把影片診斷工作台產出的「本次服務包」貼在這裡…" onchange="window.__atlSvcPkgSave()">'+esc(val)+'</textarea>'
+    +'<div class="atl-svcpkg-hint">工作台=上游(影片診斷+服務包),中控台=下游(承接/整理/分流/交付)</div></div>';
+}
+
+/* ─────── Full top block for any station ─────── */
+function buildTopBlock(stageId){
+  return buildLoopBar(stageId)+buildTimeline(stageId)+buildMeta()+buildPoscard(stageId)+buildToolkit(stageId)+buildToolCard(stageId)+buildSvcPkg(stageId)
+    +(stageId==='stage7'||stageId==='nextround'?buildCzoneRemind():'')
+    +(buildAdMVP(stageId));
+}
+
+/* ─────── Render functions for 3 new stations ─────── */
+var NEW_STATION_FIELDS={
+  shoot:[
+    ['shootDate','拍攝日期','填入拍攝日期'],
+    ['shootList','拍攝清單','列出所有要拍的內容項目'],
+    ['scenes','場景','每個場景的地點、佈置、注意事項'],
+    ['cast','人物／出鏡者','誰出鏡、角色、服裝道具'],
+    ['storyboard','分鏡確認','腳本分鏡是否全部確認'],
+    ['onSiteMemo','現場備忘','拍攝當天要特別注意的事'],
+    ['dayFlow','拍攝日流程','時間表：幾點集合、幾點開拍、幾點收工'],
+    ['shootStatus','完成狀態','拍攝是否完成、有無需要補拍']
+  ],
+  postprod:[
+    ['editStatus','剪輯狀態','目前剪輯進度：初剪／二剪／定剪'],
+    ['subtitles','字幕','字幕是否完成、需不需要客戶校對'],
+    ['cover','封面','封面設計是否完成、版本'],
+    ['versionMgmt','版本管理','目前第幾版、修改了什麼'],
+    ['revisionLog','修改紀錄','客戶要求修改的內容'],
+    ['clientCheck','客戶檢查','客戶是否確認、有無回饋'],
+    ['outputSpec','輸出規格','解析度、格式、平台規格'],
+    ['prodStatus','成品狀態','是否可交付']
+  ],
+  nextround:[
+    ['dataReview','數據回看','觀看數、互動數、留存、轉換表現'],
+    ['contentPerf','內容表現摘要','哪些內容表現好、哪些差、為什麼'],
+    ['nextThemes','下一輪主題方向','根據數據建議下一批內容方向'],
+    ['renewalAdvice','續約建議','是否續約、調整方案建議'],
+    ['nextBatch','下一批內容規劃','下一輪的主題、數量、時程'],
+    ['loopBack','回流到需求對焦','帶著這次經驗重新進入第 1 步']
+  ]
+};
+function renderNewStation(stageId){
+  var a=(typeof curAcc==='function')?curAcc():null;
+  var box=document.getElementById('view-'+stageId); if(!box) return;
+  if(!a||!a.id){box.innerHTML='<div class="hint" style="margin:40px 20px">請先到「選擇客戶」選一位客戶。</div>';return;}
+  var fields=NEW_STATION_FIELDS[stageId]||[];
+  var d=POSCARD_DATA[stageId]||{};
+  var flowData={}; try{var f=ensureFlow(a);var key='stage_'+stageId;if(f[key]&&f[key].data)flowData=f[key].data;}catch(e){}
+  var h='<div class="page-head"><div class="ph-en">FLOW '+d.n+' · '+esc((d.flow||'').replace(/流程 \d+ · /,'').toUpperCase())+' </div>'
+    +'<h2 class="ph-title">'+esc(d.flow||stageId)+'</h2></div>';
+  h+=buildTopBlock(stageId);
+  h+='<div class="atl-newst-section"><h3>'+esc(d.flow||stageId)+' — 工作區</h3>';
+  fields.forEach(function(fd){
+    h+='<div class="atl-newst-fld"><label>'+esc(fd[1])+'</label>'
+      +'<textarea id="ns-'+stageId+'-'+fd[0]+'" placeholder="'+esc(fd[2])+'">'+esc(flowData[fd[0]]||'')+'</textarea></div>';
+  });
+  h+='<div style="margin-top:12px"><button type="button" style="padding:8px 16px;background:#A51820;color:#fff;border:none;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit" onclick="window.__atlNsSave(\''+stageId+'\')">💾 儲存本站資料</button></div></div>';
+  if(stageId==='nextround'){
+    h+=buildAdDiag();
+    h+='<div style="margin:16px 0;text-align:center"><button type="button" style="padding:12px 24px;background:linear-gradient(135deg,#A51820,#7A1018);color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;box-shadow:0 4px 14px rgba(165,24,32,.22)" onclick="switchTo(\'stage1\')">🔄 回流到第 1 步 · 需求對焦</button></div>';
+  }
+  box.innerHTML=h;
+}
+window.renderShoot=function(){renderNewStation('shoot');};
+window.renderPostprod=function(){renderNewStation('postprod');};
+window.renderNextround=function(){renderNewStation('nextround');};
+
+/* ─────── Save for new stations ─────── */
+window.__atlNsSave=function(stageId){
+  try{
+    var a=curAcc(); if(!a) return;
+    var f=ensureFlow(a); var key='stage_'+stageId;
+    if(!f[key]) f[key]={status:'not-started',updatedAt:Date.now(),data:{}};
+    var fields=NEW_STATION_FIELDS[stageId]||[];
+    var data={}, filled=0;
+    fields.forEach(function(fd){
+      var el=document.getElementById('ns-'+stageId+'-'+fd[0]);
+      if(el&&el.value.trim()){data[fd[0]]=el.value.trim();filled++;}
+    });
+    f[key].data=data; f[key].status=filled?'in-progress':'not-started'; f[key].updatedAt=Date.now();
+    a.updatedAt=Date.now();
+    if(typeof saveCurrent==='function') saveCurrent(true);
+    if(typeof toast==='function') toast('✓ 已儲存 · '+stageId);
+  }catch(e){if(typeof toast==='function') toast('儲存失敗');}
+};
+
+/* ─────── Override existing addon inject for 7 old stations ─────── */
+/* Instead of removing old addons, we override what they show by re-injecting after their inject */
+function injectV90Top(stageId){
+  try{
+    var view=document.getElementById('view-'+stageId); if(!view) return;
+    /* Remove old addon elements */
+    ['atl-cflow','atl-poscard','atl-cmeta','atl-svcpkg','atl-toolcard','atl-mktool','atl-bloop','atl-czone-remind'].forEach(function(cls){
+      var old; while((old=view.querySelector('.'+cls))){old.remove();}
+    });
+    /* Also remove any loose .atl-cmeta inside .atl-cflow */
+    var oldCf=view.querySelector('.atl-cflow'); if(oldCf){var oldM=oldCf.querySelector('.atl-cmeta');if(oldM)oldM.remove();}
+    /* Check if page-head exists (= client selected) */
+    var ph=view.querySelector('.page-head'); if(!ph) return;
+    /* Build new top block */
+    var wrapper=document.createElement('div'); wrapper.className='atl-v90-top';
+    wrapper.innerHTML=buildTopBlock(stageId);
+    /* Insert before first child */
+    if(view.firstChild) view.insertBefore(wrapper,view.firstChild); else view.appendChild(wrapper);
+  }catch(e){}
+}
+/* Wrap render functions */
+function wrapRender(name,fixedStage){
+  var orig=window[name]; if(typeof orig!=='function'||orig.__v90w) return;
+  var w=function(){var r=orig.apply(this,arguments);try{var sid=fixedStage||arguments[0];if(sid)injectV90Top(sid);}catch(e){}return r;};
+  w.__v90w=true; window[name]=w;
+}
+wrapRender('renderStage1','stage1'); wrapRender('renderStage2','stage2'); wrapRender('renderStage3','stage3'); wrapRender('renderExtStage',null);
+
+/* Auto-save for new station views */
+['view-shoot','view-postprod','view-nextround'].forEach(function(vid){
+  var v=document.getElementById(vid);
+  if(v){v.addEventListener('input',function(){if(typeof _scheduleAutoSave==='function')_scheduleAutoSave();});
+        v.addEventListener('change',function(){if(typeof _scheduleAutoSave==='function')_scheduleAutoSave();});}
+});
+
+/* Initial inject if a station is already showing */
+try{var on=document.querySelector('.view.on');if(on&&on.id){var sid=on.id.replace('view-','');if(SID_TO_FLOW[sid]!=null)injectV90Top(sid);}}catch(e){}
+
 })();
 </script>
