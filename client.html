@@ -58,10 +58,10 @@
 (function(){try{var t="__atlls";window.localStorage.setItem(t,"1");window.localStorage.removeItem(t);}catch(e){try{var mem={};Object.defineProperty(window,"localStorage",{configurable:true,value:{getItem:function(k){return Object.prototype.hasOwnProperty.call(mem,k)?mem[k]:null;},setItem:function(k,v){mem[k]=String(v);},removeItem:function(k){delete mem[k];},clear:function(){mem={};},key:function(i){return Object.keys(mem)[i]||null;},get length(){return Object.keys(mem).length;}}});}catch(e2){}}})();
 </script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>ATELIER 客戶服務台</title>
+<title>ATELIER 中控台</title>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="ATELIER 客戶服務台">
+<meta name="apple-mobile-web-app-title" content="ATELIER 中控台">
 <meta name="theme-color" content="#A51820">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700;900&family=Noto+Sans+TC:wght@400;500;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -799,7 +799,7 @@ details.cat summary .cat-name{vertical-align:middle}
 .btn-deliver-2.pdf{margin-right:8px;background:#FBEDED}
 </style>
 <style id="atl-cs856-noanchor">
-/* cs-v8.56: 關閉瀏覽器捲動錨定(scroll anchoring)。③~⑦ 點開「服務台總控／閉環／客戶現況」時,
+/* cs-v8.56: 關閉瀏覽器捲動錨定(scroll anchoring)。③~⑦ 點開「中控台總控／閉環／客戶現況」時,
    面板插入在進度卡下方(=目前捲動位置的上方),瀏覽器本來會自動調整 scrollTop 想「保持內容穩定」
    → 反而把畫面拉到卡的中間/上下亂跑(=跳針)。關掉錨定後,面板往下出現、畫面停在原地,
    由使用者自己往下拉(=②建檔的體感)。純 CSS、可逆。 */
@@ -846,7 +846,7 @@ html, body { overflow-anchor: none; }
     <div style="max-width:420px;width:100%;background:#fff;border:1px solid #E8E3DA;border-radius:12px;padding:32px 24px;box-shadow:0 16px 48px rgba(42,26,28,.08)">
       <div style="text-align:center;margin-bottom:28px">
         <div style="width:72px;height:72px;margin:0 auto 16px;border-radius:16px;background:radial-gradient(circle at 50% 30%,#AE2F36,#94151C);color:#FDFBF8;display:flex;align-items:center;justify-content:center;font-family:Cormorant Garamond,'Noto Serif TC',serif;font-size:34px;font-weight:600;box-shadow:0 12px 32px rgba(165,24,32,.25)">A</div>
-        <div style="font-family:Noto Serif TC,serif;font-size:22px;font-weight:900;color:#2A1A1C;margin-bottom:4px">ATELIER 客戶服務台</div>
+        <div style="font-family:Noto Serif TC,serif;font-size:22px;font-weight:900;color:#2A1A1C;margin-bottom:4px">ATELIER 中控台</div>
         <div style="font-size:11px;color:#A51820;letter-spacing:.25em;font-weight:700;margin-bottom:8px">PRIVATE · FOUNDERS ONLY</div>
         <div style="font-size:12px;color:#7A5A5E;font-style:italic">請登入以繼續</div>
       </div>
@@ -872,7 +872,7 @@ html, body { overflow-anchor: none; }
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">中控台</span></span>
-    <span id="verBadge">cs-v9.0</span>
+    <span id="verBadge">v1.0</span>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button type="button" id="atlSpecBtn" class="popout-btn" title="規格模式（點一下開啟，再點任一元件看它的規格）"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7l4-4 14 14-4 4z"/><path d="M9 5l1.5 1.5M12 8l1.5 1.5M15 11l1.5 1.5"/></svg>規格</button>
@@ -916,7 +916,7 @@ html, body { overflow-anchor: none; }
 <!-- ═══ 選擇客戶（預設頁）═══ -->
 <div class="view on" id="view-select">
   <div class="page-head">
-    <div class="ph-en">CLIENT SERVICE DESK</div>
+    <div class="ph-en">ATELIER COMMAND CENTER</div>
     <h2 class="ph-title">選擇客戶</h2>
     <div class="ph-sub">Pick one client. Walk the whole cycle, from intake to delivery.</div>
   </div>
@@ -5344,8 +5344,8 @@ window.addEventListener('DOMContentLoaded', function(){
     if(stageId==='stage4'){ moveInto('#atlP3Card','trans'); moveInto('#atlP3ExtraCard','trans'); (function(){ var pane=wrap.querySelector('.sxpane[data-sxpane=produce]'); var cta=box.querySelector('.cta1c-card'); if(pane&&cta&&pane.firstChild!==cta){ pane.insertBefore(cta, pane.firstChild); } })(); }
     if(stageId==='stage6'){ moveInto('.cmp-card','battle'); moveInto('#cmpExtraCard','battle'); }
     if(stageId==='stage7'){ moveInto('.rvw-card','recap'); moveInto('#rvwx9-host','recap'); moveInto('.atl-final-card','sum'); } /* cs-v8.31:復盤卡的額外項目卡(#rvwx9-host)也一起搬進recap分頁、排在復盤卡後面(原本被漏掉留在最頂端) */
-    /* cs-v7.75: 閉環視角(.cs-lens)/服務台總控(.atl452safe) 不再硬搬進填寫頁 —— 改交還給「客戶進度歸檔卡」原生的收合鈕(__atlToggleLoop/__atlToggleMaster)管理,跟①-③一樣可收合;預設由 sx-declutter 的 > 直接子層規則收起(不浮在頂部) */
-    /* cs-v7.84: 服務台總控面板(.atl452safe) → 搬到「客戶進度歸檔卡」正下方(仍在 sxtabwrap 之前,不會被下面 loose 迴圈收進填寫頁)。配 v7.78 的「沒 atl-master-open 就隱藏」CSS → 點歸檔卡「服務台總控 ▾」就展開在卡片下方,不在頁面頂端。 */
+    /* cs-v7.75: 閉環視角(.cs-lens)/中控台總控(.atl452safe) 不再硬搬進填寫頁 —— 改交還給「客戶進度歸檔卡」原生的收合鈕(__atlToggleLoop/__atlToggleMaster)管理,跟①-③一樣可收合;預設由 sx-declutter 的 > 直接子層規則收起(不浮在頂部) */
+    /* cs-v7.84: 中控台總控面板(.atl452safe) → 搬到「客戶進度歸檔卡」正下方(仍在 sxtabwrap 之前,不會被下面 loose 迴圈收進填寫頁)。配 v7.78 的「沒 atl-master-open 就隱藏」CSS → 點歸檔卡「中控台總控 ▾」就展開在卡片下方,不在頁面頂端。 */
     try{ var _mcard=box.querySelector('.client-progress-bar'); var _mp=box.querySelector('.atl452safe'); if(_mcard&&_mp&&_mcard.nextSibling!==_mp){ _mcard.parentNode.insertBefore(_mp,_mcard.nextSibling); } }catch(e){}
     var loose=[],seen=false; [].slice.call(box.children).forEach(function(el){ if(el===wrap){ seen=true; return; } if(seen&&el.nodeType===1) loose.push(el); }); loose.forEach(function(el){ fill.appendChild(el); }); }catch(e){} };
   window.renderExtStage=function(stageId){
@@ -8654,7 +8654,7 @@ details.ovBlock > summary .ovx-tag.has{color:#9C7D4A}
         var gaps=(diag.gaps&&diag.gaps.length)?diag.gaps:[]; var gy=3.5;
         if(gaps.length){ s5.addText('最該補的缺口',{x:.85,y:gy,w:11,h:.35,fontSize:13,bold:true,color:C.text2,fontFace:_sans}); gy+=.5;
           gaps.slice(0,4).forEach(function(g){ s5.addText('▸ '+clip(g,46),{x:1.0,y:gy,w:11,h:.4,fontSize:14,color:C.text,fontFace:_sans}); gy+=.5; }); }
-      } else { s5.addText('在工作台「策略診斷」跑完、按「送服務台」後，這頁會帶出目標層／關鍵階段／缺口。',{x:.85,y:2.6,w:11,h:.8,fontSize:14,color:C.text3,fontFace:_sans}); }
+      } else { s5.addText('在工作台「策略診斷」跑完、按「送中控台」後，這頁會帶出目標層／關鍵階段／缺口。',{x:.85,y:2.6,w:11,h:.8,fontSize:14,color:C.text3,fontFace:_sans}); }
 
       // 6 結尾
       var s6=pptx.addSlide(); s6.background={color:C.primary};
@@ -8782,7 +8782,7 @@ details.ovBlock > summary .ovx-tag.has{color:#9C7D4A}
         var gaps=(diag.gaps&&diag.gaps.length)?diag.gaps:[]; var gy=3.4; if(gaps.length){ s6.addText('最該補的缺口',{x:.85,y:gy,w:11,h:.35,fontSize:13,bold:true,color:C.text2,fontFace:_sans}); gy+=.5; gaps.slice(0,4).forEach(function(g){ s6.addText('▸ '+clip(g,46),{x:1.0,y:gy,w:11,h:.4,fontSize:14,color:C.text,fontFace:_sans}); gy+=.5; }); } }
       else { var p=a.profile||{}; var pos=p.positioning;
         if(pos&&String(pos).trim()){ s6.addText('帳號定位',{x:.85,y:2.5,w:11,h:.35,fontSize:13,bold:true,color:C.text2,fontFace:_sans}); s6.addText(clip(pos,80),{x:.85,y:3.0,w:11.5,h:.7,fontSize:15,color:C.text,fontFace:_sans}); }
-        else s6.addText('在工作台「策略診斷」跑完並「送服務台」後，這頁會帶出目標層／關鍵階段／缺口。',{x:.85,y:2.5,w:11,h:.8,fontSize:14,color:C.text3,fontFace:_sans}); }
+        else s6.addText('在工作台「策略診斷」跑完並「送中控台」後，這頁會帶出目標層／關鍵階段／缺口。',{x:.85,y:2.5,w:11,h:.8,fontSize:14,color:C.text3,fontFace:_sans}); }
       brandFoot(s6);
 
       // 7 結尾
@@ -9819,7 +9819,7 @@ function setFilter(m){document.body.classList.remove('atl452safe-filter-research
 function setMode(m){document.body.classList.remove('atl452safe-mode-quick','atl452safe-mode-standard','atl452safe-mode-deep');document.body.classList.add('atl452safe-mode-'+m);try{localStorage.setItem('atelier_case_mode',m)}catch(e){}document.querySelectorAll('.atl452safe-mode button').forEach(function(b){b.classList.toggle('on',b.getAttribute('data-mode')===m)})}
 function classify(){document.querySelectorAll('button,a').forEach(function(b){if(b.getAttribute('data-atl452safe-kind'))return;var t=(b.textContent||'').trim();if(!/提示詞|複製|Hook|CTA|行動出口|特點|賣點|轉譯|交接|戰役|問診|AI|診斷|PPT|PDF|HTML/.test(t))return;var k='交付用';if(/問診|ICP|Offer|承接|證據|原料|補/.test(t))k='問診用';if(/市場|案例|對標|Hook|拆|轉譯公式|工作台/.test(t))k='研究用';if(/交付|戰役|CTA|行動出口|客戶版|顧問版|PPT|PDF|HTML/.test(t))k='交付用';b.setAttribute('data-atl452safe-kind',k);b.classList.add('atl452safe-kind');b.title=(b.title?b.title+'｜':'')+'提示詞分類：'+k})}
 function exportHTML(a){var w=window.open('','_blank');if(!w){cp(packText(a),'已複製交付包');return}var html='<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><title>ATELIER 客戶賣點交付包</title><style>body{font-family:Noto Sans TC,sans-serif;background:#FDFBF8;color:#2A1A1C;padding:44px;line-height:1.8;white-space:pre-wrap}h1{font-family:Noto Serif TC,serif;color:#A51820}</style></head><body><h1>ATELIER 客戶賣點交付包</h1>'+esc(packText(a))+'</body></html>';w.document.write(html);w.document.close()}
-function render(){var host=document.querySelector('.view.on')||document.body;if(!host||host.querySelector('[data-atl452safe]'))return;var a=cur(),st=status(a),b=brief(a);var div=document.createElement('div');div.className='atl452safe';div.setAttribute('data-atl452safe','1');div.innerHTML='<h3>服務台總控</h3><p>乾淨注入版：服務台只負責收客戶原料、特點變賣點、CTA 行動出口、內容戰役與交付。</p><div class="atl452safe-grid"><div class="atl452safe-card"><b>1 工作台策略</b><span>'+(st.handoff?'已接住':'待從工作台保存')+'</span></div><div class="atl452safe-card"><b>2 商業原料</b><span>'+(st.raw?'已有原料':'待補 ICP / Offer / 承接')+'</span></div><div class="atl452safe-card"><b>3 特點賣點</b><span>'+(st.sell?'可供 CTA 與戰役':'待補特點與白話利益')+'</span></div><div class="atl452safe-card"><b>4 交付輸出</b><span>'+(st.pack?'已合成交付包':'待合成')+'</span></div></div><div><span class="atl452safe-pill '+(st.handoff?'ok':'hot')+'">策略 '+(st.handoff?'OK':'待補')+'</span><span class="atl452safe-pill '+(st.raw?'ok':'hot')+'">原料 '+(st.raw?'OK':'待補')+'</span><span class="atl452safe-pill '+(st.sell?'ok':'hot')+'">賣點 '+(st.sell?'OK':'待補')+'</span><span class="atl452safe-pill '+(st.pack?'ok':'hot')+'">交付包 '+(st.pack?'OK':'待合成')+'</span></div><div class="atl452safe-mode"><button data-mode="quick">快速模式</button><button data-mode="standard">標準模式</button><button data-mode="deep">深度模式</button></div><div class="atl452safe-filter"><button data-filter="all">全部提示詞</button><button data-filter="research">只看研究用</button><button data-filter="intake">只看問診用</button><button data-filter="delivery">只看交付用</button></div><div class="atl452safe-mini" data-atl452safe-level="standard"><label>客戶特點<textarea class="atl452safe-ta" data-k="features">'+esc(b.features||'')+'</textarea></label><label>觀眾痛點<textarea class="atl452safe-ta" data-k="pain">'+esc(b.pain||'')+'</textarea></label><label>白話利益<textarea class="atl452safe-ta" data-k="benefit">'+esc(b.benefit||'')+'</textarea></label><label>CTA 行動出口<textarea class="atl452safe-ta" data-k="cta">'+esc(b.cta||'')+'</textarea></label><label>可用 Hook<textarea class="atl452safe-ta" data-k="hook">'+esc(b.hook||'')+'</textarea></label><label>可拍主題<textarea class="atl452safe-ta" data-k="topics">'+esc(b.topics||'')+'</textarea></label></div><div class="atl452safe-actions"><button class="atl452safe-btn" data-save>保存特點→賣點卡</button><button class="atl452safe-btn ghost" data-pack>合成/複製交付包</button><button class="atl452safe-btn ghost" data-html data-atl452safe-level="deep">輸出 HTML</button></div><div class="atl452safe-note">CTA 行動出口＝誰×卡點×下一步×承接窗口×得到什麼。</div>';div.querySelector('[data-save]').onclick=function(){var aa=cur();if(!aa){alert('請先選客戶');return}aa.sellingPointBrief=aa.sellingPointBrief||{};div.querySelectorAll('[data-k]').forEach(function(x){aa.sellingPointBrief[x.getAttribute('data-k')]=x.value});aa.sellingPointBrief.updatedAt=new Date().toISOString();save()};div.querySelector('[data-pack]').onclick=function(){var aa=cur();if(!aa){alert('請先選客戶');return}aa.sellingPointDeliveryPack={text:packText(aa),updatedAt:new Date().toISOString(),source:'service-desk-v452-safe'};save();cp(aa.sellingPointDeliveryPack.text,'已合成並複製交付包')};div.querySelector('[data-html]').onclick=function(){exportHTML(cur())};div.querySelectorAll('[data-filter]').forEach(function(bn){bn.onclick=function(){setFilter(bn.getAttribute('data-filter'))}});div.querySelectorAll('[data-mode]').forEach(function(bn){bn.onclick=function(){setMode(bn.getAttribute('data-mode'))}});host.insertBefore(div,host.firstChild);setMode(localStorage.getItem('atelier_case_mode')||'standard')}
+function render(){var host=document.querySelector('.view.on')||document.body;if(!host||host.querySelector('[data-atl452safe]'))return;var a=cur(),st=status(a),b=brief(a);var div=document.createElement('div');div.className='atl452safe';div.setAttribute('data-atl452safe','1');div.innerHTML='<h3>中控台總控</h3><p>乾淨注入版：服務台只負責收客戶原料、特點變賣點、CTA 行動出口、內容戰役與交付。</p><div class="atl452safe-grid"><div class="atl452safe-card"><b>1 工作台策略</b><span>'+(st.handoff?'已接住':'待從工作台保存')+'</span></div><div class="atl452safe-card"><b>2 商業原料</b><span>'+(st.raw?'已有原料':'待補 ICP / Offer / 承接')+'</span></div><div class="atl452safe-card"><b>3 特點賣點</b><span>'+(st.sell?'可供 CTA 與戰役':'待補特點與白話利益')+'</span></div><div class="atl452safe-card"><b>4 交付輸出</b><span>'+(st.pack?'已合成交付包':'待合成')+'</span></div></div><div><span class="atl452safe-pill '+(st.handoff?'ok':'hot')+'">策略 '+(st.handoff?'OK':'待補')+'</span><span class="atl452safe-pill '+(st.raw?'ok':'hot')+'">原料 '+(st.raw?'OK':'待補')+'</span><span class="atl452safe-pill '+(st.sell?'ok':'hot')+'">賣點 '+(st.sell?'OK':'待補')+'</span><span class="atl452safe-pill '+(st.pack?'ok':'hot')+'">交付包 '+(st.pack?'OK':'待合成')+'</span></div><div class="atl452safe-mode"><button data-mode="quick">快速模式</button><button data-mode="standard">標準模式</button><button data-mode="deep">深度模式</button></div><div class="atl452safe-filter"><button data-filter="all">全部提示詞</button><button data-filter="research">只看研究用</button><button data-filter="intake">只看問診用</button><button data-filter="delivery">只看交付用</button></div><div class="atl452safe-mini" data-atl452safe-level="standard"><label>客戶特點<textarea class="atl452safe-ta" data-k="features">'+esc(b.features||'')+'</textarea></label><label>觀眾痛點<textarea class="atl452safe-ta" data-k="pain">'+esc(b.pain||'')+'</textarea></label><label>白話利益<textarea class="atl452safe-ta" data-k="benefit">'+esc(b.benefit||'')+'</textarea></label><label>CTA 行動出口<textarea class="atl452safe-ta" data-k="cta">'+esc(b.cta||'')+'</textarea></label><label>可用 Hook<textarea class="atl452safe-ta" data-k="hook">'+esc(b.hook||'')+'</textarea></label><label>可拍主題<textarea class="atl452safe-ta" data-k="topics">'+esc(b.topics||'')+'</textarea></label></div><div class="atl452safe-actions"><button class="atl452safe-btn" data-save>保存特點→賣點卡</button><button class="atl452safe-btn ghost" data-pack>合成/複製交付包</button><button class="atl452safe-btn ghost" data-html data-atl452safe-level="deep">輸出 HTML</button></div><div class="atl452safe-note">CTA 行動出口＝誰×卡點×下一步×承接窗口×得到什麼。</div>';div.querySelector('[data-save]').onclick=function(){var aa=cur();if(!aa){alert('請先選客戶');return}aa.sellingPointBrief=aa.sellingPointBrief||{};div.querySelectorAll('[data-k]').forEach(function(x){aa.sellingPointBrief[x.getAttribute('data-k')]=x.value});aa.sellingPointBrief.updatedAt=new Date().toISOString();save()};div.querySelector('[data-pack]').onclick=function(){var aa=cur();if(!aa){alert('請先選客戶');return}aa.sellingPointDeliveryPack={text:packText(aa),updatedAt:new Date().toISOString(),source:'service-desk-v452-safe'};save();cp(aa.sellingPointDeliveryPack.text,'已合成並複製交付包')};div.querySelector('[data-html]').onclick=function(){exportHTML(cur())};div.querySelectorAll('[data-filter]').forEach(function(bn){bn.onclick=function(){setFilter(bn.getAttribute('data-filter'))}});div.querySelectorAll('[data-mode]').forEach(function(bn){bn.onclick=function(){setMode(bn.getAttribute('data-mode'))}});host.insertBefore(div,host.firstChild);setMode(localStorage.getItem('atelier_case_mode')||'standard')}
 function tick(){try{classify();render()}catch(e){console.warn('[atl452 safe]',e)}}
 setInterval(tick,1200);setTimeout(tick,300);
 })();
@@ -10831,7 +10831,7 @@ button:not(:disabled), .btn:not(.disabled):not([disabled]), [role="button"]{
   function printPdf(){var items=collectSelected(); if(!items.length){toastSafe('請先勾選要進入最終交付的內容');return;} var a=cur(), title='ATELIER 最終交付總覽'; var body=selectedText().replace(/[&<>]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;'}[c]}).replace(/\n/g,'<br>'); var html='<!DOCTYPE html><html lang="zh-Hant"><meta charset="UTF-8"><title>'+title+'</title><body style="font-family:Noto Sans TC,Arial,sans-serif;background:#fff;color:#2A1A1C;padding:32px;line-height:1.8"><h1 style="font-family:Noto Serif TC,serif;color:#A51820">'+title+'</h1><div style="color:#7A5A5E;margin-bottom:22px">'+esc((a&&(a.displayName||a.name||a.handle))||'未選客戶')+'</div><div>'+body+'</div><scr'+'ipt>window.onload=function(){setTimeout(function(){window.print()},350)}<\/scr'+'ipt></body></html>'; var w=window.open('','_blank'); if(!w){toastSafe('請允許彈出視窗，才能列印成 PDF');return;} w.document.open(); w.document.write(html); w.document.close();} /* cs-v8.38:PDF=開新視窗列印,使用者選「另存為 PDF」 */
   function addCorner(slide,C,page,total,caption,title,source){slide.background={color:C.whisper}; slide.addText(caption,{x:.8,y:.55,w:6.5,h:.24,fontSize:11,color:C.sub,fontFace:'Cormorant Garamond',italic:true,charSpace:3}); slide.addText(String(page).padStart(2,'0')+' / '+String(total).padStart(2,'0'),{x:11.15,y:.55,w:1.2,h:.18,fontSize:10,color:C.sub,fontFace:'Cormorant Garamond',align:'right'}); if(title)slide.addText(title,{x:.8,y:1.15,w:11.8,h:.58,fontSize:30,bold:true,color:C.ink,fontFace:'Noto Serif TC',fit:'shrink'}); slide.addText(source||'ATELIER 客戶服務台',{x:.8,y:7.0,w:4,h:.18,fontSize:9,color:C.sub,fontFace:'Noto Sans TC'}); slide.addText('ATELIER',{x:10.4,y:7.0,w:1.9,h:.18,fontSize:9,color:C.sub,fontFace:'Cormorant Garamond',align:'right'});}
   function dlPpt(){var items=collectSelected(); if(!items.length){toastSafe('請先勾選要進入最終交付的內容');return;} renderRec(); var runner=function(){try{var pptx=(typeof pptFactory==='function')?pptFactory():(new (window.pptxgen||window.PptxGenJS)()); var C={whisper:'FDFBF8',soft:'FBF0EF',hero:'A51820',accent:'FAE8EA',ink:'2A1A1C',text:'5C4248',sub:'7A5A5E',line:'E8E3DA',gold:'D4A574'}; var a=cur(), nm=(a&&(a.displayName||a.name||a.handle))||'CLIENT'; var stages={}; items.forEach(function(it){(stages[it.stage]=stages[it.stage]||[]).push(it)}); var pages=2+Object.keys(stages).length+1; pptx.layout='LAYOUT_WIDE'; pptx.author='ATELIER'; pptx.company='ATELIER'; pptx.subject='最終交付總覽'; pptx.theme={headFontFace:'Noto Serif TC',bodyFontFace:'Noto Sans TC',lang:'zh-TW'}; var p=1, s=pptx.addSlide(); s.background={color:C.whisper}; s.addText('ATELIER · FINAL DELIVERY',{x:.8,y:1.1,w:8,h:.24,fontSize:12,color:C.sub,fontFace:'Cormorant Garamond',italic:true,charSpace:5}); s.addText(nm,{x:.8,y:2.1,w:11.6,h:.85,fontSize:46,bold:true,color:C.ink,fontFace:'Noto Serif TC',fit:'shrink'}); s.addShape('rect',{x:.8,y:3.22,w:4.8,h:.13,fill:{color:C.accent},line:{color:C.accent}}); s.addText('最終交付總覽',{x:.8,y:3.75,w:6,h:.42,fontSize:23,color:C.hero,fontFace:'Noto Serif TC'}); s.addText('Selected content · Stage review · Next action',{x:.8,y:4.35,w:6,h:.25,fontSize:13,color:C.text,fontFace:'Cormorant Garamond',italic:true}); s.addText('ATELIER',{x:.8,y:6.9,w:2,h:.18,fontSize:10,color:C.sub,fontFace:'Cormorant Garamond'});
-      p++; s=pptx.addSlide(); addCorner(s,C,p,pages,'EXECUTIVE SUMMARY','本次交付重點','資料來源：客戶服務台七站'); s.addText('已勾選 '+items.length+' 個交付項目，整理為 '+Object.keys(stages).length+' 個階段。',{x:.8,y:2.2,w:10.8,h:.45,fontSize:18,bold:true,color:C.hero,fontFace:'Noto Serif TC',fit:'shrink'}); s.addText(recPages(items).slice(0,6).map(function(x,i){return (i+1)+'. '+x}).join('\n'),{x:.95,y:3.0,w:10.9,h:3.2,fontSize:14,color:C.text,fontFace:'Noto Sans TC',breakLine:false,fit:'shrink',valign:'top'});
+      p++; s=pptx.addSlide(); addCorner(s,C,p,pages,'EXECUTIVE SUMMARY','本次交付重點','資料來源：ATELIER 中控台'); s.addText('已勾選 '+items.length+' 個交付項目，整理為 '+Object.keys(stages).length+' 個階段。',{x:.8,y:2.2,w:10.8,h:.45,fontSize:18,bold:true,color:C.hero,fontFace:'Noto Serif TC',fit:'shrink'}); s.addText(recPages(items).slice(0,6).map(function(x,i){return (i+1)+'. '+x}).join('\n'),{x:.95,y:3.0,w:10.9,h:3.2,fontSize:14,color:C.text,fontFace:'Noto Sans TC',breakLine:false,fit:'shrink',valign:'top'});
       Object.keys(stages).forEach(function(k){p++; var list=stages[k]; var sl=pptx.addSlide(); addCorner(sl,C,p,pages,'STAGE REVIEW',k,'資料來源：已勾選交付項目'); sl.addText(list.slice(0,6).map(function(it,i){return (i+1)+'. '+it.label+'：'+String(it.value||'').replace(/\s+/g,' ').slice(0,150)}).join('\n\n'),{x:.9,y:2.2,w:11.3,h:4.45,fontSize:12.5,color:C.text,fontFace:'Noto Sans TC',fit:'shrink',valign:'top',breakLine:false});});
       p++; s=pptx.addSlide(); addCorner(s,C,p,pages,'NEXT ACTION','確認交付與下一輪行動','資料來源：ATELIER 交付流程'); s.addText('建議先確認三件事',{x:.8,y:2.15,w:8,h:.36,fontSize:20,bold:true,color:C.hero,fontFace:'Noto Serif TC'}); s.addText('1. 哪些內容直接進客戶版交付\n2. 哪些內容保留在顧問版作戰計畫\n3. 下一輪要補拍、補問或補資料的優先順序',{x:1.0,y:3.0,w:10.2,h:2.0,fontSize:18,color:C.text,fontFace:'Noto Sans TC',breakLine:false,fit:'shrink'}); pptx.writeFile({fileName:'ATELIER_最終交付總覽_'+String(nm).replace(/[\\/:*?"<>|]/g,'_')+'.pptx'});}catch(e){console.error(e);toastSafe('PPT 產生失敗，請先確認瀏覽器可載入 PPT 元件');}}; if(window.pptxgen||window.PptxGenJS||typeof pptFactory==='function')runner(); else if(typeof loadPptx==='function')loadPptx(function(ok){if(ok)runner();else toastSafe('PPT 元件載入失敗')}); else toastSafe('找不到 PPT 元件');}
   function openFinal(){var a=cur(); if(!a){toastSafe('請先選擇一位客戶');return;} var md=qs('#modal'), sh=qs('#sheet'); if(!md||!sh)return; var html='<div class="atl-final-modal"><div class="atl-final-head"><div><div class="atl-final-kicker">ATELIER · FINAL DELIVERY</div><div class="atl-final-title">最終交付總覽</div><div class="atl-final-sub">先勾選哪幾站、哪些項目要進最終輸出；下方會先產生建議頁清單，再輸出 HTML / PPT / PDF。</div></div><button type="button" class="atl-final-close" data-final-close>×</button></div><div class="atl-final-ver" style="display:flex;gap:14px;align-items:center;margin:0 0 14px;flex-wrap:wrap"><span style="font-size:12.5px;color:#5C4248;font-weight:700">輸出版本</span><label style="display:inline-flex;align-items:center;gap:5px;font-size:13px;color:#2A1A1C;cursor:pointer"><input type="radio" name="atlFinalVer" value="client" checked onclick="window.__atlFinalVer=&quot;client&quot;">客戶版</label><label style="display:inline-flex;align-items:center;gap:5px;font-size:13px;color:#2A1A1C;cursor:pointer"><input type="radio" name="atlFinalVer" value="advisor" onclick="window.__atlFinalVer=&quot;advisor&quot;">顧問版</label></div><div id="atlFinalRec" class="atl-recbox"></div>';
@@ -10880,7 +10880,7 @@ button:not(:disabled), .btn:not(.disabled):not([disabled]), [role="button"]{
   if(window.__atlCs473Continuity) return; window.__atlCs473Continuity=true;
   function cleanTextNode(n){var s=n.nodeValue||''; var ns=s.replace(/cs-v4\.\d+\s*(SAFE|LATEST)?\s*[｜|·:-]?\s*/g,'').replace(/\bv\d{3}\s*[｜|·:-]?\s*/g,''); if(ns!==s)n.nodeValue=ns;}
   function cleanVersions(){
-    try{var vb=document.getElementById('verBadge'); if(vb)vb.textContent='cs-v9.0';}catch(e){}
+    try{var vb=document.getElementById('verBadge'); if(vb)vb.textContent='v1.0';}catch(e){}
     try{var w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT,{acceptNode:function(n){var p=n.parentElement; if(!p||p.id==='verBadge'||/^(SCRIPT|STYLE|TEXTAREA)$/i.test(p.tagName))return NodeFilter.FILTER_REJECT; return /(cs-v4\.\d+|\bv\d{3})/.test(n.nodeValue||'')?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_REJECT;}}); var nodes=[],n; while(n=w.nextNode())nodes.push(n); nodes.forEach(cleanTextNode);}catch(e){}
   }
   function alignSelection(){
@@ -10899,7 +10899,7 @@ button:not(:disabled), .btn:not(.disabled):not([disabled]), [role="button"]{
 <!-- ═══════════ cs-v4.75 · 操作壓版修正：總控收納＋欄位自動長高＋按鈕/狀態節制 ═══════════
      依《系統規範總則》D2/D3/D7/D8/D13：不新增大模組，只把既有操作變成能收、能看、能輸入。 -->
 <style id="atl-cs474-ux-tighten">
-/* 服務台總控可收納：預設只留標題與一句摘要，不再佔滿第一屏。 */
+/* 中控台總控可收納：預設只留標題與一句摘要，不再佔滿第一屏。 */
 .atl452safe{position:relative!important;overflow:visible!important}
 .atl452safe h3{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:12px!important;margin-bottom:8px!important}
 .atl-safe474-summary{font-size:11.5px!important;font-weight:500!important;color:#7A5A5E!important;-webkit-text-fill-color:#7A5A5E!important;margin-left:auto!important;line-height:1.6!important}
@@ -10940,7 +10940,7 @@ input[type="text"]:focus,input:not([type]):focus{border-color:#D4A574!important;
     btn.onclick=function(e){e.stopPropagation(); set(!safe.classList.contains('atl-safe474-collapsed'));};
     h.appendChild(summary); h.appendChild(btn); set(localStorage.getItem('atl.cs474.safeCollapsed')!=='0');
   }
-  function cleanBadge(){ var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v9.0'; }
+  function cleanBadge(){ var vb=qs('#verBadge'); if(vb)vb.textContent='v1.0'; }
   function run(){ cleanBadge(); ensureSafeCollapse(); wireAutogrow(document); }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run); else run();
   setInterval(run,1200);
@@ -11001,7 +11001,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
   function wire(root){qsa('textarea,input[type="text"],input[type="url"],input[type="email"],input:not([type])',root||document).forEach(function(el){if(el.__atl475)return; if(el.closest('.atl-field-modal,.atl-final-modal'))return; el.__atl475=true; el.addEventListener('focus',function(){show(el); autogrow(el)}); el.addEventListener('input',function(){autogrow(el)}); el.addEventListener('blur',hideSoon); autogrow(el);});}
   document.addEventListener('click',function(e){var b=e.target.closest('#atlFieldToolbar button'); if(!b||!active)return; var a=b.getAttribute('data-act'); if(a==='prompt')openModal('prompt',active); if(a==='fill')openModal('fill',active); if(a==='edit')openModal('edit',active); if(a==='done'){var bar=qs('#atlFieldToolbar'); if(bar)bar.classList.remove('on'); if(active)active.classList.remove('atl-field-active'); toastSafe('此欄位可視為定案，請記得儲存');}},true);
   function addCollapse(root){qsa('.section-card,.deliverable-card,.atl452safe-card',root||document).forEach(function(card){if(card.__atlCollapse475||card.closest('.preview-modal,.atl-field-modal'))return; card.__atlCollapse475=true; card.classList.add('atl-collapsible'); var h=qs('h2,h3,h4,.stitle,.section-title',card)||card.firstElementChild; if(h)h.classList.add('atl-keep-visible'); var btn=document.createElement('button'); btn.type='button'; btn.className='atl-collapse-toggle'; btn.textContent='收合'; btn.addEventListener('click',function(e){e.preventDefault(); e.stopPropagation(); var closed=card.classList.toggle('atl-closed'); btn.textContent=closed?'展開':'收合';}); card.insertBefore(btn,card.firstChild);});}
-  function boot(){try{var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v9.0';}catch(e){} wire(document); addCollapse(document);}
+  function boot(){try{var vb=qs('#verBadge'); if(vb)vb.textContent='v1.0';}catch(e){} wire(document); addCollapse(document);}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot); else boot();
   try{new MutationObserver(function(ms){var hit=false; ms.forEach(function(m){if(m.addedNodes&&m.addedNodes.length)hit=true}); if(hit){clearTimeout(window.__atl475Timer); window.__atl475Timer=setTimeout(boot,180);}}).observe(document.body,{childList:true,subtree:true});}catch(e){}
 })();
@@ -11042,7 +11042,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
 <script id="atl478-final-export-js">
 (function(){
   if(window.__atl478FinalExport)return; window.__atl478FinalExport=true;
-  var VERSION='cs-v9.0';
+  var VERSION='v1.0';
   function esc(s){return (s==null?'':String(s)).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
   function qsa(sel,root){return Array.prototype.slice.call((root||document).querySelectorAll(sel))}
   function text(el){return (el&&el.innerText||el&&el.textContent||'').replace(/\s+/g,' ').trim()}
@@ -11162,7 +11162,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
 <script>
 (function(){
   if(window.__atlCs480) return; window.__atlCs480=true;
-  var V='cs-v9.0';
+  var V='v1.0';
   function lock(){ var vb=document.getElementById('verBadge'); if(vb && (vb.textContent||'').trim()!==V) vb.textContent=V; }
   function unify(){
     var safe=document.querySelector('.atl452safe'); if(!safe) return;
@@ -11222,11 +11222,11 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
 .atl-closed .atl-collapse-toggle::before{ content:"\25B8  "; }
 </style>
 
-<!-- cs-v5.09 · 選擇客戶頁不顯示「服務台總控 / 賣點庫」(它們屬於選好客戶後的工作階段;選擇頁只負責挑客戶)。純 CSS。 -->
+<!-- cs-v5.09 · 選擇客戶頁不顯示「中控台總控 / 賣點庫」(它們屬於選好客戶後的工作階段;選擇頁只負責挑客戶)。純 CSS。 -->
 <style id="atl-cs484-selectclean">
 #view-select .atl452safe,
 #view-select #atl-spc-lib{ display:none !important; }
-/* cs-v8.20:服務台總控／薄條 在儀表板不顯示(它是單一客戶進度,屬工作頁;儀表板是全客戶總覽)。保留①~⑦。 */
+/* cs-v8.20:中控台總控／薄條 在儀表板不顯示(它是單一客戶進度,屬工作頁;儀表板是全客戶總覽)。保留①~⑦。 */
 #view-dashboard .atl452safe,
 #view-dashboard .atl-tk-bar{ display:none !important; }
 </style>
@@ -11356,9 +11356,9 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
       {n:'2',t:'帳號分析卡 → 看懂他是誰',d:'讀：人設關鍵字 / 人群痛點誤區 / 產品賣點 / 專業題庫。'},
       {n:'3',t:'影片庫 → 找招牌爆款',d:'用九宮格觀看排行找最紅那支，拆出可複製的公式。'},
       {n:'4',t:'對照同行 → 他在市場站哪',d:'挑 2–3 個同產業帳號，問三件事：量級 / 打法 / 空位。'},
-      {n:'5',t:'策略診斷 → 送服務台',d:'把理解收成一句結論，按「送服務台」帶過去。'}
+      {n:'5',t:'策略診斷 → 送中控台',d:'把理解收成一句結論，按「送中控台」帶過去。'}
     ]},
-    {phase:'第二階段 · 服務台七站',sub:'把理解，變成可交付、可收費的方案。每站一個產出。',items:[
+    {phase:'第二階段 · 中控台',sub:'把理解，變成可交付、可收費的方案。每站一個產出。',items:[
       {n:'①',t:'初診',d:'還沒談，用公開資料先判斷。'},
       {n:'②',t:'建檔',d:'談過、知道他的服務項目。'},
       {n:'③',t:'問診',d:'深入了解真正的需求。'},
@@ -11636,7 +11636,7 @@ textarea.atl-grown{ overflow-y:auto; }
 </script>
 
 <style id="atl-cs498-tkcollapse">
-/* cs-v5.09 · 服務台總控預設收合成一條薄條(只鎖定含「服務台總控」h3 的 atl452safe，不誤傷其他面板) */
+/* cs-v5.09 · 中控台總控預設收合成一條薄條(只鎖定含「中控台總控」h3 的 atl452safe，不誤傷其他面板) */
 .atl-tk-bar{ display:flex; align-items:center; gap:8px; padding:8px 13px; margin:12px 0 4px; background:#FFF7F4; border:1px solid #E8E3DA; border-left:4px solid #A51820; border-radius:11px; font-size:12.5px; color:#7A1518; -webkit-text-fill-color:#7A1518; cursor:pointer; font-weight:800; font-family:inherit; }
 .atl-tk-bar:hover{ background:#FBEDEA; }
 .atl-tk-bar .arr{ font-size:11px; width:12px; }
@@ -11649,7 +11649,7 @@ textarea.atl-grown{ overflow-y:auto; }
 (function(){
   if(window.__atlTk498) return; window.__atlTk498=true;
   if(window.__atlTkOpen===undefined) window.__atlTkOpen=false; /* 預設收合 */
-  function isTk(p){ var h=p && p.querySelector && p.querySelector('h3'); return !!(h && (h.textContent||'').indexOf('服務台總控')>=0); }
+  function isTk(p){ var h=p && p.querySelector && p.querySelector('h3'); return !!(h && (h.textContent||'').indexOf('中控台總控')>=0); }
   function panels(){ return [].slice.call(document.querySelectorAll('.atl452safe')).filter(isTk); }
   function setTxt(el,t){ if(el && el.textContent!==t) el.textContent=t; }
   function curName(){ try{ var a=(typeof curAcc==='function')?curAcc():null; if(a){ var n=a.displayName||a.handle||''; return n.length>16? n.slice(0,16)+'…':n; } }catch(e){} return ''; }
@@ -11659,7 +11659,7 @@ textarea.atl-grown{ overflow-y:auto; }
   function sync(p,bar){
     var arr=bar.querySelector('.arr'), hint=bar.querySelector('.hint'), lbl=bar.querySelector('.lbl');
     var nm=curName(), st=curStage(), pc=curPct();
-    setTxt(lbl, '服務台總控'+(nm?(' · '+nm):'')+(st?(' · '+st):'')+(pc?(' · 完成 '+pc):''));
+    setTxt(lbl, '中控台總控'+(nm?(' · '+nm):'')+(st?(' · '+st):'')+(pc?(' · 完成 '+pc):''));
     if(window.__atlTkOpen){ p.classList.remove('atl-tk-collapsed'); setTxt(arr,'▾'); setTxt(hint,'點此收合'); }
     else { p.classList.add('atl-tk-collapsed'); setTxt(arr,'▸'); setTxt(hint,'點此展開'); }
   }
@@ -11669,7 +11669,7 @@ textarea.atl-grown{ overflow-y:auto; }
     var bar=p.previousElementSibling;
     if(!(bar&&bar.classList&&bar.classList.contains('atl-tk-bar'))){
       bar=document.createElement('div'); bar.className='atl-tk-bar';
-      bar.innerHTML='<span class="arr">▸</span><span class="lbl">服務台總控</span><button type="button" class="atl-tk-jump">↓ 到這站要做的內容</button><span class="hint">點此展開</span>';
+      bar.innerHTML='<span class="arr">▸</span><span class="lbl">中控台總控</span><button type="button" class="atl-tk-jump">↓ 到這站要做的內容</button><span class="hint">點此展開</span>';
       p.parentNode.insertBefore(bar,p);
       bar.addEventListener('click',function(){ window.__atlTkOpen=!window.__atlTkOpen; syncAll(); });
       var _jb=bar.querySelector('.atl-tk-jump'); if(_jb) _jb.addEventListener('click',function(e){ e.stopPropagation(); jumpToWork(); });
@@ -12113,7 +12113,7 @@ input.atl477-open-field:not([type="checkbox"]):not([type="radio"]):not([type="bu
 <script id="atl-cs477-final-touch">
 (function(){
   if(window.__atlCs477FinalTouch) return; window.__atlCs477FinalTouch=true;
-  var VERSION='cs-v9.0';
+  var VERSION='v1.0';
   function qs(s,r){return (r||document).querySelector(s)}
   function qsa(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
   function setVersion(){try{var b=qs('#verBadge'); if(b)b.textContent=VERSION; window.ATELIER_CLIENT_VERSION=VERSION;}catch(e){}}
@@ -12352,8 +12352,8 @@ input.atl477-open-field:not([type="checkbox"]):not([type="radio"]):not([type="bu
           _extra+='<span class="cpb-toggles">'
             +(_hasCtx?'<button type="button" class="cpb-more-btn" data-lbl="客戶現況" onclick="window.__atlCpbTg&&window.__atlCpbTg(\'ctx\',this)">客戶現況 '+(_co?'\u25B4':'\u25BE')+'</button>':'')
             +(_hasLens?'<button type="button" class="cpb-more-btn" data-lbl="閉環視角・地圖" onclick="window.__atlCpbTg&&window.__atlCpbTg(\'lens\',this)">閉環視角・地圖 '+(_lo?'\u25B4':'\u25BE')+'</button>':'')
-            +(_hasMaster?'<span class="cpb-tg-pair"><button type="button" class="cpb-more-btn" data-lbl="服務台總控" onclick="window.__atlCpbTg&&window.__atlCpbTg(\'master\',this)">服務台總控 '+(_mo?'\u25B4':'\u25BE')+'</button>'
-              +'<span class="atl-infohold"><button type="button" class="atl-infodot" onclick="event.stopPropagation();var p=this.nextElementSibling;p.style.display=(p.style.display===\'block\')?\'none\':\'block\'">i</button><span class="atl-infopop">服務台總控：把這位客戶的原料變成「賣點 → CTA 行動出口 → 內容戰役 → 交付包」的工作區。平常收起,需要時點開。</span></span></span>':'')
+            +(_hasMaster?'<span class="cpb-tg-pair"><button type="button" class="cpb-more-btn" data-lbl="中控台總控" onclick="window.__atlCpbTg&&window.__atlCpbTg(\'master\',this)">中控台總控 '+(_mo?'\u25B4':'\u25BE')+'</button>'
+              +'<span class="atl-infohold"><button type="button" class="atl-infodot" onclick="event.stopPropagation();var p=this.nextElementSibling;p.style.display=(p.style.display===\'block\')?\'none\':\'block\'">i</button><span class="atl-infopop">中控台總控：把這位客戶的原料變成「賣點 → CTA 行動出口 → 內容戰役 → 交付包」的工作區。平常收起,需要時點開。</span></span></span>':'')
             +'</span>';
         }
         _extra+='</div>';
@@ -13821,7 +13821,7 @@ body.atl-hide-final #atlFinalFloat{ display:none !important; }
 })();
 </script>
 
-<!-- ATELIER cs-v5.40 · 選擇客戶頁不該出現「服務台總控」(那頁只負責挑客戶;總控是選好客戶後各站的導覽控制)。
+<!-- ATELIER cs-v5.40 · 選擇客戶頁不該出現「中控台總控」(那頁只負責挑客戶;總控是選好客戶後各站的導覽控制)。
      舊 CSS hide 因卡片注入位置抓不到→改用 JS:選擇客戶頁顯示時就藏總控,離開再顯示。純前端、可逆。 -->
 <script>
 (function(){
@@ -13834,7 +13834,7 @@ body.atl-hide-final #atlFinalFloat{ display:none !important; }
   function apply(){
     var hide=selectActive();
     document.querySelectorAll('[data-atl452safe], .atl452safe').forEach(function(c){
-      if((c.textContent||'').indexOf('服務台總控')>=0) c.style.display = hide?'none':'';
+      if((c.textContent||'').indexOf('中控台總控')>=0) c.style.display = hide?'none':'';
     });
   }
   document.addEventListener('click', function(){ setTimeout(apply,120); }, true);
@@ -14173,11 +14173,11 @@ body.atl-hide-final #atlFinalFloat{ display:none !important; }
 #view-stage1 .atl-s1xtoggle{ display:none !important; }
 </style>
 
-<!-- ATELIER cs-v5.55 · 把「服務台總控」收進 86% 卡的「服務台總控 ▾」箭頭+ⓘ用途:頂端薄條收掉,點箭頭才展開面板(壓過 cs-v5.09 收合 + atl-s1extra 兩層隱藏)。狀態記在 view-stage1,卡片重畫不跑掉。純前端、可逆。 -->
+<!-- ATELIER cs-v5.55 · 把「中控台總控」收進 86% 卡的「中控台總控 ▾」箭頭+ⓘ用途:頂端薄條收掉,點箭頭才展開面板(壓過 cs-v5.09 收合 + atl-s1extra 兩層隱藏)。狀態記在 view-stage1,卡片重畫不跑掉。純前端、可逆。 -->
 <style id="atl-cs555-css">
-/* 頂端那條「服務台總控 · …」薄條收掉(改由 86% 卡的箭頭控制) */
+/* 頂端那條「中控台總控 · …」薄條收掉(改由 86% 卡的箭頭控制) */
 #view-stage1 .atl-tk-bar{ display:none !important; }
-/* 預設:服務台總控面板收起(本來就被 cs-v5.09/atl-s1extra 藏著);點箭頭(atl-master-open)才顯示,壓過那兩層隱藏 */
+/* 預設:中控台總控面板收起(本來就被 cs-v5.09/atl-s1extra 藏著);點箭頭(atl-master-open)才顯示,壓過那兩層隱藏 */
 #view-stage1.atl-master-open .atl452safe{ display:block !important; }
 #view-stage1.atl-master-open .atl452safe.atl-tk-collapsed{ display:block !important; }
 #view-stage1.atl-master-open .atl452safe.atl-s1extra{ display:block !important; }
@@ -14189,7 +14189,7 @@ body.atl-hide-final #atlFinalFloat{ display:none !important; }
   window.__atlToggleMaster=function(btn){
     var v=(btn&&btn.closest&&btn.closest('[id^="view-stage"]'))||document.querySelector('.view.on')||document.getElementById('view-stage1'); if(!v) return;
     var open=v.classList.toggle('atl-master-open');
-    if(btn) btn.textContent='服務台總控 '+(open?'\u25B4':'\u25BE');
+    if(btn) btn.textContent='中控台總控 '+(open?'\u25B4':'\u25BE');
     try{ if(window.__atlCtxInject) window.__atlCtxInject(); }catch(e){}   /* cs-v8.52:立即把總控面板移到卡下方,避免跑到view頂端 */
     if(open){ try{ window.__atlTkOpen=true; }catch(e){}   /* 讓 cs-v5.09 也認得是展開,內容不被它再收回 */
       var p=v.querySelector('.atl452safe'); if(p){ p.classList.remove('atl-tk-collapsed'); }   /* cs-v8.55:不再自動捲動(原scrollIntoView會跑上跑下/跳到卡中間→跳針);比照②建檔,面板往下出現、由使用者自己往下拉 */
@@ -14553,10 +14553,10 @@ details.cs-context[open] > summary::after{ content:'\25BE' !important; }
 .preview-wrap .preview-actions{ background:var(--bg) !important; padding:8px 2px 10px !important; margin:0 0 8px !important; }
 </style>
 
-<!-- ATELIER cs-v5.71 · #1 選擇客戶頁也藏掉「服務台總控」收合薄條;#2 ⓘ 鎖成正圓(不再被 flex 擠成橢圓);
+<!-- ATELIER cs-v5.71 · #1 選擇客戶頁也藏掉「中控台總控」收合薄條;#2 ⓘ 鎖成正圓(不再被 flex 擠成橢圓);
   #3 分頁的 ⓘ 收掉(每步圈圈只留在上面流程列一處,避免同一步兩個圈)。純前端、可逆。 -->
 <style id="atl-cs571-css">
-/* #1 選擇客戶頁:服務台總控薄條也藏掉 */
+/* #1 選擇客戶頁:中控台總控薄條也藏掉 */
 #view-select .atl-tk-bar{ display:none !important; }
 /* #2 ⓘ 外框不被壓縮 → 永遠正圓 */
 .atl-infohold{ flex:0 0 auto !important; display:inline-flex !important; align-items:center; }
@@ -14567,9 +14567,9 @@ details.cs-context[open] > summary::after{ content:'\25BE' !important; }
 <!-- ATELIER cs-v5.72 · 資訊鈕設計系統:
   ·分頁 ⓘ = 雙圈(代表「整頁操作流程」),還原並做漂亮;卡片/標題 ⓘ = 單圈(小註解)。
   ·所有 ⓘ 鎖死正圓、裡面 i 上下左右置中。
-  (服務台總控/智能下一步 ⓘ 閃退 = 進度卡重畫洗掉,已於 injectClientProgressBar 加「說明卡開著就不重畫」。) 純前端、可逆。 -->
+  (中控台總控/智能下一步 ⓘ 閃退 = 進度卡重畫洗掉,已於 injectClientProgressBar 加「說明卡開著就不重畫」。) 純前端、可逆。 -->
 <style id="atl-cs572-css">
-/* 單圈 ⓘ(註解):正圓、i 置中 — 卡片、標題、86%卡內的服務台總控/智能下一步 */
+/* 單圈 ⓘ(註解):正圓、i 置中 — 卡片、標題、86%卡內的中控台總控/智能下一步 */
 .stage-info-btn, .atl-infodot{
   width:19px !important; height:19px !important;
   min-width:19px !important; max-width:19px !important; min-height:19px !important; max-height:19px !important;
@@ -14663,7 +14663,7 @@ details.cs-context[open] > summary::after{ content:'\25BE' !important; }
 </script>
 
 <!-- ATELIER cs-v5.76 · B：④總和「勾選要放進交付物的內容」(客戶版/顧問版→輸出版本;16來源/5進階→附不附)＋版本規格;
-  雙圈/單圈設計系統:標題「公開資料初診」+分頁1234=乾淨雙圈(整頁操作流程),卡片/服務台總控/智能下一步=單圈(小註解)。純前端、可逆。 -->
+  雙圈/單圈設計系統:標題「公開資料初診」+分頁1234=乾淨雙圈(整頁操作流程),卡片/中控台總控/智能下一步=單圈(小註解)。純前端、可逆。 -->
 <style id="atl-cs576-css">
 /* B：④總和勾選群 */
 .s1agg{ margin-top:14px; padding:14px 16px; background:#FBF7F1; border:1px solid #EFE3D2; border-radius:12px; }
@@ -14684,7 +14684,7 @@ details.cs-context[open] > summary::after{ content:'\25BE' !important; }
   font-family:Georgia,serif !important; font-style:normal !important; font-size:9.5px !important; line-height:1 !important; vertical-align:middle !important; cursor:pointer; transition:all .18s ease;
 }
 .stage-info-btn:hover, .s1tab .s1tab-info:hover{ border-color:#A51820 !important; box-shadow: inset 0 0 0 2px #fff, inset 0 0 0 3px #E8B5B8 !important; color:#A51820 !important; -webkit-text-fill-color:#A51820 !important; }
-/* 單圈(小註解):卡片/服務台總控/智能下一步 ⓘ — 維持乾淨單圈、i 置中(沿用 cs-v5.73,明確再鎖一次) */
+/* 單圈(小註解):卡片/中控台總控/智能下一步 ⓘ — 維持乾淨單圈、i 置中(沿用 cs-v5.73,明確再鎖一次) */
 .atl-infodot{ box-shadow:none !important; border:1px solid #E2CFB6 !important; }
 </style>
 <script>
@@ -14809,7 +14809,7 @@ details.cs-context[open] > summary::after{ content:'\25BE' !important; }
 }
 .stage-info-btn:hover, .s1tab .s1tab-info:hover{ box-shadow:none !important; border-color:#A51820 !important; }
 .stage-info-btn:hover::before, .s1tab .s1tab-info:hover::before{ border-color:#E0A8AC !important; }
-/* 單圈維持(卡片/服務台總控/智能下一步):確保沒有內圈 */
+/* 單圈維持(卡片/中控台總控/智能下一步):確保沒有內圈 */
 .atl-infodot{ box-shadow:none !important; }
 .atl-infodot::before{ content:none !important; }
 /* ② 隱藏「初診交付物：會前初步觀察 PPT」卡(②產生不該有,PPT 出口在④總和) */
@@ -16124,7 +16124,7 @@ textarea.p2-ta{ width:100%; box-sizing:border-box; min-height:40px; resize:verti
 #view-stage4 .sxtabs .s1tab .s1tab-label{ font-size:12px !important; letter-spacing:.3px !important; }
 #view-stage4 .sxtabs .s1tab{ padding:13px 3px !important; }
 #view-stage6 .sxtabs, #view-stage7 .sxtabs{ grid-template-columns:repeat(5,1fr) !important; }
-/* cs-v7.80: 拉掉④–⑦頂部那條「服務台總控…點此展開」收合條(.atl-tk-bar) → 服務台總控只留歸檔卡那顆鈕 */
+/* cs-v7.80: 拉掉④–⑦頂部那條「中控台總控…點此展開」收合條(.atl-tk-bar) → 中控台總控只留歸檔卡那顆鈕 */
 #view-stage4 .atl-tk-bar, #view-stage5 .atl-tk-bar, #view-stage6 .atl-tk-bar, #view-stage7 .atl-tk-bar{ display:none !important; }
 /* cs-v7.77: ④⑤⑥⑦ 的 AI 智能列補上 flex,讓「全選」靠最右(跟①②③一致;原本只設了 stage1/2/3) */
 #view-stage4 .s2-aibar, #view-stage5 .s2-aibar, #view-stage6 .s2-aibar, #view-stage7 .s2-aibar{ display:flex; align-items:center; justify-content:flex-start; flex-wrap:wrap; gap:8px; margin:10px 0 4px; text-align:left; position:relative; }
@@ -16141,7 +16141,7 @@ textarea.p2-ta{ width:100%; box-sizing:border-box; min-height:40px; resize:verti
 #view-stage6 > #cmpExtraCard,
 #view-stage6 > .cmp-card,
 #view-stage7 > .rvw-card, #view-stage7 > .atl-final-card{ display:none !important; }
-/* cs-v7.78: 閉環視角/服務台總控 改成「沒展開才隱藏」→ 歸檔卡的收合鈕(atl-loop-open/atl-master-open)才點得動、收得回 */
+/* cs-v7.78: 閉環視角/中控台總控 改成「沒展開才隱藏」→ 歸檔卡的收合鈕(atl-loop-open/atl-master-open)才點得動、收得回 */
 #view-stage4:not(.atl-loop-open) > .cs-lens, #view-stage5:not(.atl-loop-open) > .cs-lens, #view-stage6:not(.atl-loop-open) > .cs-lens, #view-stage7:not(.atl-loop-open) > .cs-lens{ display:none !important; }
 #view-stage4:not(.atl-master-open) > .atl452safe, #view-stage5:not(.atl-master-open) > .atl452safe, #view-stage6:not(.atl-master-open) > .atl452safe, #view-stage7:not(.atl-master-open) > .atl452safe{ display:none !important; }
 .sx-flow{ display:flex; justify-content:center; align-items:center; gap:0; margin:6px 0 18px; flex-wrap:nowrap; width:100%; }
@@ -16273,7 +16273,7 @@ textarea.p2-ta{ width:100%; box-sizing:border-box; min-height:40px; resize:verti
 })();
 </script>
 
-<!-- ════════════ cs-v6.07 · 建檔 86% 卡下方接一排：智能下一步＋把「客戶現況／閉環視角／服務台總控」收成箭頭下拉（預設收起，點開才顯示）════════════ -->
+<!-- ════════════ cs-v6.07 · 建檔 86% 卡下方接一排：智能下一步＋把「客戶現況／閉環視角／中控台總控」收成箭頭下拉（預設收起，點開才顯示）════════════ -->
 <style id="atl-cs607-css">
 .atl-s2float-hide{ display:none !important; }
 .atl-s2actrow{ background:linear-gradient(180deg,#FBF6F0,#F7F1E9); border:1px solid #E8E3DA; border-top:1px dashed #ECE0CC;
@@ -16301,7 +16301,7 @@ textarea.p2-ta{ width:100%; box-sizing:border-box; min-height:40px; resize:verti
     var kids=[].slice.call(v.children);
     for(var i=0;i<kids.length;i++){ var c=kids[i]; if(c.classList&&c.classList.contains('atl-s2actrow')) continue;
       var t=(c.textContent||'').replace(/\s+/g,'');
-      if(/服務台總控/.test(t) && /(點此展開|到這站要做的內容)/.test(t) && t.length<170) return c; }
+      if(/中控台總控/.test(t) && /(點此展開|到這站要做的內容)/.test(t) && t.length<170) return c; }
     return null;
   }
   function applyFloat(v,kw){
@@ -16339,7 +16339,7 @@ textarea.p2-ta{ width:100%; box-sizing:border-box; min-height:40px; resize:verti
     html+='<span class="sp"></span>'
       +'<button type="button" class="cpb-more-btn" data-lbl="客戶現況" onclick="window.__atlS2Float(\'ctx\',this)">客戶現況 '+_ar('ctx')+'</button>'
       +'<button type="button" class="cpb-more-btn" data-lbl="閉環視角・地圖" onclick="window.__atlS2Float(\'lens\',this)">閉環視角・地圖 '+_ar('lens')+'</button>'
-      +'<button type="button" class="cpb-more-btn" data-lbl="服務台總控" onclick="window.__atlS2Float(\'master\',this)">服務台總控 '+_ar('master')+'</button>'
+      +'<button type="button" class="cpb-more-btn" data-lbl="中控台總控" onclick="window.__atlS2Float(\'master\',this)">中控台總控 '+_ar('master')+'</button>'
       +'</div>';
     bar.insertAdjacentHTML('afterend', html);
   }
@@ -16472,7 +16472,7 @@ textarea.p2-ta{ width:100%; box-sizing:border-box; min-height:40px; resize:verti
 #view-stage2 .s2-verpick-tip svg{ width:16px; height:16px; }
 #view-stage2 .s2-verpick-tip:hover{ color:#A51820; -webkit-text-fill-color:#A51820; }
 
-/* ── (3) 服務台總控：建檔頁不要那條粉紅薄條，改用上方「服務台總控」下拉直接展開整張表 ── */
+/* ── (3) 中控台總控：建檔頁不要那條粉紅薄條，改用上方「中控台總控」下拉直接展開整張表 ── */
 #view-stage2 .atl-tk-bar{ display:none !important; }
 
 /* ── (F) 建檔填寫框 autogrow 修復：鎖 border-box、關掉高度動畫，避免越點越高／卡住 ── */
@@ -18350,9 +18350,9 @@ textarea.p2-ta{ width:100%; box-sizing:border-box; min-height:40px; resize:verti
 </script>
 
 
-<!-- ════════════ cs-v6.30 · 「86% 歸檔卡」鋪到 ③問診～⑦交付：智能下一步＋服務台總控/閉環視角・地圖收納，比照 ①初診②建檔 ════════════ -->
+<!-- ════════════ cs-v6.30 · 「86% 歸檔卡」鋪到 ③問診～⑦交付：智能下一步＋中控台總控/閉環視角・地圖收納，比照 ①初診②建檔 ════════════ -->
 <style id="atl-cs630-css">
-/* 服務台總控 / 閉環視角 的收納面板，原本只在 #view-stage1 展開；改成任一站(.view)展開時都顯示 */
+/* 中控台總控 / 閉環視角 的收納面板，原本只在 #view-stage1 展開；改成任一站(.view)展開時都顯示 */
 .view.atl-master-open .atl452safe{ display:block !important; }
 .view.atl-loop-open .cs-lens{ display:flex !important; flex-wrap:wrap; align-items:center; gap:9px; }
 .view.atl-loop-open .cs-lens.atl-s1extra{ display:flex !important; }
@@ -18531,7 +18531,7 @@ textarea.p2-ta{ width:100%; box-sizing:border-box; min-height:40px; resize:verti
 .s3dlv-sel{ font-family:inherit; font-size:12px; padding:5px 9px; border:1px solid #C9A57A; border-radius:8px; background:#FFFDFB; color:#5C0F14; -webkit-text-fill-color:#5C0F14; cursor:pointer; max-width:280px; }
 /* 第14點：浮在分頁外的舊選取條，stage3 隱藏(改由產生grid／總和各自的選取) */
 #view-stage3 .atl-selbar{ display:none !important; }
-/* stage3：服務台總控的粉色細條與閉環卡，預設收起(改由歸檔卡的收納鈕在卡片正下方展開) */
+/* stage3：中控台總控的粉色細條與閉環卡，預設收起(改由歸檔卡的收納鈕在卡片正下方展開) */
 #view-stage3 > .atl452safe, #view-stage3 > .cs-lens{ display:none; }
 #view-stage3.atl-master-open > .atl452safe{ display:block !important; }
 #view-stage3.atl-loop-open > .cs-lens{ display:flex !important; }
@@ -18932,7 +18932,7 @@ try{ window.__atl632=true; }catch(e){}
 }
 </style>
 
-<!-- ════════════ cs-v6.44 · ②建檔歸檔卡 路線A:動作列改畫進卡內(與問診同結構=卡內 .cpb-extra + .cpb-actrow + 服務台總控ⓘ)。
+<!-- ════════════ cs-v6.44 · ②建檔歸檔卡 路線A:動作列改畫進卡內(與問診同結構=卡內 .cpb-extra + .cpb-actrow + 中控台總控ⓘ)。
   渲染器解除 stage2 排除、_isExt 含 stage2(讓客戶現況 toggle 顯示)、toggle 狀態讀 cs607 的 __atl607open。
   cs641 已把 cs607 的 .atl-s2actrow 整塊隱藏,但保留在 DOM 當「向下展開」定位錨(applyFloat 插在它後面=卡片正下方)。
   本分派器:stage2 → cs607 已驗證的 __atlS2Float(面板開合行為與舊版完全相同);其餘站 → __atlToggle*。
@@ -20189,7 +20189,7 @@ function buildSvcPkg(stageId){
 
 /* ─────── Full top block for any station ─────── */
 function buildTopBlock(stageId){
-  return buildLoopBar(stageId)+buildTimeline(stageId)+buildMeta()+buildPoscard(stageId)+buildToolkit(stageId)+buildToolCard(stageId)+buildSvcPkg(stageId)
+  return buildLoopBar(stageId)+buildTimeline(stageId)+buildMeta()+buildPoscard(stageId)+(window.buildToolkit||buildToolkit)(stageId)+buildToolCard(stageId)+buildSvcPkg(stageId)
     +(stageId==='stage7'||stageId==='nextround'?buildCzoneRemind():'')
     +(buildAdMVP(stageId));
 }
@@ -20308,5 +20308,118 @@ wrapRender('renderStage1','stage1'); wrapRender('renderStage2','stage2'); wrapRe
 /* Initial inject if a station is already showing */
 try{var on=document.querySelector('.view.on');if(on&&on.id){var sid=on.id.replace('view-','');if(SID_TO_FLOW[sid]!=null)injectV90Top(sid);}}catch(e){}
 
+})();
+</script>
+<script id="atl-v90-tools-full">
+/* cs-v9.0: 行銷工具完整卡片 — 每個工具 8 欄位（規格§六） */
+(function(){
+var T={
+/* ═══ A 前端策略 ═══ */
+SMART:{name:'SMART',
+  explain:'用 S(具體)-M(可衡量)-A(可達成)-R(相關)-T(有時限) 檢查目標是否夠清楚。',
+  whyHere:'確認客戶的目標不是「我想變有名」這種模糊說法,而是可以執行的方向。',
+  feedAI:'客戶說的目標原文、想達成的結果、時間範圍、過去嘗試過什麼。',
+  missing:'客戶的具體數字目標(粉絲數/詢問量/營收)、期望達成時間。',
+  clientLine:'「我們先把你的目標拆清楚,確保每一步都有明確方向。」'},
+SWOT_INIT:{name:'初步 SWOT',
+  explain:'快速盤點客戶的優勢(S)、劣勢(W)、機會(O)、威脅(T),20 分鐘出初判。',
+  whyHere:'第一次接觸就抓出這個品牌的核心優劣勢,後面診斷才有根據。',
+  feedAI:'客戶公開資料(官網/IG/Maps/新聞)、同行對標帳號、初步觀察。',
+  missing:'客戶的內部數據(營收/成交率)、競爭對手的真實表現。',
+  clientLine:'「我先幫你做一個快速健檢,看看你目前的優勢跟要補的地方。」'},
+DEF_SPEED:{name:'定義層速判',
+  explain:'用一句話判斷客戶目前在「品牌定位→受眾→內容→轉換」哪一層卡住。',
+  whyHere:'避免客戶說「我要拍影片」但其實是定位不清,先判斷真正的瓶頸在哪。',
+  feedAI:'客戶說的需求、目前內容現況、轉換路徑、過去嘗試的結果。',
+  missing:'客戶的轉換數據(詢問量/成交率)。',
+  clientLine:'「我先確認你卡在哪一層,才不會做錯方向。」'},
+PESTEL:{name:'PESTEL',explain:'政治/經濟/社會/科技/環境/法律六面向掃描外部環境。',whyHere:'判斷市場大環境對客戶生意的影響。',feedAI:'客戶所在產業、地區、近期法規或趨勢變化。',missing:'產業報告、法規變動資訊。',clientLine:'「先看看外部環境有沒有什麼會影響你的生意。」'},
+FIVE_FORCES:{name:'五力＋KFS',explain:'Porter 五力分析＋關鍵成功因素,判斷產業競爭強度。',whyHere:'看清楚客戶在產業裡的位置和競爭壓力。',feedAI:'同行數量、替代品、客戶議價力、供應商、進入門檻。',missing:'產業競爭對手的具體數據。',clientLine:'「我幫你看一下你這個產業的競爭狀況。」'},
+BIZ_MODEL:{name:'商業模式圖',explain:'9 格畫布快速理解客戶怎麼賺錢。',whyHere:'理解客戶的收入模式,才能幫他規劃內容策略。',feedAI:'客戶的收入來源、主要客群、成本結構、價值主張。',missing:'客戶不願透露的財務結構。',clientLine:'「我需要理解你怎麼賺錢,才能幫你規劃內容。」'},
+/* 站2 */
+FOUR_C:{name:'4C',explain:'顧客(Customer)、成本(Cost)、便利(Convenience)、溝通(Communication)。',whyHere:'從客戶的角度看這個 offer 值不值得買。',feedAI:'客戶的服務內容、定價、購買流程、溝通方式。',missing:'客戶的真實成交數據。',clientLine:'「我從你客戶的角度看一下,你的服務好不好買。」'},
+WORTH:{name:'值得性判斷',explain:'這個案子值不值得接?報酬、成長性、風險、時間成本綜合評估。',whyHere:'幫你自己判斷要不要接這個客戶,不是每個案子都該接。',feedAI:'客戶預算、時間需求、配合度、成長潛力。',missing:'客戶的預算底線和期望。',clientLine:'（內部工具,不對客戶說。）'},
+SEVEN_P:{name:'7P',explain:'Product/Price/Place/Promotion/People/Process/Physical Evidence。',whyHere:'全面檢查客戶的服務組合有沒有缺漏。',feedAI:'客戶的服務項目、定價、通路、推廣方式、團隊、流程、實體證據。',missing:'客戶內部流程細節。',clientLine:'「我幫你全面檢查一下你的服務組合。」'},
+VPC:{name:'VPC (Value Proposition Canvas)',explain:'價值主張畫布:客戶的痛點、任務、收穫 vs 你的產品、止痛劑、維他命。',whyHere:'確認客戶的 offer 有沒有對準市場的真需求。',feedAI:'客戶的目標客群痛點、服務如何解決、競爭優勢。',missing:'終端客戶的真實回饋。',clientLine:'「我幫你確認你的服務是不是真的解決了客戶最痛的問題。」'},
+/* 站3 */
+PERSONA:{name:'Persona',explain:'建立理想客戶的具體人物誌:年齡、職業、痛點、行為、媒體習慣。',whyHere:'深度訪談時用來對焦「我們到底在跟誰說話」。',feedAI:'訪談記錄、客戶描述的理想客群、過去成交案例。',missing:'直接接觸終端客戶的機會。',clientLine:'「我幫你畫一個最理想客戶的樣子,這樣內容才知道跟誰說話。」'},
+STP:{name:'STP',explain:'市場區隔(Segmentation)→目標市場(Targeting)→定位(Positioning)。',whyHere:'訪談後收斂出「要打哪一群人、用什麼角度切」。',feedAI:'市場資料、客戶現有客群分布、競爭對手定位。',missing:'市場規模數據。',clientLine:'「我幫你找出最值得打的那一群人。」'},
+JTBD:{name:'JTBD (Jobs to be Done)',explain:'客戶的客戶「雇用」這個服務是為了完成什麼任務?',whyHere:'找出客戶的客戶真正要解決的問題,不是表面需求。',feedAI:'訪談中客戶描述的「客戶為什麼來找我」、成交場景。',missing:'終端客戶的直接訪談。',clientLine:'「我想搞清楚你的客戶到底在什麼情境下決定找你。」'},
+FIVE_A:{name:'5A (Aware→Appeal→Ask→Act→Advocate)',explain:'從知道你→被吸引→主動查→行動→推薦,五階段漏斗。',whyHere:'找出客戶的受眾卡在哪一個階段。',feedAI:'客戶的內容觸及數據、詢問量、成交率、轉介紹率。',missing:'各階段的轉換率數據。',clientLine:'「我幫你看看你的客戶從知道你到買單,哪裡卡住了。」'},
+CJM:{name:'CJM (Customer Journey Map)',explain:'畫出客戶的客戶從發現到購買的完整旅程。',whyHere:'找出旅程中的斷點,知道內容該補在哪。',feedAI:'客戶描述的成交流程、觸點、常見問題。',missing:'完整的客戶旅程數據。',clientLine:'「我幫你畫一張客戶從看到你到買單的路線圖。」'},
+/* 站4 */
+PERCEP_MAP:{name:'知覺圖',explain:'把競爭對手跟客戶放在二維座標上,看出定位空間。',whyHere:'用視覺化的方式確認差異化定位。',feedAI:'客戶與競爭對手在價格、專業度、風格等維度的比較。',missing:'競爭對手的詳細資料。',clientLine:'「我幫你畫一張圖,看看你跟同行的差異在哪。」'},
+SWOT_TOWS:{name:'SWOT→TOWS',explain:'把 SWOT 的四象限交叉,推出具體策略行動。',whyHere:'把前面的觀察轉化成「所以我們應該做什麼」。',feedAI:'前三站累積的 SWOT 資料。',missing:'內部資源限制的真實評估。',clientLine:'「根據分析,我推薦這幾個優先方向。」'},
+GOLDEN:{name:'黃金圈 (Why-How-What)',explain:'Simon Sinek 的 Why→How→What,從核心信念出發定位品牌。',whyHere:'把「你為什麼做這件事」轉成品牌定位與內容主軸。',feedAI:'訪談中客戶說的創業初衷、使命、價值觀。',missing:'客戶自己可能沒想清楚的「為什麼」。',clientLine:'「我幫你把你做這件事的初衷,變成觀眾聽得懂的故事。」'},
+BLUE_OCEAN:{name:'藍海策略',explain:'找出「不需要跟同行搶的新空間」。',whyHere:'如果紅海太擠,幫客戶找到差異化的切入點。',feedAI:'競爭對手都在做什麼、客戶有什麼獨特資源。',missing:'市場未被滿足的需求洞察。',clientLine:'「我幫你找一個同行沒在做、但你有優勢的方向。」'},
+/* 站5 */
+AARRR:{name:'5A／AARRR',explain:'Acquisition→Activation→Retention→Revenue→Referral 成長漏斗。',whyHere:'用漏斗思維規劃內容:哪些題目是拉新、哪些是留存、哪些是轉換。',feedAI:'客戶目前的內容數據、各階段轉換率。',missing:'完整的漏斗數據。',clientLine:'「我幫你把內容分成拉新、留人、轉換三條線。」'},
+CONTENT_PILLAR:{name:'Content Pillar',explain:'把內容策略拆成 3-5 根主軸,每根主軸有明確的主題方向。',whyHere:'讓內容不再散亂,每一支影片都有策略目的。',feedAI:'診斷結論、受眾痛點、品牌定位、商業目標。',missing:'客戶想要的風格偏好。',clientLine:'「我幫你規劃 3-5 個內容主軸,以後每一支影片都有方向。」'},
+/* 站6 */
+AIDA:{name:'AIDA',explain:'Attention→Interest→Desire→Action,每支影片的節奏框架。',whyHere:'把主題轉成腳本時,確保每支影片都有完整的說服路徑。',feedAI:'確定的主題方向、目標受眾、行動出口(CTA)。',missing:'客戶的 CTA 資源(LINE/表單/預約頁)。',clientLine:'「我幫你把每支影片設計成:先抓住注意力→引起興趣→產生渴望→行動。」'},
+HOOK:{name:'Hook 開頭設計',explain:'前 3 秒怎麼留住觀眾:數據衝擊/反差/痛點提問/懸念。',whyHere:'短影音的生死在前 3 秒,Hook 決定觀眾看不看下去。',feedAI:'主題方向、目標受眾的痛點、可用的數據或故事。',missing:'過去影片的完播率數據。',clientLine:'「前 3 秒決定生死,我幫你設計開頭。」'},
+CTA_DESIGN:{name:'CTA 設計',explain:'Call to Action:每支影片結尾要觀眾做什麼?',whyHere:'內容不只是被看,要引導觀眾走到下一步。',feedAI:'客戶的轉換路徑(LINE/表單/官網)、想要的行動。',missing:'客戶的承接頁面是否準備好。',clientLine:'「每支影片結尾都要有明確的下一步行動。」'},
+PAS:{name:'PAS／BAB／FAB',explain:'Pain-Agitate-Solution / Before-After-Bridge / Feature-Advantage-Benefit 三種敘事框架。',whyHere:'不同主題適合不同敘事結構,這三套是最常用的。',feedAI:'主題方向、目標受眾的痛點、客戶的解決方案。',missing:'客戶案例和成果數據。',clientLine:'「我幫你選最適合這個主題的敘事方式。」'},
+/* 站7 */
+BRAND_CONSISTENCY:{name:'品牌一致性',explain:'確認拍攝現場的視覺、語氣、氛圍是否跟品牌定位一致。',whyHere:'拍出來的東西要跟前面設定的品牌形象一致。',feedAI:'品牌定位、色調、語氣、視覺參考。',missing:'品牌規範手冊(如果有的話)。',clientLine:'「我確保拍出來的感覺跟你的品牌一致。」'},
+SERVICE_EVIDENCE:{name:'服務證據檢查',explain:'Physical Evidence:現場有沒有可以拍到的信任證據(獎狀/作品/場地/設備)。',whyHere:'拍攝時順便蒐集信任素材,不用另外補拍。',feedAI:'客戶的信任資產清單(獎項/案例/場地/設備)。',missing:'客戶可能忘記提到的隱藏素材。',clientLine:'「拍攝時我會順便幫你拍一些信任素材。」'},
+/* 站8 */
+AIDA_RHYTHM:{name:'AIDA 節奏檢查',explain:'檢查剪輯節奏是否符合 AIDA:開頭抓注意→中段引興趣→高潮推慾望→結尾導行動。',whyHere:'後製時確保影片不只是好看,而是有商業目的。',feedAI:'腳本結構、目標 CTA、觀眾停留點。',missing:'過去影片的觀看曲線(retention curve)。',clientLine:'「我檢查剪輯的節奏有沒有對準商業目的。」'},
+COVER_CTR:{name:'封面點擊＋完播假設',explain:'封面決定點擊率(CTR),開頭決定完播率。兩者要一起設計。',whyHere:'後製時設計封面+開頭的組合拳。',feedAI:'主題方向、目標受眾、封面文案選項。',missing:'過去封面的 CTR 數據。',clientLine:'「封面跟開頭是一組的,我幫你一起設計。」'},
+BRAND_ID:{name:'品牌識別檢查',explain:'字型、色調、logo 露出、字卡風格是否一致。',whyHere:'確保每支影片出去都像同一個品牌出的。',feedAI:'品牌色、字型、logo 使用規範。',missing:'品牌規範文件。',clientLine:'「我確保每支影片的視覺風格都一致。」'},
+/* 站9 */
+CTA_ACCEPT:{name:'CTA 承接檢查',explain:'觀眾看完影片按了 CTA 之後,到底會到哪?那個頁面準備好了嗎?',whyHere:'交付前最後檢查:影片→CTA→承接頁→成交,這條路通不通。',feedAI:'CTA 連結、承接頁面截圖、表單/LINE設定。',missing:'承接頁面的轉換率。',clientLine:'「我最後確認一下觀眾點了之後會到哪、那邊準備好了沒。」'},
+PZB:{name:'PZB 服務品質缺口',explain:'檢查客戶期望 vs 實際交付之間有沒有落差。',whyHere:'交付前對齊期望,避免「做完了但客戶不滿意」。',feedAI:'客戶的原始期望、實際交付內容、溝通紀錄。',missing:'客戶內心的真實期望(可能沒說出來)。',clientLine:'「交付前我跟你對一下,確保成品符合你的期待。」'},
+FIVE_A_ACCEPT:{name:'5A 承接',explain:'確認交付物在 5A 漏斗的哪個位置發揮作用。',whyHere:'讓每個交付物都有明確的漏斗位置。',feedAI:'交付物清單、每個交付物的目的、預期受眾行為。',missing:'發布後的數據(交付前無法預測)。',clientLine:'「每支影片我都標好它在漏斗的哪個位置。」'},
+/* 站10 */
+FUNNEL_REVIEW:{name:'復盤漏斗／AARRR',explain:'回看這一輪內容在漏斗每個階段的表現。',whyHere:'用數據判斷下一輪要加強哪個環節。',feedAI:'發布後的數據:觸及/點擊/詢問/成交/轉介紹。',missing:'完整的漏斗數據追蹤。',clientLine:'「我幫你看一下這一輪內容在每個環節的表現。」'},
+CLV:{name:'CLV (Customer Lifetime Value)',explain:'估算一個客戶長期能帶來多少價值。',whyHere:'判斷續約的價值和下一輪的投入程度。',feedAI:'客單價、回購率、合作期間、轉介紹率。',missing:'長期客戶數據。',clientLine:'「我幫你算一下長期合作的價值。」'},
+SMART_REVIEW:{name:'SMART 復盤',explain:'回頭檢查一開始設定的 SMART 目標達成了多少。',whyHere:'閉環:從第 1 步設的目標,到第 10 步看達成率。',feedAI:'第 1 步設定的目標、這一輪的實際成果。',missing:'準確的成效數據。',clientLine:'「我們回頭看一下一開始設的目標達成了多少。」'}
+};
+/* ─── 每站的工具組合 ─── */
+var STATION_TOOLS={
+  stage1:{preset:['SMART','SWOT_INIT','DEF_SPEED'],adv:['PESTEL','FIVE_FORCES','BIZ_MODEL']},
+  stage2:{preset:['FOUR_C','SMART','WORTH'],adv:['SEVEN_P','VPC']},
+  stage3:{preset:['PERSONA','STP','JTBD'],adv:['FIVE_A','CJM']},
+  stage4:{preset:['PERCEP_MAP','SWOT_TOWS','GOLDEN'],adv:['BLUE_OCEAN']},
+  stage6:{preset:['AARRR','CONTENT_PILLAR','SMART'],adv:[]},
+  stage5:{preset:['AIDA','HOOK','CTA_DESIGN'],adv:['PAS']},
+  shoot:{preset:['BRAND_CONSISTENCY','SERVICE_EVIDENCE'],adv:[]},
+  postprod:{preset:['AIDA_RHYTHM','COVER_CTR','BRAND_ID'],adv:[]},
+  stage7:{preset:['CTA_ACCEPT','PZB','FIVE_A_ACCEPT'],adv:[]},
+  nextround:{preset:['FUNNEL_REVIEW','CLV','SMART_REVIEW'],adv:[]}
+};
+function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function toolCard(key,isAdv){
+  var t=T[key]; if(!t) return '<div class="atl-mktool-card"><h4>'+esc(key)+'</h4></div>';
+  var o=isAdv?'opacity:.8;':'';
+  return '<div class="atl-mktool-card" style="'+o+'">'
+    +'<h4>'+esc(t.name)+(isAdv?' <span style="font-size:9px;color:#B0896C;font-weight:600">進階</span>':'')+'</h4>'
+    +'<p>'+esc(t.explain)+'</p>'
+    +'<p class="why" style="margin-top:4px"><b>這站為什麼用：</b>'+esc(t.whyHere)+'</p>'
+    +'<p class="why"><b>要餵 AI：</b>'+esc(t.feedAI)+'</p>'
+    +'<p class="why"><b>目前缺：</b>'+esc(t.missing)+'</p>'
+    +'<p class="why" style="color:#5E7A50"><b>客戶版一句話：</b>'+esc(t.clientLine)+'</p>'
+    +'<button type="button" onclick="window.__atlToolPrompt&&__atlToolPrompt(this.getAttribute(\'data-sid\'),\''+esc(t.name)+'\')" data-sid="">一鍵提示詞</button>'
+    +'</div>';
+}
+/* Override buildToolkit */
+window.buildToolkit=function(stageId){
+  var st=STATION_TOOLS[stageId]; if(!st) return '';
+  var h='<details class="atl-mktool"><summary><span class="chev">▶</span>🧰 本站可用行銷工具（'+st.preset.length+' 預設'+(st.adv.length?' + '+st.adv.length+' 進階':'')+'）</summary><div class="atl-mktool-grid">';
+  st.preset.forEach(function(k){
+    var card=toolCard(k,false);
+    h+=card.replace('data-sid=""','data-sid="'+stageId+'"');
+  });
+  if(st.adv.length){
+    h+='<div style="grid-column:1/-1;font-size:11px;color:#8A7274;font-weight:700;margin-top:6px;padding-top:6px;border-top:1px dashed #E6D8C8">▼ 選用／進階</div>';
+    st.adv.forEach(function(k){
+      var card=toolCard(k,true);
+      h+=card.replace('data-sid=""','data-sid="'+stageId+'"');
+    });
+  }
+  h+='</div></details>';
+  return h;
+};
 })();
 </script>
