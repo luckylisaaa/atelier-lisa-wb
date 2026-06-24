@@ -798,6 +798,45 @@ details.cat summary .cat-name{vertical-align:middle}
 /* cs-v3.39 · 交付物 PDF 鈕 */
 .btn-deliver-2.pdf{margin-right:8px;background:#FBEDED}
 </style>
+<style id="atl-cs856-noanchor">
+/* cs-v8.56: 關閉瀏覽器捲動錨定(scroll anchoring)。③~⑦ 點開「服務台總控／閉環／客戶現況」時,
+   面板插入在進度卡下方(=目前捲動位置的上方),瀏覽器本來會自動調整 scrollTop 想「保持內容穩定」
+   → 反而把畫面拉到卡的中間/上下亂跑(=跳針)。關掉錨定後,面板往下出現、畫面停在原地,
+   由使用者自己往下拉(=②建檔的體感)。純 CSS、可逆。 */
+html, body { overflow-anchor: none; }
+</style>
+<script id="atl-cs856-tabscroll">
+/* cs-v8.56: 統一「分頁捲動」helper。各站分頁列點下去→把那一排大數字分頁捲到 sticky 頂列正下方、整排看得到。
+   頂列高度即時量(不寫死),被點的分頁列由呼叫端傳入(用按鈕往上找最近祖先,不靠猜 class)。可逆。 */
+(function(){
+  if(window.__atlTabScroll) return;
+  window.__atlTabScrollSeq=0;
+  window.__atlTabScroll=function(rowEl){
+    try{
+      if(!rowEl||!rowEl.getBoundingClientRect) return;
+      var mySeq=(++window.__atlTabScrollSeq); /* 序號:之後若又點別的分頁,舊的修正回合自動作廢,避免兩次點擊互相拉扯 */
+      var desiredOff=function(){
+        var tb=document.querySelector('.topbar'); var off=0;
+        if(tb){ var ps=getComputedStyle(tb).position; if(ps==='sticky'||ps==='fixed') off=Math.round(tb.getBoundingClientRect().height); }
+        return off+10; /* 與頂列之間留一點縫,大字那排不貼死 */
+      };
+      /* 量「列現在離理想位置差多少」,用差值微調捲動。各站分頁內容會非同步重排(有的早、有的晚到 ~700ms),
+         一次到位的絕對座標會被後續重排推歪;改成「立即平滑捲動+幾個檢查點補正」,讓大字那排最終穩穩停在頂列正下方。 */
+      var correct=function(){
+        try{
+          if(mySeq!==window.__atlTabScrollSeq) return; /* 已被新的點擊取代→停手 */
+          var delta=Math.round(rowEl.getBoundingClientRect().top-desiredOff());
+          if(Math.abs(delta)<=2) return; /* 已就位,不動 */
+          var y=Math.round(window.scrollY+delta); if(y<0)y=0;
+          try{ window.scrollTo({top:y,behavior:'smooth'}); }catch(e){ window.scrollTo(0,y); }
+        }catch(e){}
+      };
+      if(window.requestAnimationFrame){ requestAnimationFrame(function(){ requestAnimationFrame(correct); }); } else { setTimeout(correct,30); }
+      setTimeout(correct,240); setTimeout(correct,500); setTimeout(correct,760); /* 吸收非同步重排,純 setTimeout、有上限、不新增任何計時器/觀察器 */
+    }catch(e){}
+  };
+})();
+</script>
 </head>
 <body>
 
@@ -833,7 +872,7 @@ details.cat summary .cat-name{vertical-align:middle}
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">客戶服務台</span></span>
-    <span id="verBadge">cs-v8.55</span>
+    <span id="verBadge">cs-v8.56</span>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button type="button" id="atlSpecBtn" class="popout-btn" title="規格模式（點一下開啟，再點任一元件看它的規格）"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7l4-4 14 14-4 4z"/><path d="M9 5l1.5 1.5M12 8l1.5 1.5M15 11l1.5 1.5"/></svg>規格</button>
@@ -2943,7 +2982,7 @@ window.switchS3Tab=function(name){
   root.querySelectorAll('.s2-topflow .s2-tf-item').forEach(function(it){ it.classList.toggle('active', it.getAttribute('data-s3step')===name); });
   if(name==='sum' && window.fillS3SumPane) window.fillS3SumPane(); /* cs-v7.06 */
   if(name==='deliver' && window.s3RenderDeliver) window.s3RenderDeliver(); /* cs-v7.06 */
-  try{ var _tb=root.querySelector('.s1tabs')||root.querySelector('.s2-topflow'); if(_tb){ var _y=_tb.getBoundingClientRect().top+window.pageYOffset-104; window.scrollTo({top:Math.max(0,_y),behavior:'smooth'}); } else window.scrollTo({top:0,behavior:'smooth'}); }catch(e){}
+  try{ var _tb=root.querySelector('.s1tabs')||root.querySelector('.s2-topflow'); if(_tb&&window.__atlTabScroll){ window.__atlTabScroll(_tb); } else if(_tb){ var _y=_tb.getBoundingClientRect().top+window.pageYOffset-104; window.scrollTo({top:Math.max(0,_y),behavior:'smooth'}); } else window.scrollTo({top:0,behavior:'smooth'}); }catch(e){}   /* cs-v8.56:改用統一 helper(動態量 sticky 頂列高度),原寫死 -104 比真實頂列矮→分頁列被蓋20px */
 };
 /* cs-v7.06:問診「總和」分頁——四環節完成度總覽(脈絡欄數／問答題數／客戶版／顧問版) */
 window.fillS3SumPane=function(){
@@ -6110,7 +6149,7 @@ window.switchS1Tab=function(name){
   tabs.forEach(function(t){ t.classList.toggle('active', t.getAttribute('data-s1tab')===name); });
   panes.forEach(function(p){ p.classList.toggle('active', p.getAttribute('data-s1pane')===name); });
   try{ var _g=document.getElementById('s1guide'); if(_g&&window.S1_GUIDE&&window.S1_GUIDE[name]) _g.innerHTML=window.S1_GUIDE[name]; }catch(e){}
-  try{ window.scrollTo({top:0,behavior:'smooth'}); }catch(e){}
+  try{ var _r1=document.querySelector('#view-stage1 .s1tabs'); if(_r1&&window.__atlTabScroll){ window.__atlTabScroll(_r1); } else { window.scrollTo({top:0,behavior:'smooth'}); } }catch(e){}   /* cs-v8.56:捲到分頁大字那排(停在 sticky 頂列正下方),不再捲到整頁最頂 */
 };
 window.openS1TabInfo=function(name){
   var content={
@@ -10829,7 +10868,7 @@ button:not(:disabled), .btn:not(.disabled):not([disabled]), [role="button"]{
   if(window.__atlCs473Continuity) return; window.__atlCs473Continuity=true;
   function cleanTextNode(n){var s=n.nodeValue||''; var ns=s.replace(/cs-v4\.\d+\s*(SAFE|LATEST)?\s*[｜|·:-]?\s*/g,'').replace(/\bv\d{3}\s*[｜|·:-]?\s*/g,''); if(ns!==s)n.nodeValue=ns;}
   function cleanVersions(){
-    try{var vb=document.getElementById('verBadge'); if(vb)vb.textContent='cs-v8.55';}catch(e){}
+    try{var vb=document.getElementById('verBadge'); if(vb)vb.textContent='cs-v8.56';}catch(e){}
     try{var w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT,{acceptNode:function(n){var p=n.parentElement; if(!p||p.id==='verBadge'||/^(SCRIPT|STYLE|TEXTAREA)$/i.test(p.tagName))return NodeFilter.FILTER_REJECT; return /(cs-v4\.\d+|\bv\d{3})/.test(n.nodeValue||'')?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_REJECT;}}); var nodes=[],n; while(n=w.nextNode())nodes.push(n); nodes.forEach(cleanTextNode);}catch(e){}
   }
   function alignSelection(){
@@ -10889,7 +10928,7 @@ input[type="text"]:focus,input:not([type]):focus{border-color:#D4A574!important;
     btn.onclick=function(e){e.stopPropagation(); set(!safe.classList.contains('atl-safe474-collapsed'));};
     h.appendChild(summary); h.appendChild(btn); set(localStorage.getItem('atl.cs474.safeCollapsed')!=='0');
   }
-  function cleanBadge(){ var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v8.55'; }
+  function cleanBadge(){ var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v8.56'; }
   function run(){ cleanBadge(); ensureSafeCollapse(); wireAutogrow(document); }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run); else run();
   setInterval(run,1200);
@@ -10950,7 +10989,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
   function wire(root){qsa('textarea,input[type="text"],input[type="url"],input[type="email"],input:not([type])',root||document).forEach(function(el){if(el.__atl475)return; if(el.closest('.atl-field-modal,.atl-final-modal'))return; el.__atl475=true; el.addEventListener('focus',function(){show(el); autogrow(el)}); el.addEventListener('input',function(){autogrow(el)}); el.addEventListener('blur',hideSoon); autogrow(el);});}
   document.addEventListener('click',function(e){var b=e.target.closest('#atlFieldToolbar button'); if(!b||!active)return; var a=b.getAttribute('data-act'); if(a==='prompt')openModal('prompt',active); if(a==='fill')openModal('fill',active); if(a==='edit')openModal('edit',active); if(a==='done'){var bar=qs('#atlFieldToolbar'); if(bar)bar.classList.remove('on'); if(active)active.classList.remove('atl-field-active'); toastSafe('此欄位可視為定案，請記得儲存');}},true);
   function addCollapse(root){qsa('.section-card,.deliverable-card,.atl452safe-card',root||document).forEach(function(card){if(card.__atlCollapse475||card.closest('.preview-modal,.atl-field-modal'))return; card.__atlCollapse475=true; card.classList.add('atl-collapsible'); var h=qs('h2,h3,h4,.stitle,.section-title',card)||card.firstElementChild; if(h)h.classList.add('atl-keep-visible'); var btn=document.createElement('button'); btn.type='button'; btn.className='atl-collapse-toggle'; btn.textContent='收合'; btn.addEventListener('click',function(e){e.preventDefault(); e.stopPropagation(); var closed=card.classList.toggle('atl-closed'); btn.textContent=closed?'展開':'收合';}); card.insertBefore(btn,card.firstChild);});}
-  function boot(){try{var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v8.55';}catch(e){} wire(document); addCollapse(document);}
+  function boot(){try{var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v8.56';}catch(e){} wire(document); addCollapse(document);}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot); else boot();
   try{new MutationObserver(function(ms){var hit=false; ms.forEach(function(m){if(m.addedNodes&&m.addedNodes.length)hit=true}); if(hit){clearTimeout(window.__atl475Timer); window.__atl475Timer=setTimeout(boot,180);}}).observe(document.body,{childList:true,subtree:true});}catch(e){}
 })();
@@ -10991,7 +11030,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
 <script id="atl478-final-export-js">
 (function(){
   if(window.__atl478FinalExport)return; window.__atl478FinalExport=true;
-  var VERSION='cs-v8.55';
+  var VERSION='cs-v8.56';
   function esc(s){return (s==null?'':String(s)).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
   function qsa(sel,root){return Array.prototype.slice.call((root||document).querySelectorAll(sel))}
   function text(el){return (el&&el.innerText||el&&el.textContent||'').replace(/\s+/g,' ').trim()}
@@ -11111,7 +11150,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
 <script>
 (function(){
   if(window.__atlCs480) return; window.__atlCs480=true;
-  var V='cs-v8.55';
+  var V='cs-v8.56';
   function lock(){ var vb=document.getElementById('verBadge'); if(vb && (vb.textContent||'').trim()!==V) vb.textContent=V; }
   function unify(){
     var safe=document.querySelector('.atl452safe'); if(!safe) return;
@@ -12062,7 +12101,7 @@ input.atl477-open-field:not([type="checkbox"]):not([type="radio"]):not([type="bu
 <script id="atl-cs477-final-touch">
 (function(){
   if(window.__atlCs477FinalTouch) return; window.__atlCs477FinalTouch=true;
-  var VERSION='cs-v8.55';
+  var VERSION='cs-v8.56';
   function qs(s,r){return (r||document).querySelector(s)}
   function qsa(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
   function setVersion(){try{var b=qs('#verBadge'); if(b)b.textContent=VERSION; window.ATELIER_CLIENT_VERSION=VERSION;}catch(e){}}
@@ -16180,6 +16219,7 @@ textarea.p2-ta{ width:100%; box-sizing:border-box; min-height:40px; resize:verti
     [].forEach.call(v.querySelectorAll('.s2pane'),function(p){ p.classList.toggle('active', p.getAttribute('data-s2pane')===name); });
     if(name==='review' && window.renderS2Review){ try{ renderS2Review(); }catch(e){} }
     if(name==='deliver' && window.s2RenderDeliver){ try{ s2RenderDeliver(); }catch(e){} }
+    try{ var _r2=v.querySelector('.s2tabs'); if(_r2&&window.__atlTabScroll) window.__atlTabScroll(_r2); }catch(e){}   /* cs-v8.56:點分頁→捲到分頁大字那排(停在 sticky 頂列正下方) */
   };
 
   window.toggleS2AIbox=function(btn){
@@ -18335,6 +18375,7 @@ textarea.p2-ta{ width:100%; box-sizing:border-box; min-height:40px; resize:verti
       [].forEach.call(wrap.querySelectorAll('.s1tab'),function(b){ b.classList.toggle('active', b.getAttribute('data-sxtab')===name); });
       [].forEach.call(wrap.querySelectorAll('.sxpane'),function(p){ p.classList.toggle('active', p.getAttribute('data-sxpane')===name); });
       if(name==='review') renderReview(wrap);
+      try{ var _row=(btn.closest&&(btn.closest('.sxtabs')||btn.closest('.s1tabs')))||wrap.querySelector('.sxtabs')||wrap.querySelector('.s1tabs'); if(_row&&window.__atlTabScroll) window.__atlTabScroll(_row); }catch(e){}   /* cs-v8.56:④~⑦ 的分頁走這支(switchSxTab),原本完全沒有捲動→點分頁不會帶到大字那排。補上統一 helper,捲到被點的分頁列停在 sticky 頂列正下方。 */
     }catch(e){}
   };
 
@@ -18537,7 +18578,7 @@ try{ window.__atl632=true; }catch(e){}
       [].forEach.call(wrap.querySelectorAll('.s1tab'),function(b){ b.classList.toggle('active', b.getAttribute('data-sx2')===name); });
       [].forEach.call(wrap.querySelectorAll('.sxpane'),function(p){ p.classList.toggle('active', p.getAttribute('data-sx2')===name); });
       if(name==='review') buildReview(wrap);
-      if(btn.classList.contains('sx2navbtn')){ var _nav=v.querySelector('.sx2nav')||wrap; if(_nav.scrollIntoView){ try{ _nav.scrollIntoView({behavior:'smooth',block:'start'}); }catch(e){} } }   /* cs-v8.55:捲到「分頁大字那排(.sx2nav)」頂端(原本捲到.sx2wrap內容→把分頁列推出畫面);配合.sx2nav的scroll-margin-top扣掉sticky頂列 */
+      try{ var _row=(btn.closest&&(btn.closest('.sxtabs')||btn.closest('.s1tabs')||btn.closest('.sx2nav')))||v.querySelector('.sxtabs')||v.querySelector('.sx2nav'); if(_row&&window.__atlTabScroll) window.__atlTabScroll(_row); }catch(e){}   /* cs-v8.56:捲到「被點的那排大數字分頁」頂端(停在 sticky 頂列正下方)。原 cs-v8.55: 捲 .sx2nav 在多數站不存在、且只在點 .sx2navbtn 時才捲(主排是 .s1tab→根本沒捲)→這就是「沒改變」的原因。改用按鈕往上找最近分頁列,不靠猜 class。 */
     }catch(e){}
   };
 
