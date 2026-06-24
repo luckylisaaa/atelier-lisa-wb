@@ -872,7 +872,7 @@ html, body { overflow-anchor: none; }
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">中控台</span></span>
-    <span id="verBadge">v1.0.1</span>
+    <span id="verBadge">v1.0.2</span>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button type="button" id="atlSpecBtn" class="popout-btn" title="規格模式（點一下開啟，再點任一元件看它的規格）"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7l4-4 14 14-4 4z"/><path d="M9 5l1.5 1.5M12 8l1.5 1.5M15 11l1.5 1.5"/></svg>規格</button>
@@ -10880,7 +10880,7 @@ button:not(:disabled), .btn:not(.disabled):not([disabled]), [role="button"]{
   if(window.__atlCs473Continuity) return; window.__atlCs473Continuity=true;
   function cleanTextNode(n){var s=n.nodeValue||''; var ns=s.replace(/cs-v4\.\d+\s*(SAFE|LATEST)?\s*[｜|·:-]?\s*/g,'').replace(/\bv\d{3}\s*[｜|·:-]?\s*/g,''); if(ns!==s)n.nodeValue=ns;}
   function cleanVersions(){
-    try{var vb=document.getElementById('verBadge'); if(vb)vb.textContent='v1.0.1';}catch(e){}
+    try{var vb=document.getElementById('verBadge'); if(vb)vb.textContent='v1.0.2';}catch(e){}
     try{var w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT,{acceptNode:function(n){var p=n.parentElement; if(!p||p.id==='verBadge'||/^(SCRIPT|STYLE|TEXTAREA)$/i.test(p.tagName))return NodeFilter.FILTER_REJECT; return /(cs-v4\.\d+|\bv\d{3})/.test(n.nodeValue||'')?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_REJECT;}}); var nodes=[],n; while(n=w.nextNode())nodes.push(n); nodes.forEach(cleanTextNode);}catch(e){}
   }
   function alignSelection(){
@@ -10940,7 +10940,7 @@ input[type="text"]:focus,input:not([type]):focus{border-color:#D4A574!important;
     btn.onclick=function(e){e.stopPropagation(); set(!safe.classList.contains('atl-safe474-collapsed'));};
     h.appendChild(summary); h.appendChild(btn); set(localStorage.getItem('atl.cs474.safeCollapsed')!=='0');
   }
-  function cleanBadge(){ var vb=qs('#verBadge'); if(vb)vb.textContent='v1.0.1'; }
+  function cleanBadge(){ var vb=qs('#verBadge'); if(vb)vb.textContent='v1.0.2'; }
   function run(){ cleanBadge(); ensureSafeCollapse(); wireAutogrow(document); }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run); else run();
   setInterval(run,1200);
@@ -11001,7 +11001,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
   function wire(root){qsa('textarea,input[type="text"],input[type="url"],input[type="email"],input:not([type])',root||document).forEach(function(el){if(el.__atl475)return; if(el.closest('.atl-field-modal,.atl-final-modal'))return; el.__atl475=true; el.addEventListener('focus',function(){show(el); autogrow(el)}); el.addEventListener('input',function(){autogrow(el)}); el.addEventListener('blur',hideSoon); autogrow(el);});}
   document.addEventListener('click',function(e){var b=e.target.closest('#atlFieldToolbar button'); if(!b||!active)return; var a=b.getAttribute('data-act'); if(a==='prompt')openModal('prompt',active); if(a==='fill')openModal('fill',active); if(a==='edit')openModal('edit',active); if(a==='done'){var bar=qs('#atlFieldToolbar'); if(bar)bar.classList.remove('on'); if(active)active.classList.remove('atl-field-active'); toastSafe('此欄位可視為定案，請記得儲存');}},true);
   function addCollapse(root){qsa('.section-card,.deliverable-card,.atl452safe-card',root||document).forEach(function(card){if(card.__atlCollapse475||card.closest('.preview-modal,.atl-field-modal'))return; card.__atlCollapse475=true; card.classList.add('atl-collapsible'); var h=qs('h2,h3,h4,.stitle,.section-title',card)||card.firstElementChild; if(h)h.classList.add('atl-keep-visible'); var btn=document.createElement('button'); btn.type='button'; btn.className='atl-collapse-toggle'; btn.textContent='收合'; btn.addEventListener('click',function(e){e.preventDefault(); e.stopPropagation(); var closed=card.classList.toggle('atl-closed'); btn.textContent=closed?'展開':'收合';}); card.insertBefore(btn,card.firstChild);});}
-  function boot(){try{var vb=qs('#verBadge'); if(vb)vb.textContent='v1.0.1';}catch(e){} wire(document); addCollapse(document);}
+  function boot(){try{var vb=qs('#verBadge'); if(vb)vb.textContent='v1.0.2';}catch(e){} wire(document); addCollapse(document);}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot); else boot();
   try{new MutationObserver(function(ms){var hit=false; ms.forEach(function(m){if(m.addedNodes&&m.addedNodes.length)hit=true}); if(hit){clearTimeout(window.__atl475Timer); window.__atl475Timer=setTimeout(boot,180);}}).observe(document.body,{childList:true,subtree:true});}catch(e){}
 })();
@@ -11042,7 +11042,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
 <script id="atl478-final-export-js">
 (function(){
   if(window.__atl478FinalExport)return; window.__atl478FinalExport=true;
-  var VERSION='v1.0.1';
+  var VERSION='v1.0.2';
   function esc(s){return (s==null?'':String(s)).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
   function qsa(sel,root){return Array.prototype.slice.call((root||document).querySelectorAll(sel))}
   function text(el){return (el&&el.innerText||el&&el.textContent||'').replace(/\s+/g,' ').trim()}
@@ -11162,7 +11162,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
 <script>
 (function(){
   if(window.__atlCs480) return; window.__atlCs480=true;
-  var V='v1.0.1';
+  var V='v1.0.2';
   function lock(){ var vb=document.getElementById('verBadge'); if(vb && (vb.textContent||'').trim()!==V) vb.textContent=V; }
   function unify(){
     var safe=document.querySelector('.atl452safe'); if(!safe) return;
@@ -12113,7 +12113,7 @@ input.atl477-open-field:not([type="checkbox"]):not([type="radio"]):not([type="bu
 <script id="atl-cs477-final-touch">
 (function(){
   if(window.__atlCs477FinalTouch) return; window.__atlCs477FinalTouch=true;
-  var VERSION='v1.0.1';
+  var VERSION='v1.0.2';
   function qs(s,r){return (r||document).querySelector(s)}
   function qsa(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
   function setVersion(){try{var b=qs('#verBadge'); if(b)b.textContent=VERSION; window.ATELIER_CLIENT_VERSION=VERSION;}catch(e){}}
@@ -19936,7 +19936,7 @@ var FLOW=[
   {n:8,label:'後製整理',stageId:'postprod',zone:'B',zoneFull:'內容生產｜內容製作',isNew:true,
    tools:['AIDA 節奏','品牌識別','封面點擊＋完播假設'],toolsAdv:['A/B 測試','Retention Curve'],
    toolPurpose:'檢查剪輯、字幕、封面、CTA 是否服務商業目的。'},
-  {n:9,label:'主平台成品交付',stageId:'stage7',zone:'D',zoneFull:'數據飛輪｜交付復盤',
+  {n:9,label:'主平台成品交付',stageId:'stage7',zone:'C',zoneFull:'轉換後端｜上線承接',
    tools:['CTA 承接','PZB','5A 承接'],toolsAdv:['投放子模組'],
    toolPurpose:'交付品質、上線承接路徑、投放與導流需求。'},
   {n:10,label:'下一階段建議',stageId:'nextround',zone:'D',zoneFull:'數據飛輪｜交付復盤',isNew:true,
@@ -20034,7 +20034,7 @@ var POSCARD_DATA={
     produce:'剪輯版本、字幕、封面、輸出規格確認。',
     free:'成品預覽與修改溝通。',paid:'完整版本管理與輸出規格。',internal:'內部品質判斷與修改紀錄。',
     files:'成品預覽(客戶版)、版本紀錄(顧問版)、輸出規格單',next:'9 主平台成品交付'},
-  stage7:{n:9,zone:'D',zoneFull:'數據飛輪｜交付復盤',flow:'流程 9 · 主平台成品交付',
+  stage7:{n:9,zone:'C',zoneFull:'轉換後端｜上線承接',flow:'流程 9 · 主平台成品交付',
     purpose:'把交付物、客戶回饋、修改紀錄、下一步與付款狀態集中管理,讓服務閉環。',
     prepare:'完成的內容成品與交付清單。',
     produce:'交付紀錄、修改紀錄、結案摘要。',
@@ -20709,6 +20709,251 @@ if(v2){
     if(e.target.id&&e.target.id.startsWith('coop-')){window.__atlCoopSave();}
   });
 }
+
+})();
+</script>
+<style id="atl-v102-layout">
+/* v1.0.2: 版型根因修正 — 桌機三欄＋手機單欄 */
+
+/* ─── 桌機版 ≥1024px：三區工作台 ─── */
+@media(min-width:1024px){
+  body{background:#F5F0EA;}
+  .topbar{max-width:none;border-radius:0;}
+  .tabs{justify-content:flex-start;gap:0;padding:0 16px;background:#FAF6F1;border-bottom:1px solid #EFE3D2;max-width:none;}
+  .tabs .tab{padding:10px 14px!important;font-size:12px!important;}
+
+  /* 三欄容器 */
+  .atl-desk-wrap{display:grid;grid-template-columns:200px 1fr 280px;gap:0;max-width:1400px;margin:0 auto;min-height:calc(100vh - 100px);}
+  .atl-desk-left{background:#FAF6F1;border-right:1px solid #EFE3D2;padding:12px 0;position:sticky;top:90px;height:fit-content;max-height:calc(100vh - 100px);overflow-y:auto;}
+  .atl-desk-center{background:#fff;padding:16px 24px;min-width:0;overflow-x:hidden;}
+  .atl-desk-right{background:#FAF6F1;border-left:1px solid #EFE3D2;padding:12px;position:sticky;top:90px;height:fit-content;max-height:calc(100vh - 100px);overflow-y:auto;}
+  .atl-desk-right.collapsed{display:none;}
+  .atl-desk-right.collapsed+.atl-desk-center{grid-column:2/4;}
+
+  /* 左側導覽 */
+  .atl-sidenav{list-style:none;padding:0;margin:0;}
+  .atl-sidenav li{margin:0;}
+  .atl-sidenav a,.atl-sidenav button{display:block;width:100%;text-align:left;padding:10px 16px;font-size:12.5px;font-weight:600;
+    color:#5C4A3C;background:none;border:none;border-left:3px solid transparent;cursor:pointer;font-family:inherit;transition:all .15s;}
+  .atl-sidenav a:hover,.atl-sidenav button:hover{background:#FFF8F0;color:#A51820;}
+  .atl-sidenav .on{background:#FFF4EC;border-left-color:#A51820;color:#A51820;font-weight:700;}
+  .atl-sidenav .zone-label{display:block;font-size:9.5px;color:#B0896C;font-weight:600;letter-spacing:1px;margin-top:1px;}
+
+  /* 隱藏手機版tab列（桌機用左側導覽） */
+  .tabs{display:none!important;}
+  /* 隱藏 view 裡的 addon top block（桌機移到右側欄） */
+  .atl-v90-top{display:none!important;}
+  /* 右側欄 toggle */
+  .atl-right-toggle{position:fixed;right:0;top:50%;transform:translateY(-50%);writing-mode:vertical-rl;
+    padding:8px 4px;background:#A51820;color:#fff;border:none;border-radius:6px 0 0 6px;cursor:pointer;font-size:11px;font-weight:700;z-index:40;}
+}
+
+/* ─── 手機版 <1024px：維持單欄 ─── */
+@media(max-width:1023px){
+  .atl-desk-wrap,.atl-desk-left,.atl-desk-right,.atl-right-toggle{display:none!important;}
+  /* 手機版保持原有佈局，addon top block 繼續用收合模式 */
+}
+
+/* ─── 右側欄元件樣式 ─── */
+.atl-side-section{margin:0 0 8px;border:1px solid #EFE3D2;border-radius:10px;background:#FFFDFB;overflow:hidden;}
+.atl-side-section>summary{list-style:none;cursor:pointer;padding:8px 12px;font-size:11.5px;font-weight:700;color:#5C0F14;
+  display:flex;align-items:center;gap:5px;user-select:none;}
+.atl-side-section>summary::-webkit-details-marker{display:none;}
+.atl-side-section>summary .tri{display:inline-block;width:0;height:0;border-top:4px solid transparent;
+  border-bottom:4px solid transparent;border-left:6px solid #C9A57A;transition:transform .2s;}
+.atl-side-section[open]>summary .tri{transform:rotate(90deg);}
+.atl-side-section .side-body{padding:8px 12px 10px;font-size:12px;color:#2A1A1C;line-height:1.55;}
+.atl-side-ref-item{margin:4px 0;padding:6px 8px;background:#FAF6F1;border-radius:7px;border:1px solid #EFE6DA;}
+.atl-side-ref-item b{color:#5C0F14;font-size:11px;}
+.atl-side-ref-item .val{color:#5C4A3C;font-size:11.5px;}
+</style>
+<script id="atl-v102-layout-js">
+/* v1.0.2: 桌機三欄版型 + 精準引用 */
+(function(){
+if(window.__atlV102) return; window.__atlV102=true;
+function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+var FLOW_REF=window.FLOW||[];
+var ZONE_FULL=window.ZONE_FULL||{A:'前端策略｜診斷定位',B:'內容生產｜內容製作',C:'轉換後端｜上線承接',D:'數據飛輪｜交付復盤'};
+
+/* 逐站引用規則 */
+var REF_RULES={
+  stage1:['❹ 內容現況'],
+  stage3:['❸ 目標人群'],
+  stage4:['❺ 信任資產','❻ 轉換路徑','❼ 競爭位置'],
+  stage5:['❽ 拍攝條件'],  /* 站6=stage5 */
+  shoot:['❽ 拍攝條件'],
+  stage7:['❻ 轉換路徑']
+};
+
+/* 讀取建檔資料 */
+function getProfileData(catName){
+  try{
+    var a=curAcc(); if(!a) return [];
+    var f=(a.clientFlow&&a.clientFlow.stage2_filing)||{};
+    var d=(f.data)||{};
+    var items=[];
+    if(typeof PROFILE_CATS!=='undefined'){
+      PROFILE_CATS.forEach(function(pc){
+        if(pc[1]===catName){
+          pc[2].forEach(function(fd){
+            var val=d[fd[0]]||''; if(val) items.push({label:fd[1],value:val});
+          });
+        }
+      });
+    }
+    return items;
+  }catch(e){return [];}
+}
+
+/* 讀取復盤資料（站9→站10） */
+function getRecapData(){
+  try{
+    var a=curAcc(); if(!a) return [];
+    var f=(a.clientFlow&&a.clientFlow.stage7_delivery)||{};
+    var d=(f.data)||{};
+    var fields=['deliveredItems','feedback','revision','nextStep','payment','internalReview','finalSummary'];
+    var labels={'deliveredItems':'已交付項目','feedback':'客戶回饋','revision':'修改紀錄','nextStep':'下一步行動',
+      'payment':'款項/時數','internalReview':'內部復盤','finalSummary':'結案摘要'};
+    return fields.filter(function(k){return d[k];}).map(function(k){return {label:labels[k]||k,value:d[k]};});
+  }catch(e){return [];}
+}
+
+/* 建立引用區塊 */
+function buildRefSection(title, items){
+  if(!items.length) return '<details class="atl-side-section"><summary><span class="tri"></span>'+esc(title)+'</summary><div class="side-body" style="color:#B0896C">尚無資料</div></details>';
+  var h='<details class="atl-side-section"><summary><span class="tri"></span>'+esc(title)+' ('+items.length+')</summary><div class="side-body">';
+  items.forEach(function(it){
+    h+='<div class="atl-side-ref-item"><b>'+esc(it.label)+'</b><div class="val">'+esc(it.value)+'</div></div>';
+  });
+  h+='</div></details>';
+  return h;
+}
+
+/* 建立右側欄內容 */
+function buildRightPanel(stageId){
+  var h='';
+  /* 定位卡 */
+  var pc=window.POSCARD_DATA&&POSCARD_DATA[stageId];
+  if(pc){
+    h+='<details class="atl-side-section"><summary><span class="tri"></span>定位卡 · '+esc(pc.flow)+'</summary><div class="side-body">';
+    h+='<div style="margin:2px 0"><b>目的：</b>'+esc(pc.purpose)+'</div>';
+    h+='<div style="margin:2px 0"><b>準備：</b>'+esc(pc.prepare)+'</div>';
+    h+='<div style="margin:2px 0"><b>產出：</b>'+esc(pc.produce)+'</div>';
+    h+='<div style="margin:4px 0;display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px;font-size:11px">';
+    h+='<div style="background:#F4F7F1;padding:4px 6px;border-radius:5px"><b style="color:#5E7A50">免費</b><br>'+esc(pc.free)+'</div>';
+    h+='<div style="background:#FFF8EE;padding:4px 6px;border-radius:5px"><b style="color:#A6842E">付費</b><br>'+esc(pc.paid)+'</div>';
+    h+='<div style="background:#FBF1F1;padding:4px 6px;border-radius:5px"><b style="color:#A51820">內部</b><br>'+esc(pc.internal)+'</div>';
+    h+='</div>';
+    h+='<div style="margin:4px 0;font-size:11px"><b>檔案：</b>'+esc(pc.files)+'</div>';
+    h+='<div style="margin:4px 0;color:#A51820;font-weight:700;font-size:11px">下一步 → '+esc(pc.next)+'</div>';
+    h+='</div></details>';
+  }
+  /* 客戶狀態/服務型態 */
+  h+='<details class="atl-side-section" open><summary><span class="tri"></span>客戶資訊</summary><div class="side-body">';
+  var a=(typeof curAcc==='function')?curAcc():null;
+  var cs=(a&&a.profile&&a.profile.clientStatus)||'未設定';
+  var st=(a&&a.profile&&a.profile.serviceType)||'未設定';
+  h+='<div style="margin:2px 0"><b>狀態：</b>'+esc(cs)+'</div>';
+  h+='<div style="margin:2px 0"><b>型態：</b>'+esc(st)+'</div>';
+  h+='</div></details>';
+  /* 行銷工具 */
+  if(typeof window.buildToolkit==='function'){
+    var tk=(window.buildToolkit)(stageId);
+    if(tk) h+=tk;
+  }
+  /* 精準引用 */
+  var refs=REF_RULES[stageId]||[];
+  refs.forEach(function(catName){
+    var items=getProfileData(catName);
+    h+=buildRefSection('引用：'+catName, items);
+  });
+  /* 站10特殊：引用復盤 */
+  if(stageId==='nextround'){
+    h+=buildRefSection('來自第 9 站的復盤資料', getRecapData());
+  }
+  return h;
+}
+
+/* ─── 桌機版：建立三欄結構 ─── */
+function setupDesktop(){
+  if(window.innerWidth<1024) return;
+  if(document.querySelector('.atl-desk-wrap')) return; /* 已建 */
+
+  var wrap=document.createElement('div'); wrap.className='atl-desk-wrap';
+  /* 左側 */
+  var left=document.createElement('div'); left.className='atl-desk-left';
+  var nav=document.createElement('ul'); nav.className='atl-sidenav'; nav.id='atl-sidenav';
+  var steps=[
+    {id:'select',label:'選擇客戶',zone:''},
+    {id:'dashboard',label:'儀表板',zone:''},
+    {id:'stage1',label:'1 需求對焦',zone:'A'},
+    {id:'stage2',label:'2 合作確認',zone:'A'},
+    {id:'stage3',label:'3 深度訪談',zone:'A'},
+    {id:'stage4',label:'4 IP方向',zone:'A'},
+    {id:'stage6',label:'5 主題規劃',zone:'B'},
+    {id:'stage5',label:'6 腳本拍攝',zone:'B'},
+    {id:'shoot',label:'7 拍攝執行',zone:'B'},
+    {id:'postprod',label:'8 後製整理',zone:'B'},
+    {id:'stage7',label:'9 成品交付',zone:'C'},
+    {id:'nextround',label:'10 下階段',zone:'D'}
+  ];
+  steps.forEach(function(st){
+    var li=document.createElement('li');
+    var btn=document.createElement('button');
+    btn.type='button';
+    btn.innerHTML=esc(st.label)+(st.zone?'<span class="zone-label">'+esc(st.zone)+' '+(ZONE_FULL[st.zone]||'')+'</span>':'');
+    btn.setAttribute('data-nav',st.id);
+    btn.onclick=function(){switchTo(st.id);updateSideNav(st.id);updateRightPanel(st.id);};
+    li.appendChild(btn); nav.appendChild(li);
+  });
+  left.appendChild(nav);
+  /* 中間 */
+  var center=document.createElement('div'); center.className='atl-desk-center'; center.id='atl-desk-center';
+  /* 右側 */
+  var right=document.createElement('div'); right.className='atl-desk-right'; right.id='atl-desk-right';
+  wrap.appendChild(left); wrap.appendChild(center); wrap.appendChild(right);
+  /* 插入到 tabs 後面 */
+  var tabs=document.getElementById('tabs');
+  if(tabs) tabs.parentNode.insertBefore(wrap, tabs.nextSibling);
+  /* 把所有 .view 搬到 center */
+  document.querySelectorAll('.view').forEach(function(v){center.appendChild(v);});
+  /* banner 也搬 */
+  var banner=document.getElementById('csBanner');
+  if(banner) center.insertBefore(banner, center.firstChild);
+}
+
+function updateSideNav(activeId){
+  var nav=document.getElementById('atl-sidenav');
+  if(!nav) return;
+  nav.querySelectorAll('button').forEach(function(btn){
+    btn.classList.toggle('on', btn.getAttribute('data-nav')===activeId);
+  });
+}
+
+function updateRightPanel(stageId){
+  var right=document.getElementById('atl-desk-right');
+  if(!right) return;
+  right.innerHTML=buildRightPanel(stageId);
+}
+
+/* Hook switchTo 更新右側欄 */
+var _sw=window.switchTo;
+window.switchTo=function(v){
+  var r=_sw.apply(this,arguments);
+  updateSideNav(v); updateRightPanel(v);
+  return r;
+};
+
+/* Init */
+if(document.readyState==='complete'||document.readyState==='interactive'){
+  setupDesktop();
+} else {
+  window.addEventListener('DOMContentLoaded', setupDesktop);
+}
+window.addEventListener('resize', function(){
+  if(window.innerWidth>=1024 && !document.querySelector('.atl-desk-wrap')) setupDesktop();
+});
 
 })();
 </script>
