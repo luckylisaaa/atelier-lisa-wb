@@ -872,7 +872,7 @@ html, body { overflow-anchor: none; }
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">中控台</span></span>
-    <span id="verBadge">v1.1.3</span>
+    <span id="verBadge">v1.1.4</span>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button type="button" id="atlSpecBtn" class="popout-btn" title="規格模式（點一下開啟，再點任一元件看它的規格）"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7l4-4 14 14-4 4z"/><path d="M9 5l1.5 1.5M12 8l1.5 1.5M15 11l1.5 1.5"/></svg>規格</button>
@@ -10880,7 +10880,7 @@ button:not(:disabled), .btn:not(.disabled):not([disabled]), [role="button"]{
   if(window.__atlCs473Continuity) return; window.__atlCs473Continuity=true;
   function cleanTextNode(n){var s=n.nodeValue||''; var ns=s.replace(/cs-v4\.\d+\s*(SAFE|LATEST)?\s*[｜|·:-]?\s*/g,'').replace(/\bv\d{3}\s*[｜|·:-]?\s*/g,''); if(ns!==s)n.nodeValue=ns;}
   function cleanVersions(){
-    try{var vb=document.getElementById('verBadge'); if(vb)vb.textContent='v1.1.3';}catch(e){}
+    try{var vb=document.getElementById('verBadge'); if(vb)vb.textContent='v1.1.4';}catch(e){}
     try{var w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT,{acceptNode:function(n){var p=n.parentElement; if(!p||p.id==='verBadge'||/^(SCRIPT|STYLE|TEXTAREA)$/i.test(p.tagName))return NodeFilter.FILTER_REJECT; return /(cs-v4\.\d+|\bv\d{3})/.test(n.nodeValue||'')?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_REJECT;}}); var nodes=[],n; while(n=w.nextNode())nodes.push(n); nodes.forEach(cleanTextNode);}catch(e){}
   }
   function alignSelection(){
@@ -10940,7 +10940,7 @@ input[type="text"]:focus,input:not([type]):focus{border-color:#D4A574!important;
     btn.onclick=function(e){e.stopPropagation(); set(!safe.classList.contains('atl-safe474-collapsed'));};
     h.appendChild(summary); h.appendChild(btn); set(localStorage.getItem('atl.cs474.safeCollapsed')!=='0');
   }
-  function cleanBadge(){ var vb=qs('#verBadge'); if(vb)vb.textContent='v1.1.3'; }
+  function cleanBadge(){ var vb=qs('#verBadge'); if(vb)vb.textContent='v1.1.4'; }
   function run(){ cleanBadge(); ensureSafeCollapse(); wireAutogrow(document); }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run); else run();
   setInterval(run,1200);
@@ -11001,7 +11001,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
   function wire(root){qsa('textarea,input[type="text"],input[type="url"],input[type="email"],input:not([type])',root||document).forEach(function(el){if(el.__atl475)return; if(el.closest('.atl-field-modal,.atl-final-modal'))return; el.__atl475=true; el.addEventListener('focus',function(){show(el); autogrow(el)}); el.addEventListener('input',function(){autogrow(el)}); el.addEventListener('blur',hideSoon); autogrow(el);});}
   document.addEventListener('click',function(e){var b=e.target.closest('#atlFieldToolbar button'); if(!b||!active)return; var a=b.getAttribute('data-act'); if(a==='prompt')openModal('prompt',active); if(a==='fill')openModal('fill',active); if(a==='edit')openModal('edit',active); if(a==='done'){var bar=qs('#atlFieldToolbar'); if(bar)bar.classList.remove('on'); if(active)active.classList.remove('atl-field-active'); toastSafe('此欄位可視為定案，請記得儲存');}},true);
   function addCollapse(root){qsa('.section-card,.deliverable-card,.atl452safe-card',root||document).forEach(function(card){if(card.__atlCollapse475||card.closest('.preview-modal,.atl-field-modal'))return; card.__atlCollapse475=true; card.classList.add('atl-collapsible'); var h=qs('h2,h3,h4,.stitle,.section-title',card)||card.firstElementChild; if(h)h.classList.add('atl-keep-visible'); var btn=document.createElement('button'); btn.type='button'; btn.className='atl-collapse-toggle'; btn.textContent='收合'; btn.addEventListener('click',function(e){e.preventDefault(); e.stopPropagation(); var closed=card.classList.toggle('atl-closed'); btn.textContent=closed?'展開':'收合';}); card.insertBefore(btn,card.firstChild);});}
-  function boot(){try{var vb=qs('#verBadge'); if(vb)vb.textContent='v1.1.3';}catch(e){} wire(document); addCollapse(document);}
+  function boot(){try{var vb=qs('#verBadge'); if(vb)vb.textContent='v1.1.4';}catch(e){} wire(document); addCollapse(document);}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot); else boot();
   try{new MutationObserver(function(ms){var hit=false; ms.forEach(function(m){if(m.addedNodes&&m.addedNodes.length)hit=true}); if(hit){clearTimeout(window.__atl475Timer); window.__atl475Timer=setTimeout(boot,180);}}).observe(document.body,{childList:true,subtree:true});}catch(e){}
 })();
@@ -11042,7 +11042,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
 <script id="atl478-final-export-js">
 (function(){
   if(window.__atl478FinalExport)return; window.__atl478FinalExport=true;
-  var VERSION='v1.1.3';
+  var VERSION='v1.1.4';
   function esc(s){return (s==null?'':String(s)).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
   function qsa(sel,root){return Array.prototype.slice.call((root||document).querySelectorAll(sel))}
   function text(el){return (el&&el.innerText||el&&el.textContent||'').replace(/\s+/g,' ').trim()}
@@ -11162,7 +11162,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
 <script>
 (function(){
   if(window.__atlCs480) return; window.__atlCs480=true;
-  var V='v1.1.3';
+  var V='v1.1.4';
   function lock(){ var vb=document.getElementById('verBadge'); if(vb && (vb.textContent||'').trim()!==V) vb.textContent=V; }
   function unify(){
     var safe=document.querySelector('.atl452safe'); if(!safe) return;
@@ -12116,7 +12116,7 @@ input.atl477-open-field:not([type="checkbox"]):not([type="radio"]):not([type="bu
 <script id="atl-cs477-final-touch">
 (function(){
   if(window.__atlCs477FinalTouch) return; window.__atlCs477FinalTouch=true;
-  var VERSION='v1.1.3';
+  var VERSION='v1.1.4';
   function qs(s,r){return (r||document).querySelector(s)}
   function qsa(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
   function setVersion(){try{var b=qs('#verBadge'); if(b)b.textContent=VERSION; window.ATELIER_CLIENT_VERSION=VERSION;}catch(e){}}
@@ -20639,6 +20639,15 @@ window.buildToolkit=function(stageId){
 .atl-gencard-body .gc-tool{ margin:10px 0; padding:10px 12px; background:#FAF6F1; border:1px solid #EFE3D2; border-radius:10px; }
 .atl-gencard-body .gc-tool-h{ font-size:13px; font-weight:700; color:#5C0F14; margin-bottom:5px; }
 .atl-gencard-body .gc-line{ font-size:11px; font-weight:400; color:#8A7274; }
+.atl-gencard-body .gc-sec{ margin:12px 0; padding-top:10px; border-top:1px dashed #E2D2BC; }
+.atl-gencard-body .gc-sec:first-child{ border-top:0; padding-top:0; }
+.atl-gencard-body .gc-sec h5{ margin:0 0 8px; font-size:13.5px; color:#A51820; font-weight:800; }
+.atl-gencard-body .tier{ margin:8px 0; padding:9px 11px; border-radius:8px; }
+.atl-gencard-body .tier.say{ background:#F4F7F1; border:1px solid #D9E6CF; } .atl-gencard-body .tier.say b{ color:#5E7A50; }
+.atl-gencard-body .tier.sign{ background:#FFF8EE; border:1px solid #ECD9AE; } .atl-gencard-body .tier.sign b{ color:#A6842E; }
+.atl-gencard-body .tier.no{ background:#FBF1F1; border:1px solid #ECC9C9; } .atl-gencard-body .tier.no b{ color:#A51820; }
+.atl-gencard-body .tier b{ display:block; margin-bottom:3px; font-size:12.5px; }
+.atl-gencard-body ul{ margin:4px 0 0; padding-left:18px; font-size:12.5px; color:#4A3A3C; line-height:1.65; }
 </style>
 <script id="atl-v110-js">
 /* ═══ cs-v1.1.0 · 設計北極星（正式規格，請勿移除） ═══════════════════
@@ -21136,11 +21145,16 @@ wrapAfter('renderStage2',function(){ var view=document.getElementById('view-stag
 /* ─────── 中間工作區：產生 10 步對齊卡（診斷站 1-7 用，附加不動 base 產生 tab） ─────── */
 function genCardHTML(stageId){
   var pb=PLAYBOOK[stageId]; if(!pb) return '';
-  var h='<details class="atl-gencard" open><summary>產生 · 本站 10 步對齊提示詞（複製去外部 AI）</summary><div class="atl-gencard-body">';
-  h+='<p class="gc-note">這一站要餵 AI 產生：'+esc((pb.output||[]).join('、'))+'</p>';
-  (pb.tools||[]).forEach(function(t){
-    h+='<div class="gc-tool"><div class="gc-tool-h">'+esc(t.name)+'　<span class="gc-line">客戶版一句話：'+esc(t.clientLine)+'</span></div><div class="atl-nspre">'+esc(t.prompt)+'</div>'+nsCopyBtn('複製提示詞',t.prompt+'\n\n[貼回格式]\n'+t.paste)+'</div>';
-  });
+  var pr=presence(stageId);
+  var h='<details class="atl-gencard" open><summary>本站 10 步對齊 · 產生／交付／總和（可直接匯出 PPT／PDF／HTML）</summary><div class="atl-gencard-body">';
+  h+='<div class="gc-sec"><h5>產生 · 餵 AI 產生什麼</h5><p class="gc-note">這一站要產生：'+esc((pb.output||[]).join('、'))+'</p>';
+  (pb.tools||[]).forEach(function(t){ h+='<div class="gc-tool"><div class="gc-tool-h">'+esc(t.name)+'　<span class="gc-line">客戶版一句話：'+esc(t.clientLine)+'</span></div><div class="atl-nspre">'+esc(t.prompt)+'</div>'+nsCopyBtn('複製提示詞',t.prompt+'\n\n[貼回格式]\n'+t.paste)+'</div>'; });
+  h+='</div>';
+  h+='<div class="gc-sec"><h5>交付 · 客戶版／顧問版（三層邊界）</h5>';
+  h+='<div class="tier say"><b>客戶可說 · 免費可討論</b>'+li(pb.canSay)+'</div>';
+  h+='<div class="tier sign"><b>簽約後才交付</b>'+li(pb.afterSign)+'</div>';
+  h+='<div class="tier no"><b>內部不交付 · 只給顧問</b>'+li(pb.internalOnly)+'</div></div>';
+  h+='<div class="gc-sec"><h5>總和 · 結論與匯出</h5><ul><li>資料狀態：'+(pr.total?('已填 '+pr.filled+'/'+pr.total+' 欄'):'尚未開始')+'</li><li>是否可推進：'+esc(pb.advance||'')+'</li></ul>'+exportBar(stageId)+'</div>';
   h+='</div></details>';
   return h;
 }
@@ -21160,9 +21174,30 @@ function injectGenCard(stageId){
 window.__atlInjectGenCard=injectGenCard;
 function labelOf(stageId){ for(var i=0;i<STEPS.length;i++){ if(STEPS[i].id===stageId) return STEPS[i].label.replace(/^\d+\s*/,''); } return stageId; }
 function nsCopyBtn(label,text){ return '<button type="button" class="atl-nsbtn" onclick="window.__atlCopy(\''+b64(text)+'\')">'+SVG.copy+' '+esc(label)+'</button>'; }
+function exportBar(stageId){ return '<div style="margin-top:8px"><button type="button" class="atl-nsbtn primary" onclick="window.__atlExport(\''+stageId+'\',\'ppt\')">'+SVG.save+' 下載 PPT</button><button type="button" class="atl-nsbtn" onclick="window.__atlExport(\''+stageId+'\',\'html\')">下載 HTML</button><button type="button" class="atl-nsbtn" onclick="window.__atlExport(\''+stageId+'\',\'print\')">列印／存 PDF</button><button type="button" class="atl-nsbtn" onclick="window.__atlExport(\''+stageId+'\',\'copy\')">複製</button></div>'; }
+function nsPt(stageId){
+  function build(){
+    try{
+      var C=window.pptxgen||window.PptxGenJS; if(!C){ try{if(typeof toast==='function')toast('PPT 元件載入失敗，可改用下載 HTML');}catch(e){} return; }
+      var p=new C(); var a=ca(); var name=(a&&(a.displayName||a.id))||'客戶'; var no=STEP_NO[stageId]||'-'; var pb=PLAYBOOK[stageId]||{};
+      function sl(title,arr,color){ var s=p.addSlide(); s.addText(title,{x:0.5,y:0.4,w:9,h:0.7,fontSize:24,bold:true,color:color||'5C0F14'}); var body=(arr||[]).map(function(x){return {text:String(x),options:{bullet:true,fontSize:14,color:'2A1A1C',paraSpaceAfter:6}};}); if(body.length) s.addText(body,{x:0.6,y:1.4,w:8.8,h:5.2,valign:'top'}); }
+      var t=p.addSlide(); t.background={color:'FBF7F2'}; t.addText('ATELIER 中控台',{x:0.5,y:1.4,w:9,h:0.5,fontSize:14,color:'A6842E'}); t.addText(String(name),{x:0.5,y:2.0,w:9,h:0.9,fontSize:30,bold:true,color:'5C0F14'}); t.addText('第 '+no+' 站 · '+labelOf(stageId),{x:0.5,y:3.0,w:9,h:0.6,fontSize:18,color:'A51820'}); t.addText('顧問內部文件 · 含三層邊界，分送客戶前請刪除內部段落',{x:0.5,y:6.9,w:9,h:0.4,fontSize:10,color:'8A7274'});
+      sl('要產出',pb.output,'5C0F14');
+      sl('客戶可說（免費可討論）',pb.canSay,'5E7A50');
+      sl('簽約後才交付',pb.afterSign,'A6842E');
+      sl('內部不交付（顧問用）',pb.internalOnly,'A51820');
+      sl('是否可推進',[pb.advance||''],'5C0F14');
+      p.writeFile({fileName:name+'_第'+no+'站_'+labelOf(stageId)+'.pptx'});
+    }catch(e){ try{if(typeof toast==='function')toast('PPT 產生失敗，可改用下載 HTML');}catch(e2){} }
+  }
+  if(window.pptxgen||window.PptxGenJS){ build(); return; }
+  try{if(typeof toast==='function')toast('正在載入 PPT 元件（約 3–10 秒）…');}catch(e){}
+  var urls=['https://cdn.jsdelivr.net/npm/pptxgenjs@3.12.0/dist/pptxgen.bundle.js','https://unpkg.com/pptxgenjs@3.12.0/dist/pptxgen.bundle.js'];
+  var i=0; (function tryUrl(){ if(i>=urls.length){ try{if(typeof toast==='function')toast('PPT 元件載入失敗，可改用下載 HTML');}catch(e){} return; } var s=document.createElement('script'); s.src=urls[i++]; s.async=true; s.onload=function(){ if(window.pptxgen||window.PptxGenJS) build(); else tryUrl(); }; s.onerror=tryUrl; document.head.appendChild(s); })();
+}
 function nsGenHTML(stageId){ var pb=PLAYBOOK[stageId]||{}; var h='<div class="atl-nsblk"><h4>產生 · 這一站要餵 AI 產生什麼</h4><p style="font-size:12.5px;color:#5C4A3C;margin:0 0 4px">複製提示詞貼到外部 AI（ChatGPT／Claude），結果貼回「交付／總和」或本站欄位。</p>'; (pb.tools||[]).forEach(function(t){ h+='<div class="atl-nsblk" style="background:#FAF6F1"><h4 style="font-size:13px">'+esc(t.name)+'</h4><div class="atl-nspre">'+esc(t.prompt)+'</div>'+nsCopyBtn('複製提示詞',t.prompt+'\n\n[貼回格式]\n'+t.paste)+'</div>'; }); h+='</div>'; return h; }
 function nsDeliverHTML(stageId){ var pb=PLAYBOOK[stageId]||{}; var h='<div class="atl-nsblk"><h4>交付 · 客戶版／顧問版（三層邊界）</h4>'; h+='<div class="tier say"><b>客戶可說 · 免費可討論</b>'+li(pb.canSay)+'</div>'; h+='<div class="tier sign"><b>簽約後才交付</b>'+li(pb.afterSign)+'</div>'; h+='<div class="tier no"><b>內部不交付 · 只給顧問</b>'+li(pb.internalOnly)+'</div></div>'; return h; }
-function nsSumHTML(stageId){ var pb=PLAYBOOK[stageId]||{}; var pr=presence(stageId); var h='<div class="atl-nsblk"><h4>總和 · 總結什麼、缺什麼、下一步</h4>'; h+='<ul><li>資料狀態：'+(pr.total?('已填 '+pr.filled+'/'+pr.total+' 欄'):'尚未開始')+'</li><li>要產出：'+esc((pb.output||[]).join('；'))+'</li><li>是否可推進：'+esc(pb.advance||'')+'</li></ul>'; h+='<div style="margin-top:6px"><button type="button" class="atl-nsbtn primary" onclick="window.__atlNsExport(\''+stageId+'\',\'html\')">'+SVG.save+' 下載 HTML</button><button type="button" class="atl-nsbtn" onclick="window.__atlNsExport(\''+stageId+'\',\'print\')">列印／存 PDF</button><button type="button" class="atl-nsbtn" onclick="window.__atlNsExport(\''+stageId+'\',\'copy\')">複製總和</button></div></div>'; return h; }
+function nsSumHTML(stageId){ var pb=PLAYBOOK[stageId]||{}; var pr=presence(stageId); var h='<div class="atl-nsblk"><h4>總和 · 總結什麼、缺什麼、下一步</h4>'; h+='<ul><li>資料狀態：'+(pr.total?('已填 '+pr.filled+'/'+pr.total+' 欄'):'尚未開始')+'</li><li>要產出：'+esc((pb.output||[]).join('；'))+'</li><li>是否可推進：'+esc(pb.advance||'')+'</li></ul>'+exportBar(stageId)+'</div>'; return h; }
 function nsTabBuild(stageId){
   var view=document.getElementById('view-'+stageId); if(!view) return;
   if(view.querySelector('.atl-nstab')) return;
@@ -21183,18 +21218,22 @@ function nsTabBuild(stageId){
   [['work','主工作區'],['gen','產生'],['deliver','交付'],['sum','總和']].forEach(function(t){ var b=document.createElement('button'); b.type='button'; b.textContent=t[1]; if(t[0]==='work')b.className='on'; b.onclick=(function(key,btn){ return function(){ var bs=bar.querySelectorAll('button'); for(var i=0;i<bs.length;i++)bs[i].classList.remove('on'); btn.classList.add('on'); var ps=view.querySelectorAll('.atl-nspane'); for(var j=0;j<ps.length;j++){ ps[j].classList.toggle('on', ps[j].getAttribute('data-pane')===key); } }; })(t[0],b); bar.appendChild(b); });
   swapIcons(view);
 }
-window.__atlNsExport=function(stageId,mode){
+window.__atlExport=function(stageId,mode){
   try{
+    if(mode==='ppt'){ nsPt(stageId); return; }
     var a=ca(); var name=(a&&(a.displayName||a.id))||'客戶'; var pb=PLAYBOOK[stageId]||{}; var no=STEP_NO[stageId]||'-';
-    var d=stationData(stageId)||{}; var fields=(window.NEW_STATION_FIELDS&&window.NEW_STATION_FIELDS[stageId])||[];
-    var rows=''; fields.forEach(function(fd){ var v=d[fd[0]]; if(v&&String(v).trim()) rows+='<tr><th>'+esc(fd[1])+'</th><td>'+esc(String(v)).replace(/\n/g,'<br>')+'</td></tr>'; });
+    var d=stationData(stageId)||{}; var fields=(window.NEW_STATION_FIELDS&&window.NEW_STATION_FIELDS[stageId])||null;
+    var rows='';
+    if(fields){ fields.forEach(function(fd){ var v=d[fd[0]]; if(v&&String(v).trim()) rows+='<tr><th>'+esc(fd[1])+'</th><td>'+esc(String(v)).replace(/\n/g,'<br>')+'</td></tr>'; }); }
+    else { var out=[]; (function flat(obj,prefix,depth){ if(depth>2||obj==null) return; if(typeof obj==='string'){ if(obj.trim()) out.push([prefix,obj]); return; } if(typeof obj==='number'||typeof obj==='boolean'){ out.push([prefix,String(obj)]); return; } if(Object.prototype.toString.call(obj)==='[object Array]'){ var ar=obj.filter(function(x){return x!=null&&String(x).trim();}); if(ar.length) out.push([prefix,ar.join('、')]); return; } if(typeof obj==='object'){ for(var k in obj){ if(!Object.prototype.hasOwnProperty.call(obj,k)) continue; flat(obj[k], prefix?prefix+' · '+k:k, depth+1); } } })(d,'',0); out.slice(0,50).forEach(function(r){ rows+='<tr><th>'+esc(r[0])+'</th><td>'+esc(String(r[1])).replace(/\n/g,'<br>')+'</td></tr>'; }); }
     function ul(arr){ return '<ul>'+(arr||[]).map(function(x){return '<li>'+esc(x)+'</li>';}).join('')+'</ul>'; }
     var html='<!doctype html><html><head><meta charset="utf-8"><title>'+esc(name)+' 第'+no+'站總和</title><style>body{font-family:Noto Sans TC,Arial,sans-serif;color:#2A1A1C;max-width:760px;margin:30px auto;padding:0 20px;line-height:1.6}h1{color:#5C0F14;font-size:22px}h2{color:#A51820;font-size:16px;border-bottom:2px solid #EFE3D2;padding-bottom:4px;margin-top:24px}table{width:100%;border-collapse:collapse;margin:8px 0}th{text-align:left;width:30%;vertical-align:top;color:#5C0F14;padding:6px 8px;background:#FAF6F1;border:1px solid #EFE3D2}td{padding:6px 8px;border:1px solid #EFE3D2}ul{padding-left:20px}.muted{color:#8A7274;font-size:12px}.say{color:#5E7A50}.sign{color:#A6842E}.no{color:#A51820}</style></head><body><h1>'+esc(name)+'　第 '+no+' 站 · '+esc(labelOf(stageId))+'</h1><p class="muted">ATELIER 中控台 · 顧問內部文件（含三層邊界；分送客戶前請刪除顧問版與內部不交付段落）</p><h2>本站資料</h2>'+(rows?('<table>'+rows+'</table>'):'<p class="muted">尚未填寫</p>')+'<h2>要產出</h2>'+ul(pb.output)+'<h2 class="say">客戶可說（免費可討論）</h2>'+ul(pb.canSay)+'<h2 class="sign">簽約後才交付</h2>'+ul(pb.afterSign)+'<h2 class="no">內部不交付（顧問用）</h2>'+ul(pb.internalOnly)+'<h2>是否可推進</h2><p>'+esc(pb.advance||'')+'</p></body></html>';
-    if(mode==='copy'){ var tmp=document.createElement('div'); tmp.innerHTML=html; var txt=tmp.innerText||tmp.textContent||''; if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(txt).then(function(){ try{ if(typeof toast==='function')toast('✓ 已複製總和'); }catch(e){} }); } return; }
+    if(mode==='copy'){ var tmp=document.createElement('div'); tmp.innerHTML=html; var txt=tmp.innerText||tmp.textContent||''; if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(txt).then(function(){ try{ if(typeof toast==='function')toast('✓ 已複製'); }catch(e){} }); } return; }
     if(mode==='print'){ var w=window.open('','_blank'); if(w){ w.document.write(html); w.document.close(); w.focus(); setTimeout(function(){ try{w.print();}catch(e){} },350); } return; }
     var blob=new Blob([html],{type:'text/html;charset=utf-8'}); var url=URL.createObjectURL(blob); var aEl=document.createElement('a'); aEl.href=url; aEl.download=name+'_第'+no+'站總和.html'; document.body.appendChild(aEl); aEl.click(); document.body.removeChild(aEl); setTimeout(function(){URL.revokeObjectURL(url);},1000);
   }catch(e){}
 };
+window.__atlNsExport=window.__atlExport;
 ['renderShoot','renderPostprod','renderNextround'].forEach(function(name){ var id=name.replace('render','').toLowerCase(); wrapAfter(name,function(){ var view=document.getElementById('view-'+id); if(!view) return; var ph=view.querySelector('.page-head'); if(!ph) return; var node=ph.nextSibling; while(node && !(node.nodeType===1 && node.classList && node.classList.contains('atl-newst-section'))){ var nx=node.nextSibling; if(node.parentNode) node.parentNode.removeChild(node); node=nx; } nsTabBuild(id); swapIcons(view); }); });
 
 function init(){
