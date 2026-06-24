@@ -872,7 +872,7 @@ html, body { overflow-anchor: none; }
   <div class="brand">
     <span class="brand-icon"><svg viewBox="0 0 200 200"><path d="M 64 100 C 64 72, 84 72, 100 100 C 116 128, 136 128, 136 100 C 136 72, 116 72, 100 100 C 84 128, 64 128, 64 100 Z" stroke="#FDFBF8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="brand-txt">ATELIER<span class="brand-sub">客戶服務台</span></span>
-    <span id="verBadge">cs-v8.56</span>
+    <span id="verBadge">cs-v8.58</span>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button type="button" id="atlSpecBtn" class="popout-btn" title="規格模式（點一下開啟，再點任一元件看它的規格）"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7l4-4 14 14-4 4z"/><path d="M9 5l1.5 1.5M12 8l1.5 1.5M15 11l1.5 1.5"/></svg>規格</button>
@@ -10868,7 +10868,7 @@ button:not(:disabled), .btn:not(.disabled):not([disabled]), [role="button"]{
   if(window.__atlCs473Continuity) return; window.__atlCs473Continuity=true;
   function cleanTextNode(n){var s=n.nodeValue||''; var ns=s.replace(/cs-v4\.\d+\s*(SAFE|LATEST)?\s*[｜|·:-]?\s*/g,'').replace(/\bv\d{3}\s*[｜|·:-]?\s*/g,''); if(ns!==s)n.nodeValue=ns;}
   function cleanVersions(){
-    try{var vb=document.getElementById('verBadge'); if(vb)vb.textContent='cs-v8.56';}catch(e){}
+    try{var vb=document.getElementById('verBadge'); if(vb)vb.textContent='cs-v8.58';}catch(e){}
     try{var w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT,{acceptNode:function(n){var p=n.parentElement; if(!p||p.id==='verBadge'||/^(SCRIPT|STYLE|TEXTAREA)$/i.test(p.tagName))return NodeFilter.FILTER_REJECT; return /(cs-v4\.\d+|\bv\d{3})/.test(n.nodeValue||'')?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_REJECT;}}); var nodes=[],n; while(n=w.nextNode())nodes.push(n); nodes.forEach(cleanTextNode);}catch(e){}
   }
   function alignSelection(){
@@ -10928,7 +10928,7 @@ input[type="text"]:focus,input:not([type]):focus{border-color:#D4A574!important;
     btn.onclick=function(e){e.stopPropagation(); set(!safe.classList.contains('atl-safe474-collapsed'));};
     h.appendChild(summary); h.appendChild(btn); set(localStorage.getItem('atl.cs474.safeCollapsed')!=='0');
   }
-  function cleanBadge(){ var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v8.56'; }
+  function cleanBadge(){ var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v8.58'; }
   function run(){ cleanBadge(); ensureSafeCollapse(); wireAutogrow(document); }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run); else run();
   setInterval(run,1200);
@@ -10989,7 +10989,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
   function wire(root){qsa('textarea,input[type="text"],input[type="url"],input[type="email"],input:not([type])',root||document).forEach(function(el){if(el.__atl475)return; if(el.closest('.atl-field-modal,.atl-final-modal'))return; el.__atl475=true; el.addEventListener('focus',function(){show(el); autogrow(el)}); el.addEventListener('input',function(){autogrow(el)}); el.addEventListener('blur',hideSoon); autogrow(el);});}
   document.addEventListener('click',function(e){var b=e.target.closest('#atlFieldToolbar button'); if(!b||!active)return; var a=b.getAttribute('data-act'); if(a==='prompt')openModal('prompt',active); if(a==='fill')openModal('fill',active); if(a==='edit')openModal('edit',active); if(a==='done'){var bar=qs('#atlFieldToolbar'); if(bar)bar.classList.remove('on'); if(active)active.classList.remove('atl-field-active'); toastSafe('此欄位可視為定案，請記得儲存');}},true);
   function addCollapse(root){qsa('.section-card,.deliverable-card,.atl452safe-card',root||document).forEach(function(card){if(card.__atlCollapse475||card.closest('.preview-modal,.atl-field-modal'))return; card.__atlCollapse475=true; card.classList.add('atl-collapsible'); var h=qs('h2,h3,h4,.stitle,.section-title',card)||card.firstElementChild; if(h)h.classList.add('atl-keep-visible'); var btn=document.createElement('button'); btn.type='button'; btn.className='atl-collapse-toggle'; btn.textContent='收合'; btn.addEventListener('click',function(e){e.preventDefault(); e.stopPropagation(); var closed=card.classList.toggle('atl-closed'); btn.textContent=closed?'展開':'收合';}); card.insertBefore(btn,card.firstChild);});}
-  function boot(){try{var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v8.56';}catch(e){} wire(document); addCollapse(document);}
+  function boot(){try{var vb=qs('#verBadge'); if(vb)vb.textContent='cs-v8.58';}catch(e){} wire(document); addCollapse(document);}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot); else boot();
   try{new MutationObserver(function(ms){var hit=false; ms.forEach(function(m){if(m.addedNodes&&m.addedNodes.length)hit=true}); if(hit){clearTimeout(window.__atl475Timer); window.__atl475Timer=setTimeout(boot,180);}}).observe(document.body,{childList:true,subtree:true});}catch(e){}
 })();
@@ -11030,7 +11030,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
 <script id="atl478-final-export-js">
 (function(){
   if(window.__atl478FinalExport)return; window.__atl478FinalExport=true;
-  var VERSION='cs-v8.56';
+  var VERSION='cs-v8.58';
   function esc(s){return (s==null?'':String(s)).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
   function qsa(sel,root){return Array.prototype.slice.call((root||document).querySelectorAll(sel))}
   function text(el){return (el&&el.innerText||el&&el.textContent||'').replace(/\s+/g,' ').trim()}
@@ -11150,7 +11150,7 @@ textarea{overflow:hidden!important;resize:vertical!important;transition:min-heig
 <script>
 (function(){
   if(window.__atlCs480) return; window.__atlCs480=true;
-  var V='cs-v8.56';
+  var V='cs-v8.58';
   function lock(){ var vb=document.getElementById('verBadge'); if(vb && (vb.textContent||'').trim()!==V) vb.textContent=V; }
   function unify(){
     var safe=document.querySelector('.atl452safe'); if(!safe) return;
@@ -12101,7 +12101,7 @@ input.atl477-open-field:not([type="checkbox"]):not([type="radio"]):not([type="bu
 <script id="atl-cs477-final-touch">
 (function(){
   if(window.__atlCs477FinalTouch) return; window.__atlCs477FinalTouch=true;
-  var VERSION='cs-v8.56';
+  var VERSION='cs-v8.58';
   function qs(s,r){return (r||document).querySelector(s)}
   function qsa(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
   function setVersion(){try{var b=qs('#verBadge'); if(b)b.textContent=VERSION; window.ATELIER_CLIENT_VERSION=VERSION;}catch(e){}}
@@ -19467,5 +19467,246 @@ function run(){addAiBtn();addNavBtns();} /* regroupS2 已內建模板，不再�
   }
   function wire(){ btn=document.getElementById('atlSpecBtn'); if(btn&&!btn.__specWired){ btn.__specWired=1; btn.addEventListener('click',function(e){ e.stopPropagation(); toggle(); }); } }
   setTimeout(wire,300); setTimeout(wire,1500);
+})();
+</script>
+
+
+<!-- ═══════════════ cs-v8.57: 每階段定位卡（大改版施工順序第 1 步 · addon only）═══════════════ -->
+<style id="atl-cs857-poscard">
+/* cs-v8.57: 每階段「定位卡」。固定 8 欄（規格 §6/§8）：本階段位於哪區、客戶流程哪一步、本階段目的、我要準備、會產出、客戶可見、顧問內部、下一步。
+   純畫面、可逆、不動資料層、不新增任何計時器/觀察器。插在每站 .page-head 下方。 */
+.atl-poscard{ position:relative; margin:14px 0 16px; padding:15px 16px 14px; background:#FDFBF8;
+  border:1px solid #EADBCB; border-radius:14px; box-shadow:0 2px 10px rgba(92,15,20,.05);
+  font-family:'Noto Sans TC',system-ui,-apple-system,sans-serif; overflow:hidden; }
+.atl-poscard::before{ content:''; position:absolute; left:0; top:0; bottom:0; width:4px; background:linear-gradient(#A51820,#7A1018); }
+.atl-poscard-top{ display:flex; flex-wrap:wrap; align-items:center; gap:8px; margin-bottom:9px; }
+.atl-poscard-zone{ display:inline-flex; align-items:center; gap:5px; background:#A51820; color:#fff; -webkit-text-fill-color:#fff;
+  font-size:12px; font-weight:700; letter-spacing:.5px; padding:4px 11px; border-radius:999px; }
+.atl-poscard-flow{ font-size:12.5px; color:#8A7274; font-weight:600; }
+.atl-poscard-flow b{ color:#5C0F14; font-weight:700; }
+.atl-poscard-tag{ margin-left:auto; font-size:10.5px; letter-spacing:2px; color:#C9A57A; font-weight:700; }
+.atl-poscard-purpose{ font-size:13.5px; line-height:1.65; color:#2A1A1C; margin:0; }
+.atl-poscard-purpose b{ color:#A51820; font-weight:700; }
+.atl-poscard-det{ margin-top:9px; }
+.atl-poscard-det>summary{ list-style:none; cursor:pointer; font-size:12px; color:#A51820; font-weight:700;
+  padding:4px 0 2px; user-select:none; -webkit-user-select:none; display:flex; align-items:center; gap:6px; }
+.atl-poscard-det>summary::-webkit-details-marker{ display:none; }
+.atl-poscard-det>summary .chev{ transition:transform .2s; font-size:9px; color:#C9A57A; }
+.atl-poscard-det[open]>summary .chev{ transform:rotate(90deg); }
+.atl-poscard-grid{ display:grid; grid-template-columns:1fr 1fr; gap:8px 10px; margin-top:8px; }
+.atl-poscard-cell{ background:#FAF6F1; border:1px solid #EFE6DA; border-radius:9px; padding:8px 10px; }
+.atl-poscard-cell.cli{ background:#F4F7F1; border-color:#DCE6D4; }
+.atl-poscard-cell.adv{ background:#FBF1F1; border-color:#EAD7D7; }
+.atl-poscard-k{ font-size:10.5px; font-weight:700; letter-spacing:.5px; color:#8A7274; margin-bottom:3px; }
+.atl-poscard-cell.cli .atl-poscard-k{ color:#5E7A50; }
+.atl-poscard-cell.adv .atl-poscard-k{ color:#A51820; }
+.atl-poscard-v{ font-size:12.5px; line-height:1.55; color:#2A1A1C; }
+.atl-poscard-next{ margin-top:11px; padding-top:9px; border-top:1px dashed #E6D8C8; font-size:12.5px; color:#5C0F14; font-weight:600; }
+.atl-poscard-next b{ color:#A51820; }
+@media(max-width:380px){ .atl-poscard-grid{ grid-template-columns:1fr; } }
+</style>
+<script id="atl-cs857-poscard-js">
+/* cs-v8.57: 定位卡注入。資料=規格 §6/§8。包裝 render 函式,於每次重繪後補回卡片(render 會清空 view innerHTML)。不新增計時器/觀察器。 */
+(function(){
+  if(window.__atlPosCardReady) return; window.__atlPosCardReady=true;
+  var DATA={
+    stage1:{zone:'A',zoneName:'診斷定位區',flow:'流程 1 · 需求對焦',
+      purpose:'第一次接觸,用公開資料看懂客戶現況,對焦他真正的需求與期待。',
+      prepare:'客戶公開資料(官網、IG、YT、FB、Google、地圖、新聞)與他來談時說的原始需求。',
+      produce:'公開資料初診觀察、需求對焦的初步判斷。',
+      cli:'對外可說的觀察與初步方向。',
+      adv:'內部疑點、風險,還沒對焦清楚的地方。',
+      next:'② 建檔(確認合作範圍)'},
+    stage2:{zone:'A',zoneName:'診斷定位區',flow:'流程 2 · 合作確認',
+      purpose:'確認合作範圍與邊界,把客戶基本資料建檔,讓後面每一站都接得上。',
+      prepare:'合作條件、服務方案/報價、客戶基本資料與聯絡窗口。',
+      produce:'客戶檔案、合作範圍與邊界的確認。',
+      cli:'合作範圍、服務內容、雙方分工。',
+      adv:'內部邊界備註(哪些不在範圍、風險提醒)。',
+      next:'③ 問診(深度訪談)'},
+    stage3:{zone:'A',zoneName:'診斷定位區',flow:'流程 3 · 深度訪談',
+      purpose:'深度訪談,挖出公開資料看不到的脈絡(內幕、人情、市場時機)。',
+      prepare:'訪談大綱、會前問題清單,以及初診與建檔留下的疑點。',
+      produce:'訪談記錄、深度脈絡與關鍵洞察。',
+      cli:'可對外的訪談摘要與共識。',
+      adv:'內部判斷、敏感資訊、不對外的觀察。',
+      next:'④ 診斷(收斂成策略判斷)'},
+    stage4:{zone:'A',zoneName:'診斷定位區',flow:'流程 4 · IP與內容方向',
+      purpose:'把初診、建檔、問診收斂成可交付的策略判斷:定位、受眾、內容缺口、轉換缺口與優先改善順序。',
+      prepare:'前三站(初診、建檔、問診)的所有資料。',
+      produce:'內容診斷書、IP 與內容方向、優先改善順序。',
+      cli:'診斷結論與內容方向(客戶版)。',
+      adv:'完整判斷、風險與優先序背後的理由。',
+      next:'進入內容製作 · ⑥ 企劃(主題方向規劃)'},
+    stage5:{zone:'B',zoneName:'內容製作區',flow:'流程 6 · 腳本與拍攝規劃',
+      purpose:'把客戶手上的人設、服務、案例、場景、證據與可拍素材盤點出來,避免企劃時空想。',
+      prepare:'已定的內容方向,以及客戶既有素材與資產清單。',
+      produce:'素材盤點表、可延伸主軸、待補拍攝清單。',
+      cli:'拍攝計畫與需要客戶配合的素材。',
+      adv:'內部素材判斷與缺漏風險。',
+      next:'拍攝執行 / 後製整理(B 段製作 · 待建)'},
+    stage6:{zone:'B',zoneName:'內容製作區',flow:'流程 5 · 主題方向規劃',
+      purpose:'把診斷結論轉成客戶看得懂、團隊可執行的提案:目標、主軸、題庫、時程、KPI。',
+      prepare:'診斷結論,以及 IP 與內容方向。',
+      produce:'主題企劃、首波題庫、執行時程與成效指標。',
+      cli:'提案方向與主題企劃(客戶版)。',
+      adv:'內部策略主張與配置理由。',
+      next:'⑤ 盤點(腳本與拍攝規劃)'},
+    stage7:{zone:'D',zoneName:'交付復盤區',flow:'流程 9 · 主平台成品交付',
+      purpose:'把交付物、客戶回饋、修改紀錄、下一步與付款狀態集中管理,讓服務閉環、專案不散掉。',
+      prepare:'完成的內容成品與交付清單。',
+      produce:'交付紀錄、修改紀錄、結案摘要。',
+      cli:'成品交付與結案摘要。',
+      adv:'內部復盤與流程優化筆記。',
+      next:'下一階段內容建議(D 段數據復盤 · 待建)'}
+  };
+  function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  function cell(cls,k,v){ return '<div class="atl-poscard-cell'+(cls?' '+cls:'')+'"><div class="atl-poscard-k">'+k+'</div><div class="atl-poscard-v">'+esc(v)+'</div></div>'; }
+  function cardHTML(d){
+    return '<div class="atl-poscard-top">'
+      +'<span class="atl-poscard-zone">'+esc(d.zone)+' '+esc(d.zoneName)+'</span>'
+      +'<span class="atl-poscard-flow">客戶流程中是:<b>'+esc(d.flow)+'</b></span>'
+      +'<span class="atl-poscard-tag">定位卡</span>'
+      +'</div>'
+      +'<div class="atl-poscard-purpose"><b>本階段目的 · </b>'+esc(d.purpose)+'</div>'
+      +'<details class="atl-poscard-det" open><summary><span class="chev">▶</span>這站要準備什麼、會產出什麼、哪些給客戶 / 哪些只給顧問</summary>'
+      +'<div class="atl-poscard-grid">'
+      +cell('','我要準備',d.prepare)
+      +cell('','會產出',d.produce)
+      +cell('cli','客戶可見',d.cli)
+      +cell('adv','顧問內部',d.adv)
+      +'</div></details>'
+      +'<div class="atl-poscard-next">下一步 → <b>'+esc(d.next)+'</b></div>';
+  }
+  function hasCard(view){ var ch=view.children; for(var i=0;i<ch.length;i++){ if(ch[i].classList&&ch[i].classList.contains('atl-poscard')) return true; } return false; }
+  function findHead(view){ var ch=view.children; for(var i=0;i<ch.length;i++){ if(ch[i].classList&&ch[i].classList.contains('page-head')) return ch[i]; } return null; }
+  function ensure(stageId){
+    try{
+      var d=DATA[stageId]; if(!d) return;
+      var view=document.getElementById('view-'+stageId); if(!view) return;
+      if(hasCard(view)) return;
+      if(!findHead(view)) return; /* 沒有 page-head(通常=未選客戶提示頁)→ 不插卡 */
+      var card=document.createElement('div'); card.className='atl-poscard'; card.innerHTML=cardHTML(d);
+      /* 放到該站最上方(第一個子層),確保不被進度卡/面板往下擠;若有流程軌會在它之後,卡片仍穩居頂部 */
+      if(view.firstChild) view.insertBefore(card, view.firstChild); else view.appendChild(card);
+    }catch(e){}
+  }
+  window.__atlPosCardEnsure=ensure;
+  function wrap(name, fixedStage){
+    var orig=window[name]; if(typeof orig!=='function' || orig.__posWrapped) return;
+    var w=function(){ var r=orig.apply(this,arguments); try{ var sid=fixedStage||arguments[0]; if(sid && DATA[sid]) ensure(sid); }catch(e){} return r; };
+    w.__posWrapped=true; window[name]=w;
+  }
+  wrap('renderStage1','stage1'); wrap('renderStage2','stage2'); wrap('renderStage3','stage3'); wrap('renderExtStage', null);
+  /* 補上模組載入時可能已渲染的那一站 */
+  try{ var on=document.querySelector('.view.on'); if(on && on.id && /^view-stage[1-7]$/.test(on.id)) ensure(on.id.replace('view-','')); }catch(e){}
+})();
+</script>
+
+
+<!-- ═══════════════ cs-v8.58: 客戶合作流程時間軸＋A/B/C/D 分區標籤（大改版施工順序第 2+3 步 · addon only）═══════════════ -->
+<style id="atl-cs858-cflow">
+/* cs-v8.58: 10步客戶合作流程時間軸(第一層)+A/B/C/D分區標籤(第二層)。
+   純畫面、可逆、不動資料層、不新增任何計時器/觀察器。插在每站定位卡上方。 */
+.atl-cflow{ position:relative; margin:0 0 10px; padding:13px 14px 11px; background:linear-gradient(180deg,#FFFCFA,#FBF6F0);
+  border:1px solid #EFE3D2; border-left:3px solid #C9A57A; border-radius:14px;
+  font-family:'Noto Sans TC',system-ui,-apple-system,sans-serif; overflow:hidden; }
+.atl-cflow-head{ font-family:'Noto Serif TC',serif; font-size:13px; font-weight:800; color:#5C0F14;
+  margin-bottom:8px; display:flex; align-items:center; gap:7px; flex-wrap:wrap; }
+.atl-cflow-head .step-hint{ font-family:'Noto Sans TC',sans-serif; font-size:11.5px; font-weight:600; color:#A51820; }
+.atl-cflow-track{ display:flex; align-items:center; gap:3px; overflow-x:auto; -webkit-overflow-scrolling:touch;
+  padding:4px 2px 6px; scrollbar-width:none; }
+.atl-cflow-track::-webkit-scrollbar{ display:none; }
+.atl-cflow-node{ display:inline-flex; flex-direction:column; align-items:center; gap:2px;
+  border:1px solid #E2CFB6; background:#FFFDFB; border-radius:10px; padding:6px 8px;
+  cursor:pointer; font-family:inherit; min-width:48px; flex-shrink:0;
+  transition:all .15s ease; text-decoration:none; -webkit-appearance:none; appearance:none; }
+button.atl-cflow-node{ outline:none; }
+.atl-cflow-node:hover{ border-color:#A51820; background:#FBF1F0; transform:translateY(-1px); }
+.atl-cflow-node.atl-cflow-on{ background:#A51820; border-color:#A51820; transform:scale(1.06); box-shadow:0 2px 8px rgba(165,24,32,.22); }
+.atl-cflow-node.atl-cflow-on .atl-cflow-n{ color:#fff; -webkit-text-fill-color:#fff; }
+.atl-cflow-node.atl-cflow-on .atl-cflow-l{ color:#FFE8D6; -webkit-text-fill-color:#FFE8D6; }
+.atl-cflow-node.atl-cflow-todo{ cursor:default; background:#F7F2EC; border-style:dashed; opacity:.72; }
+.atl-cflow-node.atl-cflow-todo:hover{ transform:none; border-color:#E2CFB6; background:#F7F2EC; }
+.atl-cflow-todo .atl-cflow-n,.atl-cflow-todo .atl-cflow-l{ color:#A0907E; -webkit-text-fill-color:#A0907E; }
+.atl-cflow-n{ font-size:13px; font-weight:800; color:#A51820; -webkit-text-fill-color:#A51820; line-height:1; }
+.atl-cflow-l{ font-size:10px; color:#5C4A3C; -webkit-text-fill-color:#5C4A3C; white-space:nowrap; line-height:1.2; }
+.atl-cflow-tb{ font-size:8.5px; font-weight:800; color:#B0896C; -webkit-text-fill-color:#B0896C;
+  background:#EFE3D2; border-radius:5px; padding:1px 4px; margin-top:1px; }
+.atl-cflow-arr{ color:#D8C4A8; font-size:12px; font-weight:700; flex-shrink:0; }
+.atl-cflow-zone{ margin-top:7px; display:inline-flex; align-items:center; gap:6px;
+  font-size:12px; font-weight:700; color:#5C0F14; letter-spacing:.5px; }
+.atl-cflow-zone-pill{ display:inline-block; background:#C9A57A; color:#fff; -webkit-text-fill-color:#fff;
+  font-size:11px; font-weight:800; padding:3px 10px; border-radius:999px; letter-spacing:1px; }
+</style>
+<script id="atl-cs858-cflow-js">
+/* cs-v8.58: 客戶合作流程時間軸(10步)+A/B/C/D分區標籤。包裝 render 函式,於每次重繪後在定位卡上方補回。不新增計時器/觀察器。 */
+(function(){
+  if(window.__atlCflowReady) return; window.__atlCflowReady=true;
+  /* §3 對照表: [flowStep, label, stageKey or null, zone, zoneName] */
+  var STEPS=[
+    [1,'需求對焦','stage1','A','診斷定位區'],
+    [2,'合作確認','stage2','A','診斷定位區'],
+    [3,'深度訪談','stage3','A','診斷定位區'],
+    [4,'IP與內容方向','stage4','A','診斷定位區'],
+    [5,'主題方向規劃','stage6','B','內容製作區'],
+    [6,'腳本與拍攝規劃','stage5','B','內容製作區'],
+    [7,'拍攝執行',null,'B','內容製作區'],
+    [8,'後製整理',null,'B','內容製作區'],
+    [9,'主平台成品交付','stage7','D','交付復盤區'],
+    [10,'下一階段建議',null,'D','交付復盤區']
+  ];
+  /* stageId → which flow step index (0-based) */
+  var STAGE_TO_IDX={stage1:0,stage2:1,stage3:2,stage4:3,stage6:4,stage5:5,stage7:8};
+  function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  function buildHTML(stageId){
+    var idx=STAGE_TO_IDX[stageId]; if(idx==null) idx=-1;
+    var cur=STEPS[idx]; var flowNum=cur?cur[0]:'?';
+    var h='<div class="atl-cflow-head">客戶合作流程<span class="step-hint">你現在在第 '+flowNum+' 步</span></div>';
+    var track='<div class="atl-cflow-track">';
+    for(var i=0;i<STEPS.length;i++){
+      if(i>0) track+='<span class="atl-cflow-arr">›</span>';
+      var st=STEPS[i]; var isOn=(i===idx); var isTodo=!st[2];
+      if(isTodo){
+        track+='<span class="atl-cflow-node atl-cflow-todo" title="此階段尚未建站，目前在外部處理，系統已預留"'
+          +' onclick="try{if(typeof toast===\'function\')toast(\'此階段尚未建站，目前在外部處理，系統已預留\');}catch(e){}">'
+          +'<span class="atl-cflow-n">'+st[0]+'</span><span class="atl-cflow-l">'+esc(st[1])+'</span>'
+          +'<span class="atl-cflow-tb">待建</span></span>';
+      } else {
+        track+='<button type="button" class="atl-cflow-node'+(isOn?' atl-cflow-on':'')+'" onclick="switchTo(\''+st[2]+'\')">'
+          +'<span class="atl-cflow-n">'+st[0]+'</span><span class="atl-cflow-l">'+esc(st[1])+'</span></button>';
+      }
+    }
+    track+='</div>';
+    /* 第二層: A/B/C/D 分區標籤 */
+    var zone='';
+    if(cur){ zone='<div class="atl-cflow-zone"><span class="atl-cflow-zone-pill">'+esc(cur[3])+'</span>'+esc(cur[4])+'</div>'; }
+    return h+track+zone;
+  }
+  function hasCflow(view){ var ch=view.children; for(var i=0;i<ch.length;i++){ if(ch[i].classList&&ch[i].classList.contains('atl-cflow')) return true; } return false; }
+  function findHead(view){ var ch=view.children; for(var i=0;i<ch.length;i++){ if(ch[i].classList&&ch[i].classList.contains('page-head')) return ch[i]; } return null; }
+  function ensure(stageId){
+    try{
+      if(!STAGE_TO_IDX.hasOwnProperty(stageId)) return;
+      var view=document.getElementById('view-'+stageId); if(!view) return;
+      if(hasCflow(view)) return;
+      if(!findHead(view)) return; /* 未選客戶提示頁不插 */
+      var el=document.createElement('div'); el.className='atl-cflow'; el.innerHTML=buildHTML(stageId);
+      if(view.firstChild) view.insertBefore(el, view.firstChild); else view.appendChild(el);
+      /* 自動捲到當前步驟居中 */
+      try{
+        var trackEl=el.querySelector('.atl-cflow-track'); var onEl=el.querySelector('.atl-cflow-on');
+        if(trackEl&&onEl){ trackEl.scrollLeft=Math.max(0,onEl.offsetLeft-trackEl.offsetWidth/2+onEl.offsetWidth/2); }
+      }catch(e){}
+    }catch(e){}
+  }
+  window.__atlCflowEnsure=ensure;
+  function wrap(name, fixedStage){
+    var orig=window[name]; if(typeof orig!=='function' || orig.__cflowWrapped) return;
+    var w=function(){ var r=orig.apply(this,arguments); try{ var sid=fixedStage||arguments[0]; if(sid && STAGE_TO_IDX.hasOwnProperty(sid)) ensure(sid); }catch(e){} return r; };
+    w.__cflowWrapped=true; window[name]=w;
+  }
+  wrap('renderStage1','stage1'); wrap('renderStage2','stage2'); wrap('renderStage3','stage3'); wrap('renderExtStage', null);
+  try{ var on=document.querySelector('.view.on'); if(on && on.id && /^view-stage[1-7]$/.test(on.id)) ensure(on.id.replace('view-','')); }catch(e){}
 })();
 </script>
